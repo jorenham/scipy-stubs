@@ -1,15 +1,19 @@
 from typing import Literal
 
+import numpy as np
+
+import scipy._typing as spt
+
 __all__ = ["ellip_harm", "ellip_harm_2", "ellip_normal"]
 
 def ellip_harm(
-    h2: float,
-    k2: float,
-    n: int,
-    p: float,
-    s: float,
+    h2: spt.AnyReal,
+    k2: spt.AnyReal,
+    n: spt.AnyInt,
+    p: spt.AnyReal,
+    s: spt.AnyReal,
     signm: Literal[-1, 1] = ...,
     signn: Literal[-1, 1] = ...,
-) -> float: ...
-def ellip_harm_2(h2: float, k2: float, n: int, p: int, s: float) -> float: ...
-def ellip_normal(h2: float, k2: float, n: int, p: int) -> float: ...
+) -> np.float64: ...
+def ellip_harm_2(h2: spt.AnyReal, k2: spt.AnyReal, n: spt.AnyInt, p: spt.AnyInt, s: spt.AnyReal) -> spt.Array0D[np.float64]: ...
+def ellip_normal(h2: spt.AnyReal, k2: spt.AnyReal, n: spt.AnyReal, p: spt.AnyReal) -> spt.Array0D[np.float64]: ...

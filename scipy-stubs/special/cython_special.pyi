@@ -211,7 +211,7 @@ __all__ = [
 
 __pyx_capi__: Final[Mapping[str, CapsuleType]]
 
-_CythonFunctionOrMethod: TypeAlias = Callable[..., object]
+_CythonFunctionOrMethod: TypeAlias = Callable[..., object]  # no-any-explicit
 
 agm: _CythonFunctionOrMethod
 bdtr: _CythonFunctionOrMethod

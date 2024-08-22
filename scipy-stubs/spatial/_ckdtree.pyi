@@ -3,7 +3,7 @@ from typing import Any, Generic, Literal, TypeAlias, TypeVar, overload
 import numpy as np
 import numpy.typing as npt
 
-from scipy._typing import ArrayLike0D
+from scipy._typing import AnyScalar
 from scipy.sparse import coo_matrix, dok_matrix
 
 __all__ = ["cKDTree"]
@@ -123,7 +123,7 @@ class cKDTree(Generic[_BoxT]):
     def count_neighbors(
         self,
         other: cKDTree[npt.NDArray[np.float64] | None],
-        r: ArrayLike0D,
+        r: AnyScalar,
         p: float = ...,
         weights: None | tuple[None, None] = ...,
         cumulative: bool = ...,
@@ -132,7 +132,7 @@ class cKDTree(Generic[_BoxT]):
     def count_neighbors(
         self,
         other: cKDTree[npt.NDArray[np.float64] | None],
-        r: ArrayLike0D,
+        r: AnyScalar,
         p: float = ...,
         weights: _Weights = ...,
         cumulative: bool = ...,

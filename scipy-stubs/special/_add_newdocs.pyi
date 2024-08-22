@@ -1,6 +1,10 @@
-from scipy._typing import Untyped
+from typing import Final
 
-docdict: dict[str, str]
+from typing_extensions import LiteralString
 
-def get(name) -> Untyped: ...
-def add_newdoc(name, doc): ...
+__all__ = ()
+
+docdict: Final[dict[str, str]]
+
+def get(name: LiteralString) -> str: ...
+def add_newdoc(name: LiteralString, doc: str) -> None: ...
