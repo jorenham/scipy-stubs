@@ -1,0 +1,6 @@
+from scipy._typing import Untyped
+
+class Array:
+    def __array_namespace__(self, api_version: Untyped | None = None) -> Untyped: ...
+
+def test_numpy_dependency(library): ...

@@ -1,0 +1,85 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry]
+name = "scipy-stubs"
+version = "1.4.1.dev0"
+description = ""
+authors = ["Joren Hammudoglu <jhammudoglu@gmail.com>"]
+license = "BSD-3-Clause"
+readme = "README.md"
+packages = [
+    {include = "scipy-stubs"}
+]
+classifiers = [
+   "Typing :: Stubs Only",
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+scipy = "^1.14.1"
+
+[tool.poetry.group.lint.dependencies]
+ruff = "^0.6.1"
+basedmypy = "^2.6.0"
+basedpyright = "^1.17.0"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.8.0"
+poethepoet = "^0.27.0"
+
+
+[tool.mypy]
+warn_unused_ignores = true
+
+
+[tool.pyright]
+include = ["scipy-stubs"]
+stubPath = "."
+venvPath = "."
+venv = ".venv"
+pythonVersion = "3.10"
+pythonPlatform = "All"
+typeCheckingMode = "strict"
+reportPrivateUsage = false
+
+
+[tool.ruff]
+builtins = ["reveal_locals", "reveal_type"]
+exclude = ["scipy-pyright"]
+force-exclude = true
+target-version = "py310"
+# https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#maximum-line-length
+line-length = 130
+src = ["scipy-stubs"]
+
+[tool.ruff.format]
+line-ending = "lf"
+skip-magic-trailing-comma = false
+
+
+[tool.ruff.lint]
+preview = true
+select = ["E", "W", "I", "UP", "ANN", "COM", "EXE", "ICN", "INP", "PYI", "Q", "TID", "TCH", "ERA", "PGH", "RUF"]
+extend-select = [
+    "PLC0105", "PLC0131", "PLC0132", "PLC0414",
+    "PLE0303", "PLE0304", "PLE0305", "PLE0307", "PLE0308", "PLE0309",
+    "PLE0604", "PLE0605", "PLE1132"
+]
+ignore = [
+    "E741",
+    "COM812",  # ruff format compat
+    "ANN",  # TODO
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+known-local-folder = ["scipy"]
+split-on-trailing-comma = true
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
+mypy-init-return = true

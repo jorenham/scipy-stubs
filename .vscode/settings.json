@@ -1,0 +1,5 @@
+{
+  "editor.rulers": [130],
+  "git.branchProtection": ["master"],
+  "mypy-type-checker.args": ["--config-file=pyproject.toml"]
+}

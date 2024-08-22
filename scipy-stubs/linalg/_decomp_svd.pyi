@@ -1,0 +1,19 @@
+from ._misc import LinAlgError as LinAlgError
+from .lapack import get_lapack_funcs as get_lapack_funcs
+from scipy._typing import Untyped
+
+def svd(
+    a,
+    full_matrices: bool = True,
+    compute_uv: bool = True,
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    lapack_driver: str = "gesdd",
+) -> Untyped: ...
+def svdvals(a, overwrite_a: bool = False, check_finite: bool = True) -> Untyped: ...
+def diagsvd(s, M, N) -> Untyped: ...
+def orth(A, rcond: Untyped | None = None) -> Untyped: ...
+def null_space(
+    A, rcond: Untyped | None = None, *, overwrite_a: bool = False, check_finite: bool = True, lapack_driver: str = "gesdd"
+) -> Untyped: ...
+def subspace_angles(A, B) -> Untyped: ...

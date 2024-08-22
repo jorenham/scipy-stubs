@@ -1,0 +1,3 @@
+from scipy._typing import Untyped
+
+def max_len_seq(nbits, state: Untyped | None = None, length: Untyped | None = None, taps: Untyped | None = None) -> Untyped: ...

@@ -1,0 +1,6 @@
+from numpy.fft import fftfreq as fftfreq, fftshift as fftshift, ifftshift as ifftshift
+
+from scipy._typing import Untyped
+
+def rfftfreq(n, d: float = 1.0) -> Untyped: ...
+def next_fast_len(target) -> Untyped: ...

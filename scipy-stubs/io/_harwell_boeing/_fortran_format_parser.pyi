@@ -1,0 +1,53 @@
+from scipy._typing import Untyped
+
+TOKENS: Untyped
+
+class BadFortranFormat(SyntaxError): ...
+
+def number_digits(n) -> Untyped: ...
+
+class IntFormat:
+    @classmethod
+    def from_number(cls, n, min: Untyped | None = None) -> Untyped: ...
+    width: Untyped
+    repeat: Untyped
+    min: Untyped
+    def __init__(self, width, min: Untyped | None = None, repeat: Untyped | None = None): ...
+    @property
+    def fortran_format(self) -> Untyped: ...
+    @property
+    def python_format(self) -> Untyped: ...
+
+class ExpFormat:
+    @classmethod
+    def from_number(cls, n, min: Untyped | None = None) -> Untyped: ...
+    width: Untyped
+    significand: Untyped
+    repeat: Untyped
+    min: Untyped
+    def __init__(self, width, significand, min: Untyped | None = None, repeat: Untyped | None = None): ...
+    @property
+    def fortran_format(self) -> Untyped: ...
+    @property
+    def python_format(self) -> Untyped: ...
+
+class Token:
+    type: Untyped
+    value: Untyped
+    pos: Untyped
+    def __init__(self, type, value, pos) -> None: ...
+
+class Tokenizer:
+    tokens: Untyped
+    res: Untyped
+    def __init__(self) -> None: ...
+    data: Untyped
+    curpos: int
+    len: Untyped
+    def input(self, s): ...
+    def next_token(self) -> Untyped: ...
+
+class FortranFormatParser:
+    tokenizer: Untyped
+    def __init__(self) -> None: ...
+    def parse(self, s) -> Untyped: ...

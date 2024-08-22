@@ -1,0 +1,23 @@
+from scipy._typing import Untyped
+from scipy.sparse import (
+    bsr_matrix as bsr_matrix,
+    coo_matrix as coo_matrix,
+    csc_matrix as csc_matrix,
+    csr_array as csr_array,
+    csr_matrix as csr_matrix,
+    dia_matrix as dia_matrix,
+    dok_matrix as dok_matrix,
+    load_npz as load_npz,
+    save_npz as save_npz,
+    sparray as sparray,
+)
+
+DATA_DIR: Untyped
+
+def test_save_and_load_random(): ...
+def test_save_and_load_empty(): ...
+def test_save_and_load_one_entry(): ...
+def test_sparray_vs_spmatrix(): ...
+def test_malicious_load() -> Untyped: ...
+def test_py23_compatibility(): ...
+def test_implemented_error(): ...

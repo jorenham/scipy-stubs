@@ -1,0 +1,3 @@
+from scipy._typing import Untyped
+
+def nnls(A, b, maxiter: Untyped | None = None, *, atol: Untyped | None = None) -> Untyped: ...

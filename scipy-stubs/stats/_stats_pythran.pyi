@@ -1,0 +1,3 @@
+from scipy._typing import Untyped
+
+def siegelslopes(y, x, method) -> Untyped: ...

@@ -1,0 +1,56 @@
+from enum import Enum
+
+from scipy._typing import Untyped
+
+class ExitStatus(Enum):
+    RADIUS_SUCCESS: int
+    TARGET_SUCCESS: int
+    FIXED_SUCCESS: int
+    CALLBACK_SUCCESS: int
+    FEASIBLE_SUCCESS: int
+    MAX_EVAL_WARNING: int
+    MAX_ITER_WARNING: int
+    INFEASIBLE_ERROR: int
+    LINALG_ERROR: int
+
+class Options(str, Enum):
+    DEBUG: str
+    FEASIBILITY_TOL: str
+    FILTER_SIZE: str
+    HISTORY_SIZE: str
+    MAX_EVAL: str
+    MAX_ITER: str
+    NPT: str
+    RHOBEG: str
+    RHOEND: str
+    SCALE: str
+    STORE_HISTORY: str
+    TARGET: str
+    VERBOSE: str
+
+class Constants(str, Enum):
+    DECREASE_RADIUS_FACTOR: str
+    INCREASE_RADIUS_FACTOR: str
+    INCREASE_RADIUS_THRESHOLD: str
+    DECREASE_RADIUS_THRESHOLD: str
+    DECREASE_RESOLUTION_FACTOR: str
+    LARGE_RESOLUTION_THRESHOLD: str
+    MODERATE_RESOLUTION_THRESHOLD: str
+    LOW_RATIO: str
+    HIGH_RATIO: str
+    VERY_LOW_RATIO: str
+    PENALTY_INCREASE_THRESHOLD: str
+    PENALTY_INCREASE_FACTOR: str
+    SHORT_STEP_THRESHOLD: str
+    LOW_RADIUS_FACTOR: str
+    BYRD_OMOJOKUN_FACTOR: str
+    THRESHOLD_RATIO_CONSTRAINTS: str
+    LARGE_SHIFT_FACTOR: str
+    LARGE_GRADIENT_FACTOR: str
+    RESOLUTION_FACTOR: str
+    IMPROVE_TCG: str
+
+DEFAULT_OPTIONS: Untyped
+DEFAULT_CONSTANTS: Untyped
+PRINT_OPTIONS: Untyped
+BARRIER: Untyped

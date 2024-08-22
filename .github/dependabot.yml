@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: pip
+    versioning-strategy: lockfile-only
+    directory: /
+    target-branch: "dev"
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns:
+          - "*"

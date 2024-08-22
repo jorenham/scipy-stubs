@@ -1,0 +1,166 @@
+from typing import Any
+
+import numpy.typing as npt
+
+from scipy._lib._array_api import array_namespace as array_namespace
+from scipy._typing import Untyped
+
+pi: Untyped
+golden: Untyped
+golden_ratio: Untyped
+quetta: float
+ronna: float
+yotta: float
+zetta: float
+exa: float
+peta: float
+tera: float
+giga: float
+mega: float
+kilo: float
+hecto: float
+deka: float
+deci: float
+centi: float
+milli: float
+micro: float
+nano: float
+pico: float
+femto: float
+atto: float
+zepto: float
+yocto: float
+ronto: float
+quecto: float
+kibi: Untyped
+mebi: Untyped
+gibi: Untyped
+tebi: Untyped
+pebi: Untyped
+exbi: Untyped
+zebi: Untyped
+yobi: Untyped
+c: Untyped
+speed_of_light: Untyped
+mu_0: Untyped
+epsilon_0: Untyped
+h: Untyped
+Planck: Untyped
+hbar: Untyped
+G: Untyped
+gravitational_constant: Untyped
+g: Untyped
+e: Untyped
+elementary_charge: Untyped
+R: Untyped
+gas_constant: Untyped
+alpha: Untyped
+fine_structure: Untyped
+N_A: Untyped
+Avogadro: Untyped
+k: Untyped
+Boltzmann: Untyped
+sigma: Untyped
+Stefan_Boltzmann: Untyped
+Wien: Untyped
+Rydberg: Untyped
+gram: float
+metric_ton: float
+grain: float
+lb: Untyped
+pound: Untyped
+blob: Untyped
+slinch: Untyped
+slug: Untyped
+oz: Untyped
+ounce: Untyped
+stone: Untyped
+long_ton: Untyped
+short_ton: Untyped
+troy_ounce: Untyped
+troy_pound: Untyped
+carat: float
+m_e: Untyped
+electron_mass: Untyped
+m_p: Untyped
+proton_mass: Untyped
+m_n: Untyped
+neutron_mass: Untyped
+m_u: Untyped
+u: Untyped
+atomic_mass: Untyped
+degree: Untyped
+arcmin: Untyped
+arcminute: Untyped
+arcsec: Untyped
+arcsecond: Untyped
+minute: float
+hour: Untyped
+day: Untyped
+week: Untyped
+year: Untyped
+Julian_year: Untyped
+inch: float
+foot: Untyped
+yard: Untyped
+mile: Untyped
+mil: Untyped
+pt: Untyped
+point: Untyped
+survey_foot: Untyped
+survey_mile: Untyped
+nautical_mile: float
+fermi: float
+angstrom: float
+micron: float
+au: float
+astronomical_unit: float
+light_year: Untyped
+parsec: Untyped
+atm: Untyped
+atmosphere: Untyped
+bar: float
+torr: Untyped
+mmHg: Untyped
+psi: Untyped
+hectare: float
+acre: Untyped
+litre: float
+liter: float
+gallon: Untyped
+gallon_US: Untyped
+fluid_ounce: Untyped
+fluid_ounce_US: Untyped
+bbl: Untyped
+barrel: Untyped
+gallon_imp: float
+fluid_ounce_imp: Untyped
+kmh: Untyped
+mph: Untyped
+mach: float
+speed_of_sound: float
+knot: Untyped
+zero_Celsius: float
+degree_Fahrenheit: Untyped
+eV = elementary_charge
+electron_volt = elementary_charge
+calorie: float
+calorie_th: float
+calorie_IT: float
+erg: float
+Btu_th: Untyped
+Btu: Untyped
+Btu_IT: Untyped
+ton_TNT: Untyped
+hp: Untyped
+horsepower: Untyped
+dyn: float
+dyne: float
+lbf: Untyped
+pound_force: Untyped
+kgf = g
+kilogram_force = g
+
+def convert_temperature(val: npt.ArrayLike, old_scale: str, new_scale: str) -> Any: ...
+def lambda2nu(lambda_: npt.ArrayLike) -> Any: ...
+def nu2lambda(nu: npt.ArrayLike) -> Any: ...

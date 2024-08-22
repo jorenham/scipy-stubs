@@ -1,0 +1,6 @@
+from scipy._typing import Untyped
+
+PICKLE_KWARGS: Untyped
+
+def save_npz(file, matrix, compressed: bool = True): ...
+def load_npz(file) -> Untyped: ...

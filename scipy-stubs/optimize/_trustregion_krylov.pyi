@@ -1,0 +1,1 @@
+from ._trlib import get_trlib_quadratic_subproblem as get_trlib_quadratic_subproblem
