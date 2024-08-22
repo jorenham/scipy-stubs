@@ -1,5 +1,7 @@
-from . import codata as codata, constants as constants
+from . import _codata, _constants
 from ._codata import *
-from ._codata import physical_constants as physical_constants
 from ._constants import *
-from scipy._lib._testutils import PytestTester as PytestTester
+
+__all__: list[str] = []
+__all__ += _codata.__all__
+__all__ += _constants.__all__
