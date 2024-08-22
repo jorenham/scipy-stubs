@@ -31,8 +31,5 @@ from ._traversal import (
     depth_first_order as depth_first_order,
     depth_first_tree as depth_first_tree,
 )
-from scipy._lib._testutils import PytestTester as PytestTester
-from scipy._typing import Untyped
 
 __docformat__: str
-test: Untyped

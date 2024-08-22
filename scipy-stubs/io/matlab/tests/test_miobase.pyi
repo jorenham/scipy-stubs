@@ -1,3 +1,0 @@
-from scipy.io.matlab._miobase import matdims as matdims
-
-def test_matdims(): ...

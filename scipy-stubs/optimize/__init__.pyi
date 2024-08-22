@@ -36,7 +36,3 @@ from ._shgo import shgo as shgo
 from ._slsqp_py import fmin_slsqp as fmin_slsqp
 from ._tnc import fmin_tnc as fmin_tnc
 from ._zeros_py import *
-from scipy._lib._testutils import PytestTester as PytestTester
-from scipy._typing import Untyped
-
-test: Untyped

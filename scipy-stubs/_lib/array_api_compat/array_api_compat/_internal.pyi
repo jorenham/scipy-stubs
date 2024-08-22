@@ -1,3 +1,0 @@
-from scipy._typing import Untyped
-
-def get_xp(xp) -> Untyped: ...

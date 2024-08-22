@@ -27,7 +27,3 @@ from ._spline_filters import *
 from ._upfirdn import upfirdn as upfirdn
 from ._waveforms import *
 from .windows import get_window as get_window
-from scipy._lib._testutils import PytestTester as PytestTester
-from scipy._typing import Untyped
-
-test: Untyped

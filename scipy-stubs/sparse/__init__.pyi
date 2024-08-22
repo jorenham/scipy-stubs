@@ -27,8 +27,3 @@ from ._extract import *
 from ._lil import *
 from ._matrix import spmatrix as spmatrix
 from ._matrix_io import *
-from scipy._lib._testutils import PytestTester as PytestTester
-from scipy._typing import Untyped
-
-msg: str
-test: Untyped

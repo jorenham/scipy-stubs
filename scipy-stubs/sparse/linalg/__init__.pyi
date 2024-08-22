@@ -8,7 +8,3 @@ from ._matfuncs import *
 from ._norm import *
 from ._onenormest import *
 from ._special_sparse_arrays import *
-from scipy._lib._testutils import PytestTester as PytestTester
-from scipy._typing import Untyped
-
-test: Untyped

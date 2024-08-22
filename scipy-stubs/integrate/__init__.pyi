@@ -18,7 +18,3 @@ from ._quad_vec import quad_vec as quad_vec
 from ._quadpack_py import *
 from ._quadrature import *
 from ._tanhsinh import nsum as nsum
-from scipy._lib._testutils import PytestTester as PytestTester
-from scipy._typing import Untyped
-
-test: Untyped

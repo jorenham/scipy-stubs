@@ -18,7 +18,3 @@ from ._miobase import (
     MatWriteError as MatWriteError,
     matfile_version as matfile_version,
 )
-from scipy._lib._testutils import PytestTester as PytestTester
-from scipy._typing import Untyped
-
-test: Untyped
