@@ -19,7 +19,7 @@ pip install scipy-stubs
 | `scipy._lib`                      | 1: skeleton     |
 | `scipy._lib._uarray`              | 0: missing      |
 | `scipy.cluster`                   | 1: skeleton     |
-| `scipy.constants`                 | 1: skeleton     |
+| `scipy.constants`                 | 3: ready        |
 | `scipy.datasets`                  | 1: skeleton     |
 | `scipy.fft`                       | 1: skeleton     |
 | `scipy.fft._pocketfft`            | 1: skeleton     |
