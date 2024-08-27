@@ -1,13 +1,36 @@
-from .lapack import get_lapack_funcs as get_lapack_funcs
-from scipy._typing import Untyped
-from scipy.linalg import LinAlgError as LinAlgError, block_diag as block_diag
+from typing import Literal, TypeAlias, overload
 
+import numpy as np
+import numpy.typing as npt
+import optype as opt
+
+__all__ = ["cossin"]
+
+_Array_f_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.floating[npt.NBitBase]]]
+_Array_f_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.floating[npt.NBitBase]]]
+_Array_c_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.complexfloating[npt.NBitBase, npt.NBitBase]]]
+
+@overload
 def cossin(
-    X,
-    p: Untyped | None = None,
-    q: Untyped | None = None,
-    separate: bool = False,
+    X: npt.ArrayLike | opt.CanIter[opt.CanNext[npt.ArrayLike]],
+    p: opt.typing.AnyInt | None = None,
+    q: opt.typing.AnyInt | None = None,
+    separate: Literal[False] = False,
     swap_sign: bool = False,
     compute_u: bool = True,
     compute_vh: bool = True,
-) -> Untyped: ...
+) -> tuple[_Array_f_2d, _Array_f_2d, _Array_f_2d] | tuple[_Array_c_2d, _Array_f_2d, _Array_c_2d]: ...
+@overload
+def cossin(
+    X: npt.ArrayLike | opt.CanIter[opt.CanNext[npt.ArrayLike]],
+    p: opt.typing.AnyInt | None = None,
+    q: opt.typing.AnyInt | None = None,
+    *,
+    separate: Literal[True],
+    swap_sign: bool = False,
+    compute_u: bool = True,
+    compute_vh: bool = True,
+) -> (
+    tuple[tuple[_Array_f_2d, _Array_f_2d], _Array_f_1d, tuple[_Array_f_2d, _Array_f_2d]]
+    | tuple[tuple[_Array_c_2d, _Array_c_2d], _Array_f_1d, tuple[_Array_c_2d, _Array_c_2d]]
+): ...

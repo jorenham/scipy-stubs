@@ -1,4 +1,14 @@
-from ._decomp_svd import svd as svd
-from scipy._typing import Untyped
+from typing import TypeAlias
 
-def orthogonal_procrustes(A, B, check_finite: bool = True) -> Untyped: ...
+import numpy as np
+import numpy.typing as npt
+
+__all__ = ["orthogonal_procrustes"]
+
+_Array_fc_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.inexact[npt.NBitBase]]]
+
+def orthogonal_procrustes(
+    A: npt.ArrayLike,
+    B: npt.ArrayLike,
+    check_finite: bool = True,
+) -> tuple[_Array_fc_2d, float | np.float64]: ...

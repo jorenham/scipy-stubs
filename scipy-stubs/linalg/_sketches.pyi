@@ -1,6 +1,14 @@
-from scipy._lib._util import check_random_state as check_random_state, rng_integers as rng_integers
-from scipy._typing import Untyped
-from scipy.sparse import csc_matrix as csc_matrix
+import numpy as np
+import numpy.typing as npt
 
-def cwt_matrix(n_rows, n_columns, seed: Untyped | None = None) -> Untyped: ...
-def clarkson_woodruff_transform(input_matrix, sketch_size, seed: Untyped | None = None) -> Untyped: ...
+import scipy._typing as spt
+from scipy.sparse import csc_matrix
+
+__all__ = ["clarkson_woodruff_transform"]
+
+def cwt_matrix(n_rows: int, n_columns: int, seed: spt.Seed | None = None) -> csc_matrix: ...
+def clarkson_woodruff_transform(
+    input_matrix: npt.ArrayLike,
+    sketch_size: int,
+    seed: spt.Seed | None = None,
+) -> npt.NDArray[np.float64]: ...

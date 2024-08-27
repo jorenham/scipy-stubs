@@ -30,7 +30,7 @@ pip install scipy-stubs
 | `scipy.io`                        | 1: skeleton     |
 | `scipy.io.arff`                   | 1: skeleton     |
 | `scipy.io.matlab`                 | 1: skeleton     |
-| `scipy.linalg`                    | 1: skeleton     |
+| `scipy.linalg`                    | 3: ready        |
 | `scipy.misc`                      | 0: missing      |
 | `scipy.ndimage`                   | 1: skeleton     |
 | `scipy.odr`                       | 1: skeleton     |

@@ -1,4 +1,2 @@
-from scipy._typing import Untyped
-
-def __dir__() -> Untyped: ...
-def __getattr__(name) -> Untyped: ...
+# This file is not meant for public use and will be removed in SciPy v2.0.0.
+__all__ = ()

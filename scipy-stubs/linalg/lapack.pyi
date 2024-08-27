@@ -1,10 +1,18 @@
-from scipy._typing import Untyped
-from scipy.linalg._flapack import *
+from collections.abc import Iterable, Sequence
+from typing import Final, Literal
 
-HAS_ILP64: bool
-empty_module: Untyped
-p1: Untyped
-p2: Untyped
+import numpy as np
+import numpy.typing as npt
 
-def backtickrepl(m) -> Untyped: ...
-def get_lapack_funcs(names, arrays=(), dtype: Untyped | None = None, ilp64: bool = False) -> Untyped: ...
+import scipy._typing as spt
+
+__all__ = ["get_lapack_funcs"]
+
+HAS_ILP64: Final[bool]
+
+def get_lapack_funcs(
+    names: Iterable[str] | str,
+    arrays: Sequence[npt.NDArray[np.generic]] = (),
+    dtype: npt.DTypeLike | None = None,
+    ilp64: Literal[True, False, "preferred"] = False,
+) -> list[spt._FortranFunction] | spt._FortranFunction: ...

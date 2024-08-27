@@ -1,58 +1,187 @@
-from ._cythonized_array_utils import (
-    bandwidth as bandwidth,
-    find_det_from_lu as find_det_from_lu,
-    ishermitian as ishermitian,
-    issymmetric as issymmetric,
-)
-from ._misc import LinAlgError as LinAlgError, LinAlgWarning as LinAlgWarning
-from ._solve_toeplitz import levinson as levinson
-from .lapack import get_lapack_funcs as get_lapack_funcs
-from scipy._typing import Untyped
+from typing import Literal, TypeAlias, overload
 
-lapack_cast_dict: Untyped
+import numpy as np
+import numpy.typing as npt
+
+import scipy._typing as spt
+
+__all__ = [
+    "det",
+    "inv",
+    "lstsq",
+    "matmul_toeplitz",
+    "matrix_balance",
+    "pinv",
+    "pinvh",
+    "solve",
+    "solve_banded",
+    "solve_circulant",
+    "solve_toeplitz",
+    "solve_triangular",
+    "solveh_banded",
+]
+
+_Array_fc: TypeAlias = np.ndarray[tuple[int, ...], np.dtype[np.inexact[npt.NBitBase]]]
+_Array_fc_0d: TypeAlias = np.ndarray[tuple[()], np.dtype[np.inexact[npt.NBitBase]]]
+_Array_fc_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.inexact[npt.NBitBase]]]
+_Array_fc_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.inexact[npt.NBitBase]]]
+
+lapack_cast_dict: dict[str, str]
+
+# TODO: narrow the `npt.ArrayLike` to specific n-dimensional array-likes.
+# TODO: add overloads for shape and dtype
 
 def solve(
-    a,
-    b,
+    a: npt.ArrayLike,
+    b: npt.ArrayLike,
     lower: bool = False,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    assume_a: Untyped | None = None,
+    assume_a: Literal[
+        "diagonal",
+        "tridiagonal",
+        "upper triangular",
+        "lower triangular",
+        "sym",
+        "symmetric",
+        "her",
+        "hermitian",
+        "positive definite",
+        "pos",
+        "general",
+        "gen",
+    ]
+    | None = None,
     transposed: bool = False,
-) -> Untyped: ...
+) -> _Array_fc_2d: ...
 def solve_triangular(
-    a, b, trans: int = 0, lower: bool = False, unit_diagonal: bool = False, overwrite_b: bool = False, check_finite: bool = True
-) -> Untyped: ...
-def solve_banded(l_and_u, ab, b, overwrite_ab: bool = False, overwrite_b: bool = False, check_finite: bool = True) -> Untyped: ...
+    a: npt.ArrayLike,
+    b: npt.ArrayLike,
+    trans: Literal[0, "N", 1, "T", 2, "C"] = 0,
+    lower: bool = False,
+    unit_diagonal: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+) -> _Array_fc_1d | _Array_fc_2d: ...
+def solve_banded(
+    l_and_u: npt.ArrayLike,
+    ab: npt.ArrayLike,
+    b: npt.ArrayLike,
+    overwrite_ab: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+) -> _Array_fc_1d | _Array_fc_2d: ...
 def solveh_banded(
-    ab, b, overwrite_ab: bool = False, overwrite_b: bool = False, lower: bool = False, check_finite: bool = True
-) -> Untyped: ...
-def solve_toeplitz(c_or_cr, b, check_finite: bool = True) -> Untyped: ...
+    ab: npt.ArrayLike,
+    b: npt.ArrayLike,
+    overwrite_ab: bool = False,
+    overwrite_b: bool = False,
+    lower: bool = False,
+    check_finite: bool = True,
+) -> _Array_fc_1d | _Array_fc_2d: ...
+def solve_toeplitz(
+    c_or_cr: npt.ArrayLike | tuple[npt.ArrayLike, npt.ArrayLike],
+    b: npt.ArrayLike,
+    check_finite: bool = True,
+) -> _Array_fc_1d | _Array_fc_2d: ...
 def solve_circulant(
-    c, b, singular: str = "raise", tol: Untyped | None = None, caxis: int = -1, baxis: int = 0, outaxis: int = 0
-) -> Untyped: ...
-def inv(a, overwrite_a: bool = False, check_finite: bool = True) -> Untyped: ...
-def det(a, overwrite_a: bool = False, check_finite: bool = True) -> Untyped: ...
+    c: npt.ArrayLike,
+    b: npt.ArrayLike,
+    singular: Literal["lstsq", "raise"] = "raise",
+    tol: spt.AnyReal | None = None,
+    caxis: spt.AnyInt = -1,
+    baxis: spt.AnyInt = 0,
+    outaxis: spt.AnyInt = 0,
+) -> _Array_fc: ...
+def inv(a: npt.ArrayLike, overwrite_a: bool = False, check_finite: bool = True) -> _Array_fc_2d: ...
+def det(a: npt.ArrayLike, overwrite_a: bool = False, check_finite: bool = True) -> np.inexact[npt.NBitBase] | _Array_fc: ...
+# TODO: lstsq.default_lapack_driver
 def lstsq(
-    a,
-    b,
-    cond: Untyped | None = None,
+    a: npt.ArrayLike,
+    b: npt.ArrayLike,
+    cond: spt.AnyReal | None = None,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    lapack_driver: Untyped | None = None,
-) -> Untyped: ...
+    lapack_driver: Literal["gelsd", "gelsy", "gelss"] | None = None,
+) -> tuple[_Array_fc_1d | _Array_fc_2d, _Array_fc_0d | _Array_fc_1d, int, _Array_fc | None]: ...
+@overload
 def pinv(
-    a, *, atol: Untyped | None = None, rtol: Untyped | None = None, return_rank: bool = False, check_finite: bool = True
-) -> Untyped: ...
-def pinvh(
-    a,
-    atol: Untyped | None = None,
-    rtol: Untyped | None = None,
-    lower: bool = True,
-    return_rank: bool = False,
+    a: npt.ArrayLike,
+    *,
+    atol: spt.AnyReal | None = None,
+    rtol: spt.AnyReal | None = None,
+    return_rank: Literal[False] = False,
     check_finite: bool = True,
-) -> Untyped: ...
-def matrix_balance(A, permute: bool = True, scale: bool = True, separate: bool = False, overwrite_a: bool = False) -> Untyped: ...
-def matmul_toeplitz(c_or_cr, x, check_finite: bool = False, workers: Untyped | None = None) -> Untyped: ...
+) -> _Array_fc_2d: ...
+@overload
+def pinv(
+    a: npt.ArrayLike,
+    *,
+    atol: spt.AnyReal | None = None,
+    rtol: spt.AnyReal | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[_Array_fc_2d, int]: ...
+@overload
+def pinvh(
+    a: npt.ArrayLike,
+    atol: spt.AnyReal | None = None,
+    rtol: spt.AnyReal | None = None,
+    lower: bool = True,
+    return_rank: Literal[False] = False,
+    check_finite: bool = True,
+) -> _Array_fc_2d: ...
+@overload
+def pinvh(
+    a: npt.ArrayLike,
+    atol: spt.AnyReal | None = None,
+    rtol: spt.AnyReal | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[_Array_fc_2d, int]: ...
+@overload
+def pinvh(
+    a: npt.ArrayLike,
+    atol: spt.AnyReal | None,
+    rtol: spt.AnyReal | None,
+    lower: bool,
+    return_rank: Literal[True],
+    /,
+    check_finite: bool = True,
+) -> tuple[_Array_fc_2d, int]: ...
+@overload
+def matrix_balance(
+    A: npt.ArrayLike,
+    permute: bool = True,
+    scale: bool = True,
+    separate: Literal[False] = False,
+    overwrite_a: bool = False,
+) -> tuple[_Array_fc_2d, _Array_fc_2d]: ...
+@overload
+def matrix_balance(
+    A: npt.ArrayLike,
+    permute: bool = True,
+    scale: bool = True,
+    *,
+    separate: Literal[True],
+    overwrite_a: bool = False,
+) -> tuple[_Array_fc_2d, tuple[_Array_fc_1d, _Array_fc_1d]]: ...
+@overload
+def matrix_balance(
+    A: npt.ArrayLike,
+    permute: bool,
+    scale: bool,
+    separate: Literal[True],
+    /,
+    overwrite_a: bool = False,
+) -> tuple[_Array_fc_2d, tuple[_Array_fc_1d, _Array_fc_1d]]: ...
+def matmul_toeplitz(
+    c_or_cr: npt.ArrayLike | tuple[npt.ArrayLike, npt.ArrayLike],
+    x: npt.ArrayLike,
+    check_finite: bool = True,
+    workers: int | None = None,
+) -> _Array_fc_1d | _Array_fc_2d: ...

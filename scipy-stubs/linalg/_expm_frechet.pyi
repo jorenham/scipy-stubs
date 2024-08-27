@@ -1,11 +1,37 @@
-from scipy._typing import Untyped
+from typing import Literal, TypeAlias, overload
 
-def expm_frechet(A, E, method: Untyped | None = None, compute_expm: bool = True, check_finite: bool = True) -> Untyped: ...
-def expm_frechet_block_enlarge(A, E) -> Untyped: ...
+import numpy as np
+import numpy.typing as npt
 
-ell_table_61: Untyped
+__all__ = ["expm_cond", "expm_frechet"]
 
-def expm_frechet_algo_64(A, E) -> Untyped: ...
-def vec(M) -> Untyped: ...
-def expm_frechet_kronform(A, method: Untyped | None = None, check_finite: bool = True) -> Untyped: ...
-def expm_cond(A, check_finite: bool = True) -> Untyped: ...
+_Array_fc_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.inexact[npt.NBitBase]]]
+
+@overload
+def expm_frechet(
+    A: npt.ArrayLike,
+    E: npt.ArrayLike,
+    method: Literal["SPS", "blockEnlarge"] | None = None,
+    compute_expm: Literal[True] = True,
+    check_finite: bool = True,
+) -> tuple[_Array_fc_2d, _Array_fc_2d]: ...
+@overload
+def expm_frechet(
+    A: npt.ArrayLike,
+    E: npt.ArrayLike,
+    method: Literal["SPS", "blockEnlarge"] | None = None,
+    *,
+    compute_expm: Literal[False],
+    check_finite: bool = True,
+) -> _Array_fc_2d: ...
+@overload
+def expm_frechet(
+    A: npt.ArrayLike,
+    E: npt.ArrayLike,
+    method: Literal["SPS", "blockEnlarge"] | None,
+    compute_expm: Literal[False],
+    /,
+    check_finite: bool = True,
+) -> _Array_fc_2d: ...
+
+def expm_cond(A: npt.ArrayLike, check_finite: bool = True) -> np.float64: ...

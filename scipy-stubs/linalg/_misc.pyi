@@ -1,11 +1,19 @@
+from typing import Literal
+
+import numpy as np
+import numpy.typing as npt
 from numpy.linalg import LinAlgError as LinAlgError
 
-from .blas import get_blas_funcs as get_blas_funcs
-from .lapack import get_lapack_funcs as get_lapack_funcs
 from scipy._typing import Untyped
+
+__all__ = ["LinAlgError", "LinAlgWarning", "norm"]
 
 class LinAlgWarning(RuntimeWarning): ...
 
 def norm(
-    a, ord: Untyped | None = None, axis: Untyped | None = None, keepdims: bool = False, check_finite: bool = True
-) -> Untyped: ...
+    a: npt.ArrayLike,
+    ord: Literal["fro", "nuc", 0, 1, -1, 2, -2] | float | None = None,
+    axis: Untyped | None = None,
+    keepdims: bool = False,
+    check_finite: bool = True,
+) -> np.float64 | npt.NDArray[np.float64]: ...
