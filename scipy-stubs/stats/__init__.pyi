@@ -1,8 +1,8 @@
-from . import _binned_statistic, _bws_test, contingency, mstats, qmc
+from . import _binned_statistic, _bws_test, _censored_data, contingency, mstats, qmc
 from ._binned_statistic import *
 from ._binomtest import binomtest
 from ._bws_test import *
-from ._censored_data import CensoredData
+from ._censored_data import *
 from ._covariance import Covariance
 from ._entropy import *
 from ._fit import fit, goodness_of_fit
@@ -33,7 +33,6 @@ from .distributions import *
 
 __all__ = [
     "BootstrapMethod",
-    "CensoredData",
     "ConstantInputWarning",
     "Covariance",
     "DegenerateDataWarning",
@@ -71,7 +70,6 @@ __all__ = [
     "brunnermunzel",
     "burr",
     "burr12",
-    "bws_test",
     "cauchy",
     "chi",
     "chi2",
@@ -330,3 +328,4 @@ __all__ = [
 ]
 __all__ += _binned_statistic.__all__
 __all__ += _bws_test.__all__
+__all__ += _censored_data.__all__
