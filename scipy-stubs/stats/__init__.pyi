@@ -1,4 +1,4 @@
-from . import contingency, mstats, qmc
+from . import _binned_statistic, contingency, mstats, qmc
 from ._binned_statistic import *
 from ._binomtest import binomtest
 from ._bws_test import bws_test
@@ -58,9 +58,6 @@ __all__ = [
     "betanbinom",
     "betaprime",
     "biasedurn",
-    "binned_statistic",
-    "binned_statistic_2d",
-    "binned_statistic_dd",
     "binom",
     "binomtest",
     "boltzmann",
@@ -331,3 +328,4 @@ __all__ = [
     "zmap",
     "zscore",
 ]
+__all__ += _binned_statistic.__all__
