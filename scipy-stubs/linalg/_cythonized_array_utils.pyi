@@ -1,7 +1,18 @@
-from typing import Any
+from typing import TypeAlias
 
-from numpy.typing import NDArray
+import numpy as np
+import numpy.typing as npt
 
-def bandwidth(a: NDArray[Any]) -> tuple[int, int]: ...
-def issymmetric(a: NDArray[Any], atol: None | float = ..., rtol: None | float = ...) -> bool: ...
-def ishermitian(a: NDArray[Any], atol: None | float = ..., rtol: None | float = ...) -> bool: ...
+__all__ = ["bandwidth", "ishermitian", "issymmetric"]
+
+# see `scipy/linalg/_cythonized_array_utils.pxd`
+numeric_t: TypeAlias = (  # noqa: PYI042
+    np.int8 | np.int16 | np.int32 | np.int64
+    | np.uint8 | np.uint16 | np.uint32 | np.uint64
+    | np.float32 | np.float64 | np.longdouble
+    | np.complex64 | np.complex128
+)
+
+def bandwidth(a: npt.NDArray[numeric_t]) -> tuple[int, int]: ...
+def issymmetric(a: npt.NDArray[numeric_t], atol: float | None = None, rtol: float | None = None) -> bool: ...
+def ishermitian(a: npt.NDArray[numeric_t], atol: float | None = None, rtol: float | None = None) -> bool: ...
