@@ -1,5 +1,5 @@
-from ._censored_data import CensoredData as CensoredData
-from ._distn_infrastructure import get_distribution_names as get_distribution_names, rv_continuous as rv_continuous
+from ._censored_data import CensoredData
+from ._distn_infrastructure import rv_continuous
 from ._ksstats import kolmogn as kolmogn, kolmogni as kolmogni, kolmognp as kolmognp
 from scipy import integrate as integrate, optimize as optimize
 from scipy._lib._ccallback import LowLevelCallable as LowLevelCallable
@@ -9,9 +9,6 @@ from scipy._lib.doccer import (
     replace_notes_in_docstring as replace_notes_in_docstring,
 )
 from scipy._typing import Untyped
-from scipy.interpolate import BSpline as BSpline
-from scipy.optimize import root_scalar as root_scalar
-from scipy.stats._warnings_errors import FitError as FitError
 
 class ksone_gen(rv_continuous): ...
 

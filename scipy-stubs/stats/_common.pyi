@@ -1,7 +1,7 @@
 from typing import NamedTuple
 
-from scipy._typing import Untyped
+__all__ = ["ConfidenceInterval"]
 
 class ConfidenceInterval(NamedTuple):
-    low: Untyped
-    high: Untyped
+    low: float
+    high: float
