@@ -2,6 +2,8 @@ from typing import Literal, TypeAlias
 
 from ._common import ConfidenceInterval
 
+__all__ = ["BinomTestResult", "binomtest"]
+
 _Alternative: TypeAlias = Literal["two-sided", "less", "greater"]
 
 class BinomTestResult:

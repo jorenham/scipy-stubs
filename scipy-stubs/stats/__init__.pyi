@@ -1,7 +1,7 @@
-from . import _binned_statistic, contingency, mstats, qmc
+from . import _binned_statistic, _bws_test, contingency, mstats, qmc
 from ._binned_statistic import *
 from ._binomtest import binomtest
-from ._bws_test import bws_test
+from ._bws_test import *
 from ._censored_data import CensoredData
 from ._covariance import Covariance
 from ._entropy import *
@@ -329,3 +329,4 @@ __all__ = [
     "zscore",
 ]
 __all__ += _binned_statistic.__all__
+__all__ += _bws_test.__all__
