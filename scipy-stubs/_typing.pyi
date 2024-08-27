@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 from typing_extensions import TypeVar
 
-__all__ = "AnyBool", "AnyChar", "AnyComplex", "AnyInt", "AnyReal", "AnyScalar", "Array0D", "Seed", "Untyped"
+__all__ = ["AnyBool", "AnyChar", "AnyComplex", "AnyInt", "AnyReal", "AnyScalar", "Array0D", "CorrelateMode", "Seed", "Untyped"]
 
 # placeholder for missing annotations
 Untyped: TypeAlias = object
@@ -21,5 +21,6 @@ AnyComplex: TypeAlias = int | float | complex | np.number[npt.NBitBase] | np.boo
 AnyChar: TypeAlias = str | bytes  # `np.str_ <: builtins.str` and `np.bytes_ <: builtins.bytes`
 AnyScalar: TypeAlias = int | float | complex | AnyChar | np.generic
 
-# numpy.random
+# numpy literals
 Seed: TypeAlias = int | np.random.Generator | np.random.RandomState
+CorrelateMode: TypeAlias = Literal["valid", "same", "full"]
