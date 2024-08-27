@@ -1,11 +1,23 @@
 # Helper types for internal use (type-check only).
-from typing import Literal, TypeAlias
+from typing import Literal, Protocol, TypeAlias, type_check_only
 
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import TypeVar
+from typing_extensions import LiteralString, TypeVar
 
-__all__ = ["AnyBool", "AnyChar", "AnyComplex", "AnyInt", "AnyReal", "AnyScalar", "Array0D", "CorrelateMode", "Seed", "Untyped"]
+__all__ = [
+    "AnyBool",
+    "AnyChar",
+    "AnyComplex",
+    "AnyInt",
+    "AnyReal",
+    "AnyScalar",
+    "Array0D",
+    "CorrelateMode",
+    "Seed",
+    "Untyped",
+    "_FortranFunction",
+]
 
 # placeholder for missing annotations
 Untyped: TypeAlias = object
@@ -24,3 +36,18 @@ AnyScalar: TypeAlias = int | float | complex | AnyChar | np.generic
 # numpy literals
 Seed: TypeAlias = int | np.random.Generator | np.random.RandomState
 CorrelateMode: TypeAlias = Literal["valid", "same", "full"]
+
+# used in `scipy.linalg.blas` and `scipy.linalg.lapack`
+@type_check_only
+class _FortranFunction(Protocol):
+    @property
+    def dtype(self) -> np.dtype[np.number[npt.NBitBase]]: ...
+    @property
+    def int_dtype(self) -> np.dtype[np.integer[npt.NBitBase]]: ...
+    @property
+    def module_name(self) -> LiteralString: ...
+    @property
+    def prefix(self) -> LiteralString: ...
+    @property
+    def typecode(self) -> LiteralString: ...
+    def __call__(self, /, *args: object, **kwargs: object) -> object: ...
