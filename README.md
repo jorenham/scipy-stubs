@@ -46,9 +46,9 @@ pip install scipy-stubs
 | `scipy.spatial.distance`          | 3: ready        |
 | `scipy.special`                   | 3: ready        |
 | `scipy.special.cython_special`    | 2: partial      |
-| `scipy.stats`                     | 1: skeleton     |
+| `scipy.stats`                     | 2: partial      |
 | `scipy.stats.contingency`         | 1: skeleton     |
-| `scipy.stats.distributions`       | 1: skeleton     |
+| `scipy.stats.distributions`       | 3: ready        |
 | `scipy.stats.mstats`              | 1: skeleton     |
 | `scipy.stats.qmc`                 | 1: skeleton     |
 | `scipy.stats.sampling`            | 1: skeleton     |
