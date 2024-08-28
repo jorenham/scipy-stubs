@@ -1,16 +1,24 @@
-import numpy as np
+# These stubs won't be used, because the implementation has type annotations, which unfortunately are incorrect.
+# This again shows that "no type annotations than wrong ones".
+# Anyway, these stubs are just for show, and perhaps could be used as an example of how to correctly annotate `_entropy.py`.
+from typing import Any, Literal
 
-from scipy import special as special
-from scipy._lib._array_api import array_namespace as array_namespace, xp_moveaxis_to_end as xp_moveaxis_to_end
+import numpy as np
+import numpy.typing as npt
+
+__all__ = ["differential_entropy", "entropy"]
 
 def entropy(
-    pk: np.typing.ArrayLike, qk: np.typing.ArrayLike | None = None, base: float | None = None, axis: int = 0
-) -> np.number | np.ndarray: ...
+    pk: npt.ArrayLike,
+    qk: npt.ArrayLike | None = None,
+    base: float | None = None,
+    axis: int = 0,
+) -> np.floating[Any] | npt.NDArray[np.floating[Any]]: ...
 def differential_entropy(
-    values: np.typing.ArrayLike,
+    values: npt.ArrayLike,
     *,
     window_length: int | None = None,
     base: float | None = None,
     axis: int = 0,
-    method: str = "auto",
-) -> np.number | np.ndarray: ...
+    method: Literal["vasicek", "van es", "ebrahimi", "correa", "auto"] = "auto",
+) -> np.floating[Any] | npt.NDArray[np.floating[Any]]: ...
