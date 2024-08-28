@@ -1,501 +1,440 @@
-from ._censored_data import CensoredData
+from typing import Final
+
+from typing_extensions import deprecated
+
 from ._distn_infrastructure import rv_continuous
-from ._ksstats import kolmogn as kolmogn, kolmogni as kolmogni, kolmognp as kolmognp
-from scipy import integrate as integrate, optimize as optimize
-from scipy._lib._ccallback import LowLevelCallable as LowLevelCallable
-from scipy._lib.doccer import (
-    extend_notes_in_docstring as extend_notes_in_docstring,
-    inherit_docstring_from as inherit_docstring_from,
-    replace_notes_in_docstring as replace_notes_in_docstring,
-)
-from scipy._typing import Untyped
+
+__all__ = [
+    "alpha",
+    "anglit",
+    "arcsine",
+    "argus",
+    "beta",
+    "betaprime",
+    "bradford",
+    "burr",
+    "burr12",
+    "cauchy",
+    "chi",
+    "chi2",
+    "cosine",
+    "crystalball",
+    "dgamma",
+    "dweibull",
+    "erlang",
+    "expon",
+    "exponnorm",
+    "exponpow",
+    "exponweib",
+    "f",
+    "fatiguelife",
+    "fisk",
+    "foldcauchy",
+    "foldnorm",
+    "gamma",
+    "gausshyper",
+    "genexpon",
+    "genextreme",
+    "gengamma",
+    "genhalflogistic",
+    "genhyperbolic",
+    "geninvgauss",
+    "genlogistic",
+    "gennorm",
+    "genpareto",
+    "gibrat",
+    "gompertz",
+    "gumbel_l",
+    "gumbel_r",
+    "halfcauchy",
+    "halfgennorm",
+    "halflogistic",
+    "halfnorm",
+    "hypsecant",
+    "invgamma",
+    "invgauss",
+    "invweibull",
+    "irwinhall",
+    "jf_skew_t",
+    "johnsonsb",
+    "johnsonsu",
+    "kappa3",
+    "kappa4",
+    "ksone",
+    "kstwo",
+    "kstwobign",
+    "laplace",
+    "laplace_asymmetric",
+    "levy",
+    "levy_l",
+    "loggamma",
+    "logistic",
+    "loglaplace",
+    "lognorm",
+    "loguniform",
+    "lomax",
+    "maxwell",
+    "mielke",
+    "moyal",
+    "nakagami",
+    "ncf",
+    "nct",
+    "ncx2",
+    "norm",
+    "norminvgauss",
+    "pareto",
+    "pearson3",
+    "powerlaw",
+    "powerlognorm",
+    "powernorm",
+    "rayleigh",
+    "rdist",
+    "recipinvgauss",
+    "reciprocal",
+    "rel_breitwigner",
+    "rice",
+    "rv_histogram",
+    "semicircular",
+    "skewcauchy",
+    "skewnorm",
+    "studentized_range",
+    "t",
+    "trapezoid",
+    "trapz",
+    "triang",
+    "truncexpon",
+    "truncnorm",
+    "truncpareto",
+    "truncweibull_min",
+    "tukeylambda",
+    "uniform",
+    "vonmises",
+    "vonmises_line",
+    "wald",
+    "weibull_max",
+    "weibull_min",
+    "wrapcauchy",
+]
 
 class ksone_gen(rv_continuous): ...
-
-ksone: Untyped
+ksone: Final[ksone_gen]
 
 class kstwo_gen(rv_continuous): ...
-
-kstwo: Untyped
+kstwo: Final[kstwo_gen]
 
 class kstwobign_gen(rv_continuous): ...
+kstwobign: Final[kstwobign_gen]
 
-kstwobign: Untyped
-
-class norm_gen(rv_continuous):
-    def fit(self, data, **kwds) -> Untyped: ...
-
-norm: Untyped
+class norm_gen(rv_continuous): ...
+norm: Final[norm_gen]
 
 class alpha_gen(rv_continuous): ...
-
-alpha: Untyped
+alpha: Final[alpha_gen]
 
 class anglit_gen(rv_continuous): ...
-
-anglit: Untyped
+anglit: Final[anglit_gen]
 
 class arcsine_gen(rv_continuous): ...
+arcsine: Final[arcsine_gen]
 
-arcsine: Untyped
-
-class FitDataError(ValueError):
-    args: Untyped
-    def __init__(self, distr, lower, upper) -> None: ...
-
-class FitSolverError(FitError):
-    args: Untyped
-    def __init__(self, mesg) -> None: ...
-
-class beta_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-beta: Untyped
+class beta_gen(rv_continuous): ...
+beta: Final[beta_gen]
 
 class betaprime_gen(rv_continuous): ...
-
-betaprime: Untyped
+betaprime: Final[betaprime_gen]
 
 class bradford_gen(rv_continuous): ...
-
-bradford: Untyped
+bradford: Final[bradford_gen]
 
 class burr_gen(rv_continuous): ...
-
-burr: Untyped
+burr: Final[burr_gen]
 
 class burr12_gen(rv_continuous): ...
-
-burr12: Untyped
+burr12: Final[burr12_gen]
 
 class fisk_gen(burr_gen): ...
-
-fisk: Untyped
+fisk: Final[fisk_gen]
 
 class cauchy_gen(rv_continuous): ...
-
-cauchy: Untyped
+cauchy: Final[cauchy_gen]
 
 class chi_gen(rv_continuous): ...
-
-chi: Untyped
+chi: Final[chi_gen]
 
 class chi2_gen(rv_continuous): ...
-
-chi2: Untyped
+chi2: Final[chi2_gen]
 
 class cosine_gen(rv_continuous): ...
-
-cosine: Untyped
+cosine: Final[cosine_gen]
 
 class dgamma_gen(rv_continuous): ...
-
-dgamma: Untyped
+dgamma: Final[dgamma_gen]
 
 class dweibull_gen(rv_continuous): ...
+dweibull: Final[dweibull_gen]
 
-dweibull: Untyped
-
-class expon_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-expon: Untyped
+class expon_gen(rv_continuous): ...
+expon: Final[expon_gen]
 
 class exponnorm_gen(rv_continuous): ...
-
-exponnorm: Untyped
+exponnorm: Final[exponnorm_gen]
 
 class exponweib_gen(rv_continuous): ...
-
-exponweib: Untyped
+exponweib: Final[exponweib_gen]
 
 class exponpow_gen(rv_continuous): ...
-
-exponpow: Untyped
+exponpow: Final[exponpow_gen]
 
 class fatiguelife_gen(rv_continuous): ...
-
-fatiguelife: Untyped
+fatiguelife: Final[fatiguelife_gen]
 
 class foldcauchy_gen(rv_continuous): ...
-
-foldcauchy: Untyped
+foldcauchy: Final[foldcauchy_gen]
 
 class f_gen(rv_continuous): ...
-
-f: Untyped
+f: Final[f_gen]
 
 class foldnorm_gen(rv_continuous): ...
+foldnorm: Final[foldnorm_gen]
 
-foldnorm: Untyped
-
-class weibull_min_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-weibull_min: Untyped
+class weibull_min_gen(rv_continuous): ...
+weibull_min: Final[weibull_min_gen]
 
 class truncweibull_min_gen(rv_continuous): ...
-
-truncweibull_min: Untyped
+truncweibull_min: Final[truncweibull_min_gen]
 
 class weibull_max_gen(rv_continuous): ...
-
-weibull_max: Untyped
+weibull_max: Final[weibull_max_gen]
 
 class genlogistic_gen(rv_continuous): ...
-
-genlogistic: Untyped
+genlogistic: Final[genlogistic_gen]
 
 class genpareto_gen(rv_continuous): ...
-
-genpareto: Untyped
+genpareto: Final[genpareto_gen]
 
 class genexpon_gen(rv_continuous): ...
-
-genexpon: Untyped
+genexpon: Final[genexpon_gen]
 
 class genextreme_gen(rv_continuous): ...
+genextreme: Final[genextreme_gen]
 
-genextreme: Untyped
+class gamma_gen(rv_continuous): ...
+gamma: Final[gamma_gen]
 
-class gamma_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-gamma: Untyped
-
-class erlang_gen(gamma_gen):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-erlang: Untyped
+class erlang_gen(gamma_gen): ...
+erlang: Final[erlang_gen]
 
 class gengamma_gen(rv_continuous): ...
-
-gengamma: Untyped
+gengamma: Final[gengamma_gen]
 
 class genhalflogistic_gen(rv_continuous): ...
-
-genhalflogistic: Untyped
+genhalflogistic: Final[genhalflogistic_gen]
 
 class genhyperbolic_gen(rv_continuous): ...
-
-genhyperbolic: Untyped
+genhyperbolic: Final[genhyperbolic_gen]
 
 class gompertz_gen(rv_continuous): ...
+gompertz: Final[gompertz_gen]
 
-gompertz: Untyped
+class gumbel_r_gen(rv_continuous): ...
+gumbel_r: Final[gumbel_r_gen]
 
-class gumbel_r_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
+class gumbel_l_gen(rv_continuous): ...
+gumbel_l: Final[gumbel_l_gen]
 
-gumbel_r: Untyped
+class halfcauchy_gen(rv_continuous): ...
+halfcauchy: Final[halfcauchy_gen]
 
-class gumbel_l_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
+class halflogistic_gen(rv_continuous): ...
+halflogistic: Final[halflogistic_gen]
 
-gumbel_l: Untyped
-
-class halfcauchy_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-halfcauchy: Untyped
-
-class halflogistic_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-halflogistic: Untyped
-
-class halfnorm_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-halfnorm: Untyped
+class halfnorm_gen(rv_continuous): ...
+halfnorm: Final[halfnorm_gen]
 
 class hypsecant_gen(rv_continuous): ...
-
-hypsecant: Untyped
+hypsecant: Final[hypsecant_gen]
 
 class gausshyper_gen(rv_continuous): ...
-
-gausshyper: Untyped
+gausshyper: Final[gausshyper_gen]
 
 class invgamma_gen(rv_continuous): ...
+invgamma: Final[invgamma_gen]
 
-invgamma: Untyped
-
-class invgauss_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-invgauss: Untyped
+class invgauss_gen(rv_continuous): ...
+invgauss: Final[invgauss_gen]
 
 class geninvgauss_gen(rv_continuous): ...
-
-geninvgauss: Untyped
+geninvgauss: Final[geninvgauss_gen]
 
 class norminvgauss_gen(rv_continuous): ...
-
-norminvgauss: Untyped
+norminvgauss: Final[norminvgauss_gen]
 
 class invweibull_gen(rv_continuous): ...
-
-invweibull: Untyped
+invweibull: Final[invweibull_gen]
 
 class jf_skew_t_gen(rv_continuous): ...
-
-jf_skew_t: Untyped
+jf_skew_t: Final[jf_skew_t_gen]
 
 class johnsonsb_gen(rv_continuous): ...
-
-johnsonsb: Untyped
+johnsonsb: Final[johnsonsb_gen]
 
 class johnsonsu_gen(rv_continuous): ...
+johnsonsu: Final[johnsonsu_gen]
 
-johnsonsu: Untyped
-
-class laplace_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-laplace: Untyped
+class laplace_gen(rv_continuous): ...
+laplace: Final[laplace_gen]
 
 class laplace_asymmetric_gen(rv_continuous): ...
-
-laplace_asymmetric: Untyped
+laplace_asymmetric: Final[laplace_asymmetric_gen]
 
 class levy_gen(rv_continuous): ...
-
-levy: Untyped
+levy: Final[levy_gen]
 
 class levy_l_gen(rv_continuous): ...
+levy_l: Final[levy_l_gen]
 
-levy_l: Untyped
-
-class logistic_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-logistic: Untyped
+class logistic_gen(rv_continuous): ...
+logistic: Final[logistic_gen]
 
 class loggamma_gen(rv_continuous): ...
+loggamma: Final[loggamma_gen]
 
-loggamma: Untyped
+class loglaplace_gen(rv_continuous): ...
+loglaplace: Final[loglaplace_gen]
 
-class loglaplace_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-loglaplace: Untyped
-
-class lognorm_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-lognorm: Untyped
+class lognorm_gen(rv_continuous): ...
+lognorm: Final[lognorm_gen]
 
 class gibrat_gen(rv_continuous): ...
-
-gibrat: Untyped
+gibrat: Final[gibrat_gen]
 
 class maxwell_gen(rv_continuous): ...
-
-maxwell: Untyped
+maxwell: Final[maxwell_gen]
 
 class mielke_gen(rv_continuous): ...
-
-mielke: Untyped
+mielke: Final[mielke_gen]
 
 class kappa4_gen(rv_continuous): ...
-
-kappa4: Untyped
+kappa4: Final[kappa4_gen]
 
 class kappa3_gen(rv_continuous): ...
-
-kappa3: Untyped
+kappa3: Final[kappa3_gen]
 
 class moyal_gen(rv_continuous): ...
-
-moyal: Untyped
+moyal: Final[moyal_gen]
 
 class nakagami_gen(rv_continuous): ...
-
-nakagami: Untyped
+nakagami: Final[nakagami_gen]
 
 class ncx2_gen(rv_continuous): ...
-
-ncx2: Untyped
+ncx2: Final[ncx2_gen]
 
 class ncf_gen(rv_continuous): ...
-
-ncf: Untyped
+ncf: Final[ncf_gen]
 
 class t_gen(rv_continuous): ...
-
-t: Untyped
+t: Final[t_gen]
 
 class nct_gen(rv_continuous): ...
+nct: Final[nct_gen]
 
-nct: Untyped
-
-class pareto_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-pareto: Untyped
+class pareto_gen(rv_continuous): ...
+pareto: Final[pareto_gen]
 
 class lomax_gen(rv_continuous): ...
+lomax: Final[lomax_gen]
 
-lomax: Untyped
+class pearson3_gen(rv_continuous): ...
+pearson3: Final[pearson3_gen]
 
-class pearson3_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-pearson3: Untyped
-
-class powerlaw_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-powerlaw: Untyped
+class powerlaw_gen(rv_continuous): ...
+powerlaw: Final[powerlaw_gen]
 
 class powerlognorm_gen(rv_continuous): ...
-
-powerlognorm: Untyped
+powerlognorm: Final[powerlognorm_gen]
 
 class powernorm_gen(rv_continuous): ...
-
-powernorm: Untyped
+powernorm: Final[powernorm_gen]
 
 class rdist_gen(rv_continuous): ...
+rdist: Final[rdist_gen]
 
-rdist: Untyped
-
-class rayleigh_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-rayleigh: Untyped
+class rayleigh_gen(rv_continuous): ...
+rayleigh: Final[rayleigh_gen]
 
 class reciprocal_gen(rv_continuous):
     fit_note: str
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-loguniform: Untyped
-reciprocal: Untyped
+loguniform: Final[reciprocal_gen]
+reciprocal: Final[reciprocal_gen]
 
 class rice_gen(rv_continuous): ...
+rice: Final[rice_gen]
 
-rice: Untyped
-
-class irwinhall_gen(rv_continuous):
-    def fit(self, data, *args, **kwds): ...
-
-irwinhall: Untyped
+class irwinhall_gen(rv_continuous): ...
+irwinhall: Final[irwinhall_gen]
 
 class recipinvgauss_gen(rv_continuous): ...
-
-recipinvgauss: Untyped
+recipinvgauss: Final[recipinvgauss_gen]
 
 class semicircular_gen(rv_continuous): ...
-
-semicircular: Untyped
+semicircular: Final[semicircular_gen]
 
 class skewcauchy_gen(rv_continuous): ...
+skewcauchy: Final[skewcauchy_gen]
 
-skewcauchy: Untyped
-
-class skewnorm_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-skewnorm: Untyped
+class skewnorm_gen(rv_continuous): ...
+skewnorm: Final[skewnorm_gen]
 
 class trapezoid_gen(rv_continuous): ...
-
-deprmsg: str
-
-class trapz_gen(trapezoid_gen):
-    def __call__(self, *args, **kwds) -> Untyped: ...
-
-trapezoid: Untyped
-trapz: Untyped
-
-class _DeprecationWrapper:
-    msg: Untyped
-    method: Untyped
-    def __init__(self, method) -> None: ...
-    def __call__(self, *args, **kwargs) -> Untyped: ...
+@deprecated("will be removed in SciPy 1.16.0.")
+class trapz_gen(trapezoid_gen): ...
+trapezoid: Final[trapezoid_gen]
+trapz: Final[trapz_gen]  # pyright: ignore[reportDeprecated]
 
 class triang_gen(rv_continuous): ...
-
-triang: Untyped
+triang: Final[triang_gen]
 
 class truncexpon_gen(rv_continuous): ...
-
-truncexpon: Untyped
+truncexpon: Final[truncexpon_gen]
 
 class truncnorm_gen(rv_continuous): ...
+truncnorm: Final[truncnorm_gen]
 
-truncnorm: Untyped
-
-class truncpareto_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-truncpareto: Untyped
+class truncpareto_gen(rv_continuous): ...
+truncpareto: Final[truncpareto_gen]
 
 class tukeylambda_gen(rv_continuous): ...
+tukeylambda: Final[tukeylambda_gen]
 
-tukeylambda: Untyped
+class uniform_gen(rv_continuous): ...
+uniform: Final[uniform_gen]
 
-class FitUniformFixedScaleDataError(FitDataError):
-    args: Untyped
-    def __init__(self, ptp, fscale) -> None: ...
-
-class uniform_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-uniform: Untyped
-
-class vonmises_gen(rv_continuous):
-    def rvs(self, *args, **kwds) -> Untyped: ...
-    def expect(
-        self,
-        func: Untyped | None = None,
-        args=(),
-        loc: int = 0,
-        scale: int = 1,
-        lb: Untyped | None = None,
-        ub: Untyped | None = None,
-        conditional: bool = False,
-        **kwds,
-    ) -> Untyped: ...
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-vonmises: Untyped
-vonmises_line: Untyped
+class vonmises_gen(rv_continuous): ...
+vonmises: Final[vonmises_gen]
+vonmises_line: Final[vonmises_gen]
 
 class wald_gen(invgauss_gen): ...
-
-wald: Untyped
+wald: Final[wald_gen]
 
 class wrapcauchy_gen(rv_continuous): ...
-
-wrapcauchy: Untyped
+wrapcauchy: Final[wrapcauchy_gen]
 
 class gennorm_gen(rv_continuous): ...
-
-gennorm: Untyped
+gennorm: Final[gennorm_gen]
 
 class halfgennorm_gen(rv_continuous): ...
-
-halfgennorm: Untyped
+halfgennorm: Final[halfgennorm_gen]
 
 class crystalball_gen(rv_continuous): ...
-
-crystalball: Untyped
+crystalball: Final[crystalball_gen]
 
 class argus_gen(rv_continuous): ...
+argus: Final[argus_gen]
 
-argus: Untyped
-
-class rv_histogram(rv_continuous):
-    def __init__(self, histogram, *args, density: Untyped | None = None, **kwargs): ...
+class rv_histogram(rv_continuous): ...
 
 class studentized_range_gen(rv_continuous): ...
+studentized_range: Final[studentized_range_gen]
 
-studentized_range: Untyped
-
-class rel_breitwigner_gen(rv_continuous):
-    def fit(self, data, *args, **kwds) -> Untyped: ...
-
-rel_breitwigner: Untyped
-pairs: Untyped
+class rel_breitwigner_gen(rv_continuous): ...
+rel_breitwigner: Final[rel_breitwigner_gen]
