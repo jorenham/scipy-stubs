@@ -35,6 +35,7 @@ poethepoet = "^0.27.0"
 
 [tool.mypy]
 warn_unused_ignores = true
+disallow_any_explicit = false  # no other way to type e.g. `np.float64 <: np.number[Any]`
 
 
 [tool.pyright]
