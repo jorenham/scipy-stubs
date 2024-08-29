@@ -1,36 +1,66 @@
 from scipy._typing import Untyped
 
-from scipy._lib._util import check_random_state as check_random_state, rng_integers as rng_integers
-from ._base import issparse as issparse, sparray as sparray
-from ._bsr import bsr_array as bsr_array, bsr_matrix as bsr_matrix
-from ._coo import coo_array as coo_array, coo_matrix as coo_matrix
-from ._csc import csc_array as csc_array, csc_matrix as csc_matrix
-from ._csr import csr_array as csr_array, csr_matrix as csr_matrix
-from ._dia import dia_array as dia_array, dia_matrix as dia_matrix
-from ._sparsetools import csr_hstack as csr_hstack
-from ._sputils import get_index_dtype as get_index_dtype, isscalarlike as isscalarlike, upcast as upcast
+__all__ = [
+    "block_array",
+    "block_diag",
+    "bmat",
+    "diags",
+    "diags_array",
+    "eye",
+    "eye_array",
+    "hstack",
+    "identity",
+    "kron",
+    "kronsum",
+    "rand",
+    "random",
+    "random_array",
+    "spdiags",
+    "vstack",
+]
 
-__docformat__: str
-
-def spdiags(data, diags, m: Untyped | None = None, n: Untyped | None = None, format: Untyped | None = None) -> Untyped: ...
+def spdiags(
+    data: Untyped,
+    diags: Untyped,
+    m: Untyped | None = None,
+    n: Untyped | None = None,
+    format: Untyped | None = None,
+) -> Untyped: ...
 def diags_array(
-    diagonals, /, *, offsets: int = 0, shape: Untyped | None = None, format: Untyped | None = None, dtype: Untyped | None = None
+    diagonals: Untyped,
+    /,
+    *,
+    offsets: int = 0,
+    shape: Untyped | None = None,
+    format: Untyped | None = None,
+    dtype: Untyped | None = None,
 ) -> Untyped: ...
 def diags(
-    diagonals, offsets: int = 0, shape: Untyped | None = None, format: Untyped | None = None, dtype: Untyped | None = None
+    diagonals: Untyped,
+    offsets: int = 0,
+    shape: Untyped | None = None,
+    format: Untyped | None = None,
+    dtype: Untyped | None = None,
 ) -> Untyped: ...
-def identity(n, dtype: str = "d", format: Untyped | None = None) -> Untyped: ...
-def eye_array(m, n: Untyped | None = None, *, k: int = 0, dtype=..., format: Untyped | None = None) -> Untyped: ...
-def eye(m, n: Untyped | None = None, k: int = 0, dtype=..., format: Untyped | None = None) -> Untyped: ...
-def kron(A, B, format: Untyped | None = None) -> Untyped: ...
-def kronsum(A, B, format: Untyped | None = None) -> Untyped: ...
-def hstack(blocks, format: Untyped | None = None, dtype: Untyped | None = None) -> Untyped: ...
-def vstack(blocks, format: Untyped | None = None, dtype: Untyped | None = None) -> Untyped: ...
-def bmat(blocks, format: Untyped | None = None, dtype: Untyped | None = None) -> Untyped: ...
-def block_array(blocks, *, format: Untyped | None = None, dtype: Untyped | None = None) -> Untyped: ...
-def block_diag(mats, format: Untyped | None = None, dtype: Untyped | None = None) -> Untyped: ...
+def identity(n: Untyped, dtype: str = "d", format: Untyped | None = None) -> Untyped: ...
+def eye_array(
+    m: Untyped,
+    n: Untyped | None = None,
+    *,
+    k: int = 0,
+    dtype: Untyped = ...,
+    format: Untyped | None = None,
+) -> Untyped: ...
+def eye(m: Untyped, n: Untyped | None = None, k: int = 0, dtype: Untyped = ..., format: Untyped | None = None) -> Untyped: ...
+def kron(A: Untyped, B: Untyped, format: Untyped | None = None) -> Untyped: ...
+def kronsum(A: Untyped, B: Untyped, format: Untyped | None = None) -> Untyped: ...
+def hstack(blocks: Untyped, format: Untyped | None = None, dtype: Untyped | None = None) -> Untyped: ...
+def vstack(blocks: Untyped, format: Untyped | None = None, dtype: Untyped | None = None) -> Untyped: ...
+def bmat(blocks: Untyped, format: Untyped | None = None, dtype: Untyped | None = None) -> Untyped: ...
+def block_array(blocks: Untyped, *, format: Untyped | None = None, dtype: Untyped | None = None) -> Untyped: ...
+def block_diag(mats: Untyped, format: Untyped | None = None, dtype: Untyped | None = None) -> Untyped: ...
 def random_array(
-    shape,
+    shape: Untyped,
     *,
     density: float = 0.01,
     format: str = "coo",
@@ -39,8 +69,8 @@ def random_array(
     data_sampler: Untyped | None = None,
 ) -> Untyped: ...
 def random(
-    m,
-    n,
+    m: Untyped,
+    n: Untyped,
     density: float = 0.01,
     format: str = "coo",
     dtype: Untyped | None = None,
@@ -48,5 +78,10 @@ def random(
     data_rvs: Untyped | None = None,
 ) -> Untyped: ...
 def rand(
-    m, n, density: float = 0.01, format: str = "coo", dtype: Untyped | None = None, random_state: Untyped | None = None
+    m: Untyped,
+    n: Untyped,
+    density: float = 0.01,
+    format: str = "coo",
+    dtype: Untyped | None = None,
+    random_state: Untyped | None = None,
 ) -> Untyped: ...

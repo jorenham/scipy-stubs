@@ -1,28 +1,28 @@
+from typing_extensions import override
+
 from scipy._typing import Untyped
 
-from ._base import sparray as sparray
+from ._base import sparray
 from ._compressed import _cs_matrix
-from ._matrix import spmatrix as spmatrix
-from ._sparsetools import (
-    csr_count_blocks as csr_count_blocks,
-    csr_sample_values as csr_sample_values,
-    csr_tobsr as csr_tobsr,
-    csr_tocsc as csr_tocsc,
-    get_csr_submatrix as get_csr_submatrix,
-)
-from ._sputils import upcast as upcast
+from ._matrix import spmatrix
 
-__docformat__: str
+__all__ = ["csr_array", "csr_matrix", "isspmatrix_csr"]
 
 class _csr_base(_cs_matrix):
+    @override
     def transpose(self, axes: Untyped | None = None, copy: bool = False) -> Untyped: ...
+    @override
     def tolil(self, copy: bool = False) -> Untyped: ...
+    @override
     def tocsr(self, copy: bool = False) -> Untyped: ...
+    @override
     def tocsc(self, copy: bool = False) -> Untyped: ...
+    @override
     def tobsr(self, blocksize: Untyped | None = None, copy: bool = True) -> Untyped: ...
+    @override
     def __iter__(self) -> Untyped: ...
-
-def isspmatrix_csr(x) -> Untyped: ...
 
 class csr_array(_csr_base, sparray): ...
 class csr_matrix(spmatrix, _csr_base): ...
+
+def isspmatrix_csr(x: Untyped) -> bool: ...

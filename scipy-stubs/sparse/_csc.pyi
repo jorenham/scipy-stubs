@@ -1,21 +1,26 @@
+from typing_extensions import override
+
 from scipy._typing import Untyped
 
-from ._base import sparray as sparray
+from ._base import sparray
 from ._compressed import _cs_matrix
-from ._matrix import spmatrix as spmatrix
-from ._sparsetools import csc_tocsr as csc_tocsr, expandptr as expandptr
-from ._sputils import upcast as upcast
+from ._matrix import spmatrix
 
-__docformat__: str
+__all__ = ["csc_array", "csc_matrix", "isspmatrix_csc"]
 
 class _csc_base(_cs_matrix):
-    def transpose(self, axes: Untyped | None = None, copy: bool = False) -> Untyped: ...
+    @override
     def __iter__(self) -> Untyped: ...
+    @override
+    def transpose(self, axes: Untyped | None = None, copy: bool = False) -> Untyped: ...
+    @override
     def tocsc(self, copy: bool = False) -> Untyped: ...
+    @override
     def tocsr(self, copy: bool = False) -> Untyped: ...
+    @override
     def nonzero(self) -> Untyped: ...
-
-def isspmatrix_csc(x) -> Untyped: ...
 
 class csc_array(_csc_base, sparray): ...
 class csc_matrix(spmatrix, _csc_base): ...
+
+def isspmatrix_csc(x: Untyped) -> bool: ...
