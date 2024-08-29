@@ -50,13 +50,13 @@ reports = ["lxml"]
 
 [[package]]
 name = "basedpyright"
-version = "1.17.0"
+version = "1.17.1"
 description = "static type checking for Python (but based)"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "basedpyright-1.17.0-py3-none-any.whl", hash = "sha256:a7e070be5d3930223df0a435590932fbc114242b7f8d1723c5d717754e7a3b4e"},
-    {file = "basedpyright-1.17.0.tar.gz", hash = "sha256:79e2740156a040fdc68e4372940f40694375ef7e4a0ca70bacf8910af08717e0"},
+    {file = "basedpyright-1.17.1-py3-none-any.whl", hash = "sha256:bbf74a0ac530588d902edcecc3c4a1ace071290a5176d388a329576d1550cc17"},
+    {file = "basedpyright-1.17.1.tar.gz", hash = "sha256:ee5f245b0a2fd579fbf069c7a6476b21554a324f3ffda97a717d74ca4a41734c"},
 ]
 
 [package.dependencies]
@@ -490,4 +490,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10.1"
-content-hash = "c9f01a31d77dc840c5c8281a08d3e3a430d34a23e76717027d41049f7811310d"
+content-hash = "489ef67d8a1f5ad223e639b29ca177ee6631ef00aa789d347dddfe5a2b73ddaa"
