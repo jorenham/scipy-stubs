@@ -1,14 +1,10 @@
+# TODO
 from scipy._typing import Untyped
 
-from scipy.sparse import issparse as issparse
-from scipy.sparse._sputils import (
-    convert_pydata_sparse_to_scipy as convert_pydata_sparse_to_scipy,
-    is_pydata_spmatrix as is_pydata_spmatrix,
-)
-from scipy.sparse.linalg import LinearOperator as LinearOperator
+__all__ = ["laplacian"]
 
 def laplacian(
-    csgraph,
+    csgraph: Untyped,
     normed: bool = False,
     return_diag: bool = False,
     use_out_degree: bool = False,
