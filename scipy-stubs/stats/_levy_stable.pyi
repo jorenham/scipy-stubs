@@ -1,23 +1,31 @@
 from collections.abc import Callable
+from typing import Final
+
+import numpy as np
+import numpy.typing as npt
 
 from ._distn_infrastructure import rv_continuous
-from scipy._typing import Untyped
+
+__all__ = ["levy_stable", "levy_stable_gen", "pdf_from_cf_with_fft"]
 
 class levy_stable_gen(rv_continuous):
-    parameterization: str
-    pdf_default_method: str
-    cdf_default_method: str
-    quad_eps: Untyped
-    piecewise_x_tol_near_zeta: float
-    piecewise_alpha_tol_near_one: float
-    pdf_fft_min_points_threshold: Untyped
-    pdf_fft_grid_spacing: float
-    pdf_fft_n_points_two_power: Untyped
-    pdf_fft_interpolation_level: int
-    pdf_fft_interpolation_degree: int
+    parameterization: Final = "S1"
+    pdf_default_method: Final = "piecewise"
+    cdf_default_method: Final = "piecewise"
+    quad_eps: Final = 1.2e-14
+    piecewise_x_tol_near_zeta: Final = 0.005
+    piecewise_alpha_tol_near_one: Final = 0.005
+    pdf_fft_min_points_threshold: Final = None
+    pdf_fft_grid_spacing: Final = 0.001
+    pdf_fft_n_points_two_power: Final = None
+    pdf_fft_interpolation_level: Final = 3
+    pdf_fft_interpolation_degree: Final = 3
+
+levy_stable: Final[levy_stable_gen]
 
 def pdf_from_cf_with_fft(
-    cf: Callable[[float], complex], h: float = ..., q: int = ..., level: int = ...
-) -> tuple[Untyped, Untyped]: ...
-
-levy_stable: levy_stable_gen
+    cf: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.complex128]],
+    h: float = 0.01,
+    q: int = 9,
+    level: int = 3,
+) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]: ...

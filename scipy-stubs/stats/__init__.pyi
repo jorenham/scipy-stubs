@@ -1,4 +1,4 @@
-from . import _binned_statistic, _bws_test, _censored_data, contingency, distributions, mstats, qmc
+from . import _binned_statistic, _bws_test, _censored_data, _multivariate, contingency, distributions, mstats, qmc
 from ._binned_statistic import *
 from ._binomtest import binomtest
 from ._bws_test import *
@@ -69,8 +69,6 @@ __all__ = [
     "describe",
     "differential_entropy",
     "directional_stats",
-    "dirichlet",
-    "dirichlet_multinomial",
     "distributions",
     "dunnett",
     "ecdf",
@@ -90,7 +88,6 @@ __all__ = [
     "gstd",
     "gzscore",
     "hmean",
-    "invwishart",
     "iqr",
     "jarque_bera",
     "kde",
@@ -107,7 +104,6 @@ __all__ = [
     "linregress",
     "logrank",
     "mannwhitneyu",
-    "matrix_normal",
     "median_abs_deviation",
     "median_test",
     "mode",
@@ -118,16 +114,11 @@ __all__ = [
     "mstats",
     "mstats_basic",
     "mstats_extras",
-    "multinomial",
     "multiscale_graphcorr",
-    "multivariate_hypergeom",
-    "multivariate_normal",
-    "multivariate_t",
     "mvn",
     "mvsdist",
     "normaltest",
     "obrientransform",
-    "ortho_group",
     "page_trend_test",
     "pearsonr",
     "percentileofscore",
@@ -142,8 +133,6 @@ __all__ = [
     "probplot",
     "qmc",
     "quantile_test",
-    "random_correlation",
-    "random_table",
     "rankdata",
     "ranksums",
     "relfreq",
@@ -160,7 +149,6 @@ __all__ = [
     "sobol_indices",
     "somersd",
     "spearmanr",
-    "special_ortho_group",
     "stats",
     "theilslopes",
     "tiecorrect",
@@ -178,15 +166,11 @@ __all__ = [
     "ttest_rel",
     "tukey_hsd",
     "tvar",
-    "uniform_direction",
-    "unitary_group",
     "variation",
-    "vonmises_fisher",
     "wasserstein_distance",
     "wasserstein_distance_nd",
     "weightedtau",
     "wilcoxon",
-    "wishart",
     "yeojohnson",
     "yeojohnson_llf",
     "yeojohnson_normmax",
@@ -197,4 +181,5 @@ __all__ = [
 __all__ += _binned_statistic.__all__
 __all__ += _bws_test.__all__
 __all__ += _censored_data.__all__
+__all__ += _multivariate.__all__
 __all__ += distributions.__all__
