@@ -1,3 +1,6 @@
-from . import linsolve as linsolve
-from ._superlu import SuperLU as SuperLU
+from . import linsolve
+from ._superlu import SuperLU
 from .linsolve import *
+
+__all__ = ["SuperLU"]
+__all__ += linsolve.__all__
