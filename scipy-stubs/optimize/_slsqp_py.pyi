@@ -1,31 +1,25 @@
 from scipy._typing import Untyped
 
-from scipy._lib._array_api import array_namespace as array_namespace, xp_atleast_nd as xp_atleast_nd
-from scipy.optimize._slsqp import slsqp as slsqp
-from ._constraints import old_bound_to_new as old_bound_to_new
-from ._numdiff import approx_derivative as approx_derivative
-from ._optimize import OptimizeResult as OptimizeResult
+__all__ = ["approx_jacobian", "fmin_slsqp"]
 
-__docformat__: str
-
-def approx_jacobian(x, func, epsilon, *args) -> Untyped: ...
+def approx_jacobian(x: Untyped, func: Untyped, epsilon: Untyped, *args: Untyped) -> Untyped: ...
 def fmin_slsqp(
-    func,
-    x0,
-    eqcons=(),
+    func: Untyped,
+    x0: Untyped,
+    eqcons: Untyped = ...,
     f_eqcons: Untyped | None = None,
-    ieqcons=(),
+    ieqcons: Untyped = ...,
     f_ieqcons: Untyped | None = None,
-    bounds=(),
+    bounds: Untyped = ...,
     fprime: Untyped | None = None,
     fprime_eqcons: Untyped | None = None,
     fprime_ieqcons: Untyped | None = None,
-    args=(),
+    args: Untyped = ...,
     iter: int = 100,
     acc: float = 1e-06,
     iprint: int = 1,
     disp: Untyped | None = None,
     full_output: int = 0,
-    epsilon=...,
+    epsilon: Untyped = ...,
     callback: Untyped | None = None,
 ) -> Untyped: ...
