@@ -1,7 +1,5 @@
 from scipy._typing import Untyped
 
-from scipy._lib.uarray import Dispatchable as Dispatchable, generate_multimethod as generate_multimethod
-
 def fft(
     x,
     n: Untyped | None = None,
