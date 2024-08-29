@@ -110,15 +110,27 @@ class cKDTree(Generic[_BoxT]):
         return_length: bool = ...,
     ) -> Any: ...
     def query_ball_tree(
-        self, other: cKDTree[npt.NDArray[np.float64] | None], r: float, p: float, eps: float = ...,
+        self,
+        other: cKDTree[npt.NDArray[np.float64] | None],
+        r: float,
+        p: float,
+        eps: float = ...,
     ) -> list[list[int]]: ...
     @overload
     def query_pairs(
-        self, r: float, p: float = ..., eps: float = ..., output_type: Literal["set"] = ...,
+        self,
+        r: float,
+        p: float = ...,
+        eps: float = ...,
+        output_type: Literal["set"] = ...,
     ) -> set[tuple[int, int]]: ...
     @overload
     def query_pairs(
-        self, r: float, p: float = ..., eps: float = ..., output_type: Literal["ndarray"] = ...,
+        self,
+        r: float,
+        p: float = ...,
+        eps: float = ...,
+        output_type: Literal["ndarray"] = ...,
     ) -> npt.NDArray[np.intp]: ...
     @overload
     def count_neighbors(

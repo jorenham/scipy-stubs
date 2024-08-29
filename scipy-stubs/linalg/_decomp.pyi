@@ -220,7 +220,7 @@ def eigvalsh_tridiagonal(
     select: _EigSelect = "a",
     select_range: _EigSelectRange | None = None,
     check_finite: bool = True,
-    tol: spt.AnyReal = 0.,
+    tol: spt.AnyReal = 0.0,
     lapack_driver: _LapackDriverST | _LapackDriverAuto = "auto",
 ) -> _Array_fc_1d: ...
 @overload
@@ -231,7 +231,7 @@ def eigh_tridiagonal(
     select: _EigSelect = "a",
     select_range: _EigSelectRange | None = None,
     check_finite: bool = True,
-    tol: spt.AnyReal = 0.,
+    tol: spt.AnyReal = 0.0,
     lapack_driver: _LapackDriverST | _LapackDriverAuto = "auto",
 ) -> tuple[_Array_fc_1d, _Array_fc_2d]: ...
 @overload
@@ -242,7 +242,7 @@ def eigh_tridiagonal(
     select: _EigSelect = "a",
     select_range: _EigSelectRange | None = None,
     check_finite: bool = True,
-    tol: spt.AnyReal = 0.,
+    tol: spt.AnyReal = 0.0,
     lapack_driver: _LapackDriverST | _LapackDriverAuto = "auto",
 ) -> _Array_fc_1d: ...
 @overload
