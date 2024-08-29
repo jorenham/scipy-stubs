@@ -36,6 +36,8 @@ poethepoet = "^0.27.0"
 [tool.mypy]
 warn_unused_ignores = true
 disallow_any_explicit = false  # no other way to type e.g. `np.float64 <: np.number[Any]`
+disable_bytearray_promotion = true
+disable_memoryview_promotion = true
 
 
 [tool.pyright]
@@ -46,7 +48,14 @@ venv = ".venv"
 pythonVersion = "3.10"
 pythonPlatform = "All"
 typeCheckingMode = "strict"
+
+deprecateTypingAliases = true
 reportPrivateUsage = false
+reportIgnoreCommentWithoutRule = true
+reportImplicitRelativeImport = true
+reportInvalidCast = true
+reportUnnecessaryTypeIgnoreComment = true
+reportUnsafeMultipleInheritance = true
 
 
 [tool.ruff]
