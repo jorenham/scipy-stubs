@@ -200,7 +200,7 @@ class rv_generic:
     # def _argcheck_rvs(
     #     self,
     #     /,
-    #     # NOTE: This `Unpack` trickery is only understood by pyright; mypy (still) doesn't fully support `Unpack` (`mypy<=1.11.1`)
+    #     # NOTE: This `Unpack` trick is only understood by pyright; mypy (still) doesn't fully support `Unpack` (`mypy<=1.11.1`)
     #     *args: Unpack[tuple[Unpack[tuple[_ParamT, ...]], _LocT, _ScaleT]],
     #     size: onpt.AnyIntegerArray | None = None,
     # ) -> tuple[
