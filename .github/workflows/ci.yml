@@ -42,20 +42,17 @@ jobs:
       - name: ruff check
         run: poetry run ruff check --output-format=github
 
-      # TODO
-      # - name: basedpyright
-      #   run: poetry run basedpyright
+      - name: basedmypy stubtest
+        run: poetry run stubtest --mypy-config-file=pyproject.toml scipy
 
-      # TODO
-      # - name: basedmypy
-      #   run: poetry run mypy .
-
-      # TODO: remove `--ignoreexternal`
       - name: basedpyright --verifytypes
         run: poetry run basedpyright --ignoreexternal --verifytypes scipy-stubs
 
-      - name: basedmypy stubtest
-        run: poetry run stubtest --mypy-config-file=pyproject.toml scipy
+      # TODO: don't continue on error
+      - name: basedpyright --verifytypes
+        run: poetry run basedpyright --verifytypes scipy-stubs
+        continue-on-error: true
+
 
       # TODO
       # - uses: scientific-python/repo-review@v0.11.2
