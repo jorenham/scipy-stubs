@@ -10,13 +10,24 @@ description = ""
 authors = ["Joren Hammudoglu <jhammudoglu@gmail.com>"]
 license = "BSD-3-Clause"
 readme = "README.md"
-packages = [
-    {include = "scipy-stubs"}
-]
+packages = [{include = "scipy-stubs"}]
 classifiers = [
-   "Typing :: Stubs Only",
+    "Development Status :: 3 - Alpha",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering",
+    "Typing :: Stubs Only",
+    "Typing :: Typed",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
+repository = "https://github.com/jorenham/scipy-stubs/"
+documentation = "https://github.com/jorenham/scipy-stubs?tab=readme-ov-file#scipy-stubs"
 
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/jorenham/scipy-stubs/issues"
+"Changelog" = "https://github.com/jorenham/scipy-stubs/releases"
 
 [tool.poetry.dependencies]
 python = "^3.10.1"
@@ -26,7 +37,7 @@ scipy = "^1.14.1"
 [tool.poetry.group.lint.dependencies]
 ruff = "^0.6.2"
 basedmypy = "^2.6.0"
-basedpyright = "^1.17.0"
+basedpyright = "^1.17.1"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.8.0"
