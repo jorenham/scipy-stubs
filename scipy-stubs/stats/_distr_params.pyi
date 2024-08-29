@@ -1,5 +1,4 @@
 from typing import Final
-
 from typing_extensions import LiteralString
 
 __all__ = "distcont", "distdiscrete", "invdistcont", "invdistdiscrete"

@@ -4,6 +4,7 @@ from typing import Literal
 import numpy as np
 
 from scipy._typing import Untyped
+
 from scipy.signal import detrend as detrend
 from scipy.signal.windows import get_window as get_window
 

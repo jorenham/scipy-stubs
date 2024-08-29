@@ -1,3 +1,5 @@
+from scipy._typing import Untyped
+
 from ._byteordercodes import native_code as native_code, swapped_code as swapped_code
 from ._mio5_params import (
     MDTYPES as MDTYPES,
@@ -32,7 +34,6 @@ from ._miobase import (
     read_dtype as read_dtype,
 )
 from ._streams import ZlibInputStream as ZlibInputStream
-from scipy._typing import Untyped
 
 class MatFile5Reader(MatFileReader):
     uint16_codec: Untyped

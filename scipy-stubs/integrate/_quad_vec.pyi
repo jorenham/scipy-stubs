@@ -1,7 +1,8 @@
 import collections
 
-from scipy._lib._util import MapWrapper as MapWrapper
 from scipy._typing import Untyped
+
+from scipy._lib._util import MapWrapper as MapWrapper
 
 class LRUDict(collections.OrderedDict):
     def __init__(self, max_size) -> None: ...

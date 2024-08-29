@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
 
-from scipy._lib._util import MapWrapper as MapWrapper
 from scipy._typing import Untyped
+
+from scipy._lib._util import MapWrapper as MapWrapper
 
 class VertexBase(ABC):
     x: Untyped

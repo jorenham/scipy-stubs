@@ -1,7 +1,8 @@
 from typing import NamedTuple
 
-from scipy import special as special, stats as stats
 from scipy._typing import Untyped
+
+from scipy import special as special, stats as stats
 
 class _MWU:
     def __init__(self, n1, n2) -> None: ...

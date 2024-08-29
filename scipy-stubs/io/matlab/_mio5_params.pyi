@@ -1,7 +1,8 @@
 import numpy as np
 
-from ._miobase import convert_dtypes as convert_dtypes
 from scipy._typing import Untyped
+
+from ._miobase import convert_dtypes as convert_dtypes
 
 miINT8: int
 miUINT8: int

@@ -1,12 +1,13 @@
-from .common import EPS as EPS, in_bounds as in_bounds, make_strictly_feasible as make_strictly_feasible
-from .dogbox import dogbox as dogbox
-from .trf import trf as trf
 from scipy._typing import Untyped
+
 from scipy.optimize import OptimizeResult as OptimizeResult
 from scipy.optimize._minimize import Bounds as Bounds
 from scipy.optimize._numdiff import approx_derivative as approx_derivative, group_columns as group_columns
 from scipy.sparse import issparse as issparse
 from scipy.sparse.linalg import LinearOperator as LinearOperator
+from .common import EPS as EPS, in_bounds as in_bounds, make_strictly_feasible as make_strictly_feasible
+from .dogbox import dogbox as dogbox
+from .trf import trf as trf
 
 TERMINATION_MESSAGES: Untyped
 FROM_MINPACK_TO_COMMON: Untyped

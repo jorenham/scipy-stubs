@@ -1,4 +1,5 @@
 from scipy._typing import Untyped
+
 from scipy.linalg.lapack import dgesv as dgesv
 from scipy.spatial import KDTree as KDTree
 from scipy.special import comb as comb

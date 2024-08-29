@@ -1,4 +1,5 @@
 from scipy._typing import Untyped
+
 from scipy.sparse.linalg import aslinearoperator as aslinearoperator
 
 def onenormest(A, t: int = 2, itmax: int = 5, compute_v: bool = False, compute_w: bool = False) -> Untyped: ...

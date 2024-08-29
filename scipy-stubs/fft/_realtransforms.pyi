@@ -1,5 +1,6 @@
-from scipy._lib.uarray import Dispatchable as Dispatchable
 from scipy._typing import Untyped
+
+from scipy._lib.uarray import Dispatchable as Dispatchable
 
 def dctn(
     x,

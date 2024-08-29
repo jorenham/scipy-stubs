@@ -1,4 +1,6 @@
-from .._lib._util import copy_if_needed as copy_if_needed
+from scipy._typing import Untyped
+
+from scipy._lib._util import copy_if_needed as copy_if_needed
 from ._base import issparse as issparse, sparray as sparray
 from ._data import _data_matrix
 from ._matrix import spmatrix as spmatrix
@@ -11,7 +13,6 @@ from ._sputils import (
     upcast_char as upcast_char,
     validateaxis as validateaxis,
 )
-from scipy._typing import Untyped
 
 __docformat__: str
 

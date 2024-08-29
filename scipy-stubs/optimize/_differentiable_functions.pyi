@@ -1,8 +1,9 @@
+from scipy._typing import Untyped
+
+from scipy._lib._array_api import array_namespace as array_namespace, xp_atleast_nd as xp_atleast_nd
+from scipy.sparse.linalg import LinearOperator as LinearOperator
 from ._hessian_update_strategy import HessianUpdateStrategy as HessianUpdateStrategy
 from ._numdiff import approx_derivative as approx_derivative, group_columns as group_columns
-from scipy._lib._array_api import array_namespace as array_namespace, xp_atleast_nd as xp_atleast_nd
-from scipy._typing import Untyped
-from scipy.sparse.linalg import LinearOperator as LinearOperator
 
 FD_METHODS: Untyped
 

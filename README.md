@@ -85,6 +85,7 @@ pip install scipy-stubs
 | `scipy`                           | 1: skeleton     |
 | `scipy._lib`                      | 1: skeleton     |
 | `scipy._lib._uarray`              | 0: missing      |
+| `scipy._lib.array_api_compat`     | 1: partial      |
 | `scipy.cluster`                   | 1: skeleton     |
 | `scipy.constants`                 | 3: ready        |
 | `scipy.datasets`                  | 1: skeleton     |

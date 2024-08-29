@@ -1,4 +1,5 @@
 from scipy._typing import Untyped
+
 from scipy.linalg._basic import solve as solve, solve_triangular as solve_triangular
 from scipy.sparse._base import issparse as issparse
 from scipy.sparse._construct import eye as eye

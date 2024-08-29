@@ -1,5 +1,6 @@
-from scipy._lib._util import normalize_axis_index as normalize_axis_index
 from scipy._typing import Untyped
+
+from scipy._lib._util import normalize_axis_index as normalize_axis_index
 
 def fourier_gaussian(input, sigma, n: int = -1, axis: int = -1, output: Untyped | None = None) -> Untyped: ...
 def fourier_uniform(input, size, n: int = -1, axis: int = -1, output: Untyped | None = None) -> Untyped: ...

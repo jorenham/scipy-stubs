@@ -1,3 +1,5 @@
+from scipy._typing import Untyped
+
 from ._constraints import (
     Bounds as Bounds,
     LinearConstraint as LinearConstraint,
@@ -10,7 +12,6 @@ from ._constraints import (
 )
 from ._differentiable_functions import FD_METHODS as FD_METHODS
 from ._optimize import MemoizeJac as MemoizeJac, OptimizeResult as OptimizeResult
-from scipy._typing import Untyped
 
 MINIMIZE_METHODS: Untyped
 MINIMIZE_METHODS_NEW_CB: Untyped

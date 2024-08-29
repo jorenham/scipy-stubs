@@ -1,4 +1,5 @@
 from scipy._typing import Untyped
+
 from scipy.sparse.linalg._interface import (
     IdentityOperator as IdentityOperator,
     LinearOperator as LinearOperator,

@@ -1,10 +1,11 @@
+from scipy._typing import Untyped
+
+from scipy.spatial import cKDTree as cKDTree
 from .interpnd import (
     CloughTocher2DInterpolator as CloughTocher2DInterpolator,
     LinearNDInterpolator as LinearNDInterpolator,
     NDInterpolatorBase as NDInterpolatorBase,
 )
-from scipy._typing import Untyped
-from scipy.spatial import cKDTree as cKDTree
 
 class NearestNDInterpolator(NDInterpolatorBase):
     tree: Untyped

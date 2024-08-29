@@ -1,6 +1,7 @@
+from scipy._typing import Untyped
+
 from ._minpack_py import leastsq as leastsq
 from ._optimize import MemoizeJac as MemoizeJac, OptimizeResult as OptimizeResult
-from scipy._typing import Untyped
 
 ROOT_METHODS: Untyped
 

@@ -1,3 +1,7 @@
+from scipy._typing import Untyped
+
+from scipy.optimize import OptimizeResult as OptimizeResult
+from scipy.sparse.linalg import LinearOperator as LinearOperator, aslinearoperator as aslinearoperator, lsmr as lsmr
 from .common import (
     build_quadratic_1d as build_quadratic_1d,
     check_termination as check_termination,
@@ -12,9 +16,6 @@ from .common import (
     step_size_to_bound as step_size_to_bound,
     update_tr_radius as update_tr_radius,
 )
-from scipy._typing import Untyped
-from scipy.optimize import OptimizeResult as OptimizeResult
-from scipy.sparse.linalg import LinearOperator as LinearOperator, aslinearoperator as aslinearoperator, lsmr as lsmr
 
 def lsmr_operator(Jop, d, active_set) -> Untyped: ...
 def find_intersection(x, tr_bounds, lb, ub) -> Untyped: ...

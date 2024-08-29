@@ -1,9 +1,10 @@
+from scipy._typing import Untyped
+
 from ._bsplines import make_interp_spline as make_interp_spline
 from ._cubic import PchipInterpolator as PchipInterpolator
 from ._fitpack2 import RectBivariateSpline as RectBivariateSpline
 from ._ndbspline import make_ndbspl as make_ndbspl
 from ._rgi_cython import evaluate_linear_2d as evaluate_linear_2d, find_indices as find_indices
-from scipy._typing import Untyped
 
 class RegularGridInterpolator:
     method: Untyped

@@ -1,10 +1,11 @@
+from scipy._typing import Untyped
+
 from .projections import projections as projections
 from .qp_subproblem import (
     box_intersections as box_intersections,
     modified_dogleg as modified_dogleg,
     projected_cg as projected_cg,
 )
-from scipy._typing import Untyped
 
 def default_scaling(x) -> Untyped: ...
 def equality_constrained_sqp(

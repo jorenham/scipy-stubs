@@ -1,13 +1,13 @@
-from numpy import absolute
+import numpy as np
 
-from scipy import optimize as optimize, special as special
-from scipy._lib._util import float_factorial as float_factorial
 from scipy._typing import Untyped
+
+from scipy._lib._util import float_factorial as float_factorial
 from scipy.special import comb as comb
 
 class BadCoefficients(UserWarning): ...
 
-abs = absolute
+abs = np.absolute
 
 def findfreqs(num, den, N, kind: str = "ba") -> Untyped: ...
 def freqs(b, a, worN: int = 200, plot: Untyped | None = None) -> Untyped: ...

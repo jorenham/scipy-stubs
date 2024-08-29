@@ -1,5 +1,7 @@
 from typing_extensions import Self
 
+from scipy._typing import Untyped
+
 from ._matrix import spmatrix as spmatrix
 from ._sputils import (
     asmatrix as asmatrix,
@@ -12,7 +14,6 @@ from ._sputils import (
     matrix as matrix,
     validateaxis as validateaxis,
 )
-from scipy._typing import Untyped
 
 class SparseWarning(Warning): ...
 class SparseFormatWarning(SparseWarning): ...

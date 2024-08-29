@@ -1,5 +1,6 @@
-from scipy import spatial as spatial
 from scipy._typing import Untyped
+
+from scipy import spatial as spatial
 from scipy.optimize import Bounds as Bounds, OptimizeResult as OptimizeResult, minimize as minimize
 from scipy.optimize._constraints import new_bounds_to_old as new_bounds_to_old
 from scipy.optimize._minimize import standardize_constraints as standardize_constraints

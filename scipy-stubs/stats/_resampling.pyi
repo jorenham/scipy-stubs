@@ -2,16 +2,17 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from ._common import ConfidenceInterval as ConfidenceInterval
-from ._warnings_errors import DegenerateDataWarning as DegenerateDataWarning
+from scipy._typing import Untyped
+
 from scipy._lib._array_api import (
     array_namespace as array_namespace,
     is_numpy as is_numpy,
     xp_moveaxis_to_end as xp_moveaxis_to_end,
 )
 from scipy._lib._util import check_random_state as check_random_state, rng_integers as rng_integers
-from scipy._typing import Untyped
 from scipy.special import comb as comb, factorial as factorial, ndtr as ndtr, ndtri as ndtri
+from ._common import ConfidenceInterval as ConfidenceInterval
+from ._warnings_errors import DegenerateDataWarning as DegenerateDataWarning
 
 @dataclass
 class BootstrapResult:

@@ -1,17 +1,19 @@
 import abc
+
 from collections.abc import Sequence
 from typing import Any, Final, Generic, Literal, TypeAlias, overload, type_check_only
+from typing_extensions import Self, TypeVar, override
 
 import numpy as np
+
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onpt
-from typing_extensions import Self, TypeVar, override
-
 import scipy._typing as spt
+
+from scipy.stats import _covariance
 from ._covariance import Covariance
 from ._distn_infrastructure import _RNG, _Seed
-from scipy.stats import _covariance
 
 __all__ = [
     "dirichlet",

@@ -1,5 +1,6 @@
-from scipy._lib._util import normalize_axis_index as normalize_axis_index
 from scipy._typing import Untyped
+
+from scipy._lib._util import normalize_axis_index as normalize_axis_index
 from scipy.linalg import (
     LinAlgError as LinAlgError,
     cho_solve_banded as cho_solve_banded,

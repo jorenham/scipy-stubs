@@ -2,9 +2,10 @@ from typing import Any, Literal
 
 import numpy as np
 
+from scipy._typing import Untyped
+
 import scipy.sparse as sp
 from scipy._lib._util import np_long as np_long, np_ulong as np_ulong
-from scipy._typing import Untyped
 
 supported_dtypes: Untyped
 

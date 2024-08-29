@@ -1,5 +1,6 @@
-from ._upfirdn_apply import mode_enum as mode_enum
 from scipy._typing import Untyped
+
+from ._upfirdn_apply import mode_enum as mode_enum
 
 class _UpFIRDn:
     def __init__(self, h, x_dtype, up, down) -> None: ...

@@ -1,5 +1,6 @@
-from ._optimize import OptimizeResult as OptimizeResult
 from scipy._typing import Untyped
+
+from ._optimize import OptimizeResult as OptimizeResult
 
 izip = zip
 

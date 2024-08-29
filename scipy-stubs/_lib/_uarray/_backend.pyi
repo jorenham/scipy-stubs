@@ -1,8 +1,9 @@
 import typing
 from collections.abc import Generator
 
-from ._uarray import BackendNotImplementedError as BackendNotImplementedError
 from scipy._typing import Untyped
+
+from ._uarray import BackendNotImplementedError as BackendNotImplementedError
 
 ArgumentExtractorType: Untyped
 ArgumentReplacerType: typing.TypeAlias = typing.Callable[[tuple, dict, tuple], tuple[tuple, dict]]

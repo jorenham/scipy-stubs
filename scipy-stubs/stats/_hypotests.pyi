@@ -1,15 +1,17 @@
 from dataclasses import dataclass
+
 from typing import NamedTuple
 
 import numpy as np
 
-from . import distributions as distributions
-from ._common import ConfidenceInterval as ConfidenceInterval
-from ._continuous_distns import norm as norm
 from scipy._typing import Untyped
+
 from scipy.fft import ifft as ifft
 from scipy.optimize import shgo as shgo
 from scipy.special import gamma as gamma, gammaln as gammaln, kv as kv
+from . import distributions as distributions
+from ._common import ConfidenceInterval as ConfidenceInterval
+from ._continuous_distns import norm as norm
 
 class Epps_Singleton_2sampResult(NamedTuple):
     statistic: Untyped

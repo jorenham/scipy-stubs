@@ -1,7 +1,8 @@
 from collections.abc import Generator
 
-from ._vertex import VertexCacheField as VertexCacheField, VertexCacheIndex as VertexCacheIndex
 from scipy._typing import Untyped
+
+from ._vertex import VertexCacheField as VertexCacheField, VertexCacheIndex as VertexCacheIndex
 
 class Complex:
     dim: Untyped

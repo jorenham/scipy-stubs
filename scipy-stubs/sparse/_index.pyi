@@ -1,6 +1,7 @@
+from scipy._typing import Untyped
+
 from ._base import issparse as issparse, sparray as sparray
 from ._sputils import isintlike as isintlike
-from scipy._typing import Untyped
 
 INT_TYPES: Untyped
 

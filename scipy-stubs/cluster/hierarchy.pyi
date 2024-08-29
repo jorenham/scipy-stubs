@@ -1,6 +1,7 @@
+from scipy._typing import Untyped
+
 from scipy._lib._array_api import array_namespace as array_namespace, is_jax as is_jax, xp_copy as xp_copy
 from scipy._lib._disjoint_set import DisjointSet as DisjointSet
-from scipy._typing import Untyped
 
 class ClusterWarning(UserWarning): ...
 

@@ -1,7 +1,8 @@
-from . import distributions as distributions
-from scipy._lib._util import MapWrapper as MapWrapper, check_random_state as check_random_state, rng_integers as rng_integers
 from scipy._typing import Untyped
+
+from scipy._lib._util import MapWrapper as MapWrapper, check_random_state as check_random_state, rng_integers as rng_integers
 from scipy.spatial.distance import cdist as cdist
+from . import distributions as distributions
 
 class _ParallelP:
     x: Untyped

@@ -1,4 +1,5 @@
 from scipy._typing import Untyped
+
 from scipy.linalg import LinAlgError as LinAlgError
 from scipy.sparse import (
     SparseEfficiencyWarning as SparseEfficiencyWarning,

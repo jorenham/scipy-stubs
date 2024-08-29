@@ -1,9 +1,10 @@
+from scipy._typing import Untyped
+
+from scipy._lib._array_api import array_namespace as array_namespace, xp_atleast_nd as xp_atleast_nd
+from scipy.optimize._slsqp import slsqp as slsqp
 from ._constraints import old_bound_to_new as old_bound_to_new
 from ._numdiff import approx_derivative as approx_derivative
 from ._optimize import OptimizeResult as OptimizeResult
-from scipy._lib._array_api import array_namespace as array_namespace, xp_atleast_nd as xp_atleast_nd
-from scipy._typing import Untyped
-from scipy.optimize._slsqp import slsqp as slsqp
 
 __docformat__: str
 

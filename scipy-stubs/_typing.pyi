@@ -1,9 +1,10 @@
 # Helper types for internal use (type-check only).
 from typing import Literal, Protocol, TypeAlias, type_check_only
+from typing_extensions import LiteralString, TypeVar
 
 import numpy as np
+
 import numpy.typing as npt
-from typing_extensions import LiteralString, TypeVar
 
 __all__ = [
     "AnyBool",

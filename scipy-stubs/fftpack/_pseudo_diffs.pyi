@@ -1,5 +1,6 @@
-from . import convolve as convolve
 from scipy._typing import Untyped
+
+from . import convolve as convolve
 
 def diff(x, order: int = 1, period: Untyped | None = None, _cache=...) -> Untyped: ...
 def tilbert(x, h, period: Untyped | None = None, _cache=...) -> Untyped: ...

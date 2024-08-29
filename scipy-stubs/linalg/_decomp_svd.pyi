@@ -1,8 +1,8 @@
 from typing import Literal, TypeAlias, overload
 
 import numpy as np
-import numpy.typing as npt
 
+import numpy.typing as npt
 import scipy._typing as spt
 
 __all__ = ["diagsvd", "null_space", "orth", "subspace_angles", "svd", "svdvals"]

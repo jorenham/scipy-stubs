@@ -1,8 +1,11 @@
 from abc import ABC, abstractmethod
+
 from typing import ClassVar, Literal, overload
 
 import numpy as np
+
 import numpy.typing as npt
+from scipy._typing import Untyped
 
 from scipy._lib._util import (
     DecimalNumber as DecimalNumber,
@@ -11,7 +14,6 @@ from scipy._lib._util import (
     SeedType as SeedType,
     rng_integers as rng_integers,
 )
-from scipy._typing import Untyped
 from scipy.sparse.csgraph import minimum_spanning_tree as minimum_spanning_tree
 from scipy.spatial import Voronoi as Voronoi, distance as distance
 from scipy.special import gammainc as gammainc

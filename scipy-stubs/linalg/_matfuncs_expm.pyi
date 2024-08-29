@@ -1,4 +1,5 @@
 import numpy as np
+
 import numpy.typing as npt
 
 __all__ = ["pade_UV_calc", "pick_pade_structure"]

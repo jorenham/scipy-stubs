@@ -1,6 +1,7 @@
+from scipy._typing import Untyped
+
 from scipy import sparse as sparse
 from scipy._lib._util import np_long as np_long, np_ulong as np_ulong
-from scipy._typing import Untyped
 from scipy.linalg import eig as eig, eigh as eigh, orth as orth, toeplitz as toeplitz
 from scipy.sparse import csr_matrix as csr_matrix, diags as diags, eye as eye, spdiags as spdiags
 from scipy.sparse.linalg import LinearOperator as LinearOperator, eigs as eigs

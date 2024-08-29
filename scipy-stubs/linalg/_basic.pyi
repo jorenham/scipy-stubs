@@ -1,8 +1,8 @@
 from typing import Literal, TypeAlias, overload
 
 import numpy as np
-import numpy.typing as npt
 
+import numpy.typing as npt
 import scipy._typing as spt
 
 __all__ = [

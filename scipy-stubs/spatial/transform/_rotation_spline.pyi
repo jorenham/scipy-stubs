@@ -1,8 +1,9 @@
 import numpy as np
+
 import numpy.typing as npt
 
-from ._rotation import Rotation
 from scipy.interpolate import PPoly
+from ._rotation import Rotation
 
 __all__ = ["RotationSpline"]
 

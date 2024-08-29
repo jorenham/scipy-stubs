@@ -1,11 +1,12 @@
-from .bvls import bvls as bvls
-from .common import compute_grad as compute_grad, in_bounds as in_bounds
-from .trf_linear import trf_linear as trf_linear
 from scipy._typing import Untyped
+
 from scipy.optimize import OptimizeResult as OptimizeResult
 from scipy.optimize._minimize import Bounds as Bounds
 from scipy.sparse import csr_matrix as csr_matrix, issparse as issparse
 from scipy.sparse.linalg import LinearOperator as LinearOperator, lsmr as lsmr
+from .bvls import bvls as bvls
+from .common import compute_grad as compute_grad, in_bounds as in_bounds
+from .trf_linear import trf_linear as trf_linear
 
 def prepare_bounds(bounds, n) -> Untyped: ...
 

@@ -1,10 +1,11 @@
 from collections.abc import Sequence
 from typing import Any, Final, Generic, Protocol, TypeAlias, overload, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
+
 import numpy.typing as npt
 import optype.numpy as onpt
-from typing_extensions import TypeVar
 
 __all__ = ["Covariance"]
 

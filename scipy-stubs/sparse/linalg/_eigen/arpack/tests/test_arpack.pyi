@@ -1,5 +1,6 @@
-from scipy._lib._gcutils import IS_PYPY as IS_PYPY, assert_deallocated as assert_deallocated
 from scipy._typing import Untyped
+
+from scipy._lib._gcutils import IS_PYPY as IS_PYPY, assert_deallocated as assert_deallocated
 from scipy.linalg import eig as eig, eigh as eigh
 from scipy.sparse import csc_matrix as csc_matrix, csr_matrix as csr_matrix, diags as diags, rand as rand
 from scipy.sparse.linalg import LinearOperator as LinearOperator, aslinearoperator as aslinearoperator

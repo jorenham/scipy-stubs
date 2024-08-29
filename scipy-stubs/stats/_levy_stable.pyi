@@ -2,6 +2,7 @@ from collections.abc import Callable
 from typing import Final
 
 import numpy as np
+
 import numpy.typing as npt
 
 from ._distn_infrastructure import rv_continuous

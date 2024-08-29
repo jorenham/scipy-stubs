@@ -1,3 +1,5 @@
+from scipy._typing import Untyped
+
 from scipy._lib._array_api import (
     array_namespace as array_namespace,
     xp_atleast_nd as xp_atleast_nd,
@@ -6,7 +8,6 @@ from scipy._lib._array_api import (
     xp_size as xp_size,
 )
 from scipy._lib._util import check_random_state as check_random_state, rng_integers as rng_integers
-from scipy._typing import Untyped
 from scipy.spatial.distance import cdist as cdist
 
 __docformat__: str

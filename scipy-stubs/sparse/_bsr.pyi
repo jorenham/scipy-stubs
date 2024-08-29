@@ -1,3 +1,6 @@
+from scipy._typing import Untyped
+
+from scipy._lib._util import copy_if_needed as copy_if_needed
 from ._base import issparse as issparse, sparray as sparray
 from ._compressed import _cs_matrix
 from ._data import _minmax_mixin
@@ -19,8 +22,6 @@ from ._sputils import (
     to_native as to_native,
     upcast as upcast,
 )
-from scipy._lib._util import copy_if_needed as copy_if_needed
-from scipy._typing import Untyped
 
 __docformat__: str
 

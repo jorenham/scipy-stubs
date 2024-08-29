@@ -1,4 +1,5 @@
 from scipy._typing import Untyped
+
 from scipy.stats import scoreatpercentile as scoreatpercentile
 
 def argrelmin(data, axis: int = 0, order: int = 1, mode: str = "clip") -> Untyped: ...

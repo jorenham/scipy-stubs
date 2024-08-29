@@ -1,8 +1,9 @@
-from ._arraytools import axis_slice as axis_slice
-from scipy._lib._util import float_factorial as float_factorial
 from scipy._typing import Untyped
+
+from scipy._lib._util import float_factorial as float_factorial
 from scipy.linalg import lstsq as lstsq
 from scipy.ndimage import convolve1d as convolve1d
+from ._arraytools import axis_slice as axis_slice
 
 def savgol_coeffs(
     window_length, polyorder, deriv: int = 0, delta: float = 1.0, pos: Untyped | None = None, use: str = "conv"

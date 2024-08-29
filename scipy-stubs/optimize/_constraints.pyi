@@ -1,3 +1,6 @@
+from scipy._typing import Untyped
+
+from scipy.sparse import issparse as issparse
 from ._differentiable_functions import (
     IdentityVectorFunction as IdentityVectorFunction,
     LinearVectorFunction as LinearVectorFunction,
@@ -5,8 +8,6 @@ from ._differentiable_functions import (
 )
 from ._hessian_update_strategy import BFGS as BFGS
 from ._optimize import OptimizeWarning as OptimizeWarning
-from scipy._typing import Untyped
-from scipy.sparse import issparse as issparse
 
 class NonlinearConstraint:
     fun: Untyped

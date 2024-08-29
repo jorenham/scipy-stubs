@@ -1,3 +1,9 @@
+from scipy._typing import Untyped
+
+from scipy.linalg import lu_factor as lu_factor, lu_solve as lu_solve
+from scipy.optimize._numdiff import group_columns as group_columns
+from scipy.sparse import csc_matrix as csc_matrix, eye as eye, issparse as issparse
+from scipy.sparse.linalg import splu as splu
 from .base import DenseOutput as DenseOutput, OdeSolver as OdeSolver
 from .common import (
     EPS as EPS,
@@ -9,11 +15,6 @@ from .common import (
     validate_tol as validate_tol,
     warn_extraneous as warn_extraneous,
 )
-from scipy._typing import Untyped
-from scipy.linalg import lu_factor as lu_factor, lu_solve as lu_solve
-from scipy.optimize._numdiff import group_columns as group_columns
-from scipy.sparse import csc_matrix as csc_matrix, eye as eye, issparse as issparse
-from scipy.sparse.linalg import splu as splu
 
 S6: Untyped
 C: Untyped

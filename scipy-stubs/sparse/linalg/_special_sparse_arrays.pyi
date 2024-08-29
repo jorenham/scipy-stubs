@@ -1,4 +1,5 @@
 from scipy._typing import Untyped
+
 from scipy.sparse import dia_array as dia_array, eye as eye, kron as kron
 from scipy.sparse.linalg import LinearOperator as LinearOperator
 

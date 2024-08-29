@@ -1,8 +1,9 @@
-from ._common import ConfidenceInterval as ConfidenceInterval
-from ._discrete_distns import nchypergeom_fisher as nchypergeom_fisher
 from scipy._typing import Untyped
+
 from scipy.optimize import brentq as brentq
 from scipy.special import ndtri as ndtri
+from ._common import ConfidenceInterval as ConfidenceInterval
+from ._discrete_distns import nchypergeom_fisher as nchypergeom_fisher
 
 class OddsRatioResult:
     statistic: Untyped

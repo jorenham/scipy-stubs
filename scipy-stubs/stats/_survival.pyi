@@ -1,11 +1,13 @@
 from dataclasses import dataclass
+
 from typing import Literal
 
 import numpy as np
+
 import numpy.typing as npt
+from scipy._typing import Untyped
 
 from scipy import interpolate as interpolate, special as special, stats as stats
-from scipy._typing import Untyped
 from scipy.stats._censored_data import CensoredData as CensoredData
 from scipy.stats._common import ConfidenceInterval as ConfidenceInterval
 

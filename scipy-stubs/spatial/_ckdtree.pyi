@@ -1,9 +1,10 @@
 from typing import Any, Generic, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
-import numpy.typing as npt
 
+import numpy.typing as npt
 from scipy._typing import AnyScalar
+
 from scipy.sparse import coo_matrix, dok_matrix
 
 __all__ = ["cKDTree"]

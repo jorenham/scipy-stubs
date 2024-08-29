@@ -1,10 +1,11 @@
+from scipy._typing import Untyped
+
+from scipy import linalg as linalg, special as special
+from scipy._lib._util import check_random_state as check_random_state
 from ._stats import (
     gaussian_kernel_estimate as gaussian_kernel_estimate,
     gaussian_kernel_estimate_log as gaussian_kernel_estimate_log,
 )
-from scipy import linalg as linalg, special as special
-from scipy._lib._util import check_random_state as check_random_state
-from scipy._typing import Untyped
 
 class gaussian_kde:
     dataset: Untyped

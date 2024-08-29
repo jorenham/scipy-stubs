@@ -1,6 +1,6 @@
-from ._linesearch import scalar_search_armijo as scalar_search_armijo, scalar_search_wolfe1 as scalar_search_wolfe1
-from scipy._lib._util import copy_if_needed as copy_if_needed
 from scipy._typing import Untyped
+
+from scipy._lib._util import copy_if_needed as copy_if_needed
 from scipy.linalg import (
     LinAlgError as LinAlgError,
     get_blas_funcs as get_blas_funcs,
@@ -10,6 +10,7 @@ from scipy.linalg import (
     solve as solve,
     svd as svd,
 )
+from ._linesearch import scalar_search_armijo as scalar_search_armijo, scalar_search_wolfe1 as scalar_search_wolfe1
 
 class NoConvergence(Exception): ...
 

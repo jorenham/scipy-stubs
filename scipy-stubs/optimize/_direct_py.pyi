@@ -2,10 +2,10 @@ from collections.abc import Callable, Iterable
 from typing import Any
 
 import numpy.typing as npt
-
-from ._constraints import Bounds as Bounds, old_bound_to_new as old_bound_to_new
 from scipy._typing import Untyped
+
 from scipy.optimize import OptimizeResult as OptimizeResult
+from ._constraints import Bounds as Bounds, old_bound_to_new as old_bound_to_new
 
 ERROR_MESSAGES: Untyped
 SUCCESS_MESSAGES: Untyped

@@ -1,4 +1,5 @@
 from scipy._typing import Untyped
+
 from scipy.odr._odrpack import Model as Model
 
 class _MultilinearModel(Model):

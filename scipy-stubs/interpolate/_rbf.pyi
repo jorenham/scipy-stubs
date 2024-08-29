@@ -1,5 +1,6 @@
-from scipy import linalg as linalg
 from scipy._typing import Untyped
+
+from scipy import linalg as linalg
 from scipy.spatial.distance import cdist as cdist, pdist as pdist, squareform as squareform
 from scipy.special import xlogy as xlogy
 

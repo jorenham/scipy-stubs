@@ -1,9 +1,6 @@
-from ..special import loggamma as loggamma, poch as poch
-from ._basic import irfft as irfft, rfft as rfft
-from scipy._lib._array_api import array_namespace as array_namespace
 from scipy._typing import Untyped
 
-LN_2: Untyped
+__all__ = ["fht", "fhtoffset", "ifht"]
 
 def fht(a, dln, mu, offset: float = 0.0, bias: float = 0.0) -> Untyped: ...
 def ifht(A, dln, mu, offset: float = 0.0, bias: float = 0.0) -> Untyped: ...

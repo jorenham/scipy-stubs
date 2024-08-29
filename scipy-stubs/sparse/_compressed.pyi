@@ -1,3 +1,6 @@
+from scipy._typing import Untyped
+
+from scipy._lib._util import copy_if_needed as copy_if_needed
 from ._base import SparseEfficiencyWarning as SparseEfficiencyWarning, issparse as issparse, sparray as sparray
 from ._data import _data_matrix, _minmax_mixin
 from ._index import IndexMixin as IndexMixin
@@ -25,8 +28,6 @@ from ._sputils import (
     upcast as upcast,
     upcast_char as upcast_char,
 )
-from scipy._lib._util import copy_if_needed as copy_if_needed
-from scipy._typing import Untyped
 
 class _cs_matrix(_data_matrix, _minmax_mixin, IndexMixin):
     data: Untyped

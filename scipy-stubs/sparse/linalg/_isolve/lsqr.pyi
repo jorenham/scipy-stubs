@@ -1,4 +1,5 @@
 from scipy._typing import Untyped
+
 from scipy.sparse._sputils import convert_pydata_sparse_to_scipy as convert_pydata_sparse_to_scipy
 from scipy.sparse.linalg._interface import aslinearoperator as aslinearoperator
 

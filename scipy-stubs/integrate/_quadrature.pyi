@@ -2,6 +2,7 @@ from collections.abc import Callable
 from typing import Any, NamedTuple, Protocol
 
 from scipy._typing import Untyped
+
 from scipy.special import gammaln as gammaln, logsumexp as logsumexp, roots_legendre as roots_legendre
 
 def trapezoid(y, x: Untyped | None = None, dx: float = 1.0, axis: int = -1) -> Untyped: ...

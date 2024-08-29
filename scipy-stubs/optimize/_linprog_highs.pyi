@@ -1,3 +1,4 @@
+from scipy.sparse import csc_matrix as csc_matrix, issparse as issparse, vstack as vstack
 from ._highs._highs_constants import (
     CONST_INF as CONST_INF,
     HIGHS_OBJECTIVE_SENSE_MINIMIZE as HIGHS_OBJECTIVE_SENSE_MINIMIZE,
@@ -24,4 +25,3 @@ from ._highs._highs_constants import (
     MODEL_STATUS_UNBOUNDED_OR_INFEASIBLE as MODEL_STATUS_UNBOUNDED_OR_INFEASIBLE,
 )
 from ._optimize import OptimizeResult as OptimizeResult, OptimizeWarning as OptimizeWarning
-from scipy.sparse import csc_matrix as csc_matrix, issparse as issparse, vstack as vstack

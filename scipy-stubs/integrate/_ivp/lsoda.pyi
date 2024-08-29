@@ -1,7 +1,8 @@
+from scipy._typing import Untyped
+
+from scipy.integrate import ode as ode
 from .base import DenseOutput as DenseOutput, OdeSolver as OdeSolver
 from .common import validate_first_step as validate_first_step, validate_tol as validate_tol, warn_extraneous as warn_extraneous
-from scipy._typing import Untyped
-from scipy.integrate import ode as ode
 
 class LSODA(OdeSolver):
     def __init__(

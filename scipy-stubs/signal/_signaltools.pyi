@@ -3,6 +3,11 @@ from typing import Literal
 import numpy as np
 from numpy._typing import ArrayLike
 
+from scipy._typing import Untyped
+
+from scipy import linalg as linalg, ndimage as ndimage
+from scipy.spatial import cKDTree as cKDTree
+from scipy.special import lambertw as lambertw
 from ._arraytools import (
     axis_reverse as axis_reverse,
     axis_slice as axis_slice,
@@ -15,10 +20,6 @@ from ._fir_filter_design import firwin as firwin
 from ._ltisys import dlti as dlti
 from ._upfirdn import upfirdn as upfirdn
 from .windows import get_window as get_window
-from scipy import linalg as linalg, ndimage as ndimage
-from scipy._typing import Untyped
-from scipy.spatial import cKDTree as cKDTree
-from scipy.special import lambertw as lambertw
 
 def correlate(in1, in2, mode: str = "full", method: str = "auto") -> Untyped: ...
 def correlation_lags(in1_len, in2_len, mode: str = "full") -> Untyped: ...

@@ -1,10 +1,11 @@
 from typing import TypeVar
 
 import numpy as np
+
 import numpy.typing as npt
+from scipy._typing import Untyped
 
 from ._ckdtree import cKDTree as cKDTree, cKDTreeNode as cKDTreeNode
-from scipy._typing import Untyped
 
 __all__ = ["KDTree", "Rectangle", "distance_matrix", "minkowski_distance", "minkowski_distance_p"]
 

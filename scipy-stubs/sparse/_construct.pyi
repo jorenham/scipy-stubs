@@ -1,3 +1,6 @@
+from scipy._typing import Untyped
+
+from scipy._lib._util import check_random_state as check_random_state, rng_integers as rng_integers
 from ._base import issparse as issparse, sparray as sparray
 from ._bsr import bsr_array as bsr_array, bsr_matrix as bsr_matrix
 from ._coo import coo_array as coo_array, coo_matrix as coo_matrix
@@ -6,8 +9,6 @@ from ._csr import csr_array as csr_array, csr_matrix as csr_matrix
 from ._dia import dia_array as dia_array, dia_matrix as dia_matrix
 from ._sparsetools import csr_hstack as csr_hstack
 from ._sputils import get_index_dtype as get_index_dtype, isscalarlike as isscalarlike, upcast as upcast
-from scipy._lib._util import check_random_state as check_random_state, rng_integers as rng_integers
-from scipy._typing import Untyped
 
 __docformat__: str
 

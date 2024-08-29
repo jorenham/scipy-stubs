@@ -1,5 +1,6 @@
-from scipy._lib._threadsafety import ReentrancyLock as ReentrancyLock
 from scipy._typing import Untyped
+
+from scipy._lib._threadsafety import ReentrancyLock as ReentrancyLock
 from scipy.linalg import eig as eig, eigh as eigh, lu_factor as lu_factor, lu_solve as lu_solve
 from scipy.sparse import eye as eye, issparse as issparse
 from scipy.sparse._sputils import (

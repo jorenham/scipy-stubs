@@ -1,9 +1,9 @@
 from typing import Literal, TypeAlias, overload
 
 import numpy as np
-import numpy.typing as npt
-import optype as opt
 
+import numpy.typing as npt
+import optype as op
 import scipy._typing as spt
 
 __all__ = [
@@ -27,8 +27,8 @@ _EigSelect: TypeAlias = Literal["a", "v", "i"]
 _EigSelectRange: TypeAlias = tuple[spt.AnyReal, spt.AnyReal]
 
 _EigHType: TypeAlias = Literal[1, 2, 3]
-_EigHSubsetByIndex: TypeAlias = opt.CanIter[opt.CanNext[opt.typing.AnyInt]]
-_EigHSubsetByValue: TypeAlias = opt.CanIter[opt.CanNext[spt.AnyReal]]
+_EigHSubsetByIndex: TypeAlias = op.CanIter[op.CanNext[op.typing.AnyInt]]
+_EigHSubsetByValue: TypeAlias = op.CanIter[op.CanNext[spt.AnyReal]]
 
 _LapackDriverE: TypeAlias = Literal["ev", "evd", "evr", "evx"]
 _LapackDriverG: TypeAlias = Literal["gv", "gvd", "gvx"]

@@ -1,4 +1,5 @@
 from scipy._typing import Untyped
+
 from scipy.sparse import issparse as issparse
 from scipy.sparse._sputils import (
     asmatrix as asmatrix,

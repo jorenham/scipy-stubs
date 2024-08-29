@@ -1,7 +1,8 @@
 from typing import NamedTuple
 
-from . import distributions as distributions
 from scipy._typing import Untyped
+
+from . import distributions as distributions
 
 def argstoarray(*args) -> Untyped: ...
 def find_repeats(arr) -> Untyped: ...

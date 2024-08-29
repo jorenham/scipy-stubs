@@ -1,12 +1,13 @@
 import abc
+
 from collections.abc import Callable, Iterable, Sequence
 from typing import Any, Final, Generic, Literal, TypeAlias, overload, type_check_only
-
-import numpy as np
-import numpy.typing as npt
-import optype.numpy as onpt
 from typing_extensions import LiteralString, Self, TypeVar, Unpack, override
 
+import numpy as np
+
+import numpy.typing as npt
+import optype.numpy as onpt
 import scipy._typing as spt
 
 __all__ = [

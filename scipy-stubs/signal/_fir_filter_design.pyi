@@ -3,6 +3,7 @@ from typing import Literal
 import numpy as np
 
 from scipy._typing import Untyped
+
 from scipy.linalg import (
     LinAlgError as LinAlgError,
     LinAlgWarning as LinAlgWarning,

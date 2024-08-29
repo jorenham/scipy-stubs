@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
-from ._common import ConfidenceInterval as ConfidenceInterval
 from scipy._typing import Untyped
+
 from scipy.special import ndtri as ndtri
+from ._common import ConfidenceInterval as ConfidenceInterval
 
 @dataclass
 class RelativeRiskResult:

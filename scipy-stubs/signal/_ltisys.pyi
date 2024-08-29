@@ -1,3 +1,7 @@
+from scipy._typing import Untyped
+
+from scipy import linalg as linalg
+from scipy.interpolate import make_interp_spline as make_interp_spline
 from ._filter_design import (
     freqs as freqs,
     freqs_zpk as freqs_zpk,
@@ -15,9 +19,6 @@ from ._lti_conversion import (
     tf2ss as tf2ss,
     zpk2ss as zpk2ss,
 )
-from scipy import linalg as linalg
-from scipy._typing import Untyped
-from scipy.interpolate import make_interp_spline as make_interp_spline
 
 class LinearTimeInvariant:
     def __new__(cls, *system, **kwargs) -> Untyped: ...

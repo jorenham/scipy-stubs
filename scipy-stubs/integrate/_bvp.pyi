@@ -1,4 +1,5 @@
 from scipy._typing import Untyped
+
 from scipy.optimize import OptimizeResult as OptimizeResult
 from scipy.sparse import coo_matrix as coo_matrix, csc_matrix as csc_matrix
 from scipy.sparse.linalg import splu as splu

@@ -1,4 +1,5 @@
 from scipy._typing import Untyped
+
 from scipy.linalg._decomp_qr import qr as qr
 from scipy.sparse._sputils import is_pydata_spmatrix as is_pydata_spmatrix
 from scipy.sparse.linalg import aslinearoperator as aslinearoperator

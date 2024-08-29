@@ -1,5 +1,6 @@
-from scipy import stats as stats
 from scipy._typing import Untyped
+
+from scipy import stats as stats
 
 class WilcoxonDistribution:
     n: Untyped

@@ -1,8 +1,10 @@
-from collections.abc import Callable
 from dataclasses import dataclass
+
+from collections.abc import Callable
 from typing import Literal, Protocol
 
 import numpy as np
+
 import numpy.typing as npt
 
 from scipy._lib._util import DecimalNumber as DecimalNumber, IntNumber as IntNumber, SeedType as SeedType

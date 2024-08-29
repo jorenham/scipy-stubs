@@ -1,6 +1,7 @@
+from typing_extensions import Self
+
 import numpy.typing as npt
 import optype.numpy as onpt
-from typing_extensions import Self
 
 __all__ = ["CensoredData"]
 

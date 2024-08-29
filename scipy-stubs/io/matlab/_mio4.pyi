@@ -1,3 +1,5 @@
+from scipy._typing import Untyped
+
 from ._mio_utils import chars_to_strings as chars_to_strings, squeeze_element as squeeze_element
 from ._miobase import (
     MatFileReader as MatFileReader,
@@ -8,7 +10,6 @@ from ._miobase import (
     matdims as matdims,
     read_dtype as read_dtype,
 )
-from scipy._typing import Untyped
 
 SYS_LITTLE_ENDIAN: Untyped
 miDOUBLE: int

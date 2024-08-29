@@ -1,4 +1,5 @@
 from scipy._typing import Untyped
+
 from scipy.sparse import csr_matrix as csr_matrix, issparse as issparse
 from scipy.sparse._sputils import convert_pydata_sparse_to_scipy as convert_pydata_sparse_to_scipy
 from scipy.sparse.csgraph._tools import (

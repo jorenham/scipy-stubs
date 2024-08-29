@@ -1,11 +1,7 @@
 from typing import NamedTuple
 
-from . import distributions as distributions
-from ._ansari_swilk_statistics import gscale as gscale, swilk as swilk
-from ._distn_infrastructure import rv_generic as rv_generic
-from ._fit import FitResult as FitResult
-from ._stats_py import SignificanceResult as SignificanceResult, find_repeats as find_repeats
-from .contingency import chi2_contingency as chi2_contingency
+from scipy._typing import Untyped
+
 from scipy import interpolate as interpolate, optimize as optimize, special as special, stats as stats
 from scipy._lib._array_api import (
     array_namespace as array_namespace,
@@ -13,7 +9,12 @@ from scipy._lib._array_api import (
     xp_size as xp_size,
     xp_vector_norm as xp_vector_norm,
 )
-from scipy._typing import Untyped
+from . import distributions as distributions
+from ._ansari_swilk_statistics import gscale as gscale, swilk as swilk
+from ._distn_infrastructure import rv_generic as rv_generic
+from ._fit import FitResult as FitResult
+from ._stats_py import SignificanceResult as SignificanceResult, find_repeats as find_repeats
+from .contingency import chi2_contingency as chi2_contingency
 
 class Mean(NamedTuple):
     statistic: Untyped

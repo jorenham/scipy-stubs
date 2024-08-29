@@ -1,7 +1,8 @@
+from scipy._typing import Untyped
+
+from scipy._lib._array_api import array_namespace as array_namespace, xp_atleast_nd as xp_atleast_nd
 from ._constraints import old_bound_to_new as old_bound_to_new
 from ._optimize import MemoizeJac as MemoizeJac, OptimizeResult as OptimizeResult
-from scipy._lib._array_api import array_namespace as array_namespace, xp_atleast_nd as xp_atleast_nd
-from scipy._typing import Untyped
 
 MSG_NONE: int
 MSG_ITER: int

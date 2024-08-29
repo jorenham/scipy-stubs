@@ -1,6 +1,7 @@
 from typing import TypeVar
 
 import numpy as np
+
 import numpy.typing as npt
 
 __all__ = ["lu_decompose", "lu_dispatcher"]

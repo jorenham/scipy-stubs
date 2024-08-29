@@ -1,6 +1,26 @@
 from dataclasses import dataclass
+
 from typing import NamedTuple
 
+from scipy._typing import Untyped
+
+from scipy import linalg as linalg, sparse as sparse, stats as stats
+from scipy._lib._array_api import (
+    array_namespace as array_namespace,
+    is_numpy as is_numpy,
+    xp_atleast_nd as xp_atleast_nd,
+    xp_moveaxis_to_end as xp_moveaxis_to_end,
+    xp_sign as xp_sign,
+    xp_size as xp_size,
+    xp_vector_norm as xp_vector_norm,
+)
+from scipy._lib._util import (
+    AxisError as AxisError,
+    check_random_state as check_random_state,
+    normalize_axis_index as normalize_axis_index,
+)
+from scipy.optimize import LinearConstraint as LinearConstraint, milp as milp, root_scalar as root_scalar
+from scipy.spatial import distance_matrix as distance_matrix
 from . import distributions as distributions
 from ._axis_nan_policy import (
     SmallSampleWarning as SmallSampleWarning,
@@ -18,24 +38,6 @@ from ._resampling import (
     permutation_test as permutation_test,
 )
 from ._stats_mstats_common import siegelslopes as siegelslopes, theilslopes as theilslopes
-from scipy import linalg as linalg, sparse as sparse, stats as stats
-from scipy._lib._array_api import (
-    array_namespace as array_namespace,
-    is_numpy as is_numpy,
-    xp_atleast_nd as xp_atleast_nd,
-    xp_moveaxis_to_end as xp_moveaxis_to_end,
-    xp_sign as xp_sign,
-    xp_size as xp_size,
-    xp_vector_norm as xp_vector_norm,
-)
-from scipy._lib._util import (
-    AxisError as AxisError,
-    check_random_state as check_random_state,
-    normalize_axis_index as normalize_axis_index,
-)
-from scipy._typing import Untyped
-from scipy.optimize import LinearConstraint as LinearConstraint, milp as milp, root_scalar as root_scalar
-from scipy.spatial import distance_matrix as distance_matrix
 
 SignificanceResult: Untyped
 

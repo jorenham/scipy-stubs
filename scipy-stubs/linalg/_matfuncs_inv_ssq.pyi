@@ -1,4 +1,5 @@
 import numpy as np
+
 import numpy.typing as npt
 
 from scipy.sparse.linalg._interface import LinearOperator

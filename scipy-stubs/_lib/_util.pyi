@@ -1,8 +1,9 @@
-from typing import NamedTuple, TypeVar
+from types import TracebackType
+from typing import Any, NamedTuple, TypeAlias
+from typing_extensions import TypeVar, override
 
 import numpy as np
 
-from scipy._lib._array_api import array_namespace as array_namespace, is_numpy as is_numpy, xp_size as xp_size
 from scipy._typing import Untyped
 
 AxisError: type[Exception]
@@ -11,16 +12,16 @@ VisibleDeprecationWarning: type[Warning]
 DTypePromotionError = TypeError
 np_long: type
 np_ulong: type
-IntNumber: Untyped
-DecimalNumber: Untyped
 copy_if_needed: bool | None
-SeedType: Untyped
-GeneratorType = TypeVar("GeneratorType", bound=np.random.Generator | np.random.RandomState)
+
+IntNumber: TypeAlias = int | np.integer[Any]
+DecimalNumber: TypeAlias = float | np.floating[Any] | np.integer[Any]
+SeedType: TypeAlias = IntNumber | np.random.Generator | np.random.RandomState | None
 
 class Generator: ...
 
 def float_factorial(n: int) -> float: ...
-def check_random_state(seed) -> Untyped: ...
+def check_random_state(seed: SeedType) -> np.random.Generator | np.random.RandomState: ...
 
 class FullArgSpec(NamedTuple):
     args: Untyped
@@ -31,7 +32,7 @@ class FullArgSpec(NamedTuple):
     kwonlydefaults: Untyped
     annotations: Untyped
 
-def getfullargspec_no_self(func) -> Untyped: ...
+def getfullargspec_no_self(func) -> FullArgSpec: ...
 
 class _FunctionWrapper:
     f: Untyped
@@ -47,17 +48,30 @@ class MapWrapper:
     def join(self): ...
     def close(self): ...
     def __exit__(
-        self, exc_type: type[BaseException] | None, exc_value: BaseException | None, traceback: types.TracebackType | None
+        self,
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
     ): ...
     def __call__(self, func, iterable) -> Untyped: ...
 
 def rng_integers(
-    gen, low, high: Untyped | None = None, size: Untyped | None = None, dtype: str = "int64", endpoint: bool = False
+    gen,
+    low,
+    high: Untyped | None = None,
+    size: Untyped | None = None,
+    dtype: str = "int64",
+    endpoint: bool = False,
 ) -> Untyped: ...
 def normalize_axis_index(axis, ndim) -> Untyped: ...
 
-class _RichResult(dict):
-    def __getattr__(self, name) -> Untyped: ...
-    __setattr__: Untyped
-    __delattr__: Untyped
-    def __dir__(self) -> Untyped: ...
+_VT = TypeVar("_VT", default=object)
+
+class _RichResult(dict[str, _VT]):
+    def __getattr__(self, name: str, /) -> _VT: ...
+    @override
+    def __setattr__(self, name: str, value: _VT, /) -> None: ...
+    @override
+    def __delattr__(self, name: str, /) -> None: ...
+    @override
+    def __dir__(self, /) -> list[str]: ...

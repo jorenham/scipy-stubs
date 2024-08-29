@@ -1,6 +1,7 @@
+from scipy._typing import Untyped
+
 from ._bsplines import BSpline as BSpline
 from ._fitpack_impl import bisplev as bisplev, bisplrep as bisplrep, dblint as dblint
-from scipy._typing import Untyped
 
 def splprep(
     x,

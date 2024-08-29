@@ -1,11 +1,12 @@
-from ._trustregion import BaseQuadraticSubproblem as BaseQuadraticSubproblem
 from scipy._typing import Untyped
+
 from scipy.linalg import (
     cho_solve as cho_solve,
     get_lapack_funcs as get_lapack_funcs,
     norm as norm,
     solve_triangular as solve_triangular,
 )
+from ._trustregion import BaseQuadraticSubproblem as BaseQuadraticSubproblem
 
 def estimate_smallest_singular_value(U) -> Untyped: ...
 def gershgorin_bounds(H) -> Untyped: ...

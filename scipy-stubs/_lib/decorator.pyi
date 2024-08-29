@@ -1,4 +1,5 @@
 from contextlib import GeneratorContextManager as _GeneratorContextManager
+
 from typing import NamedTuple
 
 from scipy._typing import Untyped

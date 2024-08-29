@@ -1,5 +1,7 @@
 import numpy as np
 
+from scipy._typing import Untyped
+
 from . import dop853_coefficients as dop853_coefficients
 from .base import DenseOutput as DenseOutput, OdeSolver as OdeSolver
 from .common import (
@@ -10,7 +12,6 @@ from .common import (
     validate_tol as validate_tol,
     warn_extraneous as warn_extraneous,
 )
-from scipy._typing import Untyped
 
 SAFETY: float
 MIN_FACTOR: float

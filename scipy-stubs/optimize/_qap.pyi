@@ -1,6 +1,7 @@
-from . import OptimizeResult as OptimizeResult, linear_sum_assignment as linear_sum_assignment
-from scipy._lib._util import check_random_state as check_random_state
 from scipy._typing import Untyped
+
+from scipy._lib._util import check_random_state as check_random_state
+from . import OptimizeResult as OptimizeResult, linear_sum_assignment as linear_sum_assignment
 
 QUADRATIC_ASSIGNMENT_METHODS: Untyped
 

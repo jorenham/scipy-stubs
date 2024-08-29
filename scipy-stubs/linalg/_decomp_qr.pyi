@@ -1,6 +1,7 @@
 from typing import Literal, TypeAlias, overload
 
 import numpy as np
+
 import numpy.typing as npt
 
 __all__ = ["qr", "qr_multiply", "rq"]

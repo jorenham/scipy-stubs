@@ -1,13 +1,16 @@
-from .._constraints import (
+from scipy._typing import Untyped
+
+from scipy.optimize._constraints import (
     Bounds as Bounds,
     LinearConstraint as LinearConstraint,
     NonlinearConstraint as NonlinearConstraint,
     PreparedConstraint as PreparedConstraint,
     strict_bounds as strict_bounds,
 )
-from .._differentiable_functions import ScalarFunction as ScalarFunction, VectorFunction as VectorFunction
-from .._hessian_update_strategy import BFGS as BFGS
-from .._optimize import OptimizeResult as OptimizeResult
+from scipy.optimize._differentiable_functions import ScalarFunction as ScalarFunction, VectorFunction as VectorFunction
+from scipy.optimize._hessian_update_strategy import BFGS as BFGS
+from scipy.optimize._optimize import OptimizeResult as OptimizeResult
+from scipy.sparse.linalg import LinearOperator as LinearOperator
 from .canonical_constraint import (
     CanonicalConstraint as CanonicalConstraint,
     initial_constraints_as_canonical as initial_constraints_as_canonical,
@@ -15,8 +18,6 @@ from .canonical_constraint import (
 from .equality_constrained_sqp import equality_constrained_sqp as equality_constrained_sqp
 from .report import BasicReport as BasicReport, IPReport as IPReport, SQPReport as SQPReport
 from .tr_interior_point import tr_interior_point as tr_interior_point
-from scipy._typing import Untyped
-from scipy.sparse.linalg import LinearOperator as LinearOperator
 
 TERMINATION_MESSAGES: Untyped
 

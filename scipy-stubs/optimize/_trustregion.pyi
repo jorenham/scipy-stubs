@@ -1,7 +1,8 @@
-from ._optimize import OptimizeResult as OptimizeResult
 from scipy._typing import Untyped
+
 from scipy.optimize._differentiable_functions import FD_METHODS as FD_METHODS
 from scipy.optimize._hessian_update_strategy import HessianUpdateStrategy as HessianUpdateStrategy
+from ._optimize import OptimizeResult as OptimizeResult
 
 class BaseQuadraticSubproblem:
     def __init__(self, x, fun, jac, hess: Untyped | None = None, hessp: Untyped | None = None): ...

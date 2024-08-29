@@ -1,3 +1,5 @@
+from scipy._typing import Untyped
+
 from ._base import sparray as sparray
 from ._compressed import _cs_matrix
 from ._matrix import spmatrix as spmatrix
@@ -9,7 +11,6 @@ from ._sparsetools import (
     get_csr_submatrix as get_csr_submatrix,
 )
 from ._sputils import upcast as upcast
-from scipy._typing import Untyped
 
 __docformat__: str
 

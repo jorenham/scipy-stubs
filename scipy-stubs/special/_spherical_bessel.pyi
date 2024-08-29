@@ -1,6 +1,7 @@
 from typing import TypeAlias
 
 import numpy as np
+
 import numpy.typing as npt
 
 __all__ = ["spherical_in", "spherical_jn", "spherical_kn", "spherical_yn"]

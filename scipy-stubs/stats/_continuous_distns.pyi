@@ -1,5 +1,4 @@
 from typing import Final
-
 from typing_extensions import deprecated
 
 from ._distn_infrastructure import rv_continuous
