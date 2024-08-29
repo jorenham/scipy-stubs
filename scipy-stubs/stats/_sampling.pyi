@@ -3,7 +3,8 @@ from scipy._typing import Untyped
 from scipy import stats as stats
 from scipy._lib._util import check_random_state as check_random_state
 from ._qmc import Halton as Halton, QMCEngine as QMCEngine
-from ._unuran.unuran_wrapper import NumericalInversePolynomial as NumericalInversePolynomial
+
+__all__ = ["FastGeneratorInversion", "RatioUniforms"]
 
 def argus_pdf(x, chi) -> Untyped: ...
 def argus_gamma_trf(x, chi) -> Untyped: ...
