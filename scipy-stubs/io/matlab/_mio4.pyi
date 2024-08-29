@@ -1,15 +1,29 @@
 from scipy._typing import Untyped
 
-from ._mio_utils import chars_to_strings as chars_to_strings, squeeze_element as squeeze_element
-from ._miobase import (
-    MatFileReader as MatFileReader,
-    arr_dtype_number as arr_dtype_number,
-    arr_to_chars as arr_to_chars,
-    convert_dtypes as convert_dtypes,
-    docfiller as docfiller,
-    matdims as matdims,
-    read_dtype as read_dtype,
-)
+from ._miobase import MatFileReader
+
+__all__ = [
+    "SYS_LITTLE_ENDIAN",
+    "MatFile4Reader",
+    "MatFile4Writer",
+    "VarHeader4",
+    "VarReader4",
+    "VarWriter4",
+    "arr_to_2d",
+    "mclass_info",
+    "mdtypes_template",
+    "miDOUBLE",
+    "miINT16",
+    "miINT32",
+    "miSINGLE",
+    "miUINT8",
+    "miUINT16",
+    "mxCHAR_CLASS",
+    "mxFULL_CLASS",
+    "mxSPARSE_CLASS",
+    "np_to_mtypes",
+    "order_codes",
+]
 
 SYS_LITTLE_ENDIAN: Untyped
 miDOUBLE: int

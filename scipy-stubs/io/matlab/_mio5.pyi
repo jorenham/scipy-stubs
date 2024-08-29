@@ -21,7 +21,6 @@ from ._mio5_params import (
     mxSPARSE_CLASS as mxSPARSE_CLASS,
     mxSTRUCT_CLASS as mxSTRUCT_CLASS,
 )
-from ._mio5_utils import VarReader5 as VarReader5
 from ._miobase import (
     MatFileReader as MatFileReader,
     MatReadError as MatReadError,
@@ -33,7 +32,6 @@ from ._miobase import (
     matdims as matdims,
     read_dtype as read_dtype,
 )
-from ._streams import ZlibInputStream as ZlibInputStream
 
 class MatFile5Reader(MatFileReader):
     uint16_codec: Untyped
