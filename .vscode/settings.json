@@ -1,5 +1,10 @@
 {
-  "editor.rulers": [130],
+  "[python]": {
+    "editor.rulers": [130]
+  },
+  "[markdown]": {
+    "editor.rulers": [88]
+  },
   "git.branchProtection": ["master"],
   "mypy-type-checker.args": ["--config-file=pyproject.toml"]
 }
