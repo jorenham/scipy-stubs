@@ -151,8 +151,8 @@ class rv_discrete_frozen(rv_frozen[_RVD_co], Generic[_RVD_co]):
     def logpmf(self, /, k: _AnyArray_f8_in) -> _AnyArray_f8_out: ...
 
 _ParamT = TypeVar("_ParamT", bound=_Scalar_uif)
-_LocT = TypeVar("_LocT", bound=_Scalar_uif)
-_ScaleT = TypeVar("_ScaleT", bound=_Scalar_uif)
+# _LocT = TypeVar("_LocT", bound=_Scalar_uif)
+# _ScaleT = TypeVar("_ScaleT", bound=_Scalar_uif)
 
 class rv_generic:
     # TODO: private methods
@@ -194,24 +194,63 @@ class rv_generic:
         **kwargs: _AnyArray_f8_in,
     ) -> tuple[_AnyArray_f8_out | None, _AnyArray_f8_out | None, _AnyArray_f8_out | None, _AnyArray_f8_out | None]: ...
     def _munp(self, /, n: onpt.AnyIntegerArray, *args: _AnyScalar_f8_in) -> npt.NDArray[np.float64]: ...
+    # TODO: see: https://github.com/KotlinIsland/basedmypy/issues/747
+    # ruff: noqa: ERA001
+    # @overload
+    # def _argcheck_rvs(
+    #     self,
+    #     /,
+    #     # NOTE: This `Unpack` trickery is only understood by pyright; mypy (still) doesn't fully support `Unpack` (`mypy<=1.11.1`)
+    #     *args: Unpack[tuple[Unpack[tuple[_ParamT, ...]], _LocT, _ScaleT]],
+    #     size: onpt.AnyIntegerArray | None = None,
+    # ) -> tuple[
+    #     list[npt.NDArray[_ParamT]],
+    #     npt.NDArray[_LocT],
+    #     npt.NDArray[_ScaleT],
+    #     tuple[int, ...] | tuple[np.intp, ...],
+    # ]: ...
+    # @overload
+    # def _argcheck_rvs(
+    #     self,
+    #     /,
+    #     *args: Unpack[tuple[Unpack[tuple[int, ...]], int, int]],
+    #     size: onpt.AnyIntegerArray | None = None,
+    # ) -> tuple[
+    #     list[npt.NDArray[np.intp]],
+    #     npt.NDArray[np.intp],
+    #     npt.NDArray[np.intp],
+    #     tuple[int, ...] | tuple[np.intp, ...],
+    # ]: ...
+    # @overload
+    # def _argcheck_rvs(
+    #     self,
+    #     /,
+    #     *args: Unpack[tuple[Unpack[tuple[float, ...]], float, float]],
+    #     size: onpt.AnyIntegerArray | None = None,
+    # ) -> tuple[
+    #     # NOTE: this first union type shouldn't be needed, but is required to work around a pyright bug
+    #     list[npt.NDArray[np.intp]] | list[npt.NDArray[np.intp | np.float64]],
+    #     npt.NDArray[np.intp | np.float64],
+    #     npt.NDArray[np.intp | np.float64],
+    #     tuple[int, ...] | tuple[np.intp, ...],
+    # ]: ...
     @overload
     def _argcheck_rvs(
         self,
         /,
-        # NOTE: This `Unpack` trickery is only understood by pyright; mypy (still) doesn't fully support `Unpack` (`mypy<=1.11.1`)
-        *args: Unpack[tuple[Unpack[tuple[_ParamT, ...]], _LocT, _ScaleT]],
+        *args: tuple[_ParamT, ...],
         size: onpt.AnyIntegerArray | None = None,
     ) -> tuple[
         list[npt.NDArray[_ParamT]],
-        npt.NDArray[_LocT],
-        npt.NDArray[_ScaleT],
+        npt.NDArray[_ParamT],
+        npt.NDArray[_ParamT],
         tuple[int, ...] | tuple[np.intp, ...],
     ]: ...
     @overload
     def _argcheck_rvs(
         self,
         /,
-        *args: Unpack[tuple[Unpack[tuple[int, ...]], int, int]],
+        *args: tuple[int, ...],
         size: onpt.AnyIntegerArray | None = None,
     ) -> tuple[
         list[npt.NDArray[np.intp]],
@@ -223,7 +262,7 @@ class rv_generic:
     def _argcheck_rvs(
         self,
         /,
-        *args: Unpack[tuple[Unpack[tuple[float, ...]], float, float]],
+        *args: tuple[float, ...],
         size: onpt.AnyIntegerArray | None = None,
     ) -> tuple[
         # NOTE: this first union type shouldn't be needed, but is required to work around a pyright bug
