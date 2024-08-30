@@ -3,7 +3,7 @@ from typing import Any, Literal
 
 from scipy._typing import Untyped
 
-from .array_api_compat import device, size
+from scipy._lib.array_api_compat import device, size
 
 __all__ = ["_asarray", "array_namespace", "device", "size"]
 
