@@ -80,32 +80,36 @@ pip install scipy-stubs
 
 ## Development Progress
 
+According to [basedpyright](https://github.com/DetachHead/basedpyright) (stricter than
+pyright), the "type completeness score" is **38.6%**
+[at the time of writing](https://github.com/jorenham/scipy-stubs/tree/15f8b2c).
+
 | Module                            | Stubs status    |
 |---------------------------------- |---------------- |
 | `scipy`                           | 1: skeleton     |
 | `scipy._lib`                      | 2: partial      |
-| `scipy._lib.uarray`               | 2: ready        |
+| `scipy._lib.uarray`               | 3: ready        |
 | `scipy._lib.array_api_compat`     | 2: partial      |
 | `scipy.cluster`                   | 1: skeleton     |
 | `scipy.constants`                 | 3: ready        |
-| `scipy.datasets`                  | 1: skeleton     |
-| `scipy.fft`                       | 1: skeleton     |
-| `scipy.fft._pocketfft`            | 1: partial      |
-| `scipy.fftpack`                   | 1: skeleton     |
+| `scipy.datasets`                  | 2: partial      |
+| `scipy.fft`                       | 2: partial      |
+| `scipy.fft._pocketfft`            | 2: partial      |
+| `scipy.fftpack`                   | 2: partial      |
 | `scipy.integrate`                 | 2: partial      |
-| `scipy.integrate._ivp`            | 1: partial      |
+| `scipy.integrate._ivp`            | 2: partial      |
 | `scipy.interpolate`               | 2: partial      |
-| `scipy.io`                        | 1: skeleton     |
-| `scipy.io.arff`                   | 1: skeleton     |
+| `scipy.io`                        | 2: partial      |
+| `scipy.io.arff`                   | 2: partial      |
 | `scipy.io.matlab`                 | 2: partial      |
 | `scipy.linalg`                    | 3: ready        |
 | `scipy.misc`                      | 0: missing      |
-| `scipy.ndimage`                   | 1: skeleton     |
+| `scipy.ndimage`                   | 2: partial      |
 | `scipy.odr`                       | 1: skeleton     |
 | `scipy.optimize`                  | 2: partial      |
 | `scipy.optimize.cython_optimize`  | 0: missing      |
 | `scipy.optimize.zeros`            | 0: missing      |
-| `scipy.signal`                    | 1: partial      |
+| `scipy.signal`                    | 2: partial      |
 | `scipy.signal.windows`            | 1: skeleton     |
 | `scipy.sparse`                    | 2: partial      |
 | `scipy.sparse.csgraph`            | 2: partial      |
@@ -118,7 +122,7 @@ pip install scipy-stubs
 | `scipy.stats.contingency`         | 1: skeleton     |
 | `scipy.stats.distributions`       | 3: ready        |
 | `scipy.stats.mstats`              | 1: skeleton     |
-| `scipy.stats.qmc`                 | 1: skeleton     |
+| `scipy.stats.qmc`                 | 2: partial      |
 | `scipy.stats.sampling`            | 1: skeleton     |
 
 Status labels:
