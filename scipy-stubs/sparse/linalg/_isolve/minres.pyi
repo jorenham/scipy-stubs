@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from .utils import make_system as make_system
 
 def minres(

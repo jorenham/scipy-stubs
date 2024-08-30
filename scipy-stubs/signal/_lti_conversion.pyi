@@ -1,6 +1,5 @@
-from scipy._typing import Untyped
-
 from scipy import linalg as linalg
+from scipy._typing import Untyped
 from ._filter_design import normalize as normalize, tf2zpk as tf2zpk, zpk2tf as zpk2tf
 
 def tf2ss(num, den) -> Untyped: ...

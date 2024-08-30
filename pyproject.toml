@@ -149,12 +149,11 @@ banned-from = [
 [tool.ruff.lint.isort]
 combine-as-imports = true
 known-first-party = ["scipy"]
-no-lines-before = ["local-folder"]
+no-lines-before = ["typing", "first-party", "local-folder"]
 section-order = [
   "standard-library",
   "typing",
   "third-party",
-  "typing-extra",
   "first-party",
   "local-folder",
 ]
@@ -162,7 +161,6 @@ split-on-trailing-comma = true
 
 [tool.ruff.lint.isort.sections]
 typing = ["collections.abc", "types", "typing", "typing_extensions"]
-typing-extra = ["optype", "optype.numpy", "numpy.typing", "scipy._typing"]
 
 [tool.ruff.lint.flake8-annotations]
 allow-star-arg-any = true

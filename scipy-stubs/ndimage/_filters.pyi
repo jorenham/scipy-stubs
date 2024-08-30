@@ -1,6 +1,5 @@
-from scipy._typing import Untyped
-
 from scipy._lib._util import normalize_axis_index as normalize_axis_index
+from scipy._typing import Untyped
 
 def correlate1d(
     input, weights, axis: int = -1, output: Untyped | None = None, mode: str = "reflect", cval: float = 0.0, origin: int = 0

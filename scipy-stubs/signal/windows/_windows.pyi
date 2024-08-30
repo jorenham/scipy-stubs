@@ -1,6 +1,5 @@
-from scipy._typing import Untyped
-
 from scipy import linalg as linalg, special as special
+from scipy._typing import Untyped
 
 def general_cosine(M, a, sym: bool = True) -> Untyped: ...
 def boxcar(M, sym: bool = True) -> Untyped: ...

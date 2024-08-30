@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from ._mio4 import MatFile4Reader as MatFile4Reader, MatFile4Writer as MatFile4Writer
 from ._mio5 import MatFile5Reader as MatFile5Reader, MatFile5Writer as MatFile5Writer
 from ._miobase import docfiller as docfiller

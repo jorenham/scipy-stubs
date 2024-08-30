@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.optimize import brentq as brentq
 from scipy.special import ndtri as ndtri
 from ._common import ConfidenceInterval as ConfidenceInterval

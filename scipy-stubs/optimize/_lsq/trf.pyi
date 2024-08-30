@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.linalg import qr as qr, svd as svd
 from scipy.optimize import OptimizeResult as OptimizeResult
 from scipy.sparse.linalg import lsmr as lsmr

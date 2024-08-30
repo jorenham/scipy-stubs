@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.sparse import bmat as bmat, csc_matrix as csc_matrix, eye as eye, issparse as issparse
 from scipy.sparse.linalg import LinearOperator as LinearOperator
 

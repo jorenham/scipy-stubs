@@ -1,7 +1,6 @@
 from typing import Any, Literal, Protocol, SupportsFloat, SupportsIndex, TypeAlias, overload, type_check_only
 
 import numpy as np
-
 import numpy.typing as npt
 
 __all__ = [

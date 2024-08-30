@@ -1,27 +1,14 @@
-from scipy._typing import Untyped
-
 class ReportBase:
     COLUMN_NAMES: list[str]
     COLUMN_WIDTHS: list[int]
     ITERATION_FORMATS: list[str]
     @classmethod
-    def print_header(cls): ...
+    def print_header(cls) -> None: ...
     @classmethod
-    def print_iteration(cls, *args): ...
+    def print_iteration(cls, *args) -> None: ...
     @classmethod
-    def print_footer(cls): ...
+    def print_footer(cls) -> None: ...
 
-class BasicReport(ReportBase):
-    COLUMN_NAMES: Untyped
-    COLUMN_WIDTHS: Untyped
-    ITERATION_FORMATS: Untyped
-
-class SQPReport(ReportBase):
-    COLUMN_NAMES: Untyped
-    COLUMN_WIDTHS: Untyped
-    ITERATION_FORMATS: Untyped
-
-class IPReport(ReportBase):
-    COLUMN_NAMES: Untyped
-    COLUMN_WIDTHS: Untyped
-    ITERATION_FORMATS: Untyped
+class BasicReport(ReportBase): ...
+class SQPReport(ReportBase): ...
+class IPReport(ReportBase): ...

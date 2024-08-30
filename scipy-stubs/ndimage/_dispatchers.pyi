@@ -1,6 +1,5 @@
-from scipy._typing import Untyped
-
 from scipy._lib._array_api import array_namespace as array_namespace
+from scipy._typing import Untyped
 
 def affine_transform_dispatcher(
     input, matrix, offset: float = 0.0, output_shape: Untyped | None = None, output: Untyped | None = None, *args, **kwds

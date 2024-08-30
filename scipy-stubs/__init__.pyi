@@ -1,7 +1,6 @@
-from scipy._typing import Untyped
-
 from scipy._lib._ccallback import LowLevelCallable as LowLevelCallable
 from scipy._lib._testutils import PytestTester as PytestTester
+from scipy._typing import Untyped
 
 msg: str
 np_minversion: str

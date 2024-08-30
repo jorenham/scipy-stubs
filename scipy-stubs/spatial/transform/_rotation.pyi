@@ -2,7 +2,6 @@ from collections.abc import Sequence
 from typing import Any, TypeAlias
 
 import numpy as np
-
 import numpy.typing as npt
 
 __all__ = ["Rotation", "Slerp"]

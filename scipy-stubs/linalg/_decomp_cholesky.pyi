@@ -1,7 +1,6 @@
 from typing import TypeAlias
 
 import numpy as np
-
 import numpy.typing as npt
 
 __all__ = ["cho_factor", "cho_solve", "cho_solve_banded", "cholesky", "cholesky_banded"]

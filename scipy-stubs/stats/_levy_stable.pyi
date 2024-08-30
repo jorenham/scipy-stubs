@@ -2,9 +2,7 @@ from collections.abc import Callable
 from typing import Final
 
 import numpy as np
-
 import numpy.typing as npt
-
 from ._distn_infrastructure import rv_continuous
 
 __all__ = ["levy_stable", "levy_stable_gen", "pdf_from_cf_with_fft"]

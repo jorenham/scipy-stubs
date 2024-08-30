@@ -1,12 +1,9 @@
-from scipy._typing import Untyped
+from typing_extensions import override
 
-from scipy.linalg import (
-    cho_solve as cho_solve,
-    get_lapack_funcs as get_lapack_funcs,
-    norm as norm,
-    solve_triangular as solve_triangular,
-)
-from ._trustregion import BaseQuadraticSubproblem as BaseQuadraticSubproblem
+import numpy as np
+import numpy.typing as npt
+from scipy._typing import Untyped
+from ._trustregion import BaseQuadraticSubproblem
 
 def estimate_smallest_singular_value(U) -> Untyped: ...
 def gershgorin_bounds(H) -> Untyped: ...
@@ -24,6 +21,7 @@ class IterativeSubproblem(BaseQuadraticSubproblem):
     hess_inf: Untyped
     hess_fro: Untyped
     CLOSE_TO_ZERO: Untyped
-    def __init__(self, x, fun, jac, hess, hessp: Untyped | None = None, k_easy: float = 0.1, k_hard: float = 0.2): ...
+    def __init__(self, x, fun, jac, hess, hessp: Untyped | None = None, k_easy: float = 0.1, k_hard: float = 0.2) -> None: ...
     lambda_current: Untyped
-    def solve(self, tr_radius) -> Untyped: ...
+    @override
+    def solve(self, trust_radius: float | np.float64) -> tuple[npt.NDArray[np.float64], bool]: ...

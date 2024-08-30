@@ -2,7 +2,6 @@ from collections.abc import Callable
 from typing import Literal, TypeAlias
 
 import numpy as np
-
 import numpy.typing as npt
 
 __all__ = ["ordqz", "qz"]

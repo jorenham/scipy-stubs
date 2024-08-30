@@ -1,7 +1,5 @@
 import numpy as np
-
 import numpy.typing as npt
-
 from scipy.interpolate import PPoly
 from ._rotation import Rotation
 

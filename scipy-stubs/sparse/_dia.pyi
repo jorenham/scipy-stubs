@@ -1,7 +1,6 @@
 from typing_extensions import override
 
 from scipy._typing import Untyped
-
 from ._base import sparray, spmatrix
 from ._data import _data_matrix
 
@@ -19,20 +18,6 @@ class _dia_base(_data_matrix):
         *,
         maxprint: Untyped | None = None,
     ) -> None: ...
-    @override
-    def count_nonzero(self, axis: Untyped | None = None) -> int: ...
-    @override
-    def sum(self, axis: Untyped | None = None, dtype: Untyped | None = None, out: Untyped | None = None) -> Untyped: ...
-    @override
-    def todia(self, copy: bool = False) -> Untyped: ...
-    @override
-    def transpose(self, axes: Untyped | None = None, copy: bool = False) -> Untyped: ...
-    @override
-    def diagonal(self, k: int = 0) -> Untyped: ...
-    @override
-    def tocsc(self, copy: bool = False) -> Untyped: ...
-    @override
-    def tocoo(self, copy: bool = False) -> Untyped: ...
     @override
     def resize(self, *shape: int): ...  # type: ignore[override]
 

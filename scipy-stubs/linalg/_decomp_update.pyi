@@ -1,7 +1,6 @@
 from typing import Literal, TypeAlias
 
 import numpy as np
-
 import numpy.typing as npt
 
 __all__ = ["qr_delete", "qr_insert", "qr_update"]

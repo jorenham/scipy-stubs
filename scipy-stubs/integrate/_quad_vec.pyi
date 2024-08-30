@@ -1,13 +1,12 @@
 import collections
+from typing_extensions import override
 
 from scipy._typing import Untyped
 
-from scipy._lib._util import MapWrapper as MapWrapper
-
-class LRUDict(collections.OrderedDict):
-    def __init__(self, max_size) -> None: ...
-    def __setitem__(self, key, value) -> None: ...
-    def update(self, other): ...
+class LRUDict(collections.OrderedDict[tuple[float, float], Untyped]):
+    def __init__(self, max_size: int) -> None: ...
+    @override
+    def update(self, other) -> None: ...  # type: ignore[override]
 
 class SemiInfiniteFunc:
     def __init__(self, func, start, infty) -> None: ...

@@ -1,8 +1,56 @@
+from typing import Literal
+from typing_extensions import Self, override
+
 import numpy as np
+from scipy._typing import Untyped, UntypedDict
 
-from scipy._typing import Untyped
-
-from ._miobase import convert_dtypes as convert_dtypes
+__all__ = [
+    "MDTYPES",
+    "NP_TO_MTYPES",
+    "NP_TO_MXTYPES",
+    "OPAQUE_DTYPE",
+    "MatlabFunction",
+    "MatlabObject",
+    "MatlabOpaque",
+    "codecs_template",
+    "mat_struct",
+    "mclass_dtypes_template",
+    "mclass_info",
+    "mdtypes_template",
+    "miCOMPRESSED",
+    "miDOUBLE",
+    "miINT8",
+    "miINT16",
+    "miINT32",
+    "miINT64",
+    "miMATRIX",
+    "miSINGLE",
+    "miUINT8",
+    "miUINT16",
+    "miUINT32",
+    "miUINT64",
+    "miUTF8",
+    "miUTF16",
+    "miUTF32",
+    "mxCELL_CLASS",
+    "mxCHAR_CLASS",
+    "mxDOUBLE_CLASS",
+    "mxFUNCTION_CLASS",
+    "mxINT8_CLASS",
+    "mxINT16_CLASS",
+    "mxINT32_CLASS",
+    "mxINT64_CLASS",
+    "mxOBJECT_CLASS",
+    "mxOBJECT_CLASS_FROM_MATRIX_H",
+    "mxOPAQUE_CLASS",
+    "mxSINGLE_CLASS",
+    "mxSPARSE_CLASS",
+    "mxSTRUCT_CLASS",
+    "mxUINT8_CLASS",
+    "mxUINT16_CLASS",
+    "mxUINT32_CLASS",
+    "mxUINT64_CLASS",
+]
 
 miINT8: int
 miUINT8: int
@@ -37,25 +85,27 @@ mxUINT64_CLASS: int
 mxFUNCTION_CLASS: int
 mxOPAQUE_CLASS: int
 mxOBJECT_CLASS_FROM_MATRIX_H: int
-mdtypes_template: Untyped
-mclass_dtypes_template: Untyped
-mclass_info: Untyped
-NP_TO_MTYPES: Untyped
-NP_TO_MXTYPES: Untyped
-codecs_template: Untyped
-MDTYPES: Untyped
+mdtypes_template: UntypedDict
+mclass_dtypes_template: dict[int, str]
+mclass_info: dict[int, str]
+NP_TO_MTYPES: dict[str, int]
+NP_TO_MXTYPES: dict[str, int]
+codecs_template: dict[int, dict[str, str]]
+MDTYPES: UntypedDict
 
 class mat_struct: ...
 
-class MatlabObject(np.ndarray):
-    def __new__(cls, input_array, classname: Untyped | None = None) -> Untyped: ...
-    classname: Untyped
-    def __array_finalize__(self, obj): ...
+class MatlabObject(np.ndarray[tuple[int, ...], np.dtype[np.void]]):
+    classname: str | None
 
-class MatlabFunction(np.ndarray):
-    def __new__(cls, input_array) -> Untyped: ...
+    def __new__(cls, input_array: np.ndarray[tuple[int, ...], np.dtype[np.void]], classname: Untyped | None = None) -> Self: ...
+    @override
+    def __array_finalize__(self, obj: Self) -> None: ...  # type: ignore[override]
 
-class MatlabOpaque(np.ndarray):
-    def __new__(cls, input_array) -> Untyped: ...
+class MatlabFunction(np.ndarray[tuple[int, ...], np.dtype[np.void]]):
+    def __new__(cls, input_array: np.ndarray[tuple[int, ...], np.dtype[np.void]]) -> Self: ...
 
-OPAQUE_DTYPE: Untyped
+class MatlabOpaque(np.ndarray[tuple[int, ...], np.dtype[np.void]]):
+    def __new__(cls, input_array: np.ndarray[tuple[int, ...], np.dtype[np.void]]) -> Self: ...
+
+OPAQUE_DTYPE: np.dtypes.VoidDType[Literal[32]]

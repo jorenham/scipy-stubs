@@ -1,6 +1,5 @@
-from scipy._typing import Untyped
-
 from scipy._lib._util import copy_if_needed as copy_if_needed
+from scipy._typing import Untyped
 from scipy.special import comb as comb
 from ._bsplines import BSpline as BSpline, make_interp_spline as make_interp_spline
 from ._polyint import _Interpolator1D

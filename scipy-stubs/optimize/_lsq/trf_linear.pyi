@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.optimize import OptimizeResult as OptimizeResult
 
 def regularized_lsq_with_qr(

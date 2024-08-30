@@ -1,5 +1,4 @@
 import numpy.typing as npt
-
 from ._optimize import OptimizeResult
 
 __all__ = ["isotonic_regression"]

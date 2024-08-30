@@ -1,9 +1,8 @@
 from typing import NamedTuple
 
-from scipy._typing import Untyped
-
 from scipy import optimize as optimize, stats as stats
 from scipy._lib._util import check_random_state as check_random_state
+from scipy._typing import Untyped
 
 class FitResult:
     discrete: Untyped

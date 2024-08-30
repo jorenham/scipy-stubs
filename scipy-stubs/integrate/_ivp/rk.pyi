@@ -1,17 +1,8 @@
+from typing import ClassVar, Literal
+
 import numpy as np
-
-from scipy._typing import Untyped
-
-from . import dop853_coefficients as dop853_coefficients
-from .base import DenseOutput as DenseOutput, OdeSolver as OdeSolver
-from .common import (
-    norm as norm,
-    select_initial_step as select_initial_step,
-    validate_first_step as validate_first_step,
-    validate_max_step as validate_max_step,
-    validate_tol as validate_tol,
-    warn_extraneous as warn_extraneous,
-)
+from scipy._typing import Untyped, UntypedArray
+from .base import DenseOutput, OdeSolver
 
 SAFETY: float
 MIN_FACTOR: float
@@ -20,14 +11,14 @@ MAX_FACTOR: int
 def rk_step(fun, t, y, f, h, A, B, C, K) -> Untyped: ...
 
 class RungeKutta(OdeSolver):
-    C: np.ndarray
-    A: np.ndarray
-    B: np.ndarray
-    E: np.ndarray
-    P: np.ndarray
-    order: int
-    error_estimator_order: int
-    n_stages: int
+    C: ClassVar[UntypedArray]
+    A: ClassVar[UntypedArray]
+    B: ClassVar[UntypedArray]
+    E: ClassVar[UntypedArray]
+    P: ClassVar[UntypedArray]
+    order: ClassVar[int]
+    error_estimator_order: ClassVar[int]
+    n_stages: ClassVar[int]
     y_old: Untyped
     max_step: Untyped
     f: Untyped
@@ -49,38 +40,16 @@ class RungeKutta(OdeSolver):
         **extraneous,
     ): ...
 
-class RK23(RungeKutta):
-    order: int
-    error_estimator_order: int
-    n_stages: int
-    C: Untyped
-    A: Untyped
-    B: Untyped
-    E: Untyped
-    P: Untyped
-
-class RK45(RungeKutta):
-    order: int
-    error_estimator_order: int
-    n_stages: int
-    C: Untyped
-    A: Untyped
-    B: Untyped
-    E: Untyped
-    P: Untyped
+class RK23(RungeKutta): ...
+class RK45(RungeKutta): ...
 
 class DOP853(RungeKutta):
-    n_stages: Untyped
-    order: int
-    error_estimator_order: int
-    A: Untyped
-    B: Untyped
-    C: Untyped
-    E3: Untyped
-    E5: Untyped
-    D: Untyped
-    A_EXTRA: Untyped
-    C_EXTRA: Untyped
+    E3: ClassVar[UntypedArray]
+    E5: ClassVar[UntypedArray]
+    D: ClassVar[UntypedArray]
+    A_EXTRA: ClassVar[UntypedArray]
+    C_EXTRA: ClassVar[UntypedArray]
+
     K_extended: Untyped
     K: Untyped
     def __init__(

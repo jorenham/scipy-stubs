@@ -1,7 +1,6 @@
 from typing import Literal, TypeAlias, overload
 
 import numpy as np
-
 import numpy.typing as npt
 import optype as op
 import scipy._typing as spt

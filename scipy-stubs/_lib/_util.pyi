@@ -3,7 +3,6 @@ from typing import Any, NamedTuple, TypeAlias
 from typing_extensions import TypeVar, override
 
 import numpy as np
-
 from scipy._typing import Untyped
 
 AxisError: type[Exception]

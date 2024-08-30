@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.linalg import (
     LinAlgError as LinAlgError,
     cho_factor as cho_factor,

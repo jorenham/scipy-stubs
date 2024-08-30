@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.optimize import OptimizeResult as OptimizeResult
 from .common import print_header_linear as print_header_linear, print_iteration_linear as print_iteration_linear
 

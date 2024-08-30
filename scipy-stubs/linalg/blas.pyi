@@ -2,7 +2,6 @@ from collections.abc import Iterable, Sequence
 from typing import Literal
 
 import numpy as np
-
 import numpy.typing as npt
 import scipy._typing as spt
 

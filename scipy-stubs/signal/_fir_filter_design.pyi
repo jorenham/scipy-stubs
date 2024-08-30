@@ -1,9 +1,7 @@
 from typing import Literal
 
 import numpy as np
-
-from scipy._typing import Untyped
-
+from scipy._typing import Untyped, UntypedArray
 from scipy.linalg import (
     LinAlgError as LinAlgError,
     LinAlgWarning as LinAlgWarning,
@@ -50,5 +48,9 @@ def remez(
 ) -> Untyped: ...
 def firls(numtaps, bands, desired, *, weight: Untyped | None = None, fs: Untyped | None = None) -> Untyped: ...
 def minimum_phase(
-    h: np.ndarray, method: Literal["homomorphic", "hilbert"] = "homomorphic", n_fft: int | None = None, *, half: bool = True
-) -> np.ndarray: ...
+    h: UntypedArray,
+    method: Literal["homomorphic", "hilbert"] = "homomorphic",
+    n_fft: int | None = None,
+    *,
+    half: bool = True,
+) -> UntypedArray: ...

@@ -1,7 +1,7 @@
 from collections.abc import Callable, Generator
 from typing import TypeAlias
 
-from scipy._typing import Untyped
+from scipy._typing import Untyped, UntypedCallable
 
 __all__ = [
     "BackendNotImplementedError",
@@ -49,7 +49,7 @@ def generate_multimethod(
     argument_extractor: ArgumentExtractorType,
     argument_replacer: ArgumentReplacerType,
     domain: str,
-    default: typing.Callable | None = None,
+    default: UntypedCallable | None = None,
 ): ...
 def set_backend(backend, coerce: bool = False, only: bool = False) -> Untyped: ...
 def skip_backend(backend) -> Untyped: ...

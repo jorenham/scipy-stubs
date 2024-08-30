@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from ._group_columns import group_dense as group_dense, group_sparse as group_sparse
 
 def group_columns(A, order: int = 0) -> Untyped: ...

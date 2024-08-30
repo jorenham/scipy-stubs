@@ -1,6 +1,5 @@
-from scipy._typing import Untyped
-
 from scipy._lib._util import check_random_state as check_random_state
+from scipy._typing import Untyped
 from scipy.optimize import Bounds as Bounds, OptimizeResult as OptimizeResult, minimize as minimize
 from scipy.optimize._constraints import new_bounds_to_old as new_bounds_to_old
 from scipy.special import gammaln as gammaln

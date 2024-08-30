@@ -1,6 +1,6 @@
 from scipy._typing import Untyped
 
-from ._numdiff import approx_derivative as approx_derivative
+__all__ = ["root_scalar"]
 
 ROOT_SCALAR_METHODS: Untyped
 

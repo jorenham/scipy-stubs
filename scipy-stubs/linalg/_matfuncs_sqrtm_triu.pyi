@@ -2,7 +2,6 @@ from collections.abc import Iterable
 from typing import overload
 
 import numpy as np
-
 import numpy.typing as npt
 
 @overload

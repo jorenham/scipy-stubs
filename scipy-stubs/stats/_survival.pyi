@@ -1,23 +1,20 @@
 from dataclasses import dataclass
-
 from typing import Literal
 
 import numpy as np
-
 import numpy.typing as npt
-from scipy._typing import Untyped
-
 from scipy import interpolate as interpolate, special as special, stats as stats
+from scipy._typing import Untyped
 from scipy.stats._censored_data import CensoredData as CensoredData
 from scipy.stats._common import ConfidenceInterval as ConfidenceInterval
 
 @dataclass
 class EmpiricalDistributionFunction:
-    quantiles: np.ndarray
-    probabilities: np.ndarray
+    quantiles: npt.NDArray[np.float64]
+    probabilities: npt.NDArray[np.float64]
     def __init__(self, q, p, n, d, kind) -> None: ...
     def evaluate(self, x) -> Untyped: ...
-    def plot(self, ax: Untyped | None = None, **matplotlib_kwargs) -> Untyped: ...
+    def plot(self, ax: Untyped | None = None, **matplotlib_kwargs: Untyped) -> Untyped: ...
     def confidence_interval(self, confidence_level: float = 0.95, *, method: str = "linear") -> Untyped: ...
 
 @dataclass
@@ -29,8 +26,8 @@ class ECDFResult:
 def ecdf(sample: npt.ArrayLike | CensoredData) -> ECDFResult: ...
 @dataclass
 class LogRankResult:
-    statistic: np.ndarray
-    pvalue: np.ndarray
+    statistic: npt.NDArray[np.float64]
+    pvalue: npt.NDArray[np.float64]
 
 def logrank(
     x: npt.ArrayLike | CensoredData,

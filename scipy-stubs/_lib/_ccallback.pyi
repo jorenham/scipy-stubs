@@ -1,6 +1,5 @@
 import ctypes as ct
 from _ctypes import CFuncPtr as PyCFuncPtr
-
 from types import ModuleType
 from typing import ClassVar, Generic, Literal, TypeAlias
 from typing_extensions import CapsuleType, Self, TypeVar

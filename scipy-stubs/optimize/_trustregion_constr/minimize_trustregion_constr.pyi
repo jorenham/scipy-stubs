@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.optimize._constraints import (
     Bounds as Bounds,
     LinearConstraint as LinearConstraint,

@@ -1,9 +1,8 @@
 from typing import Literal
 
 import numpy as np
-from numpy.linalg import LinAlgError  # noqa: ICN003
-
 import numpy.typing as npt
+from numpy.linalg import LinAlgError  # noqa: ICN003
 from scipy._typing import Untyped
 
 __all__ = ["LinAlgError", "LinAlgWarning", "norm"]

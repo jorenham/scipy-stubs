@@ -1,12 +1,5 @@
 from scipy._typing import Untyped
 
-from scipy._lib._array_api import (
-    array_namespace as array_namespace,
-    is_complex as is_complex,
-    is_numpy as is_numpy,
-    xp_unsupported_param_msg as xp_unsupported_param_msg,
-)
-
 def fft(
     x,
     n: Untyped | None = None,

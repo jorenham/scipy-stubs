@@ -1,11 +1,8 @@
+from typing import Final
+
 from scipy._typing import Untyped
 
-from scipy._lib._array_api import array_namespace as array_namespace, xp_atleast_nd as xp_atleast_nd
-from scipy.sparse.linalg import LinearOperator as LinearOperator
-from ._hessian_update_strategy import HessianUpdateStrategy as HessianUpdateStrategy
-from ._numdiff import approx_derivative as approx_derivative, group_columns as group_columns
-
-FD_METHODS: Untyped
+FD_METHODS: Final = ("2-point", "3-point", "cs")
 
 class ScalarFunction:
     xp: Untyped
@@ -18,7 +15,17 @@ class ScalarFunction:
     H: Untyped
     x_prev: Untyped
     g_prev: Untyped
-    def __init__(self, fun, x0, args, grad, hess, finite_diff_rel_step, finite_diff_bounds, epsilon: Untyped | None = None): ...
+    def __init__(
+        self,
+        fun: Untyped,
+        x0: Untyped,
+        args: Untyped,
+        grad: Untyped,
+        hess: Untyped,
+        finite_diff_rel_step: Untyped,
+        finite_diff_bounds: Untyped,
+        epsilon: Untyped | None = None,
+    ): ...
     @property
     def nfev(self) -> Untyped: ...
     @property
@@ -51,7 +58,15 @@ class VectorFunction:
     x_prev: Untyped
     J_prev: Untyped
     def __init__(
-        self, fun, x0, jac, hess, finite_diff_rel_step, finite_diff_jac_sparsity, finite_diff_bounds, sparse_jacobian
+        self,
+        fun: Untyped,
+        x0: Untyped,
+        jac: Untyped,
+        hess: Untyped,
+        finite_diff_rel_step: Untyped,
+        finite_diff_jac_sparsity: Untyped,
+        finite_diff_bounds: Untyped,
+        sparse_jacobian: Untyped,
     ) -> None: ...
     def fun(self, x) -> Untyped: ...
     def jac(self, x) -> Untyped: ...

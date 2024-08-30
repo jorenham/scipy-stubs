@@ -1,12 +1,9 @@
 from typing import Any
 
 import numpy as np
-
 import numpy.typing as npt
 import optype.numpy as onpt
-
 from scipy.sparse import csc_matrix
-from scipy.stats._levy_stable import np
 
 __all__ = ["SuperLU"]
 

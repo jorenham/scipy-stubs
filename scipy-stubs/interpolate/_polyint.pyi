@@ -1,6 +1,5 @@
-from scipy._typing import Untyped
-
 from scipy._lib._util import check_random_state as check_random_state, float_factorial as float_factorial
+from scipy._typing import Untyped
 from scipy.special import factorial as factorial
 
 class _Interpolator1D:

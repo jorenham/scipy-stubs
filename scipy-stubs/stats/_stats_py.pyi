@@ -1,43 +1,78 @@
 from dataclasses import dataclass
-
 from typing import NamedTuple
 
 from scipy._typing import Untyped
+from ._stats_mstats_common import siegelslopes, theilslopes
 
-from scipy import linalg as linalg, sparse as sparse, stats as stats
-from scipy._lib._array_api import (
-    array_namespace as array_namespace,
-    is_numpy as is_numpy,
-    xp_atleast_nd as xp_atleast_nd,
-    xp_moveaxis_to_end as xp_moveaxis_to_end,
-    xp_sign as xp_sign,
-    xp_size as xp_size,
-    xp_vector_norm as xp_vector_norm,
-)
-from scipy._lib._util import (
-    AxisError as AxisError,
-    check_random_state as check_random_state,
-    normalize_axis_index as normalize_axis_index,
-)
-from scipy.optimize import LinearConstraint as LinearConstraint, milp as milp, root_scalar as root_scalar
-from scipy.spatial import distance_matrix as distance_matrix
-from . import distributions as distributions
-from ._axis_nan_policy import (
-    SmallSampleWarning as SmallSampleWarning,
-    too_small_1d_not_omit as too_small_1d_not_omit,
-    too_small_1d_omit as too_small_1d_omit,
-    too_small_nd_not_omit as too_small_nd_not_omit,
-    too_small_nd_omit as too_small_nd_omit,
-)
-from ._resampling import (
-    BootstrapMethod as BootstrapMethod,
-    MonteCarloMethod as MonteCarloMethod,
-    PermutationMethod as PermutationMethod,
-    bootstrap as bootstrap,
-    monte_carlo_test as monte_carlo_test,
-    permutation_test as permutation_test,
-)
-from ._stats_mstats_common import siegelslopes as siegelslopes, theilslopes as theilslopes
+__all__ = [
+    "alexandergovern",
+    "brunnermunzel",
+    "chisquare",
+    "combine_pvalues",
+    "cumfreq",
+    "describe",
+    "energy_distance",
+    "expectile",
+    "f_oneway",
+    "find_repeats",
+    "fisher_exact",
+    "friedmanchisquare",
+    "gmean",
+    "gstd",
+    "gzscore",
+    "hmean",
+    "iqr",
+    "jarque_bera",
+    "kendalltau",
+    "kruskal",
+    "ks_1samp",
+    "ks_2samp",
+    "kstest",
+    "kurtosis",
+    "kurtosistest",
+    "linregress",
+    "median_abs_deviation",
+    "mode",
+    "moment",
+    "normaltest",
+    "obrientransform",
+    "pearsonr",
+    "percentileofscore",
+    "pmean",
+    "pointbiserialr",
+    "power_divergence",
+    "quantile_test",
+    "rankdata",
+    "ranksums",
+    "relfreq",
+    "scoreatpercentile",
+    "sem",
+    "siegelslopes",
+    "sigmaclip",
+    "skew",
+    "skewtest",
+    "spearmanr",
+    "theilslopes",
+    "tiecorrect",
+    "tmax",
+    "tmean",
+    "tmin",
+    "trim1",
+    "trim_mean",
+    "trimboth",
+    "tsem",
+    "tstd",
+    "ttest_1samp",
+    "ttest_ind",
+    "ttest_ind_from_stats",
+    "ttest_rel",
+    "tvar",
+    "wasserstein_distance",
+    "wasserstein_distance_nd",
+    "weightedtau",
+    "zmap",
+    "zscore",
+]
 
 SignificanceResult: Untyped
 
@@ -47,16 +82,24 @@ def pmean(a, p, *, axis: int = 0, dtype: Untyped | None = None, weights: Untyped
 
 class ModeResult(NamedTuple):
     mode: Untyped
-    count: Untyped
+    count: Untyped  # type: ignore[assignment]
 
 def mode(a, axis: int = 0, nan_policy: str = "propagate", keepdims: bool = False) -> Untyped: ...
 def tmean(a, limits: Untyped | None = None, inclusive=(True, True), axis: Untyped | None = None) -> Untyped: ...
 def tvar(a, limits: Untyped | None = None, inclusive=(True, True), axis: int = 0, ddof: int = 1) -> Untyped: ...
 def tmin(
-    a, lowerlimit: Untyped | None = None, axis: int = 0, inclusive: bool = True, nan_policy: str = "propagate"
+    a,
+    lowerlimit: Untyped | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: str = "propagate",
 ) -> Untyped: ...
 def tmax(
-    a, upperlimit: Untyped | None = None, axis: int = 0, inclusive: bool = True, nan_policy: str = "propagate"
+    a,
+    upperlimit: Untyped | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: str = "propagate",
 ) -> Untyped: ...
 def tstd(a, limits: Untyped | None = None, inclusive=(True, True), axis: int = 0, ddof: int = 1) -> Untyped: ...
 def tsem(a, limits: Untyped | None = None, inclusive=(True, True), axis: int = 0, ddof: int = 1) -> Untyped: ...
@@ -96,7 +139,7 @@ def scoreatpercentile(a, per, limit=(), interpolation_method: str = "fraction", 
 def percentileofscore(a, score, kind: str = "rank", nan_policy: str = "propagate") -> Untyped: ...
 
 class HistogramResult(NamedTuple):
-    count: Untyped
+    count: Untyped  # type: ignore[assignment]
     lowerlimit: Untyped
     binsize: Untyped
     extrapoints: Untyped
@@ -159,7 +202,9 @@ class ConfidenceInterval(NamedTuple):
     low: Untyped
     high: Untyped
 
-PearsonRResultBase: Untyped
+class PearsonRResultBase(NamedTuple):
+    statistic: Untyped
+    pvalue: Untyped
 
 class PearsonRResult(PearsonRResultBase):
     correlation: Untyped
@@ -169,15 +214,29 @@ class PearsonRResult(PearsonRResultBase):
 def pearsonr(x, y, *, alternative: str = "two-sided", method: Untyped | None = None, axis: int = 0) -> Untyped: ...
 def fisher_exact(table, alternative: str = "two-sided") -> Untyped: ...
 def spearmanr(
-    a, b: Untyped | None = None, axis: int = 0, nan_policy: str = "propagate", alternative: str = "two-sided"
+    a,
+    b: Untyped | None = None,
+    axis: int = 0,
+    nan_policy: str = "propagate",
+    alternative: str = "two-sided",
 ) -> Untyped: ...
 def pointbiserialr(x, y) -> Untyped: ...
 def kendalltau(
-    x, y, *, nan_policy: str = "propagate", method: str = "auto", variant: str = "b", alternative: str = "two-sided"
+    x,
+    y,
+    *,
+    nan_policy: str = "propagate",
+    method: str = "auto",
+    variant: str = "b",
+    alternative: str = "two-sided",
 ) -> Untyped: ...
 def weightedtau(x, y, rank: bool = True, weigher: Untyped | None = None, additive: bool = True) -> Untyped: ...
 
-TtestResultBase: Untyped
+class TtestResultBase(NamedTuple):
+    statistic: Untyped
+    pvalue: Untyped
+    @property
+    def df(self) -> Untyped: ...
 
 class TtestResult(TtestResultBase):
     def __init__(
@@ -202,7 +261,14 @@ class Ttest_indResult(NamedTuple):
     pvalue: Untyped
 
 def ttest_ind_from_stats(
-    mean1, std1, nobs1, mean2, std2, nobs2, equal_var: bool = True, alternative: str = "two-sided"
+    mean1,
+    std1,
+    nobs1,
+    mean2,
+    std2,
+    nobs2,
+    equal_var: bool = True,
+    alternative: str = "two-sided",
 ) -> Untyped: ...
 def ttest_ind(
     a,
@@ -222,7 +288,11 @@ class Power_divergenceResult(NamedTuple):
     pvalue: Untyped
 
 def power_divergence(
-    f_obs, f_exp: Untyped | None = None, ddof: int = 0, axis: int = 0, lambda_: Untyped | None = None
+    f_obs,
+    f_exp: Untyped | None = None,
+    ddof: int = 0,
+    axis: int = 0,
+    lambda_: Untyped | None = None,
 ) -> Untyped: ...
 def chisquare(f_obs, f_exp: Untyped | None = None, ddof: int = 0, axis: int = 0) -> Untyped: ...
 
@@ -270,7 +340,10 @@ class QuantileTestResult:
 def quantile_test_iv(x, q, p, alternative) -> Untyped: ...
 def quantile_test(x, *, q: int = 0, p: float = 0.5, alternative: str = "two-sided") -> Untyped: ...
 def wasserstein_distance_nd(
-    u_values, v_values, u_weights: Untyped | None = None, v_weights: Untyped | None = None
+    u_values,
+    v_values,
+    u_weights: Untyped | None = None,
+    v_weights: Untyped | None = None,
 ) -> Untyped: ...
 def wasserstein_distance(u_values, v_values, u_weights: Untyped | None = None, v_weights: Untyped | None = None) -> Untyped: ...
 def energy_distance(u_values, v_values, u_weights: Untyped | None = None, v_weights: Untyped | None = None) -> Untyped: ...

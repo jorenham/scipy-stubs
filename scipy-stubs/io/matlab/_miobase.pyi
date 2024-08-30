@@ -1,6 +1,5 @@
-from scipy._typing import Untyped
-
 from scipy._lib import doccer as doccer
+from scipy._typing import Untyped
 
 class MatReadError(Exception): ...
 class MatWriteError(Exception): ...

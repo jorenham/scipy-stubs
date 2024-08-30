@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from ._miobase import MatFileReader
 
 __all__ = [

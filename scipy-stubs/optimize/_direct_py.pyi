@@ -3,18 +3,19 @@ from typing import Any
 
 import numpy.typing as npt
 from scipy._typing import Untyped
+from ._constraints import Bounds
+from ._optimize import OptimizeResult
 
-from scipy.optimize import OptimizeResult as OptimizeResult
-from ._constraints import Bounds as Bounds, old_bound_to_new as old_bound_to_new
+__all__ = ["direct"]
 
-ERROR_MESSAGES: Untyped
-SUCCESS_MESSAGES: Untyped
+ERROR_MESSAGES: tuple[str, ...]
+SUCCESS_MESSAGES: tuple[str, ...]
 
 def direct(
     func: Callable[[npt.ArrayLike, tuple[Any]], float],
-    bounds: Iterable | Bounds,
+    bounds: Iterable[float] | Bounds,
     *,
-    args: tuple = (),
+    args: tuple[Untyped, ...] = (),
     eps: float = 0.0001,
     maxfun: int | None = None,
     maxiter: int = 1000,

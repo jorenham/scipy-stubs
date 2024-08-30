@@ -3,7 +3,6 @@ from typing import Any, Final, Generic, Protocol, TypeAlias, overload, type_chec
 from typing_extensions import TypeVar
 
 import numpy as np
-
 import numpy.typing as npt
 import optype.numpy as onpt
 

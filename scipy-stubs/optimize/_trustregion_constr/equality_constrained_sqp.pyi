@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from .projections import projections as projections
 from .qp_subproblem import (
     box_intersections as box_intersections,

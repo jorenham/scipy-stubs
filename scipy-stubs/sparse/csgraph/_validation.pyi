@@ -1,7 +1,6 @@
 from typing import Final
 
 import numpy as np
-
 import numpy.typing as npt
 from scipy._typing import Untyped
 

@@ -1,13 +1,16 @@
-from scipy._typing import Untyped
+from typing import Final
 
+from scipy._typing import Untyped
 from ._optimize import OptimizeResult as OptimizeResult
 
-CONVERGED: str
-SIGNERR: str
-CONVERR: str
-VALUEERR: str
-INPROGRESS: str
-flag_map: Untyped
+__all__ = ["RootResults", "bisect", "brenth", "brentq", "newton", "ridder", "toms748"]
+
+CONVERGED: Final = "converged"
+SIGNERR: Final = "sign error"
+CONVERR: Final = "convergence error"
+VALUEERR: Final = "value error"
+INPROGRESS: Final = "No error"
+flag_map: Final[dict[int, str]]
 
 class RootResults(OptimizeResult):
     root: Untyped
@@ -62,5 +65,14 @@ class TOMS748Solver:
     def solve(self, f, a, b, args=(), xtol=..., rtol=..., k: int = 2, maxiter=..., disp: bool = True) -> Untyped: ...
 
 def toms748(
-    f, a, b, args=(), k: int = 1, xtol=..., rtol=..., maxiter=..., full_output: bool = False, disp: bool = True
+    f,
+    a,
+    b,
+    args=(),
+    k: int = 1,
+    xtol=...,
+    rtol=...,
+    maxiter=...,
+    full_output: bool = False,
+    disp: bool = True,
 ) -> Untyped: ...

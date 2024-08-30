@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.sparse import coo_matrix as coo_matrix
 
 CrosstabResult: Untyped

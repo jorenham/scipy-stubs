@@ -1,6 +1,5 @@
-from scipy._typing import Untyped
-
 from scipy._lib._util import check_random_state as check_random_state
+from scipy._typing import Untyped
 
 class Storage:
     def __init__(self, minres) -> None: ...

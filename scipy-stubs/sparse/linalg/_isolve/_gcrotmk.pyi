@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.linalg import (
     get_blas_funcs as get_blas_funcs,
     lstsq as lstsq,

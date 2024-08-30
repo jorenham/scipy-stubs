@@ -4,7 +4,6 @@
 from typing import Any, Literal
 
 import numpy as np
-
 import numpy.typing as npt
 
 __all__ = ["differential_entropy", "entropy"]

@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from ._registry import registry as registry, registry_urls as registry_urls
 
 data_fetcher: Untyped

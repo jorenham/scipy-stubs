@@ -1,16 +1,20 @@
 from scipy._typing import Untyped
 
-from scipy.stats import scoreatpercentile as scoreatpercentile
+__all__ = ["argrelextrema", "argrelmax", "argrelmin", "find_peaks", "find_peaks_cwt", "peak_prominences", "peak_widths"]
 
-def argrelmin(data, axis: int = 0, order: int = 1, mode: str = "clip") -> Untyped: ...
-def argrelmax(data, axis: int = 0, order: int = 1, mode: str = "clip") -> Untyped: ...
-def argrelextrema(data, comparator, axis: int = 0, order: int = 1, mode: str = "clip") -> Untyped: ...
-def peak_prominences(x, peaks, wlen: Untyped | None = None) -> Untyped: ...
+def argrelmin(data: Untyped, axis: int = 0, order: int = 1, mode: str = "clip") -> Untyped: ...
+def argrelmax(data: Untyped, axis: int = 0, order: int = 1, mode: str = "clip") -> Untyped: ...
+def argrelextrema(data: Untyped, comparator: Untyped, axis: int = 0, order: int = 1, mode: str = "clip") -> Untyped: ...
+def peak_prominences(x: Untyped, peaks: Untyped, wlen: Untyped | None = None) -> Untyped: ...
 def peak_widths(
-    x, peaks, rel_height: float = 0.5, prominence_data: Untyped | None = None, wlen: Untyped | None = None
+    x: Untyped,
+    peaks: Untyped,
+    rel_height: float = 0.5,
+    prominence_data: Untyped | None = None,
+    wlen: Untyped | None = None,
 ) -> Untyped: ...
 def find_peaks(
-    x,
+    x: Untyped,
     height: Untyped | None = None,
     threshold: Untyped | None = None,
     distance: Untyped | None = None,
@@ -21,8 +25,8 @@ def find_peaks(
     plateau_size: Untyped | None = None,
 ) -> Untyped: ...
 def find_peaks_cwt(
-    vector,
-    widths,
+    vector: Untyped,
+    widths: Untyped,
     wavelet: Untyped | None = None,
     max_distances: Untyped | None = None,
     gap_thresh: Untyped | None = None,

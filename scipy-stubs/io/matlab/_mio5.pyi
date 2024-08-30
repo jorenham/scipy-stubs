@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from ._byteordercodes import native_code as native_code, swapped_code as swapped_code
 from ._mio5_params import (
     MDTYPES as MDTYPES,

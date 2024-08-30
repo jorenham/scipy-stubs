@@ -1,8 +1,7 @@
-from contextlib import GeneratorContextManager as _GeneratorContextManager
-
+from contextlib import _GeneratorContextManager
 from typing import NamedTuple
 
-from scipy._typing import Untyped
+from scipy._typing import Untyped, UntypedCallable
 
 __version__: str
 
@@ -52,18 +51,17 @@ class FunctionMaker:
         **attrs,
     ) -> Untyped: ...
 
-def decorate(func, caller) -> Untyped: ...
-def decorator(caller, _func: Untyped | None = None) -> Untyped: ...
+def decorate(func: UntypedCallable, caller) -> Untyped: ...
+def decorator(caller, _func: UntypedCallable | None = None) -> UntypedCallable: ...
 
-class ContextManager(_GeneratorContextManager):
-    def __call__(self, func) -> Untyped: ...
+class ContextManager(_GeneratorContextManager[Untyped]): ...
 
 init: Untyped
 n_args: Untyped
 
 def __init__(self, g, *a, **k): ...
 
-contextmanager: Untyped
+contextmanager: UntypedCallable
 
 def append(a, vancestors): ...
 def dispatch_on(*dispatch_args) -> Untyped: ...

@@ -1,6 +1,5 @@
-from scipy._typing import Untyped
-
 from scipy._lib._util import check_random_state as check_random_state
+from scipy._typing import Untyped
 from scipy.linalg import LinAlgError as LinAlgError
 from scipy.sparse.linalg import aslinearoperator as aslinearoperator
 

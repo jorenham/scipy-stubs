@@ -1,15 +1,17 @@
 from scipy._typing import Untyped
 
+__all__ = ["complex_ode", "ode"]
+
 class ode:
     stiff: int
     f: Untyped
     jac: Untyped
     f_params: Untyped
     jac_params: Untyped
-    def __init__(self, f, jac: Untyped | None = None): ...
+    t: Untyped
+    def __init__(self, f, jac: Untyped | None = None) -> None: ...
     @property
     def y(self) -> Untyped: ...
-    t: Untyped
     def set_initial_value(self, y, t: float = 0.0) -> Untyped: ...
     def set_integrator(self, name, **integrator_params) -> Untyped: ...
     def integrate(self, t, step: bool = False, relax: bool = False) -> Untyped: ...
@@ -95,11 +97,12 @@ class vode(IntegratorBase):
     def step(self, *args) -> Untyped: ...
     def run_relax(self, *args) -> Untyped: ...
 
+# pyright: reportUnnecessaryTypeIgnoreComment=false
 class zvode(vode):
     runner: Untyped
     supports_run_relax: int
     supports_step: int
-    scalar = complex
+    scalar: complex  # type: ignore[assignment]
     active_global_handle: int
     zwork: Untyped
     rwork: Untyped

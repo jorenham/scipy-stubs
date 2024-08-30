@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.sparse import bmat as bmat, csc_matrix as csc_matrix, linalg as linalg
 
 def eqp_kktfact(H, c, A, b) -> Untyped: ...

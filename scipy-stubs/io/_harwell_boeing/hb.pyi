@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.sparse import csc_matrix as csc_matrix
 from ._fortran_format_parser import ExpFormat as ExpFormat, FortranFormatParser as FortranFormatParser, IntFormat as IntFormat
 

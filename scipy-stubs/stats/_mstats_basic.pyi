@@ -1,7 +1,6 @@
 from typing import NamedTuple
 
 from scipy._typing import Untyped
-
 from . import distributions as distributions
 
 def argstoarray(*args) -> Untyped: ...
@@ -11,7 +10,7 @@ def rankdata(data, axis: Untyped | None = None, use_missing: bool = False) -> Un
 
 class ModeResult(NamedTuple):
     mode: Untyped
-    count: Untyped
+    count: Untyped  # type: ignore[assignment]
 
 def mode(a, axis: int = 0) -> Untyped: ...
 def msign(x) -> Untyped: ...
@@ -25,7 +24,12 @@ def spearmanr(
     alternative: str = "two-sided",
 ) -> Untyped: ...
 def kendalltau(
-    x, y, use_ties: bool = True, use_missing: bool = False, method: str = "auto", alternative: str = "two-sided"
+    x,
+    y,
+    use_ties: bool = True,
+    use_missing: bool = False,
+    method: str = "auto",
+    alternative: str = "two-sided",
 ) -> Untyped: ...
 def kendalltau_seasonal(x) -> Untyped: ...
 
@@ -88,21 +92,39 @@ def trimr(a, limits: Untyped | None = None, inclusive=(True, True), axis: Untype
 trimdoc: str
 
 def trim(
-    a, limits: Untyped | None = None, inclusive=(True, True), relative: bool = False, axis: Untyped | None = None
+    a,
+    limits: Untyped | None = None,
+    inclusive=(True, True),
+    relative: bool = False,
+    axis: Untyped | None = None,
 ) -> Untyped: ...
 def trimboth(data, proportiontocut: float = 0.2, inclusive=(True, True), axis: Untyped | None = None) -> Untyped: ...
 def trimtail(
-    data, proportiontocut: float = 0.2, tail: str = "left", inclusive=(True, True), axis: Untyped | None = None
+    data,
+    proportiontocut: float = 0.2,
+    tail: str = "left",
+    inclusive=(True, True),
+    axis: Untyped | None = None,
 ) -> Untyped: ...
 
 trim1 = trimtail
 
 def trimmed_mean(a, limits=(0.1, 0.1), inclusive=(1, 1), relative: bool = True, axis: Untyped | None = None) -> Untyped: ...
 def trimmed_var(
-    a, limits=(0.1, 0.1), inclusive=(1, 1), relative: bool = True, axis: Untyped | None = None, ddof: int = 0
+    a,
+    limits=(0.1, 0.1),
+    inclusive=(1, 1),
+    relative: bool = True,
+    axis: Untyped | None = None,
+    ddof: int = 0,
 ) -> Untyped: ...
 def trimmed_std(
-    a, limits=(0.1, 0.1), inclusive=(1, 1), relative: bool = True, axis: Untyped | None = None, ddof: int = 0
+    a,
+    limits=(0.1, 0.1),
+    inclusive=(1, 1),
+    relative: bool = True,
+    axis: Untyped | None = None,
+    ddof: int = 0,
 ) -> Untyped: ...
 def trimmed_stde(a, limits=(0.1, 0.1), inclusive=(1, 1), axis: Untyped | None = None) -> Untyped: ...
 def tmean(a, limits: Untyped | None = None, inclusive=(True, True), axis: Untyped | None = None) -> Untyped: ...
@@ -152,7 +174,12 @@ class NormaltestResult(NamedTuple):
 
 def normaltest(a, axis: int = 0) -> Untyped: ...
 def mquantiles(
-    a, prob=(0.25, 0.5, 0.75), alphap: float = 0.4, betap: float = 0.4, axis: Untyped | None = None, limit=()
+    a,
+    prob=(0.25, 0.5, 0.75),
+    alphap: float = 0.4,
+    betap: float = 0.4,
+    axis: Untyped | None = None,
+    limit=(),
 ) -> Untyped: ...
 def scoreatpercentile(data, per, limit=(), alphap: float = 0.4, betap: float = 0.4) -> Untyped: ...
 def plotting_positions(data, alpha: float = 0.4, beta: float = 0.4) -> Untyped: ...

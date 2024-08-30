@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.stats.distributions import beta as beta, binom as binom, norm as norm, t as t
 
 def hdquantiles(data, prob=(0.25, 0.5, 0.75), axis: Untyped | None = None, var: bool = False) -> Untyped: ...

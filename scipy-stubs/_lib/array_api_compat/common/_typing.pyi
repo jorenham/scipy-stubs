@@ -1,11 +1,9 @@
 import array as _array
 import mmap
-
 from typing import Any, Literal, Protocol, TypeAlias, TypeVar
 from typing_extensions import Buffer
 
 import numpy as np
-
 import optype as op
 
 __all__ = ["NestedSequence", "SupportsBufferProtocol"]

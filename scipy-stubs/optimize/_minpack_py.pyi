@@ -1,11 +1,6 @@
 from scipy._typing import Untyped
 
-from scipy import linalg as linalg
-from scipy.linalg import LinAlgError as LinAlgError, cholesky as cholesky, solve_triangular as solve_triangular, svd as svd
-from scipy.optimize._minimize import Bounds as Bounds
-from ._lsq import least_squares as least_squares
-from ._lsq.least_squares import prepare_bounds as prepare_bounds
-from ._optimize import OptimizeResult as OptimizeResult, OptimizeWarning as OptimizeWarning
+__all__ = ["curve_fit", "fixed_point", "fsolve", "leastsq"]
 
 def fsolve(
     func,
@@ -21,10 +16,6 @@ def fsolve(
     factor: int = 100,
     diag: Untyped | None = None,
 ) -> Untyped: ...
-
-LEASTSQ_SUCCESS: Untyped
-LEASTSQ_FAILURE: Untyped
-
 def leastsq(
     func,
     x0,

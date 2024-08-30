@@ -2,7 +2,6 @@ from types import ModuleType
 from typing_extensions import TypeIs
 
 import numpy as np
-
 from ._typing import Array, Device
 
 __all__ = [

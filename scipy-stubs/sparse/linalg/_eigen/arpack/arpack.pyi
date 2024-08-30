@@ -1,30 +1,22 @@
+from typing import Final
+
 from scipy._typing import Untyped
+from scipy.sparse.linalg._interface import LinearOperator
 
-from scipy._lib._threadsafety import ReentrancyLock as ReentrancyLock
-from scipy.linalg import eig as eig, eigh as eigh, lu_factor as lu_factor, lu_solve as lu_solve
-from scipy.sparse import eye as eye, issparse as issparse
-from scipy.sparse._sputils import (
-    convert_pydata_sparse_to_scipy as convert_pydata_sparse_to_scipy,
-    is_pydata_spmatrix as is_pydata_spmatrix,
-    isdense as isdense,
-)
-from scipy.sparse.linalg import gmres as gmres, splu as splu
-from scipy.sparse.linalg._interface import LinearOperator as LinearOperator, aslinearoperator as aslinearoperator
+__all__ = ["ArpackError", "ArpackNoConvergence", "eigs", "eigsh"]
 
-arpack_int: Untyped
-__docformat__: str
-DNAUPD_ERRORS: Untyped
+DNAUPD_ERRORS: Final[dict[int, str]]
 SNAUPD_ERRORS = DNAUPD_ERRORS
-ZNAUPD_ERRORS: Untyped
+ZNAUPD_ERRORS: Final[dict[int, str]]
 CNAUPD_ERRORS = ZNAUPD_ERRORS
-DSAUPD_ERRORS: Untyped
+DSAUPD_ERRORS: Final[dict[int, str]]
 SSAUPD_ERRORS = DSAUPD_ERRORS
-DNEUPD_ERRORS: Untyped
-SNEUPD_ERRORS: Untyped
-ZNEUPD_ERRORS: Untyped
-CNEUPD_ERRORS: Untyped
-DSEUPD_ERRORS: Untyped
-SSEUPD_ERRORS: Untyped
+DNEUPD_ERRORS: Final[dict[int, str]]
+SNEUPD_ERRORS: Final[dict[int, str]]
+ZNEUPD_ERRORS: Final[dict[int, str]]
+CNEUPD_ERRORS: Final[dict[int, str]]
+DSEUPD_ERRORS: Final[dict[int, str]]
+SSEUPD_ERRORS: Final[dict[int, str]]
 
 class ArpackError(RuntimeError):
     def __init__(self, info, infodict=...) -> None: ...
@@ -95,7 +87,6 @@ class _SymmetricArpackParams(_ArpackParams):
         tol: int = 0,
     ): ...
     converged: bool
-    def iterate(self): ...
     def extract(self, return_eigenvectors) -> Untyped: ...
 
 class _UnsymmetricArpackParams(_ArpackParams):
@@ -128,28 +119,21 @@ class _UnsymmetricArpackParams(_ArpackParams):
         tol: int = 0,
     ): ...
     converged: bool
-    def iterate(self): ...
     def extract(self, return_eigenvectors) -> Untyped: ...
 
 class SpLuInv(LinearOperator):
     M_lu: Untyped
-    shape: Untyped
-    dtype: Untyped
     isreal: Untyped
     def __init__(self, M) -> None: ...
 
 class LuInv(LinearOperator):
     M_lu: Untyped
-    shape: Untyped
-    dtype: Untyped
     def __init__(self, M) -> None: ...
 
 def gmres_loose(A, b, tol) -> Untyped: ...
 
 class IterInv(LinearOperator):
     M: Untyped
-    dtype: Untyped
-    shape: Untyped
     ifunc: Untyped
     tol: Untyped
     def __init__(self, M, ifunc=..., tol: int = 0): ...
@@ -159,12 +143,9 @@ class IterOpInv(LinearOperator):
     M: Untyped
     sigma: Untyped
     OP: Untyped
-    shape: Untyped
     ifunc: Untyped
     tol: Untyped
     def __init__(self, A, M, sigma, ifunc=..., tol: int = 0): ...
-    @property
-    def dtype(self) -> Untyped: ...
 
 def get_inv_matvec(M, hermitian: bool = False, tol: int = 0) -> Untyped: ...
 def get_OPinv_matvec(A, M, sigma, hermitian: bool = False, tol: int = 0) -> Untyped: ...

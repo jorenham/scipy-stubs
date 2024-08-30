@@ -1,8 +1,6 @@
 import numpy as np
-
-from scipy._typing import Untyped
-
 from scipy._lib._util import float_factorial as float_factorial
+from scipy._typing import Untyped
 from scipy.special import comb as comb
 
 class BadCoefficients(UserWarning): ...

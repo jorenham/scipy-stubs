@@ -1,7 +1,6 @@
 from typing import Literal
 
 import numpy as np
-
 import numpy.typing as npt
 
 __all__ = [

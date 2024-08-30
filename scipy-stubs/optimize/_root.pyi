@@ -1,9 +1,7 @@
 from scipy._typing import Untyped
+from ._optimize import OptimizeResult
 
-from ._minpack_py import leastsq as leastsq
-from ._optimize import MemoizeJac as MemoizeJac, OptimizeResult as OptimizeResult
-
-ROOT_METHODS: Untyped
+__all__ = ["root"]
 
 def root(
     fun,
@@ -14,4 +12,4 @@ def root(
     tol: Untyped | None = None,
     callback: Untyped | None = None,
     options: Untyped | None = None,
-) -> Untyped: ...
+) -> OptimizeResult: ...

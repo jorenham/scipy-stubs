@@ -1,7 +1,6 @@
 from typing import Literal
 
 from scipy._typing import Untyped
-
 from scipy.linalg import solve as solve, solve_banded as solve_banded
 from . import PPoly as PPoly
 

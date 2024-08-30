@@ -1,27 +1,21 @@
-from scipy._typing import Untyped
+from typing import Any
 
-DTYPE_DICT: Untyped
-RECTYPE_DICT: Untyped
-STRUCT_DICT: Untyped
+__all__ = ["readsav"]
 
 class Pointer:
-    index: Untyped
-    def __init__(self, index) -> None: ...
+    index: int
+    def __init__(self, index: int) -> None: ...
 
 class ObjectPointer(Pointer): ...
 
-class AttrDict(dict):
-    def __init__(self, init: Untyped | None = None): ...
-    def __getitem__(self, name) -> Untyped: ...
-    def __setitem__(self, key, value) -> None: ...
-    def __getattr__(self, name) -> Untyped: ...
-    __setattr__ = __setitem__
-    __call__ = __getitem__
+class AttrDict(dict[str, Any]):
+    def __init__(self, /, init: dict[str, Any] = ...) -> None: ...
+    def __call__(self, name: str, /) -> Any: ...
 
 def readsav(
-    file_name,
-    idict: Untyped | None = None,
+    file_name: str,
+    idict: dict[str, Any] | None = None,
     python_dict: bool = False,
-    uncompressed_file_name: Untyped | None = None,
+    uncompressed_file_name: str | None = None,
     verbose: bool = False,
-) -> Untyped: ...
+) -> dict[str, Any]: ...

@@ -1,7 +1,40 @@
+from scipy._lib._disjoint_set import DisjointSet
 from scipy._typing import Untyped
 
-from scipy._lib._array_api import array_namespace as array_namespace, is_jax as is_jax, xp_copy as xp_copy
-from scipy._lib._disjoint_set import DisjointSet as DisjointSet
+__all__ = [
+    "ClusterNode",
+    "DisjointSet",
+    "average",
+    "centroid",
+    "complete",
+    "cophenet",
+    "correspond",
+    "cut_tree",
+    "dendrogram",
+    "fcluster",
+    "fclusterdata",
+    "from_mlab_linkage",
+    "inconsistent",
+    "is_isomorphic",
+    "is_monotonic",
+    "is_valid_im",
+    "is_valid_linkage",
+    "leaders",
+    "leaves_list",
+    "linkage",
+    "maxRstat",
+    "maxdists",
+    "maxinconsts",
+    "median",
+    "num_obs_linkage",
+    "optimal_leaf_ordering",
+    "set_link_color_palette",
+    "single",
+    "to_mlab_linkage",
+    "to_tree",
+    "ward",
+    "weighted",
+]
 
 class ClusterWarning(UserWarning): ...
 
@@ -24,7 +57,7 @@ class ClusterNode:
     def __init__(self, id, left: Untyped | None = None, right: Untyped | None = None, dist: int = 0, count: int = 1): ...
     def __lt__(self, node) -> Untyped: ...
     def __gt__(self, node) -> Untyped: ...
-    def __eq__(self, node) -> Untyped: ...
+    def __eq__(self, node) -> Untyped: ...  # type: ignore[override]
     def get_id(self) -> Untyped: ...
     def get_count(self) -> Untyped: ...
     def get_left(self) -> Untyped: ...

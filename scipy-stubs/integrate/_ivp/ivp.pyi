@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.optimize import OptimizeResult as OptimizeResult
 from .base import OdeSolver as OdeSolver
 from .bdf import BDF as BDF

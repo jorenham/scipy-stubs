@@ -1,7 +1,6 @@
-from scipy._typing import Untyped
-
 from scipy import stats as stats
 from scipy._lib._util import check_random_state as check_random_state
+from scipy._typing import Untyped
 from ._qmc import Halton as Halton, QMCEngine as QMCEngine
 
 __all__ = ["FastGeneratorInversion", "RatioUniforms"]

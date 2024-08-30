@@ -1,11 +1,9 @@
 from typing import Literal
 
 import numpy as np
-from numpy import sinc  # noqa: ICN003
-
 import numpy.typing as npt
+from numpy import sinc  # noqa: ICN003
 from scipy._typing import Untyped
-
 from ._ufuncs import psi as digamma
 
 __all__ = [

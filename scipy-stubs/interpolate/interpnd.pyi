@@ -2,7 +2,6 @@ from typing import Any
 from typing_extensions import override
 
 import numpy as np
-
 import numpy.typing as npt
 import optype.numpy as onpt
 

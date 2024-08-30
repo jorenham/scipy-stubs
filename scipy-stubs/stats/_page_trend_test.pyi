@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 from scipy._typing import Untyped
-
 from ._continuous_distns import norm as norm
 
 @dataclass

@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.fft import fft as fft, ifft as ifft, next_fast_len as next_fast_len
 
 def czt_points(m, w: Untyped | None = None, a: complex = ...) -> Untyped: ...

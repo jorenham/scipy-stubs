@@ -1,5 +1,4 @@
 from numpy.fft import fftfreq, fftshift, ifftshift  # noqa: ICN003
-
 from scipy._typing import Untyped
 
 __all__ = ["fftfreq", "fftshift", "ifftshift", "next_fast_len", "rfftfreq"]

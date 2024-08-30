@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.spatial import cKDTree as cKDTree
 
 def calculate_solid_angles(R) -> Untyped: ...

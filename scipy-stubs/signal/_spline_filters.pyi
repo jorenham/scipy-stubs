@@ -1,6 +1,5 @@
-from scipy._typing import Untyped
-
 from scipy._lib._util import normalize_axis_index as normalize_axis_index
+from scipy._typing import Untyped
 from scipy.interpolate import BSpline as BSpline
 from ._arraytools import axis_reverse as axis_reverse, axis_slice as axis_slice
 from ._signaltools import lfilter as lfilter, lfiltic as lfiltic, sosfilt as sosfilt

@@ -2,10 +2,8 @@ from typing import SupportsIndex, TypeAlias, TypeVar
 from typing_extensions import Never, deprecated
 
 import numpy as np
-
 import numpy.typing as npt
 import scipy._typing as spt
-
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = [

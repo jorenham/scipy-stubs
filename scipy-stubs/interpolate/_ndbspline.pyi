@@ -1,5 +1,4 @@
 from scipy._typing import Untyped
-
 from scipy.sparse import csr_array as csr_array
 
 class NdBSpline:

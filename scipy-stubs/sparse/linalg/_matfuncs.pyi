@@ -1,31 +1,19 @@
+from typing import Final
+
 from scipy._typing import Untyped
+from scipy.sparse.linalg._interface import LinearOperator
 
-from scipy.linalg._basic import solve as solve, solve_triangular as solve_triangular
-from scipy.sparse._base import issparse as issparse
-from scipy.sparse._construct import eye as eye
-from scipy.sparse._sputils import is_pydata_spmatrix as is_pydata_spmatrix, isintlike as isintlike
-from scipy.sparse.linalg import spsolve as spsolve
-from scipy.sparse.linalg._interface import LinearOperator as LinearOperator
+__all__ = ["expm", "inv", "matrix_power"]
 
-UPPER_TRIANGULAR: str
+UPPER_TRIANGULAR: Final = "upper_triangular"
 
 def inv(A) -> Untyped: ...
 
 class MatrixPowerOperator(LinearOperator):
-    dtype: Untyped
-    ndim: Untyped
-    shape: Untyped
     def __init__(self, A, p, structure: Untyped | None = None): ...
-    @property
-    def T(self) -> Untyped: ...
 
 class ProductOperator(LinearOperator):
-    shape: Untyped
-    ndim: Untyped
-    dtype: Untyped
     def __init__(self, *args, **kwargs) -> None: ...
-    @property
-    def T(self) -> Untyped: ...
 
 class _ExpmPadeHelper:
     A: Untyped
