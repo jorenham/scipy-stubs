@@ -46,13 +46,13 @@ jobs:
         run: poetry run basedpyright --ignoreexternal --verifytypes scipy-stubs
 
       # TODO: don't continue on error
-      - name: basedmypy stubtest
-        run: poetry run stubtest --concise --mypy-config-file=pyproject.toml scipy
+      - name: basedpyright --verifytypes
+        run: poetry run basedpyright --verifytypes scipy-stubs
         continue-on-error: true
 
       # TODO: don't continue on error
-      - name: basedpyright --verifytypes
-        run: poetry run basedpyright --verifytypes scipy-stubs
+      - name: basedmypy stubtest
+        run: poetry run stubtest --concise --mypy-config-file=pyproject.toml --allowlist=tests/mypy_allowlist.txt scipy
         continue-on-error: true
 
       # TODO
