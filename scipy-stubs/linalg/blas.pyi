@@ -3,7 +3,6 @@ from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
-
 import scipy._typing as spt
 
 __all__ = ["find_best_blas_type", "get_blas_funcs"]

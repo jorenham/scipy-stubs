@@ -3,7 +3,6 @@ from typing import Literal, TypeAlias, overload
 
 import numpy as np
 import numpy.typing as npt
-
 import scipy._typing as spt
 
 _PointsWeights: TypeAlias = tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]

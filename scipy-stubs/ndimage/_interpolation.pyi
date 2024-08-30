@@ -1,7 +1,7 @@
-from ._ni_docstrings import docfiller as docfiller
 from scipy import special as special
 from scipy._lib._util import normalize_axis_index as normalize_axis_index
 from scipy._typing import Untyped
+from ._ni_docstrings import docfiller as docfiller
 
 def spline_filter1d(input, order: int = 3, axis: int = -1, output=..., mode: str = "mirror") -> Untyped: ...
 def spline_filter(input, order: int = 3, output=..., mode: str = "mirror") -> Untyped: ...

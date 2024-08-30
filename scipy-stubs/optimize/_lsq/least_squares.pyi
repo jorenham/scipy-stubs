@@ -1,15 +1,9 @@
-from .common import EPS as EPS, in_bounds as in_bounds, make_strictly_feasible as make_strictly_feasible
-from .dogbox import dogbox as dogbox
-from .trf import trf as trf
 from scipy._typing import Untyped
-from scipy.optimize import OptimizeResult as OptimizeResult
-from scipy.optimize._minimize import Bounds as Bounds
-from scipy.optimize._numdiff import approx_derivative as approx_derivative, group_columns as group_columns
-from scipy.sparse import issparse as issparse
-from scipy.sparse.linalg import LinearOperator as LinearOperator
+from scipy.optimize import OptimizeResult
 
 TERMINATION_MESSAGES: Untyped
 FROM_MINPACK_TO_COMMON: Untyped
+IMPLEMENTED_LOSSES: Untyped
 
 def call_minpack(fun, x0, jac, ftol, xtol, gtol, max_nfev, x_scale, diff_step) -> Untyped: ...
 def prepare_bounds(bounds, n) -> Untyped: ...
@@ -20,9 +14,6 @@ def huber(z, rho, cost_only): ...
 def soft_l1(z, rho, cost_only): ...
 def cauchy(z, rho, cost_only): ...
 def arctan(z, rho, cost_only): ...
-
-IMPLEMENTED_LOSSES: Untyped
-
 def construct_loss_function(m, loss, f_scale) -> Untyped: ...
 def least_squares(
     fun,
@@ -44,4 +35,4 @@ def least_squares(
     verbose: int = 0,
     args=(),
     kwargs: Untyped | None = None,
-) -> Untyped: ...
+) -> OptimizeResult: ...

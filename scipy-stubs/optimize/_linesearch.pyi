@@ -1,5 +1,5 @@
-from ._dcsrch import DCSRCH as DCSRCH
 from scipy._typing import Untyped
+from ._dcsrch import DCSRCH as DCSRCH
 
 class LineSearchWarning(RuntimeWarning): ...
 

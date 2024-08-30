@@ -1,7 +1,7 @@
 from typing import NamedTuple
 
-from ._optimize import OptimizeWarning as OptimizeWarning
 from scipy._typing import Untyped
+from ._optimize import OptimizeWarning as OptimizeWarning
 
 class _LPProblem(NamedTuple):
     c: Untyped

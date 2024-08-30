@@ -1,6 +1,6 @@
-from .utils import make_system as make_system
 from scipy._typing import Untyped
 from scipy.linalg import get_blas_funcs as get_blas_funcs
+from .utils import make_system as make_system
 
 def lgmres(
     A,

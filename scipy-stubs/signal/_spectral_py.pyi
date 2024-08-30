@@ -1,6 +1,6 @@
+from scipy._typing import Untyped
 from ._arraytools import const_ext as const_ext, even_ext as even_ext, odd_ext as odd_ext, zero_ext as zero_ext
 from .windows import get_window as get_window
-from scipy._typing import Untyped
 
 def lombscargle(x, y, freqs, precenter: bool = False, normalize: bool = False) -> Untyped: ...
 def periodogram(

@@ -2,7 +2,6 @@ from typing import Literal, TypeAlias, overload
 
 import numpy as np
 import numpy.typing as npt
-
 import scipy._typing as spt
 
 __all__ = ["diagsvd", "null_space", "orth", "subspace_angles", "svd", "svdvals"]
@@ -39,7 +38,6 @@ def svd(
     check_finite: bool = True,
     lapack_driver: Literal["gesdd", "gesvd"] = "gesdd",
 ) -> _Array_f_1d: ...
-
 def svdvals(a: npt.ArrayLike, overwrite_a: bool = False, check_finite: bool = True) -> _Array_f_1d: ...
 def diagsvd(s: npt.ArrayLike, M: spt.AnyInt, N: spt.AnyInt) -> _Array_f_2d: ...
 def orth(A: npt.ArrayLike, rcond: spt.AnyReal | None = None) -> _Array_f_2d: ...

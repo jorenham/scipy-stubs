@@ -1,28 +1,14 @@
-from ._base import issparse as issparse, sparray as sparray
+from collections.abc import Sequence
+
+import numpy.typing as npt
+import scipy._typing as spt
+from scipy._typing import Untyped
+from ._base import sparray
 from ._compressed import _cs_matrix
 from ._data import _minmax_mixin
-from ._matrix import spmatrix as spmatrix
-from ._sparsetools import (
-    bsr_matmat as bsr_matmat,
-    bsr_matvec as bsr_matvec,
-    bsr_matvecs as bsr_matvecs,
-    bsr_sort_indices as bsr_sort_indices,
-    bsr_tocsr as bsr_tocsr,
-    bsr_transpose as bsr_transpose,
-    csr_matmat_maxnnz as csr_matmat_maxnnz,
-)
-from ._sputils import (
-    check_shape as check_shape,
-    getdata as getdata,
-    getdtype as getdtype,
-    isshape as isshape,
-    to_native as to_native,
-    upcast as upcast,
-)
-from scipy._lib._util import copy_if_needed as copy_if_needed
-from scipy._typing import Untyped
+from ._matrix import spmatrix
 
-__docformat__: str
+__all__ = ["bsr_array", "bsr_matrix", "isspmatrix_bsr"]
 
 class _bsr_base(_cs_matrix, _minmax_mixin):
     data: Untyped
@@ -30,35 +16,18 @@ class _bsr_base(_cs_matrix, _minmax_mixin):
     indptr: Untyped
     def __init__(
         self,
-        arg1,
-        shape: Untyped | None = None,
-        dtype: Untyped | None = None,
+        arg1: Untyped,
+        shape: spt.AnyInt | Sequence[spt.AnyInt] | None = None,
+        dtype: npt.DTypeLike | None = None,
         copy: bool = False,
-        blocksize: Untyped | None = None,
+        blocksize: tuple[int, int] | None = None,
         *,
         maxprint: Untyped | None = None,
-    ): ...
-    def check_format(self, full_check: bool = True): ...
+    ) -> None: ...
     @property
-    def blocksize(self) -> tuple: ...
-    def count_nonzero(self, axis: Untyped | None = None) -> Untyped: ...
-    def diagonal(self, k: int = 0) -> Untyped: ...
-    def __getitem__(self, key): ...
-    def __setitem__(self, key, val) -> None: ...
-    def tobsr(self, blocksize: Untyped | None = None, copy: bool = False) -> Untyped: ...
-    def tocsr(self, copy: bool = False) -> Untyped: ...
-    def tocsc(self, copy: bool = False) -> Untyped: ...
-    def tocoo(self, copy: bool = True) -> Untyped: ...
-    def toarray(self, order: Untyped | None = None, out: Untyped | None = None) -> Untyped: ...
-    def transpose(self, axes: Untyped | None = None, copy: bool = False) -> Untyped: ...
-    def eliminate_zeros(self): ...
-    has_canonical_format: bool
-    def sum_duplicates(self): ...
-    has_sorted_indices: bool
-    def sort_indices(self): ...
-    def prune(self): ...
-
-def isspmatrix_bsr(x) -> Untyped: ...
+    def blocksize(self) -> tuple[int, int]: ...
 
 class bsr_array(_bsr_base, sparray): ...
 class bsr_matrix(spmatrix, _bsr_base): ...
+
+def isspmatrix_bsr(x: Untyped) -> bool: ...

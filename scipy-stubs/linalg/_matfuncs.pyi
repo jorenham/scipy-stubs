@@ -3,7 +3,6 @@ from typing import Literal, TypeAlias, overload
 
 import numpy as np
 import numpy.typing as npt
-
 from ._expm_frechet import expm_cond, expm_frechet
 from ._matfuncs_sqrtm import sqrtm
 

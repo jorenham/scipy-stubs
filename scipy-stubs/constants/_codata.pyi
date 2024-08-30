@@ -1,5 +1,4 @@
 from typing import Final, Literal, TypeAlias
-
 from typing_extensions import LiteralString
 
 __all__ = ["ConstantWarning", "find", "physical_constants", "precision", "unit", "value"]

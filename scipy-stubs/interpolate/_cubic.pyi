@@ -1,8 +1,8 @@
 from typing import Literal
 
-from . import PPoly as PPoly
 from scipy._typing import Untyped
 from scipy.linalg import solve as solve, solve_banded as solve_banded
+from . import PPoly as PPoly
 
 def prepare_input(x, y, axis, dydx: Untyped | None = None) -> Untyped: ...
 

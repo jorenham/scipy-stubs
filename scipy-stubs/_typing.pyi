@@ -1,9 +1,11 @@
 # Helper types for internal use (type-check only).
+from collections.abc import Callable
 from typing import Literal, Protocol, TypeAlias, type_check_only
+from typing_extensions import LiteralString, TypeVar
 
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import LiteralString, TypeVar
+import optype.numpy as onpt
 
 __all__ = [
     "AnyBool",
@@ -16,11 +18,21 @@ __all__ = [
     "CorrelateMode",
     "Seed",
     "Untyped",
+    "UntypedArray",
+    "UntypedCallable",
+    "UntypedDict",
+    "UntypedList",
+    "UntypedTuple",
     "_FortranFunction",
 ]
 
-# placeholder for missing annotations
+# placeholders for missing annotations
 Untyped: TypeAlias = object
+UntypedTuple: TypeAlias = tuple[Untyped, ...]
+UntypedList: TypeAlias = list[Untyped]
+UntypedDict: TypeAlias = dict[Untyped, Untyped]
+UntypedCallable: TypeAlias = Callable[..., Untyped]
+UntypedArray: TypeAlias = onpt.Array[tuple[int, ...], np.generic]
 
 _SCT = TypeVar("_SCT", bound=np.generic, default=np.generic)
 Array0D: TypeAlias = np.ndarray[tuple[()], np.dtype[_SCT]]

@@ -1,11 +1,11 @@
+from scipy._typing import Untyped
+from scipy.optimize import OptimizeResult as OptimizeResult
 from .base import OdeSolver as OdeSolver
 from .bdf import BDF as BDF
 from .common import EPS as EPS, OdeSolution as OdeSolution
 from .lsoda import LSODA as LSODA
 from .radau import Radau as Radau
 from .rk import DOP853 as DOP853, RK23 as RK23, RK45 as RK45
-from scipy._typing import Untyped
-from scipy.optimize import OptimizeResult as OptimizeResult
 
 METHODS: Untyped
 MESSAGES: Untyped

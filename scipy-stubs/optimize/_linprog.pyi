@@ -1,5 +1,5 @@
-from ._optimize import OptimizeResult as OptimizeResult, OptimizeWarning as OptimizeWarning
 from scipy._typing import Untyped
+from ._optimize import OptimizeResult as OptimizeResult, OptimizeWarning as OptimizeWarning
 
 __docformat__: str
 LINPROG_METHODS: Untyped

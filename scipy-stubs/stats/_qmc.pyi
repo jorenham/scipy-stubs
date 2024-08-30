@@ -1,34 +1,46 @@
 from abc import ABC, abstractmethod
-from typing import ClassVar, Literal, overload
+from typing import ClassVar, Literal, TypeVar, overload
 
 import numpy as np
 import numpy.typing as npt
+from scipy._lib._util import DecimalNumber, IntNumber, SeedType
+from scipy._typing import Untyped, UntypedArray
 
-from scipy._lib._util import (
-    DecimalNumber as DecimalNumber,
-    GeneratorType as GeneratorType,
-    IntNumber as IntNumber,
-    SeedType as SeedType,
-    rng_integers as rng_integers,
-)
-from scipy._typing import Untyped
-from scipy.sparse.csgraph import minimum_spanning_tree as minimum_spanning_tree
-from scipy.spatial import Voronoi as Voronoi, distance as distance
-from scipy.special import gammainc as gammainc
+__all__ = [
+    "Halton",
+    "LatinHypercube",
+    "MultinomialQMC",
+    "MultivariateNormalQMC",
+    "PoissonDisk",
+    "QMCEngine",
+    "Sobol",
+    "discrepancy",
+    "geometric_discrepancy",
+    "scale",
+    "update_discrepancy",
+]
+
+_RNGT = TypeVar("_RNGT", bound=np.random.Generator | np.random.RandomState)
 
 @overload
 def check_random_state(seed: IntNumber | None = ...) -> np.random.Generator: ...
 @overload
-def check_random_state(seed: GeneratorType) -> GeneratorType: ...
-def scale(sample: npt.ArrayLike, l_bounds: npt.ArrayLike, u_bounds: npt.ArrayLike, *, reverse: bool = False) -> np.ndarray: ...
+def check_random_state(seed: _RNGT) -> _RNGT: ...
+def scale(sample: npt.ArrayLike, l_bounds: npt.ArrayLike, u_bounds: npt.ArrayLike, *, reverse: bool = False) -> UntypedArray: ...
 def discrepancy(
-    sample: npt.ArrayLike, *, iterative: bool = False, method: Literal["CD", "WD", "MD", "L2-star"] = "CD", workers: IntNumber = 1
+    sample: npt.ArrayLike,
+    *,
+    iterative: bool = False,
+    method: Literal["CD", "WD", "MD", "L2-star"] = "CD",
+    workers: IntNumber = 1,
 ) -> float: ...
 def geometric_discrepancy(
-    sample: npt.ArrayLike, method: Literal["mindist", "mst"] = "mindist", metric: str = "euclidean"
+    sample: npt.ArrayLike,
+    method: Literal["mindist", "mst"] = "mindist",
+    metric: str = "euclidean",
 ) -> float: ...
 def update_discrepancy(x_new: npt.ArrayLike, sample: npt.ArrayLike, initial_disc: DecimalNumber) -> float: ...
-def primes_from_2_to(n: int) -> np.ndarray: ...
+def primes_from_2_to(n: int) -> UntypedArray: ...
 def n_primes(n: IntNumber) -> list[int]: ...
 def van_der_corput(
     n: IntNumber,
@@ -39,7 +51,7 @@ def van_der_corput(
     permutations: npt.ArrayLike | None = None,
     seed: SeedType = None,
     workers: IntNumber = 1,
-) -> np.ndarray: ...
+) -> UntypedArray: ...
 
 class QMCEngine(ABC):
     d: Untyped
@@ -49,9 +61,13 @@ class QMCEngine(ABC):
     optimization_method: Untyped
     @abstractmethod
     def __init__(
-        self, d: IntNumber, *, optimization: Literal["random-cd", "lloyd"] | None = None, seed: SeedType = None
-    ) -> Untyped: ...
-    def random(self, n: IntNumber = 1, *, workers: IntNumber = 1) -> np.ndarray: ...
+        self,
+        d: IntNumber,
+        *,
+        optimization: Literal["random-cd", "lloyd"] | None = None,
+        seed: SeedType = None,
+    ) -> None: ...
+    def random(self, n: IntNumber = 1, *, workers: IntNumber = 1) -> UntypedArray: ...
     def integers(
         self,
         l_bounds: npt.ArrayLike,
@@ -60,7 +76,7 @@ class QMCEngine(ABC):
         n: IntNumber = 1,
         endpoint: bool = False,
         workers: IntNumber = 1,
-    ) -> np.ndarray: ...
+    ) -> UntypedArray: ...
     def reset(self) -> QMCEngine: ...
     def fast_forward(self, n: IntNumber) -> QMCEngine: ...
 
@@ -104,7 +120,7 @@ class Sobol(QMCEngine):
         seed: SeedType = None,
         optimization: Literal["random-cd", "lloyd"] | None = None,
     ): ...
-    def random_base2(self, m: IntNumber) -> np.ndarray: ...
+    def random_base2(self, m: IntNumber) -> UntypedArray: ...
     def reset(self) -> Sobol: ...
     def fast_forward(self, n: IntNumber) -> Sobol: ...
 
@@ -128,7 +144,7 @@ class PoissonDisk(QMCEngine):
         l_bounds: npt.ArrayLike | None = None,
         u_bounds: npt.ArrayLike | None = None,
     ): ...
-    def fill_space(self) -> np.ndarray: ...
+    def fill_space(self) -> UntypedArray: ...
     def reset(self) -> PoissonDisk: ...
 
 class MultivariateNormalQMC:
@@ -143,11 +159,11 @@ class MultivariateNormalQMC:
         engine: QMCEngine | None = None,
         seed: SeedType = None,
     ): ...
-    def random(self, n: IntNumber = 1) -> np.ndarray: ...
+    def random(self, n: IntNumber = 1) -> UntypedArray: ...
 
 class MultinomialQMC:
     pvals: Untyped
     n_trials: Untyped
     engine: Untyped
     def __init__(self, pvals: npt.ArrayLike, n_trials: IntNumber, *, engine: QMCEngine | None = None, seed: SeedType = None): ...
-    def random(self, n: IntNumber = 1) -> np.ndarray: ...
+    def random(self, n: IntNumber = 1) -> UntypedArray: ...

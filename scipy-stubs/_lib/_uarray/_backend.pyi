@@ -1,11 +1,40 @@
-import typing
-from collections.abc import Generator
+from collections.abc import Callable, Generator
+from typing import TypeAlias
 
-from ._uarray import BackendNotImplementedError as BackendNotImplementedError
-from scipy._typing import Untyped
+from scipy._typing import Untyped, UntypedCallable
 
-ArgumentExtractorType: Untyped
-ArgumentReplacerType: typing.TypeAlias = typing.Callable[[tuple, dict, tuple], tuple[tuple, dict]]
+__all__ = [
+    "BackendNotImplementedError",
+    "Dispatchable",
+    # "_BackendState",
+    # "_Function",
+    # "_SetBackendContext",
+    # "_SkipBackendContext",
+    "all_of_type",
+    "clear_backends",
+    "create_multimethod",
+    "determine_backend",
+    "determine_backend_multi",
+    "generate_multimethod",
+    "get_state",
+    "mark_as",
+    "register_backend",
+    "reset_state",
+    "set_backend",
+    "set_global_backend",
+    "set_state",
+    "skip_backend",
+    "wrap_single_convertor",
+    "wrap_single_convertor_instance",
+]
+
+class BackendNotImplementedError(NotImplementedError): ...
+
+ArgumentExtractorType: TypeAlias = Callable[..., tuple[Dispatchable, ...]]
+ArgumentReplacerType: TypeAlias = Callable[
+    [tuple[Untyped, ...], dict[Untyped, Untyped], tuple[Untyped, ...]],
+    tuple[tuple[Untyped, ...], dict[Untyped, Untyped]],
+]
 
 def unpickle_function(mod_name, qname, self_) -> Untyped: ...
 def pickle_function(func) -> Untyped: ...
@@ -20,7 +49,7 @@ def generate_multimethod(
     argument_extractor: ArgumentExtractorType,
     argument_replacer: ArgumentReplacerType,
     domain: str,
-    default: typing.Callable | None = None,
+    default: UntypedCallable | None = None,
 ): ...
 def set_backend(backend, coerce: bool = False, only: bool = False) -> Untyped: ...
 def skip_backend(backend) -> Untyped: ...

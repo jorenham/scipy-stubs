@@ -1,7 +1,11 @@
-from ._optimize import OptimizeResult as OptimizeResult
+import abc
+
+import numpy as np
 from scipy._typing import Untyped
 from scipy.optimize._differentiable_functions import FD_METHODS as FD_METHODS
 from scipy.optimize._hessian_update_strategy import HessianUpdateStrategy as HessianUpdateStrategy
+
+__all__: list[str] = []
 
 class BaseQuadraticSubproblem:
     def __init__(self, x, fun, jac, hess: Untyped | None = None, hessp: Untyped | None = None): ...
@@ -16,4 +20,5 @@ class BaseQuadraticSubproblem:
     @property
     def jac_mag(self) -> Untyped: ...
     def get_boundaries_intersections(self, z, d, trust_radius) -> Untyped: ...
-    def solve(self, trust_radius): ...
+    @abc.abstractmethod
+    def solve(self, trust_radius: float | np.float64) -> Untyped: ...

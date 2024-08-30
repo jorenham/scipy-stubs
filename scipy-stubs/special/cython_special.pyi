@@ -1,6 +1,5 @@
 from collections.abc import Callable, Mapping
 from typing import Final, TypeAlias
-
 from typing_extensions import CapsuleType
 
 __all__ = [

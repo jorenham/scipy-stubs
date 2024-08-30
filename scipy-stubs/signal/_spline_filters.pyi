@@ -1,3 +1,6 @@
+from scipy._lib._util import normalize_axis_index as normalize_axis_index
+from scipy._typing import Untyped
+from scipy.interpolate import BSpline as BSpline
 from ._arraytools import axis_reverse as axis_reverse, axis_slice as axis_slice
 from ._signaltools import lfilter as lfilter, lfiltic as lfiltic, sosfilt as sosfilt
 from ._spline import (
@@ -6,9 +9,6 @@ from ._spline import (
     symiirorder2_ic_bwd as symiirorder2_ic_bwd,
     symiirorder2_ic_fwd as symiirorder2_ic_fwd,
 )
-from scipy._lib._util import normalize_axis_index as normalize_axis_index
-from scipy._typing import Untyped
-from scipy.interpolate import BSpline as BSpline
 
 def spline_filter(Iin, lmbda: float = 5.0) -> Untyped: ...
 def gauss_spline(x, n) -> Untyped: ...

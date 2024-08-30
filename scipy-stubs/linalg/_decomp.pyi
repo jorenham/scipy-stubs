@@ -2,8 +2,7 @@ from typing import Literal, TypeAlias, overload
 
 import numpy as np
 import numpy.typing as npt
-import optype as opt
-
+import optype as op
 import scipy._typing as spt
 
 __all__ = [
@@ -27,8 +26,8 @@ _EigSelect: TypeAlias = Literal["a", "v", "i"]
 _EigSelectRange: TypeAlias = tuple[spt.AnyReal, spt.AnyReal]
 
 _EigHType: TypeAlias = Literal[1, 2, 3]
-_EigHSubsetByIndex: TypeAlias = opt.CanIter[opt.CanNext[opt.typing.AnyInt]]
-_EigHSubsetByValue: TypeAlias = opt.CanIter[opt.CanNext[spt.AnyReal]]
+_EigHSubsetByIndex: TypeAlias = op.CanIter[op.CanNext[op.typing.AnyInt]]
+_EigHSubsetByValue: TypeAlias = op.CanIter[op.CanNext[spt.AnyReal]]
 
 _LapackDriverE: TypeAlias = Literal["ev", "evd", "evr", "evx"]
 _LapackDriverG: TypeAlias = Literal["gv", "gvd", "gvx"]
@@ -220,7 +219,7 @@ def eigvalsh_tridiagonal(
     select: _EigSelect = "a",
     select_range: _EigSelectRange | None = None,
     check_finite: bool = True,
-    tol: spt.AnyReal = 0.,
+    tol: spt.AnyReal = 0.0,
     lapack_driver: _LapackDriverST | _LapackDriverAuto = "auto",
 ) -> _Array_fc_1d: ...
 @overload
@@ -231,7 +230,7 @@ def eigh_tridiagonal(
     select: _EigSelect = "a",
     select_range: _EigSelectRange | None = None,
     check_finite: bool = True,
-    tol: spt.AnyReal = 0.,
+    tol: spt.AnyReal = 0.0,
     lapack_driver: _LapackDriverST | _LapackDriverAuto = "auto",
 ) -> tuple[_Array_fc_1d, _Array_fc_2d]: ...
 @overload
@@ -242,7 +241,7 @@ def eigh_tridiagonal(
     select: _EigSelect = "a",
     select_range: _EigSelectRange | None = None,
     check_finite: bool = True,
-    tol: spt.AnyReal = 0.,
+    tol: spt.AnyReal = 0.0,
     lapack_driver: _LapackDriverST | _LapackDriverAuto = "auto",
 ) -> _Array_fc_1d: ...
 @overload

@@ -2,7 +2,6 @@ from typing import Literal, TypeAlias, overload
 
 import numpy as np
 import numpy.typing as npt
-
 import scipy._typing as spt
 
 __all__ = [
@@ -96,6 +95,7 @@ def solve_circulant(
 ) -> _Array_fc: ...
 def inv(a: npt.ArrayLike, overwrite_a: bool = False, check_finite: bool = True) -> _Array_fc_2d: ...
 def det(a: npt.ArrayLike, overwrite_a: bool = False, check_finite: bool = True) -> np.inexact[npt.NBitBase] | _Array_fc: ...
+
 # TODO: lstsq.default_lapack_driver
 def lstsq(
     a: npt.ArrayLike,

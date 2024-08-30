@@ -1,7 +1,6 @@
 from scipy._typing import Untyped
-from scipy.linalg.lapack import dgesv as dgesv
-from scipy.spatial import KDTree as KDTree
-from scipy.special import comb as comb
+
+__all__ = ["RBFInterpolator"]
 
 class RBFInterpolator:
     y: Untyped
@@ -15,12 +14,12 @@ class RBFInterpolator:
     powers: Untyped
     def __init__(
         self,
-        y,
-        d,
+        y: Untyped,
+        d: Untyped,
         neighbors: Untyped | None = None,
         smoothing: float = 0.0,
         kernel: str = "thin_plate_spline",
         epsilon: Untyped | None = None,
         degree: Untyped | None = None,
-    ): ...
-    def __call__(self, x) -> Untyped: ...
+    ) -> None: ...
+    def __call__(self, x: Untyped) -> Untyped: ...

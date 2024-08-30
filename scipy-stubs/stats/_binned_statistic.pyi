@@ -3,7 +3,6 @@ from typing import Literal, NamedTuple, TypeAlias
 
 import numpy as np
 import numpy.typing as npt
-
 from scipy._typing import Untyped
 
 __all__ = ["binned_statistic", "binned_statistic_2d", "binned_statistic_dd"]

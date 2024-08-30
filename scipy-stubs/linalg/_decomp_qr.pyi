@@ -118,7 +118,6 @@ def qr(
     /,
     check_finite: bool = True,
 ) -> tuple[tuple[_Array_fc_2d, _Array_fc_2d], _Array_fc_2d, _Array_i_1d]: ...
-
 @overload
 def qr_multiply(
     a: npt.ArrayLike,
@@ -151,7 +150,6 @@ def qr_multiply(
     overwrite_a: bool = False,
     overwrite_c: bool = False,
 ) -> tuple[_Array_fc_2d, _Array_fc_2d, _Array_i_1d]: ...
-
 @overload
 def rq(
     a: npt.ArrayLike,

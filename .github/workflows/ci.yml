@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          config: ".markdownlint.yaml"
+          globs: "**/*.md"
+
+      - name: install poetry
+        run: |
+          pipx install poetry
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: poetry
+
+      - name: poetry install
+        run: poetry install
+
+      - name: ruff check
+        run: poetry run ruff check --output-format=github
+
+      - name: basedpyright --verifytypes
+        run: poetry run basedpyright --ignoreexternal --verifytypes scipy-stubs
+
+      # TODO: don't continue on error
+      - name: basedmypy stubtest
+        run: poetry run stubtest --concise --mypy-config-file=pyproject.toml scipy
+        continue-on-error: true
+
+      # TODO: don't continue on error
+      - name: basedpyright --verifytypes
+        run: poetry run basedpyright --verifytypes scipy-stubs
+        continue-on-error: true
+
+      # TODO
+      # - uses: scientific-python/repo-review@v0.11.2
+      #   with:
+      #     plugins: sp-repo-review

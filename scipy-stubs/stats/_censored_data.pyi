@@ -1,6 +1,7 @@
+from typing_extensions import Self
+
 import numpy.typing as npt
 import optype.numpy as onpt
-from typing_extensions import Self
 
 __all__ = ["CensoredData"]
 
@@ -16,9 +17,7 @@ class CensoredData:
     def __sub__(self, other: object, /) -> CensoredData: ...
     def __truediv__(self, other: object, /) -> CensoredData: ...
     def __len__(self) -> int: ...
-
     def num_censored(self) -> int: ...
-
     @classmethod
     def right_censored(cls, x: npt.ArrayLike, censored: onpt.AnyBoolArray) -> Self: ...
     @classmethod

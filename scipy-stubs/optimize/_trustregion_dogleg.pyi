@@ -1,5 +1,5 @@
-from ._trustregion import BaseQuadraticSubproblem as BaseQuadraticSubproblem
 from scipy._typing import Untyped
+from ._trustregion import BaseQuadraticSubproblem as BaseQuadraticSubproblem
 
 class DoglegSubproblem(BaseQuadraticSubproblem):
     def cauchy_point(self) -> Untyped: ...

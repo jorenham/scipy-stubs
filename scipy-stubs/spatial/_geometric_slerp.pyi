@@ -1,6 +1,6 @@
-import numpy as np
 import numpy.typing as npt
+import scipy._typing as spt
 
-from scipy.spatial.distance import euclidean as euclidean
+__all__ = ["geometric_slerp"]
 
-def geometric_slerp(start: npt.ArrayLike, end: npt.ArrayLike, t: npt.ArrayLike, tol: float = 1e-07) -> np.ndarray: ...
+def geometric_slerp(start: npt.ArrayLike, end: npt.ArrayLike, t: npt.ArrayLike, tol: float = 1e-07) -> spt.UntypedArray: ...

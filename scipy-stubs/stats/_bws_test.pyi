@@ -1,7 +1,6 @@
 from typing import Literal
 
 import numpy.typing as npt
-
 from ._resampling import PermutationMethod, PermutationTestResult
 
 __all__ = ["bws_test"]

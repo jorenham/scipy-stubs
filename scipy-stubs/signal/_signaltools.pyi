@@ -1,24 +1,44 @@
 from typing import Literal
 
 import numpy as np
-from numpy._typing import ArrayLike
+import numpy.typing as npt
+from scipy._typing import Untyped, UntypedArray
 
-from ._arraytools import (
-    axis_reverse as axis_reverse,
-    axis_slice as axis_slice,
-    const_ext as const_ext,
-    even_ext as even_ext,
-    odd_ext as odd_ext,
-)
-from ._filter_design import cheby1 as cheby1, zpk2sos as zpk2sos
-from ._fir_filter_design import firwin as firwin
-from ._ltisys import dlti as dlti
-from ._upfirdn import upfirdn as upfirdn
-from .windows import get_window as get_window
-from scipy import linalg as linalg, ndimage as ndimage
-from scipy._typing import Untyped
-from scipy.spatial import cKDTree as cKDTree
-from scipy.special import lambertw as lambertw
+__all__ = [
+    "choose_conv_method",
+    "cmplx_sort",
+    "convolve",
+    "convolve2d",
+    "correlate",
+    "correlate2d",
+    "correlation_lags",
+    "decimate",
+    "deconvolve",
+    "detrend",
+    "fftconvolve",
+    "filtfilt",
+    "hilbert",
+    "hilbert2",
+    "invres",
+    "invresz",
+    "lfilter",
+    "lfilter_zi",
+    "lfiltic",
+    "medfilt",
+    "medfilt2d",
+    "oaconvolve",
+    "order_filter",
+    "resample",
+    "resample_poly",
+    "residue",
+    "residuez",
+    "sosfilt",
+    "sosfilt_zi",
+    "sosfiltfilt",
+    "unique_roots",
+    "vectorstrength",
+    "wiener",
+]
 
 def correlate(in1, in2, mode: str = "full", method: str = "auto") -> Untyped: ...
 def correlation_lags(in1_len, in2_len, mode: str = "full") -> Untyped: ...
@@ -48,12 +68,12 @@ def resample_poly(
 ) -> Untyped: ...
 def vectorstrength(events, period) -> Untyped: ...
 def detrend(
-    data: np.ndarray,
+    data: UntypedArray,
     axis: int = -1,
     type: Literal["linear", "constant"] = "linear",
-    bp: ArrayLike | int = 0,
+    bp: npt.ArrayLike | int = 0,
     overwrite_data: bool = False,
-) -> np.ndarray: ...
+) -> UntypedArray: ...
 def lfilter_zi(b, a) -> Untyped: ...
 def sosfilt_zi(sos) -> Untyped: ...
 def filtfilt(

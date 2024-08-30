@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from ._continuous_distns import norm as norm
 from scipy._typing import Untyped
+from ._continuous_distns import norm as norm
 
 @dataclass
 class PageTrendTestResult:

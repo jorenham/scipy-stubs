@@ -1,8 +1,8 @@
 from typing import Any, TypeAlias
+from typing_extensions import final
 
 import numpy as np
 import numpy.typing as npt
-from typing_extensions import final
 
 __all__ = ["ConvexHull", "Delaunay", "HalfspaceIntersection", "QhullError", "Voronoi", "tsearch"]
 

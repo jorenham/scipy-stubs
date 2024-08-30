@@ -1,73 +1,71 @@
 [build-system]
-requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
+requires = ["poetry-core"]
 
 [tool.poetry]
-name = "scipy-stubs"
-version = "1.4.1.dev0"
-description = ""
 authors = ["Joren Hammudoglu <jhammudoglu@gmail.com>"]
-license = "BSD-3-Clause"
-readme = "README.md"
-packages = [{include = "scipy-stubs"}]
 classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Operating System :: OS Independent",
-    "Topic :: Scientific/Engineering",
-    "Typing :: Stubs Only",
-    "Typing :: Typed",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
+  "Development Status :: 3 - Alpha",
+  "Operating System :: OS Independent",
+  "Topic :: Scientific/Engineering",
+  "Typing :: Stubs Only",
+  "Typing :: Typed",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
 ]
-repository = "https://github.com/jorenham/scipy-stubs/"
+description = ""
 documentation = "https://github.com/jorenham/scipy-stubs?tab=readme-ov-file#scipy-stubs"
+license = "BSD-3-Clause"
+name = "scipy-stubs"
+packages = [{include = "scipy-stubs"}]
+readme = "README.md"
+repository = "https://github.com/jorenham/scipy-stubs/"
+version = "1.4.1.dev0"
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/jorenham/scipy-stubs/issues"
 "Changelog" = "https://github.com/jorenham/scipy-stubs/releases"
 
 [tool.poetry.dependencies]
-python = "^3.10.1"
 optype = "^0.6.1"
+python = "^3.10.1"
 scipy = "^1.14.1"
 
 [tool.poetry.group.lint.dependencies]
-ruff = "^0.6.2"
 basedmypy = "^2.6.0"
 basedpyright = "^1.17.1"
+ruff = "^0.6.2"
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^3.8.0"
 poethepoet = "^0.27.0"
-
+pre-commit = "^3.8.0"
 
 [tool.mypy]
-warn_unused_ignores = true
-disallow_any_explicit = false  # no other way to type e.g. `np.float64 <: np.number[Any]`
 disable_bytearray_promotion = true
 disable_memoryview_promotion = true
-
+disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[Any]`
+disallow_untyped_defs = false  # TODO
+disallow_incomplete_defs = false  # TODO
+warn_unused_ignores = true
 
 [tool.pyright]
 include = ["scipy-stubs"]
-stubPath = "."
-venvPath = "."
-venv = ".venv"
-pythonVersion = "3.10"
 pythonPlatform = "All"
+pythonVersion = "3.10"
+stubPath = "."
 typeCheckingMode = "strict"
+venv = ".venv"
+venvPath = "."
 
 deprecateTypingAliases = true
-reportPrivateUsage = false
 reportIgnoreCommentWithoutRule = true
 reportImplicitRelativeImport = true
 reportInvalidCast = true
+reportPrivateUsage = false
 reportUnnecessaryTypeIgnoreComment = true
 reportUnsafeMultipleInheritance = true
-
 
 [tool.ruff]
 builtins = ["reveal_locals", "reveal_type"]
@@ -82,25 +80,87 @@ src = ["scipy-stubs"]
 line-ending = "lf"
 skip-magic-trailing-comma = false
 
-
 [tool.ruff.lint]
-preview = true
-select = ["E", "W", "I", "UP", "ANN", "COM", "EXE", "ICN", "INP", "PYI", "Q", "TID", "TCH", "ERA", "PGH", "RUF"]
-extend-select = [
-    "PLC0105", "PLC0131", "PLC0132", "PLC0414",
-    "PLE0303", "PLE0304", "PLE0305", "PLE0307", "PLE0308", "PLE0309",
-    "PLE0604", "PLE0605", "PLE1132"
-]
 ignore = [
-    "E741",
-    "COM812",  # ruff format compat
-    "ANN",  # TODO
+  "E741",
+  "COM812", # ruff format compat
+  "ANN", # TODO
 ]
+preview = true
+select = [
+  "E",
+  "W",
+  "I",
+  "UP",
+  "ANN",
+  "COM",
+  "EXE",
+  "ICN",
+  "INP",
+  "PYI",
+  "Q",
+  "TID",
+  "TCH",
+  "ERA",
+  "PGH",
+  "RUF",
+  "PLC0105",
+  "PLC0131",
+  "PLC0132",
+  "PLC0414",
+  "PLE0303",
+  "PLE0304",
+  "PLE0305",
+  "PLE0307",
+  "PLE0308",
+  "PLE0309",
+  "PLE0604",
+  "PLE0605",
+  "PLE1132",
+]
+
+[tool.ruff.lint.flake8-import-conventions]
+banned-from = [
+  "numpy",
+  "numpy.dtypes",
+  "numpy.exceptions",
+  "numpy.emath",
+  "numpy.fft",
+  "numpy.linalg",
+  "numpy.ma",
+  "numpy.polynomial",
+  "numpy.random",
+  "numpy.rec",
+  "numpy.typing",
+  "numpy.strings",
+  "optype",
+  "optype.numpy",
+  "optype.typing",
+]
+[tool.ruff.lint.flake8-import-conventions.extend-aliases]
+"numpy" = "np"
+"numpy.polynomial" = "npp"
+"numpy.typing" = "npt"
+"optype" = "op"
+"optype.numpy" = "onpt"
+"scipy" = "sp"
+"scipy._typing" = "spt"
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
-known-local-folder = ["scipy"]
+known-first-party = ["scipy"]
+no-lines-before = ["typing", "first-party", "local-folder"]
+section-order = [
+  "standard-library",
+  "typing",
+  "third-party",
+  "first-party",
+  "local-folder",
+]
 split-on-trailing-comma = true
+
+[tool.ruff.lint.isort.sections]
+typing = ["collections.abc", "types", "typing", "typing_extensions"]
 
 [tool.ruff.lint.flake8-annotations]
 allow-star-arg-any = true

@@ -1,14 +1,16 @@
+# NOTE: There are alteady inline stubs for this module, so this won't be used (which is unfortunate, because the inline
+# annotations are wrong in several places, although it's still pretty good overall).
 from typing import Any, Generic, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import numpy.typing as npt
-
 from scipy._typing import AnyScalar
 from scipy.sparse import coo_matrix, dok_matrix
 
 __all__ = ["cKDTree"]
 
 _Weights: TypeAlias = npt.ArrayLike | tuple[npt.ArrayLike, npt.ArrayLike]
+_BoxT = TypeVar("_BoxT", bound=npt.NDArray[np.float64] | None)
 
 class cKDTreeNode:
     @property
@@ -33,8 +35,6 @@ class cKDTreeNode:
     def lesser(self) -> cKDTreeNode | None: ...
     @property
     def greater(self) -> cKDTreeNode | None: ...
-
-_BoxT = TypeVar("_BoxT", bound=npt.NDArray[np.float64] | None)
 
 class cKDTree(Generic[_BoxT]):
     @property
@@ -109,15 +109,27 @@ class cKDTree(Generic[_BoxT]):
         return_length: bool = ...,
     ) -> Any: ...
     def query_ball_tree(
-        self, other: cKDTree[npt.NDArray[np.float64] | None], r: float, p: float, eps: float = ...,
+        self,
+        other: cKDTree[npt.NDArray[np.float64] | None],
+        r: float,
+        p: float,
+        eps: float = ...,
     ) -> list[list[int]]: ...
     @overload
     def query_pairs(
-        self, r: float, p: float = ..., eps: float = ..., output_type: Literal["set"] = ...,
+        self,
+        r: float,
+        p: float = ...,
+        eps: float = ...,
+        output_type: Literal["set"] = ...,
     ) -> set[tuple[int, int]]: ...
     @overload
     def query_pairs(
-        self, r: float, p: float = ..., eps: float = ..., output_type: Literal["ndarray"] = ...,
+        self,
+        r: float,
+        p: float = ...,
+        eps: float = ...,
+        output_type: Literal["ndarray"] = ...,
     ) -> npt.NDArray[np.intp]: ...
     @overload
     def count_neighbors(
@@ -145,7 +157,7 @@ class cKDTree(Generic[_BoxT]):
         p: float = ...,
         weights: None | tuple[None, None] = ...,
         cumulative: bool = ...,
-    ) -> np.intp | npt.NDArray[np.intp]: ...
+    ) -> np.float64 | np.intp | npt.NDArray[np.intp]: ...
     @overload
     def count_neighbors(
         self,
@@ -154,7 +166,7 @@ class cKDTree(Generic[_BoxT]):
         p: float = ...,
         weights: _Weights = ...,
         cumulative: bool = ...,
-    ) -> np.float64 | npt.NDArray[np.float64]: ...
+    ) -> np.intp | np.float64 | npt.NDArray[np.float64]: ...
     @overload
     def sparse_distance_matrix(
         self,

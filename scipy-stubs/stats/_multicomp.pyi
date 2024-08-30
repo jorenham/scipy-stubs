@@ -3,17 +3,16 @@ from typing import Literal
 
 import numpy as np
 import numpy.typing as npt
-
 from scipy import stats as stats
 from scipy._lib._util import DecimalNumber as DecimalNumber, SeedType as SeedType
-from scipy.optimize import minimize_scalar as minimize_scalar
 from scipy.stats._common import ConfidenceInterval as ConfidenceInterval
-from scipy.stats._qmc import check_random_state as check_random_state
+
+__all__ = ["dunnett"]
 
 @dataclass
 class DunnettResult:
-    statistic: np.ndarray
-    pvalue: np.ndarray
+    statistic: npt.NDArray[np.float64]
+    pvalue: npt.NDArray[np.float64]
     def confidence_interval(self, confidence_level: DecimalNumber = 0.95) -> ConfidenceInterval: ...
 
 def dunnett(

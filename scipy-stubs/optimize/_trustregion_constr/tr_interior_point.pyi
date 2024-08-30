@@ -1,6 +1,6 @@
-from .equality_constrained_sqp import equality_constrained_sqp as equality_constrained_sqp
 from scipy._typing import Untyped
 from scipy.sparse.linalg import LinearOperator as LinearOperator
+from .equality_constrained_sqp import equality_constrained_sqp as equality_constrained_sqp
 
 class BarrierSubproblem:
     n_vars: Untyped

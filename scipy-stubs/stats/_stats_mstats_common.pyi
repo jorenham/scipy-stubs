@@ -1,5 +1,5 @@
-from . import distributions as distributions
 from scipy._typing import Untyped
+from . import distributions as distributions
 
 TheilslopesResult: Untyped
 SiegelslopesResult: Untyped

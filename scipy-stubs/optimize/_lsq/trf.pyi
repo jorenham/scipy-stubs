@@ -1,3 +1,7 @@
+from scipy._typing import Untyped
+from scipy.linalg import qr as qr, svd as svd
+from scipy.optimize import OptimizeResult as OptimizeResult
+from scipy.sparse.linalg import lsmr as lsmr
 from .common import (
     CL_scaling_vector as CL_scaling_vector,
     build_quadratic_1d as build_quadratic_1d,
@@ -20,10 +24,6 @@ from .common import (
     step_size_to_bound as step_size_to_bound,
     update_tr_radius as update_tr_radius,
 )
-from scipy._typing import Untyped
-from scipy.linalg import qr as qr, svd as svd
-from scipy.optimize import OptimizeResult as OptimizeResult
-from scipy.sparse.linalg import lsmr as lsmr
 
 def trf(
     fun, jac, x0, f0, J0, lb, ub, ftol, xtol, gtol, max_nfev, x_scale, loss_function, tr_solver, tr_options, verbose
