@@ -47,7 +47,7 @@ jobs:
 
       # TODO: don't continue on error
       - name: basedmypy stubtest
-        run: poetry run stubtest --mypy-config-file=pyproject.toml scipy
+        run: poetry run stubtest --concise --mypy-config-file=pyproject.toml scipy
         continue-on-error: true
 
       # TODO: don't continue on error
