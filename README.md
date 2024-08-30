@@ -31,13 +31,12 @@
     </a>
 </p>
 <p align="center">
-    <!-- TODO -->
-    <!-- <a href="https://github.com/jorenham/scipy-stubs/actions?query=workflow%3ACI">
+    <a href="https://github.com/jorenham/scipy-stubs/actions?query=workflow%3ACI">
         <img
             alt="scipy-stubs - CI"
             src="https://github.com/jorenham/scipy-stubs/workflows/CI/badge.svg"
         />
-    </a> -->
+    </a>
     <!-- TODO -->
     <!-- <a href="https://github.com/pre-commit/pre-commit">
         <img
