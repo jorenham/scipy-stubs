@@ -19,7 +19,7 @@ _Function: TypeAlias = CapsuleType | PyCFuncPtr | CFFIFuncP | CData
 _UserData: TypeAlias = CapsuleType | ct.c_void_p | CFFIVoidP
 
 _FuncT_co = TypeVar("_FuncT_co", bound=_Function, covariant=True, default=_Function)
-_DataT_co = TypeVar("_DataT_co", bound=_UserData | None, covariant=True, default=None)
+_DataT_co = TypeVar("_DataT_co", bound=_UserData | None, covariant=True, default=_UserData)
 
 class LowLevelCallable(tuple[CapsuleType, _FuncT_co, _DataT_co], Generic[_FuncT_co, _DataT_co]):
     # NOTE: __getitem__ will raise a ValueError
