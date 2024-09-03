@@ -85,6 +85,7 @@ ignore = [
   "E741",
   "COM812", # ruff format compat
   "ANN", # TODO
+  "PYI054", # numeric-literal-too-long
 ]
 preview = true
 select = [
