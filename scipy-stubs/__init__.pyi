@@ -2,6 +2,7 @@ from collections.abc import Sequence
 from typing import Final, Literal
 from typing_extensions import LiteralString
 
+from numpy import __version__ as __numpy_version__  # noqa: ICN003
 from . import (
     cluster,
     constants,
@@ -25,6 +26,7 @@ from . import (
 from .__config__ import show as show_config
 from ._lib._ccallback import LowLevelCallable
 from ._lib._testutils import PytestTester
+from .version import version as __version__
 
 __all__ = [
     "LowLevelCallable",
@@ -50,7 +52,6 @@ __all__ = [
     "stats",
     "test",
 ]
-__version__: Final[LiteralString]
 np_minversion: Final[LiteralString]
 np_maxversion: Final[LiteralString]
 
