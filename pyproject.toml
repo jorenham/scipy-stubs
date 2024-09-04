@@ -35,11 +35,11 @@ scipy = "^1.14.1"
 
 [tool.poetry.group.lint.dependencies]
 basedmypy = "^2.6.0"
-basedpyright = "^1.17.1"
+basedpyright = "^1.17.2"
 ruff = "^0.6.3"
 
 [tool.poetry.group.dev.dependencies]
-poethepoet = "^0.27.0"
+poethepoet = "^0.28.0"
 pre-commit = "^3.8.0"
 
 [tool.mypy]
@@ -52,6 +52,8 @@ warn_unused_ignores = true
 
 [tool.pyright]
 include = ["scipy-stubs"]
+exclude = [".cache"]
+ignore = [".venv"]
 pythonPlatform = "All"
 pythonVersion = "3.10"
 stubPath = "."

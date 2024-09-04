@@ -42,12 +42,12 @@ jobs:
       - name: ruff check
         run: poetry run ruff check --output-format=github
 
-      - name: basedpyright --verifytypes
+      - name: basedpyright --verifytypes --ignoreexternal
         run: poetry run basedpyright --ignoreexternal --verifytypes scipy-stubs
 
       # TODO: don't continue on error
       - name: basedpyright --verifytypes
-        run: poetry run basedpyright --verifytypes scipy-stubs
+        run: poetry run basedpyright --level error --verifytypes scipy-stubs
         continue-on-error: true
 
       # TODO: don't continue on error
