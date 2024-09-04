@@ -80,14 +80,12 @@ pip install scipy-stubs
 ## Development Progress
 
 According to [basedpyright](https://github.com/DetachHead/basedpyright) (stricter than
-pyright), the "type completeness score" is **39.2%**.
+pyright), the "type completeness score" is **42.4%**.
 
 | Module                            | Stubs status    |
 |---------------------------------- |---------------- |
-| `scipy`                           | 1: skeleton     |
+| `scipy.__init__`                  | 3: ready        |
 | `scipy._lib`                      | 2: partial      |
-| `scipy._lib.uarray`               | 3: ready        |
-| `scipy._lib.array_api_compat`     | 2: partial      |
 | `scipy.cluster`                   | 1: skeleton     |
 | `scipy.constants`                 | 3: ready        |
 | `scipy.datasets`                  | 2: partial      |
