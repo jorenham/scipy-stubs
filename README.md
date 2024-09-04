@@ -115,7 +115,7 @@ pyright), the "type completeness score" is **42.6%**.
 | `scipy.special.cython_special`    | 2: partial      |
 | `scipy.stats`                     | 2: partial      |
 | `scipy.stats.contingency`         | 1: skeleton     |
-| `scipy.stats.distributions`       | 3: ready        |
+| `scipy.stats.distributions`       | 4: done         |
 | `scipy.stats.mstats`              | 1: skeleton     |
 | `scipy.stats.qmc`                 | 2: partial      |
 | `scipy.stats.sampling`            | 1: skeleton     |

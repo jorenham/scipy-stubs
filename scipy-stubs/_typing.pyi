@@ -16,6 +16,7 @@ __all__ = [
     "AnyScalar",
     "Array0D",
     "CorrelateMode",
+    "NanPolicy",
     "Seed",
     "Untyped",
     "UntypedArray",
@@ -48,6 +49,9 @@ AnyScalar: TypeAlias = int | float | complex | AnyChar | np.generic
 # numpy literals
 Seed: TypeAlias = int | np.random.Generator | np.random.RandomState
 CorrelateMode: TypeAlias = Literal["valid", "same", "full"]
+
+# scipy literals
+NanPolicy: TypeAlias = Literal["raise", "propagate", "omit"]
 
 # used in `scipy.linalg.blas` and `scipy.linalg.lapack`
 @type_check_only
