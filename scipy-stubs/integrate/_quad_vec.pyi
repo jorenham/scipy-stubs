@@ -94,8 +94,10 @@ def quad_vec(
     *,
     args: tuple[Unpack[_Ts]] = ...,
 ) -> tuple[_NDT_f, float]: ...
+# false positive (basedmypy==1.6.0 / mypy==1.11.1)
+# pyright: reportUnnecessaryTypeIgnoreComment=false
 @overload
-def quad_vec(
+def quad_vec(  # type: ignore[overload-overlap]
     f: _QuadVecFunc[float | np.float64, Unpack[_Ts]],
     /,
     a: float,
