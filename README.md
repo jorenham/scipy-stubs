@@ -104,7 +104,6 @@ pyright), the "type completeness score" is **42.4%**.
 | `scipy.odr`                       | 1: skeleton     |
 | `scipy.optimize`                  | 2: partial      |
 | `scipy.optimize.cython_optimize`  | 0: missing      |
-| `scipy.optimize.zeros`            | 0: missing      |
 | `scipy.signal`                    | 2: partial      |
 | `scipy.signal.windows`            | 1: skeleton     |
 | `scipy.sparse`                    | 2: partial      |
