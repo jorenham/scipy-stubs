@@ -52,7 +52,8 @@ jobs:
 
       # TODO: don't continue on error
       - name: basedmypy stubtest
-        run: poetry run stubtest --concise --ignore-positional-only --mypy-config-file=pyproject.toml --allowlist=tests/stubtest/allowlist.txt scipy
+        # run: poetry run stubtest --concise --ignore-positional-only --mypy-config-file=pyproject.toml --allowlist=tests/stubtest/allowlist.txt scipy
+        run: poetry run poe stubtest -- --concise
         continue-on-error: true
 
       # TODO
