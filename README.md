@@ -80,8 +80,7 @@ pip install scipy-stubs
 ## Development Progress
 
 According to [basedpyright](https://github.com/DetachHead/basedpyright) (stricter than
-pyright), the "type completeness score" is **38.6%**
-[at the time of writing](https://github.com/jorenham/scipy-stubs/tree/15f8b2c).
+pyright), the "type completeness score" is **39.2%**.
 
 | Module                            | Stubs status    |
 |---------------------------------- |---------------- |
@@ -95,7 +94,7 @@ pyright), the "type completeness score" is **38.6%**
 | `scipy.fft`                       | 2: partial      |
 | `scipy.fft._pocketfft`            | 2: partial      |
 | `scipy.fftpack`                   | 2: partial      |
-| `scipy.integrate`                 | 2: partial      |
+| `scipy.integrate`                 | 3: ready        |
 | `scipy.integrate._ivp`            | 2: partial      |
 | `scipy.interpolate`               | 2: partial      |
 | `scipy.io`                        | 2: partial      |
@@ -126,8 +125,8 @@ pyright), the "type completeness score" is **38.6%**
 
 Status labels:
 
-0. missing (failed stubgen)
-1. skeleton (mostly succesful stubgen)
-2. partial (incomplete/broad annotations)
-3. ready (complete & valid annotations, untested)
-4. done (complete, valid, tested, and production-ready)
+1. missing (failed stubgen)
+2. skeleton (mostly succesful stubgen)
+3. partial (incomplete/broad annotations)
+4. ready (complete & valid annotations, untested)
+5. done (complete, valid, tested, and production-ready)
