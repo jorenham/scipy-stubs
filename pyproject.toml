@@ -2,6 +2,7 @@
 build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core"]
 
+
 [tool.poetry]
 authors = ["Joren Hammudoglu <jhammudoglu@gmail.com>"]
 classifiers = [
@@ -42,6 +43,21 @@ ruff = "^0.6.3"
 poethepoet = "^0.28.0"
 pre-commit = "^3.8.0"
 
+[tool.poe.executor]
+type = "poetry"
+
+[tool.poe.tasks]
+lint = "ruff check"
+# stubtest = "stubtest --ignore-positional-only --mypy-config-file=pyproject.toml --allowlist=tests/stubtest/allowlist.txt scipy"
+verifytypes = "basedpyright --level error --verifytypes scipy-stubs"
+
+[tool.poe.tasks.stubtest]
+cmd = "stubtest --ignore-positional-only --mypy-config-file=pyproject.toml --allowlist=tests/stubtest/allowlist.txt $modules"
+args = [
+  {name = "modules", positional = true, multiple = true, default = "scipy"},
+]
+
+
 [tool.mypy]
 disable_bytearray_promotion = true
 disable_memoryview_promotion = true
@@ -49,6 +65,7 @@ disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[An
 disallow_untyped_defs = false  # TODO
 disallow_incomplete_defs = false  # TODO
 warn_unused_ignores = true
+
 
 [tool.pyright]
 include = ["scipy-stubs"]
@@ -68,6 +85,7 @@ reportInvalidCast = true
 reportPrivateUsage = false
 reportUnnecessaryTypeIgnoreComment = true
 reportUnsafeMultipleInheritance = true
+
 
 [tool.ruff]
 builtins = ["reveal_locals", "reveal_type"]
