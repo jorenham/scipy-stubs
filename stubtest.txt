@@ -4,7 +4,6 @@
 [1mscipy._lib._ccallback.CFFIVoidP(B[m is not present at runtime
 [1mscipy._lib._ccallback.LowLevelCallable.__getitem__(B[m variable differs from runtime type def (self: Untyped, idx: Untyped) -> Untyped
 [1mscipy._lib._ccallback.PyCFuncPtr(B[m cannot be subclassed at runtime, but isn't marked with @final in the stub
-[1mscipy._lib._ccallback.__all__(B[m is not present at runtime
 [1mscipy._lib._highs_utils(B[m failed to import. Maybe install the runtime package or alter PYTHONPATH? ModuleNotFoundError: No module named 'scipy._lib._highs_utils'
 [1mscipy._lib._pep440.Infinity(B[m is not a type
 [1mscipy._lib._pep440.NegativeInfinity(B[m is not a type
@@ -56,178 +55,7 @@
 [1mscipy._lib._util.Generator.weibull(B[m is not present in stub
 [1mscipy._lib._util.Generator.zipf(B[m is not present in stub
 [1mscipy._lib._util.SeedType(B[m is not present at runtime
-[1mscipy._lib.array_api_compat.__all__(B[m is not present at runtime
-[1mscipy._lib.array_api_compat.common.__all__(B[m is not present at runtime
 [1mscipy._lib.decorator.ContextManager.__init__(B[m is inconsistent, stub argument "func" differs from runtime argument "g"
-[1mscipy.constants.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.constants.codata(B[m is not present in stub
-[1mscipy.constants.constants(B[m is not present in stub
-[1mscipy.constants.codata.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.constants.codata.ConstantWarning(B[m is not present in stub
-[1mscipy.constants.codata.__all__(B[m variable differs from runtime type list[Untyped]
-[1mscipy.constants.codata.c(B[m is not present in stub
-[1mscipy.constants.codata.find(B[m is not present in stub
-[1mscipy.constants.codata.k(B[m is not present in stub
-[1mscipy.constants.codata.physical_constants(B[m is not present in stub
-[1mscipy.constants.codata.precision(B[m is not present in stub
-[1mscipy.constants.codata.unit(B[m is not present in stub
-[1mscipy.constants.codata.value(B[m is not present in stub
-[1mscipy.constants.constants.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.constants.constants.Avogadro(B[m is not present in stub
-[1mscipy.constants.constants.Boltzmann(B[m is not present in stub
-[1mscipy.constants.constants.Btu(B[m is not present in stub
-[1mscipy.constants.constants.Btu_IT(B[m is not present in stub
-[1mscipy.constants.constants.Btu_th(B[m is not present in stub
-[1mscipy.constants.constants.G(B[m is not present in stub
-[1mscipy.constants.constants.Julian_year(B[m is not present in stub
-[1mscipy.constants.constants.N_A(B[m is not present in stub
-[1mscipy.constants.constants.Planck(B[m is not present in stub
-[1mscipy.constants.constants.R(B[m is not present in stub
-[1mscipy.constants.constants.Rydberg(B[m is not present in stub
-[1mscipy.constants.constants.Stefan_Boltzmann(B[m is not present in stub
-[1mscipy.constants.constants.Wien(B[m is not present in stub
-[1mscipy.constants.constants.__all__(B[m variable differs from runtime type list[Untyped]
-[1mscipy.constants.constants.acre(B[m is not present in stub
-[1mscipy.constants.constants.alpha(B[m is not present in stub
-[1mscipy.constants.constants.angstrom(B[m is not present in stub
-[1mscipy.constants.constants.arcmin(B[m is not present in stub
-[1mscipy.constants.constants.arcminute(B[m is not present in stub
-[1mscipy.constants.constants.arcsec(B[m is not present in stub
-[1mscipy.constants.constants.arcsecond(B[m is not present in stub
-[1mscipy.constants.constants.astronomical_unit(B[m is not present in stub
-[1mscipy.constants.constants.atm(B[m is not present in stub
-[1mscipy.constants.constants.atmosphere(B[m is not present in stub
-[1mscipy.constants.constants.atomic_mass(B[m is not present in stub
-[1mscipy.constants.constants.atto(B[m is not present in stub
-[1mscipy.constants.constants.au(B[m is not present in stub
-[1mscipy.constants.constants.bar(B[m is not present in stub
-[1mscipy.constants.constants.barrel(B[m is not present in stub
-[1mscipy.constants.constants.bbl(B[m is not present in stub
-[1mscipy.constants.constants.blob(B[m is not present in stub
-[1mscipy.constants.constants.c(B[m is not present in stub
-[1mscipy.constants.constants.calorie(B[m is not present in stub
-[1mscipy.constants.constants.calorie_IT(B[m is not present in stub
-[1mscipy.constants.constants.calorie_th(B[m is not present in stub
-[1mscipy.constants.constants.carat(B[m is not present in stub
-[1mscipy.constants.constants.centi(B[m is not present in stub
-[1mscipy.constants.constants.convert_temperature(B[m is not present in stub
-[1mscipy.constants.constants.day(B[m is not present in stub
-[1mscipy.constants.constants.deci(B[m is not present in stub
-[1mscipy.constants.constants.degree(B[m is not present in stub
-[1mscipy.constants.constants.degree_Fahrenheit(B[m is not present in stub
-[1mscipy.constants.constants.deka(B[m is not present in stub
-[1mscipy.constants.constants.dyn(B[m is not present in stub
-[1mscipy.constants.constants.dyne(B[m is not present in stub
-[1mscipy.constants.constants.e(B[m is not present in stub
-[1mscipy.constants.constants.eV(B[m is not present in stub
-[1mscipy.constants.constants.electron_mass(B[m is not present in stub
-[1mscipy.constants.constants.electron_volt(B[m is not present in stub
-[1mscipy.constants.constants.elementary_charge(B[m is not present in stub
-[1mscipy.constants.constants.epsilon_0(B[m is not present in stub
-[1mscipy.constants.constants.erg(B[m is not present in stub
-[1mscipy.constants.constants.exa(B[m is not present in stub
-[1mscipy.constants.constants.exbi(B[m is not present in stub
-[1mscipy.constants.constants.femto(B[m is not present in stub
-[1mscipy.constants.constants.fermi(B[m is not present in stub
-[1mscipy.constants.constants.fine_structure(B[m is not present in stub
-[1mscipy.constants.constants.fluid_ounce(B[m is not present in stub
-[1mscipy.constants.constants.fluid_ounce_US(B[m is not present in stub
-[1mscipy.constants.constants.fluid_ounce_imp(B[m is not present in stub
-[1mscipy.constants.constants.foot(B[m is not present in stub
-[1mscipy.constants.constants.g(B[m is not present in stub
-[1mscipy.constants.constants.gallon(B[m is not present in stub
-[1mscipy.constants.constants.gallon_US(B[m is not present in stub
-[1mscipy.constants.constants.gallon_imp(B[m is not present in stub
-[1mscipy.constants.constants.gas_constant(B[m is not present in stub
-[1mscipy.constants.constants.gibi(B[m is not present in stub
-[1mscipy.constants.constants.giga(B[m is not present in stub
-[1mscipy.constants.constants.golden(B[m is not present in stub
-[1mscipy.constants.constants.golden_ratio(B[m is not present in stub
-[1mscipy.constants.constants.grain(B[m is not present in stub
-[1mscipy.constants.constants.gram(B[m is not present in stub
-[1mscipy.constants.constants.gravitational_constant(B[m is not present in stub
-[1mscipy.constants.constants.h(B[m is not present in stub
-[1mscipy.constants.constants.hbar(B[m is not present in stub
-[1mscipy.constants.constants.hectare(B[m is not present in stub
-[1mscipy.constants.constants.hecto(B[m is not present in stub
-[1mscipy.constants.constants.horsepower(B[m is not present in stub
-[1mscipy.constants.constants.hour(B[m is not present in stub
-[1mscipy.constants.constants.hp(B[m is not present in stub
-[1mscipy.constants.constants.inch(B[m is not present in stub
-[1mscipy.constants.constants.k(B[m is not present in stub
-[1mscipy.constants.constants.kgf(B[m is not present in stub
-[1mscipy.constants.constants.kibi(B[m is not present in stub
-[1mscipy.constants.constants.kilo(B[m is not present in stub
-[1mscipy.constants.constants.kilogram_force(B[m is not present in stub
-[1mscipy.constants.constants.kmh(B[m is not present in stub
-[1mscipy.constants.constants.knot(B[m is not present in stub
-[1mscipy.constants.constants.lambda2nu(B[m is not present in stub
-[1mscipy.constants.constants.lb(B[m is not present in stub
-[1mscipy.constants.constants.lbf(B[m is not present in stub
-[1mscipy.constants.constants.light_year(B[m is not present in stub
-[1mscipy.constants.constants.liter(B[m is not present in stub
-[1mscipy.constants.constants.litre(B[m is not present in stub
-[1mscipy.constants.constants.long_ton(B[m is not present in stub
-[1mscipy.constants.constants.m_e(B[m is not present in stub
-[1mscipy.constants.constants.m_n(B[m is not present in stub
-[1mscipy.constants.constants.m_p(B[m is not present in stub
-[1mscipy.constants.constants.m_u(B[m is not present in stub
-[1mscipy.constants.constants.mach(B[m is not present in stub
-[1mscipy.constants.constants.mebi(B[m is not present in stub
-[1mscipy.constants.constants.mega(B[m is not present in stub
-[1mscipy.constants.constants.metric_ton(B[m is not present in stub
-[1mscipy.constants.constants.micro(B[m is not present in stub
-[1mscipy.constants.constants.micron(B[m is not present in stub
-[1mscipy.constants.constants.mil(B[m is not present in stub
-[1mscipy.constants.constants.mile(B[m is not present in stub
-[1mscipy.constants.constants.milli(B[m is not present in stub
-[1mscipy.constants.constants.minute(B[m is not present in stub
-[1mscipy.constants.constants.mmHg(B[m is not present in stub
-[1mscipy.constants.constants.mph(B[m is not present in stub
-[1mscipy.constants.constants.mu_0(B[m is not present in stub
-[1mscipy.constants.constants.nano(B[m is not present in stub
-[1mscipy.constants.constants.nautical_mile(B[m is not present in stub
-[1mscipy.constants.constants.neutron_mass(B[m is not present in stub
-[1mscipy.constants.constants.nu2lambda(B[m is not present in stub
-[1mscipy.constants.constants.ounce(B[m is not present in stub
-[1mscipy.constants.constants.oz(B[m is not present in stub
-[1mscipy.constants.constants.parsec(B[m is not present in stub
-[1mscipy.constants.constants.pebi(B[m is not present in stub
-[1mscipy.constants.constants.peta(B[m is not present in stub
-[1mscipy.constants.constants.pi(B[m is not present in stub
-[1mscipy.constants.constants.pico(B[m is not present in stub
-[1mscipy.constants.constants.point(B[m is not present in stub
-[1mscipy.constants.constants.pound(B[m is not present in stub
-[1mscipy.constants.constants.pound_force(B[m is not present in stub
-[1mscipy.constants.constants.proton_mass(B[m is not present in stub
-[1mscipy.constants.constants.psi(B[m is not present in stub
-[1mscipy.constants.constants.pt(B[m is not present in stub
-[1mscipy.constants.constants.short_ton(B[m is not present in stub
-[1mscipy.constants.constants.sigma(B[m is not present in stub
-[1mscipy.constants.constants.slinch(B[m is not present in stub
-[1mscipy.constants.constants.slug(B[m is not present in stub
-[1mscipy.constants.constants.speed_of_light(B[m is not present in stub
-[1mscipy.constants.constants.speed_of_sound(B[m is not present in stub
-[1mscipy.constants.constants.stone(B[m is not present in stub
-[1mscipy.constants.constants.survey_foot(B[m is not present in stub
-[1mscipy.constants.constants.survey_mile(B[m is not present in stub
-[1mscipy.constants.constants.tebi(B[m is not present in stub
-[1mscipy.constants.constants.tera(B[m is not present in stub
-[1mscipy.constants.constants.ton_TNT(B[m is not present in stub
-[1mscipy.constants.constants.torr(B[m is not present in stub
-[1mscipy.constants.constants.troy_ounce(B[m is not present in stub
-[1mscipy.constants.constants.troy_pound(B[m is not present in stub
-[1mscipy.constants.constants.u(B[m is not present in stub
-[1mscipy.constants.constants.week(B[m is not present in stub
-[1mscipy.constants.constants.yard(B[m is not present in stub
-[1mscipy.constants.constants.year(B[m is not present in stub
-[1mscipy.constants.constants.yobi(B[m is not present in stub
-[1mscipy.constants.constants.yocto(B[m is not present in stub
-[1mscipy.constants.constants.yotta(B[m is not present in stub
-[1mscipy.constants.constants.zebi(B[m is not present in stub
-[1mscipy.constants.constants.zepto(B[m is not present in stub
-[1mscipy.constants.constants.zero_Celsius(B[m is not present in stub
-[1mscipy.constants.constants.zetta(B[m is not present in stub
 [1mscipy.fftpack.basic.fft(B[m is not present in stub
 [1mscipy.fftpack.basic.fft2(B[m is not present in stub
 [1mscipy.fftpack.basic.fftn(B[m is not present in stub
@@ -260,7 +88,6 @@
 [1mscipy.fftpack.realtransforms.idctn(B[m is not present in stub
 [1mscipy.fftpack.realtransforms.idst(B[m is not present in stub
 [1mscipy.fftpack.realtransforms.idstn(B[m is not present in stub
-[1mscipy.integrate.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.integrate.dblquad(B[m is inconsistent, runtime argument "args" has a default value of type (), which is incompatible with stub argument type (Unpack[_Ts`-1 = Unpack[()]],)
 [1mscipy.integrate.dblquad(B[m is inconsistent, runtime argument "epsabs" is not keyword-only
 [1mscipy.integrate.dblquad(B[m is inconsistent, runtime argument "epsrel" is not keyword-only
@@ -320,7 +147,6 @@
 [1mscipy.integrate._bvp.solve_newton(B[m is not present in stub
 [1mscipy.integrate._bvp.stacked_matmul(B[m is not present in stub
 [1mscipy.integrate._bvp.wrap_functions(B[m is not present in stub
-[1mscipy.integrate._ivp.__all__(B[m is not present at runtime
 [1mscipy.integrate._ivp.ivp.prepare_events(B[m is inconsistent, runtime does not have argument "t0"
 [1mscipy.integrate._ode.IntegratorBase.scalar(B[m variable differs from runtime type type
 [1mscipy.integrate._ode.dop853.success(B[m variable differs from runtime type None
@@ -378,17 +204,6 @@
 [1mscipy.integrate._quadpack_py.tplquad(B[m is inconsistent, runtime argument "epsrel" is not keyword-only
 [1mscipy.integrate._quadrature.fixed_quad(B[m is inconsistent, runtime argument "args" has a default value of type (), which is incompatible with stub argument type (Unpack[_Ts`-2 = Unpack[()]],)
 [1mscipy.integrate._tanhsinh.nsum(B[m is not present at runtime
-[1mscipy.integrate.lsoda.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.integrate.lsoda.lsoda(B[m is not present in stub
-[1mscipy.integrate.odepack.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.integrate.odepack.ODEintWarning(B[m is not present in stub
-[1mscipy.integrate.odepack.odeint(B[m is not present in stub
-[1mscipy.integrate.quadpack.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.integrate.quadpack.IntegrationWarning(B[m is not present in stub
-[1mscipy.integrate.quadpack.dblquad(B[m is not present in stub
-[1mscipy.integrate.quadpack.nquad(B[m is not present in stub
-[1mscipy.integrate.quadpack.quad(B[m is not present in stub
-[1mscipy.integrate.quadpack.tplquad(B[m is not present in stub
 [1mscipy.interpolate.InterpolatedUnivariateSpline.__init__(B[m is inconsistent, runtime argument "w" is not keyword-only
 [1mscipy.interpolate.InterpolatedUnivariateSpline.__init__(B[m is inconsistent, runtime argument "bbox" is not keyword-only
 [1mscipy.interpolate.InterpolatedUnivariateSpline.__init__(B[m is inconsistent, runtime argument "k" is not keyword-only
@@ -645,14 +460,8 @@
 [1mscipy.io.mmio.mmwrite(B[m is not present in stub
 [1mscipy.io.netcdf.netcdf_file(B[m is not present in stub
 [1mscipy.io.netcdf.netcdf_variable(B[m is not present in stub
-[1mscipy.linalg.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.linalg.cython_blas(B[m is not present in stub
 [1mscipy.linalg.cython_lapack(B[m is not present in stub
-[1mscipy.linalg.decomp_cholesky(B[m is not present in stub
-[1mscipy.linalg.decomp_lu(B[m is not present in stub
-[1mscipy.linalg.decomp_qr(B[m is not present in stub
-[1mscipy.linalg.decomp_schur(B[m is not present in stub
-[1mscipy.linalg.decomp_svd(B[m is not present in stub
 [1mscipy.linalg.eig(B[m is inconsistent, stub argument "a" has a default value but runtime argument does not
 [1mscipy.linalg.eig(B[m is inconsistent, stub argument "a" differs from runtime argument "b"
 [1mscipy.linalg.eig(B[m is inconsistent, runtime argument "b" has a default value of type None, which is incompatible with stub argument type numpy._typing._array_like._SupportsArray[numpy.dtype[Any]] | numpy._typing._nested_sequence._NestedSequence[numpy._typing._array_like._SupportsArray[numpy.dtype[Any]]] | int | float | complex | str | bytes | numpy._typing._nested_sequence._NestedSequence[bool | int | float | complex | str | bytes]. This is often caused by overloads failing to account for explicitly passing in the default value.
@@ -713,7 +522,6 @@
 [1mscipy.linalg.lu(B[m is inconsistent, runtime does not have argument "check_finite"
 [1mscipy.linalg.lu(B[m is inconsistent, runtime does not have argument "p_indices"
 [1mscipy.linalg.lu(B[m is inconsistent, runtime does not have argument "p_indices"
-[1mscipy.linalg.matfuncs(B[m is not present in stub
 [1mscipy.linalg.matmul_toeplitz(B[m is inconsistent, runtime argument "check_finite" has a default value of False, which is different from stub argument default True
 [1mscipy.linalg.matrix_balance(B[m is inconsistent, stub argument "A" has a default value but runtime argument does not
 [1mscipy.linalg.matrix_balance(B[m is inconsistent, stub argument "A" differs from runtime argument "permute"
@@ -724,7 +532,6 @@
 [1mscipy.linalg.matrix_balance(B[m is inconsistent, runtime does not have argument "separate"
 [1mscipy.linalg.matrix_balance(B[m is inconsistent, runtime does not have argument "separate"
 [1mscipy.linalg.matrix_balance(B[m is inconsistent, runtime does not have argument "overwrite_a"
-[1mscipy.linalg.misc(B[m is not present in stub
 [1mscipy.linalg.null_space(B[m is inconsistent, runtime does not have argument "check_finite"
 [1mscipy.linalg.null_space(B[m is inconsistent, runtime does not have argument "lapack_driver"
 [1mscipy.linalg.null_space(B[m is inconsistent, runtime does not have argument "overwrite_a"
@@ -787,7 +594,6 @@
 [1mscipy.linalg.rq(B[m is inconsistent, runtime does not have argument "mode"
 [1mscipy.linalg.rq(B[m is inconsistent, runtime does not have argument "check_finite"
 [1mscipy.linalg.solve(B[m is inconsistent, runtime argument "assume_a" has a default value of 'gen', which is different from stub argument default None
-[1mscipy.linalg.special_matrices(B[m is not present in stub
 [1mscipy.linalg.svd(B[m is inconsistent, stub argument "a" has a default value but runtime argument does not
 [1mscipy.linalg.svd(B[m is inconsistent, stub argument "a" differs from runtime argument "full_matrices"
 [1mscipy.linalg.svd(B[m is inconsistent, stub argument "full_matrices" differs from runtime argument "compute_uv"
@@ -862,7 +668,6 @@
 [1mscipy.linalg._decomp_lu.lu(B[m is inconsistent, runtime does not have argument "check_finite"
 [1mscipy.linalg._decomp_lu.lu(B[m is inconsistent, runtime does not have argument "p_indices"
 [1mscipy.linalg._decomp_lu.lu(B[m is inconsistent, runtime does not have argument "p_indices"
-[1mscipy.linalg._decomp_lu_cython.__all__(B[m is not present at runtime
 [1mscipy.linalg._decomp_lu_cython.lu_decompose(B[m is not present at runtime
 [1mscipy.linalg._decomp_lu_cython.lu_dispatcher(B[m is inconsistent, stub argument "lu" differs from runtime argument "u"
 [1mscipy.linalg._decomp_lu_cython.lu_dispatcher(B[m is inconsistent, stub argument "perm" differs from runtime argument "piv"
@@ -942,7 +747,6 @@
 [1mscipy.linalg._matfuncs.expm_frechet(B[m is inconsistent, runtime does not have argument "compute_expm"
 [1mscipy.linalg._matfuncs.expm_frechet(B[m is inconsistent, runtime does not have argument "check_finite"
 [1mscipy.linalg._matfuncs_expm.pick_pade_structure(B[m is inconsistent, stub argument "a" differs from runtime argument "Am"
-[1mscipy.linalg._solve_toeplitz.__all__(B[m is not present at runtime
 [1mscipy.linalg._special_matrices.invpascal(B[m is inconsistent, stub argument "n" has a default value but runtime argument does not
 [1mscipy.linalg._special_matrices.invpascal(B[m is inconsistent, stub argument "n" differs from runtime argument "kind"
 [1mscipy.linalg._special_matrices.invpascal(B[m is inconsistent, runtime argument "kind" has a default value of type 'symmetric', which is incompatible with stub argument type int | numpy.integer[numpy._typing.NBitBase] | numpy.bool. This is often caused by overloads failing to account for explicitly passing in the default value.
@@ -959,134 +763,12 @@
 [1mscipy.linalg._special_matrices.pascal(B[m is inconsistent, runtime does not have argument "kind"
 [1mscipy.linalg._special_matrices.pascal(B[m is inconsistent, runtime does not have argument "exact"
 [1mscipy.linalg._special_matrices.pascal(B[m is inconsistent, runtime does not have argument "exact"
-[1mscipy.linalg.basic.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.linalg.basic.LinAlgError(B[m is not present in stub
-[1mscipy.linalg.basic.LinAlgWarning(B[m is not present in stub
-[1mscipy.linalg.basic.__all__(B[m variable differs from runtime type list[Untyped]
-[1mscipy.linalg.basic.det(B[m is not present in stub
-[1mscipy.linalg.basic.get_lapack_funcs(B[m is not present in stub
-[1mscipy.linalg.basic.inv(B[m is not present in stub
-[1mscipy.linalg.basic.lstsq(B[m is not present in stub
-[1mscipy.linalg.basic.matmul_toeplitz(B[m is not present in stub
-[1mscipy.linalg.basic.matrix_balance(B[m is not present in stub
-[1mscipy.linalg.basic.pinv(B[m is not present in stub
-[1mscipy.linalg.basic.pinvh(B[m is not present in stub
-[1mscipy.linalg.basic.solve(B[m is not present in stub
-[1mscipy.linalg.basic.solve_banded(B[m is not present in stub
-[1mscipy.linalg.basic.solve_circulant(B[m is not present in stub
-[1mscipy.linalg.basic.solve_toeplitz(B[m is not present in stub
-[1mscipy.linalg.basic.solve_triangular(B[m is not present in stub
-[1mscipy.linalg.basic.solveh_banded(B[m is not present in stub
-[1mscipy.linalg.decomp.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.linalg.decomp.LinAlgError(B[m is not present in stub
-[1mscipy.linalg.decomp.__all__(B[m variable differs from runtime type list[Untyped]
-[1mscipy.linalg.decomp.cdf2rdf(B[m is not present in stub
-[1mscipy.linalg.decomp.eig(B[m is not present in stub
-[1mscipy.linalg.decomp.eig_banded(B[m is not present in stub
-[1mscipy.linalg.decomp.eigh(B[m is not present in stub
-[1mscipy.linalg.decomp.eigh_tridiagonal(B[m is not present in stub
-[1mscipy.linalg.decomp.eigvals(B[m is not present in stub
-[1mscipy.linalg.decomp.eigvals_banded(B[m is not present in stub
-[1mscipy.linalg.decomp.eigvalsh(B[m is not present in stub
-[1mscipy.linalg.decomp.eigvalsh_tridiagonal(B[m is not present in stub
-[1mscipy.linalg.decomp.get_lapack_funcs(B[m is not present in stub
-[1mscipy.linalg.decomp.hessenberg(B[m is not present in stub
-[1mscipy.linalg.decomp.norm(B[m is not present in stub
-[1mscipy.linalg.decomp_cholesky.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.linalg.decomp_cholesky.LinAlgError(B[m is not present in stub
-[1mscipy.linalg.decomp_cholesky.__all__(B[m variable differs from runtime type list[Untyped]
-[1mscipy.linalg.decomp_cholesky.cho_factor(B[m is not present in stub
-[1mscipy.linalg.decomp_cholesky.cho_solve(B[m is not present in stub
-[1mscipy.linalg.decomp_cholesky.cho_solve_banded(B[m is not present in stub
-[1mscipy.linalg.decomp_cholesky.cholesky(B[m is not present in stub
-[1mscipy.linalg.decomp_cholesky.cholesky_banded(B[m is not present in stub
-[1mscipy.linalg.decomp_cholesky.get_lapack_funcs(B[m is not present in stub
-[1mscipy.linalg.decomp_lu.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.linalg.decomp_lu.LinAlgWarning(B[m is not present in stub
-[1mscipy.linalg.decomp_lu.__all__(B[m variable differs from runtime type list[Untyped]
-[1mscipy.linalg.decomp_lu.get_lapack_funcs(B[m is not present in stub
-[1mscipy.linalg.decomp_lu.lu(B[m is not present in stub
-[1mscipy.linalg.decomp_lu.lu_factor(B[m is not present in stub
-[1mscipy.linalg.decomp_lu.lu_solve(B[m is not present in stub
-[1mscipy.linalg.decomp_qr.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.linalg.decomp_qr.__all__(B[m variable differs from runtime type list[Untyped]
-[1mscipy.linalg.decomp_qr.get_lapack_funcs(B[m is not present in stub
-[1mscipy.linalg.decomp_qr.qr(B[m is not present in stub
-[1mscipy.linalg.decomp_qr.qr_multiply(B[m is not present in stub
-[1mscipy.linalg.decomp_qr.rq(B[m is not present in stub
-[1mscipy.linalg.decomp_schur.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.linalg.decomp_schur.LinAlgError(B[m is not present in stub
-[1mscipy.linalg.decomp_schur.__all__(B[m variable differs from runtime type list[Untyped]
-[1mscipy.linalg.decomp_schur.eigvals(B[m is not present in stub
-[1mscipy.linalg.decomp_schur.get_lapack_funcs(B[m is not present in stub
-[1mscipy.linalg.decomp_schur.norm(B[m is not present in stub
-[1mscipy.linalg.decomp_schur.rsf2csf(B[m is not present in stub
-[1mscipy.linalg.decomp_schur.schur(B[m is not present in stub
-[1mscipy.linalg.decomp_svd.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.linalg.decomp_svd.LinAlgError(B[m is not present in stub
-[1mscipy.linalg.decomp_svd.__all__(B[m variable differs from runtime type list[Untyped]
-[1mscipy.linalg.decomp_svd.diagsvd(B[m is not present in stub
-[1mscipy.linalg.decomp_svd.get_lapack_funcs(B[m is not present in stub
-[1mscipy.linalg.decomp_svd.null_space(B[m is not present in stub
-[1mscipy.linalg.decomp_svd.orth(B[m is not present in stub
-[1mscipy.linalg.decomp_svd.subspace_angles(B[m is not present in stub
-[1mscipy.linalg.decomp_svd.svd(B[m is not present in stub
-[1mscipy.linalg.decomp_svd.svdvals(B[m is not present in stub
 [1mscipy.linalg.interpolative.estimate_rank(B[m is inconsistent, runtime does not have argument "rng"
 [1mscipy.linalg.interpolative.estimate_spectral_norm(B[m is inconsistent, runtime does not have argument "rng"
 [1mscipy.linalg.interpolative.estimate_spectral_norm_diff(B[m is inconsistent, runtime does not have argument "rng"
 [1mscipy.linalg.interpolative.interp_decomp(B[m is inconsistent, runtime does not have argument "rng"
 [1mscipy.linalg.interpolative.seed(B[m is inconsistent, runtime argument "seed" has a default value of type None, which is incompatible with stub argument type Never
 [1mscipy.linalg.interpolative.svd(B[m is inconsistent, runtime does not have argument "rng"
-[1mscipy.linalg.matfuncs.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.linalg.matfuncs.__all__(B[m variable differs from runtime type list[Untyped]
-[1mscipy.linalg.matfuncs.coshm(B[m is not present in stub
-[1mscipy.linalg.matfuncs.cosm(B[m is not present in stub
-[1mscipy.linalg.matfuncs.expm(B[m is not present in stub
-[1mscipy.linalg.matfuncs.expm_cond(B[m is not present in stub
-[1mscipy.linalg.matfuncs.expm_frechet(B[m is not present in stub
-[1mscipy.linalg.matfuncs.fractional_matrix_power(B[m is not present in stub
-[1mscipy.linalg.matfuncs.funm(B[m is not present in stub
-[1mscipy.linalg.matfuncs.inv(B[m is not present in stub
-[1mscipy.linalg.matfuncs.khatri_rao(B[m is not present in stub
-[1mscipy.linalg.matfuncs.logm(B[m is not present in stub
-[1mscipy.linalg.matfuncs.norm(B[m is not present in stub
-[1mscipy.linalg.matfuncs.rsf2csf(B[m is not present in stub
-[1mscipy.linalg.matfuncs.schur(B[m is not present in stub
-[1mscipy.linalg.matfuncs.signm(B[m is not present in stub
-[1mscipy.linalg.matfuncs.sinhm(B[m is not present in stub
-[1mscipy.linalg.matfuncs.sinm(B[m is not present in stub
-[1mscipy.linalg.matfuncs.solve(B[m is not present in stub
-[1mscipy.linalg.matfuncs.sqrtm(B[m is not present in stub
-[1mscipy.linalg.matfuncs.svd(B[m is not present in stub
-[1mscipy.linalg.matfuncs.tanhm(B[m is not present in stub
-[1mscipy.linalg.matfuncs.tanm(B[m is not present in stub
-[1mscipy.linalg.misc.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.linalg.misc.LinAlgError(B[m is not present in stub
-[1mscipy.linalg.misc.LinAlgWarning(B[m is not present in stub
-[1mscipy.linalg.misc.__all__(B[m variable differs from runtime type list[Untyped]
-[1mscipy.linalg.misc.get_blas_funcs(B[m is not present in stub
-[1mscipy.linalg.misc.get_lapack_funcs(B[m is not present in stub
-[1mscipy.linalg.misc.norm(B[m is not present in stub
-[1mscipy.linalg.special_matrices.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
-[1mscipy.linalg.special_matrices.__all__(B[m variable differs from runtime type list[Untyped]
-[1mscipy.linalg.special_matrices.block_diag(B[m is not present in stub
-[1mscipy.linalg.special_matrices.circulant(B[m is not present in stub
-[1mscipy.linalg.special_matrices.companion(B[m is not present in stub
-[1mscipy.linalg.special_matrices.convolution_matrix(B[m is not present in stub
-[1mscipy.linalg.special_matrices.dft(B[m is not present in stub
-[1mscipy.linalg.special_matrices.fiedler(B[m is not present in stub
-[1mscipy.linalg.special_matrices.fiedler_companion(B[m is not present in stub
-[1mscipy.linalg.special_matrices.hadamard(B[m is not present in stub
-[1mscipy.linalg.special_matrices.hankel(B[m is not present in stub
-[1mscipy.linalg.special_matrices.helmert(B[m is not present in stub
-[1mscipy.linalg.special_matrices.hilbert(B[m is not present in stub
-[1mscipy.linalg.special_matrices.invhilbert(B[m is not present in stub
-[1mscipy.linalg.special_matrices.invpascal(B[m is not present in stub
-[1mscipy.linalg.special_matrices.kron(B[m is not present in stub
-[1mscipy.linalg.special_matrices.leslie(B[m is not present in stub
-[1mscipy.linalg.special_matrices.pascal(B[m is not present in stub
-[1mscipy.linalg.special_matrices.toeplitz(B[m is not present in stub
 [1mscipy.misc.common.ascent(B[m is not present in stub
 [1mscipy.misc.common.central_diff_weights(B[m is not present in stub
 [1mscipy.misc.common.derivative(B[m is not present in stub
@@ -1198,10 +880,9 @@
 [1mscipy.odr.odrpack.odr_stop(B[m is not present in stub
 [1mscipy.optimize.KrylovJacobian.setup(B[m is inconsistent, stub argument "F" differs from runtime argument "f"
 [1mscipy.optimize.KrylovJacobian.update(B[m is inconsistent, stub argument "F" differs from runtime argument "f"
-[1mscipy.optimize.NonlinearConstraint.__init__(B[m is inconsistent, runtime argument "hess" has a default value of <scipy.optimize._hessian_update_strategy.BFGS object at 0x718076291ba0>, which is different from stub argument default None
-[1mscipy.optimize._constraints.NonlinearConstraint.__init__(B[m is inconsistent, runtime argument "hess" has a default value of <scipy.optimize._hessian_update_strategy.BFGS object at 0x718076291ba0>, which is different from stub argument default None
-[1mscipy.optimize._constraints.__all__(B[m is not present at runtime
-[1mscipy.optimize._differentialevolution.NonlinearConstraint.__init__(B[m is inconsistent, runtime argument "hess" has a default value of <scipy.optimize._hessian_update_strategy.BFGS object at 0x718076291ba0>, which is different from stub argument default None
+[1mscipy.optimize.NonlinearConstraint.__init__(B[m is inconsistent, runtime argument "hess" has a default value of <scipy.optimize._hessian_update_strategy.BFGS object at 0x7284d477d9f0>, which is different from stub argument default None
+[1mscipy.optimize._constraints.NonlinearConstraint.__init__(B[m is inconsistent, runtime argument "hess" has a default value of <scipy.optimize._hessian_update_strategy.BFGS object at 0x7284d477d9f0>, which is different from stub argument default None
+[1mscipy.optimize._differentialevolution.NonlinearConstraint.__init__(B[m is inconsistent, runtime argument "hess" has a default value of <scipy.optimize._hessian_update_strategy.BFGS object at 0x7284d477d9f0>, which is different from stub argument default None
 [1mscipy.optimize._elementwise(B[m failed to import. Maybe install the runtime package or alter PYTHONPATH? ModuleNotFoundError: No module named 'scipy.optimize._elementwise'
 [1mscipy.optimize._group_columns.__pythran__(B[m is not present in stub
 [1mscipy.optimize._highs.cython(B[m failed to import. Maybe install the runtime package or alter PYTHONPATH? ModuleNotFoundError: No module named 'scipy.optimize._highs.cython'
@@ -1215,7 +896,6 @@
 [1mscipy.optimize._linprog_util._LPProblem.__new__(B[m is inconsistent, runtime argument "bounds" has a default value but stub argument does not
 [1mscipy.optimize._linprog_util._LPProblem.__new__(B[m is inconsistent, runtime argument "x0" has a default value but stub argument does not
 [1mscipy.optimize._linprog_util._LPProblem.__new__(B[m is inconsistent, runtime argument "integrality" has a default value but stub argument does not
-[1mscipy.optimize._lsap.__all__(B[m is not present at runtime
 [1mscipy.optimize._lsq.least_squares(B[m is inconsistent, runtime argument "tr_options" has a default value of {}, which is different from stub argument default None
 [1mscipy.optimize._lsq.least_squares(B[m is inconsistent, runtime argument "kwargs" has a default value of {}, which is different from stub argument default None
 [1mscipy.optimize._lsq.common.LinearOperator.__new__(B[m is inconsistent, stub does not have *args argument "args"
@@ -1256,80 +936,17 @@
 [1mscipy.optimize._nonlin.KrylovJacobian.update(B[m is inconsistent, stub argument "F" differs from runtime argument "f"
 [1mscipy.optimize._numdiff.approx_derivative(B[m is inconsistent, runtime argument "kwargs" has a default value of {}, which is different from stub argument default None
 [1mscipy.optimize._numdiff.check_derivative(B[m is inconsistent, runtime argument "kwargs" has a default value of {}, which is different from stub argument default None
-[1mscipy.optimize._remove_redundancy.__all__(B[m is not present at runtime
-[1mscipy.optimize._trlib._trlib.__all__(B[m is not present at runtime
 [1mscipy.optimize._trustregion_constr._minimize_trustregion_constr(B[m is not present in stub
 [1mscipy.optimize._trustregion_constr.minimize_trustregion_constr.LagrangianHessian.__call__(B[m is inconsistent, stub argument "v_ineq" has a default value but runtime argument does not
 [1mscipy.optimize._trustregion_constr.minimize_trustregion_constr.LinearOperator.__new__(B[m is inconsistent, stub does not have *args argument "args"
 [1mscipy.optimize._trustregion_constr.minimize_trustregion_constr.LinearOperator.dtype(B[m is not present at runtime
-[1mscipy.optimize._trustregion_constr.minimize_trustregion_constr.NonlinearConstraint.__init__(B[m is inconsistent, runtime argument "hess" has a default value of <scipy.optimize._hessian_update_strategy.BFGS object at 0x718076291ba0>, which is different from stub argument default None
+[1mscipy.optimize._trustregion_constr.minimize_trustregion_constr.NonlinearConstraint.__init__(B[m is inconsistent, runtime argument "hess" has a default value of <scipy.optimize._hessian_update_strategy.BFGS object at 0x7284d477d9f0>, which is different from stub argument default None
 [1mscipy.optimize._trustregion_constr.projections.LinearOperator.__new__(B[m is inconsistent, stub does not have *args argument "args"
 [1mscipy.optimize._trustregion_constr.projections.LinearOperator.dtype(B[m is not present at runtime
 [1mscipy.optimize._trustregion_constr.tr_interior_point.LinearOperator.__new__(B[m is inconsistent, stub does not have *args argument "args"
 [1mscipy.optimize._trustregion_constr.tr_interior_point.LinearOperator.dtype(B[m is not present at runtime
 [1mscipy.optimize._trustregion_exact._minimize_trustregion_exact(B[m is not present in stub
 [1mscipy.optimize._trustregion_krylov._minimize_trust_krylov(B[m is not present in stub
-[1mscipy.optimize.cobyla.OptimizeResult(B[m is not present in stub
-[1mscipy.optimize.cobyla.fmin_cobyla(B[m is not present in stub
-[1mscipy.optimize.elementwise(B[m failed to import. Maybe install the runtime package or alter PYTHONPATH? ModuleNotFoundError: No module named 'scipy.optimize.elementwise'
-[1mscipy.optimize.lbfgsb.LbfgsInvHessProduct(B[m is not present in stub
-[1mscipy.optimize.lbfgsb.OptimizeResult(B[m is not present in stub
-[1mscipy.optimize.lbfgsb.fmin_l_bfgs_b(B[m is not present in stub
-[1mscipy.optimize.lbfgsb.zeros(B[m is not present in stub
-[1mscipy.optimize.linesearch.line_search(B[m is not present in stub
-[1mscipy.optimize.minpack.OptimizeResult(B[m is not present in stub
-[1mscipy.optimize.minpack.OptimizeWarning(B[m is not present in stub
-[1mscipy.optimize.minpack.curve_fit(B[m is not present in stub
-[1mscipy.optimize.minpack.fixed_point(B[m is not present in stub
-[1mscipy.optimize.minpack.fsolve(B[m is not present in stub
-[1mscipy.optimize.minpack.least_squares(B[m is not present in stub
-[1mscipy.optimize.minpack.leastsq(B[m is not present in stub
-[1mscipy.optimize.minpack.zeros(B[m is not present in stub
-[1mscipy.optimize.nonlin.BroydenFirst(B[m is not present in stub
-[1mscipy.optimize.nonlin.InverseJacobian(B[m is not present in stub
-[1mscipy.optimize.nonlin.KrylovJacobian(B[m is not present in stub
-[1mscipy.optimize.nonlin.anderson(B[m is not present in stub
-[1mscipy.optimize.nonlin.broyden1(B[m is not present in stub
-[1mscipy.optimize.nonlin.broyden2(B[m is not present in stub
-[1mscipy.optimize.nonlin.diagbroyden(B[m is not present in stub
-[1mscipy.optimize.nonlin.excitingmixing(B[m is not present in stub
-[1mscipy.optimize.nonlin.linearmixing(B[m is not present in stub
-[1mscipy.optimize.nonlin.newton_krylov(B[m is not present in stub
-[1mscipy.optimize.optimize.OptimizeResult(B[m is not present in stub
-[1mscipy.optimize.optimize.OptimizeWarning(B[m is not present in stub
-[1mscipy.optimize.optimize.approx_fprime(B[m is not present in stub
-[1mscipy.optimize.optimize.bracket(B[m is not present in stub
-[1mscipy.optimize.optimize.brent(B[m is not present in stub
-[1mscipy.optimize.optimize.brute(B[m is not present in stub
-[1mscipy.optimize.optimize.check_grad(B[m is not present in stub
-[1mscipy.optimize.optimize.fmin(B[m is not present in stub
-[1mscipy.optimize.optimize.fmin_bfgs(B[m is not present in stub
-[1mscipy.optimize.optimize.fmin_cg(B[m is not present in stub
-[1mscipy.optimize.optimize.fmin_ncg(B[m is not present in stub
-[1mscipy.optimize.optimize.fmin_powell(B[m is not present in stub
-[1mscipy.optimize.optimize.fminbound(B[m is not present in stub
-[1mscipy.optimize.optimize.golden(B[m is not present in stub
-[1mscipy.optimize.optimize.line_search(B[m is not present in stub
-[1mscipy.optimize.optimize.rosen(B[m is not present in stub
-[1mscipy.optimize.optimize.rosen_der(B[m is not present in stub
-[1mscipy.optimize.optimize.rosen_hess(B[m is not present in stub
-[1mscipy.optimize.optimize.rosen_hess_prod(B[m is not present in stub
-[1mscipy.optimize.optimize.show_options(B[m is not present in stub
-[1mscipy.optimize.optimize.zeros(B[m is not present in stub
-[1mscipy.optimize.slsqp.OptimizeResult(B[m is not present in stub
-[1mscipy.optimize.slsqp.fmin_slsqp(B[m is not present in stub
-[1mscipy.optimize.slsqp.slsqp(B[m is not present in stub
-[1mscipy.optimize.slsqp.zeros(B[m is not present in stub
-[1mscipy.optimize.tnc.OptimizeResult(B[m is not present in stub
-[1mscipy.optimize.tnc.fmin_tnc(B[m is not present in stub
-[1mscipy.optimize.tnc.zeros(B[m is not present in stub
-[1mscipy.optimize.zeros.RootResults(B[m is not present in stub
-[1mscipy.optimize.zeros.bisect(B[m is not present in stub
-[1mscipy.optimize.zeros.brenth(B[m is not present in stub
-[1mscipy.optimize.zeros.brentq(B[m is not present in stub
-[1mscipy.optimize.zeros.newton(B[m is not present in stub
-[1mscipy.optimize.zeros.ridder(B[m is not present in stub
-[1mscipy.optimize.zeros.toms748(B[m is not present in stub
 [1mscipy.signal.BSpline(B[m is not present at runtime
 [1mscipy.signal.EPSILON(B[m is not present at runtime
 [1mscipy.signal.LinAlgError(B[m is not present at runtime
@@ -1377,7 +994,6 @@
 [1mscipy.signal._max_len_seq_inner.__pythran__(B[m is not present in stub
 [1mscipy.signal._short_time_fft.FFT_MODE_TYPE(B[m is not a Union
 [1mscipy.signal._short_time_fft.PAD_TYPE(B[m is not a Union
-[1mscipy.signal._signaltools.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.signal._signaltools.cmplx_sort(B[m is not present in stub
 [1mscipy.signal._spectral.__pythran__(B[m is not present in stub
 [1mscipy.signal._spline.cspline2d(B[m is not present in stub
@@ -1633,7 +1249,6 @@
 [1mscipy.sparse._index.INT_TYPES(B[m is not present in stub
 [1mscipy.sparse._lil._lil_base.__init__(B[m is inconsistent, runtime does not have argument "maxprint"
 [1mscipy.sparse._lil._lil_base.count_nonzero(B[m is inconsistent, runtime does not have argument "axis"
-[1mscipy.sparse._matrix.__all__(B[m is not present at runtime
 [1mscipy.sparse._matrix.spmatrix.todense(B[m is not present at runtime
 [1mscipy.sparse._sputils.convert_pydata_sparse_to_scipy(B[m is inconsistent, runtime does not have argument "accept_fv"
 [1mscipy.sparse.base.MAXPRINT(B[m is not present in stub
@@ -1740,7 +1355,6 @@
 [1mscipy.sparse.csc.isspmatrix_csc(B[m is not present in stub
 [1mscipy.sparse.csc.spmatrix(B[m is not present in stub
 [1mscipy.sparse.csc.upcast(B[m is not present in stub
-[1mscipy.sparse.csgraph.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.sparse.csgraph.NegativeCycleError.__init__(B[m is inconsistent, stub does not have argument "message"
 [1mscipy.sparse.csgraph.NegativeCycleError.__init__(B[m is inconsistent, runtime does not have *args argument "args"
 [1mscipy.sparse.csgraph.bellman_ford(B[m is inconsistent, stub does not have argument "csgraph"
@@ -1879,15 +1493,12 @@
 [1mscipy.sparse.csgraph.yen(B[m is inconsistent, stub does not have argument "unweighted"
 [1mscipy.sparse.csgraph.yen(B[m is inconsistent, runtime does not have **kwargs argument "kwargs"
 [1mscipy.sparse.csgraph._flow.MaximumFlowResult(B[m is not present in stub
-[1mscipy.sparse.csgraph._flow.__all__(B[m is not present at runtime
 [1mscipy.sparse.csgraph._flow.maximum_flow(B[m is inconsistent, stub does not have argument "csgraph"
 [1mscipy.sparse.csgraph._flow.maximum_flow(B[m is inconsistent, stub does not have argument "source"
 [1mscipy.sparse.csgraph._flow.maximum_flow(B[m is inconsistent, stub does not have argument "sink"
 [1mscipy.sparse.csgraph._flow.maximum_flow(B[m is inconsistent, runtime does not have *args argument "args"
 [1mscipy.sparse.csgraph._flow.maximum_flow(B[m is inconsistent, stub does not have argument "method"
 [1mscipy.sparse.csgraph._flow.maximum_flow(B[m is inconsistent, runtime does not have **kwargs argument "kwargs"
-[1mscipy.sparse.csgraph._laplacian.__all__(B[m is not present at runtime
-[1mscipy.sparse.csgraph._matching.__all__(B[m is not present at runtime
 [1mscipy.sparse.csgraph._matching.maximum_bipartite_matching(B[m is inconsistent, stub does not have argument "graph"
 [1mscipy.sparse.csgraph._matching.maximum_bipartite_matching(B[m is inconsistent, stub does not have argument "perm_type"
 [1mscipy.sparse.csgraph._matching.maximum_bipartite_matching(B[m is inconsistent, runtime does not have *args argument "args"
@@ -1896,12 +1507,10 @@
 [1mscipy.sparse.csgraph._matching.min_weight_full_bipartite_matching(B[m is inconsistent, stub does not have argument "maximize"
 [1mscipy.sparse.csgraph._matching.min_weight_full_bipartite_matching(B[m is inconsistent, runtime does not have *args argument "args"
 [1mscipy.sparse.csgraph._matching.min_weight_full_bipartite_matching(B[m is inconsistent, runtime does not have **kwargs argument "kwargs"
-[1mscipy.sparse.csgraph._min_spanning_tree.__all__(B[m is not present at runtime
 [1mscipy.sparse.csgraph._min_spanning_tree.minimum_spanning_tree(B[m is inconsistent, stub does not have argument "csgraph"
 [1mscipy.sparse.csgraph._min_spanning_tree.minimum_spanning_tree(B[m is inconsistent, stub does not have argument "overwrite"
 [1mscipy.sparse.csgraph._min_spanning_tree.minimum_spanning_tree(B[m is inconsistent, runtime does not have *args argument "args"
 [1mscipy.sparse.csgraph._min_spanning_tree.minimum_spanning_tree(B[m is inconsistent, runtime does not have **kwargs argument "kwargs"
-[1mscipy.sparse.csgraph._reordering.__all__(B[m is not present at runtime
 [1mscipy.sparse.csgraph._reordering.reverse_cuthill_mckee(B[m is inconsistent, stub does not have argument "graph"
 [1mscipy.sparse.csgraph._reordering.reverse_cuthill_mckee(B[m is inconsistent, stub does not have argument "symmetric_mode"
 [1mscipy.sparse.csgraph._reordering.reverse_cuthill_mckee(B[m is inconsistent, runtime does not have *args argument "args"
@@ -1911,7 +1520,6 @@
 [1mscipy.sparse.csgraph._reordering.structural_rank(B[m is inconsistent, runtime does not have **kwargs argument "kwargs"
 [1mscipy.sparse.csgraph._shortest_path.NegativeCycleError.__init__(B[m is inconsistent, stub does not have argument "message"
 [1mscipy.sparse.csgraph._shortest_path.NegativeCycleError.__init__(B[m is inconsistent, runtime does not have *args argument "args"
-[1mscipy.sparse.csgraph._shortest_path.__test__(B[m is not present in stub
 [1mscipy.sparse.csgraph._shortest_path.bellman_ford(B[m is inconsistent, stub does not have argument "csgraph"
 [1mscipy.sparse.csgraph._shortest_path.bellman_ford(B[m is inconsistent, stub does not have argument "directed"
 [1mscipy.sparse.csgraph._shortest_path.bellman_ford(B[m is inconsistent, stub does not have argument "indices"
@@ -1960,7 +1568,6 @@
 [1mscipy.sparse.csgraph._shortest_path.yen(B[m is inconsistent, stub does not have argument "return_predecessors"
 [1mscipy.sparse.csgraph._shortest_path.yen(B[m is inconsistent, stub does not have argument "unweighted"
 [1mscipy.sparse.csgraph._shortest_path.yen(B[m is inconsistent, runtime does not have **kwargs argument "kwargs"
-[1mscipy.sparse.csgraph._tools.__all__(B[m is not present at runtime
 [1mscipy.sparse.csgraph._tools.construct_dist_matrix(B[m is inconsistent, stub does not have argument "graph"
 [1mscipy.sparse.csgraph._tools.construct_dist_matrix(B[m is inconsistent, stub does not have argument "predecessors"
 [1mscipy.sparse.csgraph._tools.construct_dist_matrix(B[m is inconsistent, stub does not have argument "directed"
@@ -1995,7 +1602,6 @@
 [1mscipy.sparse.csgraph._tools.reconstruct_path(B[m is inconsistent, stub does not have argument "directed"
 [1mscipy.sparse.csgraph._tools.reconstruct_path(B[m is inconsistent, runtime does not have *args argument "args"
 [1mscipy.sparse.csgraph._tools.reconstruct_path(B[m is inconsistent, runtime does not have **kwargs argument "kwargs"
-[1mscipy.sparse.csgraph._traversal.__all__(B[m is not present at runtime
 [1mscipy.sparse.csgraph._traversal.breadth_first_order(B[m is inconsistent, stub does not have argument "csgraph"
 [1mscipy.sparse.csgraph._traversal.breadth_first_order(B[m is inconsistent, stub does not have argument "i_start"
 [1mscipy.sparse.csgraph._traversal.breadth_first_order(B[m is inconsistent, stub does not have argument "directed"
@@ -2079,11 +1685,9 @@
 [1mscipy.sparse.linalg.spsolve(B[m is not present in stub
 [1mscipy.sparse.linalg.spsolve_triangular(B[m is not present in stub
 [1mscipy.sparse.linalg.use_solver(B[m is not present in stub
-[1mscipy.sparse.linalg._dsolve.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.sparse.linalg._dsolve.SuperLU(B[m cannot be subclassed at runtime, but isn't marked with @final in the stub
 [1mscipy.sparse.linalg._dsolve.splu(B[m is inconsistent, runtime argument "options" has a default value of {}, which is different from stub argument default None
 [1mscipy.sparse.linalg._dsolve._superlu.SuperLU(B[m cannot be subclassed at runtime, but isn't marked with @final in the stub
-[1mscipy.sparse.linalg._dsolve._superlu.__all__(B[m is not present at runtime
 [1mscipy.sparse.linalg._dsolve._superlu.gssv(B[m is not present in stub
 [1mscipy.sparse.linalg._dsolve._superlu.gstrf(B[m is not present in stub
 [1mscipy.sparse.linalg._dsolve._superlu.gstrs(B[m is not present in stub
@@ -2221,7 +1825,6 @@
 [1mscipy.spatial._spherical_voronoi.cKDTree.__reduce_cython__(B[m is not present in stub
 [1mscipy.spatial._spherical_voronoi.cKDTree.__setstate_cython__(B[m is not present in stub
 [1mscipy.spatial._spherical_voronoi.cKDTree.query_ball_tree(B[m is inconsistent, runtime argument "p" has a default value but stub argument does not
-[1mscipy.spatial.ckdtree.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.spatial.ckdtree.cKDTree.__init__(B[m is inconsistent, stub does not have *args argument "args"
 [1mscipy.spatial.ckdtree.cKDTree.__reduce_cython__(B[m is not present in stub
 [1mscipy.spatial.ckdtree.cKDTree.__setstate_cython__(B[m is not present in stub
@@ -2229,7 +1832,6 @@
 [1mscipy.spatial.distance.jensenshannon(B[m is inconsistent, stub does not have argument "axis"
 [1mscipy.spatial.distance.jensenshannon(B[m is inconsistent, stub does not have argument "keepdims"
 [1mscipy.spatial.distance.kulczynski1(B[m is inconsistent, stub argument "w" is not keyword-only
-[1mscipy.spatial.kdtree.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.spatial.kdtree.KDTree.__init__(B[m is inconsistent, stub does not have argument "data"
 [1mscipy.spatial.kdtree.KDTree.__init__(B[m is inconsistent, stub does not have argument "leafsize"
 [1mscipy.spatial.kdtree.KDTree.__init__(B[m is inconsistent, stub does not have argument "compact_nodes"
@@ -2241,7 +1843,6 @@
 [1mscipy.spatial.kdtree.cKDTree.__reduce_cython__(B[m is not present in stub
 [1mscipy.spatial.kdtree.cKDTree.__setstate_cython__(B[m is not present in stub
 [1mscipy.spatial.kdtree.cKDTree.query_ball_tree(B[m is inconsistent, runtime argument "p" has a default value but stub argument does not
-[1mscipy.spatial.qhull.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.spatial.qhull.Delaunay.find_simplex(B[m is inconsistent, runtime argument "tol" has a default value of type None, which is incompatible with stub argument type float
 [1mscipy.spatial.transform.Rotation.__reduce_cython__(B[m is not present in stub
 [1mscipy.spatial.transform.Rotation.__setstate_cython__(B[m is not present in stub
@@ -2249,13 +1850,9 @@
 [1mscipy.spatial.transform._rotation.Rotation.__reduce_cython__(B[m is not present in stub
 [1mscipy.spatial.transform._rotation.Rotation.__setstate_cython__(B[m is not present in stub
 [1mscipy.spatial.transform._rotation.Rotation.approx_equal(B[m is inconsistent, runtime argument "atol" has a default value but stub argument does not
-[1mscipy.spatial.transform._rotation.__all__(B[m is not present at runtime
-[1mscipy.spatial.transform._rotation_spline.__all__(B[m is not present at runtime
 [1mscipy.spatial.transform.rotation.Rotation.__reduce_cython__(B[m is not present in stub
 [1mscipy.spatial.transform.rotation.Rotation.__setstate_cython__(B[m is not present in stub
 [1mscipy.spatial.transform.rotation.Rotation.approx_equal(B[m is inconsistent, runtime argument "atol" has a default value but stub argument does not
-[1mscipy.spatial.transform.rotation.__all__(B[m variable differs from runtime type list[Untyped]
-[1mscipy.special.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.special.btdtr(B[m variable differs from runtime type def (*args: Untyped, **kwargs: Untyped) -> Untyped
 [1mscipy.special.btdtri(B[m variable differs from runtime type def (*args: Untyped, **kwargs: Untyped) -> Untyped
 [1mscipy.special.comb(B[m is inconsistent, stub argument "n" differs from runtime argument "N"
@@ -2264,16 +1861,12 @@
 [1mscipy.special.factorialk(B[m is inconsistent, runtime argument "exact" is not keyword-only
 [1mscipy.special.perm(B[m is inconsistent, stub argument "n" differs from runtime argument "N"
 [1mscipy.special.perm(B[m is inconsistent, runtime argument "exact" is not keyword-only
-[1mscipy.special._add_newdocs.__all__(B[m is not present at runtime
 [1mscipy.special._basic.comb(B[m is inconsistent, stub argument "n" differs from runtime argument "N"
 [1mscipy.special._basic.factorial(B[m is inconsistent, runtime argument "exact" is not keyword-only
 [1mscipy.special._basic.factorial2(B[m is inconsistent, runtime argument "exact" is not keyword-only
 [1mscipy.special._basic.factorialk(B[m is inconsistent, runtime argument "exact" is not keyword-only
 [1mscipy.special._basic.perm(B[m is inconsistent, stub argument "n" differs from runtime argument "N"
 [1mscipy.special._basic.perm(B[m is inconsistent, runtime argument "exact" is not keyword-only
-[1mscipy.special._ellip_harm.__all__(B[m is not present at runtime
-[1mscipy.special._lambertw.__all__(B[m is not present at runtime
-[1mscipy.special._orthogonal.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.special._orthogonal.c_roots(B[m is not present in stub
 [1mscipy.special._orthogonal.cg_roots(B[m is not present in stub
 [1mscipy.special._orthogonal.h_roots(B[m is not present in stub
@@ -2294,10 +1887,6 @@
 [1mscipy.special._orthogonal.ts_roots(B[m is not present in stub
 [1mscipy.special._orthogonal.u_roots(B[m is not present in stub
 [1mscipy.special._orthogonal.us_roots(B[m is not present in stub
-[1mscipy.special._sf_error.__all__(B[m is not present at runtime
-[1mscipy.special._spherical_bessel.__all__(B[m is not present at runtime
-[1mscipy.special.cython_special.__all__(B[m is not present at runtime
-[1mscipy.stats.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.stats.BootstrapMethod.__init__(B[m is inconsistent, runtime argument "batch" has a default value of type None, which is incompatible with stub argument type int
 [1mscipy.stats.ConfidenceInterval(B[m is not present at runtime
 [1mscipy.stats.ECDFResult(B[m is not present at runtime
@@ -2453,7 +2042,6 @@
 [1mscipy.stats.mood(B[m is inconsistent, stub does not have argument "keepdims"
 [1mscipy.stats.mood(B[m is inconsistent, stub does not have argument "nan_policy"
 [1mscipy.stats.moyal(B[m is not present in stub
-[1mscipy.stats.mstats_extras(B[m is not present in stub
 [1mscipy.stats.mvn(B[m is not present in stub
 [1mscipy.stats.nakagami(B[m is not present in stub
 [1mscipy.stats.nbinom(B[m is not present in stub
@@ -2571,11 +2159,6 @@
 [1mscipy.stats._axis_nan_policy.too_small_1d_omit(B[m is not present in stub
 [1mscipy.stats._axis_nan_policy.too_small_nd_not_omit(B[m is not present in stub
 [1mscipy.stats._axis_nan_policy.too_small_nd_omit(B[m is not present in stub
-[1mscipy.stats._binomtest.__all__(B[m is not present at runtime
-[1mscipy.stats._bws_test.__all__(B[m is not present at runtime
-[1mscipy.stats._censored_data.__all__(B[m is not present at runtime
-[1mscipy.stats._common.__all__(B[m is not present at runtime
-[1mscipy.stats._continuous_distns.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.stats._continuous_distns.norm_gen.fit(B[m is inconsistent, runtime does not have *args argument "args"
 [1mscipy.stats._continuous_distns.reciprocal_gen.fit_note(B[m is not present in stub
 [1mscipy.stats._continuous_distns.rv_histogram.__init__(B[m is inconsistent, stub does not have argument "histogram"
@@ -2591,14 +2174,12 @@
 [1mscipy.stats._continuous_distns.rv_histogram.__init__(B[m is inconsistent, runtime does not have argument "xtol"
 [1mscipy.stats._continuous_distns.rv_histogram.__init__(B[m is inconsistent, stub does not have argument "density"
 [1mscipy.stats._continuous_distns.rv_histogram.__init__(B[m is inconsistent, stub does not have **kwargs argument "kwargs"
-[1mscipy.stats._discrete_distns.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.stats._discrete_distns._nchypergeom_gen.dist(B[m is not present in stub
 [1mscipy.stats._discrete_distns._nchypergeom_gen.rvs_name(B[m is not present in stub
 [1mscipy.stats._discrete_distns.nchypergeom_fisher_gen.dist(B[m is not present in stub
 [1mscipy.stats._discrete_distns.nchypergeom_fisher_gen.rvs_name(B[m is not present in stub
 [1mscipy.stats._discrete_distns.nchypergeom_wallenius_gen.dist(B[m is not present in stub
 [1mscipy.stats._discrete_distns.nchypergeom_wallenius_gen.rvs_name(B[m is not present in stub
-[1mscipy.stats._distn_infrastructure.__all__(B[m is not present at runtime
 [1mscipy.stats._distn_infrastructure.docdict(B[m is not present in stub
 [1mscipy.stats._distn_infrastructure.docdict_discrete(B[m is not present in stub
 [1mscipy.stats._distn_infrastructure.docheaders(B[m is not present in stub
@@ -2656,7 +2237,6 @@
 [1mscipy.stats._distn_infrastructure.rv_sample.qvals(B[m is not present at runtime
 [1mscipy.stats._distn_infrastructure.rv_sample.vecentropy(B[m is not present at runtime
 [1mscipy.stats._distn_infrastructure.rv_sample.xk(B[m is not present at runtime
-[1mscipy.stats._distr_params.__all__(B[m is not present at runtime
 [1mscipy.stats._entropy.differential_entropy(B[m is inconsistent, stub does not have argument "keepdims"
 [1mscipy.stats._entropy.differential_entropy(B[m is inconsistent, stub does not have argument "nan_policy"
 [1mscipy.stats._entropy.entropy(B[m is inconsistent, stub does not have argument "keepdims"
@@ -2832,7 +2412,6 @@
 [1mscipy.stats._survival.EmpiricalDistributionFunction.__match_args__(B[m variable differs from runtime type ('quantiles', 'probabilities', '_n', '_d', '_sf', '_kind')
 [1mscipy.stats._warnings_errors.FitError.__init__(B[m is inconsistent, stub does not have argument "msg"
 [1mscipy.stats._warnings_errors.FitError.__init__(B[m is inconsistent, runtime does not have *args argument "args"
-[1mscipy.stats.distributions.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.stats.distributions.entropy(B[m is inconsistent, stub does not have argument "keepdims"
 [1mscipy.stats.distributions.entropy(B[m is inconsistent, stub does not have argument "nan_policy"
 [1mscipy.stats.distributions.rv_continuous.__init__(B[m is inconsistent, runtime argument "momtype" is not keyword-only
@@ -2914,19 +2493,8 @@
 [1mscipy.stats.mstats.t(B[m is not present at runtime
 [1mscipy.stats.mstats.trim1(B[m is not present at runtime
 [1mscipy.stats.mstats.trimdoc(B[m is not present at runtime
-[1mscipy.stats.mstats_extras.compare_medians_ms(B[m is not present in stub
-[1mscipy.stats.mstats_extras.hdmedian(B[m is not present in stub
-[1mscipy.stats.mstats_extras.hdquantiles(B[m is not present in stub
-[1mscipy.stats.mstats_extras.hdquantiles_sd(B[m is not present in stub
-[1mscipy.stats.mstats_extras.idealfourths(B[m is not present in stub
-[1mscipy.stats.mstats_extras.median_cihs(B[m is not present in stub
-[1mscipy.stats.mstats_extras.mjci(B[m is not present in stub
-[1mscipy.stats.mstats_extras.mquantiles_cimj(B[m is not present in stub
-[1mscipy.stats.mstats_extras.rsh(B[m is not present in stub
-[1mscipy.stats.mstats_extras.trimmed_mean_ci(B[m is not present in stub
 [1mscipy.stats.qmc.PoissonDisk.__init__(B[m is inconsistent, runtime does not have argument "l_bounds"
 [1mscipy.stats.qmc.PoissonDisk.__init__(B[m is inconsistent, runtime does not have argument "u_bounds"
-[1mscipy.stats.sampling.__all__(B[m names exported from the stub do not correspond to the names exported at runtime. This is probably due to things being missing from the stub or an inaccurate `__all__` in the stub
 [1mscipy.stats.sampling.DiscreteAliasUrn(B[m is not present in stub
 [1mscipy.stats.sampling.DiscreteGuideTable(B[m is not present in stub
 [1mscipy.stats.sampling.NumericalInverseHermite(B[m is not present in stub
@@ -2934,18 +2502,6 @@
 [1mscipy.stats.sampling.SimpleRatioUniforms(B[m is not present in stub
 [1mscipy.stats.sampling.TransformedDensityRejection(B[m is not present in stub
 [1mscipy.stats.sampling.UNURANError(B[m is not present in stub
-[1mscipy._lib.cobyqa.framework(B[m failed to find stubs
-[1mscipy._lib.cobyqa.main(B[m failed to find stubs
-[1mscipy._lib.cobyqa.models(B[m failed to find stubs
-[1mscipy._lib.cobyqa.problem(B[m failed to find stubs
-[1mscipy._lib.cobyqa.settings(B[m failed to find stubs
-[1mscipy._lib.cobyqa.subsolvers(B[m failed to find stubs
-[1mscipy._lib.cobyqa.subsolvers.geometry(B[m failed to find stubs
-[1mscipy._lib.cobyqa.subsolvers.optim(B[m failed to find stubs
-[1mscipy._lib.cobyqa.utils(B[m failed to find stubs
-[1mscipy._lib.cobyqa.utils.exceptions(B[m failed to find stubs
-[1mscipy._lib.cobyqa.utils.math(B[m failed to find stubs
-[1mscipy._lib.cobyqa.utils.versions(B[m failed to find stubs
 [1mscipy.fftpack.convolve(B[m failed to find stubs
 [1mscipy.linalg.cython_blas(B[m failed to find stubs
 [1mscipy.linalg.cython_lapack(B[m failed to find stubs
