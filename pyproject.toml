@@ -48,11 +48,10 @@ type = "poetry"
 
 [tool.poe.tasks]
 lint = "ruff check"
-# stubtest = "stubtest --ignore-positional-only --mypy-config-file=pyproject.toml --allowlist=tests/stubtest/allowlist.txt scipy"
 verifytypes = "basedpyright --level error --verifytypes scipy-stubs"
 
 [tool.poe.tasks.stubtest]
-cmd = "stubtest --ignore-positional-only --mypy-config-file=pyproject.toml --allowlist=tests/stubtest/allowlist.txt $modules"
+cmd = "stubtest --mypy-config-file=pyproject.toml --allowlist=tests/stubtest/allowlist.txt $modules"
 args = [
   {name = "modules", positional = true, multiple = true, default = "scipy"},
 ]
