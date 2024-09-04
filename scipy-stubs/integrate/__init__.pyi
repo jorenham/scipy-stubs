@@ -29,7 +29,6 @@ __all__ += [
     "OdeSolution",
     "OdeSolver",
     "Radau",
-    "newton_cotes",
     "quad_vec",
     "solve_bvp",
     "solve_ivp",
