@@ -126,11 +126,20 @@ def cumulative_simpson(
 ) -> npt.NDArray[np.inexact[Any]]: ...
 
 # function-based
+@overload
+def fixed_quad(
+    func: _VectorizedQuadFunc[_NDT_f],
+    a: spt.AnyReal,
+    b: spt.AnyReal,
+    args: tuple[()] = (),
+    n: op.CanIndex = 5,
+) -> _NDT_f: ...
+@overload
 def fixed_quad(
     func: _VectorizedQuadFunc[_NDT_f, Unpack[_Ts]],
     a: spt.AnyReal,
     b: spt.AnyReal,
-    args: tuple[Unpack[_Ts]] = ...,
+    args: tuple[Unpack[_Ts]],
     n: op.CanIndex = 5,
 ) -> _NDT_f: ...
 
