@@ -8,7 +8,7 @@ import optype as op
 import optype.numpy as onpt
 import scipy._typing as spt
 
-__all__ = "QuadInfoDict", "QuadOpts", "QuadWeights"
+__all__ = "ODEInfoDict", "QuadInfoDict", "QuadOpts", "QuadWeights"
 
 QuadWeights: TypeAlias = Literal["cos", "sin", "alg", "alg-loga", "alg-logb", "alg-log", "cauchy"]
 
@@ -47,3 +47,18 @@ class QuadInfoDict(TypedDict):
     rslst: NotRequired[onpt.Array[tuple[int], np.float64]]
     erlst: NotRequired[onpt.Array[tuple[int], np.float64]]
     ierlst: NotRequired[onpt.Array[tuple[int], np.float64]]
+
+@type_check_only
+class ODEInfoDict(TypedDict):
+    hu: onpt.Array[tuple[int], np.float64]
+    tcur: onpt.Array[tuple[int], np.float64]
+    tolsf: onpt.Array[tuple[int], np.float64]
+    tsw: float
+    nst: int
+    nfe: int
+    nje: int
+    nqu: onpt.Array[tuple[int], np.int_]
+    imxer: int
+    lenrw: int
+    leniw: int
+    mused: onpt.Array[tuple[int], np.int_]
