@@ -50,6 +50,7 @@ class Radau(OdeSolver):
     Z: Untyped
     def __init__(
         self,
+        /,
         fun: UntypedCallable,
         t0: Untyped,
         y0: Untyped,
@@ -69,4 +70,4 @@ class RadauDenseOutput(DenseOutput):
     Q: Untyped
     order: Untyped
     y_old: Untyped
-    def __init__(self, t_old: float, t: float, /, y_old: Untyped, Q: Untyped) -> None: ...
+    def __init__(self, /, t_old: float, t: float, y_old: Untyped, Q: Untyped) -> None: ...

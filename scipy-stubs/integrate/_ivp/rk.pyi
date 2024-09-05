@@ -37,6 +37,7 @@ class RungeKutta(OdeSolver):
     h_previous: Untyped
     def __init__(
         self,
+        /,
         fun: UntypedCallable,
         t0: Untyped,
         y0: Untyped,
@@ -63,6 +64,7 @@ class DOP853(RungeKutta):
     K: Untyped
     def __init__(
         self,
+        /,
         fun: UntypedCallable,
         t0: Untyped,
         y0: Untyped,
@@ -80,10 +82,10 @@ class RkDenseOutput(DenseOutput):
     Q: Untyped
     order: Untyped
     y_old: Untyped
-    def __init__(self, t_old: float, t: float, /, y_old: Untyped, Q: Untyped) -> None: ...
+    def __init__(self, /, t_old: float, t: float, y_old: Untyped, Q: Untyped) -> None: ...
 
 class Dop853DenseOutput(DenseOutput):
     h: Untyped
     F: Untyped
     y_old: Untyped
-    def __init__(self, t_old: float, t: float, /, y_old: Untyped, F: Untyped) -> None: ...
+    def __init__(self, /, t_old: float, t: float, y_old: Untyped, F: Untyped) -> None: ...

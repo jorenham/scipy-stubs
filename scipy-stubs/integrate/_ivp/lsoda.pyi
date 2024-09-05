@@ -6,6 +6,7 @@ from .base import DenseOutput, OdeSolver
 class LSODA(OdeSolver):
     def __init__(
         self,
+        /,
         fun: UntypedCallable,
         t0: Untyped,
         y0: Untyped,
@@ -26,4 +27,4 @@ class LsodaDenseOutput(DenseOutput):
     h: Untyped
     yh: Untyped
     p: Untyped
-    def __init__(self, t_old: float, t: float, /, h: Untyped, order: Untyped, yh: Untyped) -> None: ...
+    def __init__(self, /, t_old: float, t: float, h: Untyped, order: Untyped, yh: Untyped) -> None: ...
