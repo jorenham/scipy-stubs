@@ -1,26 +1,4 @@
-from . import (
-    _basic,
-    _cythonized_array_utils,
-    _decomp,
-    _decomp_cholesky,
-    _decomp_cossin,
-    _decomp_ldl,
-    _decomp_lu,
-    _decomp_polar,
-    _decomp_qr,
-    _decomp_qz,
-    _decomp_schur,
-    _decomp_svd,
-    _decomp_update,
-    _matfuncs,
-    _misc,
-    _procrustes,
-    _sketches,
-    _solvers,
-    _special_matrices,
-    blas,
-    lapack,
-)
+from . import blas, cython_blas, cython_lapack, lapack
 from ._basic import *
 from ._cythonized_array_utils import *
 from ._decomp import *
@@ -43,25 +21,118 @@ from ._special_matrices import *
 from .blas import *
 from .lapack import *
 
-__all__: list[str] = []
-__all__ += _basic.__all__
-__all__ += _cythonized_array_utils.__all__
-__all__ += _decomp.__all__
-__all__ += _decomp_cholesky.__all__
-__all__ += _decomp_cossin.__all__
-__all__ += _decomp_ldl.__all__
-__all__ += _decomp_lu.__all__
-__all__ += _decomp_polar.__all__
-__all__ += _decomp_qr.__all__
-__all__ += _decomp_qz.__all__
-__all__ += _decomp_schur.__all__
-__all__ += _decomp_svd.__all__
-__all__ += _decomp_update.__all__
-__all__ += _matfuncs.__all__
-__all__ += _misc.__all__
-__all__ += _procrustes.__all__
-__all__ += _sketches.__all__
-__all__ += _solvers.__all__
-__all__ += _special_matrices.__all__
-__all__ += blas.__all__
-__all__ += lapack.__all__
+__all__ = [
+    "LinAlgError",
+    "LinAlgWarning",
+    "bandwidth",
+    # "basic",
+    "blas",
+    "block_diag",
+    "cdf2rdf",
+    "cho_factor",
+    "cho_solve",
+    "cho_solve_banded",
+    "cholesky",
+    "cholesky_banded",
+    "circulant",
+    "clarkson_woodruff_transform",
+    "companion",
+    "convolution_matrix",
+    "coshm",
+    "cosm",
+    "cossin",
+    "cython_blas",
+    "cython_lapack",
+    # "decomp",
+    # "decomp_cholesky",
+    # "decomp_lu",
+    # "decomp_qr",
+    # "decomp_schur",
+    # "decomp_svd",
+    "det",
+    "dft",
+    "diagsvd",
+    "eig",
+    "eig_banded",
+    "eigh",
+    "eigh_tridiagonal",
+    "eigvals",
+    "eigvals_banded",
+    "eigvalsh",
+    "eigvalsh_tridiagonal",
+    "expm",
+    "expm_cond",
+    "expm_frechet",
+    "fiedler",
+    "fiedler_companion",
+    "find_best_blas_type",
+    "fractional_matrix_power",
+    "funm",
+    "get_blas_funcs",
+    "get_lapack_funcs",
+    "hadamard",
+    "hankel",
+    "helmert",
+    "hessenberg",
+    "hilbert",
+    "inv",
+    "invhilbert",
+    "invpascal",
+    "ishermitian",
+    "issymmetric",
+    "khatri_rao",
+    "kron",
+    "lapack",
+    "ldl",
+    "leslie",
+    "logm",
+    "lstsq",
+    "lu",
+    "lu_factor",
+    "lu_solve",
+    # "matfuncs",
+    "matmul_toeplitz",
+    "matrix_balance",
+    # "misc",
+    "norm",
+    "null_space",
+    "ordqz",
+    "orth",
+    "orthogonal_procrustes",
+    "pascal",
+    "pinv",
+    "pinvh",
+    "polar",
+    "qr",
+    "qr_delete",
+    "qr_insert",
+    "qr_multiply",
+    "qr_update",
+    "qz",
+    "rq",
+    "rsf2csf",
+    "schur",
+    "signm",
+    "sinhm",
+    "sinm",
+    "solve",
+    "solve_banded",
+    "solve_circulant",
+    "solve_continuous_are",
+    "solve_continuous_lyapunov",
+    "solve_discrete_are",
+    "solve_discrete_lyapunov",
+    "solve_lyapunov",
+    "solve_sylvester",
+    "solve_toeplitz",
+    "solve_triangular",
+    "solveh_banded",
+    # "special_matrices",
+    "sqrtm",
+    "subspace_angles",
+    "svd",
+    "svdvals",
+    "tanhm",
+    "tanm",
+    "toeplitz",
+]
