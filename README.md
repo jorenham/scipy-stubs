@@ -83,7 +83,8 @@ pip install scipy-stubs
 |---------------------------------- |---------------- |
 | `scipy.__init__`                  | 3: ready        |
 | `scipy._lib`                      | 2: partial      |
-| `scipy.cluster`                   | 1: skeleton     |
+| `scipy.cluster.vq`                | **4: done**     |
+| `scipy.cluster.hierarchy`         | 1: skeleton     |
 | `scipy.constants`                 | **4: done**     |
 | `scipy.datasets`                  | **4: done**     |
 | `scipy.fft`                       | 2: partial      |
