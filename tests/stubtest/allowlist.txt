@@ -129,7 +129,6 @@ scipy._lib._ccallback.__all__
 scipy._lib.array_api_compat.__all__
 scipy._lib.array_api_compat.common.__all__
 scipy.integrate._ivp.__all__
-scipy.linalg._decomp_lu_cython.__all__
 scipy.linalg._solve_toeplitz.__all__
 scipy.optimize._constraints.__all__
 scipy.optimize._lsap.__all__
