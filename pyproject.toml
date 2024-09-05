@@ -48,7 +48,7 @@ type = "poetry"
 
 [tool.poe.tasks]
 lint = "ruff check"
-verifytypes = "basedpyright --level error --verifytypes scipy-stubs"
+verifytypes = "basedpyright --ignoreexternal --verifytypes scipy-stubs"
 
 [tool.poe.tasks.stubtest]
 cmd = "stubtest --mypy-config-file=pyproject.toml --allowlist=tests/stubtest/allowlist.txt $modules"
