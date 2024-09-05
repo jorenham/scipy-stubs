@@ -1,10 +1,10 @@
 from collections.abc import Callable, Sequence
-from typing import Any, ClassVar, Final, Generic, Literal, TypeAlias, TypeVar
+from typing import Any, ClassVar, Final, Generic, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onpt
-from scipy._typing import Untyped
+import scipy._typing as spt
 
 _VT = TypeVar("_VT", bound=npt.NDArray[np.inexact[Any]], default=npt.NDArray[np.inexact[Any]])
 
@@ -54,9 +54,12 @@ class DenseOutput:
     t: Final[float]
     t_min: Final[float]
     t_max: Final[float]
-    def __init__(self, t_old: float, t: float, /) -> None: ...
-    def __call__(self, /, t: _ArrayLikeReal) -> Untyped: ...
+    def __init__(self, /, t_old: float, t: float) -> None: ...
+    @overload
+    def __call__(self, /, t: spt.AnyReal) -> onpt.Array[tuple[int], np.inexact[Any]]: ...
+    @overload
+    def __call__(self, /, t: _ArrayLikeReal) -> npt.NDArray[np.inexact[Any]]: ...
 
 class ConstantDenseOutput(DenseOutput, Generic[_VT]):
-    value: Untyped
-    def __init__(self, t_old: float, t: float, /, value: _VT) -> None: ...
+    value: _VT
+    def __init__(self, /, t_old: float, t: float, value: _VT) -> None: ...

@@ -43,6 +43,7 @@ class BDF(OdeSolver):
     LU: Untyped
     def __init__(
         self,
+        /,
         fun: UntypedCallable,
         t0: Untyped,
         y0: Untyped,
@@ -62,4 +63,4 @@ class BdfDenseOutput(DenseOutput):
     t_shift: Untyped
     denom: Untyped
     D: Untyped
-    def __init__(self, t_old: float, t: float, /, h: Untyped, order: Untyped, D: Untyped) -> None: ...
+    def __init__(self, /, t_old: float, t: float, h: Untyped, order: Untyped, D: Untyped) -> None: ...

@@ -87,12 +87,13 @@ pyright), the "type completeness score" is **42.6%**.
 | `scipy.__init__`                  | 3: ready        |
 | `scipy._lib`                      | 2: partial      |
 | `scipy.cluster`                   | 1: skeleton     |
-| `scipy.constants`                 | 3: ready        |
+| `scipy.constants`                 | **4: done**     |
 | `scipy.datasets`                  | 2: partial      |
 | `scipy.fft`                       | 2: partial      |
 | `scipy.fft._pocketfft`            | 2: partial      |
 | `scipy.fftpack`                   | 2: partial      |
-| `scipy.integrate`                 | 3: ready        |
+| `scipy.integrate`                 | **4: done**     |
+| `scipy.integrate._bvp`            | 2: partial      |
 | `scipy.integrate._ivp`            | 2: partial      |
 | `scipy.interpolate`               | 2: partial      |
 | `scipy.io`                        | 2: partial      |
@@ -115,11 +116,11 @@ pyright), the "type completeness score" is **42.6%**.
 | `scipy.special.cython_special`    | 2: partial      |
 | `scipy.stats`                     | 2: partial      |
 | `scipy.stats.contingency`         | 1: skeleton     |
-| `scipy.stats.distributions`       | 4: done         |
+| `scipy.stats.distributions`       | **4: done**     |
 | `scipy.stats.mstats`              | 1: skeleton     |
 | `scipy.stats.qmc`                 | 2: partial      |
 | `scipy.stats.sampling`            | 1: skeleton     |
-| `scipy.version`                   | 4: done         |
+| `scipy.version`                   | **4: done**     |
 
 Status labels:
 

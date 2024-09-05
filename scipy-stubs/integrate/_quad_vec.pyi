@@ -36,8 +36,8 @@ class _DoesMap(Protocol):
 
 @type_check_only
 class _InfiniteFunc(Protocol[_NDT_f_co]):
-    def get_t(self, x: float, /) -> float: ...
-    def __call__(self, t: float, /) -> _NDT_f_co: ...
+    def get_t(self, /, x: float) -> float: ...
+    def __call__(self, /, t: float) -> _NDT_f_co: ...
 
 class LRUDict(collections.OrderedDict[tuple[float, float], _VT], Generic[_VT]):
     def __init__(self, /, max_size: int) -> None: ...
@@ -45,10 +45,10 @@ class LRUDict(collections.OrderedDict[tuple[float, float], _VT], Generic[_VT]):
     def update(self, other: Never, /) -> NoReturn: ...  # type: ignore[override]
 
 class SemiInfiniteFunc(_InfiniteFunc[_NDT_f_co], Generic[_NDT_f_co]):
-    def __init__(self, func: Callable[[float], _NDT_f_co], /, start: float, infty: bool) -> None: ...
+    def __init__(self, /, func: Callable[[float], _NDT_f_co], start: float, infty: bool) -> None: ...
 
 class DoubleInfiniteFunc(_InfiniteFunc, Generic[_NDT_f_co]):
-    def __init__(self, func: Callable[[float], _NDT_f_co], /) -> None: ...
+    def __init__(self, /, func: Callable[[float], _NDT_f_co]) -> None: ...
 
 # NOTE: This is only used as "info dict" for `quad_vec(..., full_output=True)`,
 # even though, confusingly, it is not even even a mapping.
@@ -73,39 +73,53 @@ class _Bunch(Generic[_SCT_f_co]):
     message: Final[str]
     intervals: Final[onpt.Array[tuple[int, Literal[2]], np.float64]]
     errors: Final[onpt.Array[tuple[int], np.float64]]
-    @property
-    def integrals(self, /) -> onpt.Array[tuple[int, Literal[2]], _SCT_f_co]: ...
+    integrals: onpt.Array[tuple[int, Literal[2]], _SCT_f_co]
 
 @overload
 def quad_vec(
-    f: _QuadVecFunc[_NDT_f, Unpack[_Ts]],
-    /,
+    f: _QuadVecFunc[_NDT_f],
     a: float,
     b: float,
     epsabs: float = 1e-200,
     epsrel: float = 1e-08,
     norm: Literal["max", "2"] = "2",
-    cache_size: int = 100_000_000,
+    cache_size: float = 100_000_000,
     limit: float = 10_000,
     workers: int | _DoesMap = 1,
     points: op.CanIter[op.CanNext[float]] | None = None,
     quadrature: Literal["gk21", "gk15", "trapezoid"] | None = None,
     full_output: Literal[False, 0, None] = False,
     *,
-    args: tuple[Unpack[_Ts]] = ...,
+    args: tuple[()] = ...,
+) -> tuple[_NDT_f, float]: ...
+@overload
+def quad_vec(
+    f: _QuadVecFunc[_NDT_f, Unpack[_Ts]],
+    a: float,
+    b: float,
+    epsabs: float = 1e-200,
+    epsrel: float = 1e-08,
+    norm: Literal["max", "2"] = "2",
+    cache_size: float = 100_000_000,
+    limit: float = 10_000,
+    workers: int | _DoesMap = 1,
+    points: op.CanIter[op.CanNext[float]] | None = None,
+    quadrature: Literal["gk21", "gk15", "trapezoid"] | None = None,
+    full_output: Literal[False, 0, None] = False,
+    *,
+    args: tuple[Unpack[_Ts]],
 ) -> tuple[_NDT_f, float]: ...
 # false positive (basedmypy==1.6.0 / mypy==1.11.1)
 # pyright: reportUnnecessaryTypeIgnoreComment=false
 @overload
 def quad_vec(  # type: ignore[overload-overlap]
     f: _QuadVecFunc[float | np.float64, Unpack[_Ts]],
-    /,
     a: float,
     b: float,
     epsabs: float = 1e-200,
     epsrel: float = 1e-08,
     norm: Literal["max", "2"] = "2",
-    cache_size: int = 100_000_000,
+    cache_size: float = 100_000_000,
     limit: float = 10_000,
     workers: int | _DoesMap = 1,
     points: op.CanIter[op.CanNext[float]] | None = None,
@@ -117,13 +131,12 @@ def quad_vec(  # type: ignore[overload-overlap]
 @overload
 def quad_vec(
     f: _QuadVecFunc[np.floating[_NBT], Unpack[_Ts]],
-    /,
     a: float,
     b: float,
     epsabs: float = 1e-200,
     epsrel: float = 1e-08,
     norm: Literal["max", "2"] = "2",
-    cache_size: int = 100_000_000,
+    cache_size: float = 100_000_000,
     limit: float = 10_000,
     workers: int | _DoesMap = 1,
     points: op.CanIter[op.CanNext[float]] | None = None,
@@ -135,13 +148,12 @@ def quad_vec(
 @overload
 def quad_vec(
     f: _QuadVecFunc[onpt.Array[_ShapeT, np.floating[_NBT]], Unpack[_Ts]],
-    /,
     a: float,
     b: float,
     epsabs: float = 1e-200,
     epsrel: float = 1e-08,
     norm: Literal["max", "2"] = "2",
-    cache_size: int = 100_000_000,
+    cache_size: float = 100_000_000,
     limit: float = 10_000,
     workers: int | _DoesMap = 1,
     points: op.CanIter[op.CanNext[float]] | None = None,
