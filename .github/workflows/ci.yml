@@ -25,8 +25,7 @@ jobs:
           config: ".markdownlint.yaml"
           globs: "**/*.md"
 
-      - name: install poetry
-        run: |
+      - run: |
           pipx install poetry poethepoet
           poetry config virtualenvs.create true --local
           poetry config virtualenvs.in-project true --local
@@ -36,23 +35,17 @@ jobs:
           python-version: "3.10"
           cache: poetry
 
-      - name: poetry install
+      - name: install
         run: poetry install
 
-      - name: ruff check
-        run: poetry run ruff check --output-format=github
+      - name: lint (ruff)
+        run: poe lint --output-format=github
 
-      - name: basedpyright --verifytypes --ignoreexternal
-        run: poetry run basedpyright --ignoreexternal --verifytypes scipy-stubs
-
-      # TODO: don't continue on error
-      - name: basedpyright --verifytypes
-        run: poetry run basedpyright --level error --verifytypes scipy-stubs
-        continue-on-error: true
+      - name: verifytypes (basedpyright)
+        run: poe verifytypes
 
       # TODO: don't continue on error
-      - name: mypy.stubtest (based)
-        # run: poetry run stubtest --concise --ignore-positional-only --mypy-config-file=pyproject.toml --allowlist=tests/stubtest/allowlist.txt scipy
+      - name: stubtest (basedmypy)
         run: poe stubtest -- --concise
         continue-on-error: true
 
