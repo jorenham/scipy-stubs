@@ -87,11 +87,8 @@ pip install scipy-stubs
 | `scipy.constants`                 | **4: done**     |
 | `scipy.datasets`                  | **4: done**     |
 | `scipy.fft`                       | 2: partial      |
-| `scipy.fft._pocketfft`            | 2: partial      |
 | `scipy.fftpack`                   | 2: partial      |
 | `scipy.integrate`                 | **4: done**     |
-| `scipy.integrate._bvp`            | 2: partial      |
-| `scipy.integrate._ivp`            | 2: partial      |
 | `scipy.interpolate`               | 2: partial      |
 | `scipy.io`                        | 2: partial      |
 | `scipy.io.arff`                   | 2: partial      |
@@ -101,7 +98,6 @@ pip install scipy-stubs
 | `scipy.ndimage`                   | 2: partial      |
 | `scipy.odr`                       | 1: skeleton     |
 | `scipy.optimize`                  | 2: partial      |
-| `scipy.optimize.cython_optimize`  | 0: missing      |
 | `scipy.signal`                    | 2: partial      |
 | `scipy.signal.windows`            | 1: skeleton     |
 | `scipy.sparse`                    | 2: partial      |
@@ -110,7 +106,6 @@ pip install scipy-stubs
 | `scipy.spatial`                   | 2: partial      |
 | `scipy.spatial.distance`          | 3: ready        |
 | `scipy.special`                   | 3: ready        |
-| `scipy.special.cython_special`    | 2: partial      |
 | `scipy.stats`                     | 2: partial      |
 | `scipy.stats.contingency`         | 1: skeleton     |
 | `scipy.stats.distributions`       | **4: done**     |
