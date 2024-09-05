@@ -30,7 +30,6 @@ def expm_frechet(
     E: npt.ArrayLike,
     method: Literal["SPS", "blockEnlarge"] | None,
     compute_expm: Literal[False],
-    /,
     check_finite: bool = True,
 ) -> _Array_fc_2d: ...
 def expm_cond(A: npt.ArrayLike, check_finite: bool = True) -> np.float64: ...
