@@ -37,21 +37,7 @@ def solve(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    assume_a: Literal[
-        "diagonal",
-        "tridiagonal",
-        "upper triangular",
-        "lower triangular",
-        "sym",
-        "symmetric",
-        "her",
-        "hermitian",
-        "positive definite",
-        "pos",
-        "general",
-        "gen",
-    ]
-    | None = None,
+    assume_a: Literal["gen", "sym", "her", "pos"] = "gen",
     transposed: bool = False,
 ) -> _Array_fc_2d: ...
 def solve_triangular(
@@ -150,7 +136,6 @@ def pinvh(
     rtol: spt.AnyReal | None,
     lower: bool,
     return_rank: Literal[True],
-    /,
     check_finite: bool = True,
 ) -> tuple[_Array_fc_2d, int]: ...
 @overload
@@ -176,12 +161,11 @@ def matrix_balance(
     permute: bool,
     scale: bool,
     separate: Literal[True],
-    /,
     overwrite_a: bool = False,
 ) -> tuple[_Array_fc_2d, tuple[_Array_fc_1d, _Array_fc_1d]]: ...
 def matmul_toeplitz(
     c_or_cr: npt.ArrayLike | tuple[npt.ArrayLike, npt.ArrayLike],
     x: npt.ArrayLike,
-    check_finite: bool = True,
+    check_finite: bool = False,
     workers: int | None = None,
 ) -> _Array_fc_1d | _Array_fc_2d: ...
