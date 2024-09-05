@@ -79,16 +79,13 @@ pip install scipy-stubs
 
 ## Development Progress
 
-According to [basedpyright](https://github.com/DetachHead/basedpyright) (stricter than
-pyright), the "type completeness score" is **42.6%**.
-
 | Package or module                 | Stubs status    |
 |---------------------------------- |---------------- |
 | `scipy.__init__`                  | 3: ready        |
 | `scipy._lib`                      | 2: partial      |
 | `scipy.cluster`                   | 1: skeleton     |
 | `scipy.constants`                 | **4: done**     |
-| `scipy.datasets`                  | 2: partial      |
+| `scipy.datasets`                  | **4: done**     |
 | `scipy.fft`                       | 2: partial      |
 | `scipy.fft._pocketfft`            | 2: partial      |
 | `scipy.fftpack`                   | 2: partial      |
