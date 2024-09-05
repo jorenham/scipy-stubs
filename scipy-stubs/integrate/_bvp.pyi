@@ -1,5 +1,3 @@
-# TODO: Annotate the private functions as well
-
 from collections.abc import Callable, Sequence
 from typing import Any, Final, Generic, Literal, TypeAlias, overload
 from typing_extensions import TypeVar
@@ -7,6 +5,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onpt
+from scipy._typing import UntypedCallable
 from scipy.interpolate import PPoly
 
 _SCT = TypeVar("_SCT", bound=np.generic)
@@ -40,12 +39,33 @@ _FunBCR_p: TypeAlias = Callable[
 ]
 _FunBCR_jac: TypeAlias = Callable[
     [_Array_1d[_SCT_fc], _Array_1d[_SCT_fc]],
-    tuple[npt.NDArray[_SCT_fc], npt.NDArray[_SCT_fc]]
+    tuple[npt.NDArray[_SCT_fc], npt.NDArray[_SCT_fc]],
 ]
 _FunBCR_jac_p: TypeAlias = Callable[
     [_Array_1d[_SCT_fc], _Array_1d[_SCT_fc], _Array_1d[np.float64]],
-    tuple[npt.NDArray[_SCT_fc], npt.NDArray[_SCT_fc], npt.NDArray[_SCT_fc]]
+    tuple[npt.NDArray[_SCT_fc], npt.NDArray[_SCT_fc], npt.NDArray[_SCT_fc]],
 ]
+
+EPS: Final[float]
+TERMINATION_MESSAGES: Final[dict[int, str]]
+
+# private functions
+# TODO: Annotate these
+estimate_fun_jac: UntypedCallable
+estimate_bc_jac: UntypedCallable
+compute_jac_indices: UntypedCallable
+stacked_matmul: UntypedCallable
+construct_global_jac: UntypedCallable
+collocation_fun: UntypedCallable
+prepare_sys: UntypedCallable
+solve_newton: UntypedCallable
+print_iteration_progress: Callable[..., None]
+estimate_rms_residuals: UntypedCallable
+create_spline: UntypedCallable
+modify_mesh: UntypedCallable
+wrap_functions: UntypedCallable
+
+def print_iteration_header() -> None: ...
 
 # NOTE: this inherits from `scipy.optimize.OptimizeResult` at runtime.
 # But because `BVPResult` doesn't share all members (and optional attributes
@@ -59,10 +79,9 @@ class BVPResult(Generic[_SCT_fc]):
     status: Final[Literal[0, 1, 2]]
     message: Final[str]
     success: Final[bool]
-    @property
-    def y(self, /) -> onpt.Array[tuple[int, int], _SCT_fc]: ...
-    @property
-    def yp(self) -> onpt.Array[tuple[int, int], _SCT_fc]: ...
+
+    y: onpt.Array[tuple[int, int], _SCT_fc]
+    yp: onpt.Array[tuple[int, int], _SCT_fc]
 
 # public
 @overload
