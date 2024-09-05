@@ -1,65 +1,122 @@
-from scipy._typing import Untyped
+from collections.abc import Callable, Sequence
+from typing import Any, ClassVar, Final, Generic, Literal, Protocol, TypeAlias, type_check_only
+from typing_extensions import Self, TypeVarTuple, Unpack, override
+
+import numpy as np
+import numpy.typing as npt
+import optype.numpy as onpt
+from scipy._typing import Untyped, UntypedCallable, UntypedTuple
 
 __all__ = ["complex_ode", "ode"]
 
-class ode:
+_Ts = TypeVarTuple("_Ts", default=Unpack[tuple[()]])
+
+@type_check_only
+class _ODEFuncF(Protocol[Unpack[_Ts]]):
+    def __call__(
+        self,
+        t: float,
+        y: float | npt.NDArray[np.float64],
+        /,
+        *args: Unpack[_Ts],
+    ) -> float | npt.NDArray[np.floating[Any]]: ...
+
+@type_check_only
+class _ODEFuncC(Protocol[Unpack[_Ts]]):
+    def __call__(
+        self,
+        t: float,
+        y: complex | npt.NDArray[np.complex128],
+        /,
+        *args: Unpack[_Ts],
+    ) -> complex | npt.NDArray[np.complexfloating[Any, Any]]: ...
+
+_SolOutFunc: TypeAlias = Callable[[float, onpt.Array[tuple[int], np.inexact[Any]]], Literal[0, -1]]
+
+class ode(Generic[Unpack[_Ts]]):
     stiff: int
-    f: Untyped
-    jac: Untyped
-    f_params: Untyped
-    jac_params: Untyped
-    t: Untyped
-    def __init__(self, f, jac: Untyped | None = None) -> None: ...
+    f: _ODEFuncF[Unpack[_Ts]]
+    jac: _ODEFuncF[Unpack[_Ts]] | None
+    f_params: tuple[()] | tuple[Unpack[_Ts]]
+    jac_params: tuple[()] | tuple[Unpack[_Ts]]
+    t: float
+    def __init__(self, /, f: _ODEFuncF[Unpack[_Ts]], jac: _ODEFuncF[Unpack[_Ts]] | None = None) -> None: ...
     @property
-    def y(self) -> Untyped: ...
-    def set_initial_value(self, y, t: float = 0.0) -> Untyped: ...
-    def set_integrator(self, name, **integrator_params) -> Untyped: ...
-    def integrate(self, t, step: bool = False, relax: bool = False) -> Untyped: ...
-    def successful(self) -> Untyped: ...
-    def get_return_code(self) -> Untyped: ...
-    def set_f_params(self, *args) -> Untyped: ...
-    def set_jac_params(self, *args) -> Untyped: ...
-    def set_solout(self, solout): ...
+    def y(self, /) -> float: ...
+    def integrate(self, /, t: float, step: bool = False, relax: bool = False) -> float: ...
+    def set_initial_value(self, /, y: onpt.AnyInexactArray | Sequence[Sequence[complex]] | complex, t: float = 0.0) -> Self: ...
+    def set_integrator(self, /, name: str, **integrator_params: Untyped) -> Self: ...
+    def set_f_params(self, /, *args: Unpack[_Ts]) -> Self: ...
+    def set_jac_params(self, /, *args: Unpack[_Ts]) -> Self: ...
+    def set_solout(self, /, solout: _SolOutFunc) -> None: ...
+    def get_return_code(self, /) -> Literal[-7, -6, -5, -4, -3, -2, -1, 1, 2]: ...
+    def successful(self, /) -> bool: ...
 
-class complex_ode(ode):
-    cf: Untyped
-    cjac: Untyped
-    def __init__(self, f, jac: Untyped | None = None): ...
+class complex_ode(ode[Unpack[_Ts]], Generic[Unpack[_Ts]]):
+    cf: _ODEFuncC[Unpack[_Ts]]
+    cjac: _ODEFuncC[Unpack[_Ts]] | None
+    tmp: onpt.Array[tuple[int], np.float64]
+    def __init__(self, /, f: _ODEFuncC[Unpack[_Ts]], jac: _ODEFuncC[Unpack[_Ts]] | None = None) -> None: ...
     @property
-    def y(self) -> Untyped: ...
-    def set_integrator(self, name, **integrator_params) -> Untyped: ...
-    tmp: Untyped
-    def set_initial_value(self, y, t: float = 0.0) -> Untyped: ...
-    def integrate(self, t, step: bool = False, relax: bool = False) -> Untyped: ...
-    def set_solout(self, solout): ...
+    @override
+    def y(self, /) -> complex: ...  # type: ignore[override]
+    @override
+    def integrate(self, /, t: float, step: bool = False, relax: bool = False) -> complex: ...  # type: ignore[override]
 
-def find_integrator(name) -> Untyped: ...
+def find_integrator(name: str) -> type[IntegratorBase] | None: ...
 
 class IntegratorConcurrencyError(RuntimeError):
-    def __init__(self, name) -> None: ...
+    def __init__(self, /, name: str) -> None: ...
 
 class IntegratorBase:
-    runner: Untyped
-    success: Untyped
-    istate: Untyped
-    supports_run_relax: Untyped
-    supports_step: Untyped
-    supports_solout: bool
-    integrator_classes: Untyped
-    scalar = float
-    handle: Untyped
-    def acquire_new_handle(self): ...
-    def check_handle(self): ...
-    def reset(self, n, has_jac): ...
-    def run(self, f, jac, y0, t0, t1, f_params, jac_params): ...
-    def step(self, f, jac, y0, t0, t1, f_params, jac_params): ...
-    def run_relax(self, f, jac, y0, t0, t1, f_params, jac_params): ...
+    runner: ClassVar[Callable[..., object] | None]  # fortran function or unavailable
+    supports_run_relax: ClassVar[Literal[0, 1, None]] = None
+    supports_step: ClassVar[Literal[0, 1, None]] = None
+    supports_solout: ClassVar[bool]
+    scalar: ClassVar[type] = ...
+    handle: ClassVar[int]
+    success: Literal[0, 1] | None = None
+    integrator_classes: list[type[IntegratorBase]]
+    istate: int | None = None
+    def acquire_new_handle(self, /) -> None: ...
+    def check_handle(self, /) -> None: ...
+    def reset(self, /, n: int, has_jac: bool) -> None: ...
+    def run(
+        self,
+        /,
+        f: UntypedCallable,
+        jac: UntypedCallable,
+        y0: complex,
+        t0: float,
+        t1: float,
+        f_params: UntypedTuple,
+        jac_params: UntypedTuple,
+    ) -> tuple[Untyped, float]: ...
+    def step(
+        self,
+        /,
+        f: UntypedCallable,
+        jac: UntypedCallable,
+        y0: complex,
+        t0: float,
+        t1: float,
+        f_params: UntypedTuple,
+        jac_params: UntypedTuple,
+    ) -> tuple[Untyped, float]: ...
+    def run_relax(
+        self,
+        /,
+        f: UntypedCallable,
+        jac: UntypedCallable,
+        y0: complex,
+        t0: float,
+        t1: float,
+        f_params: UntypedTuple,
+        jac_params: UntypedTuple,
+    ) -> tuple[Untyped, float]: ...
 
 class vode(IntegratorBase):
-    runner: Untyped
-    messages: Untyped
-    supports_run_relax: int
-    supports_step: int
+    messages: ClassVar[dict[int, str]]
     active_global_handle: int
     meth: int
     with_jacobian: Untyped
@@ -72,10 +129,13 @@ class vode(IntegratorBase):
     max_step: Untyped
     min_step: Untyped
     first_step: Untyped
-    success: int
     initialized: bool
+    rwork: Untyped
+    iwork: Untyped
+    call_args: Untyped
     def __init__(
         self,
+        /,
         method: str = "adams",
         with_jacobian: bool = False,
         rtol: float = 1e-06,
@@ -87,49 +147,40 @@ class vode(IntegratorBase):
         max_step: float = 0.0,
         min_step: float = 0.0,
         first_step: float = 0.0,
-    ): ...
-    rwork: Untyped
-    iwork: Untyped
-    call_args: Untyped
-    def reset(self, n, has_jac): ...
-    istate: Untyped
-    def run(self, f, jac, y0, t0, t1, f_params, jac_params) -> Untyped: ...
-    def step(self, *args) -> Untyped: ...
-    def run_relax(self, *args) -> Untyped: ...
+    ) -> None: ...
 
 # pyright: reportUnnecessaryTypeIgnoreComment=false
 class zvode(vode):
-    runner: Untyped
-    supports_run_relax: int
-    supports_step: int
-    scalar: complex  # type: ignore[assignment]
     active_global_handle: int
     zwork: Untyped
     rwork: Untyped
     iwork: Untyped
     call_args: Untyped
-    success: int
     initialized: bool
-    def reset(self, n, has_jac): ...
 
 class dopri5(IntegratorBase):
-    runner: Untyped
-    name: str
-    supports_solout: bool
-    messages: Untyped
-    rtol: Untyped
-    atol: Untyped
-    nsteps: Untyped
-    max_step: Untyped
-    first_step: Untyped
-    safety: Untyped
-    ifactor: Untyped
-    dfactor: Untyped
-    beta: Untyped
-    verbosity: Untyped
-    success: int
+    name: ClassVar = "dopri5"
+    messages: ClassVar[dict[int, str]]
+
+    rtol: Final[float]
+    atol: Final[float]
+    nsteps: Final[int]
+    max_step: Final[float]
+    first_step: Final[float]
+    safety: Final[float]
+    ifactor: Final[float]
+    dfactor: Final[float]
+    beta: Final[float]
+    verbosity: Final[int]
+    solout: Callable[[float, onpt.Array[tuple[int], np.inexact[Any]]], Literal[0, -1]] | None
+    solout_cmplx: bool
+    iout: int
+    work: onpt.Array[tuple[int], np.float64]
+    iwork: onpt.Array[tuple[int], np.int32]
+    call_args: Untyped
     def __init__(
         self,
+        /,
         rtol: float = 1e-06,
         atol: float = 1e-12,
         nsteps: int = 500,
@@ -141,21 +192,11 @@ class dopri5(IntegratorBase):
         beta: float = 0.0,
         method: Untyped | None = None,
         verbosity: int = -1,
-    ): ...
-    solout: Untyped
-    solout_cmplx: Untyped
-    iout: int
-    def set_solout(self, solout, complex: bool = False): ...
-    work: Untyped
-    iwork: Untyped
-    call_args: Untyped
-    def reset(self, n, has_jac): ...
-    istate: Untyped
-    def run(self, f, jac, y0, t0, t1, f_params, jac_params) -> Untyped: ...
+    ) -> None: ...
+    def set_solout(self, solout: _SolOutFunc | None, complex: bool = False) -> None: ...
 
 class dop853(dopri5):
-    runner: Untyped
-    name: str
+    name: ClassVar = "dop853"
     def __init__(
         self,
         rtol: float = 1e-06,
@@ -169,39 +210,38 @@ class dop853(dopri5):
         beta: float = 0.0,
         method: Untyped | None = None,
         verbosity: int = -1,
-    ): ...
-    work: Untyped
-    iwork: Untyped
+    ) -> None: ...
     call_args: Untyped
-    success: int
-    def reset(self, n, has_jac): ...
 
 class lsoda(IntegratorBase):
-    runner: Untyped
-    active_global_handle: int
-    messages: Untyped
-    with_jacobian: Untyped
-    rtol: Untyped
-    atol: Untyped
-    mu: Untyped
-    ml: Untyped
-    max_order_ns: Untyped
-    max_order_s: Untyped
-    nsteps: Untyped
-    max_step: Untyped
-    min_step: Untyped
-    first_step: Untyped
-    ixpr: Untyped
-    max_hnil: Untyped
-    success: int
-    initialized: bool
+    active_global_handle: ClassVar[int] = 0
+    messages: ClassVar[dict[int, str]]
+
+    with_jacobian: Final[bool]
+    rtol: Final[float]
+    atol: Final[float]
+    mu: Final[float | None]
+    ml: Final[float | None]
+    max_order_ns: Final[int]
+    max_order_s: Final[int]
+    nsteps: Final[int]
+    max_step: Final[float]
+    min_step: Final[float]
+    first_step: Final[float]
+    ixpr: Final[int]
+    max_hnil: Final[int]
+    initialized: Final[bool]
+    rwork: onpt.Array[tuple[int], np.float64]
+    iwork: onpt.Array[tuple[int], np.int32]
+    call_args: list[float | onpt.Array[tuple[int], np.float64] | onpt.Array[tuple[int], np.int32]]
     def __init__(
         self,
+        /,
         with_jacobian: bool = False,
         rtol: float = 1e-06,
         atol: float = 1e-12,
-        lband: Untyped | None = None,
-        uband: Untyped | None = None,
+        lband: float | None = None,
+        uband: float | None = None,
         nsteps: int = 500,
         max_step: float = 0.0,
         min_step: float = 0.0,
@@ -211,12 +251,4 @@ class lsoda(IntegratorBase):
         max_order_ns: int = 12,
         max_order_s: int = 5,
         method: Untyped | None = None,
-    ): ...
-    rwork: Untyped
-    iwork: Untyped
-    call_args: Untyped
-    def reset(self, n, has_jac): ...
-    istate: Untyped
-    def run(self, f, jac, y0, t0, t1, f_params, jac_params) -> Untyped: ...
-    def step(self, *args) -> Untyped: ...
-    def run_relax(self, *args) -> Untyped: ...
+    ) -> None: ...
