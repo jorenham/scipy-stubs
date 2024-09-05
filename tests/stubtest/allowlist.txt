@@ -124,17 +124,26 @@ scipy.interpolate.AAA
 scipy.interpolate._aaa
 scipy.interpolate._interpnd_info
 
-# mypy didn't read the typing specs on `__all__` within stubs
+# deprecated submodules are removed from these `__all__`
+scipy.constants.__all__
+scipy.integrate.__all__
+scipy.linalg.__all__
+scipy.special.__all__
+scipy.stats.__all__
+
+# TODO
 scipy._lib._ccallback.__all__
 scipy._lib.array_api_compat.__all__
 scipy._lib.array_api_compat.common.__all__
 scipy.integrate._ivp.__all__
-scipy.linalg._solve_toeplitz.__all__
 scipy.optimize._constraints.__all__
 scipy.optimize._lsap.__all__
 scipy.optimize._remove_redundancy.__all__
 scipy.optimize._trlib._trlib.__all__
 scipy.signal._signaltools.__all__
+scipy.spatial.ckdtree.__all__
+scipy.spatial.kdtree.__all__
+scipy.spatial.qhull.__all__
 scipy.sparse._matrix.__all__
 scipy.sparse.csgraph.__all__
 scipy.sparse.csgraph._flow.__all__
@@ -145,6 +154,7 @@ scipy.sparse.csgraph._reordering.__all__
 scipy.sparse.csgraph._shortest_path.__all__
 scipy.sparse.csgraph._tools.__all__
 scipy.sparse.csgraph._traversal.__all__
+scipy.sparse.linalg._dsolve.__all__
 scipy.sparse.linalg._dsolve._superlu.__all__
 scipy.spatial.transform._rotation.__all__
 scipy.spatial.transform._rotation_spline.__all__
@@ -159,20 +169,9 @@ scipy.stats._binomtest.__all__
 scipy.stats._bws_test.__all__
 scipy.stats._censored_data.__all__
 scipy.stats._common.__all__
-scipy.stats._distn_infrastructure.__all__
-scipy.stats._distr_params.__all__
-
-# mypy doesn't know how to sort `__all__`
-scipy.constants.__all__
-scipy.integrate.__all__
-scipy.linalg.__all__
-scipy.sparse.linalg._dsolve.__all__
-scipy.spatial.ckdtree.__all__
-scipy.spatial.kdtree.__all__
-scipy.spatial.qhull.__all__
-scipy.special.__all__
-scipy.stats.__all__
 scipy.stats._continuous_distns.__all__
 scipy.stats._discrete_distns.__all__
+scipy.stats._distn_infrastructure.__all__
+scipy.stats._distr_params.__all__
 scipy.stats.distributions.__all__
 scipy.stats.sampling.__all__
