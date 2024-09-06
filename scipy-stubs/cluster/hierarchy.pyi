@@ -1,6 +1,6 @@
 from collections.abc import Callable, Sequence
 from types import ModuleType
-from typing import Any, Literal, TypeAlias, overload
+from typing import Any, Literal, TypeAlias, TypedDict, overload
 from typing_extensions import TypeVar, override
 
 import numpy as np
@@ -53,6 +53,14 @@ _SortOrder: TypeAlias = Literal["ascending", "descending"]
 
 # for the lack of a better type
 _MatplotlibAxes: TypeAlias = object
+
+class _DendrogramResult(TypedDict):
+    color_list: list[str]
+    icoord: list[list[int]]
+    dcoord: list[list[int]]
+    ivl: list[str]
+    leaves: list[int] | None
+    leaves_color_list: list[str]
 
 class ClusterWarning(UserWarning): ...
 
@@ -168,7 +176,7 @@ def dendrogram(
     link_color_func: Callable[[int], str] | None = None,
     ax: _MatplotlibAxes | None = None,
     above_threshold_color: str = "C0",
-) -> dict[str, object]: ...  # TODO: TypedDict
+) -> _DendrogramResult: ...
 def is_isomorphic(T1: onpt.AnyArray, T2: onpt.AnyArray) -> bool: ...
 def maxdists(Z: onpt.AnyArray) -> onpt.Array[tuple[int], np.float64]: ...
 def maxinconsts(Z: onpt.AnyArray, R: onpt.AnyArray) -> onpt.Array[tuple[int], np.float64]: ...
