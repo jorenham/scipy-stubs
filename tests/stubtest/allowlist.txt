@@ -75,6 +75,7 @@ scipy._lib.cobyqa.*
 scipy._lib.messagestream
 scipy.fft._pocketfft.pypocketfft.*
 scipy.special._precompute.*
+scipy.special.libsf_error_state
 scipy.stats._rcont.rcont
 scipy.stats._unuran.unuran_wrapper
 
