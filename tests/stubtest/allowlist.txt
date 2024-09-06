@@ -5,7 +5,7 @@ scipy.integrate._typing
 # internal testing
 scipy._lib.test
 scipy._lib.tests.*
-scipy.cluster.PytestTester
+# scipy.cluster.PytestTester
 scipy.cluster.tests.*
 scipy.conftest
 scipy.constants.tests.*
