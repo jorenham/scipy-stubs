@@ -1,7 +1,7 @@
 <h1 align="center">scipy-stubs</h1>
 
 <p align="center">
-    Building blocks for precise & flexible type hints.
+    Type stubs for <a href="https://github.com/scipy/scipy">SciPy</a>.
 </p>
 
 <p align="center">
@@ -66,6 +66,13 @@
 
 ---
 
+> [!NOTE]
+> This project is in the alpha stage, so some annotations are missing, and some might
+> be (slightly) incorrect.
+> But either way, it's no problem to `scipy-stubs` at the moment:
+> Type-checkers will (already) understand `scipy` a lot better *with* `scipy-stubs`,
+> than without it.
+
 ## Installation
 
 The `scipy-stubs` package is available as on PyPI:
@@ -74,8 +81,26 @@ The `scipy-stubs` package is available as on PyPI:
 pip install scipy-stubs
 ```
 
-> [!IMPORTANT]
-> This project is in the early development stage, and is not ready for production use.
+## Version Compatibility
+
+### Type-checkers
+
+For validation and testing, `scipy-stubs` primarily uses
+[`basedmypy`](https://github.com/KotlinIsland/basedmypy) (a `mypy` fork) and
+[`basedpyright`](https://github.com/DetachHead/basedpyright) (a `pyright` fork).
+Because they are in generally stricter than `mypy` and `pyright`, they should be
+compatible as well.
+If you find that this is not the case, then don't hesitate to open an issue.
+
+### Required dependencies
+
+The versioning scheme of `scipy-stubs` includes the compatible `scipy` version.
+Later versions might work too, but in case of API-changes, the stubs could be outdated.
+
+Apart from `scipy`'s own dependencies (e.g. `numpy`), the only other
+required dependency is [`optype`](https://github.com/jorenham/optype).
+
+The exact version requirements are specified in the [`pyproject.toml`](pyproject.toml).
 
 ## Development Progress
 
