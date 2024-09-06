@@ -1,7 +1,7 @@
 <h1 align="center">scipy-stubs</h1>
 
 <p align="center">
-    Building blocks for precise & flexible type hints.
+    Type stubs for <a href="https://github.com/scipy/scipy">SciPy</a>.
 </p>
 
 <p align="center">
