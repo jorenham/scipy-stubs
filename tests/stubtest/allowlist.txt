@@ -63,7 +63,7 @@ scipy.stats.tests.*
 scipy.stats._qmc_cy.__test__
 scipy.stats._sobol.__test__
 
-# undocumented internal scipy machinery
+# undocumented & irrelevant internal scipy machinery
 scipy._lib._docscrape.*
 scipy._lib._uarray.*
 scipy._lib.array_api_compat.cupy
@@ -74,6 +74,7 @@ scipy._lib.array_api_compat.common._typing.*
 scipy._lib.cobyqa.*
 scipy._lib.messagestream
 scipy.fft._pocketfft.pypocketfft.*
+scipy.special._precompute.*
 scipy.stats._rcont.rcont
 scipy.stats._unuran.unuran_wrapper
 
