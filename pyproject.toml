@@ -37,7 +37,7 @@ scipy = "^1.14.1"
 [tool.poetry.group.lint.dependencies]
 basedmypy = "^2.6.0"
 basedpyright = "^1.17.2"
-ruff = "^0.6.3"
+ruff = "^0.6.4"
 
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.28.0"
