@@ -66,6 +66,13 @@
 
 ---
 
+> [!NOTE]
+> This project is in the alpha stage, so some annotations are missing, and some might
+> be (slightly) incorrect.
+> But either way, it's no problem to `scipy-stubs` at the moment:
+> Type-checkers will (already) understand `scipy` a lot better *with* `scipy-stubs`,
+> than without it.
+
 ## Installation
 
 The `scipy-stubs` package is available as on PyPI:
@@ -73,9 +80,6 @@ The `scipy-stubs` package is available as on PyPI:
 ```shell
 pip install scipy-stubs
 ```
-
-> [!IMPORTANT]
-> This project is in the early development stage, and is not ready for production use.
 
 ## Development Progress
 
