@@ -1,18 +1,14 @@
 {
-  "[python]": {
-    "editor.rulers": [130]
-  },
   "[markdown]": {
     "editor.rulers": [88]
+  },
+  "[python]": {
+    "editor.rulers": [130]
   },
   "[toml]": {
     "editor.rulers": [88],
     "editor.tabSize": 4
   },
   "git.branchProtection": ["master"],
-  "mypy-type-checker.args": [
-    "--config-file=pyproject.toml"
-  ],
-  "yaml.format.printWidth": 88,
-  "prettier.printWidth": 88
+  "mypy-type-checker.args": ["--config-file=pyproject.toml"]
 }
