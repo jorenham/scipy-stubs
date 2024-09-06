@@ -1,8 +1,7 @@
-from scipy._typing import Untyped
-from . import common as common, doccer as doccer
+from typing import Literal
+
+from . import common, doccer  # pyright: ignore[reportUnusedImport]
 from ._common import *
 
-dataset_methods: Untyped
-
-def __dir__() -> Untyped: ...
-def __getattr__(name) -> Untyped: ...
+__all__ = ["ascent", "central_diff_weights", "derivative", "electrocardiogram", "face"]
+dataset_methods: list[Literal["ascent", "face", "electrocardiogram"]]
