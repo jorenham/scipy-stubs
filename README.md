@@ -106,7 +106,7 @@ pip install scipy-stubs
 | `scipy.sparse.linalg`             | 2: partial      |
 | `scipy.spatial`                   | 2: partial      |
 | `scipy.spatial.distance`          | 3: ready        |
-| `scipy.special`                   | 3: ready        |
+| `scipy.special`                   | **4: done**     |
 | `scipy.special.cython_special`    | **4: done**     |
 | `scipy.stats`                     | 2: partial      |
 | `scipy.stats.contingency`         | 1: skeleton     |
