@@ -95,7 +95,7 @@ pip install scipy-stubs
 | `scipy.io.arff`                   | 2: partial      |
 | `scipy.io.matlab`                 | 2: partial      |
 | `scipy.linalg`                    | **4: done**     |
-| `scipy.misc`                      | 0: missing      |
+| ~`scipy.misc`~                    | **4: done**     |
 | `scipy.ndimage`                   | 2: partial      |
 | `scipy.odr`                       | 1: skeleton     |
 | `scipy.optimize`                  | 2: partial      |
