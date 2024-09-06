@@ -58,7 +58,6 @@ scipy.spatial.PytestTester
 scipy.spatial.tests.*
 scipy.spatial.transform.tests.*
 scipy.spatial.transform._rotation.__test__
-scipy.special.cython_special.__test__
 scipy.special.tests.*
 scipy.stats.tests.*
 scipy.stats._qmc_cy.__test__
@@ -128,7 +127,6 @@ scipy.interpolate._interpnd_info
 scipy.constants.__all__
 scipy.integrate.__all__
 scipy.linalg.__all__
-scipy.special.__all__
 scipy.stats.__all__
 
 # TODO
@@ -158,13 +156,6 @@ scipy.sparse.linalg._dsolve.__all__
 scipy.sparse.linalg._dsolve._superlu.__all__
 scipy.spatial.transform._rotation.__all__
 scipy.spatial.transform._rotation_spline.__all__
-scipy.special._add_newdocs.__all__
-scipy.special._ellip_harm.__all__
-scipy.special._lambertw.__all__
-scipy.special._orthogonal.__all__
-scipy.special._sf_error.__all__
-scipy.special._spherical_bessel.__all__
-scipy.special.cython_special.__all__
 scipy.stats._binomtest.__all__
 scipy.stats._bws_test.__all__
 scipy.stats._censored_data.__all__
