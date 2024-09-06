@@ -1,7 +1,7 @@
 from ._ufuncs import (
-    betainc,
-    betaincc,
-    chdtr,
+    betainc,  # pyright: ignore[reportUnusedImport]
+    betaincc,  # pyright: ignore[reportUnusedImport]
+    chdtr,  # pyright: ignore[reportUnusedImport]
     chdtrc,
     entr,
     erf,
@@ -19,14 +19,11 @@ from ._ufuncs import (
     ndtr,
     ndtri,
     rel_entr,
-    stdtr,
+    stdtr,  # pyright: ignore[reportUnusedImport]
     xlogy,
 )
 
 __all__ = [
-    "betainc",
-    "betaincc",
-    "chdtr",
     "chdtrc",
     "entr",
     "erf",
@@ -44,6 +41,5 @@ __all__ = [
     "ndtr",
     "ndtri",
     "rel_entr",
-    "stdtr",
     "xlogy",
 ]

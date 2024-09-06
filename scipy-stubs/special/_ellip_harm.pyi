@@ -3,8 +3,6 @@ from typing import Literal
 import numpy as np
 import scipy._typing as spt
 
-__all__ = ["ellip_harm", "ellip_harm_2", "ellip_normal"]
-
 def ellip_harm(
     h2: spt.AnyReal,
     k2: spt.AnyReal,

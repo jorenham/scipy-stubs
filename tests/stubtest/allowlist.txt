@@ -74,10 +74,6 @@ scipy._lib.array_api_compat.common._typing.*
 scipy._lib.cobyqa.*
 scipy._lib.messagestream
 scipy.fft._pocketfft.pypocketfft.*
-scipy.special.add_newdocs
-scipy.special.libsf_error_state
-scipy.special._precompute.*
-scipy.special._support_alternative_backends.*
 scipy.stats._rcont.rcont
 scipy.stats._unuran.unuran_wrapper
 
@@ -105,11 +101,6 @@ scipy.optimize.optimize.*
 scipy.optimize.slsqp.*
 scipy.optimize.tnc.*
 scipy.optimize.zeros.*
-scipy.special.basic
-scipy.special.orthogonal
-scipy.special.sf_error
-scipy.special.specfun
-scipy.special.spfun_stats
 scipy.linalg.basic
 scipy.stats.kde.*
 scipy.stats.morestats.*
