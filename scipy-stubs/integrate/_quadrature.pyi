@@ -27,15 +27,15 @@ _NestedReal: TypeAlias = Sequence[float] | Sequence[_NestedReal]
 _NestedComplex: TypeAlias = Sequence[complex] | Sequence[_NestedComplex]
 _ArrayLike_uif: TypeAlias = _NestedReal | onpt.AnyFloatingArray | onpt.AnyIntegerArray
 _ArrayLike_uifc: TypeAlias = _NestedComplex | onpt.AnyNumberArray
-_QuadFuncOut: TypeAlias = np.ndarray[onpt.AtLeast1D, np.dtype[np.floating[Any]]] | float | np.floating[Any]
+_QuadFuncOut: TypeAlias = onpt.Array[tuple[int, ...], np.floating[Any]] | Sequence[float]
 
 _NDT_f = TypeVar("_NDT_f", bound=_QuadFuncOut)
 _NDT_f_co = TypeVar("_NDT_f_co", bound=_QuadFuncOut, covariant=True)
-_Ts = TypeVarTuple("_Ts", default=Unpack[tuple[()]])
+_Ts = TypeVarTuple("_Ts")
 
 @type_check_only
 class _VectorizedQuadFunc(Protocol[_NDT_f_co, Unpack[_Ts]]):
-    def __call__(self, x: float, /, *args: Unpack[_Ts]) -> _NDT_f_co: ...
+    def __call__(self, x: onpt.Array[tuple[int], np.float64], /, *args: Unpack[_Ts]) -> _NDT_f_co: ...
 
 class AccuracyWarning(Warning): ...
 
@@ -128,18 +128,19 @@ def cumulative_simpson(
 # function-based
 @overload
 def fixed_quad(
-    func: _VectorizedQuadFunc[_NDT_f],
-    a: spt.AnyReal,
-    b: spt.AnyReal,
-    args: tuple[()] = (),
-    n: op.CanIndex = 5,
-) -> _NDT_f: ...
-@overload
-def fixed_quad(
     func: _VectorizedQuadFunc[_NDT_f, Unpack[_Ts]],
     a: spt.AnyReal,
     b: spt.AnyReal,
     args: tuple[Unpack[_Ts]],
+    n: op.CanIndex = 5,
+) -> _NDT_f: ...
+@overload
+def fixed_quad(
+    # func: _VectorizedQuadFunc[_NDT_f],
+    func: Callable[[onpt.Array[tuple[int], np.float64]], _NDT_f],
+    a: spt.AnyReal,
+    b: spt.AnyReal,
+    args: tuple[()] = (),
     n: op.CanIndex = 5,
 ) -> _NDT_f: ...
 
