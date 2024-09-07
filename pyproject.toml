@@ -16,14 +16,14 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
 ]
-description = ""
+description = "Type stubs for SciPy"
 documentation = "https://github.com/jorenham/scipy-stubs?tab=readme-ov-file#scipy-stubs"
 license = "BSD-3-Clause"
 name = "scipy-stubs"
 packages = [{include = "scipy-stubs"}]
 readme = "README.md"
 repository = "https://github.com/jorenham/scipy-stubs/"
-version = "1.4.1a1"
+version = "1.4.1a2"
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/jorenham/scipy-stubs/issues"
