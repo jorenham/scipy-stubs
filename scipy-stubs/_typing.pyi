@@ -1,9 +1,10 @@
 # Helper types for internal use (type-check only).
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from typing import Any, Literal, Protocol, TypeAlias, type_check_only
 from typing_extensions import LiteralString, TypeVar
 
 import numpy as np
+import optype as op
 import optype.numpy as onpt
 
 __all__ = [
@@ -14,6 +15,7 @@ __all__ = [
     "AnyInt",
     "AnyReal",
     "AnyScalar",
+    "AnyShape",
     "Array0D",
     "CorrelateMode",
     "NanPolicy",
@@ -45,6 +47,9 @@ AnyReal: TypeAlias = int | float | np.floating[Any] | np.integer[Any] | np.bool_
 AnyComplex: TypeAlias = int | float | complex | np.number[Any] | np.bool_
 AnyChar: TypeAlias = str | bytes  # `np.str_ <: builtins.str` and `np.bytes_ <: builtins.bytes`
 AnyScalar: TypeAlias = int | float | complex | AnyChar | np.generic
+
+# equivalent to `numpy._typing._shape._ShapeLike`
+AnyShape: TypeAlias = op.CanIndex | Sequence[op.CanIndex]
 
 # numpy literals
 RNG: TypeAlias = np.random.Generator | np.random.RandomState
