@@ -78,6 +78,7 @@ venv = ".venv"
 venvPath = "."
 
 deprecateTypingAliases = true
+enableTypeIgnoreComments = false
 reportIgnoreCommentWithoutRule = true
 reportImplicitRelativeImport = true
 reportInvalidCast = true
