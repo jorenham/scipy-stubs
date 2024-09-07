@@ -149,7 +149,6 @@ class vode(IntegratorBase):
         first_step: float = 0.0,
     ) -> None: ...
 
-# pyright: reportUnnecessaryTypeIgnoreComment=false
 class zvode(vode):
     active_global_handle: int
     zwork: Untyped
