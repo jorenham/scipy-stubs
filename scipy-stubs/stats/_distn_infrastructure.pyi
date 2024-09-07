@@ -485,8 +485,8 @@ class rv_continuous(_rv_mixin, rv_generic):
         self,
         /,
         data: _AnyArray_f8_in,
-        args: tuple[_AnyScalar_f8_in] | None = None,
-    ) -> tuple[Unpack[tuple[_AnyScalar_f8_in, ...]], float, float]: ...
+        args: tuple[float, ...] | None = None,
+    ) -> tuple[Unpack[tuple[float, ...]], float, float]: ...
     def _reduce_func(
         self,
         /,
