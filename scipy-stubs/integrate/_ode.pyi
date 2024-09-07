@@ -59,9 +59,9 @@ class complex_ode(ode[Unpack[_Ts]], Generic[Unpack[_Ts]]):
     def __init__(self, /, f: _ODEFuncC[Unpack[_Ts]], jac: _ODEFuncC[Unpack[_Ts]] | None = None) -> None: ...
     @property
     @override
-    def y(self, /) -> complex: ...  # type: ignore[override]
+    def y(self, /) -> complex: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
-    def integrate(self, /, t: float, step: bool = False, relax: bool = False) -> complex: ...  # type: ignore[override]
+    def integrate(self, /, t: float, step: bool = False, relax: bool = False) -> complex: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
 
 def find_integrator(name: str) -> type[IntegratorBase] | None: ...
 
@@ -149,7 +149,6 @@ class vode(IntegratorBase):
         first_step: float = 0.0,
     ) -> None: ...
 
-# pyright: reportUnnecessaryTypeIgnoreComment=false
 class zvode(vode):
     active_global_handle: int
     zwork: Untyped

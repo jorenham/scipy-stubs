@@ -1,4 +1,3 @@
-# pyright: reportUnnecessaryTypeIgnoreComment=false
 from collections.abc import Iterable
 from typing_extensions import Self, override
 

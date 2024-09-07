@@ -11,7 +11,7 @@ from ._typing import QuadInfoDict, QuadOpts, QuadWeights
 
 __all__ = ["IntegrationWarning", "dblquad", "nquad", "quad", "tplquad"]
 
-_Ts = TypeVarTuple("_Ts", default=Unpack[tuple[()]])
+_Ts = TypeVarTuple("_Ts")
 _T = TypeVar("_T")
 _T_co = TypeVar("_T_co", covariant=True)
 _T_f = TypeVar("_T_f", default=float)
@@ -57,7 +57,7 @@ class _QuadOutputNC(TypedDict):
     neval: int
 
 _QuadComplexFullOutput: TypeAlias = _QuadOutput1C_1 | _QuadOutput1C_2 | _QuadOutput1C_3
-_QuadExplain = TypedDict("_QuadExplain", {0: str, 1: str, 2: str, 3: str, 4: str, 5: str})  # type: ignore[misc]
+_QuadExplain = TypedDict("_QuadExplain", {0: str, 1: str, 2: str, 3: str, 4: str, 5: str})  # type: ignore[misc]  # pyright: ignore[reportGeneralTypeIssues]
 
 @type_check_only
 class _CanLenAndIter(Protocol[_T_co]):
@@ -83,10 +83,10 @@ class _OptCallable(Protocol[_T_f_contra, _OptT_co]):
 # 1-dimensional quadrature
 @overload
 def quad(
-    func: _QuadFunc1[spt.AnyReal] | LowLevelCallable,
+    func: _QuadFunc1[spt.AnyReal, Unpack[_Ts]] | LowLevelCallable,
     a: float,
     b: float,
-    args: tuple[()] = (),
+    args: tuple[Unpack[_Ts]],
     full_output: Literal[False, 0, None] = 0,
     epsabs: float = 1.49e-08,
     epsrel: float = 1.49e-08,
@@ -101,11 +101,10 @@ def quad(
 ) -> tuple[float, float]: ...
 @overload
 def quad(
-    func: _QuadFunc1[spt.AnyReal] | LowLevelCallable,
+    func: _QuadFunc1[spt.AnyReal, Unpack[_Ts]] | LowLevelCallable,
     a: float,
     b: float,
-    args: tuple[()] = (),
-    *,
+    args: tuple[Unpack[_Ts]],
     full_output: Literal[True, 1],
     epsabs: float = 1.49e-08,
     epsrel: float = 1.49e-08,
@@ -124,10 +123,10 @@ def quad(
 ): ...
 @overload
 def quad(
-    func: _QuadFunc1[spt.AnyComplex] | LowLevelCallable,
+    func: _QuadFunc1[spt.AnyComplex, Unpack[_Ts]] | LowLevelCallable,
     a: float,
     b: float,
-    args: tuple[()] = (),
+    args: tuple[Unpack[_Ts]],
     full_output: Literal[False, 0, None] = 0,
     epsabs: float = 1.49e-08,
     epsrel: float = 1.49e-08,
@@ -143,11 +142,10 @@ def quad(
 ) -> tuple[complex, complex]: ...
 @overload
 def quad(
-    func: _QuadFunc1[spt.AnyComplex] | LowLevelCallable,
+    func: _QuadFunc1[spt.AnyComplex, Unpack[_Ts]] | LowLevelCallable,
     a: float,
     b: float,
-    args: tuple[()] = (),
-    *,
+    args: tuple[Unpack[_Ts]],
     full_output: Literal[True, 1],
     epsabs: float = 1.49e-08,
     epsrel: float = 1.49e-08,
@@ -158,14 +156,15 @@ def quad(
     wopts: tuple[int, npt.NDArray[np.float32 | np.float64]] | None = None,
     maxp1: int = 50,
     limlst: int = 50,
+    *,
     complex_func: Literal[True, 1],
 ) -> tuple[complex, complex, _QuadComplexFullOutput]: ...
 @overload
 def quad(
-    func: _QuadFunc1[spt.AnyReal, Unpack[_Ts]] | LowLevelCallable,
+    func: Callable[[float], spt.AnyReal] | LowLevelCallable,
     a: float,
     b: float,
-    args: tuple[Unpack[_Ts]],
+    args: tuple[()] = (),
     full_output: Literal[False, 0, None] = 0,
     epsabs: float = 1.49e-08,
     epsrel: float = 1.49e-08,
@@ -180,10 +179,11 @@ def quad(
 ) -> tuple[float, float]: ...
 @overload
 def quad(
-    func: _QuadFunc1[spt.AnyReal, Unpack[_Ts]] | LowLevelCallable,
+    func: Callable[[float], spt.AnyReal] | LowLevelCallable,
     a: float,
     b: float,
-    args: tuple[Unpack[_Ts]],
+    args: tuple[()] = (),
+    *,
     full_output: Literal[True, 1],
     epsabs: float = 1.49e-08,
     epsrel: float = 1.49e-08,
@@ -202,10 +202,10 @@ def quad(
 ): ...
 @overload
 def quad(
-    func: _QuadFunc1[spt.AnyComplex, Unpack[_Ts]] | LowLevelCallable,
+    func: Callable[[float], spt.AnyComplex] | LowLevelCallable,
     a: float,
     b: float,
-    args: tuple[Unpack[_Ts]],
+    args: tuple[()] = (),
     full_output: Literal[False, 0, None] = 0,
     epsabs: float = 1.49e-08,
     epsrel: float = 1.49e-08,
@@ -221,10 +221,11 @@ def quad(
 ) -> tuple[complex, complex]: ...
 @overload
 def quad(
-    func: _QuadFunc1[spt.AnyComplex, Unpack[_Ts]] | LowLevelCallable,
+    func: Callable[[float], spt.AnyComplex] | LowLevelCallable,
     a: float,
     b: float,
-    args: tuple[Unpack[_Ts]],
+    args: tuple[()] = (),
+    *,
     full_output: Literal[True, 1],
     epsabs: float = 1.49e-08,
     epsrel: float = 1.49e-08,
@@ -235,22 +236,10 @@ def quad(
     wopts: tuple[int, npt.NDArray[np.float32 | np.float64]] | None = None,
     maxp1: int = 50,
     limlst: int = 50,
-    *,
     complex_func: Literal[True, 1],
 ) -> tuple[complex, complex, _QuadComplexFullOutput]: ...
 
 # 2-dimensional quadrature
-@overload
-def dblquad(
-    func: _QuadFunc2R[spt.AnyReal] | LowLevelCallable,
-    a: float,
-    b: float,
-    gfun: float | Callable[[float], float],
-    hfun: float | Callable[[float], float],
-    args: tuple[()] = (),
-    epsabs: float = 1.49e-08,
-    epsrel: float = 1.49e-08,
-) -> tuple[float, float]: ...
 @overload
 def dblquad(
     func: _QuadFunc2R[spt.AnyReal, Unpack[_Ts]] | LowLevelCallable,
@@ -262,21 +251,19 @@ def dblquad(
     epsabs: float = 1.49e-08,
     epsrel: float = 1.49e-08,
 ) -> tuple[float, float]: ...
-
-# 3-dimensional quadrature
 @overload
-def tplquad(
-    func: _QuadFunc3R[spt.AnyReal] | LowLevelCallable,
+def dblquad(
+    func: Callable[[float, float], spt.AnyReal] | LowLevelCallable,
     a: float,
     b: float,
     gfun: float | Callable[[float], float],
     hfun: float | Callable[[float], float],
-    qfun: float | Callable[[float, float], float],
-    rfun: float | Callable[[float, float], float],
     args: tuple[()] = (),
     epsabs: float = 1.49e-08,
     epsrel: float = 1.49e-08,
 ) -> tuple[float, float]: ...
+
+# 3-dimensional quadrature
 @overload
 def tplquad(
     func: _QuadFunc3R[spt.AnyReal, Unpack[_Ts]] | LowLevelCallable,
@@ -290,30 +277,68 @@ def tplquad(
     epsabs: float = 1.49e-08,
     epsrel: float = 1.49e-08,
 ) -> tuple[float, float]: ...
+@overload
+def tplquad(
+    func: Callable[[float, float, float], spt.AnyReal] | LowLevelCallable,
+    a: float,
+    b: float,
+    gfun: float | Callable[[float], float],
+    hfun: float | Callable[[float], float],
+    qfun: float | Callable[[float, float], float],
+    rfun: float | Callable[[float, float], float],
+    args: tuple[()] = (),
+    epsabs: float = 1.49e-08,
+    epsrel: float = 1.49e-08,
+) -> tuple[float, float]: ...
 
 # N-dimensional quadrature
 @overload
 def nquad(
     func: _QuadFuncNR[_T_f],
     ranges: _SizedIterable[_QuadRange | _RangeCallable[_T_f]],
-    args: op.CanIter[op.CanNext[_T_f]] | None = None,
-    opts: QuadOpts | _OptCallable[_T_f] | op.CanIter[op.CanNext[QuadOpts | _OptCallable[_T_f]]] | None = None,
+    args: op.CanIter[op.CanNext[_T_f]],
+    opts: QuadOpts | _OptCallable[float | _T_f] | op.CanIter[op.CanNext[QuadOpts | _OptCallable[float | _T_f]]] | None = None,
+    full_output: Literal[False, 0, None] = False,
+) -> tuple[float, float]: ...
+@overload
+def nquad(
+    func: _QuadFuncNR,
+    ranges: _SizedIterable[_QuadRange | _RangeCallable],
+    args: None = None,
+    opts: QuadOpts | _OptCallable | op.CanIter[op.CanNext[QuadOpts | _OptCallable]] | None = None,
     full_output: Literal[False, 0, None] = False,
 ) -> tuple[float, float]: ...
 @overload
 def nquad(
     func: _QuadFuncNR[_T_f],
     ranges: _SizedIterable[_QuadRange | _RangeCallable[_T_f]],
-    args: op.CanIter[op.CanNext[_T_f]] | None,
-    opts: QuadOpts | _OptCallable[_T_f] | op.CanIter[op.CanNext[QuadOpts | _OptCallable[_T_f]]] | None,
+    args: op.CanIter[op.CanNext[_T_f]],
+    opts: QuadOpts | _OptCallable[float | _T_f] | op.CanIter[op.CanNext[QuadOpts | _OptCallable[float | _T_f]]] | None,
+    full_output: Literal[True, 1],
+) -> tuple[float, float, _QuadOutputNC]: ...
+@overload
+def nquad(
+    func: _QuadFuncNR,
+    ranges: _SizedIterable[_QuadRange | _RangeCallable],
+    args: None,
+    opts: QuadOpts | _OptCallable | op.CanIter[op.CanNext[QuadOpts | _OptCallable]] | None,
     full_output: Literal[True, 1],
 ) -> tuple[float, float, _QuadOutputNC]: ...
 @overload
 def nquad(
     func: _QuadFuncNR[_T_f],
     ranges: _SizedIterable[_QuadRange | _RangeCallable[_T_f]],
-    args: op.CanIter[op.CanNext[_T_f]] | None = None,
-    opts: QuadOpts | _OptCallable[_T_f] | op.CanIter[op.CanNext[QuadOpts | _OptCallable[_T_f]]] | None = None,
+    args: op.CanIter[op.CanNext[_T_f]],
+    opts: QuadOpts | _OptCallable[float | _T_f] | op.CanIter[op.CanNext[QuadOpts | _OptCallable[float | _T_f]]] | None = None,
+    *,
+    full_output: Literal[True, 1],
+) -> tuple[float, float, _QuadOutputNC]: ...
+@overload
+def nquad(
+    func: _QuadFuncNR,
+    ranges: _SizedIterable[_QuadRange | _RangeCallable],
+    args: None = None,
+    opts: QuadOpts | _OptCallable | op.CanIter[op.CanNext[QuadOpts | _OptCallable]] | None = None,
     *,
     full_output: Literal[True, 1],
 ) -> tuple[float, float, _QuadOutputNC]: ...

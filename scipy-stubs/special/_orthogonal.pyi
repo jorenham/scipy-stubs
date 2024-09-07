@@ -60,7 +60,6 @@ __all__ = [
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
-# pyright: reportUnnecessaryTypeIgnoreComment=false
 # mypy: disable-error-code="explicit-override"
 class orthopoly1d(np.poly1d):
     limits: tuple[float, float]
