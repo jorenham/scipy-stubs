@@ -42,7 +42,7 @@ class _InfiniteFunc(Protocol[_NDT_f_co]):
 class LRUDict(collections.OrderedDict[tuple[float, float], _VT], Generic[_VT]):
     def __init__(self, /, max_size: int) -> None: ...
     @override
-    def update(self, other: Never, /) -> NoReturn: ...  # type: ignore[override]
+    def update(self, other: Never, /) -> NoReturn: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
 
 class SemiInfiniteFunc(_InfiniteFunc[_NDT_f_co], Generic[_NDT_f_co]):
     def __init__(self, /, func: Callable[[float], _NDT_f_co], start: float, infty: bool) -> None: ...
@@ -77,7 +77,7 @@ class _Bunch(Generic[_SCT_f_co]):
 
 @overload
 def quad_vec(
-    f: _QuadVecFunc[_NDT_f],
+    f: Callable[[float], _NDT_f],
     a: float,
     b: float,
     epsabs: float = 1e-200,
