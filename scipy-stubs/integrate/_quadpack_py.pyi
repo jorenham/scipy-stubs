@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Final, Generic, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
+from typing import Any, Final, Generic, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import TypeVar, TypeVarTuple, Unpack
 
 import numpy as np
@@ -14,7 +14,6 @@ __all__ = ["IntegrationWarning", "dblquad", "nquad", "quad", "tplquad"]
 _Ts = TypeVarTuple("_Ts")
 _T = TypeVar("_T")
 _T_co = TypeVar("_T_co", covariant=True)
-_T_f = TypeVar("_T_f", default=float)
 _T_f_contra = TypeVar("_T_f_contra", contravariant=True, default=float)
 
 class IntegrationWarning(UserWarning): ...
@@ -31,11 +30,6 @@ class _QuadFunc2R(Protocol[Unpack[_Ts]]):
 @type_check_only
 class _QuadFunc3R(Protocol[Unpack[_Ts]]):
     def __call__(self, x: float, y: float, z: float, /, *args: Unpack[_Ts]) -> spt.AnyReal: ...
-
-@type_check_only
-class _QuadFuncNR(Protocol[_T_f_contra]):
-    # NOTE: Unfortunately, it's not possible to do `*xs: *tuple[*tuple[float, ...], *Ts]` for some reason.
-    def __call__(self, /, *xs: float | _T_f_contra) -> spt.AnyReal: ...
 
 @type_check_only
 class _QuadOutput1C_1(TypedDict):
@@ -294,50 +288,25 @@ def tplquad(
 # N-dimensional quadrature
 @overload
 def nquad(
-    func: _QuadFuncNR[_T_f],
-    ranges: _SizedIterable[_QuadRange | _RangeCallable[_T_f]],
-    args: op.CanIter[op.CanNext[_T_f]],
-    opts: QuadOpts | _OptCallable[float | _T_f] | op.CanIter[op.CanNext[QuadOpts | _OptCallable[float | _T_f]]] | None = None,
+    func: Callable[..., float | np.floating[Any]] | LowLevelCallable,
+    ranges: _SizedIterable[_QuadRange | _RangeCallable[float]],
+    args: op.CanIter[op.CanNext[object]] | None = None,
+    opts: QuadOpts | Callable[..., QuadOpts] | op.CanIter[op.CanNext[QuadOpts | Callable[..., QuadOpts]]] | None = None,
     full_output: Literal[False, 0, None] = False,
 ) -> tuple[float, float]: ...
 @overload
 def nquad(
-    func: _QuadFuncNR,
-    ranges: _SizedIterable[_QuadRange | _RangeCallable],
-    args: None = None,
-    opts: QuadOpts | _OptCallable | op.CanIter[op.CanNext[QuadOpts | _OptCallable]] | None = None,
-    full_output: Literal[False, 0, None] = False,
-) -> tuple[float, float]: ...
-@overload
-def nquad(
-    func: _QuadFuncNR[_T_f],
-    ranges: _SizedIterable[_QuadRange | _RangeCallable[_T_f]],
-    args: op.CanIter[op.CanNext[_T_f]],
-    opts: QuadOpts | _OptCallable[float | _T_f] | op.CanIter[op.CanNext[QuadOpts | _OptCallable[float | _T_f]]] | None,
-    full_output: Literal[True, 1],
-) -> tuple[float, float, _QuadOutputNC]: ...
-@overload
-def nquad(
-    func: _QuadFuncNR,
-    ranges: _SizedIterable[_QuadRange | _RangeCallable],
-    args: None,
+    func: Callable[..., float | np.floating[Any]] | LowLevelCallable,
+    ranges: _SizedIterable[_QuadRange | _RangeCallable[float]],
+    args: op.CanIter[op.CanNext[object]] | None,
     opts: QuadOpts | _OptCallable | op.CanIter[op.CanNext[QuadOpts | _OptCallable]] | None,
     full_output: Literal[True, 1],
 ) -> tuple[float, float, _QuadOutputNC]: ...
 @overload
 def nquad(
-    func: _QuadFuncNR[_T_f],
-    ranges: _SizedIterable[_QuadRange | _RangeCallable[_T_f]],
-    args: op.CanIter[op.CanNext[_T_f]],
-    opts: QuadOpts | _OptCallable[float | _T_f] | op.CanIter[op.CanNext[QuadOpts | _OptCallable[float | _T_f]]] | None = None,
-    *,
-    full_output: Literal[True, 1],
-) -> tuple[float, float, _QuadOutputNC]: ...
-@overload
-def nquad(
-    func: _QuadFuncNR,
-    ranges: _SizedIterable[_QuadRange | _RangeCallable],
-    args: None = None,
+    func: Callable[..., float | np.floating[Any]] | LowLevelCallable,
+    ranges: _SizedIterable[_QuadRange | _RangeCallable[float]],
+    args: op.CanIter[op.CanNext[object]] | None = None,
     opts: QuadOpts | _OptCallable | op.CanIter[op.CanNext[QuadOpts | _OptCallable]] | None = None,
     *,
     full_output: Literal[True, 1],
@@ -353,23 +322,23 @@ class _OptFunc(_OptCallable[_T_f_contra, _OptT], Generic[_T_f_contra, _OptT]):
 
 _BT_co = TypeVar("_BT_co", bound=bool, covariant=True, default=bool)
 
-class _NQuad(Generic[_T_f, _BT_co]):
+class _NQuad(Generic[_BT_co]):
     abserr: Final[float]
     maxdepth: Final[int]
     out_dict: Final[_QuadOutputNC]
-    func: _QuadFuncNR[_T_f]
-    ranges: list[_RangeFunc[_T_f]]
-    opts: list[_OptFunc[_T_f]]
+    func: Callable[..., float | np.floating[Any]]
+    ranges: list[_RangeFunc]
+    opts: list[_OptFunc]
     full_output: _BT_co
     def __init__(
         self,
         /,
-        func: _QuadFuncNR[_T_f],
-        ranges: list[_RangeFunc[_T_f]],
-        opts: list[_OptFunc[_T_f]],
+        func: Callable[..., float | np.floating[Any]],
+        ranges: list[_RangeFunc],
+        opts: list[_OptFunc],
         full_output: _BT_co,
     ) -> None: ...
     @overload
-    def integrate(self: _NQuad[_T_f, Literal[False]], /, *args: _T_f) -> tuple[float, float]: ...
+    def integrate(self: _NQuad[Literal[False]], /, *args: object) -> tuple[float, float]: ...
     @overload
-    def integrate(self: _NQuad[_T_f, Literal[True]], /, *args: _T_f) -> tuple[float, float, _QuadOutputNC]: ...
+    def integrate(self: _NQuad[Literal[True]], /, *args: object) -> tuple[float, float, _QuadOutputNC]: ...
