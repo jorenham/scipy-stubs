@@ -406,6 +406,12 @@ class _ShapeInfo:
 
 @type_check_only
 class _rv_mixin:
+    name: Final[LiteralString]
+    a: Final[float]
+    b: Final[float]
+    badvalue: Final[float]
+    shapes: Final[LiteralString]
+
     def _attach_methods(self, /) -> None: ...
     def generic_moment(self, /, n: onpt.AnyIntegerArray, *args: _Scalar_f8_in) -> npt.NDArray[np.float64]: ...
     def _logpxf(self, /, x: npt.NDArray[_Scalar_uif], *args: npt.NDArray[_Scalar_uif]) -> npt.NDArray[np.float64]: ...
@@ -429,12 +435,7 @@ class _rv_mixin:
 
 class rv_continuous(_rv_mixin, rv_generic):
     moment_type: Final[Literal[0, 1]]
-    name: Final[LiteralString]
-    a: Final[float]
-    b: Final[float]
-    badvalue: Final[float]
     xtol: Final[float]
-    shapes: Final[LiteralString]
 
     def __init__(
         self,
@@ -541,8 +542,8 @@ class rv_continuous(_rv_mixin, rv_generic):
     # NOTE:
 
 class rv_discrete(_rv_mixin, rv_generic):
-    inc: int
-    moment_tol: float
+    inc: Final[int]
+    moment_tol: Final[float]
 
     def __new__(
         cls,
@@ -669,13 +670,9 @@ class rv_discrete(_rv_mixin, rv_generic):
     ) -> np.float64: ...
 
 class rv_sample(rv_discrete, Generic[_XT_co, _PT_co]):
-    badvalue: Final[float]
-    a: _XT_co
-    b: _XT_co
     xk: np.ndarray[tuple[int], np.dtype[_XT_co]]
     pk: np.ndarray[tuple[int], np.dtype[_PT_co]]
     qvals: np.ndarray[tuple[int], np.dtype[_PT_co]]
-    shapes: Final = " "
     def __init__(  # pyright: ignore[reportInconsistentConstructor]
         self,
         /,
