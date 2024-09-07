@@ -1,13 +1,13 @@
 # Helper types for internal use (type-check only).
 from collections.abc import Callable
-from typing import Literal, Protocol, TypeAlias, type_check_only
+from typing import Any, Literal, Protocol, TypeAlias, type_check_only
 from typing_extensions import LiteralString, TypeVar
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onpt
 
 __all__ = [
+    "RNG",
     "AnyBool",
     "AnyChar",
     "AnyComplex",
@@ -40,14 +40,15 @@ Array0D: TypeAlias = np.ndarray[tuple[()], np.dtype[_SCT]]
 
 # keep in sync with `numpy._typing._scalars`
 AnyBool: TypeAlias = bool | np.bool_ | Literal[0, 1]
-AnyInt: TypeAlias = int | np.integer[npt.NBitBase] | np.bool_
-AnyReal: TypeAlias = int | float | np.floating[npt.NBitBase] | np.integer[npt.NBitBase] | np.bool_
-AnyComplex: TypeAlias = int | float | complex | np.number[npt.NBitBase] | np.bool_
+AnyInt: TypeAlias = int | np.integer[Any] | np.bool_
+AnyReal: TypeAlias = int | float | np.floating[Any] | np.integer[Any] | np.bool_
+AnyComplex: TypeAlias = int | float | complex | np.number[Any] | np.bool_
 AnyChar: TypeAlias = str | bytes  # `np.str_ <: builtins.str` and `np.bytes_ <: builtins.bytes`
 AnyScalar: TypeAlias = int | float | complex | AnyChar | np.generic
 
 # numpy literals
-Seed: TypeAlias = int | np.random.Generator | np.random.RandomState
+RNG: TypeAlias = np.random.Generator | np.random.RandomState
+Seed: TypeAlias = int | RNG
 CorrelateMode: TypeAlias = Literal["valid", "same", "full"]
 
 # scipy literals
@@ -57,9 +58,9 @@ NanPolicy: TypeAlias = Literal["raise", "propagate", "omit"]
 @type_check_only
 class _FortranFunction(Protocol):
     @property
-    def dtype(self) -> np.dtype[np.number[npt.NBitBase]]: ...
+    def dtype(self) -> np.dtype[np.number[Any]]: ...
     @property
-    def int_dtype(self) -> np.dtype[np.integer[npt.NBitBase]]: ...
+    def int_dtype(self) -> np.dtype[np.integer[Any]]: ...
     @property
     def module_name(self) -> LiteralString: ...
     @property
