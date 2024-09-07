@@ -147,11 +147,7 @@ class rv_generic:
     def _attach_methods(self, /) -> None: ...
     def _attach_argparser_methods(self, /) -> None: ...
     def _construct_argparser(
-        self,
-        /,
-        meths_to_inspect: Iterable[Callable[..., Any]],
-        locscale_in: str,
-        locscale_out: str
+        self, /, meths_to_inspect: Iterable[Callable[..., Any]], locscale_in: str, locscale_out: str
     ) -> None: ...
     def _construct_doc(self, /, docdict: dict[str, str], shapes_vals: tuple[float, ...] | None = None) -> None: ...
     def _construct_default_doc(
@@ -305,14 +301,6 @@ class _rv_mixin:
     def _cdfvec(self, /, x: _Array_f8_co, *args: Any) -> _Array_f8: ...
     def _cdf(self, /, x: _Array_f8_co, *args: Any) -> _Array_f8: ...
     def _ppfvec(self, /, q: _Array_f8_co, *args: Any) -> _Array_f8: ...
-    @overload
-    def ppf(self, /, q: _ScalarLike_f8_co, *args: _ScalarLike_f8_co) -> np.float64: ...
-    @overload
-    def ppf(self, /, q: _ArrayLike_f8_co, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> _ScalarOrArray_f8: ...
-    @overload
-    def isf(self, /, q: _ScalarLike_f8_co, *args: _ScalarLike_f8_co, **kwds: _ScalarLike_f8_co) -> np.float64: ...
-    @overload
-    def isf(self, /, q: _ArrayLike_f8_co, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> _ScalarOrArray_f8: ...
     def _unpack_loc_scale(
         self,
         /,
@@ -337,35 +325,185 @@ class rv_continuous(_rv_mixin, rv_generic):
         seed: spt.Seed | None = None,
     ) -> None: ...
     @override
-    def __call__(self, /, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> rv_continuous_frozen[Self]: ...
+    def __call__(
+        self,
+        /,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        scale: _ArrayLike_f8_co = 1,
+        **kwds: _ArrayLike_f8_co,
+    ) -> rv_continuous_frozen[Self]: ...
     @override
-    def freeze(self, /, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> rv_continuous_frozen[Self]: ...
+    def freeze(
+        self,
+        /,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        scale: _ArrayLike_f8_co = 1,
+        **kwds: _ArrayLike_f8_co,
+    ) -> rv_continuous_frozen[Self]: ...
     def _pdf(self, /, x: _Array_f8_co, *args: Any) -> _Array_f8: ...
     def _logpdf(self, /, x: _Array_f8_co, *args: Any) -> _Array_f8: ...
     @overload
-    def pdf(self, /, x: _ScalarLike_f8_co, *args: _ScalarLike_f8_co, **kwds: _ScalarLike_f8_co) -> np.float64: ...
+    def pdf(
+        self,
+        /,
+        x: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        scale: _ScalarLike_f8_co = 1,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
     @overload
-    def pdf(self, /, x: _ArrayLike_f8_co, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> _ScalarOrArray_f8: ...
+    def pdf(
+        self,
+        /,
+        x: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        scale: _ArrayLike_f8_co = 1,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
     @overload
-    def logpdf(self, /, x: _ScalarLike_f8_co, *args: _ScalarLike_f8_co, **kwds: _ScalarLike_f8_co) -> np.float64: ...
+    def logpdf(
+        self,
+        /,
+        x: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        scale: _ScalarLike_f8_co = 1,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
     @overload
-    def logpdf(self, /, x: _ArrayLike_f8_co, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> _ScalarOrArray_f8: ...
+    def logpdf(
+        self,
+        /,
+        x: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        scale: _ArrayLike_f8_co = 1,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
     @overload
-    def cdf(self, /, x: _ScalarLike_f8_co, *args: _ScalarLike_f8_co, **kwds: _ScalarLike_f8_co) -> np.float64: ...
+    def cdf(
+        self,
+        /,
+        x: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        scale: _ScalarLike_f8_co = 1,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
     @overload
-    def cdf(self, /, x: _ArrayLike_f8_co, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> _ScalarOrArray_f8: ...
+    def cdf(
+        self,
+        /,
+        x: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        scale: _ArrayLike_f8_co = 1,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
     @overload
-    def logcdf(self, /, x: _ScalarLike_f8_co, *args: _ScalarLike_f8_co, **kwds: _ScalarLike_f8_co) -> np.float64: ...
+    def logcdf(
+        self,
+        /,
+        x: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        scale: _ScalarLike_f8_co = 1,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
     @overload
-    def logcdf(self, /, x: _ArrayLike_f8_co, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> _ScalarOrArray_f8: ...
+    def logcdf(
+        self,
+        /,
+        x: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        scale: _ArrayLike_f8_co = 1,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
     @overload
-    def sf(self, /, x: _ScalarLike_f8_co, *args: _ScalarLike_f8_co, **kwds: _ScalarLike_f8_co) -> np.float64: ...
+    def sf(
+        self,
+        /,
+        x: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        scale: _ScalarLike_f8_co = 1,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
     @overload
-    def sf(self, /, x: _ArrayLike_f8_co, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> _ScalarOrArray_f8: ...
+    def sf(
+        self,
+        /,
+        x: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        scale: _ArrayLike_f8_co = 1,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
     @overload
-    def logsf(self, /, x: _ScalarLike_f8_co, *args: _ScalarLike_f8_co, **kwds: _ScalarLike_f8_co) -> np.float64: ...
+    def logsf(
+        self,
+        /,
+        x: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        scale: _ScalarLike_f8_co = 1,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
     @overload
-    def logsf(self, /, x: _ArrayLike_f8_co, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> _ScalarOrArray_f8: ...
+    def logsf(
+        self,
+        /,
+        x: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        scale: _ArrayLike_f8_co = 1,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
+    @overload
+    def ppf(
+        self,
+        /,
+        q: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        scale: _ScalarLike_f8_co = 1,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
+    @overload
+    def ppf(
+        self,
+        /,
+        q: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        scale: _ArrayLike_f8_co = 1,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
+    @overload
+    def isf(
+        self,
+        /,
+        q: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        scale: _ScalarLike_f8_co = 1,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
+    @overload
+    def isf(
+        self,
+        /,
+        q: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        scale: _ArrayLike_f8_co = 1,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
     def _nnlf_and_penalty(self, /, x: _Array_f8_co, args: Sequence[Any]) -> np.float64: ...
     def _fitstart(
         self,
@@ -410,9 +548,19 @@ class rv_continuous(_rv_mixin, rv_generic):
         lb: _ScalarLike_f8_co | None = None,
         ub: _ScalarLike_f8_co | None = None,
         conditional: bool = False,
-        # TODO: use `TypedDict` and `Unpack` with the `scipy.integrate.quad` kwargs
-        **kwds: Any,
+        **kwds: Unpack[_QuadOpts],
     ) -> np.float64: ...
+    @override
+    def rvs(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+        self,
+        /,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        scale: _ScalarLike_f8_co = 1,
+        size: spt.AnyInt | tuple[spt.AnyInt, ...] = 1,
+        random_state: spt.Seed | None = None,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
 
 class rv_discrete(_rv_mixin, rv_generic):
     inc: Final[int]
@@ -446,42 +594,175 @@ class rv_discrete(_rv_mixin, rv_generic):
         seed: spt.Seed | None = None,
     ) -> None: ...
     @override
-    def __call__(self, /, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> rv_discrete_frozen[Self]: ...
-    @override
-    def freeze(self, /, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> rv_discrete_frozen[Self]: ...
-    @override
-    def rvs(  # type: ignore[override]
+    def __call__(
         self,
         /,
         *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        **kwds: _ArrayLike_f8_co,
+    ) -> rv_discrete_frozen[Self]: ...
+    @override
+    def freeze(
+        self,
+        /,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        **kwds: _ArrayLike_f8_co,
+    ) -> rv_discrete_frozen[Self]: ...
+    @override
+    def rvs(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+        self,
+        /,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
         size: spt.AnyInt | tuple[spt.AnyInt, ...] = 1,
         random_state: spt.Seed | None = None,
         **kwds: _ArrayLike_f8_co,
     ) -> int | _ScalarOrArray[np.int64]: ...
     @overload
-    def pmf(self, /, k: _ScalarLike_f8_co, *args: _ScalarLike_f8_co, **kwds: _ScalarLike_f8_co) -> np.float64: ...
+    def pmf(
+        self,
+        /,
+        k: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
     @overload
-    def pmf(self, /, k: _ArrayLike_f8_co, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> _ScalarOrArray_f8: ...
+    def pmf(
+        self,
+        /,
+        k: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
     @overload
-    def logpmf(self, /, k: _ScalarLike_f8_co, *args: _ScalarLike_f8_co, **kwds: _ScalarLike_f8_co) -> np.float64: ...
+    def logpmf(
+        self,
+        /,
+        k: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
     @overload
-    def logpmf(self, /, k: _ArrayLike_f8_co, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> _ScalarOrArray_f8: ...
+    def logpmf(
+        self,
+        /,
+        k: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
     @overload
-    def cdf(self, /, k: _ScalarLike_f8_co, *args: _ScalarLike_f8_co, **kwds: _ScalarLike_f8_co) -> np.float64: ...
+    def cdf(
+        self,
+        /,
+        k: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
     @overload
-    def cdf(self, /, k: _ArrayLike_f8_co, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> _ScalarOrArray_f8: ...
+    def cdf(
+        self,
+        /,
+        k: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
     @overload
-    def logcdf(self, /, k: _ScalarLike_f8_co, *args: _ScalarLike_f8_co, **kwds: _ScalarLike_f8_co) -> np.float64: ...
+    def logcdf(
+        self,
+        /,
+        k: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
     @overload
-    def logcdf(self, /, k: _ArrayLike_f8_co, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> _ScalarOrArray_f8: ...
+    def logcdf(
+        self,
+        /,
+        k: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
     @overload
-    def sf(self, /, k: _ScalarLike_f8_co, *args: _ScalarLike_f8_co, **kwds: _ScalarLike_f8_co) -> np.float64: ...
+    def sf(
+        self,
+        /,
+        k: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
     @overload
-    def sf(self, /, k: _ArrayLike_f8_co, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> _ScalarOrArray_f8: ...
+    def sf(
+        self,
+        /,
+        k: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
     @overload
-    def logsf(self, /, k: _ScalarLike_f8_co, *args: _ScalarLike_f8_co, **kwds: _ScalarLike_f8_co) -> np.float64: ...
+    def logsf(
+        self,
+        /,
+        k: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
     @overload
-    def logsf(self, /, k: _ArrayLike_f8_co, *args: _ArrayLike_f8_co, **kwds: _ArrayLike_f8_co) -> _ScalarOrArray_f8: ...
+    def logsf(
+        self,
+        /,
+        k: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
+    @overload
+    def ppf(
+        self,
+        /,
+        q: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
+    @overload
+    def ppf(
+        self,
+        /,
+        q: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
+    @overload
+    def isf(
+        self,
+        /,
+        q: _ScalarLike_f8_co,
+        *args: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        **kwds: _ScalarLike_f8_co,
+    ) -> np.float64: ...
+    @overload
+    def isf(
+        self,
+        /,
+        q: _ArrayLike_f8_co,
+        *args: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        **kwds: _ArrayLike_f8_co,
+    ) -> _ScalarOrArray_f8: ...
     def expect(
         self,
         /,
@@ -517,9 +798,145 @@ class rv_sample(rv_discrete, Generic[_XT_co, _PT_co]):
     def _entropy(self, /) -> float | np.float64: ...
     vecentropy: Final = _entropy
     @override
-    def generic_moment(self, /, n: _ArrayLikeInt_co | int | Sequence[int]) -> _Array_f8: ...  # type: ignore[override]
+    def generic_moment(self, /, n: _ArrayLikeInt_co | int | Sequence[int]) -> _Array_f8: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
 
-def get_distribution_names(
-    namespace_pairs: Iterable[tuple[str, type]],
-    rv_base_class: type,
-) -> _Tuple2[list[LiteralString]]: ...
+def get_distribution_names(namespace_pairs: Iterable[tuple[str, type]], rv_base_class: type) -> _Tuple2[list[LiteralString]]: ...
+
+# private helper subtypes
+@type_check_only
+class _rv_continuous_0(rv_continuous):
+    # overrides of rv_generic
+    @override  # type: ignore[override]
+    @overload
+    def stats(
+        self,
+        /,
+        loc: _ScalarLike_f8_co = 0,
+        scale: _ScalarLike_f8_co = 1,
+        moment: _StatsMoment = ...,
+    ) -> tuple[np.float64, ...]: ...
+    @overload
+    def stats(  # pyright: ignore[reportIncompatibleMethodOverride]
+        self,
+        /,
+        loc: _ArrayLike_f8_co = 0,
+        scale: _ArrayLike_f8_co = 1,
+        moment: _StatsMoment = ...,
+    ) -> tuple[np.float64, ...] | tuple[_Array_f8, ...]: ...
+    @override  # type: ignore[override]
+    @overload
+    def entropy(self, /, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> np.float64: ...
+    @overload
+    def entropy(self, /, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _ScalarOrArray_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override  # type: ignore[override]
+    @overload
+    def moment(self, /, order: spt.AnyInt, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> np.float64: ...
+    @overload
+    def moment(self, /, order: spt.AnyInt, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _ScalarOrArray_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override  # type: ignore[override]
+    @overload
+    def median(self, /, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> np.float64: ...
+    @overload
+    def median(self, /, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _ScalarOrArray_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override  # type: ignore[override]
+    @overload
+    def mean(self, /, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> np.float64: ...
+    @overload
+    def mean(self, /, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _ScalarOrArray_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override  # type: ignore[override]
+    @overload
+    def var(self, /, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> np.float64: ...
+    @overload
+    def var(self, /, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _ScalarOrArray_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override  # type: ignore[override]
+    @overload
+    def std(self, /, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> np.float64: ...
+    @overload
+    def std(self, /, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _ScalarOrArray_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override  # type: ignore[override]
+    @overload
+    def interval(
+        self,
+        /,
+        confidence: _ScalarLike_f8_co,
+        loc: _ScalarLike_f8_co = 0,
+        scale: _ScalarLike_f8_co = 1,
+    ) -> _Tuple2[np.float64]: ...
+    @overload
+    def interval(  # pyright: ignore[reportIncompatibleMethodOverride]
+        self,
+        /,
+        confidence: _ArrayLike_f8_co,
+        loc: _ArrayLike_f8_co = 0,
+        scale: _ArrayLike_f8_co = 1,
+    ) -> _Tuple2[np.float64] | _Tuple2[_Array_f8]: ...
+    @override  # type: ignore[override]
+    @overload
+    def support(self, /, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> _Tuple2[np.float64]: ...
+    @overload
+    def support(self, /, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _Tuple2[np.float64] | _Tuple2[_Array_f8]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+
+    # overrides of rv_continuous
+    @override
+    def __call__(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+        self,
+        /,
+        loc: _ArrayLike_f8_co = 0,
+        scale: _ArrayLike_f8_co = 1,
+    ) -> rv_continuous_frozen[Self]: ...
+    @override
+    def freeze(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+        self,
+        /,
+        loc: _ArrayLike_f8_co = 0,
+        scale: _ArrayLike_f8_co = 1,
+    ) -> rv_continuous_frozen[Self]: ...
+    @override  # type: ignore[override]
+    @overload
+    def pdf(self, /, x: _ScalarLike_f8_co, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> np.float64: ...
+    @overload
+    def pdf(self, /, x: _ArrayLike_f8_co, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _ScalarOrArray_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override  # type: ignore[override]
+    @overload
+    def logpdf(self, /, x: _ScalarLike_f8_co, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> np.float64: ...
+    @overload
+    def logpdf(self, /, x: _ArrayLike_f8_co, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _ScalarOrArray_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override  # type: ignore[override]
+    @overload
+    def cdf(self, /, x: _ScalarLike_f8_co, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> np.float64: ...
+    @overload
+    def cdf(self, /, x: _ArrayLike_f8_co, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _ScalarOrArray_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override  # type: ignore[override]
+    @overload
+    def logcdf(self, /, x: _ScalarLike_f8_co, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> np.float64: ...
+    @overload
+    def logcdf(self, /, x: _ArrayLike_f8_co, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _ScalarOrArray_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override  # type: ignore[override]
+    @overload
+    def sf(self, /, x: _ScalarLike_f8_co, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> np.float64: ...
+    @overload
+    def sf(self, /, x: _ArrayLike_f8_co, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _ScalarOrArray_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override  # type: ignore[override]
+    @overload
+    def logsf(self, /, x: _ScalarLike_f8_co, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> np.float64: ...
+    @overload
+    def logsf(self, /, x: _ArrayLike_f8_co, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _ScalarOrArray_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override  # type: ignore[override]
+    @overload
+    def ppf(self, /, q: _ScalarLike_f8_co, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> np.float64: ...
+    @overload
+    def ppf(self, /, q: _ArrayLike_f8_co, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _ScalarOrArray_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override  # type: ignore[override]
+    @overload
+    def isf(self, /, q: _ScalarLike_f8_co, loc: _ScalarLike_f8_co = 0, scale: _ScalarLike_f8_co = 1) -> np.float64: ...
+    @overload
+    def isf(self, /, q: _ArrayLike_f8_co, loc: _ArrayLike_f8_co = 0, scale: _ArrayLike_f8_co = 1) -> _ScalarOrArray_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override
+    def rvs(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+        self,
+        /,
+        loc: _ScalarLike_f8_co = 0,
+        scale: _ScalarLike_f8_co = 1,
+        size: spt.AnyInt | tuple[spt.AnyInt, ...] = 1,
+        random_state: spt.Seed | None = None,
+    ) -> _ScalarOrArray_f8: ...
