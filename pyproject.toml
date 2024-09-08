@@ -58,6 +58,7 @@ args = [
 
 
 [tool.mypy]
+python_version = "3.10"
 disable_bytearray_promotion = true
 disable_memoryview_promotion = true
 disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[Any]`
