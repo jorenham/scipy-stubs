@@ -49,7 +49,6 @@ _ArrLike_f8: TypeAlias = _Scalar_f8 | _Arr_f8
 _Scalar_f8_co: TypeAlias = float | _Scalar_if
 _Arr_f8_co: TypeAlias = onpt.Array[_ShapeT, _Scalar_if]
 _ArrLike_f8_co: TypeAlias = _ArrLike_f8 | onpt.CanArray[tuple[int, ...], np.dtype[_Scalar_if]] | Sequence[_ArrLike_f8_co]
-_ArrLike_f8_nd_co: TypeAlias = _Arr_f8_co | Sequence[_ArrLike_f8_co] | onpt.CanArray[onpt.AtLeast1D, np.dtype[_Scalar_if]]
 
 _ArgT = TypeVar("_ArgT", bound=_ArrLike_f8_co, default=_ArrLike_f8_co)
 # there are at most 4 + 2 args
@@ -113,9 +112,7 @@ class rv_frozen(Generic[_RVT_co, _VT_f8_co]):
     @overload
     def __init__(self: rv_frozen[_RVT, _Scalar_f8], /, dist: _RVT, *args: _Scalar_f8_co, **kwds: _Scalar_f8_co) -> None: ...
     @overload
-    def __init__(self: rv_frozen[_RVT, _Arr_f8], /, dist: _RVT, *args: _ArrLike_f8_nd_co, **kwds: _ArrLike_f8_nd_co) -> None: ...
-    @overload
-    def __init__(self, /, dist: _RVT_co, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> None: ...
+    def __init__(self: rv_frozen[_RVT, _ArrLike_f8], /, dist: _RVT, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> None: ...
     @overload
     def cdf(self, /, x: _Scalar_f8_co) -> _VT_f8_co: ...
     @overload
@@ -196,7 +193,6 @@ class rv_discrete_frozen(rv_frozen[_RVT_d_co, _VT_f8_co], Generic[_RVT_d_co, _VT
 # NOTE: Because of the limitations of `ParamSpec`, there is no proper way to annotate specific "positional or keyword arguments".
 # Considering the Liskov Substitution Principle, the only remaining option is to annotate `*args, and `**kwargs` as `Any`.
 class rv_generic:
-    # TODO: private methods
     def __init__(self, /, seed: spt.Seed | None = None) -> None: ...
     @property
     def random_state(self, /) -> spt.RNG: ...
@@ -374,8 +370,9 @@ class rv_continuous(_rv_mixin, rv_generic):
         shapes: LiteralString | None = None,
         seed: spt.Seed | None = None,
     ) -> None: ...
-    @override
-    @overload
+    # NOTE: Using `@override` on `__call__` or `freeze` causes stubtest to crash (mypy 1.11.1)
+    # @override
+    @overload  # type: ignore[explicit-override]
     def __call__(self, /) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
     @overload
     def __call__(
@@ -395,8 +392,8 @@ class rv_continuous(_rv_mixin, rv_generic):
         scale: _ArrLike_f8_co = 1,
         **kwds: _ArrLike_f8_co,
     ) -> rv_continuous_frozen[Self]: ...
-    @override
-    @overload
+    # @override
+    @overload  # type: ignore[explicit-override]
     def freeze(self, /) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
     @overload
     def freeze(
@@ -664,8 +661,9 @@ class rv_discrete(_rv_mixin, rv_generic):
         shapes: LiteralString | None = None,
         seed: spt.Seed | None = None,
     ) -> None: ...
-    @override
-    @overload
+    # NOTE: Using `@override` on `__call__` or `freeze` causes stubtest to crash (mypy 1.11.1)
+    # @override
+    @overload  # type: ignore[explicit-override]
     def __call__(self, /) -> rv_discrete_frozen[Self, _Scalar_f8]: ...
     @overload
     def __call__(
@@ -677,8 +675,8 @@ class rv_discrete(_rv_mixin, rv_generic):
     ) -> rv_discrete_frozen[Self, _Scalar_f8]: ...
     @overload
     def __call__(self, /, *args: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, **kwds: _ArrLike_f8_co) -> rv_discrete_frozen[Self]: ...
-    @override
-    @overload
+    # @override
+    @overload  # type: ignore[explicit-override]
     def freeze(self, /) -> rv_discrete_frozen[Self, _Scalar_f8]: ...
     @overload
     def freeze(
