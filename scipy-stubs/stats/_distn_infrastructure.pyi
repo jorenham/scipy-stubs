@@ -23,15 +23,6 @@ __all__ = [
     "rv_sample",
 ]
 
-_RVG_co = TypeVar("_RVG_co", bound=rv_generic, covariant=True, default=rv_generic)
-_RVC_co = TypeVar("_RVC_co", bound=rv_continuous, covariant=True, default=rv_continuous)
-_RVD_co = TypeVar("_RVD_co", bound=rv_discrete, covariant=True, default=rv_discrete)
-
-_XT_co = TypeVar("_XT_co", bound=np.number[Any], covariant=True, default=np.number[Any])
-_PT_co = TypeVar("_PT_co", bound=np.floating[Any], covariant=True, default=np.float32 | np.float64)
-
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
-
 _T = TypeVar("_T")
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
@@ -41,17 +32,21 @@ _Scalar_i: TypeAlias = np.integer[Any]
 _Scalar_f: TypeAlias = np.float64 | np.float32 | np.float16  # longdouble often results in trouble
 
 # NOTE: this will be equivalent to `float` in `numpy>=2.2`, see https://github.com/numpy/numpy/pull/27334
+_Scalar_b1: TypeAlias = bool | np.bool_
+_Scalar_i8: TypeAlias = int | np.int64
 _Scalar_f8: TypeAlias = float | np.float64
-_Scalar_f8_co: TypeAlias = float | _Scalar_f | _Scalar_i  # including np.bool_ here would become messy
 
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
 _Arr_b1: TypeAlias = onpt.Array[_ShapeT, np.bool_]
-_ArrLike_b1: TypeAlias = bool | np.bool_ | _Arr_b1
-
-_ArrLike_i8: TypeAlias = int | np.int64 | onpt.Array[tuple[int, ...], np.int64]
-
+_Arr_i8: TypeAlias = onpt.Array[_ShapeT, np.int64]
 _Arr_f8: TypeAlias = onpt.Array[_ShapeT, np.float64]
+
+_ArrLike_b1: TypeAlias = _Scalar_b1 | _Arr_b1
+_ArrLike_i8: TypeAlias = _Scalar_i8 | _Arr_i8
+_ArrLike_f8: TypeAlias = _Scalar_f8 | _Arr_f8
+
+_Scalar_f8_co: TypeAlias = float | _Scalar_f | _Scalar_i  # including np.bool_ here would become messy
 _Arr_f8_co: TypeAlias = onpt.Array[_ShapeT, _Scalar_f | _Scalar_i]
-_ArrLike_f8: TypeAlias = _Scalar_f8 | _Arr_f8_co
 _ArrLike_f8_co: TypeAlias = float | onpt.CanArray[tuple[int, ...], np.dtype[_Scalar_f | _Scalar_i]] | Sequence[_ArrLike_f8_co]
 
 _ArgT = TypeVar("_ArgT", bound=_ArrLike_f8_co, default=_ArrLike_f8_co)
@@ -79,15 +74,17 @@ parse_arg_template: Final[str] = ...
 
 def argsreduce(cond: _Arr_b1, *args: _ArrLike_f8_co) -> list[_Arr_f8_co]: ...
 
-class rv_frozen(Generic[_RVG_co]):
+_RVT_co = TypeVar("_RVT_co", bound=rv_generic, covariant=True, default=rv_generic)
+
+class rv_frozen(Generic[_RVT_co]):
     args: Final[_RVArgs]
     kwds: Final[_RVKwds]
-    dist: _RVG_co
+    dist: _RVT_co
     @property
     def random_state(self, /) -> spt.RNG: ...
     @random_state.setter
     def random_state(self, seed: spt.Seed, /) -> None: ...
-    def __init__(self, /, dist: _RVG_co, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> None: ...
+    def __init__(self, /, dist: _RVT_co, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> None: ...
     def cdf(self, /, x: _ArrLike_f8_co) -> _ArrLike_f8: ...
     def logcdf(self, /, x: _ArrLike_f8_co) -> _ArrLike_f8: ...
     def ppf(self, /, q: _ArrLike_f8_co) -> _ArrLike_f8: ...
@@ -127,15 +124,19 @@ class rv_frozen(Generic[_RVG_co]):
         **kwds: Unpack[_QuadOpts],
     ) -> _Scalar_f8: ...
 
-class rv_continuous_frozen(rv_frozen[_RVC_co], Generic[_RVC_co]):
+_RVT_c_co = TypeVar("_RVT_c_co", bound=rv_continuous, covariant=True, default=rv_continuous)
+
+class rv_continuous_frozen(rv_frozen[_RVT_c_co], Generic[_RVT_c_co]):
     def pdf(self, /, x: _ArrLike_f8_co) -> _ArrLike_f8: ...
     def logpdf(self, /, x: _ArrLike_f8_co) -> _ArrLike_f8: ...
 
-class rv_discrete_frozen(rv_frozen[_RVD_co], Generic[_RVD_co]):
+_RVT_d_co = TypeVar("_RVT_d_co", bound=rv_discrete, covariant=True, default=rv_discrete)
+
+class rv_discrete_frozen(rv_frozen[_RVT_d_co], Generic[_RVT_d_co]):
     def pmf(self, /, k: _ArrLike_f8_co) -> _ArrLike_f8: ...
     def logpmf(self, /, k: _ArrLike_f8_co) -> _ArrLike_f8: ...
 
-_XT = TypeVar("_XT", float | np.float64, _Arr_f8)
+_VT_f8 = TypeVar("_VT_f8", float | np.float64, _Arr_f8)
 
 # NOTE: Because of the limitations of `ParamSpec`, there is no proper way to annotate specific "positional or keyword arguments".
 # Considering the Liskov Substitution Principle, the only remaining option is to annotate `*args, and `**kwargs` as `Any`.
@@ -179,11 +180,11 @@ class rv_generic:
     def _support_mask(self, /, x: _Arr_f8_co, *args: Any) -> _Arr_b1: ...
     def _open_support_mask(self, /, x: _Arr_f8_co, *args: Any) -> _ArrLike_b1: ...
     def _rvs(self, /, *args: Any, size: spt.AnyShape | None = None, random_state: spt.Seed | None = None) -> _ArrLike_f8: ...
-    def _logcdf(self, /, x: _XT, *args: Any) -> _XT: ...
-    def _sf(self, /, x: _XT, *args: Any) -> _XT: ...
-    def _logsf(self, /, x: _XT, *args: Any) -> _XT: ...
-    def _ppf(self, /, q: _XT, *args: Any) -> _XT: ...
-    def _isf(self, /, q: _XT, *args: Any) -> _XT: ...
+    def _logcdf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
+    def _sf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
+    def _logsf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
+    def _ppf(self, /, q: _VT_f8, *args: Any) -> _VT_f8: ...
+    def _isf(self, /, q: _VT_f8, *args: Any) -> _VT_f8: ...
     @overload
     def rvs(
         self,
@@ -278,9 +279,9 @@ class _rv_mixin:
     def generic_moment(self, /, n: _ArrayLikeInt_co, *args: _Scalar_f8_co) -> _Arr_f8: ...
     def _logpxf(self, /, x: _Arr_f8_co, *args: Any) -> _Arr_f8: ...
     def _cdf_single(self, /, x: _Scalar_f8_co, *args: Any) -> _Scalar_f8: ...
-    def _cdfvec(self, /, x: _XT, *args: Any) -> _XT: ...
-    def _cdf(self, /, x: _XT, *args: Any) -> _XT: ...
-    def _ppfvec(self, /, q: _XT, *args: Any) -> _XT: ...
+    def _cdfvec(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
+    def _cdf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
+    def _ppfvec(self, /, q: _VT_f8, *args: Any) -> _VT_f8: ...
     def _unpack_loc_scale(
         self,
         /,
@@ -322,8 +323,8 @@ class rv_continuous(_rv_mixin, rv_generic):
         scale: _ArrLike_f8_co = 1,
         **kwds: _ArrLike_f8_co,
     ) -> rv_continuous_frozen[Self]: ...
-    def _pdf(self, /, x: _XT, *args: Any) -> _XT: ...
-    def _logpdf(self, /, x: _XT, *args: Any) -> _XT: ...
+    def _pdf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
+    def _logpdf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
     @overload
     def pdf(
         self,
@@ -686,10 +687,13 @@ class rv_discrete(_rv_mixin, rv_generic):
         chunksize: spt.AnyInt = 32,
     ) -> _Scalar_f8: ...
 
-class rv_sample(rv_discrete, Generic[_XT_co, _PT_co]):
-    xk: onpt.Array[tuple[int], _XT_co]
-    pk: onpt.Array[tuple[int], _PT_co]
-    qvals: onpt.Array[tuple[int], _PT_co]
+_XKT_co = TypeVar("_XKT_co", bound=np.number[Any], covariant=True, default=np.number[Any])
+_PKT_co = TypeVar("_PKT_co", bound=_Scalar_f, covariant=True, default=_Scalar_f)
+
+class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
+    xk: onpt.Array[tuple[int], _XKT_co]
+    pk: onpt.Array[tuple[int], _PKT_co]
+    qvals: onpt.Array[tuple[int], _PKT_co]
     def __init__(  # pyright: ignore[reportInconsistentConstructor]
         self,
         /,
