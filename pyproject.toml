@@ -47,15 +47,41 @@ pre-commit = "^3.8.0"
 type = "poetry"
 
 [tool.poe.tasks]
+clean = """
+rm -rf
+  scipy-stubs/**/*.pyc
+  scipy-stubs/**/__pycache__
+  ./**/.mypy_cache
+  ./**/.ruff_cache
+"""
+
 lint = "ruff check"
-verifytypes = "basedpyright --ignoreexternal --verifytypes scipy-stubs"
+format = "ruff format"
+
+_typetest_bpr = "basedpyright typetests"
+_typetest_mypy = "mypy --config-file=pyproject.toml typetests"
+typetest = ["_typetest_bpr", "_typetest_mypy"]
+
+[tool.poe.tasks.pyright]
+cmd = "basedpyright scipy-stubs/$path"
+args = [{name = "path", positional = true, multiple = true, default = ""}]
+
+[tool.poe.tasks.mypy]
+cmd = "mypy --config-file=pyproject.toml scipy-stubs/$path"
+args = [{name = "path", positional = true, multiple = true, default = ""}]
+
+[tool.poe.tasks.verifytypes]
+cmd = "basedpyright --ignoreexternal --verifytypes scipy-stubs/$path"
+args = [{name = "path", positional = true, multiple = true, default = ""}]
 
 [tool.poe.tasks.stubtest]
-cmd = "stubtest --mypy-config-file=pyproject.toml --allowlist=tests/stubtest/allowlist.txt $modules"
-args = [
-  {name = "modules", positional = true, multiple = true, default = "scipy"},
-]
-
+cmd = """
+stubtest
+  --mypy-config-file=pyproject.toml
+  --allowlist=tests/stubtest/allowlist.txt
+  $modules
+"""
+args = [{name = "modules", positional = true, multiple = true, default = "scipy"}]
 
 [tool.mypy]
 python_version = "3.10"
@@ -68,15 +94,15 @@ warn_unused_ignores = true
 
 
 [tool.pyright]
-include = ["scipy-stubs"]
+include = ["scipy-stubs", "typetests"]
 exclude = [".cache"]
 ignore = [".venv"]
-pythonPlatform = "All"
-pythonVersion = "3.10"
-stubPath = "."
-typeCheckingMode = "strict"
 venv = ".venv"
 venvPath = "."
+stubPath = "."
+pythonVersion = "3.10"
+pythonPlatform = "All"
+typeCheckingMode = "strict"
 
 deprecateTypingAliases = true
 enableTypeIgnoreComments = false

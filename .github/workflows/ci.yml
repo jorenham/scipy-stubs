@@ -49,6 +49,9 @@ jobs:
         run: poe stubtest -- --concise
         continue-on-error: true
 
+      - name: typetest
+        run: poe typetest
+
       # TODO
       # - uses: scientific-python/repo-review@v0.11.2
       #   with:
