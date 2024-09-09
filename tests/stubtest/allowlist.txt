@@ -30,7 +30,6 @@ scipy.linalg.tests.*
 scipy.misc.tests.*
 scipy.ndimage.tests.*
 scipy.odr.tests.*
-scipy.optimize._trlib._trlib.__test__
 scipy.optimize._trustregion_constr.tests.*
 scipy.optimize.tests.*
 scipy.signal.tests.*
@@ -94,15 +93,6 @@ scipy.linalg.decomp.*
 scipy.linalg.matfuncs.*
 scipy.linalg.misc.*
 scipy.linalg.special_matrices.*
-scipy.optimize.cobyla.*
-scipy.optimize.lbfgsb.*
-scipy.optimize.linesearch.*
-scipy.optimize.minpack.*
-scipy.optimize.nonlin.*
-scipy.optimize.optimize.*
-scipy.optimize.slsqp.*
-scipy.optimize.tnc.*
-scipy.optimize.zeros.*
 scipy.linalg.basic
 scipy.stats.kde.*
 scipy.stats.morestats.*
@@ -127,10 +117,6 @@ scipy._lib._ccallback.__all__
 scipy._lib.array_api_compat.__all__
 scipy._lib.array_api_compat.common.__all__
 scipy.integrate._ivp.__all__
-scipy.optimize._constraints.__all__
-scipy.optimize._lsap.__all__
-scipy.optimize._remove_redundancy.__all__
-scipy.optimize._trlib._trlib.__all__
 scipy.signal._signaltools.__all__
 scipy.spatial.ckdtree.__all__
 scipy.spatial.kdtree.__all__
