@@ -1,3 +1,5 @@
+from collections.abc import Callable
+
 from scipy._typing import Untyped
 
 __all__ = ["approx_jacobian", "fmin_slsqp"]
@@ -23,3 +25,6 @@ def fmin_slsqp(
     epsilon: Untyped = ...,
     callback: Untyped | None = None,
 ) -> Untyped: ...
+
+# from scopy.optimize._slsqp
+slsqp: Callable[..., object]

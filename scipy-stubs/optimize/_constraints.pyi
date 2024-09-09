@@ -1,19 +1,7 @@
-from scipy._typing import Untyped
-
-__all__ = (
-    "Bounds",
-    "LinearConstraint",
-    "NonlinearConstraint",
-    "PreparedConstraint",
-    "new_bounds_to_old",
-    "new_constraint_to_old",
-    "old_bound_to_new",
-    "old_constraint_to_new",
-    "strict_bounds",
-)
+from scipy._typing import Untyped, UntypedCallable
 
 class NonlinearConstraint:
-    fun: Untyped
+    fun: UntypedCallable
     lb: Untyped
     ub: Untyped
     finite_diff_rel_step: Untyped

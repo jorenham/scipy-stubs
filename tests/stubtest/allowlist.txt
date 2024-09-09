@@ -1,6 +1,7 @@
 # typecheck-only helper types
 scipy._typing
 scipy.integrate._typing
+scipy.optimize._typing
 
 # internal testing
 scipy._lib.test

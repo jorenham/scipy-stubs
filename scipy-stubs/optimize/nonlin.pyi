@@ -1,4 +1,16 @@
-from scipy._typing import Untyped
+# This file is not meant for public use and will be removed in SciPy v2.0.0.
 
-def __dir__() -> Untyped: ...
-def __getattr__(name) -> Untyped: ...
+from ._nonlin import *
+
+__all__ = [
+    "BroydenFirst",
+    "InverseJacobian",
+    "KrylovJacobian",
+    "anderson",
+    "broyden1",
+    "broyden2",
+    "diagbroyden",
+    "excitingmixing",
+    "linearmixing",
+    "newton_krylov",
+]
