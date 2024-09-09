@@ -1,12 +1,13 @@
 from collections.abc import Callable, Mapping, Sequence
-from typing import Any, Concatenate, Final, Literal, Protocol, TypeAlias, type_check_only
+from typing import Any, Concatenate, Final, Protocol, TypeAlias, type_check_only
 
 import numpy as np
 import optype.numpy as onpt
 from scipy._typing import Untyped
-from ._constraints import Bounds, LinearConstraint, NonlinearConstraint
+from ._constraints import Bounds
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._optimize import OptimizeResult
+from ._typing import Constraint, GradMethod, MimimizeMethod, MinimizeScalarMethod
 
 __all__ = ["minimize", "minimize_scalar"]
 
@@ -14,38 +15,7 @@ _Array_f_1d: TypeAlias = onpt.Array[tuple[int], np.floating[Any]]
 _ArrayLike_f_1d: TypeAlias = Sequence[float | np.floating[Any]] | onpt.CanArray[tuple[int], np.dtype[np.floating[Any]]]
 _ArrayLike_f_2d: TypeAlias = Sequence[_ArrayLike_f_1d] | onpt.CanArray[tuple[int], np.dtype[np.floating[Any]]]
 
-_MimimizeMethod: TypeAlias = Literal[
-    "Nelder-Mead",
-    "nelder-mead",
-    "Powell",
-    "powell",
-    "CG",
-    "cg",
-    "BFGS",
-    "cfgs",
-    "Newton-CG",
-    "newton-cg",
-    "L-BFGS-B",
-    "l-bfgs-c",
-    "TNC",
-    "tnc" "COBYLA",
-    "cobyla",
-    "COBYQA",
-    "cobyqa",
-    "SLSQP",
-    "slsqp",
-    "trust-constr",
-    "dogleg",
-    "trust-ncg",
-    "trust-exact",
-    "trust-krylov",
-]
-_MinimizeScalarMethod: TypeAlias = Literal["Brent", "brent", "Golden", "golden", "Bounded", "bounded"]
-_GradMethod: TypeAlias = Literal["2-point", "3-point", "cs"]
-
 _Bound: TypeAlias = tuple[float | None, float | None]
-# TODO: Use a `TypedDict` here
-_Constraint: TypeAlias = LinearConstraint | NonlinearConstraint | dict[str, object]
 
 @type_check_only
 class _MinimizeCallback(Protocol):
@@ -57,21 +27,21 @@ class _MinimizeCallbackXk(Protocol):
 
 ###
 
-MINIMIZE_METHODS: Final[Sequence[_MimimizeMethod]] = ...
-MINIMIZE_METHODS_NEW_CB: Final[Sequence[_MimimizeMethod]] = ...
-MINIMIZE_SCALAR_METHODS: Final[Sequence[_MinimizeScalarMethod]] = ...
+MINIMIZE_METHODS: Final[Sequence[MimimizeMethod]] = ...
+MINIMIZE_METHODS_NEW_CB: Final[Sequence[MimimizeMethod]] = ...
+MINIMIZE_SCALAR_METHODS: Final[Sequence[MinimizeScalarMethod]] = ...
 
 def minimize(
     fun: Callable[Concatenate[_Array_f_1d, ...], float | np.floating[Any]],
     x0: _ArrayLike_f_1d,
     args: tuple[object, ...] = (),
-    method: _MimimizeMethod | Callable[..., OptimizeResult] | None = None,
-    jac: _GradMethod | Callable[Concatenate[float, ...], _ArrayLike_f_1d] | None = None,
+    method: MimimizeMethod | Callable[..., OptimizeResult] | None = None,
+    jac: GradMethod | Callable[Concatenate[float, ...], _ArrayLike_f_1d] | None = None,
     # TODO: also allow the callable to return a `LinearOperator` or a sparse matrix
-    hess: _GradMethod | HessianUpdateStrategy | Callable[Concatenate[float, ...], _ArrayLike_f_2d] | None = None,
+    hess: GradMethod | HessianUpdateStrategy | Callable[Concatenate[float, ...], _ArrayLike_f_2d] | None = None,
     hessp: Callable[Concatenate[_Array_f_1d, _Array_f_1d, ...], _ArrayLike_f_1d] | None = None,
     bounds: Sequence[_Bound] | Bounds | None = None,
-    constraints: _Constraint | Sequence[_Constraint] = (),
+    constraints: Constraint | Sequence[Constraint] = (),
     tol: float | None = None,
     callback: _MinimizeCallback | _MinimizeCallbackXk | None = None,
     # TODO: TypedDict (dependent on `method`)
@@ -82,17 +52,17 @@ def minimize_scalar(
     bracket: Sequence[tuple[float, float] | tuple[float, float, float]] | None = None,
     bounds: Sequence[_Bound] | None = None,
     args: tuple[object, ...] = (),
-    method: _MinimizeScalarMethod | Callable[..., OptimizeResult] | None = None,
+    method: MinimizeScalarMethod | Callable[..., OptimizeResult] | None = None,
     tol: float | None = None,
     options: Mapping[str, object] | None = None,
 ) -> Untyped: ...
 def standardize_bounds(  # undocumented
     bounds: Sequence[_Bound] | Bounds,
     x0: _ArrayLike_f_1d,
-    meth: _MimimizeMethod,
+    meth: MimimizeMethod,
 ) -> Bounds | list[_Bound]: ...
 def standardize_constraints(  # undocumented
-    constraints: _Constraint | Sequence[_Constraint],
+    constraints: Constraint | Sequence[Constraint],
     x0: _ArrayLike_f_1d,
     meth: object,  # unused
-) -> list[_Constraint]: ...
+) -> list[Constraint]: ...
