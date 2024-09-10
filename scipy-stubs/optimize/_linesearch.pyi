@@ -1,5 +1,4 @@
 from scipy._typing import Untyped, UntypedCallable
-from ._dcsrch import DCSRCH as DCSRCH
 
 __all__ = [
     "LineSearchWarning",

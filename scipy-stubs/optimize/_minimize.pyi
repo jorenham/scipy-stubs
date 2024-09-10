@@ -7,7 +7,7 @@ from scipy._typing import Untyped
 from ._constraints import Bounds
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._optimize import OptimizeResult
-from ._typing import Constraint, GradMethod, MimimizeMethod, MinimizeScalarMethod
+from ._typing import Constraint, MethodJac, MethodMimimize, MethodMinimizeScalar
 
 __all__ = ["minimize", "minimize_scalar"]
 
@@ -27,18 +27,18 @@ class _MinimizeCallbackXk(Protocol):
 
 ###
 
-MINIMIZE_METHODS: Final[Sequence[MimimizeMethod]] = ...
-MINIMIZE_METHODS_NEW_CB: Final[Sequence[MimimizeMethod]] = ...
-MINIMIZE_SCALAR_METHODS: Final[Sequence[MinimizeScalarMethod]] = ...
+MINIMIZE_METHODS: Final[Sequence[MethodMimimize]] = ...
+MINIMIZE_METHODS_NEW_CB: Final[Sequence[MethodMimimize]] = ...
+MINIMIZE_SCALAR_METHODS: Final[Sequence[MethodMinimizeScalar]] = ...
 
 def minimize(
     fun: Callable[Concatenate[_Array_f_1d, ...], float | np.floating[Any]],
     x0: _ArrayLike_f_1d,
     args: tuple[object, ...] = (),
-    method: MimimizeMethod | Callable[..., OptimizeResult] | None = None,
-    jac: GradMethod | Callable[Concatenate[float, ...], _ArrayLike_f_1d] | None = None,
+    method: MethodMimimize | Callable[..., OptimizeResult] | None = None,
+    jac: MethodJac | Callable[Concatenate[float, ...], _ArrayLike_f_1d] | None = None,
     # TODO: also allow the callable to return a `LinearOperator` or a sparse matrix
-    hess: GradMethod | HessianUpdateStrategy | Callable[Concatenate[float, ...], _ArrayLike_f_2d] | None = None,
+    hess: MethodJac | HessianUpdateStrategy | Callable[Concatenate[float, ...], _ArrayLike_f_2d] | None = None,
     hessp: Callable[Concatenate[_Array_f_1d, _Array_f_1d, ...], _ArrayLike_f_1d] | None = None,
     bounds: Sequence[_Bound] | Bounds | None = None,
     constraints: Constraint | Sequence[Constraint] = (),
@@ -52,14 +52,14 @@ def minimize_scalar(
     bracket: Sequence[tuple[float, float] | tuple[float, float, float]] | None = None,
     bounds: Sequence[_Bound] | None = None,
     args: tuple[object, ...] = (),
-    method: MinimizeScalarMethod | Callable[..., OptimizeResult] | None = None,
+    method: MethodMinimizeScalar | Callable[..., OptimizeResult] | None = None,
     tol: float | None = None,
     options: Mapping[str, object] | None = None,
 ) -> Untyped: ...
 def standardize_bounds(  # undocumented
     bounds: Sequence[_Bound] | Bounds,
     x0: _ArrayLike_f_1d,
-    meth: MimimizeMethod,
+    meth: MethodMimimize,
 ) -> Bounds | list[_Bound]: ...
 def standardize_constraints(  # undocumented
     constraints: Constraint | Sequence[Constraint],
