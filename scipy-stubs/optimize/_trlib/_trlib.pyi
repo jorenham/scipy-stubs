@@ -1,17 +1,19 @@
-from typing_extensions import override
+from collections.abc import Mapping
+from typing import Final
+from typing_extensions import Never, override
 
 import numpy as np
 import numpy.typing as npt
-from scipy._typing import UntypedCallable
+from scipy._typing import Untyped, UntypedCallable
 from scipy.optimize._trustregion import BaseQuadraticSubproblem
 
-__all__ = ["TRLIBQuadraticSubproblem"]
+__test__: Final[Mapping[Never, Never]]
 
 class TRLIBQuadraticSubproblem(BaseQuadraticSubproblem):
     def __init__(
         self,
         /,
-        x,
+        x: Untyped,
         fun: UntypedCallable,
         jac: UntypedCallable,
         hess: UntypedCallable | None,

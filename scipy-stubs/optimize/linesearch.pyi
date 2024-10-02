@@ -1,4 +1,5 @@
-from scipy._typing import Untyped
+# This file is not meant for public use and will be removed in SciPy v2.0.0.
 
-def __dir__() -> Untyped: ...
-def __getattr__(name) -> Untyped: ...
+from ._linesearch import line_search
+
+__all__ = ["line_search"]

@@ -1,6 +1,6 @@
 from scipy._typing import Untyped
-from scipy.sparse.linalg import LinearOperator as LinearOperator
-from .equality_constrained_sqp import equality_constrained_sqp as equality_constrained_sqp
+
+__all__ = ["tr_interior_point"]
 
 class BarrierSubproblem:
     n_vars: Untyped
@@ -25,64 +25,72 @@ class BarrierSubproblem:
     terminate: bool
     def __init__(
         self,
-        x0,
-        s0,
-        fun,
-        grad,
-        lagr_hess,
-        n_vars,
-        n_ineq,
-        n_eq,
-        constr,
-        jac,
-        barrier_parameter,
-        tolerance,
-        enforce_feasibility,
-        global_stop_criteria,
-        xtol,
-        fun0,
-        grad0,
-        constr_ineq0,
-        jac_ineq0,
-        constr_eq0,
-        jac_eq0,
+        x0: Untyped,
+        s0: Untyped,
+        fun: Untyped,
+        grad: Untyped,
+        lagr_hess: Untyped,
+        n_vars: Untyped,
+        n_ineq: Untyped,
+        n_eq: Untyped,
+        constr: Untyped,
+        jac: Untyped,
+        barrier_parameter: Untyped,
+        tolerance: Untyped,
+        enforce_feasibility: Untyped,
+        global_stop_criteria: Untyped,
+        xtol: Untyped,
+        fun0: Untyped,
+        grad0: Untyped,
+        constr_ineq0: Untyped,
+        jac_ineq0: Untyped,
+        constr_eq0: Untyped,
+        jac_eq0: Untyped,
     ) -> None: ...
-    def update(self, barrier_parameter, tolerance): ...
-    def get_slack(self, z) -> Untyped: ...
-    def get_variables(self, z) -> Untyped: ...
-    def function_and_constraints(self, z) -> Untyped: ...
-    def scaling(self, z) -> Untyped: ...
-    def gradient_and_jacobian(self, z) -> Untyped: ...
-    def lagrangian_hessian_x(self, z, v) -> Untyped: ...
-    def lagrangian_hessian_s(self, z, v) -> Untyped: ...
-    def lagrangian_hessian(self, z, v) -> Untyped: ...
+    def update(self, barrier_parameter: Untyped, tolerance: Untyped) -> None: ...
+    def get_slack(self, z: Untyped) -> Untyped: ...
+    def get_variables(self, z: Untyped) -> Untyped: ...
+    def function_and_constraints(self, z: Untyped) -> Untyped: ...
+    def scaling(self, z: Untyped) -> Untyped: ...
+    def gradient_and_jacobian(self, z: Untyped) -> Untyped: ...
+    def lagrangian_hessian_x(self, z: Untyped, v: Untyped) -> Untyped: ...
+    def lagrangian_hessian_s(self, z: Untyped, v: Untyped) -> Untyped: ...
+    def lagrangian_hessian(self, z: Untyped, v: Untyped) -> Untyped: ...
     def stop_criteria(
-        self, state, z, last_iteration_failed, optimality, constr_violation, trust_radius, penalty, cg_info
+        self,
+        state: Untyped,
+        z: Untyped,
+        last_iteration_failed: Untyped,
+        optimality: Untyped,
+        constr_violation: Untyped,
+        trust_radius: Untyped,
+        penalty: Untyped,
+        cg_info: Untyped,
     ) -> Untyped: ...
 
 def tr_interior_point(
-    fun,
-    grad,
-    lagr_hess,
-    n_vars,
-    n_ineq,
-    n_eq,
-    constr,
-    jac,
-    x0,
-    fun0,
-    grad0,
-    constr_ineq0,
-    jac_ineq0,
-    constr_eq0,
-    jac_eq0,
-    stop_criteria,
-    enforce_feasibility,
-    xtol,
-    state,
-    initial_barrier_parameter,
-    initial_tolerance,
-    initial_penalty,
-    initial_trust_radius,
-    factorization_method,
+    fun: Untyped,
+    grad: Untyped,
+    lagr_hess: Untyped,
+    n_vars: Untyped,
+    n_ineq: Untyped,
+    n_eq: Untyped,
+    constr: Untyped,
+    jac: Untyped,
+    x0: Untyped,
+    fun0: Untyped,
+    grad0: Untyped,
+    constr_ineq0: Untyped,
+    jac_ineq0: Untyped,
+    constr_eq0: Untyped,
+    jac_eq0: Untyped,
+    stop_criteria: Untyped,
+    enforce_feasibility: Untyped,
+    xtol: Untyped,
+    state: Untyped,
+    initial_barrier_parameter: Untyped,
+    initial_tolerance: Untyped,
+    initial_penalty: Untyped,
+    initial_trust_radius: Untyped,
+    factorization_method: Untyped,
 ) -> Untyped: ...

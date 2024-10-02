@@ -1,37 +1,89 @@
-from scipy._typing import Untyped
-from scipy.linalg import qr as qr, svd as svd
-from scipy.optimize import OptimizeResult as OptimizeResult
-from scipy.sparse.linalg import lsmr as lsmr
-from .common import (
-    CL_scaling_vector as CL_scaling_vector,
-    build_quadratic_1d as build_quadratic_1d,
-    check_termination as check_termination,
-    compute_grad as compute_grad,
-    compute_jac_scale as compute_jac_scale,
-    evaluate_quadratic as evaluate_quadratic,
-    find_active_constraints as find_active_constraints,
-    in_bounds as in_bounds,
-    intersect_trust_region as intersect_trust_region,
-    make_strictly_feasible as make_strictly_feasible,
-    minimize_quadratic_1d as minimize_quadratic_1d,
-    print_header_nonlinear as print_header_nonlinear,
-    print_iteration_nonlinear as print_iteration_nonlinear,
-    regularized_lsq_operator as regularized_lsq_operator,
-    right_multiplied_operator as right_multiplied_operator,
-    scale_for_robust_loss_function as scale_for_robust_loss_function,
-    solve_lsq_trust_region as solve_lsq_trust_region,
-    solve_trust_region_2d as solve_trust_region_2d,
-    step_size_to_bound as step_size_to_bound,
-    update_tr_radius as update_tr_radius,
-)
+from collections.abc import Callable, Mapping
+from typing import Literal, TypeAlias
+from typing_extensions import TypeVar
+
+import numpy as np
+import optype.numpy as onpt
+from scipy.optimize import OptimizeResult
+from scipy.optimize._typing import SolverLSQ
+from scipy.sparse import sparray, spmatrix
+from scipy.sparse.linalg import LinearOperator
+
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
+
+_ValueFloat: TypeAlias = float | np.float64
+
+_ArrayFloat: TypeAlias = onpt.Array[_ShapeT, np.float64]
+_MatrixFloat: TypeAlias = onpt.Array[_ShapeT, np.float64] | sparray | spmatrix | LinearOperator
+
+_FunObj: TypeAlias = Callable[[_ArrayFloat[tuple[int]], _ValueFloat], _MatrixFloat]
+_FunJac: TypeAlias = Callable[[_ArrayFloat[tuple[int]], _ValueFloat], _MatrixFloat]
+_FunLoss: TypeAlias = Callable[[_ValueFloat], _ValueFloat]
+
+# TODO: custom `OptimizeResult``
 
 def trf(
-    fun, jac, x0, f0, J0, lb, ub, ftol, xtol, gtol, max_nfev, x_scale, loss_function, tr_solver, tr_options, verbose
-) -> Untyped: ...
-def select_step(x, J_h, diag_h, g_h, p, p_h, d, Delta, lb, ub, theta) -> Untyped: ...
+    fun: _FunObj,
+    jac: _FunJac,
+    x0: _ArrayFloat,
+    f0: _ValueFloat,
+    J0: _MatrixFloat,
+    lb: _ArrayFloat,
+    ub: _ArrayFloat,
+    ftol: _ValueFloat,
+    xtol: _ValueFloat,
+    gtol: _ValueFloat,
+    max_nfev: int,
+    x_scale: Literal["jac"] | _ValueFloat | _ArrayFloat,
+    loss_function: _FunLoss,
+    tr_solver: SolverLSQ,
+    tr_options: Mapping[str, object],
+    verbose: bool,
+) -> OptimizeResult: ...
 def trf_bounds(
-    fun, jac, x0, f0, J0, lb, ub, ftol, xtol, gtol, max_nfev, x_scale, loss_function, tr_solver, tr_options, verbose
-) -> Untyped: ...
+    fun: _FunObj,
+    jac: _FunJac,
+    x0: _ArrayFloat,
+    f0: _ValueFloat,
+    J0: _MatrixFloat,
+    lb: _ArrayFloat,
+    ub: _ArrayFloat,
+    ftol: _ValueFloat,
+    xtol: _ValueFloat,
+    gtol: _ValueFloat,
+    max_nfev: int,
+    x_scale: Literal["jac"] | _ValueFloat | _ArrayFloat,
+    loss_function: _FunLoss,
+    tr_solver: SolverLSQ,
+    tr_options: Mapping[str, object],
+    verbose: bool,
+) -> OptimizeResult: ...
 def trf_no_bounds(
-    fun, jac, x0, f0, J0, ftol, xtol, gtol, max_nfev, x_scale, loss_function, tr_solver, tr_options, verbose
-) -> Untyped: ...
+    fun: _FunObj,
+    jac: _FunJac,
+    x0: _ArrayFloat,
+    f0: _ValueFloat,
+    J0: _MatrixFloat,
+    ftol: _ValueFloat,
+    xtol: _ValueFloat,
+    gtol: _ValueFloat,
+    max_nfev: int,
+    x_scale: Literal["jac"] | _ValueFloat | _ArrayFloat,
+    loss_function: _FunLoss,
+    tr_solver: SolverLSQ,
+    tr_options: Mapping[str, object],
+    verbose: bool,
+) -> OptimizeResult: ...
+def select_step(
+    x: _ArrayFloat,
+    J_h: _MatrixFloat,
+    diag_h: _ArrayFloat,
+    g_h: _ArrayFloat,
+    p: _ArrayFloat,
+    p_h: _ArrayFloat,
+    d: _ArrayFloat,
+    Delta: _ValueFloat,
+    lb: _ArrayFloat,
+    ub: _ArrayFloat,
+    theta: _ValueFloat,
+) -> tuple[_ArrayFloat, _ArrayFloat, _ValueFloat]: ...

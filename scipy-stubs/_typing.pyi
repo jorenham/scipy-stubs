@@ -17,6 +17,7 @@ __all__ = [
     "AnyScalar",
     "AnyShape",
     "Array0D",
+    "Casting",
     "CorrelateMode",
     "NanPolicy",
     "Seed",
@@ -54,6 +55,7 @@ AnyShape: TypeAlias = op.CanIndex | Sequence[op.CanIndex]
 # numpy literals
 RNG: TypeAlias = np.random.Generator | np.random.RandomState
 Seed: TypeAlias = int | RNG
+Casting: TypeAlias = Literal["no", "equiv", "safe", "same_kind", "unsafe"]
 CorrelateMode: TypeAlias = Literal["valid", "same", "full"]
 
 # scipy literals

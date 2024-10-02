@@ -1,7 +1,5 @@
 from scipy._typing import Untyped
-from scipy.sparse.linalg import LinearOperator as LinearOperator
-from ._constraints import old_bound_to_new as old_bound_to_new
-from ._optimize import MemoizeJac as MemoizeJac, OptimizeResult as OptimizeResult
+from scipy.sparse.linalg import LinearOperator
 
 def fmin_l_bfgs_b(
     func,
