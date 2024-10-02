@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, Final, Generic, Literal, TypeAlias, overload
+from typing import Any, Generic, Literal, TypeAlias, overload
 from typing_extensions import TypeVar, TypeVarTuple, Unpack
 
 import numpy as np
@@ -429,13 +429,15 @@ def show_options(solver: Solver | None = None, method: MethodAll | None = None, 
 class BracketError(RuntimeError): ...
 class OptimizeWarning(UserWarning): ...
 
-class OptimizeResult(_RichResult, Generic[_SCT_f]):
-    x: onpt.Array[onpt.AtMost1D, _SCT_f]
-    fun: _SCT_f | float
-    success: Final[bool]
-    status: Final[int]
-    message: Final[str]
-    nit: Final[int]
+_NT = TypeVar("_NT", bound=int, default=int)
+
+class OptimizeResult(_RichResult, Generic[_NT, _SCT_f]):
+    x: onpt.Array[tuple[_NT], _SCT_f]
+    fun: float | _SCT_f
+    success: bool
+    status: int
+    message: str
+    nit: int
 
 # miscellaneous
 

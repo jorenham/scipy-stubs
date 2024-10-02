@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, Final, Generic, Literal, Protocol, TypeAlias, type_check_only
+from typing import Any, Generic, Literal, Protocol, TypeAlias, type_check_only
 from typing_extensions import NotRequired, TypedDict, TypeVar, TypeVarTuple, Unpack
 
 import numpy as np
@@ -45,6 +45,7 @@ Constraints: TypeAlias = Constraint | Sequence[Constraint]
 Brack: TypeAlias = tuple[_ScalarLike_f_co, _ScalarLike_f_co] | tuple[_ScalarLike_f_co, _ScalarLike_f_co, _ScalarLike_f_co]
 
 Solver: TypeAlias = Literal["minimize", "minimize_scalar", "root", "root_salar", "linprog", "quadratic_assignment"]
+
 MethodJac: TypeAlias = Literal["2-point", "3-point", "cs"]
 MethodMimimize: TypeAlias = Literal[
     "NELDER-MEAD", "Nelder-Mead", "nelder-mead",
@@ -88,29 +89,41 @@ MethodAll: TypeAlias = Literal[
     MethodQuadraticAssignment,
 ]
 
-@type_check_only
-class OptimizeResultMinimize(_OptimizeResult[_SCT_f], Generic[_SCT_f]):
-    jac: onpt.Array[tuple[int], _SCT_f]
-    nfev: Final[int]
-    njev: Final[int]
-    nhev: Final[int]
+SolverLSQ: TypeAlias = Literal["exact", "lsmr", None]
+MethodLSQ: TypeAlias = Literal["trf", "dogbox", "lm"]
+
+_NT = TypeVar("_NT", bound=int, default=int)
 
 @type_check_only
-class OptimizeResultMinimizeHess(OptimizeResultMinimize[_SCT_f], Generic[_SCT_f]):
+class OptimizeResultMinimize(_OptimizeResult[_NT, _SCT_f], Generic[_NT, _SCT_f]):
+    jac: onpt.Array[tuple[_NT], _SCT_f]
+    nfev: int
+    njev: int
+
+@type_check_only
+class OptimizeResultMinimizeHess(OptimizeResultMinimize[_NT, _SCT_f], Generic[_NT, _SCT_f]):
     hess: onpt.Array[tuple[int, int], _SCT_f]
     hess_inv: onpt.Array[tuple[int, int], _SCT_f]
+    nhev: int
 
 @type_check_only
-class OptimizeResultMinimizeConstr(OptimizeResultMinimize[_SCT_f], Generic[_SCT_f]):
-    maxcv: Final[float]
+class OptimizeResultMinimizeConstr(OptimizeResultMinimize[_NT, _SCT_f], Generic[_NT, _SCT_f]):
+    maxcv: float
 
 @type_check_only
-class OptimizeResultMinimizeHessConstr(OptimizeResultMinimize[_SCT_f], Generic[_SCT_f]):
-    hess: onpt.Array[tuple[int, int], _SCT_f]
-    hess_inv: onpt.Array[tuple[int, int], _SCT_f]
-    maxcv: Final[float]
+class OptimizeResultMinimizeHessConstr(OptimizeResultMinimize[_NT, _SCT_f], Generic[_NT, _SCT_f]):
+    hess: onpt.Array[tuple[_NT, _NT], _SCT_f]
+    hess_inv: onpt.Array[tuple[_NT, _NT], _SCT_f]
+    maxcv: float
 
 @type_check_only
-class OptimizeResultLinprog(Generic[_SCT_f]):
-    slack: onpt.Array[tuple[int], _SCT_f]
+class OptimizeResultLinprog(OptimizeResultMinimize[_NT, _SCT_f], Generic[_NT, _SCT_f]):
+    slack: onpt.Array[tuple[_NT], _SCT_f]
     con: onpt.Array[tuple[int], _SCT_f]
+
+@type_check_only
+class OptimizeResultLSQ(OptimizeResultMinimize[_NT, _SCT_f], Generic[_NT, _SCT_f]):
+    cost: float | _SCT_f
+    optimality: float | _SCT_f
+    grad: onpt.Array[tuple[_NT], _SCT_f]
+    active_mask: onpt.Array[tuple[int], np.bool_]
