@@ -1,4 +1,53 @@
-from scipy._typing import Untyped
+# This module is not meant for public use and will be removed in SciPy v2.0.0.
+# This stub simply re-exports the imported functions.
+# TODO: Add type annotated dummy functions marked deprecated.
+from ._filter_design import *
 
-def __dir__() -> Untyped: ...
-def __getattr__(name) -> Untyped: ...
+__all__ = [
+    "BadCoefficients",
+    "band_stop_obj",
+    "bessel",
+    "besselap",
+    "bilinear",
+    "bilinear_zpk",
+    "buttap",
+    "butter",
+    "buttord",
+    "cheb1ap",
+    "cheb1ord",
+    "cheb2ap",
+    "cheb2ord",
+    "cheby1",
+    "cheby2",
+    "ellip",
+    "ellipap",
+    "ellipord",
+    "findfreqs",
+    "freqs",
+    "freqs_zpk",
+    "freqz",
+    "freqz_zpk",
+    "gammatone",
+    "group_delay",
+    "iircomb",
+    "iirdesign",
+    "iirfilter",
+    "iirnotch",
+    "iirpeak",
+    "lp2bp",
+    "lp2bp_zpk",
+    "lp2bs",
+    "lp2bs_zpk",
+    "lp2hp",
+    "lp2hp_zpk",
+    "lp2lp",
+    "lp2lp_zpk",
+    "normalize",
+    "sos2tf",
+    "sos2zpk",
+    "sosfreqz",
+    "tf2sos",
+    "tf2zpk",
+    "zpk2sos",
+    "zpk2tf",
+]
