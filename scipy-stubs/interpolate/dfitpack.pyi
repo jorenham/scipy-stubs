@@ -1,7 +1,5 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
-# This stub simply re-exports the imported functions.
-# TODO: Add type annotated dummy functions marked deprecated.
-# TODO: The imports are actually from a python Fortran file which doesn't currently have a stub.
+from typing import Final
 
 __all__ = [
     "bispeu",
@@ -30,3 +28,29 @@ __all__ = [
     "surfit_smth",
     "types",
 ]
+
+bispeu: Final[object]
+bispev: Final[object]
+curfit: Final[object]
+dblint: Final[object]
+fpchec: Final[object]
+fpcurf0: Final[object]
+fpcurf1: Final[object]
+fpcurfm1: Final[object]
+parcur: Final[object]
+parder: Final[object]
+pardeu: Final[object]
+pardtc: Final[object]
+percur: Final[object]
+regrid_smth: Final[object]
+regrid_smth_spher: Final[object]
+spalde: Final[object]
+spherfit_lsq: Final[object]
+spherfit_smth: Final[object]
+splder: Final[object]
+splev: Final[object]
+splint: Final[object]
+sproot: Final[object]
+surfit_lsq: Final[object]
+surfit_smth: Final[object]
+types: Final[object]

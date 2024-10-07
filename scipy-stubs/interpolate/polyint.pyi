@@ -1,7 +1,5 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
-# This stub simply re-exports the imported functions.
-# TODO: Add type annotated dummy functions marked deprecated.
-from ._polyint import *
+from typing_extensions import deprecated
 
 __all__ = [
     "BarycentricInterpolator",
@@ -10,3 +8,24 @@ __all__ = [
     "barycentric_interpolate",
     "krogh_interpolate",
 ]
+
+@deprecated("will be removed in SciPy v2.0.0")
+class KroghInterpolator:
+    def __init__(self: object, xi: object, yi: object, axis: object = ...) -> None: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class BarycentricInterpolator:
+    def __init__(
+        self: object, xi: object, yi: object = ..., axis: object = ..., *, wi: object = ..., random_state: object = ...
+    ) -> None: ...
+    def __call__(self: object, x: object) -> object: ...
+    def set_yi(self: object, yi: object, axis: object = ...) -> None: ...
+    def add_xi(self: object, xi: object, yi: object = ...) -> None: ...
+    def derivative(self: object, x: object, der: object = ...) -> object: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+def krogh_interpolate(xi: object, yi: object, x: object, der: object = ..., axis: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def approximate_taylor_polynomial(f: object, x: object, degree: object, scale: object, order: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def barycentric_interpolate(xi: object, yi: object, x: object, axis: object = ..., *, der: object = ...) -> object: ...
