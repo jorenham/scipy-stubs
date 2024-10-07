@@ -1,6 +1,19 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
-# This stub simply re-exports the imported functions.
-# TODO: Add type annotated dummy functions marked deprecated.
-from ._mio import *
+from typing_extensions import deprecated
 
 __all__ = ["loadmat", "savemat", "whosmat"]
+
+@deprecated("will be removed in SciPy v2.0.0")
+def loadmat(file_name: object, mdict: object = ..., appendmat: object = ..., **kwargs: object) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def savemat(
+    file_name: object,
+    mdict: object,
+    appendmat: object = ...,
+    format: object = ...,
+    long_field_names: object = ...,
+    do_compression: object = ...,
+    oned_as: object = ...,
+) -> None: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def whosmat(file_name: object, appendmat: object = ..., **kwargs: object) -> object: ...

@@ -1,6 +1,13 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
-# This stub simply re-exports the imported functions.
-# TODO: Add type annotated dummy functions marked deprecated.
-from ._miobase import *
+from typing_extensions import deprecated
 
 __all__ = ["MatReadError", "MatReadWarning", "MatWriteError"]
+
+@deprecated("will be removed in SciPy v2.0.0")
+class MatReadError: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class MatWriteError: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class MatReadWarning: ...

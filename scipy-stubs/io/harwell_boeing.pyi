@@ -1,6 +1,9 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
-# This stub simply re-exports the imported functions.
-# TODO: Add type annotated dummy functions marked deprecated.
-from ._harwell_boeing import *
+from typing_extensions import deprecated
 
 __all__ = ["hb_read", "hb_write"]
+
+@deprecated("will be removed in SciPy v2.0.0")
+def hb_read(path_or_open_file: object) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def hb_write(path_or_open_file: object, m: object, hb_info: object = ...) -> None: ...
