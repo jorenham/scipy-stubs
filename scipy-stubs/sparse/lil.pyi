@@ -1,6 +1,23 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
-# This stub simply re-exports the imported functions.
-# TODO: Add type annotated dummy functions marked deprecated.
-from ._lil import *
+from typing_extensions import deprecated
 
 __all__ = ["isspmatrix_lil", "lil_array", "lil_matrix"]
+
+@deprecated("will be removed in SciPy v2.0.0")
+class lil_array:
+    def __init__(
+        self,
+        arg1: object,
+        shape: object = ...,
+        dtype: object = ...,
+        copy: object = ...,
+    ) -> None: ...
+    def getrowview(self, i: object) -> object: ...
+    def getrow(self, i: object) -> object: ...
+    def resize(self, *shape: int) -> None: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class lil_matrix: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+def isspmatrix_lil(x: object) -> object: ...

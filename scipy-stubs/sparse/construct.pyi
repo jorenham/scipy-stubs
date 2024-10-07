@@ -1,16 +1,6 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
-# This stub simply re-exports the imported functions.
-# TODO: Add type annotated dummy functions marked deprecated.
-# TODO: The imports are actually from a generated file which doesn't currently have a stub.
-from scipy._lib._util import check_random_state, rng_integers
-from ._base import *
-from ._bsr import bsr_matrix
-from ._construct import *
-from ._coo import coo_matrix
-from ._csc import csc_matrix
-from ._csr import csr_matrix
-from ._dia import dia_matrix
-from ._sputils import get_index_dtype, isscalarlike, upcast
+import numbers
+from typing_extensions import deprecated
 
 __all__ = [
     "block_diag",
@@ -31,6 +21,7 @@ __all__ = [
     "issparse",
     "kron",
     "kronsum",
+    "numbers",
     "rand",
     "random",
     "rng_integers",
@@ -38,3 +29,93 @@ __all__ = [
     "upcast",
     "vstack",
 ]
+
+@deprecated("will be removed in SciPy v2.0.0")
+class coo_matrix: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class csc_matrix: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class csr_matrix: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class dia_matrix: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class bsr_matrix: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+def csr_hstack(*args: object, **kwargs: object) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def issparse(x: object) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def check_random_state(seed: object) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def rng_integers(
+    gen: object,
+    low: object,
+    high: object = ...,
+    size: object = ...,
+    dtype: object = ...,
+    endpoint: object = ...,
+) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def vstack(blocks: object, format: object = ..., dtype: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def spdiags(
+    data: object,
+    diags: object,
+    m: object = ...,
+    n: object = ...,
+    format: object = ...,
+) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def random(
+    m: object,
+    n: object,
+    density: object = ...,
+    format: object = ...,
+    dtype: object = ...,
+    random_state: object = ...,
+    data_rvs: object = ...,
+) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def rand(
+    m: object,
+    n: object,
+    density: object = ...,
+    format: object = ...,
+    dtype: object = ...,
+    random_state: object = ...,
+) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def kron(A: object, B: object, format: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def kronsum(A: object, B: object, format: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def identity(n: object, dtype: object = ..., format: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def block_diag(mats: object, format: object = ..., dtype: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def hstack(blocks: object, format: object = ..., dtype: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def eye(m: object, n: object = ..., k: object = ..., dtype: object = ..., format: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def diags(
+    diagonals: object,
+    offsets: object = ...,
+    shape: object = ...,
+    format: object = ...,
+    dtype: object = ...,
+) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def bmat(blocks: object, format: object = ..., dtype: object = ...) -> object: ...
+
+# sputils
+@deprecated("will be removed in SciPy v2.0.0")
+def get_index_dtype(arrays: object = ..., maxval: object = ..., check_contents: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def isscalarlike(x: object) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def upcast(*args: object) -> object: ...

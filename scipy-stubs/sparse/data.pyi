@@ -1,7 +1,14 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
-# This stub simply re-exports the imported functions.
-# TODO: Add type annotated dummy functions marked deprecated.
-# TODO: Exported functions are missing from private module
-from ._data import *
+from typing import Final
+from typing_extensions import deprecated
 
 __all__ = ["isscalarlike", "name", "npfunc", "validateaxis"]
+
+name: Final[str]
+npfunc: object
+
+# sputils
+@deprecated("will be removed in SciPy v2.0.0")
+def validateaxis(axis: object) -> None: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def isscalarlike(x: object) -> object: ...
