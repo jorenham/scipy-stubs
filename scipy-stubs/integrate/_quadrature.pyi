@@ -143,7 +143,6 @@ def fixed_quad(
     args: tuple[()] = (),
     n: op.CanIndex = 5,
 ) -> _NDT_f: ...
-
 def qmc_quad(
     func: Callable[[onpt.Array[tuple[int, int], np.float64]], npt.NDArray[np.floating[Any]]],
     a: Sequence[spt.AnyReal] | onpt.AnyFloatingArray,

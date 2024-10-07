@@ -1,5 +1,7 @@
 from scipy._typing import Untyped
 
+__all__ = ["ArffError", "MetaData", "ParseArffError", "loadarff"]
+
 r_meta: Untyped
 r_comment: Untyped
 r_empty: Untyped
@@ -16,7 +18,7 @@ class ArffError(OSError): ...
 class ParseArffError(ArffError): ...
 
 class Attribute:
-    type_name: Untyped
+    type_name: str | None
     name: Untyped
     range: Untyped
     dtype: Untyped
@@ -26,7 +28,7 @@ class Attribute:
     def parse_data(self, data_str): ...
 
 class NominalAttribute(Attribute):
-    type_name: str
+    type_name: str | None
     values: Untyped
     range: Untyped
     dtype: Untyped
@@ -36,7 +38,7 @@ class NominalAttribute(Attribute):
     def parse_data(self, data_str) -> Untyped: ...
 
 class NumericAttribute(Attribute):
-    type_name: str
+    type_name: str | None
     dtype: Untyped
     def __init__(self, name) -> None: ...
     @classmethod
@@ -44,15 +46,15 @@ class NumericAttribute(Attribute):
     def parse_data(self, data_str) -> Untyped: ...
 
 class StringAttribute(Attribute):
-    type_name: str
+    type_name: str | None
     def __init__(self, name) -> None: ...
     @classmethod
     def parse_attribute(cls, name, attr_string) -> Untyped: ...
 
 class DateAttribute(Attribute):
+    type_name: str | None
     date_format: Untyped
     datetime_unit: Untyped
-    type_name: str
     range: Untyped
     dtype: Untyped
     def __init__(self, name, date_format, datetime_unit) -> None: ...
@@ -61,7 +63,7 @@ class DateAttribute(Attribute):
     def parse_data(self, data_str) -> Untyped: ...
 
 class RelationalAttribute(Attribute):
-    type_name: str
+    type_name: str | None
     dtype: Untyped
     attributes: Untyped
     dialect: Untyped

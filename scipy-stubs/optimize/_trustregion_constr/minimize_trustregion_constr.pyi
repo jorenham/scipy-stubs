@@ -40,7 +40,6 @@ def update_state_ip(
     barrier_parameter: Untyped,
     barrier_tolerance: Untyped,
 ) -> Untyped: ...
-
 def _minimize_trustregion_constr(
     fun: UntypedCallable,
     x0: Untyped,

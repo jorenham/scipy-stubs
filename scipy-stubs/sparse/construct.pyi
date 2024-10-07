@@ -1,4 +1,121 @@
-from scipy._typing import Untyped
+# This module is not meant for public use and will be removed in SciPy v2.0.0.
+import numbers
+from typing_extensions import deprecated
 
-def __dir__() -> Untyped: ...
-def __getattr__(name) -> Untyped: ...
+__all__ = [
+    "block_diag",
+    "bmat",
+    "bsr_matrix",
+    "check_random_state",
+    "coo_matrix",
+    "csc_matrix",
+    "csr_hstack",
+    "csr_matrix",
+    "dia_matrix",
+    "diags",
+    "eye",
+    "get_index_dtype",
+    "hstack",
+    "identity",
+    "isscalarlike",
+    "issparse",
+    "kron",
+    "kronsum",
+    "numbers",
+    "rand",
+    "random",
+    "rng_integers",
+    "spdiags",
+    "upcast",
+    "vstack",
+]
+
+@deprecated("will be removed in SciPy v2.0.0")
+class coo_matrix: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class csc_matrix: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class csr_matrix: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class dia_matrix: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class bsr_matrix: ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+def csr_hstack(*args: object, **kwargs: object) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def issparse(x: object) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def check_random_state(seed: object) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def rng_integers(
+    gen: object,
+    low: object,
+    high: object = ...,
+    size: object = ...,
+    dtype: object = ...,
+    endpoint: object = ...,
+) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def vstack(blocks: object, format: object = ..., dtype: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def spdiags(
+    data: object,
+    diags: object,
+    m: object = ...,
+    n: object = ...,
+    format: object = ...,
+) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def random(
+    m: object,
+    n: object,
+    density: object = ...,
+    format: object = ...,
+    dtype: object = ...,
+    random_state: object = ...,
+    data_rvs: object = ...,
+) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def rand(
+    m: object,
+    n: object,
+    density: object = ...,
+    format: object = ...,
+    dtype: object = ...,
+    random_state: object = ...,
+) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def kron(A: object, B: object, format: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def kronsum(A: object, B: object, format: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def identity(n: object, dtype: object = ..., format: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def block_diag(mats: object, format: object = ..., dtype: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def hstack(blocks: object, format: object = ..., dtype: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def eye(m: object, n: object = ..., k: object = ..., dtype: object = ..., format: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def diags(
+    diagonals: object,
+    offsets: object = ...,
+    shape: object = ...,
+    format: object = ...,
+    dtype: object = ...,
+) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def bmat(blocks: object, format: object = ..., dtype: object = ...) -> object: ...
+
+# sputils
+@deprecated("will be removed in SciPy v2.0.0")
+def get_index_dtype(arrays: object = ..., maxval: object = ..., check_contents: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def isscalarlike(x: object) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def upcast(*args: object) -> object: ...

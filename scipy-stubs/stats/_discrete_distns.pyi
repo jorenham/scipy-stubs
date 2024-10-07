@@ -43,12 +43,15 @@ class zipfian_gen(rv_discrete): ...
 class dlaplace_gen(rv_discrete): ...
 class skellam_gen(rv_discrete): ...
 class yulesimon_gen(rv_discrete): ...
+
 class _nchypergeom_gen(rv_discrete):
     rvs_name: ClassVar = None
     dist: ClassVar = None
+
 class nchypergeom_fisher_gen(_nchypergeom_gen):
     rvs_name: ClassVar = "rvs_fisher"
     dist: ClassVar[type] = ...  # scipy.stats._biasedurn._PyFishersNCHypergeometric
+
 class nchypergeom_wallenius_gen(_nchypergeom_gen):
     rvs_name: ClassVar = "rvs_wallenius"
     dist: ClassVar[type] = ...  # scipy.stats._biasedurn._PyWalleniusNCHypergeometric
