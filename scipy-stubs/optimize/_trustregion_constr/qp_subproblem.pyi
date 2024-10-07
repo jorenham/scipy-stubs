@@ -94,7 +94,6 @@ def box_sphere_intersections(
     *,
     extra_info: Literal[True, 1],
 ) -> tuple[_ScalarF8, _ScalarF8, _ScalarB1, _SphereInfoDict, _SphereInfoDict]: ...
-
 def inside_box_boundaries(
     x: onpt.Array[_ShapeT, _ScalarFloat_co],
     lb: onpt.Array[_ShapeT, _ScalarFloat_co],
