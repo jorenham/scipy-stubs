@@ -56,6 +56,7 @@ rm -rf
 
 lint = "ruff check"
 format = "ruff format"
+pre-commit = "pre-commit run --all-files"
 
 _typetest_bpr = "basedpyright typetests"
 _typetest_mypy = "mypy --config-file=pyproject.toml typetests"
