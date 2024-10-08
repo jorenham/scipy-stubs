@@ -6,7 +6,6 @@ scipy.optimize._typing
 # internal testing
 scipy._lib.test
 scipy._lib.tests.*
-# scipy.cluster.PytestTester
 scipy.cluster.tests.*
 scipy.conftest
 scipy.constants.tests.*
@@ -20,7 +19,6 @@ scipy.integrate.tests.*
 scipy.interpolate.interpnd.__test__
 scipy.interpolate.tests.*
 scipy.io._harwell_boeing.tests.*
-scipy.io.arff.test_weka
 scipy.io.arff.tests.*
 scipy.io.matlab.tests.*
 scipy.io.tests.*
