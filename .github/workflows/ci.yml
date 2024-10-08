@@ -25,16 +25,18 @@ jobs:
           config: ".markdownlint.yaml"
           globs: "**/*.md"
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - run: |
+          pipx install poetry poethepoet
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
           cache: poetry
 
-      - name: Install dependencies
-        run: |
-          pipx install poetry poethepoet
-          poetry install
+      - name: install
+        run: poetry install
 
       - name: lint (ruff)
         run: poe lint --output-format=github
@@ -46,48 +48,51 @@ jobs:
         run: poe verifytypes
 
   stubtest:
-    timeout-minutes: 5
+    needs: lint-and-typecheck
+    timeout-minutes: 10
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         module: [
-            # "scipy._lib",
-            "scipy.cluster",
-            "scipy.constants",
-            "scipy.datasets",
-            "scipy.fft",
-            "scipy.fftpack",
-            "scipy.integrate",
-            # "scipy.interpolate",
-            # "scipy.io",
-            "scipy.io.arff scipy.io.matlab",
-            "scipy.linalg",
-            "scipy.misc",
-            # "scipy.ndimage",
-            "scipy.odr",
-            "scipy.optimize",
-            # "scipy.signal",
-            # "scipy.sparse",
-            # "scipy.spatial",
-            "scipy.special",
-            # "scipy.stats",
-            "scipy.stats.contingency scipy.stats.distributions",
-            "scipy.version",
-          ]
+          # "scipy._lib",
+          "scipy.cluster",
+          "scipy.constants",
+          "scipy.datasets",
+          "scipy.fft",
+          "scipy.fftpack",
+          "scipy.integrate",
+          # "scipy.interpolate",
+          # "scipy.io",
+          "scipy.io.arff scipy.io.matlab",
+          "scipy.linalg",
+          "scipy.misc",
+          # "scipy.ndimage",
+          "scipy.odr",
+          "scipy.optimize",
+          # "scipy.signal",
+          # "scipy.sparse",
+          # "scipy.spatial",
+          "scipy.special",
+          # "scipy.stats",
+          "scipy.stats.contingency scipy.stats.distributions",
+          "scipy.version"
+        ]
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - run: |
+          pipx install poetry poethepoet
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
           cache: poetry
 
-      - name: Install dependencies
-        run: |
-          pipx install poetry poethepoet
-          poetry install
+      - name: install
+        run: poetry install
 
       - name: Run stubtest for ${{ matrix.module }}
         run: poe stubtest ${{ matrix.module }} -- --ignore-unused-allowlist
@@ -98,16 +103,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - run: |
+          pipx install poetry poethepoet
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
           cache: poetry
 
-      - name: Install dependencies
-        run: |
-          pipx install poetry poethepoet
-          poetry install
+      - name: install
+        run: poetry install
 
       - name: Run stubtest (ignored)
         run: poe stubtest -- --concise
