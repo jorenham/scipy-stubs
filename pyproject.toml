@@ -106,6 +106,7 @@ typeCheckingMode = "strict"
 
 deprecateTypingAliases = true
 enableTypeIgnoreComments = false
+reportDeprecated = false
 reportIgnoreCommentWithoutRule = true
 reportImplicitRelativeImport = true
 reportInvalidCast = true

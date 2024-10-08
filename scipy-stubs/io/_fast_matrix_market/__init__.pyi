@@ -1,27 +1,54 @@
 import io
-from typing_extensions import override
+from os import PathLike
+from typing import Final, Literal, TypeAlias, type_check_only
+from typing_extensions import TypedDict, Unpack, override
 
-from scipy._typing import Untyped
+import numpy as np
+import numpy.typing as npt
+import optype.numpy as onpt
+from scipy.sparse import coo_matrix, sparray, spmatrix
 
 __all__ = ["mminfo", "mmread", "mmwrite"]
 
-PARALLELISM: int
-ALWAYS_FIND_SYMMETRY: bool
+_FileLike: TypeAlias = bytes | str | PathLike[bytes] | PathLike[str]
+_Format: TypeAlias = Literal["coordinate", "array"]
+_Field: TypeAlias = Literal["real", "complex", "pattern", "integer"]
+_Symmetry: TypeAlias = Literal["general", "symmetric", "skew-symmetric", "hermitian"]
+
+PARALLELISM: Final = 0
+ALWAYS_FIND_SYMMETRY: Final = False
+
+@type_check_only
+class _TextToBytesWrapperKwargs(TypedDict, total=False):
+    buffer_size: int
 
 class _TextToBytesWrapper(io.BufferedReader):
-    encoding: Untyped
-    errors: Untyped
-    def __init__(self, text_io_buffer, encoding: Untyped | None = None, errors: Untyped | None = None, **kwargs): ...
+    encoding: Final[str]
+    errors: Final[str]
+    def __init__(
+        self,
+        /,
+        text_io_buffer: io.TextIOBase,
+        encoding: str | None = None,
+        errors: str | None = None,
+        **kwargs: Unpack[_TextToBytesWrapperKwargs],
+    ) -> None: ...
     @override
-    def seek(self, offset: int, whence: int = 0, /) -> None: ...  # type: ignore[override]
+    def read(self, /, size: int | None = -1) -> bytes: ...
+    @override
+    def read1(self, /, size: int = -1) -> bytes: ...
+    @override
+    def peek(self, /, size: int = -1) -> bytes: ...
+    @override
+    def seek(self, /, offset: int, whence: int = 0) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
 
-def mmread(source) -> Untyped: ...
+def mmread(source: _FileLike) -> npt.NDArray[np.generic] | coo_matrix: ...
 def mmwrite(
-    target,
-    a,
-    comment: Untyped | None = None,
-    field: Untyped | None = None,
-    precision: Untyped | None = None,
-    symmetry: str = "AUTO",
-): ...
-def mminfo(source) -> Untyped: ...
+    target: _FileLike,
+    a: onpt.CanArray | list[object] | tuple[object, ...] | sparray | spmatrix,
+    comment: str | None = None,
+    field: _Field | None = None,
+    precision: int | None = None,
+    symmetry: _Symmetry | Literal["AUTO"] = "AUTO",
+) -> None: ...
+def mminfo(source: _FileLike) -> tuple[int, int, int, _Format, _Field, _Symmetry]: ...
