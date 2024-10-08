@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
+  lint-and-typecheck:
     timeout-minutes: 5
     runs-on: ubuntu-latest
 
@@ -25,18 +25,16 @@ jobs:
           config: ".markdownlint.yaml"
           globs: "**/*.md"
 
-      - run: |
-          pipx install poetry poethepoet
-          poetry config virtualenvs.create true --local
-          poetry config virtualenvs.in-project true --local
-
-      - uses: actions/setup-python@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
           cache: poetry
 
-      - name: install
-        run: poetry install
+      - name: Install dependencies
+        run: |
+          pipx install poetry poethepoet
+          poetry install
 
       - name: lint (ruff)
         run: poe lint --output-format=github
@@ -47,66 +45,70 @@ jobs:
       - name: verifytypes (basedpyright)
         run: poe verifytypes
 
-      # TODO: scipy._lib
+  stubtest:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: [
+            # "scipy._lib",
+            "scipy.cluster",
+            "scipy.constants",
+            "scipy.datasets",
+            "scipy.fft",
+            "scipy.fftpack",
+            "scipy.integrate",
+            # "scipy.interpolate",
+            # "scipy.io",
+            "scipy.io.arff scipy.io.matlab",
+            "scipy.linalg",
+            "scipy.misc",
+            # "scipy.ndimage",
+            "scipy.odr",
+            "scipy.optimize",
+            # "scipy.signal",
+            # "scipy.sparse",
+            # "scipy.spatial",
+            "scipy.special",
+            # "scipy.stats",
+            "scipy.stats.contingency scipy.stats.distributions",
+            "scipy.version",
+          ]
+    steps:
+      - uses: actions/checkout@v4
 
-      - name: stubtest scipy.cluster
-        run: poe stubtest scipy.cluster -- --ignore-unused-allowlist
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: poetry
 
-      - name: stubtest scipy.constants
-        run: poe stubtest scipy.constants -- --ignore-unused-allowlist
+      - name: Install dependencies
+        run: |
+          pipx install poetry poethepoet
+          poetry install
 
-      - name: stubtest scipy.datasets
-        run: poe stubtest scipy.datasets -- --ignore-unused-allowlist
+      - name: Run stubtest for ${{ matrix.module }}
+        run: poe stubtest ${{ matrix.module }} -- --ignore-unused-allowlist
 
-      - name: stubtest scipy.fft scipy.fftpack
-        run: poe stubtest scipy.fft scipy.fftpack -- --ignore-unused-allowlist
+  stubtest-all:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-      - name: stubtest scipy.integrate
-        run: poe stubtest scipy.integrate -- --ignore-unused-allowlist
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: poetry
 
-      # TODO: scipy.interpolate
-      # TODO: scipy.io
+      - name: Install dependencies
+        run: |
+          pipx install poetry poethepoet
+          poetry install
 
-      - name: stubtest scipy.io.arff scipy.io.matlab
-        run: poe stubtest scipy.io.arff scipy.io.matlab -- --ignore-unused-allowlist
-
-      - name: stubtest scipy.linalg
-        run: poe stubtest scipy.linalg -- --ignore-unused-allowlist
-
-      - name: stubtest scipy.misc
-        run: poe stubtest scipy.misc -- --ignore-unused-allowlist
-
-      # TODO: scipy.ndimage
-
-      - name: stubtest scipy.odr
-        run: poe stubtest scipy.odr -- --ignore-unused-allowlist
-
-      - name: stubtest scipy.optimize
-        run: poe stubtest scipy.optimize -- --ignore-unused-allowlist
-
-      # TODO: scipy.signal
-      # TODO: scipy.sparse
-      # TODO: scipy.spatial
-
-      - name: stubtest scipy.special
-        run: poe stubtest scipy.special -- --ignore-unused-allowlist
-
-      # TODO: scipy.stats
-
-      - name: stubtest scipy.stats.contingency
-        run: poe stubtest scipy.stats.contingency -- --ignore-unused-allowlist
-
-      - name: stubtest scipy.stats.distributions
-        run: poe stubtest scipy.stats.distributions -- --ignore-unused-allowlist
-
-      # TODO: scipy.stats.mstats
-      # TODO: scipy.stats.qmc
-      # TODO: scipy.stats.sampling
-
-      - name: stubtest scipy.version
-        run: poe stubtest scipy.version -- --ignore-unused-allowlist
-
-      # TODO: scipy
-      - name: stubtest scipy (ignored)
+      - name: Run stubtest (ignored)
         run: poe stubtest -- --concise
-        continue-on-error: true  # TODO
+        continue-on-error: true
