@@ -108,29 +108,28 @@ The exact version requirements are specified in the [`pyproject.toml`](pyproject
 |---------------------------------- |---------------- |
 | `scipy.__init__`                  | 3: ready        |
 | `scipy._lib`                      | 2: partial      |
-| `scipy.cluster.vq`                | **4: done**     |
-| `scipy.cluster.hierarchy`         | **4: done**     |
+| `scipy.cluster`                   | **4: done**     |
 | `scipy.constants`                 | **4: done**     |
 | `scipy.datasets`                  | **4: done**     |
-| `scipy.fft`                       | 2: partial      |
-| `scipy.fftpack`                   | 2: partial      |
+| `scipy.fft`                       | 3: ready        |
+| `scipy.fftpack`                   | 3: ready        |
 | `scipy.integrate`                 | **4: done**     |
 | `scipy.interpolate`               | 2: partial      |
 | `scipy.io`                        | 2: partial      |
-| `scipy.io.arff`                   | 2: partial      |
-| `scipy.io.matlab`                 | 2: partial      |
+| `scipy.io.arff`                   | 3: ready        |
+| `scipy.io.matlab`                 | 3: ready        |
 | `scipy.linalg`                    | **4: done**     |
 | ~`scipy.misc`~                    | **4: done**     |
 | `scipy.ndimage`                   | 2: partial      |
-| `scipy.odr`                       | 1: skeleton     |
-| `scipy.optimize`                  | 2: partial      |
+| `scipy.odr`                       | 3: ready        |
+| `scipy.optimize`                  | 3: ready        |
 | `scipy.signal`                    | 2: partial      |
 | `scipy.signal.windows`            | 1: skeleton     |
 | `scipy.sparse`                    | 2: partial      |
 | `scipy.sparse.csgraph`            | 2: partial      |
 | `scipy.sparse.linalg`             | 2: partial      |
 | `scipy.spatial`                   | 2: partial      |
-| `scipy.spatial.distance`          | 3: ready        |
+| `scipy.spatial.distance`          | 2: partial      |
 | `scipy.special`                   | **4: done**     |
 | `scipy.special.cython_special`    | **4: done**     |
 | `scipy.stats`                     | 2: partial      |
@@ -143,8 +142,7 @@ The exact version requirements are specified in the [`pyproject.toml`](pyproject
 
 Status labels:
 
-- 0: missing (failed stubgen)
-- 1: skeleton (mostly succesful stubgen)
-- 2: partial (incomplete/broad annotations)
-- 3: ready (complete & valid annotations, untested)
-- 4: done (complete, valid, tested, and production-ready)
+1. skeleton (mostly succesful stubgen)
+2. partial (incomplete/broad annotations)
+3. ready (passes stubtest)
+4. done (complete, valid, tested, and production-ready)

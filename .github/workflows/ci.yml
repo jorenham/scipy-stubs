@@ -41,18 +41,72 @@ jobs:
       - name: lint (ruff)
         run: poe lint --output-format=github
 
-      - name: verifytypes (basedpyright)
-        run: poe verifytypes
-
-      # TODO: don't continue on error
-      - name: stubtest (basedmypy)
-        run: poe stubtest -- --concise
-        continue-on-error: true
-
       - name: typetest
         run: poe typetest
 
-      # TODO
-      # - uses: scientific-python/repo-review@v0.11.2
-      #   with:
-      #     plugins: sp-repo-review
+      - name: verifytypes (basedpyright)
+        run: poe verifytypes
+
+      # TODO: scipy._lib
+
+      - name: stubtest scipy.cluster
+        run: poe stubtest scipy.cluster -- --ignore-unused-allowlist
+
+      - name: stubtest scipy.constants
+        run: poe stubtest scipy.constants -- --ignore-unused-allowlist
+
+      - name: stubtest scipy.datasets
+        run: poe stubtest scipy.datasets -- --ignore-unused-allowlist
+
+      - name: stubtest scipy.fft scipy.fftpack
+        run: poe stubtest scipy.fft scipy.fftpack -- --ignore-unused-allowlist
+
+      - name: stubtest scipy.integrate
+        run: poe stubtest scipy.integrate -- --ignore-unused-allowlist
+
+      # TODO: scipy.interpolate
+      # TODO: scipy.io
+
+      - name: stubtest scipy.io.arff scipy.io.matlab
+        run: poe stubtest scipy.io.arff scipy.io.matlab -- --ignore-unused-allowlist
+
+      - name: stubtest scipy.linalg
+        run: poe stubtest scipy.linalg -- --ignore-unused-allowlist
+
+      - name: stubtest scipy.misc
+        run: poe stubtest scipy.misc -- --ignore-unused-allowlist
+
+      # TODO: scipy.ndimage
+
+      - name: stubtest scipy.odr
+        run: poe stubtest scipy.odr -- --ignore-unused-allowlist
+
+      - name: stubtest scipy.optimize
+        run: poe stubtest scipy.optimize -- --ignore-unused-allowlist
+
+      # TODO: scipy.signal
+      # TODO: scipy.sparse
+      # TODO: scipy.spatial
+
+      - name: stubtest scipy.special
+        run: poe stubtest scipy.special -- --ignore-unused-allowlist
+
+      # TODO: scipy.stats
+
+      - name: stubtest scipy.stats.contingency
+        run: poe stubtest scipy.stats.contingency -- --ignore-unused-allowlist
+
+      - name: stubtest scipy.stats.distributions
+        run: poe stubtest scipy.stats.distributions -- --ignore-unused-allowlist
+
+      # TODO: scipy.stats.mstats
+      # TODO: scipy.stats.qmc
+      # TODO: scipy.stats.sampling
+
+      - name: stubtest scipy.version
+        run: poe stubtest scipy.version -- --ignore-unused-allowlist
+
+      # TODO: scipy
+      - name: stubtest scipy (ignored)
+        run: poe stubtest -- --concise
+        continue-on-error: true  # TODO
