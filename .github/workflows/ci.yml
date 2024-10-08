@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
+  lint-and-typecheck:
     timeout-minutes: 5
     runs-on: ubuntu-latest
 
@@ -41,18 +41,81 @@ jobs:
       - name: lint (ruff)
         run: poe lint --output-format=github
 
-      - name: verifytypes (basedpyright)
-        run: poe verifytypes
-
-      # TODO: don't continue on error
-      - name: stubtest (basedmypy)
-        run: poe stubtest -- --concise
-        continue-on-error: true
-
       - name: typetest
         run: poe typetest
 
-      # TODO
-      # - uses: scientific-python/repo-review@v0.11.2
-      #   with:
-      #     plugins: sp-repo-review
+      - name: verifytypes (basedpyright)
+        run: poe verifytypes
+
+  stubtest:
+    needs: lint-and-typecheck
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: [
+          # "scipy._lib",
+          "scipy.cluster",
+          "scipy.constants",
+          "scipy.datasets",
+          "scipy.fft",
+          "scipy.fftpack",
+          "scipy.integrate",
+          # "scipy.interpolate",
+          # "scipy.io",
+          "scipy.io.arff scipy.io.matlab",
+          "scipy.linalg",
+          "scipy.misc",
+          # "scipy.ndimage",
+          "scipy.odr",
+          "scipy.optimize",
+          # "scipy.signal",
+          # "scipy.sparse",
+          # "scipy.spatial",
+          "scipy.special",
+          # "scipy.stats",
+          "scipy.stats.contingency scipy.stats.distributions",
+          "scipy.version"
+        ]
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: |
+          pipx install poetry poethepoet
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: poetry
+
+      - name: install
+        run: poetry install
+
+      - name: Run stubtest for ${{ matrix.module }}
+        run: poe stubtest ${{ matrix.module }} -- --ignore-unused-allowlist
+
+  stubtest-all:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: |
+          pipx install poetry poethepoet
+          poetry config virtualenvs.create true --local
+          poetry config virtualenvs.in-project true --local
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: poetry
+
+      - name: install
+        run: poetry install
+
+      - name: Run stubtest (ignored)
+        run: poe stubtest -- --concise
+        continue-on-error: true

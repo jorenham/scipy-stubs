@@ -99,8 +99,9 @@ scipy.stats.mstats_basic.*
 scipy.stats.mstats_extras.*
 scipy.stats.stats.*
 
-# random mypy hallucinations
+# mypy hallucinations
 scipy._lib._ccallback.PyCFuncPtr  # `final(T)` is impossible
+scipy.integrate._quadrature.QMCQuadResult.__replace__  # bruh...
 scipy.interpolate.AAA
 scipy.interpolate._aaa
 scipy.interpolate._interpnd_info
