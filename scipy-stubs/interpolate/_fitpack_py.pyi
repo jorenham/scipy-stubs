@@ -1,9 +1,22 @@
 from scipy._typing import Untyped
-from ._bsplines import BSpline as BSpline
-from ._fitpack_impl import bisplev as bisplev, bisplrep as bisplrep, dblint as dblint
+from ._fitpack_impl import bisplev, bisplrep
+
+__all__ = [
+    "bisplev",
+    "bisplrep",
+    "insert",
+    "spalde",
+    "splantider",
+    "splder",
+    "splev",
+    "splint",
+    "splprep",
+    "splrep",
+    "sproot",
+]
 
 def splprep(
-    x,
+    x: Untyped,
     w: Untyped | None = None,
     u: Untyped | None = None,
     ub: Untyped | None = None,
@@ -18,8 +31,8 @@ def splprep(
     quiet: int = 1,
 ) -> Untyped: ...
 def splrep(
-    x,
-    y,
+    x: Untyped,
+    y: Untyped,
     w: Untyped | None = None,
     xb: Untyped | None = None,
     xe: Untyped | None = None,
@@ -31,10 +44,10 @@ def splrep(
     per: int = 0,
     quiet: int = 1,
 ) -> Untyped: ...
-def splev(x, tck, der: int = 0, ext: int = 0) -> Untyped: ...
-def splint(a, b, tck, full_output: int = 0) -> Untyped: ...
-def sproot(tck, mest: int = 10) -> Untyped: ...
-def spalde(x, tck) -> Untyped: ...
-def insert(x, tck, m: int = 1, per: int = 0) -> Untyped: ...
-def splder(tck, n: int = 1) -> Untyped: ...
-def splantider(tck, n: int = 1) -> Untyped: ...
+def splev(x: Untyped, tck: Untyped, der: int = 0, ext: int = 0) -> Untyped: ...
+def splint(a: Untyped, b: Untyped, tck: Untyped, full_output: int = 0) -> Untyped: ...
+def sproot(tck: Untyped, mest: int = 10) -> Untyped: ...
+def spalde(x: Untyped, tck: Untyped) -> Untyped: ...
+def insert(x: Untyped, tck: Untyped, m: int = 1, per: int = 0) -> Untyped: ...
+def splder(tck: Untyped, n: int = 1) -> Untyped: ...
+def splantider(tck: Untyped, n: int = 1) -> Untyped: ...

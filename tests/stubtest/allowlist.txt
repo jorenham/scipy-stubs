@@ -80,9 +80,6 @@ scipy.stats._unuran.unuran_wrapper
 # mypy hallucinations
 scipy._lib._ccallback.PyCFuncPtr  # `final(T)` is impossible
 scipy.integrate._quadrature.QMCQuadResult.__replace__  # bruh...
-scipy.interpolate.AAA
-scipy.interpolate._aaa
-scipy.interpolate._interpnd_info
 
 # TODO:
 scipy._lib._ccallback.__all__

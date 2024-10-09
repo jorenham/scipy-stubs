@@ -1,30 +1,39 @@
 from typing import Literal
+from typing_extensions import override
 
 from scipy._typing import Untyped
-from scipy.linalg import solve as solve, solve_banded as solve_banded
-from . import PPoly as PPoly
+from ._interpolate import PPoly
 
-def prepare_input(x, y, axis, dydx: Untyped | None = None) -> Untyped: ...
+__all__ = ["Akima1DInterpolator", "CubicHermiteSpline", "CubicSpline", "PchipInterpolator", "pchip_interpolate"]
 
 class CubicHermiteSpline(PPoly):
-    axis: Untyped
-    def __init__(self, x, y, dydx, axis: int = 0, extrapolate: Untyped | None = None): ...
+    def __init__(self, x: Untyped, y: Untyped, dydx: Untyped, axis: int = 0, extrapolate: Untyped | None = None) -> None: ...
 
 class PchipInterpolator(CubicHermiteSpline):
-    axis: Untyped
-    def __init__(self, x, y, axis: int = 0, extrapolate: Untyped | None = None): ...
-
-def pchip_interpolate(xi, yi, x, der: int = 0, axis: int = 0) -> Untyped: ...
+    def __init__(self, x: Untyped, y: Untyped, axis: int = 0, extrapolate: Untyped | None = None) -> None: ...
 
 class Akima1DInterpolator(CubicHermiteSpline):
-    axis: Untyped
-    def __init__(self, x, y, axis: int = 0, *, method: Literal["akima", "makima"] = "akima", extrapolate: bool | None = None): ...
-    def extend(self, c, x, right: bool = True): ...
-    @classmethod
-    def from_spline(cls, tck, extrapolate: Untyped | None = None): ...
-    @classmethod
-    def from_bernstein_basis(cls, bp, extrapolate: Untyped | None = None): ...
+    def __init__(
+        self,
+        x: Untyped,
+        y: Untyped,
+        axis: int = 0,
+        *,
+        method: Literal["akima", "makima"] = "akima",
+        extrapolate: bool | None = None,
+    ) -> None: ...
+    @override
+    def extend(self, c: Untyped, x: Untyped, right: bool = True) -> None: ...
 
 class CubicSpline(CubicHermiteSpline):
-    axis: Untyped
-    def __init__(self, x, y, axis: int = 0, bc_type: str = "not-a-knot", extrapolate: Untyped | None = None): ...
+    def __init__(
+        self,
+        x: Untyped,
+        y: Untyped,
+        axis: int = 0,
+        bc_type: str = "not-a-knot",
+        extrapolate: Untyped | None = None,
+    ) -> None: ...
+
+def prepare_input(x: Untyped, y: Untyped, axis: Untyped, dydx: Untyped | None = None) -> Untyped: ...  # undocumented
+def pchip_interpolate(xi: Untyped, yi: Untyped, x: Untyped, der: int = 0, axis: int = 0) -> Untyped: ...

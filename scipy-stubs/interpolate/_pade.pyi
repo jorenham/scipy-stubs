@@ -1,4 +1,6 @@
-from scipy import linalg as linalg
-from scipy._typing import Untyped
+import numpy as np
+import numpy.typing as npt
 
-def pade(an, m, n: Untyped | None = None) -> Untyped: ...
+__all__ = ["pade"]
+
+def pade(an: npt.ArrayLike, m: int, n: int | None = None) -> tuple[np.poly1d, np.poly1d]: ...

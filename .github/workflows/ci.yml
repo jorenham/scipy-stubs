@@ -55,6 +55,7 @@ jobs:
             "constants"
             "datasets"
             "integrate"
+            "interpolate"
             "io"
             "linalg"
             "misc"
@@ -82,7 +83,7 @@ jobs:
           "scipy.fft",
           "scipy.fftpack",
           "scipy.integrate",
-          # "scipy.interpolate",
+          "scipy.interpolate",
           "scipy.io",
           "scipy.linalg",
           "scipy.misc",
