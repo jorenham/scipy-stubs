@@ -154,9 +154,29 @@ def qmc_quad(
     log: bool = False,
 ) -> QMCQuadResult: ...
 @deprecated("deprecated as of SciPy 1.12.0 and will be removed in SciPy 1.15.0")
-def quadrature(*args: object, **kwargs: object) -> tuple[float, float]: ...
+def quadrature(
+    func: object,
+    a: object,
+    b: object,
+    args: tuple[object, ...] = (),
+    tol: float = ...,
+    rtol: float = ...,
+    maxiter: int = ...,
+    vec_func: bool = ...,
+    miniter: int = ...,
+) -> tuple[float, float]: ...
 @deprecated("deprecated as of SciPy 1.12.0 and will be removed in SciPy 1.15.0")
-def romberg(*args: object, **kwargs: object) -> float: ...
+def romberg(
+    function: object,
+    a: object,
+    b: object,
+    args: tuple[object, ...] = (),
+    tol: float = ...,
+    rtol: float = ...,
+    show: bool = ...,
+    divmax: int = ...,
+    vec_func: bool = ...,
+) -> float: ...
 
 # low-level
 def newton_cotes(rn: int, equal: int = 0) -> tuple[onpt.Array[tuple[int], np.float64], float]: ...
