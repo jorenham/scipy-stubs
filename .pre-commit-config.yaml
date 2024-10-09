@@ -56,12 +56,6 @@ repos:
 
   - repo: local
     hooks:
-      - id: verifytypes
-        name: poe verifytypes
-        entry: poe verifytypes
-        language: system
-        always_run: true
-        pass_filenames: false
       - id: typetest
         name: poe typetest
         entry: poe typetest

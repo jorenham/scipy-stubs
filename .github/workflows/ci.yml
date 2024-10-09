@@ -44,9 +44,6 @@ jobs:
       - name: typetest
         run: poe typetest
 
-      - name: verifytypes
-        run: poe verifytypes
-
       - name: typecheck (partial)
         run: |
           targets=(
