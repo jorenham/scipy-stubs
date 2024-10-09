@@ -22,7 +22,7 @@ name = "scipy-stubs"
 packages = [{include = "scipy-stubs"}]
 readme = "README.md"
 repository = "https://github.com/jorenham/scipy-stubs/"
-version = "1.4.1a4.dev0"
+version = "1.14.1.0.dev0"
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/jorenham/scipy-stubs/issues"
@@ -30,8 +30,8 @@ version = "1.4.1a4.dev0"
 
 [tool.poetry.dependencies]
 python = "^3.10.1"
-optype = "^0.6.1"
 scipy = "^1.14.1"
+optype = "^0.6.1"
 
 [tool.poetry.group.lint.dependencies]
 basedmypy = "^2.6.0"
@@ -64,14 +64,10 @@ typetest = ["_typetest_bpr", "_typetest_mypy"]
 
 [tool.poe.tasks.pyright]
 cmd = "basedpyright scipy-stubs/$path"
-args = [{name = "path", positional = true, multiple = true, default = ""}]
+args = [{name = "path", positional = true, multiple = false, default = ""}]
 
 [tool.poe.tasks.mypy]
 cmd = "mypy --config-file=pyproject.toml scipy-stubs/$path"
-args = [{name = "path", positional = true, multiple = false, default = ""}]
-
-[tool.poe.tasks.verifytypes]
-cmd = "basedpyright --ignoreexternal --verifytypes scipy-stubs/$path"
 args = [{name = "path", positional = true, multiple = false, default = ""}]
 
 [tool.poe.tasks.stubtest]
