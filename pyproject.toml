@@ -35,12 +35,12 @@ scipy = "^1.14.1"
 
 [tool.poetry.group.lint.dependencies]
 basedmypy = "^2.6.0"
-basedpyright = "^1.18.3"
+basedpyright = "^1.18.4"
 ruff = "^0.6.9"
 
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.29.0"
-pre-commit = "^4.0.0"
+pre-commit = "^4.0.1"
 
 [tool.poe.executor]
 type = "poetry"
