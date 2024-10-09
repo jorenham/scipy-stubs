@@ -1,16 +1,15 @@
 import io
-from os import PathLike
 from typing import Final, Literal, TypeAlias, type_check_only
 from typing_extensions import TypedDict, Unpack, override
 
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onpt
+from scipy._typing import FileLike
 from scipy.sparse import coo_matrix, sparray, spmatrix
 
 __all__ = ["mminfo", "mmread", "mmwrite"]
 
-_FileLike: TypeAlias = bytes | str | PathLike[bytes] | PathLike[str]
 _Format: TypeAlias = Literal["coordinate", "array"]
 _Field: TypeAlias = Literal["real", "complex", "pattern", "integer"]
 _Symmetry: TypeAlias = Literal["general", "symmetric", "skew-symmetric", "hermitian"]
@@ -42,13 +41,13 @@ class _TextToBytesWrapper(io.BufferedReader):
     @override
     def seek(self, /, offset: int, whence: int = 0) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
 
-def mmread(source: _FileLike) -> npt.NDArray[np.generic] | coo_matrix: ...
+def mmread(source: FileLike) -> npt.NDArray[np.generic] | coo_matrix: ...
 def mmwrite(
-    target: _FileLike,
+    target: FileLike,
     a: onpt.CanArray | list[object] | tuple[object, ...] | sparray | spmatrix,
     comment: str | None = None,
     field: _Field | None = None,
     precision: int | None = None,
     symmetry: _Symmetry | Literal["AUTO"] = "AUTO",
 ) -> None: ...
-def mminfo(source: _FileLike) -> tuple[int, int, int, _Format, _Field, _Symmetry]: ...
+def mminfo(source: FileLike) -> tuple[int, int, int, _Format, _Field, _Symmetry]: ...

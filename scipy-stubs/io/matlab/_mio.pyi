@@ -1,17 +1,70 @@
-from scipy._typing import Untyped
-from ._mio4 import MatFile4Reader as MatFile4Reader, MatFile4Writer as MatFile4Writer
-from ._mio5 import MatFile5Reader as MatFile5Reader, MatFile5Writer as MatFile5Writer
-from ._miobase import docfiller as docfiller
+from typing import Literal, TypeAlias, TypedDict, type_check_only
+from typing_extensions import Unpack
 
-def mat_reader_factory(file_name, appendmat: bool = True, **kwargs) -> Untyped: ...
-def loadmat(file_name, mdict: Untyped | None = None, appendmat: bool = True, **kwargs) -> Untyped: ...
-def savemat(
-    file_name,
-    mdict,
+import numpy as np
+import numpy.typing as npt
+from scipy._typing import ByteOrder, FileLike
+from ._miobase import MatFileReader
+
+__all__ = ["loadmat", "savemat", "whosmat"]
+
+_MDict: TypeAlias = dict[str, npt.NDArray[np.generic]]
+_DataClass: TypeAlias = Literal[
+    "int8",
+    "int16",
+    "int32",
+    "int64",
+    "uint8",
+    "uint16",
+    "uint32",
+    "uint64",
+    "single",
+    "double",
+    "cell",
+    "struct",
+    "object",
+    "char",
+    "sparse",
+    "function",
+    "opaque",
+    "logical",
+    "unknown",
+]
+
+@type_check_only
+class _ReaderKwargs(TypedDict, total=False):
+    byte_order: ByteOrder | None
+    mat_dtype: bool
+    squeeze_me: bool
+    chars_as_strings: bool
+    matlab_compatible: bool
+    struct_as_record: bool
+    verify_compressed_data_integrity: bool
+    simplify_cells: bool
+    variable_names: list[str] | tuple[str] | None
+
+def mat_reader_factory(
+    file_name: FileLike,
     appendmat: bool = True,
-    format: str = "5",
+    **kwargs: Unpack[_ReaderKwargs],
+) -> tuple[MatFileReader, bool]: ...
+def loadmat(
+    file_name: FileLike,
+    mdict: _MDict | None = None,
+    appendmat: bool = True,
+    **kwargs: Unpack[_ReaderKwargs],
+) -> _MDict: ...
+def savemat(
+    file_name: FileLike,
+    mdict: _MDict,
+    appendmat: bool = True,
+    format: Literal["5", "4"] = "5",
     long_field_names: bool = False,
     do_compression: bool = False,
-    oned_as: str = "row",
-): ...
-def whosmat(file_name, appendmat: bool = True, **kwargs) -> Untyped: ...
+    oned_as: Literal["row", "column"] = "row",
+) -> None: ...
+def whosmat(
+    file_name: FileLike,
+    appendmat: bool = True,
+    **kwargs: Unpack[_ReaderKwargs],
+) -> list[tuple[str, tuple[int, ...], _DataClass]]: ...

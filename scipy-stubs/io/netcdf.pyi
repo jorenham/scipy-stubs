@@ -6,7 +6,12 @@ __all__ = ["netcdf_file", "netcdf_variable"]
 @deprecated("will be removed in SciPy v2.0.0")
 class netcdf_file:
     def __init__(
-        self, filename: object, mode: object = ..., mmap: object = ..., version: object = ..., maskandscale: object = ...
+        self,
+        filename: object,
+        mode: object = ...,
+        mmap: object = ...,
+        version: object = ...,
+        maskandscale: object = ...,
     ) -> None: ...
     def flush(self) -> None: ...
     def close(self) -> None: ...
