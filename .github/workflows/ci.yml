@@ -51,8 +51,8 @@ jobs:
         run: |
           targets=(
             "__init__.pyi"
-            "constants"
             "cluster"
+            "constants"
             "datasets"
             "integrate"
             "io"

@@ -116,8 +116,6 @@ The exact version requirements are specified in the [`pyproject.toml`](pyproject
 | `scipy.integrate`                 | **4: done**     |
 | `scipy.interpolate`               | 2: partial      |
 | `scipy.io`                        | **4: done**     |
-| `scipy.io.arff`                   | 3: ready        |
-| `scipy.io.matlab`                 | 3: ready        |
 | `scipy.linalg`                    | **4: done**     |
 | ~`scipy.misc`~                    | **4: done**     |
 | `scipy.ndimage`                   | 2: partial      |
@@ -131,9 +129,8 @@ The exact version requirements are specified in the [`pyproject.toml`](pyproject
 | `scipy.spatial`                   | 2: partial      |
 | `scipy.spatial.distance`          | 2: partial      |
 | `scipy.special`                   | **4: done**     |
-| `scipy.special.cython_special`    | **4: done**     |
 | `scipy.stats`                     | 2: partial      |
-| `scipy.stats.contingency`         | 1: skeleton     |
+| `scipy.stats.contingency`         | 3: ready        |
 | `scipy.stats.distributions`       | **4: done**     |
 | `scipy.stats.mstats`              | 1: skeleton     |
 | `scipy.stats.qmc`                 | 2: partial      |
