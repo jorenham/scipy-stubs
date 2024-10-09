@@ -80,13 +80,6 @@ scipy.stats._unuran.unuran_wrapper
 # deprecated public api (will be removed in scipy 2.0.0)
 scipy.constants.codata
 scipy.constants.constants
-scipy.integrate.lsoda.*
-scipy.integrate.odepack.*
-scipy.integrate.quadpack.*
-scipy.integrate.quadrature
-scipy.integrate.romberg
-scipy.integrate._quadrature.quadrature
-scipy.integrate._quadrature.romberg
 scipy.linalg.basic.*
 scipy.linalg.decomp.*
 scipy.linalg.matfuncs.*
@@ -108,7 +101,6 @@ scipy.interpolate._interpnd_info
 
 # deprecated submodules are removed from these `__all__`
 scipy.constants.__all__
-scipy.integrate.__all__
 scipy.linalg.__all__
 scipy.stats.__all__
 
@@ -116,11 +108,7 @@ scipy.stats.__all__
 scipy._lib._ccallback.__all__
 scipy._lib.array_api_compat.__all__
 scipy._lib.array_api_compat.common.__all__
-scipy.integrate._ivp.__all__
 scipy.signal._signaltools.__all__
-scipy.spatial.ckdtree.__all__
-scipy.spatial.kdtree.__all__
-scipy.spatial.qhull.__all__
 scipy.sparse._matrix.__all__
 scipy.sparse.csgraph.__all__
 scipy.sparse.csgraph._flow.__all__
@@ -133,6 +121,9 @@ scipy.sparse.csgraph._tools.__all__
 scipy.sparse.csgraph._traversal.__all__
 scipy.sparse.linalg._dsolve.__all__
 scipy.sparse.linalg._dsolve._superlu.__all__
+scipy.spatial.ckdtree.__all__
+scipy.spatial.kdtree.__all__
+scipy.spatial.qhull.__all__
 scipy.spatial.transform._rotation.__all__
 scipy.spatial.transform._rotation_spline.__all__
 scipy.stats._binomtest.__all__
