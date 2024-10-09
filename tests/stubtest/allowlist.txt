@@ -80,12 +80,6 @@ scipy.stats._unuran.unuran_wrapper
 # deprecated public api (will be removed in scipy 2.0.0)
 scipy.constants.codata
 scipy.constants.constants
-scipy.linalg.basic.*
-scipy.linalg.decomp.*
-scipy.linalg.matfuncs.*
-scipy.linalg.misc.*
-scipy.linalg.special_matrices.*
-scipy.linalg.basic
 scipy.stats.kde.*
 scipy.stats.morestats.*
 scipy.stats.mstats_basic.*
@@ -101,7 +95,6 @@ scipy.interpolate._interpnd_info
 
 # deprecated submodules are removed from these `__all__`
 scipy.constants.__all__
-scipy.linalg.__all__
 scipy.stats.__all__
 
 # TODO

@@ -1,2 +1,41 @@
 # This file is not meant for public use and will be removed in SciPy v2.0.0.
-__all__ = ()
+
+from ._special_matrices import (
+    block_diag,
+    circulant,
+    companion,
+    convolution_matrix,
+    dft,
+    fiedler,
+    fiedler_companion,
+    hadamard,
+    hankel,
+    helmert,
+    hilbert,
+    invhilbert,
+    invpascal,
+    kron,
+    leslie,
+    pascal,
+    toeplitz,
+)
+
+__all__ = [
+    "block_diag",
+    "circulant",
+    "companion",
+    "convolution_matrix",
+    "dft",
+    "fiedler",
+    "fiedler_companion",
+    "hadamard",
+    "hankel",
+    "helmert",
+    "hilbert",
+    "invhilbert",
+    "invpascal",
+    "kron",
+    "leslie",
+    "pascal",
+    "toeplitz",
+]
