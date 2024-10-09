@@ -58,8 +58,8 @@ lint = "ruff check"
 format = "ruff format"
 pre-commit = "pre-commit run --all-files"
 
-_typetest_bpr = "basedpyright typetests"
-_typetest_mypy = "mypy --config-file=pyproject.toml typetests"
+_typetest_bpr = "basedpyright tests/typetests"
+_typetest_mypy = "mypy --config-file=pyproject.toml tests/typetests"
 typetest = ["_typetest_bpr", "_typetest_mypy"]
 
 [tool.poe.tasks.pyright]
@@ -90,7 +90,7 @@ disallow_incomplete_defs = false  # TODO
 warn_unused_ignores = true
 
 [tool.pyright]
-include = ["scipy-stubs", "typetests"]
+include = ["scipy-stubs", "tests/typetests"]
 venv = ".venv"
 venvPath = "."
 stubPath = "."
