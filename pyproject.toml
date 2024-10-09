@@ -68,11 +68,11 @@ args = [{name = "path", positional = true, multiple = true, default = ""}]
 
 [tool.poe.tasks.mypy]
 cmd = "mypy --config-file=pyproject.toml scipy-stubs/$path"
-args = [{name = "path", positional = true, multiple = true, default = ""}]
+args = [{name = "path", positional = true, multiple = false, default = ""}]
 
 [tool.poe.tasks.verifytypes]
 cmd = "basedpyright --ignoreexternal --verifytypes scipy-stubs/$path"
-args = [{name = "path", positional = true, multiple = true, default = ""}]
+args = [{name = "path", positional = true, multiple = false, default = ""}]
 
 [tool.poe.tasks.stubtest]
 cmd = """
