@@ -1,7 +1,7 @@
 # Helper types for internal use (type-check only).
 from os import PathLike
 from collections.abc import Callable, Sequence
-from typing import Any, Literal, Protocol, TypeAlias, type_check_only
+from typing import IO, Any, Literal, Protocol, TypeAlias, type_check_only
 from typing_extensions import LiteralString, TypeVar
 
 import numpy as np
@@ -22,7 +22,9 @@ __all__ = [
     "Casting",
     "CorrelateMode",
     "FileLike",
-    "FileMode",
+    "FileModeRW",
+    "FileModeRWA",
+    "FileName",
     "NanPolicy",
     "Seed",
     "Untyped",
@@ -42,8 +44,12 @@ UntypedDict: TypeAlias = dict[Untyped, Untyped]
 UntypedCallable: TypeAlias = Callable[..., Untyped]
 UntypedArray: TypeAlias = onpt.Array[tuple[int, ...], np.generic]
 
-FileMode: TypeAlias = Literal["r", "w", "a"]
-FileLike: TypeAlias = bytes | str | PathLike[bytes] | PathLike[str]
+# I/O
+_ByteSOrStr = TypeVar("_ByteSOrStr", bytes, str)
+FileName: TypeAlias = str | PathLike[str]
+FileLike: TypeAlias = IO[_ByteSOrStr] | FileName
+FileModeRW: TypeAlias = Literal["r", "w"]
+FileModeRWA: TypeAlias = Literal[FileModeRW, "a"]
 
 _SCT = TypeVar("_SCT", bound=np.generic, default=np.generic)
 Array0D: TypeAlias = np.ndarray[tuple[()], np.dtype[_SCT]]

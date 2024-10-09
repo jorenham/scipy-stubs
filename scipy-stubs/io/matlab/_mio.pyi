@@ -3,7 +3,7 @@ from typing_extensions import Unpack
 
 import numpy as np
 import numpy.typing as npt
-from scipy._typing import ByteOrder, FileLike
+from scipy._typing import ByteOrder, FileName
 from ._miobase import MatFileReader
 
 __all__ = ["loadmat", "savemat", "whosmat"]
@@ -44,18 +44,18 @@ class _ReaderKwargs(TypedDict, total=False):
     variable_names: list[str] | tuple[str] | None
 
 def mat_reader_factory(
-    file_name: FileLike,
+    file_name: FileName,
     appendmat: bool = True,
     **kwargs: Unpack[_ReaderKwargs],
 ) -> tuple[MatFileReader, bool]: ...
 def loadmat(
-    file_name: FileLike,
+    file_name: FileName,
     mdict: _MDict | None = None,
     appendmat: bool = True,
     **kwargs: Unpack[_ReaderKwargs],
 ) -> _MDict: ...
 def savemat(
-    file_name: FileLike,
+    file_name: FileName,
     mdict: _MDict,
     appendmat: bool = True,
     format: Literal["5", "4"] = "5",
@@ -64,7 +64,7 @@ def savemat(
     oned_as: Literal["row", "column"] = "row",
 ) -> None: ...
 def whosmat(
-    file_name: FileLike,
+    file_name: FileName,
     appendmat: bool = True,
     **kwargs: Unpack[_ReaderKwargs],
 ) -> list[tuple[str, tuple[int, ...], _DataClass]]: ...

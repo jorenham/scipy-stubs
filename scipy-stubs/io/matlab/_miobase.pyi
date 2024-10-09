@@ -6,7 +6,7 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onpt
-from scipy._typing import ByteOrder, FileLike
+from scipy._typing import ByteOrder, FileName
 
 __all__ = ["MatReadError", "MatReadWarning", "MatWriteError"]
 
@@ -20,7 +20,7 @@ class MatReadWarning(UserWarning): ...
 
 def convert_dtypes(dtype_template: Mapping[str, str], order_code: ByteOrder) -> dict[str, np.dtype[np.generic]]: ...
 def read_dtype(mat_stream: IO[bytes], a_dtype: npt.DTypeLike) -> npt.NDArray[np.generic]: ...
-def matfile_version(file_name: FileLike, *, appendmat: bool = True) -> tuple[Literal[0, 1, 2], int]: ...
+def matfile_version(file_name: FileName, *, appendmat: bool = True) -> tuple[Literal[0, 1, 2], int]: ...
 
 get_matfile_version = matfile_version
 

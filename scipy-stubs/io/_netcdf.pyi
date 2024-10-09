@@ -4,7 +4,7 @@ from typing import IO, Final
 from typing_extensions import Self
 
 import numpy.typing as npt
-from scipy._typing import FileMode, Untyped
+from scipy._typing import FileLike, FileModeRWA, Untyped
 
 __all__ = ["netcdf_file", "netcdf_variable"]
 
@@ -36,7 +36,7 @@ class netcdf_file:
     fp: IO[bytes]
     filename: str
     use_mmap: bool
-    mode: FileMode
+    mode: FileModeRWA
     version_byte: int
     maskandscale: Untyped
     dimensions: dict[str, int]
@@ -44,8 +44,8 @@ class netcdf_file:
     def __init__(
         self,
         /,
-        filename: str | IO[bytes],
-        mode: FileMode = "r",
+        filename: FileLike[bytes],
+        mode: FileModeRWA = "r",
         mmap: bool | None = None,
         version: int = 1,
         maskandscale: bool = False,

@@ -5,7 +5,7 @@ from typing_extensions import TypedDict, Unpack, override
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onpt
-from scipy._typing import FileLike
+from scipy._typing import FileName
 from scipy.sparse import coo_matrix, sparray, spmatrix
 
 __all__ = ["mminfo", "mmread", "mmwrite"]
@@ -41,13 +41,13 @@ class _TextToBytesWrapper(io.BufferedReader):
     @override
     def seek(self, /, offset: int, whence: int = 0) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
 
-def mmread(source: FileLike) -> npt.NDArray[np.generic] | coo_matrix: ...
+def mmread(source: FileName) -> npt.NDArray[np.generic] | coo_matrix: ...
 def mmwrite(
-    target: FileLike,
+    target: FileName,
     a: onpt.CanArray | list[object] | tuple[object, ...] | sparray | spmatrix,
     comment: str | None = None,
     field: _Field | None = None,
     precision: int | None = None,
     symmetry: _Symmetry | Literal["AUTO"] = "AUTO",
 ) -> None: ...
-def mminfo(source: FileLike) -> tuple[int, int, int, _Format, _Field, _Symmetry]: ...
+def mminfo(source: FileName) -> tuple[int, int, int, _Format, _Field, _Symmetry]: ...

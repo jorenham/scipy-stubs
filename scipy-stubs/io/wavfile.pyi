@@ -1,11 +1,16 @@
 from enum import IntEnum
-from typing import IO
+from typing import TypeAlias
 
 import numpy as np
 import optype.numpy as onpt
 from scipy._typing import FileLike
 
 __all__ = ["WavFileWarning", "read", "write"]
+
+_ScalarR: TypeAlias = np.uint8 | np.int16 | np.int32 | np.float32
+_ScalarW: TypeAlias = _ScalarR | np.int_ | np.int64 | np.float64
+_Shape1D: TypeAlias = tuple[int]
+_Shape2D: TypeAlias = tuple[int, int]
 
 KNOWN_WAVE_FORMATS: set[WAVE_FORMAT]
 
@@ -280,15 +285,5 @@ class WAVE_FORMAT(IntEnum):
     EXTENSIBLE: int
     DEVELOPMENT: int
 
-def read(
-    filename: FileLike | IO[bytes],
-    mmap: bool = False,
-) -> onpt.Array[tuple[int] | tuple[int, int], np.uint8 | np.int16 | np.int32 | np.float32]: ...
-def write(
-    filename: FileLike | IO[bytes],
-    rate: int,
-    data: onpt.Array[
-        tuple[int] | tuple[int, int],
-        np.uint8 | np.int16 | np.int32 | np.int64 | np.intp | np.float32 | np.float64,
-    ],
-) -> None: ...
+def read(filename: FileLike[bytes], mmap: bool = False) -> onpt.Array[_Shape1D | _Shape2D, _ScalarR]: ...
+def write(filename: FileLike[bytes], rate: int, data: onpt.Array[_Shape1D | _Shape2D, _ScalarW]) -> None: ...

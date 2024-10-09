@@ -95,8 +95,6 @@ warn_unused_ignores = true
 
 [tool.pyright]
 include = ["scipy-stubs", "typetests"]
-exclude = [".cache"]
-ignore = [".venv"]
 venv = ".venv"
 venvPath = "."
 stubPath = "."
@@ -112,11 +110,10 @@ reportImplicitRelativeImport = true
 reportInvalidCast = true
 reportPrivateUsage = false
 reportUnnecessaryTypeIgnoreComment = true
-reportUnsafeMultipleInheritance = true
 
 [tool.ruff]
 builtins = ["reveal_locals", "reveal_type"]
-exclude = ["scipy-pyright", ".venv"]
+exclude = [".venv"]
 force-exclude = true
 target-version = "py310"
 # https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#maximum-line-length
