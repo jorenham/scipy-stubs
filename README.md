@@ -106,7 +106,7 @@ The exact version requirements are specified in the [`pyproject.toml`](pyproject
 
 | Package or module                 | Stubs status    |
 |---------------------------------- |---------------- |
-| `scipy.__init__`                  | 3: ready        |
+| `scipy.__init__`                  | **4: done**     |
 | `scipy._lib`                      | 2: partial      |
 | `scipy.cluster`                   | **4: done**     |
 | `scipy.constants`                 | **4: done**     |
@@ -114,7 +114,7 @@ The exact version requirements are specified in the [`pyproject.toml`](pyproject
 | `scipy.fft`                       | 3: ready        |
 | `scipy.fftpack`                   | 3: ready        |
 | `scipy.integrate`                 | **4: done**     |
-| `scipy.interpolate`               | 2: partial      |
+| `scipy.interpolate`               | **4: done**     |
 | `scipy.io`                        | **4: done**     |
 | `scipy.linalg`                    | **4: done**     |
 | ~`scipy.misc`~                    | **4: done**     |

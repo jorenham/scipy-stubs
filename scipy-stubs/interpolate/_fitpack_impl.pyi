@@ -1,9 +1,23 @@
 from scipy._typing import Untyped
 
+__all__ = [
+    "bisplev",
+    "bisplrep",
+    "insert",
+    "spalde",
+    "splantider",
+    "splder",
+    "splev",
+    "splint",
+    "splprep",
+    "splrep",
+    "sproot",
+]
+
 dfitpack_int: Untyped
 
 def splprep(
-    x,
+    x: Untyped,
     w: Untyped | None = None,
     u: Untyped | None = None,
     ub: Untyped | None = None,
@@ -18,8 +32,8 @@ def splprep(
     quiet: int = 1,
 ) -> Untyped: ...
 def splrep(
-    x,
-    y,
+    x: Untyped,
+    y: Untyped,
     w: Untyped | None = None,
     xb: Untyped | None = None,
     xe: Untyped | None = None,
@@ -31,14 +45,14 @@ def splrep(
     per: int = 0,
     quiet: int = 1,
 ) -> Untyped: ...
-def splev(x, tck, der: int = 0, ext: int = 0) -> Untyped: ...
-def splint(a, b, tck, full_output: int = 0) -> Untyped: ...
-def sproot(tck, mest: int = 10) -> Untyped: ...
-def spalde(x, tck) -> Untyped: ...
+def splev(x: Untyped, tck: Untyped, der: int = 0, ext: int = 0) -> Untyped: ...
+def splint(a: Untyped, b: Untyped, tck: Untyped, full_output: int = 0) -> Untyped: ...
+def sproot(tck: Untyped, mest: int = 10) -> Untyped: ...
+def spalde(x: Untyped, tck: Untyped) -> Untyped: ...
 def bisplrep(
-    x,
-    y,
-    z,
+    x: Untyped,
+    y: Untyped,
+    z: Untyped,
     w: Untyped | None = None,
     xb: Untyped | None = None,
     xe: Untyped | None = None,
@@ -56,8 +70,8 @@ def bisplrep(
     nyest: Untyped | None = None,
     quiet: int = 1,
 ) -> Untyped: ...
-def bisplev(x, y, tck, dx: int = 0, dy: int = 0) -> Untyped: ...
-def dblint(xa, xb, ya, yb, tck) -> Untyped: ...
-def insert(x, tck, m: int = 1, per: int = 0) -> Untyped: ...
-def splder(tck, n: int = 1) -> Untyped: ...
-def splantider(tck, n: int = 1) -> Untyped: ...
+def bisplev(x: Untyped, y: Untyped, tck: Untyped, dx: int = 0, dy: int = 0) -> Untyped: ...
+def dblint(xa: Untyped, xb: Untyped, ya: Untyped, yb: Untyped, tck: Untyped) -> Untyped: ...
+def insert(x: Untyped, tck: Untyped, m: int = 1, per: int = 0) -> Untyped: ...
+def splder(tck: Untyped, n: int = 1) -> Untyped: ...
+def splantider(tck: Untyped, n: int = 1) -> Untyped: ...

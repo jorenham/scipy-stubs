@@ -4,6 +4,9 @@ from typing_extensions import override
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onpt
+from scipy._typing import Untyped
+
+class GradientEstimationWarning(Warning): ...
 
 class NDInterpolatorBase:
     def __init__(
@@ -42,3 +45,5 @@ class CloughTocher2DInterpolator(NDInterpolatorBase):
         maxiter: int = 400,
         rescale: bool = False,
     ) -> None: ...
+
+def estimate_gradients_2d_global(tri: Untyped, y: npt.ArrayLike, maxiter: int = 400, tol: float = 1e-6) -> Untyped: ...
