@@ -1,3 +1,4 @@
+from collections.abc import Mapping
 from typing import Final, Literal, TypeAlias
 from typing_extensions import LiteralString
 
@@ -84,11 +85,11 @@ _Unit: TypeAlias = Literal[
     "u",
 ]
 _Constant: TypeAlias = tuple[float, _Unit, float]
-_ConstantDict: TypeAlias = dict[LiteralString, _Constant]
+_Constants: TypeAlias = Mapping[str, _Constant]
 
 # public
 
-physical_constants: Final[_ConstantDict]
+physical_constants: Final[_Constants]
 
 class ConstantWarning(DeprecationWarning): ...
 
@@ -99,16 +100,17 @@ def precision(key: str) -> float: ...
 
 # private
 
-txt2002: Final[str]
-txt2006: Final[str]
-txt2010: Final[str]
-txt2014: Final[str]
-txt2018: Final[str]
+txt2002: Final[str] = ...
+txt2006: Final[str] = ...
+txt2010: Final[str] = ...
+txt2014: Final[str] = ...
+txt2018: Final[str] = ...
 
-def parse_constants_2002to2014(d: str) -> _ConstantDict: ...
-def parse_constants_2018toXXXX(d: str) -> _ConstantDict: ...
+exact_values: Final[_Constants] = ...
+c: Final = 299792458.0
+mu0: Final = 1.25663706212e-06
+epsilon0: Final = 8.8541878128e-12
+k: Final = "electric constant"
 
-c: Final[float]
-mu0: Final[float]
-epsilon0: Final[float]
-exact_values: Final[_ConstantDict]
+def parse_constants_2002to2014(d: str) -> _Constants: ...
+def parse_constants_2018toXXXX(d: str) -> _Constants: ...
