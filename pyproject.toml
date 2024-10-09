@@ -22,7 +22,7 @@ name = "scipy-stubs"
 packages = [{include = "scipy-stubs"}]
 readme = "README.md"
 repository = "https://github.com/jorenham/scipy-stubs/"
-version = "1.4.1a3"
+version = "1.4.1a4.dev0"
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/jorenham/scipy-stubs/issues"
