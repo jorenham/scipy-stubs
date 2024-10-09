@@ -1,4 +1,5 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
+
 from typing_extensions import Self, deprecated
 
 __all__ = ["MatlabFunction", "MatlabObject", "MatlabOpaque", "mat_struct"]

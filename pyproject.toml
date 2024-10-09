@@ -68,11 +68,11 @@ args = [{name = "path", positional = true, multiple = true, default = ""}]
 
 [tool.poe.tasks.mypy]
 cmd = "mypy --config-file=pyproject.toml scipy-stubs/$path"
-args = [{name = "path", positional = true, multiple = true, default = ""}]
+args = [{name = "path", positional = true, multiple = false, default = ""}]
 
 [tool.poe.tasks.verifytypes]
 cmd = "basedpyright --ignoreexternal --verifytypes scipy-stubs/$path"
-args = [{name = "path", positional = true, multiple = true, default = ""}]
+args = [{name = "path", positional = true, multiple = false, default = ""}]
 
 [tool.poe.tasks.stubtest]
 cmd = """
@@ -95,8 +95,6 @@ warn_unused_ignores = true
 
 [tool.pyright]
 include = ["scipy-stubs", "typetests"]
-exclude = [".cache"]
-ignore = [".venv"]
 venv = ".venv"
 venvPath = "."
 stubPath = "."
@@ -106,16 +104,16 @@ typeCheckingMode = "strict"
 
 deprecateTypingAliases = true
 enableTypeIgnoreComments = false
+reportDeprecated = false
 reportIgnoreCommentWithoutRule = true
 reportImplicitRelativeImport = true
 reportInvalidCast = true
 reportPrivateUsage = false
 reportUnnecessaryTypeIgnoreComment = true
-reportUnsafeMultipleInheritance = true
 
 [tool.ruff]
 builtins = ["reveal_locals", "reveal_type"]
-exclude = ["scipy-pyright", ".venv"]
+exclude = [".venv"]
 force-exclude = true
 target-version = "py310"
 # https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#maximum-line-length

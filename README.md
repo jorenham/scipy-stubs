@@ -115,7 +115,7 @@ The exact version requirements are specified in the [`pyproject.toml`](pyproject
 | `scipy.fftpack`                   | 3: ready        |
 | `scipy.integrate`                 | **4: done**     |
 | `scipy.interpolate`               | 2: partial      |
-| `scipy.io`                        | 2: partial      |
+| `scipy.io`                        | **4: done**     |
 | `scipy.io.arff`                   | 3: ready        |
 | `scipy.io.matlab`                 | 3: ready        |
 | `scipy.linalg`                    | **4: done**     |

@@ -38,18 +38,37 @@ jobs:
       - name: install
         run: poetry install
 
-      - name: lint (ruff)
+      - name: lint
         run: poe lint --output-format=github
 
       - name: typetest
         run: poe typetest
 
-      - name: verifytypes (basedpyright)
+      - name: verifytypes
         run: poe verifytypes
+
+      - name: typecheck (partial)
+        run: |
+          targets=(
+            "__init__.pyi"
+            "constants"
+            "datasets"
+            "integrate"
+            "io"
+            "linalg"
+            "misc"
+            "special"
+            "stats/distributions.pyi"
+            "version.pyi"
+          )
+          for target in "${targets[@]}"; do
+            poe mypy $target
+            poe pyright $target
+          done
 
   stubtest:
     needs: lint-and-typecheck
-    timeout-minutes: 10
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -63,8 +82,7 @@ jobs:
           "scipy.fftpack",
           "scipy.integrate",
           # "scipy.interpolate",
-          # "scipy.io",
-          "scipy.io.arff scipy.io.matlab",
+          "scipy.io",
           "scipy.linalg",
           "scipy.misc",
           # "scipy.ndimage",
@@ -81,10 +99,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: |
-          pipx install poetry poethepoet
-          poetry config virtualenvs.create true --local
-          poetry config virtualenvs.in-project true --local
+      - run: pipx install poetry poethepoet
 
       - uses: actions/setup-python@v5
         with:
@@ -103,10 +118,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: |
-          pipx install poetry poethepoet
-          poetry config virtualenvs.create true --local
-          poetry config virtualenvs.in-project true --local
+      - run: pipx install poetry poethepoet
 
       - uses: actions/setup-python@v5
         with:
