@@ -101,8 +101,8 @@ The exact version requirements are specified in the [`pyproject.toml`](pyproject
 
 ## Development Status
 
-| Package             | `ruff`/`flake8-pyi` | `stubtest`         | `based{mypy,pyright}` | completeness score     |
-| ------------------- | ------------------- | ------------------ | --------------------- | ---------------------- |
+| Package             | `ruff`/`flake8-pyi` | `stubtest`         | `based{mypy,pyright}` | completeness           |
+| :------------------ | :-----------------: | :----------------: | :-------------------: | :--------------------: |
 | `scipy._lib`        | :heavy_check_mark:  | :x:                | :x:                   | :waxing_crescent_moon: |
 | `scipy.cluster`     | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :full_moon:            |
 | `scipy.constants`   | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :full_moon:            |
