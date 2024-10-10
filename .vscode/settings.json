@@ -1,6 +1,6 @@
 {
   "[markdown]": {
-    "editor.rulers": [88]
+    "editor.rulers": [130]
   },
   "[python]": {
     "editor.rulers": [130]
