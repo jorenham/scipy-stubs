@@ -1,7 +1,35 @@
 # This file is not meant for public use and will be removed in SciPy v2.0.0.
 
-from ._decomp_svd import diagsvd, null_space, orth, subspace_angles, svd, svdvals
-from ._misc import LinAlgError
-from .lapack import get_lapack_funcs
+from typing_extensions import deprecated
 
 __all__ = ["LinAlgError", "diagsvd", "get_lapack_funcs", "null_space", "orth", "subspace_angles", "svd", "svdvals"]
+
+@deprecated("will be removed in SciPy v2.0.0")
+class LinAlgError(Exception): ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+def get_lapack_funcs(
+    names: object,
+    arrays: object = ...,
+    dtype: object = ...,
+    ilp64: object = ...,
+) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def diagsvd(s: object, M: object, N: object) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def null_space(A: object, rcond: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def orth(A: object, rcond: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def subspace_angles(A: object, B: object) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def svd(
+    a: object,
+    full_matrices: object = ...,
+    compute_uv: object = ...,
+    overwrite_a: object = ...,
+    check_finite: object = ...,
+    lapack_driver: object = ...,
+) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def svdvals(a: object, overwrite_a: object = ..., check_finite: object = ...) -> object: ...
