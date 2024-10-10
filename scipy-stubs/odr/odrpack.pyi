@@ -1,5 +1,5 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
-from typing_extensions import deprecated
+from typing_extensions import deprecated, override
 
 __all__ = ["ODR", "Data", "Model", "OdrError", "OdrStop", "OdrWarning", "Output", "RealData", "odr", "odr_error", "odr_stop"]
 
@@ -39,6 +39,7 @@ class RealData(Data):
         fix: object = ...,
         meta: object = ...,
     ) -> None: ...
+    @override
     def __getattr__(self, attr: object) -> object: ...
 
 @deprecated("will be removed in SciPy v2.0.0")
