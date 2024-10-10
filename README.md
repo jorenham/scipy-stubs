@@ -67,11 +67,9 @@
 ---
 
 > [!NOTE]
-> This project is in the alpha stage, so some annotations are missing, and some might
-> be (slightly) incorrect.
-> But either way, it's no problem to `scipy-stubs` at the moment:
-> Type-checkers will (already) understand `scipy` a lot better *with* `scipy-stubs`,
-> than without it.
+> This project is in the alpha stage, so you might encounter some incomplete or invalid annotations.
+> But even so, `scipy-stubs` could already prove to be quite helpful &mdash;
+> IDE's and static type-checkers will understand `scipy` a lot better *with* `scipy-stubs` than without it.
 
 ## Installation
 
@@ -85,61 +83,42 @@ pip install scipy-stubs
 
 ### Type-checkers
 
-For validation and testing, `scipy-stubs` primarily uses
-[`basedmypy`](https://github.com/KotlinIsland/basedmypy) (a `mypy` fork) and
-[`basedpyright`](https://github.com/DetachHead/basedpyright) (a `pyright` fork).
-Because they are in generally stricter than `mypy` and `pyright`, they should be
-compatible as well.
-If you find that this is not the case, then don't hesitate to open an issue.
+For validation and testing, `scipy-stubs` primarily uses [`basedmypy`](https://github.com/KotlinIsland/basedmypy) (a `mypy` fork)
+and [`basedpyright`](https://github.com/DetachHead/basedpyright) (a `pyright` fork).
+They are in generally stricter than `mypy` and `pyright`, so you can assume compatibility with `mypy` and `pyright` as well.
+But if you find that this isn't the case, then don't hesitate to open an issue or submit a pull request.
 
 ### Required dependencies
 
-The versioning scheme of `scipy-stubs` includes the compatible `scipy` version.
-Later versions might work too, but in case of API-changes, the stubs could be outdated.
+The versioning scheme of `scipy-stubs` includes the compatible `scipy` version as `{scipy_version}.{stubs_version}`.
+Even though `scipy-stubs` doesn't enforce an upper bound on the `scipy` version, later `scipy` versions aren't guaranteed to be
+fully compatible.
 
-Apart from `scipy`'s own dependencies (e.g. `numpy`), the only other
-required dependency is [`optype`](https://github.com/jorenham/optype).
+Apart from `scipy`'s own dependencies, (e.g. `numpy`), the only other required dependency is
+[`optype`](https://github.com/jorenham/optype), which itself only depends on `typing_extensions`.
 
 The exact version requirements are specified in the [`pyproject.toml`](pyproject.toml).
 
-## Development Progress
+## Development Status
 
-| Package or module                 | Stubs status    |
-|---------------------------------- |---------------- |
-| `scipy.__init__`                  | **4: done**     |
-| `scipy._lib`                      | 2: partial      |
-| `scipy.cluster`                   | **4: done**     |
-| `scipy.constants`                 | **4: done**     |
-| `scipy.datasets`                  | **4: done**     |
-| `scipy.fft`                       | 3: ready        |
-| `scipy.fftpack`                   | 3: ready        |
-| `scipy.integrate`                 | **4: done**     |
-| `scipy.interpolate`               | **4: done**     |
-| `scipy.io`                        | **4: done**     |
-| `scipy.linalg`                    | **4: done**     |
-| ~`scipy.misc`~                    | **4: done**     |
-| `scipy.ndimage`                   | 2: partial      |
-| `scipy.odr`                       | 3: ready        |
-| `scipy.optimize`                  | 3: ready        |
-| `scipy.signal`                    | 2: partial      |
-| `scipy.signal.windows`            | 1: skeleton     |
-| `scipy.sparse`                    | 2: partial      |
-| `scipy.sparse.csgraph`            | 2: partial      |
-| `scipy.sparse.linalg`             | 2: partial      |
-| `scipy.spatial`                   | 2: partial      |
-| `scipy.spatial.distance`          | 2: partial      |
-| `scipy.special`                   | **4: done**     |
-| `scipy.stats`                     | 2: partial      |
-| `scipy.stats.contingency`         | 3: ready        |
-| `scipy.stats.distributions`       | **4: done**     |
-| `scipy.stats.mstats`              | 1: skeleton     |
-| `scipy.stats.qmc`                 | 2: partial      |
-| `scipy.stats.sampling`            | 1: skeleton     |
-| `scipy.version`                   | **4: done**     |
-
-Status labels:
-
-1. skeleton (mostly succesful stubgen)
-2. partial (incomplete/broad annotations)
-3. ready (passes stubtest)
-4. done (complete, valid, tested, and production-ready)
+| Package             | `ruff`/`flake8-pyi` | `stubtest`         | `based{mypy,pyright}` | completeness           |
+| :------------------ | :-----------------: | :----------------: | :-------------------: | :--------------------: |
+| `scipy._lib`        | :heavy_check_mark:  | :x:                | :x:                   | :waxing_crescent_moon: |
+| `scipy.cluster`     | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :full_moon:            |
+| `scipy.constants`   | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :full_moon:            |
+| `scipy.datasets`    | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :full_moon:            |
+| `scipy.fft`         | :heavy_check_mark:  | :heavy_check_mark: | :x:                   | :waxing_crescent_moon: |
+| `scipy.fftpack`     | :heavy_check_mark:  | :heavy_check_mark: | :x:                   | :waxing_crescent_moon: |
+| `scipy.integrate`   | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :waxing_gibbous_moon:  |
+| `scipy.interpolate` | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :first_quarter_moon:   |
+| `scipy.io`          | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :full_moon:            |
+| `scipy.linalg`      | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :waxing_gibbous_moon:  |
+| ~`scipy.misc`~      | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :full_moon:            |
+| `scipy.ndimage`     | :heavy_check_mark:  | :x:                | :x:                   | :new_moon:             |
+| `scipy.odr`         | :heavy_check_mark:  | :heavy_check_mark: | :x:                   | :waxing_crescent_moon: |
+| `scipy.optimize`    | :heavy_check_mark:  | :heavy_check_mark: | :x:                   | :first_quarter_moon:   |
+| `scipy.signal`      | :heavy_check_mark:  | :x:                | :x:                   | :new_moon:             |
+| `scipy.sparse`      | :heavy_check_mark:  | :x:                | :x:                   | :waxing_crescent_moon: |
+| `scipy.spatial`     | :heavy_check_mark:  | :x:                | :x:                   | :waxing_crescent_moon: |
+| `scipy.special`     | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :first_quarter_moon:   |
+| `scipy.stats`       | :heavy_check_mark:  | :x:                | :x:                   | :first_quarter_moon:   |
