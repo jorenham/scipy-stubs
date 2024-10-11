@@ -3,8 +3,6 @@ import numpy.typing as npt
 from scipy.interpolate import PPoly
 from ._rotation import Rotation
 
-__all__ = ["RotationSpline"]
-
 class RotationSpline:
     MAX_ITER: int
     TOL: float
