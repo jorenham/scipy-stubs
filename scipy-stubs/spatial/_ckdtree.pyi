@@ -1,18 +1,24 @@
-# NOTE: There are alteady inline stubs for this module, so this won't be used (which is unfortunate, because the inline
-# annotations are wrong in several places, although it's still pretty good overall).
-from typing import Any, Generic, Literal, TypeAlias, TypeVar, overload
+# NOTE(jorenham): There are alteady inline stubs for this module, so this won't be used (which is unfortunate, because the inline
+# annotations are wrong in several places, although I've seen worse).
+
+from typing import Literal, TypeAlias, overload, type_check_only
 
 import numpy as np
 import numpy.typing as npt
+from numpy._typing import _ArrayLikeInt
 from scipy._typing import AnyScalar
 from scipy.sparse import coo_matrix, dok_matrix
 
 __all__ = ["cKDTree"]
 
 _Weights: TypeAlias = npt.ArrayLike | tuple[npt.ArrayLike, npt.ArrayLike]
-_BoxT = TypeVar("_BoxT", bound=npt.NDArray[np.float64] | None)
 
-class cKDTreeNode:
+@type_check_only
+class _CythonMixin:
+    def __setstate_cython__(self, pyx_state: object, /) -> None: ...
+    def __reduce_cython__(self, /) -> None: ...
+
+class cKDTreeNode(_CythonMixin):
     @property
     def data_points(self) -> npt.NDArray[np.float64]: ...
     @property
@@ -36,7 +42,7 @@ class cKDTreeNode:
     @property
     def greater(self) -> cKDTreeNode | None: ...
 
-class cKDTree(Generic[_BoxT]):
+class cKDTree(_CythonMixin):
     @property
     def n(self) -> int: ...
     @property
@@ -58,147 +64,158 @@ class cKDTree(Generic[_BoxT]):
     @property
     def indices(self) -> npt.NDArray[np.float64]: ...
     @property
-    def boxsize(self) -> _BoxT: ...
+    def boxsize(self) -> npt.NDArray[np.float64] | None: ...
 
-    # NOTE: In practice `__init__` is used as constructor, not `__new__`.
-    # The latter gives us more flexibility in setting the generic parameter
-    # though.
-    @overload
-    def __new__(
-        cls,
+    #
+    def __init__(
+        self,
+        /,
         data: npt.ArrayLike,
         leafsize: int = ...,
         compact_nodes: bool = ...,
         copy_data: bool = ...,
         balanced_tree: bool = ...,
-        boxsize: None = ...,
-    ) -> cKDTree[None]: ...
-    @overload
-    def __new__(
-        cls,
-        data: npt.ArrayLike,
-        leafsize: int = ...,
-        compact_nodes: bool = ...,
-        copy_data: bool = ...,
-        balanced_tree: bool = ...,
-        boxsize: npt.ArrayLike = ...,
-    ) -> cKDTree[npt.NDArray[np.float64]]: ...
-
-    # TODO: returns a 2-tuple of scalars if `x.ndim == 1` and `k == 1`,
-    # returns a 2-tuple of arrays otherwise
+        boxsize: npt.ArrayLike | None = ...,
+    ) -> None: ...
     def query(
         self,
         x: npt.ArrayLike,
-        k: npt.ArrayLike = ...,
-        eps: float = ...,
-        p: float = ...,
-        distance_upper_bound: float = ...,
-        workers: int | None = ...,
-    ) -> tuple[Any, Any]: ...
-
-    # TODO: returns a list scalars if `x.ndim <= 1`,
-    # returns an object array of lists otherwise
+        k: _ArrayLikeInt = 1,
+        eps: float = 0.0,
+        p: float = 2.0,
+        distance_upper_bound: float = ...,  # inf
+        workers: int | None = None,
+    ) -> tuple[float, float] | tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]: ...
     def query_ball_point(
         self,
         x: npt.ArrayLike,
         r: npt.ArrayLike,
-        p: float = ...,
-        eps: float = ...,
-        workers: int | None = ...,
-        return_sorted: bool | None = ...,
-        return_length: bool = ...,
-    ) -> Any: ...
+        p: float = 2.0,
+        eps: float = 0.0,
+        workers: int | None = None,
+        return_sorted: bool | None = None,
+        return_length: bool = False,
+    ) -> list[int] | npt.NDArray[np.object_]: ...
     def query_ball_tree(
         self,
-        other: cKDTree[npt.NDArray[np.float64] | None],
+        other: cKDTree,
         r: float,
-        p: float,
-        eps: float = ...,
+        p: float = 2.0,
+        eps: float = 0.0,
     ) -> list[list[int]]: ...
     @overload
     def query_pairs(
         self,
         r: float,
-        p: float = ...,
-        eps: float = ...,
-        output_type: Literal["set"] = ...,
+        p: float = 2.0,
+        eps: float = 0,
+        output_type: Literal["set"] = "set",
     ) -> set[tuple[int, int]]: ...
     @overload
     def query_pairs(
         self,
         r: float,
-        p: float = ...,
-        eps: float = ...,
-        output_type: Literal["ndarray"] = ...,
+        p: float = 2.0,
+        eps: float = 0,
+        *,
+        output_type: Literal["ndarray"],
+    ) -> npt.NDArray[np.intp]: ...
+    @overload
+    def query_pairs(
+        self,
+        r: float,
+        p: float,
+        eps: float,
+        output_type: Literal["ndarray"],
     ) -> npt.NDArray[np.intp]: ...
     @overload
     def count_neighbors(
         self,
-        other: cKDTree[npt.NDArray[np.float64] | None],
+        other: cKDTree,
         r: AnyScalar,
-        p: float = ...,
-        weights: None | tuple[None, None] = ...,
-        cumulative: bool = ...,
+        p: float = 2.0,
+        weights: tuple[None, None] | None = None,
+        cumulative: bool = True,
     ) -> np.intp: ...
     @overload
     def count_neighbors(
         self,
-        other: cKDTree[npt.NDArray[np.float64] | None],
+        other: cKDTree,
         r: AnyScalar,
-        p: float = ...,
-        weights: _Weights = ...,
-        cumulative: bool = ...,
+        p: float,
+        weights: _Weights,
+        cumulative: bool = True,
     ) -> np.float64: ...
     @overload
     def count_neighbors(
         self,
-        other: cKDTree[npt.NDArray[np.float64] | None],
+        other: cKDTree,
+        r: AnyScalar,
+        p: float = 2.0,
+        *,
+        weights: _Weights,
+        cumulative: bool = True,
+    ) -> np.float64: ...
+    @overload
+    def count_neighbors(
+        self,
+        other: cKDTree,
         r: npt.ArrayLike,
-        p: float = ...,
+        p: float = 2.0,
         weights: None | tuple[None, None] = ...,
-        cumulative: bool = ...,
+        cumulative: bool = True,
     ) -> np.float64 | np.intp | npt.NDArray[np.intp]: ...
     @overload
     def count_neighbors(
         self,
-        other: cKDTree[npt.NDArray[np.float64] | None],
+        other: cKDTree,
         r: npt.ArrayLike,
-        p: float = ...,
-        weights: _Weights = ...,
-        cumulative: bool = ...,
-    ) -> np.intp | np.float64 | npt.NDArray[np.float64]: ...
+        p: float,
+        weights: _Weights,
+        cumulative: bool = True,
+    ) -> np.float64 | np.intp | npt.NDArray[np.float64]: ...
+    @overload
+    def count_neighbors(
+        self,
+        other: cKDTree,
+        r: npt.ArrayLike,
+        p: float = 2.0,
+        *,
+        weights: _Weights,
+        cumulative: bool = True,
+    ) -> np.float64 | np.intp | npt.NDArray[np.float64]: ...
     @overload
     def sparse_distance_matrix(
         self,
-        other: cKDTree[npt.NDArray[np.float64] | None],
+        other: cKDTree,
         max_distance: float,
-        p: float = ...,
+        p: float = 2.0,
         output_type: Literal["dok_matrix"] = ...,
     ) -> dok_matrix: ...
     @overload
     def sparse_distance_matrix(
         self,
-        other: cKDTree[npt.NDArray[np.float64] | None],
+        other: cKDTree,
         max_distance: float,
-        p: float = ...,
+        p: float = 2.0,
         *,
         output_type: Literal["coo_matrix"],
     ) -> coo_matrix: ...
     @overload
     def sparse_distance_matrix(
         self,
-        other: cKDTree[npt.NDArray[np.float64] | None],
+        other: cKDTree,
         max_distance: float,
-        p: float = ...,
+        p: float = 2.0,
         *,
         output_type: Literal["dict"],
     ) -> dict[tuple[int, int], float]: ...
     @overload
     def sparse_distance_matrix(
         self,
-        other: cKDTree[npt.NDArray[np.float64] | None],
+        other: cKDTree,
         max_distance: float,
-        p: float = ...,
+        p: float = 2.0,
         *,
         output_type: Literal["ndarray"],
     ) -> npt.NDArray[np.void]: ...

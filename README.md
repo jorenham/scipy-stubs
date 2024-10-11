@@ -119,6 +119,6 @@ The exact version requirements are specified in the [`pyproject.toml`](pyproject
 | `scipy.optimize`    | :heavy_check_mark:  | :heavy_check_mark: | :x:                   | :first_quarter_moon:   |
 | `scipy.signal`      | :heavy_check_mark:  | :x:                | :x:                   | :new_moon:             |
 | `scipy.sparse`      | :heavy_check_mark:  | :x:                | :x:                   | :waxing_crescent_moon: |
-| `scipy.spatial`     | :heavy_check_mark:  | :x:                | :x:                   | :waxing_crescent_moon: |
+| `scipy.spatial`     | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :waxing_gibbous_moon:  |
 | `scipy.special`     | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :first_quarter_moon:   |
 | `scipy.stats`       | :heavy_check_mark:  | :x:                | :x:                   | :first_quarter_moon:   |
