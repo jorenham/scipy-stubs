@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import ClassVar, Literal, TypeVar, overload
+from typing_extensions import override
 
 import numpy as np
 import numpy.typing as npt
-from scipy._lib._util import DecimalNumber, IntNumber, SeedType
-from scipy._typing import Untyped, UntypedArray
+from scipy._typing import AnyInt, AnyReal, Seed, Untyped, UntypedArray
 
 __all__ = [
     "Halton",
@@ -23,7 +23,7 @@ __all__ = [
 _RNGT = TypeVar("_RNGT", bound=np.random.Generator | np.random.RandomState)
 
 @overload
-def check_random_state(seed: IntNumber | None = ...) -> np.random.Generator: ...
+def check_random_state(seed: AnyInt | None = ...) -> np.random.Generator: ...
 @overload
 def check_random_state(seed: _RNGT) -> _RNGT: ...
 def scale(sample: npt.ArrayLike, l_bounds: npt.ArrayLike, u_bounds: npt.ArrayLike, *, reverse: bool = False) -> UntypedArray: ...
@@ -32,25 +32,25 @@ def discrepancy(
     *,
     iterative: bool = False,
     method: Literal["CD", "WD", "MD", "L2-star"] = "CD",
-    workers: IntNumber = 1,
+    workers: AnyInt = 1,
 ) -> float: ...
 def geometric_discrepancy(
     sample: npt.ArrayLike,
     method: Literal["mindist", "mst"] = "mindist",
     metric: str = "euclidean",
 ) -> float: ...
-def update_discrepancy(x_new: npt.ArrayLike, sample: npt.ArrayLike, initial_disc: DecimalNumber) -> float: ...
+def update_discrepancy(x_new: npt.ArrayLike, sample: npt.ArrayLike, initial_disc: AnyReal) -> float: ...
 def primes_from_2_to(n: int) -> UntypedArray: ...
-def n_primes(n: IntNumber) -> list[int]: ...
+def n_primes(n: AnyInt) -> list[int]: ...
 def van_der_corput(
-    n: IntNumber,
-    base: IntNumber = 2,
+    n: AnyInt,
+    base: AnyInt = 2,
     *,
-    start_index: IntNumber = 0,
+    start_index: AnyInt = 0,
     scramble: bool = False,
     permutations: npt.ArrayLike | None = None,
-    seed: SeedType = None,
-    workers: IntNumber = 1,
+    seed: Seed | None = None,
+    workers: AnyInt = 1,
 ) -> UntypedArray: ...
 
 class QMCEngine(ABC):
@@ -62,23 +62,23 @@ class QMCEngine(ABC):
     @abstractmethod
     def __init__(
         self,
-        d: IntNumber,
+        d: AnyInt,
         *,
         optimization: Literal["random-cd", "lloyd"] | None = None,
-        seed: SeedType = None,
+        seed: Seed | None = None,
     ) -> None: ...
-    def random(self, n: IntNumber = 1, *, workers: IntNumber = 1) -> UntypedArray: ...
+    def random(self, n: AnyInt = 1, *, workers: AnyInt = 1) -> UntypedArray: ...
     def integers(
         self,
         l_bounds: npt.ArrayLike,
         *,
         u_bounds: npt.ArrayLike | None = None,
-        n: IntNumber = 1,
+        n: AnyInt = 1,
         endpoint: bool = False,
-        workers: IntNumber = 1,
+        workers: AnyInt = 1,
     ) -> UntypedArray: ...
     def reset(self) -> QMCEngine: ...
-    def fast_forward(self, n: IntNumber) -> QMCEngine: ...
+    def fast_forward(self, n: AnyInt) -> QMCEngine: ...
 
 class Halton(QMCEngine):
     seed: Untyped
@@ -86,25 +86,25 @@ class Halton(QMCEngine):
     scramble: Untyped
     def __init__(
         self,
-        d: IntNumber,
+        d: AnyInt,
         *,
         scramble: bool = True,
         optimization: Literal["random-cd", "lloyd"] | None = None,
-        seed: SeedType = None,
-    ): ...
+        seed: Seed | None = None,
+    ) -> None: ...
 
 class LatinHypercube(QMCEngine):
     scramble: Untyped
     lhs_method: Untyped
     def __init__(
         self,
-        d: IntNumber,
+        d: AnyInt,
         *,
         scramble: bool = True,
         strength: int = 1,
         optimization: Literal["random-cd", "lloyd"] | None = None,
-        seed: SeedType = None,
-    ): ...
+        seed: Seed | None = None,
+    ) -> None: ...
 
 class Sobol(QMCEngine):
     MAXDIM: ClassVar[int]
@@ -113,16 +113,18 @@ class Sobol(QMCEngine):
     maxn: Untyped
     def __init__(
         self,
-        d: IntNumber,
+        d: AnyInt,
         *,
         scramble: bool = True,
-        bits: IntNumber | None = None,
-        seed: SeedType = None,
+        bits: AnyInt | None = None,
+        seed: Seed | None = None,
         optimization: Literal["random-cd", "lloyd"] | None = None,
-    ): ...
-    def random_base2(self, m: IntNumber) -> UntypedArray: ...
+    ) -> None: ...
+    def random_base2(self, m: AnyInt) -> UntypedArray: ...
+    @override
     def reset(self) -> Sobol: ...
-    def fast_forward(self, n: IntNumber) -> Sobol: ...
+    @override
+    def fast_forward(self, n: AnyInt) -> Sobol: ...
 
 class PoissonDisk(QMCEngine):
     hypersphere_method: Untyped
@@ -134,17 +136,18 @@ class PoissonDisk(QMCEngine):
     grid_size: Untyped
     def __init__(
         self,
-        d: IntNumber,
+        d: AnyInt,
         *,
-        radius: DecimalNumber = 0.05,
+        radius: AnyReal = 0.05,
         hypersphere: Literal["volume", "surface"] = "volume",
-        ncandidates: IntNumber = 30,
+        ncandidates: AnyInt = 30,
         optimization: Literal["random-cd", "lloyd"] | None = None,
-        seed: SeedType = None,
+        seed: Seed | None = None,
         l_bounds: npt.ArrayLike | None = None,
         u_bounds: npt.ArrayLike | None = None,
-    ): ...
+    ) -> None: ...
     def fill_space(self) -> UntypedArray: ...
+    @override
     def reset(self) -> PoissonDisk: ...
 
 class MultivariateNormalQMC:
@@ -157,13 +160,20 @@ class MultivariateNormalQMC:
         cov_root: npt.ArrayLike | None = None,
         inv_transform: bool = True,
         engine: QMCEngine | None = None,
-        seed: SeedType = None,
-    ): ...
-    def random(self, n: IntNumber = 1) -> UntypedArray: ...
+        seed: Seed | None = None,
+    ) -> None: ...
+    def random(self, n: AnyInt = 1) -> UntypedArray: ...
 
 class MultinomialQMC:
     pvals: Untyped
     n_trials: Untyped
     engine: Untyped
-    def __init__(self, pvals: npt.ArrayLike, n_trials: IntNumber, *, engine: QMCEngine | None = None, seed: SeedType = None): ...
-    def random(self, n: IntNumber = 1) -> UntypedArray: ...
+    def __init__(
+        self,
+        pvals: npt.ArrayLike,
+        n_trials: AnyInt,
+        *,
+        engine: QMCEngine | None = None,
+        seed: Seed | None = None,
+    ) -> None: ...
+    def random(self, n: AnyInt = 1) -> UntypedArray: ...
