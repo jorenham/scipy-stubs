@@ -1,20 +1,20 @@
-from scipy._typing import Untyped
+from scipy._typing import Untyped, UntypedArray
 
 def savgol_coeffs(
-    window_length,
-    polyorder,
+    window_length: int,
+    polyorder: int,
     deriv: int = 0,
     delta: float = 1.0,
-    pos: Untyped | None = None,
+    pos: int | None = None,
     use: str = "conv",
-) -> Untyped: ...
+) -> UntypedArray: ...
 def savgol_filter(
-    x,
-    window_length,
-    polyorder,
+    x: Untyped,
+    window_length: int,
+    polyorder: int,
     deriv: int = 0,
     delta: float = 1.0,
     axis: int = -1,
     mode: str = "interp",
     cval: float = 0.0,
-) -> Untyped: ...
+) -> UntypedArray: ...

@@ -74,7 +74,12 @@ def exponential(M: object, center: object = ..., tau: object = ..., sym: object 
 def taylor(M: object, nbar: object = ..., sll: object = ..., norm: object = ..., sym: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def dpss(
-    M: object, NW: object, Kmax: object = ..., sym: object = ..., norm: object = ..., return_ratios: object = ...
+    M: object,
+    NW: object,
+    Kmax: object = ...,
+    sym: object = ...,
+    norm: object = ...,
+    return_ratios: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def get_window(window: object, Nx: object, fftbins: object = ...) -> object: ...

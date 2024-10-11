@@ -1,5 +1,33 @@
-from scipy import linalg as linalg, special as special
 from scipy._typing import Untyped
+
+__all__ = [
+    "barthann",
+    "bartlett",
+    "blackman",
+    "blackmanharris",
+    "bohman",
+    "boxcar",
+    "chebwin",
+    "cosine",
+    "dpss",
+    "exponential",
+    "flattop",
+    "gaussian",
+    "general_cosine",
+    "general_gaussian",
+    "general_hamming",
+    "get_window",
+    "hamming",
+    "hann",
+    "kaiser",
+    "kaiser_bessel_derived",
+    "lanczos",
+    "nuttall",
+    "parzen",
+    "taylor",
+    "triang",
+    "tukey",
+]
 
 def general_cosine(M, a, sym: bool = True) -> Untyped: ...
 def boxcar(M, sym: bool = True) -> Untyped: ...
@@ -25,7 +53,12 @@ def cosine(M, sym: bool = True) -> Untyped: ...
 def exponential(M, center: Untyped | None = None, tau: float = 1.0, sym: bool = True) -> Untyped: ...
 def taylor(M, nbar: int = 4, sll: int = 30, norm: bool = True, sym: bool = True) -> Untyped: ...
 def dpss(
-    M, NW, Kmax: Untyped | None = None, sym: bool = True, norm: Untyped | None = None, return_ratios: bool = False
+    M,
+    NW,
+    Kmax: Untyped | None = None,
+    sym: bool = True,
+    norm: Untyped | None = None,
+    return_ratios: bool = False,
 ) -> Untyped: ...
 def lanczos(M, *, sym: bool = True) -> Untyped: ...
-def get_window(window, Nx, fftbins: bool = True) -> Untyped: ...
+def get_window(window: Untyped, Nx: Untyped, fftbins: bool = True) -> Untyped: ...

@@ -1,42 +1,34 @@
 from typing import Literal
 
-import numpy as np
 from scipy._typing import Untyped, UntypedArray
-from scipy.linalg import (
-    LinAlgError as LinAlgError,
-    LinAlgWarning as LinAlgWarning,
-    hankel as hankel,
-    lstsq as lstsq,
-    solve as solve,
-    toeplitz as toeplitz,
-)
-from scipy.special import sinc as sinc
+
+__all__ = ["firls", "firwin", "firwin2", "kaiser_atten", "kaiser_beta", "kaiserord", "minimum_phase", "remez"]
 
 def kaiser_beta(a) -> Untyped: ...
-def kaiser_atten(numtaps, width) -> Untyped: ...
-def kaiserord(ripple, width) -> Untyped: ...
+def kaiser_atten(numtaps: int, width: float | None) -> Untyped: ...
+def kaiserord(ripple, width: float | None) -> Untyped: ...
 def firwin(
-    numtaps,
+    numtaps: int,
     cutoff,
     *,
     width: Untyped | None = None,
     window: str = "hamming",
-    pass_zero: bool = True,
+    pass_zero: Literal[True, False, "bandpass", "lowpass", "highpass", "bandstop"] = True,
     scale: bool = True,
-    fs: Untyped | None = None,
+    fs: float | None = None,
 ) -> Untyped: ...
 def firwin2(
-    numtaps,
+    numtaps: int,
     freq,
     gain,
     *,
     nfreqs: Untyped | None = None,
     window: str = "hamming",
     antisymmetric: bool = False,
-    fs: Untyped | None = None,
+    fs: float | None = None,
 ) -> Untyped: ...
 def remez(
-    numtaps,
+    numtaps: int,
     bands,
     desired,
     *,
@@ -44,9 +36,16 @@ def remez(
     type: str = "bandpass",
     maxiter: int = 25,
     grid_density: int = 16,
-    fs: Untyped | None = None,
+    fs: float | None = None,
 ) -> Untyped: ...
-def firls(numtaps, bands, desired, *, weight: Untyped | None = None, fs: Untyped | None = None) -> Untyped: ...
+def firls(
+    numtaps: int,
+    bands,
+    desired,
+    *,
+    weight: Untyped | None = None,
+    fs: float | None = None,
+) -> Untyped: ...
 def minimum_phase(
     h: UntypedArray,
     method: Literal["homomorphic", "hilbert"] = "homomorphic",
