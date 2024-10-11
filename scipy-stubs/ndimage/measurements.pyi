@@ -26,10 +26,14 @@ def label(input: object, structure: object = ..., output: object = ...) -> objec
 @deprecated("will be removed in SciPy v2.0.0")
 def find_objects(input: object, max_label: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def value_indices(arr: object, *, ignore_value: object = ...) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
 def labeled_comprehension(
-    input: object, labels: object, index: object, func: object, out_dtype: object, default: object, pass_positions: object = ...
+    input: object,
+    labels: object,
+    index: object,
+    func: object,
+    out_dtype: object,
+    default: object,
+    pass_positions: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def sum(input: object, labels: object = ..., index: object = ...) -> object: ...

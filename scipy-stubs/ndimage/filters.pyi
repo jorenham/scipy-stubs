@@ -30,7 +30,12 @@ __all__ = [
 
 @deprecated("will be removed in SciPy v2.0.0")
 def convolve(
-    input: object, weights: object, output: object = ..., mode: object = ..., cval: object = ..., origin: object = ...
+    input: object,
+    weights: object,
+    output: object = ...,
+    mode: object = ...,
+    cval: object = ...,
+    origin: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def convolve1d(
@@ -44,7 +49,12 @@ def convolve1d(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def correlate(
-    input: object, weights: object, output: object = ..., mode: object = ..., cval: object = ..., origin: object = ...
+    input: object,
+    weights: object,
+    output: object = ...,
+    mode: object = ...,
+    cval: object = ...,
+    origin: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def correlate1d(
@@ -84,11 +94,21 @@ def gaussian_filter1d(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def gaussian_gradient_magnitude(
-    input: object, sigma: object, output: object = ..., mode: object = ..., cval: object = ..., **kwargs: object
+    input: object,
+    sigma: object,
+    output: object = ...,
+    mode: object = ...,
+    cval: object = ...,
+    **kwargs: object,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def gaussian_laplace(
-    input: object, sigma: object, output: object = ..., mode: object = ..., cval: object = ..., **kwargs: object
+    input: object,
+    sigma: object,
+    output: object = ...,
+    mode: object = ...,
+    cval: object = ...,
+    **kwargs: object,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def generic_filter(
