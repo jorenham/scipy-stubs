@@ -78,8 +78,8 @@ pip install scipy-stubs
 | :------------ | :-------------------: | :----------------: | :----------------: | :----------------: | :--------------------: |
 | `_lib`        | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_gibbous_moon:  |
 | `cluster`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
-| `constants`   | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
-| `datasets`    | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
+| `constants`   | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon_with_face:  |
+| `datasets`    | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon_with_face:  |
 | `fft`         | :heavy_check_mark:    | :heavy_check_mark: | :x:                | :x:                | :waxing_crescent_moon: |
 | `fftpack`     | :heavy_check_mark:    | :heavy_check_mark: | :x:                | :x:                | :waxing_crescent_moon: |
 | `integrate`   | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_gibbous_moon:  |
