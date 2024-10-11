@@ -88,7 +88,7 @@ jobs:
           "scipy.ndimage",
           "scipy.odr",
           "scipy.optimize",
-          # "scipy.signal",
+          "scipy.signal",
           # "scipy.sparse",
           "scipy.spatial",
           "scipy.special",

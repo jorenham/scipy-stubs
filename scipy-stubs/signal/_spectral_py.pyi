@@ -1,14 +1,16 @@
-from scipy._typing import Untyped
-from ._arraytools import const_ext as const_ext, even_ext as even_ext, odd_ext as odd_ext, zero_ext as zero_ext
-from .windows import get_window as get_window
+from typing import Literal
+
+from scipy._typing import Untyped, UntypedCallable
+
+__all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle", "periodogram", "spectrogram", "stft", "welch"]
 
 def lombscargle(x, y, freqs, precenter: bool = False, normalize: bool = False) -> Untyped: ...
 def periodogram(
     x,
     fs: float = 1.0,
     window: str = "boxcar",
-    nfft: Untyped | None = None,
-    detrend: str = "constant",
+    nfft: int | None = None,
+    detrend: str | Literal[False] | UntypedCallable = "constant",
     return_onesided: bool = True,
     scaling: str = "density",
     axis: int = -1,
@@ -17,10 +19,10 @@ def welch(
     x,
     fs: float = 1.0,
     window: str = "hann",
-    nperseg: Untyped | None = None,
-    noverlap: Untyped | None = None,
-    nfft: Untyped | None = None,
-    detrend: str = "constant",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: str | Literal[False] | UntypedCallable = "constant",
     return_onesided: bool = True,
     scaling: str = "density",
     axis: int = -1,
@@ -31,10 +33,10 @@ def csd(
     y,
     fs: float = 1.0,
     window: str = "hann",
-    nperseg: Untyped | None = None,
-    noverlap: Untyped | None = None,
-    nfft: Untyped | None = None,
-    detrend: str = "constant",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: str | Literal[False] | UntypedCallable = "constant",
     return_onesided: bool = True,
     scaling: str = "density",
     axis: int = -1,
@@ -44,24 +46,24 @@ def spectrogram(
     x,
     fs: float = 1.0,
     window=("tukey", 0.25),
-    nperseg: Untyped | None = None,
-    noverlap: Untyped | None = None,
-    nfft: Untyped | None = None,
-    detrend: str = "constant",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: str | Literal[False] | UntypedCallable = "constant",
     return_onesided: bool = True,
     scaling: str = "density",
     axis: int = -1,
     mode: str = "psd",
 ) -> Untyped: ...
-def check_COLA(window, nperseg, noverlap, tol: float = 1e-10) -> Untyped: ...
-def check_NOLA(window, nperseg, noverlap, tol: float = 1e-10) -> Untyped: ...
+def check_COLA(window, nperseg: int, noverlap: int, tol: float = 1e-10) -> Untyped: ...
+def check_NOLA(window, nperseg: int, noverlap: int, tol: float = 1e-10) -> Untyped: ...
 def stft(
     x,
     fs: float = 1.0,
     window: str = "hann",
     nperseg: int = 256,
-    noverlap: Untyped | None = None,
-    nfft: Untyped | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
     detrend: bool = False,
     return_onesided: bool = True,
     boundary: str = "zeros",
@@ -73,9 +75,9 @@ def istft(
     Zxx,
     fs: float = 1.0,
     window: str = "hann",
-    nperseg: Untyped | None = None,
-    noverlap: Untyped | None = None,
-    nfft: Untyped | None = None,
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
     input_onesided: bool = True,
     boundary: bool = True,
     time_axis: int = -1,
@@ -87,9 +89,9 @@ def coherence(
     y,
     fs: float = 1.0,
     window: str = "hann",
-    nperseg: Untyped | None = None,
-    noverlap: Untyped | None = None,
-    nfft: Untyped | None = None,
-    detrend: str = "constant",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: str | Literal[False] | UntypedCallable = "constant",
     axis: int = -1,
 ) -> Untyped: ...

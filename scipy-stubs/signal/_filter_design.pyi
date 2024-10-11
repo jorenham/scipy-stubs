@@ -1,17 +1,75 @@
 import numpy as np
-from scipy._lib._util import float_factorial as float_factorial
+from numpy import absolute as abs  # noqa: ICN003
 from scipy._typing import Untyped
-from scipy.special import comb as comb
+
+__all__ = [
+    "BadCoefficients",
+    "band_stop_obj",
+    "bessel",
+    "besselap",
+    "bilinear",
+    "bilinear_zpk",
+    "buttap",
+    "butter",
+    "buttord",
+    "cheb1ap",
+    "cheb1ord",
+    "cheb2ap",
+    "cheb2ord",
+    "cheby1",
+    "cheby2",
+    "ellip",
+    "ellipap",
+    "ellipord",
+    "findfreqs",
+    "freqs",
+    "freqs_zpk",
+    "freqz",
+    "freqz_zpk",
+    "gammatone",
+    "group_delay",
+    "iircomb",
+    "iirdesign",
+    "iirfilter",
+    "iirnotch",
+    "iirpeak",
+    "lp2bp",
+    "lp2bp_zpk",
+    "lp2bs",
+    "lp2bs_zpk",
+    "lp2hp",
+    "lp2hp_zpk",
+    "lp2lp",
+    "lp2lp_zpk",
+    "normalize",
+    "sos2tf",
+    "sos2zpk",
+    "sosfreqz",
+    "tf2sos",
+    "tf2zpk",
+    "zpk2sos",
+    "zpk2tf",
+]
+
+EPSILON: float
+
+filter_dict: Untyped
+band_dict: Untyped
+bessel_norms: Untyped
 
 class BadCoefficients(UserWarning): ...
-
-abs = np.absolute
 
 def findfreqs(num, den, N, kind: str = "ba") -> Untyped: ...
 def freqs(b, a, worN: int = 200, plot: Untyped | None = None) -> Untyped: ...
 def freqs_zpk(z, p, k, worN: int = 200) -> Untyped: ...
 def freqz(
-    b, a: int = 1, worN: int = 512, whole: bool = False, plot: Untyped | None = None, fs=..., include_nyquist: bool = False
+    b,
+    a: int = 1,
+    worN: int = 512,
+    whole: bool = False,
+    plot: Untyped | None = None,
+    fs=...,
+    include_nyquist: bool = False,
 ) -> Untyped: ...
 def freqz_zpk(z, p, k, worN: int = 512, whole: bool = False, fs=...) -> Untyped: ...
 def group_delay(system, w: int = 512, whole: bool = False, fs=...) -> Untyped: ...
@@ -29,7 +87,14 @@ def lp2bp(b, a, wo: float = 1.0, bw: float = 1.0) -> Untyped: ...
 def lp2bs(b, a, wo: float = 1.0, bw: float = 1.0) -> Untyped: ...
 def bilinear(b, a, fs: float = 1.0) -> Untyped: ...
 def iirdesign(
-    wp, ws, gpass, gstop, analog: bool = False, ftype: str = "ellip", output: str = "ba", fs: Untyped | None = None
+    wp,
+    ws,
+    gpass,
+    gstop,
+    analog: bool = False,
+    ftype: str = "ellip",
+    output: str = "ba",
+    fs: Untyped | None = None,
 ) -> Untyped: ...
 def iirfilter(
     N,
@@ -52,7 +117,13 @@ def cheby1(N, rp, Wn, btype: str = "low", analog: bool = False, output: str = "b
 def cheby2(N, rs, Wn, btype: str = "low", analog: bool = False, output: str = "ba", fs: Untyped | None = None) -> Untyped: ...
 def ellip(N, rp, rs, Wn, btype: str = "low", analog: bool = False, output: str = "ba", fs: Untyped | None = None) -> Untyped: ...
 def bessel(
-    N, Wn, btype: str = "low", analog: bool = False, output: str = "ba", norm: str = "phase", fs: Untyped | None = None
+    N,
+    Wn,
+    btype: str = "low",
+    analog: bool = False,
+    output: str = "ba",
+    norm: str = "phase",
+    fs: Untyped | None = None,
 ) -> Untyped: ...
 def maxflat(): ...
 def yulewalk(): ...
@@ -64,18 +135,15 @@ def ellipord(wp, ws, gpass, gstop, analog: bool = False, fs: Untyped | None = No
 def buttap(N) -> Untyped: ...
 def cheb1ap(N, rp) -> Untyped: ...
 def cheb2ap(N, rs) -> Untyped: ...
-
-EPSILON: float
-
 def ellipap(N, rp, rs) -> Untyped: ...
 def besselap(N, norm: str = "phase") -> Untyped: ...
 def iirnotch(w0, Q, fs: float = 2.0) -> Untyped: ...
 def iirpeak(w0, Q, fs: float = 2.0) -> Untyped: ...
 def iircomb(w0, Q, ftype: str = "notch", fs: float = 2.0, *, pass_zero: bool = False) -> Untyped: ...
 def gammatone(
-    freq, ftype, order: Untyped | None = None, numtaps: Untyped | None = None, fs: Untyped | None = None
+    freq,
+    ftype,
+    order: Untyped | None = None,
+    numtaps: Untyped | None = None,
+    fs: Untyped | None = None,
 ) -> Untyped: ...
-
-filter_dict: Untyped
-band_dict: Untyped
-bessel_norms: Untyped
