@@ -47,6 +47,7 @@ jobs:
       - name: typecheck (partial)
         run: |
           targets=(
+            "_lib"
             "cluster"
             "constants"
             "datasets"
@@ -73,7 +74,7 @@ jobs:
       fail-fast: false
       matrix:
         module: [
-          # "scipy._lib",
+          "scipy._lib",
           "scipy.cluster",
           "scipy.constants",
           "scipy.datasets",

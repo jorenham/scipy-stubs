@@ -4,7 +4,16 @@ scipy.integrate._typing
 scipy.ndimage._typing
 scipy.optimize._typing
 
+# submodules
+scipy._lib.array_api_compat.*
+scipy._lib.boost_math.*
+scipy._lib.cobyqa.*
+scipy._lib.highs.*
+scipy._lib.pocketfft.*
+scipy._lib.unuran.*
+
 # internal testing
+scipy._lib.messagestream.__test__
 scipy._lib.test
 scipy._lib.tests.*
 scipy.cluster.tests.*
@@ -63,29 +72,40 @@ scipy.stats._qmc_cy.__test__
 scipy.stats._sobol.__test__
 
 # undocumented & irrelevant internal scipy machinery
-scipy._lib._docscrape.*
-scipy._lib._uarray.*
-scipy._lib.array_api_compat.cupy
-scipy._lib.array_api_compat.dask.*
-scipy._lib.array_api_compat.numpy.*
-scipy._lib.array_api_compat.torch
-scipy._lib.array_api_compat.common._typing.*
-scipy._lib.cobyqa.*
-scipy._lib.messagestream
-scipy.fft._pocketfft.pypocketfft.*
+scipy._lib._uarray._backend.get_defaults
+scipy._lib._uarray._backend.pickle_function
+scipy._lib._uarray._backend.pickle_function
+scipy._lib._uarray._backend.pickle_set_backend_context
+scipy._lib._uarray._backend.pickle_skip_backend_context
+scipy._lib._uarray._backend.pickle_state
+scipy._lib._uarray._backend.unpickle_function
+scipy._lib.decorator.DEF
+scipy._lib.decorator.ArgSpec
+scipy._lib.decorator.FunctionMaker
+scipy._lib.decorator.__init__
+scipy._lib.decorator.append
+scipy._lib.decorator.dispatch_on
+scipy._lib.decorator.get_init
+scipy._lib.decorator.getargspec
+scipy._lib.decorator.init
+scipy._lib.decorator.n_args
+scipy.fft._pocketfft.*
 scipy.special._precompute.*
 scipy.special.libsf_error_state
 scipy.stats._rcont.rcont
 scipy.stats._unuran.unuran_wrapper
 
-# mypy hallucinations
+# mypy bug workarounds
+scipy._lib._array_api.Array  # within `if TYPE_CHECKING`
+scipy._lib._array_api.ArrayLike  # within `if TYPE_CHECKING`
 scipy._lib._ccallback.PyCFuncPtr  # `final(T)` is impossible
-scipy.integrate._quadrature.QMCQuadResult.__replace__  # bruh...
+scipy._lib._docscrape.Parameter.__replace__  # py313
+scipy._lib._pep440._Version.__replace__  # py313
+scipy._lib._util.FullArgSpec.__replace__  # py313
+scipy._lib.decorator.ArgSpec.__replace__  # py313
+scipy.integrate._quadrature.QMCQuadResult.__replace__  # py313
 
 # TODO:
-scipy._lib._ccallback.__all__
-scipy._lib.array_api_compat.__all__
-scipy._lib.array_api_compat.common.__all__
 scipy.sparse._matrix.__all__
 scipy.sparse.csgraph.__all__
 scipy.sparse.csgraph._flow.__all__
