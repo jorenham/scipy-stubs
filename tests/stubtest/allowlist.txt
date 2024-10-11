@@ -5,6 +5,7 @@ scipy.ndimage._typing
 scipy.optimize._typing
 
 # internal testing
+scipy._lib.messagestream.__test__
 scipy._lib.test
 scipy._lib.tests.*
 scipy.cluster.tests.*
@@ -81,7 +82,6 @@ scipy._lib.decorator.get_init
 scipy._lib.decorator.getargspec
 scipy._lib.decorator.init
 scipy._lib.decorator.n_args
-scipy._lib.messagestream
 scipy.fft._pocketfft.pypocketfft.*
 scipy.special._precompute.*
 scipy.special.libsf_error_state
