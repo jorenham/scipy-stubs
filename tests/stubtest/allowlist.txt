@@ -72,6 +72,13 @@ scipy._lib.pocketfft.*
 scipy._lib.unuran.*
 
 # undocumented & irrelevant internal scipy machinery
+scipy._lib._uarray._backend.get_defaults
+scipy._lib._uarray._backend.pickle_function
+scipy._lib._uarray._backend.pickle_function
+scipy._lib._uarray._backend.pickle_set_backend_context
+scipy._lib._uarray._backend.pickle_skip_backend_context
+scipy._lib._uarray._backend.pickle_state
+scipy._lib._uarray._backend.unpickle_function
 scipy._lib.decorator.DEF
 scipy._lib.decorator.ArgSpec
 scipy._lib.decorator.FunctionMaker
@@ -92,6 +99,7 @@ scipy.stats._unuran.unuran_wrapper
 scipy._lib._ccallback.PyCFuncPtr  # `final(T)` is impossible
 
 # mypy py313 bugs
+scipy._lib._util.FullArgSpec.__replace__
 scipy._lib.decorator.ArgSpec.__replace__
 scipy.integrate._quadrature.QMCQuadResult.__replace__
 
