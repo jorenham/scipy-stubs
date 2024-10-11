@@ -63,15 +63,15 @@ scipy.stats.tests.*
 scipy.stats._qmc_cy.__test__
 scipy.stats._sobol.__test__
 
-# undocumented & irrelevant internal scipy machinery
-scipy._lib._docscrape.*
-scipy._lib._uarray.*
-scipy._lib.array_api_compat.cupy
-scipy._lib.array_api_compat.dask.*
-scipy._lib.array_api_compat.numpy.*
-scipy._lib.array_api_compat.torch
-scipy._lib.array_api_compat.common._typing.*
+# submodules
+scipy._lib.array_api_compat.*
+scipy._lib.boost_math.*
 scipy._lib.cobyqa.*
+scipy._lib.highs.*
+scipy._lib.pocketfft.*
+scipy._lib.unuran.*
+
+# undocumented & irrelevant internal scipy machinery
 scipy._lib.decorator.DEF
 scipy._lib.decorator.ArgSpec
 scipy._lib.decorator.FunctionMaker
@@ -82,7 +82,7 @@ scipy._lib.decorator.get_init
 scipy._lib.decorator.getargspec
 scipy._lib.decorator.init
 scipy._lib.decorator.n_args
-scipy.fft._pocketfft.pypocketfft.*
+scipy.fft._pocketfft.*
 scipy.special._precompute.*
 scipy.special.libsf_error_state
 scipy.stats._rcont.rcont

@@ -6,10 +6,10 @@ from scipy._typing import Untyped, UntypedCallable
 __all__ = [
     "BackendNotImplementedError",
     "Dispatchable",
-    # "_BackendState",
-    # "_Function",
-    # "_SetBackendContext",
-    # "_SkipBackendContext",
+    "_BackendState",
+    "_Function",
+    "_SetBackendContext",
+    "_SkipBackendContext",
     "all_of_type",
     "clear_backends",
     "create_multimethod",
@@ -28,13 +28,20 @@ __all__ = [
     "wrap_single_convertor_instance",
 ]
 
-class BackendNotImplementedError(NotImplementedError): ...
-
 ArgumentExtractorType: TypeAlias = Callable[..., tuple[Dispatchable, ...]]
 ArgumentReplacerType: TypeAlias = Callable[
     [tuple[Untyped, ...], dict[Untyped, Untyped], tuple[Untyped, ...]],
     tuple[tuple[Untyped, ...], dict[Untyped, Untyped]],
 ]
+
+class BackendNotImplementedError(NotImplementedError): ...
+
+class Dispatchable:
+    value: Untyped
+    type: Untyped
+    coercible: Untyped
+    def __init__(self, value, dispatch_type, coercible: bool = True) -> None: ...
+    def __getitem__(self, index) -> Untyped: ...
 
 def unpickle_function(mod_name, qname, self_) -> Untyped: ...
 def pickle_function(func) -> Untyped: ...
@@ -57,14 +64,6 @@ def get_defaults(f) -> Untyped: ...
 def set_global_backend(backend, coerce: bool = False, only: bool = False, *, try_last: bool = False): ...
 def register_backend(backend): ...
 def clear_backends(domain, registered: bool = True, globals: bool = False): ...
-
-class Dispatchable:
-    value: Untyped
-    type: Untyped
-    coercible: Untyped
-    def __init__(self, value, dispatch_type, coercible: bool = True): ...
-    def __getitem__(self, index) -> Untyped: ...
-
 def mark_as(dispatch_type) -> Untyped: ...
 def all_of_type(arg_type) -> Untyped: ...
 def wrap_single_convertor(convert_single) -> Untyped: ...
