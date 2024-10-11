@@ -1,5 +1,13 @@
-from scipy._lib import doccer as doccer
-from scipy._typing import Untyped
+__all__ = ["docfiller"]
 
-docdict: Untyped
-docfiller: Untyped
+from typing import Final, TypeVar
+
+import optype as op
+
+_F = TypeVar("_F", bound=op.HasDoc)
+
+#
+docdict: Final[dict[str, str]]  # undocumented
+
+#
+def docfiller(f: _F) -> _F: ...  # undocumented
