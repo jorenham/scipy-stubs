@@ -6,11 +6,7 @@ scipy.optimize._typing
 
 # submodules
 scipy._lib.array_api_compat.*
-scipy._lib.boost_math.*
 scipy._lib.cobyqa.*
-scipy._lib.highs.*
-scipy._lib.pocketfft.*
-scipy._lib.unuran.*
 
 # internal testing
 scipy._lib.messagestream.__test__
@@ -62,7 +58,6 @@ scipy.sparse.linalg.eigen.test
 scipy.sparse.linalg.isolve.test
 scipy.sparse.linalg.tests.*
 scipy.sparse.tests.*
-scipy.spatial.PytestTester
 scipy.spatial.tests.*
 scipy.spatial.transform.tests.*
 scipy.spatial.transform._rotation.__test__
@@ -72,13 +67,6 @@ scipy.stats._qmc_cy.__test__
 scipy.stats._sobol.__test__
 
 # undocumented & irrelevant internal scipy machinery
-scipy._lib._uarray._backend.get_defaults
-scipy._lib._uarray._backend.pickle_function
-scipy._lib._uarray._backend.pickle_function
-scipy._lib._uarray._backend.pickle_set_backend_context
-scipy._lib._uarray._backend.pickle_skip_backend_context
-scipy._lib._uarray._backend.pickle_state
-scipy._lib._uarray._backend.unpickle_function
 scipy._lib.decorator.DEF
 scipy._lib.decorator.ArgSpec
 scipy._lib.decorator.FunctionMaker
@@ -102,35 +90,4 @@ scipy._lib._ccallback.PyCFuncPtr  # `final(T)` is impossible
 scipy._lib._docscrape.Parameter.__replace__  # py313
 scipy._lib._pep440._Version.__replace__  # py313
 scipy._lib._util.FullArgSpec.__replace__  # py313
-scipy._lib.decorator.ArgSpec.__replace__  # py313
 scipy.integrate._quadrature.QMCQuadResult.__replace__  # py313
-
-# TODO:
-scipy.sparse._matrix.__all__
-scipy.sparse.csgraph.__all__
-scipy.sparse.csgraph._flow.__all__
-scipy.sparse.csgraph._laplacian.__all__
-scipy.sparse.csgraph._matching.__all__
-scipy.sparse.csgraph._min_spanning_tree.__all__
-scipy.sparse.csgraph._reordering.__all__
-scipy.sparse.csgraph._shortest_path.__all__
-scipy.sparse.csgraph._tools.__all__
-scipy.sparse.csgraph._traversal.__all__
-scipy.sparse.linalg._dsolve.__all__
-scipy.sparse.linalg._dsolve._superlu.__all__
-scipy.stats.__all__
-scipy.stats._binomtest.__all__
-scipy.stats._bws_test.__all__
-scipy.stats._censored_data.__all__
-scipy.stats._common.__all__
-scipy.stats._continuous_distns.__all__
-scipy.stats._discrete_distns.__all__
-scipy.stats._distn_infrastructure.__all__
-scipy.stats._distr_params.__all__
-scipy.stats.distributions.__all__
-scipy.stats.sampling.__all__
-scipy.stats.kde.*
-scipy.stats.morestats.*
-scipy.stats.mstats_basic.*
-scipy.stats.mstats_extras.*
-scipy.stats.stats.*
