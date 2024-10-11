@@ -57,6 +57,7 @@ jobs:
             "misc"
             "ndimage"
             "odr"
+            "spatial"
             "special"
           )
           for target in "${targets[@]}"; do
@@ -88,7 +89,7 @@ jobs:
           "scipy.optimize",
           # "scipy.signal",
           # "scipy.sparse",
-          # "scipy.spatial",
+          "scipy.spatial",
           "scipy.special",
           # "scipy.stats",
         ]
