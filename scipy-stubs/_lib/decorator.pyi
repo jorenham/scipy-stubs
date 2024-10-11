@@ -5,8 +5,8 @@ from typing_extensions import TypeVar
 
 from scipy._typing import Untyped, UntypedCallable
 
-_T_co = TypeVar("_T_co", covariant=True, default=object)
 _T = TypeVar("_T")
+_T_co = TypeVar("_T_co", covariant=True, default=object)
 _Tss = ParamSpec("_Tss")
 
 __version__: Final[str] = ...

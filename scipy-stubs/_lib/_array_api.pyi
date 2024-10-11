@@ -11,7 +11,7 @@ _DeviceT_co = TypeVar("_DeviceT_co", covariant=True)
 # https://github.com/data-apis/array-api/pull/589
 Array: TypeAlias = object
 ArrayLike: TypeAlias = Array | npt.ArrayLike
-DType: TypeAlias = object | npt.DTypeLike
+_DType: TypeAlias = object | npt.DTypeLike
 
 @type_check_only
 class _HasDevice(Protocol[_DeviceT_co]):
@@ -25,7 +25,7 @@ class _HasShape(Protocol):
 
 def _asarray(
     array: ArrayLike,
-    dtype: DType = None,
+    dtype: _DType = None,
     order: Literal["K", "A", "C", "F"] | None = None,
     copy: bool | None = None,
     *,
@@ -34,5 +34,5 @@ def _asarray(
     subok: bool = False,
 ) -> Array: ...
 def array_namespace(*arrays: Array) -> ModuleType: ...
-def device(x: _HasDevice[_DeviceT_co]) -> _DeviceT_co: ...
+def device(x: _HasDevice[_DeviceT_co], /) -> _DeviceT_co: ...
 def size(x: _HasShape) -> int: ...

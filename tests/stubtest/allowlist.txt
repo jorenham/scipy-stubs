@@ -4,6 +4,14 @@ scipy.integrate._typing
 scipy.ndimage._typing
 scipy.optimize._typing
 
+# submodules
+scipy._lib.array_api_compat.*
+scipy._lib.boost_math.*
+scipy._lib.cobyqa.*
+scipy._lib.highs.*
+scipy._lib.pocketfft.*
+scipy._lib.unuran.*
+
 # internal testing
 scipy._lib.messagestream.__test__
 scipy._lib.test
@@ -63,14 +71,6 @@ scipy.stats.tests.*
 scipy.stats._qmc_cy.__test__
 scipy.stats._sobol.__test__
 
-# submodules
-scipy._lib.array_api_compat.*
-scipy._lib.boost_math.*
-scipy._lib.cobyqa.*
-scipy._lib.highs.*
-scipy._lib.pocketfft.*
-scipy._lib.unuran.*
-
 # undocumented & irrelevant internal scipy machinery
 scipy._lib._uarray._backend.get_defaults
 scipy._lib._uarray._backend.pickle_function
@@ -95,13 +95,15 @@ scipy.special.libsf_error_state
 scipy.stats._rcont.rcont
 scipy.stats._unuran.unuran_wrapper
 
-# mypy hallucinations
+# mypy bug workarounds
+scipy._lib._array_api.Array  # within `if TYPE_CHECKING`
+scipy._lib._array_api.ArrayLike  # within `if TYPE_CHECKING`
 scipy._lib._ccallback.PyCFuncPtr  # `final(T)` is impossible
-
-# mypy py313 bugs
-scipy._lib._util.FullArgSpec.__replace__
-scipy._lib.decorator.ArgSpec.__replace__
-scipy.integrate._quadrature.QMCQuadResult.__replace__
+scipy._lib._docscrape.Parameter.__replace__  # py313
+scipy._lib._pep440._Version.__replace__  # py313
+scipy._lib._util.FullArgSpec.__replace__  # py313
+scipy._lib.decorator.ArgSpec.__replace__  # py313
+scipy.integrate._quadrature.QMCQuadResult.__replace__  # py313
 
 # TODO:
 scipy.sparse._matrix.__all__

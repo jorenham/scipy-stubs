@@ -30,8 +30,10 @@ version = "1.14.1.0.dev0"
 
 [tool.poetry.dependencies]
 python = "^3.10.1"
+numpy = ">=1.25"
 scipy = ">=1.14.1"
 optype = "^0.6.1"
+types-cffi = ">=1.16.0"
 
 [tool.poetry.group.lint.dependencies]
 basedmypy = "^2.6.0"

@@ -1,13 +1,12 @@
 from collections.abc import Callable
 from types import TracebackType
-from typing import Any
 from typing_extensions import TypeVar
 
 from scipy._typing import Untyped
 
 __all__ = ["ReentrancyError", "ReentrancyLock", "non_reentrant"]
 
-_FT = TypeVar("_FT", bound=Callable[..., Any])
+_FT = TypeVar("_FT", bound=Callable[..., object])
 
 class ReentrancyError(RuntimeError): ...
 
@@ -21,6 +20,6 @@ class ReentrancyLock:
         value: BaseException | None,
         traceback: TracebackType | None,
     ) -> None: ...
-    def decorate(self, func: _FT, /) -> _FT: ...
+    def decorate(self, /, func: _FT) -> _FT: ...
 
 def non_reentrant(err_msg: Untyped | None = None) -> Untyped: ...

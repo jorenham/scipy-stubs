@@ -47,6 +47,7 @@ jobs:
       - name: typecheck (partial)
         run: |
           targets=(
+            "_lib"
             "cluster"
             "constants"
             "datasets"

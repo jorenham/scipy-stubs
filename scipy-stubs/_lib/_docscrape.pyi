@@ -1,13 +1,18 @@
 from collections.abc import Callable, Mapping, Sequence
-from types import ModuleType
-from typing import Any, ClassVar, Final, Literal, NamedTuple, TypeAlias
-from typing_extensions import LiteralString, override
+from typing import ClassVar, Final, Generic, Literal, NamedTuple, TypeAlias
+from typing_extensions import TypeVar, override
 
 import optype as op
-from scipy._typing import Untyped, UntypedCallable
 
-_SectionKey: TypeAlias = LiteralString
+_FT = TypeVar("_FT", bound=Callable[..., object], default=Callable[..., object])
 _SectionValue: TypeAlias = str | list[str] | dict[str, list[str]]
+
+class ParseError(Exception): ...
+
+class Parameter(NamedTuple):
+    name: str
+    type: str
+    desc: str
 
 class Reader:
     def __init__(self, /, data: str | list[str]) -> None: ...
@@ -22,65 +27,52 @@ class Reader:
     def peek(self, n: int = 0) -> str: ...
     def is_empty(self) -> bool: ...
 
-class ParseError(Exception): ...
-
-class Parameter(NamedTuple):
-    name: str
-    type: str
-    desc: str
-
-class NumpyDocString(Mapping[_SectionKey, _SectionValue]):
+class NumpyDocString(Mapping[str, _SectionValue]):
     empty_description: ClassVar[str] = ".."
-    sections: ClassVar[dict[_SectionKey, _SectionValue]]
-    def __init__(self, /, docstring: str, config: dict[str, Any] | None = None) -> None: ...
+    sections: ClassVar[dict[str, _SectionValue]]
+    def __init__(self, /, docstring: str, config: dict[str, object] = {}) -> None: ...
     @override
-    def __getitem__(self, key: _SectionKey, /) -> _SectionValue: ...
-    def __setitem__(self, key: _SectionKey, val: _SectionValue, /) -> None: ...
-    @override
-    def __iter__(self, /) -> op.CanIterSelf[_SectionKey]: ...
+    def __str__(self, /, func_role: str = "") -> str: ...
     @override
     def __len__(self, /) -> int: ...
+    @override
+    def __iter__(self, /) -> op.CanIterSelf[str]: ...
+    @override
+    def __getitem__(self, key: str, /) -> _SectionValue: ...
+    def __setitem__(self, key: str, val: _SectionValue, /) -> None: ...
 
-class FunctionDoc(NumpyDocString):
+class FunctionDoc(NumpyDocString, Generic[_FT]):
     def __init__(
         self,
         /,
-        func: UntypedCallable,
+        func: _FT,
         role: Literal["func", "meth"] = "func",
         doc: str | None = None,
-        config: dict[str, Any] | None = None,
+        config: dict[str, object] = {},
     ) -> None: ...
-    def get_func(self) -> UntypedCallable: ...
-
-class ObjDoc(NumpyDocString):
-    def __init__(self, /, obj: object, doc: str | None = None, config: dict[str, Any] | None = None) -> None: ...
+    @override
+    def __str__(self, /) -> str: ...  # type: ignore[override]  # noqa: PYI029  # pyright: ignore[reportIncompatibleMethodOverride]
+    def get_func(self, /) -> _FT: ...
 
 class ClassDoc(NumpyDocString):
     extra_public_methods: ClassVar[Sequence[str]]
     show_inherited_members: Final[bool]
-
+    @property
+    def methods(self) -> list[str]: ...
+    @property
+    def properties(self) -> list[str]: ...
     def __init__(
         self,
         /,
         cls: type,
         doc: str | None = None,
         modulename: str = "",
-        func_doc: type[FunctionDoc] = ...,
-        config: Untyped | None = None,
+        # NOTE: we can't set this to `type[FunctionDoc]` because of a mypy bug
+        func_doc: type = ...,
+        config: dict[str, object] = {},
     ) -> None: ...
-    @property
-    def methods(self) -> list[str]: ...
-    @property
-    def properties(self) -> list[str]: ...
 
 def strip_blank_lines(l: list[str]) -> list[str]: ...
+def indent(str: str | None, indent: int = 4) -> str: ...
 def dedent_lines(lines: op.CanIter[op.CanIterSelf[str]]) -> str: ...
-def get_doc_object(
-    obj: type | ModuleType | Callable[..., object] | object,
-    what: Literal["class", "module", "function", "object"] | None = None,
-    doc: str | None = None,
-    config: dict[str, Any] | None = None,
-    class_doc: type[ClassDoc] = ...,
-    func_doc: type[FunctionDoc] = ...,
-    obj_doc: type[ObjDoc] = ...,
-) -> NumpyDocString: ...
+def header(text: str, style: str = "-") -> str: ...
