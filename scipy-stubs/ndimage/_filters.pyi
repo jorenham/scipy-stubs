@@ -1,4 +1,21 @@
-from scipy._typing import Untyped, UntypedCallable
+from collections.abc import Callable, Sequence
+from typing import Concatenate, Literal, TypeAlias, TypedDict, type_check_only
+from typing_extensions import Unpack
+
+import numpy as np
+import numpy.typing as npt
+from scipy._lib._ccallback import LowLevelCallable
+from ._typing import (
+    _FloatArrayIn,
+    _FloatArrayOut,
+    _FloatValueIn,
+    _FloatVectorIn,
+    _IntArrayIn,
+    _ScalarArrayIn,
+    _ScalarArrayOut,
+    _ScalarValueIn,
+    _ScalarValueOut,
+)
 
 __all__ = [
     "convolve",
@@ -27,233 +44,288 @@ __all__ = [
     "uniform_filter1d",
 ]
 
-def correlate1d(
-    input: Untyped,
-    weights: Untyped,
-    axis: int = -1,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    origin: int = 0,
-) -> Untyped: ...
-def convolve1d(
-    input: Untyped,
-    weights: Untyped,
-    axis: int = -1,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    origin: int = 0,
-) -> Untyped: ...
-def gaussian_filter1d(
-    input: Untyped,
-    sigma: Untyped,
-    axis: int = -1,
-    order: int = 0,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    truncate: float = 4.0,
-    *,
-    radius: Untyped | None = None,
-) -> Untyped: ...
-def gaussian_filter(
-    input: Untyped,
-    sigma: Untyped,
-    order: int = 0,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    truncate: float = 4.0,
-    *,
-    radius: Untyped | None = None,
-    axes: Untyped | None = None,
-) -> Untyped: ...
-def prewitt(
-    input: Untyped,
-    axis: int = -1,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-) -> Untyped: ...
-def sobel(
-    input: Untyped,
-    axis: int = -1,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-) -> Untyped: ...
-def generic_laplace(
-    input: Untyped,
-    derivative2: Untyped,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    extra_arguments: tuple[object, ...] = (),
-    extra_keywords: dict[str, object] | None = None,
-) -> Untyped: ...
+_Mode: TypeAlias = Literal["reflect", "constant", "nearest", "mirror", "wrap", "grid-constant", "grid-mirror", "grid-wrap"]
+_Modes: TypeAlias = _Mode | Sequence[_Mode]
+_Ints: TypeAlias = int | Sequence[int]
+
+# TODO: allow passing dtype-likes to `output`
+
+#
 def laplace(
-    input: Untyped,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-) -> Untyped: ...
+    input: _ScalarArrayIn,
+    output: _ScalarArrayOut | None = None,
+    mode: _Modes = "reflect",
+    cval: _ScalarValueIn = 0.0,
+) -> _ScalarArrayOut: ...
+
+#
+def prewitt(
+    input: _ScalarArrayIn,
+    axis: int = -1,
+    output: _ScalarArrayOut | None = None,
+    mode: _Modes = "reflect",
+    cval: _ScalarValueIn = 0.0,
+) -> _ScalarArrayOut: ...
+def sobel(
+    input: _ScalarArrayIn,
+    axis: int = -1,
+    output: _ScalarArrayOut | None = None,
+    mode: _Modes = "reflect",
+    cval: _ScalarValueIn = 0.0,
+) -> _ScalarArrayOut: ...
+
+#
+def correlate1d(
+    input: _ScalarArrayIn,
+    weights: _FloatVectorIn,
+    axis: int = -1,
+    output: _ScalarArrayOut | None = None,
+    mode: _Mode = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    origin: int = 0,
+) -> _ScalarArrayOut: ...
+def convolve1d(
+    input: _ScalarArrayIn,
+    weights: _FloatVectorIn,
+    axis: int = -1,
+    output: _ScalarArrayOut | None = None,
+    mode: _Mode = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    origin: int = 0,
+) -> _ScalarArrayOut: ...
+
+#
+def correlate(
+    input: _ScalarArrayIn,
+    weights: _FloatArrayIn,
+    output: _ScalarArrayOut | None = None,
+    mode: _Mode = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    origin: _Ints = 0,
+) -> _ScalarArrayOut: ...
+def convolve(
+    input: _ScalarArrayIn,
+    weights: _FloatArrayIn,
+    output: _ScalarArrayOut | None = None,
+    mode: _Mode = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    origin: _Ints = 0,
+) -> _ScalarArrayOut: ...
+
+#
+
+@type_check_only
+class _GaussianKwargs(TypedDict, total=False):
+    truncate: float
+    radius: _Ints
+    axes: tuple[int, ...]
+
 def gaussian_laplace(
-    input: Untyped,
-    sigma: Untyped,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    **kwargs: float,
-) -> Untyped: ...
-def generic_gradient_magnitude(
-    input: Untyped,
-    derivative: Untyped,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
+    input: _ScalarArrayIn,
+    sigma: _FloatArrayIn,
+    output: _ScalarArrayOut | None = None,
+    mode: _Modes = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    **kwargs: Unpack[_GaussianKwargs],
+) -> _ScalarArrayOut: ...
+def gaussian_gradient_magnitude(
+    input: _ScalarArrayIn,
+    sigma: _FloatArrayIn,
+    output: _ScalarArrayOut | None = None,
+    mode: _Modes = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    **kwargs: Unpack[_GaussianKwargs],
+) -> _ScalarArrayOut: ...
+
+#
+def gaussian_filter1d(
+    input: _ScalarArrayIn,
+    sigma: _FloatValueIn,
+    axis: int = -1,
+    order: int = 0,
+    output: _ScalarArrayOut | None = None,
+    mode: _Mode = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    truncate: float = 4.0,
+    *,
+    radius: int | None = None,
+) -> _ScalarArrayOut: ...
+
+#
+def gaussian_filter(
+    input: _ScalarArrayIn,
+    sigma: _FloatArrayIn,
+    order: _Ints = 0,
+    output: _ScalarArrayOut | None = None,
+    mode: _Modes = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    truncate: float = 4.0,
+    *,
+    radius: _Ints | None = None,
+    axes: tuple[int, ...] | None = None,
+) -> _ScalarArrayOut: ...
+
+#
+_Derivative: TypeAlias = Callable[
+    # (input, axis, output, mode, cval, *extra_arguments, **extra_keywords)
+    Concatenate[_ScalarArrayOut, int, np.dtype[_ScalarValueOut], _Mode, _ScalarValueIn, ...],
+    _ScalarArrayOut,
+]
+
+def generic_laplace(
+    input: _ScalarArrayIn,
+    derivative2: _Derivative,
+    output: _ScalarArrayOut | None = None,
+    mode: _Modes = "reflect",
+    cval: _ScalarValueIn = 0.0,
     extra_arguments: tuple[object, ...] = (),
     extra_keywords: dict[str, object] | None = None,
-) -> Untyped: ...
-def gaussian_gradient_magnitude(
-    input: Untyped,
-    sigma: Untyped,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    **kwargs: Untyped,
-) -> Untyped: ...
-def correlate(
-    input: Untyped,
-    weights: Untyped,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    origin: int = 0,
-) -> Untyped: ...
-def convolve(
-    input: Untyped,
-    weights: Untyped,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    origin: int = 0,
-) -> Untyped: ...
-def uniform_filter1d(
-    input: Untyped,
-    size: int,
-    axis: int = -1,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    origin: int = 0,
-) -> Untyped: ...
-def uniform_filter(
-    input: Untyped,
-    size: int = 3,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    origin: int = 0,
-    *,
-    axes: Untyped | None = None,
-) -> Untyped: ...
-def minimum_filter1d(
-    input: Untyped,
-    size: int,
-    axis: int = -1,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    origin: int = 0,
-) -> Untyped: ...
-def maximum_filter1d(
-    input: Untyped,
-    size: int,
-    axis: int = -1,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    origin: int = 0,
-) -> Untyped: ...
-def minimum_filter(
-    input: Untyped,
-    size: int | None = None,
-    footprint: Untyped | None = None,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    origin: int = 0,
-    *,
-    axes: Untyped | None = None,
-) -> Untyped: ...
-def maximum_filter(
-    input: Untyped,
-    size: int | None = None,
-    footprint: Untyped | None = None,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    origin: int = 0,
-    *,
-    axes: Untyped | None = None,
-) -> Untyped: ...
-def rank_filter(
-    input: Untyped,
-    rank: int,
-    size: int | None = None,
-    footprint: Untyped | None = None,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    origin: int = 0,
-    *,
-    axes: Untyped | None = None,
-) -> Untyped: ...
-def median_filter(
-    input: Untyped,
-    size: int | None = None,
-    footprint: Untyped | None = None,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    origin: int = 0,
-    *,
-    axes: Untyped | None = None,
-) -> Untyped: ...
-def percentile_filter(
-    input: Untyped,
-    percentile: float,
-    size: int | None = None,
-    footprint: Untyped | None = None,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    origin: int = 0,
-    *,
-    axes: Untyped | None = None,
-) -> Untyped: ...
+) -> _ScalarArrayOut: ...
+def generic_gradient_magnitude(
+    input: _ScalarArrayIn,
+    derivative: _Derivative,
+    output: _ScalarArrayOut | None = None,
+    mode: _Modes = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    extra_arguments: tuple[object, ...] = (),
+    extra_keywords: dict[str, object] | None = None,
+) -> _ScalarArrayOut: ...
+
+#
+_FilterFunc1D: TypeAlias = Callable[Concatenate[npt.NDArray[np.float64], npt.NDArray[np.float64], ...], None]
+
 def generic_filter1d(
-    input: Untyped,
-    function: UntypedCallable,
+    input: _FloatArrayIn,
+    function: _FilterFunc1D | LowLevelCallable,
     filter_size: float,
     axis: int = -1,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
-    origin: int = 0,
-    extra_arguments: tuple[object, ...] = (),
-    extra_keywords: Untyped | None = None,
-) -> Untyped: ...
-def generic_filter(
-    input: Untyped,
-    function: UntypedCallable,
-    size: int | None = None,
-    footprint: Untyped | None = None,
-    output: Untyped | None = None,
-    mode: str = "reflect",
-    cval: float = 0.0,
+    output: _FloatArrayOut | None = None,
+    mode: _Mode = "reflect",
+    cval: _ScalarValueIn = 0.0,
     origin: int = 0,
     extra_arguments: tuple[object, ...] = (),
     extra_keywords: dict[str, object] | None = None,
-) -> Untyped: ...
+) -> _FloatArrayOut: ...
+
+#
+_FilterFuncND: TypeAlias = Callable[
+    Concatenate[npt.NDArray[np.float64], ...],
+    _ScalarValueIn | _ScalarValueOut | _ScalarArrayOut,
+]
+
+def generic_filter(
+    input: _FloatArrayIn,
+    function: _FilterFuncND | LowLevelCallable,
+    size: int | tuple[int, ...] | None = None,
+    footprint: _IntArrayIn | None = None,
+    output: _ScalarArrayOut | None = None,
+    mode: _Modes = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    origin: _Ints = 0,
+    extra_arguments: tuple[object, ...] = (),
+    extra_keywords: dict[str, object] | None = None,
+) -> _ScalarArrayOut: ...
+
+#
+def uniform_filter1d(
+    input: _ScalarArrayIn,
+    size: int,
+    axis: int = -1,
+    output: _ScalarArrayOut | None = None,
+    mode: _Mode = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    origin: int = 0,
+) -> _ScalarArrayOut: ...
+def minimum_filter1d(
+    input: _ScalarArrayIn,
+    size: int,
+    axis: int = -1,
+    output: _ScalarArrayOut | None = None,
+    mode: _Mode = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    origin: int = 0,
+) -> _ScalarArrayOut: ...
+def maximum_filter1d(
+    input: _ScalarArrayIn,
+    size: int,
+    axis: int = -1,
+    output: _ScalarArrayOut | None = None,
+    mode: _Mode = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    origin: int = 0,
+) -> _ScalarArrayOut: ...
+
+#
+def uniform_filter(
+    input: _ScalarArrayIn,
+    size: int | tuple[int, ...] = 3,
+    output: _ScalarArrayOut | None = None,
+    mode: _Modes = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    origin: _Ints = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> _ScalarArrayOut: ...
+
+#
+def minimum_filter(
+    input: _ScalarArrayIn,
+    size: int | tuple[int, ...] | None = None,
+    footprint: _IntArrayIn | None = None,
+    output: _ScalarArrayOut | None = None,
+    mode: _Modes = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    origin: _Ints = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> _ScalarArrayOut: ...
+def maximum_filter(
+    input: _ScalarArrayIn,
+    size: int | tuple[int, ...] | None = None,
+    footprint: _IntArrayIn | None = None,
+    output: _ScalarArrayOut | None = None,
+    mode: _Modes = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    origin: _Ints = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> _ScalarArrayOut: ...
+
+#
+def median_filter(
+    input: _ScalarArrayIn,
+    size: int | tuple[int, ...] | None = None,
+    footprint: _IntArrayIn | None = None,
+    output: _ScalarArrayOut | None = None,
+    mode: _Mode = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    origin: _Ints = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> _ScalarArrayOut: ...
+
+#
+def rank_filter(
+    input: _ScalarArrayIn,
+    rank: int,
+    size: int | tuple[int, ...] | None = None,
+    footprint: _IntArrayIn | None = None,
+    output: _ScalarArrayOut | None = None,
+    mode: _Mode = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    origin: _Ints = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> _ScalarArrayOut: ...
+def percentile_filter(
+    input: _ScalarArrayIn,
+    percentile: _FloatValueIn,
+    size: int | tuple[int, ...] | None = None,
+    footprint: _IntArrayIn | None = None,
+    output: _ScalarArrayOut | None = None,
+    mode: _Mode = "reflect",
+    cval: _ScalarValueIn = 0.0,
+    origin: _Ints = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> _ScalarArrayOut: ...
