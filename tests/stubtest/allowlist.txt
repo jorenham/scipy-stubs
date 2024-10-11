@@ -71,6 +71,16 @@ scipy._lib.array_api_compat.numpy.*
 scipy._lib.array_api_compat.torch
 scipy._lib.array_api_compat.common._typing.*
 scipy._lib.cobyqa.*
+scipy._lib.decorator.DEF
+scipy._lib.decorator.ArgSpec
+scipy._lib.decorator.FunctionMaker
+scipy._lib.decorator.__init__
+scipy._lib.decorator.append
+scipy._lib.decorator.dispatch_on
+scipy._lib.decorator.get_init
+scipy._lib.decorator.getargspec
+scipy._lib.decorator.init
+scipy._lib.decorator.n_args
 scipy._lib.messagestream
 scipy.fft._pocketfft.pypocketfft.*
 scipy.special._precompute.*
@@ -80,12 +90,12 @@ scipy.stats._unuran.unuran_wrapper
 
 # mypy hallucinations
 scipy._lib._ccallback.PyCFuncPtr  # `final(T)` is impossible
-scipy.integrate._quadrature.QMCQuadResult.__replace__  # bruh...
+
+# mypy py313 bugs
+scipy._lib.decorator.ArgSpec.__replace__
+scipy.integrate._quadrature.QMCQuadResult.__replace__
 
 # TODO:
-scipy._lib._ccallback.__all__
-scipy._lib.array_api_compat.__all__
-scipy._lib.array_api_compat.common.__all__
 scipy.sparse._matrix.__all__
 scipy.sparse.csgraph.__all__
 scipy.sparse.csgraph._flow.__all__
