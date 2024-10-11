@@ -1,15 +1,53 @@
-from scipy._lib._util import normalize_axis_index as normalize_axis_index
-from scipy._typing import Untyped
+from scipy._typing import Untyped, UntypedCallable
+
+__all__ = [
+    "convolve",
+    "convolve1d",
+    "correlate",
+    "correlate1d",
+    "gaussian_filter",
+    "gaussian_filter1d",
+    "gaussian_gradient_magnitude",
+    "gaussian_laplace",
+    "generic_filter",
+    "generic_filter1d",
+    "generic_gradient_magnitude",
+    "generic_laplace",
+    "laplace",
+    "maximum_filter",
+    "maximum_filter1d",
+    "median_filter",
+    "minimum_filter",
+    "minimum_filter1d",
+    "percentile_filter",
+    "prewitt",
+    "rank_filter",
+    "sobel",
+    "uniform_filter",
+    "uniform_filter1d",
+]
 
 def correlate1d(
-    input, weights, axis: int = -1, output: Untyped | None = None, mode: str = "reflect", cval: float = 0.0, origin: int = 0
+    input: Untyped,
+    weights: Untyped,
+    axis: int = -1,
+    output: Untyped | None = None,
+    mode: str = "reflect",
+    cval: float = 0.0,
+    origin: int = 0,
 ) -> Untyped: ...
 def convolve1d(
-    input, weights, axis: int = -1, output: Untyped | None = None, mode: str = "reflect", cval: float = 0.0, origin: int = 0
+    input: Untyped,
+    weights: Untyped,
+    axis: int = -1,
+    output: Untyped | None = None,
+    mode: str = "reflect",
+    cval: float = 0.0,
+    origin: int = 0,
 ) -> Untyped: ...
 def gaussian_filter1d(
-    input,
-    sigma,
+    input: Untyped,
+    sigma: Untyped,
     axis: int = -1,
     order: int = 0,
     output: Untyped | None = None,
@@ -20,8 +58,8 @@ def gaussian_filter1d(
     radius: Untyped | None = None,
 ) -> Untyped: ...
 def gaussian_filter(
-    input,
-    sigma,
+    input: Untyped,
+    sigma: Untyped,
     order: int = 0,
     output: Untyped | None = None,
     mode: str = "reflect",
@@ -31,44 +69,87 @@ def gaussian_filter(
     radius: Untyped | None = None,
     axes: Untyped | None = None,
 ) -> Untyped: ...
-def prewitt(input, axis: int = -1, output: Untyped | None = None, mode: str = "reflect", cval: float = 0.0) -> Untyped: ...
-def sobel(input, axis: int = -1, output: Untyped | None = None, mode: str = "reflect", cval: float = 0.0) -> Untyped: ...
-def generic_laplace(
-    input,
-    derivative2,
+def prewitt(
+    input: Untyped,
+    axis: int = -1,
     output: Untyped | None = None,
     mode: str = "reflect",
     cval: float = 0.0,
-    extra_arguments=(),
-    extra_keywords: Untyped | None = None,
 ) -> Untyped: ...
-def laplace(input, output: Untyped | None = None, mode: str = "reflect", cval: float = 0.0) -> Untyped: ...
+def sobel(
+    input: Untyped,
+    axis: int = -1,
+    output: Untyped | None = None,
+    mode: str = "reflect",
+    cval: float = 0.0,
+) -> Untyped: ...
+def generic_laplace(
+    input: Untyped,
+    derivative2: Untyped,
+    output: Untyped | None = None,
+    mode: str = "reflect",
+    cval: float = 0.0,
+    extra_arguments: tuple[object, ...] = (),
+    extra_keywords: dict[str, object] | None = None,
+) -> Untyped: ...
+def laplace(
+    input: Untyped,
+    output: Untyped | None = None,
+    mode: str = "reflect",
+    cval: float = 0.0,
+) -> Untyped: ...
 def gaussian_laplace(
-    input, sigma, output: Untyped | None = None, mode: str = "reflect", cval: float = 0.0, **kwargs
+    input: Untyped,
+    sigma: Untyped,
+    output: Untyped | None = None,
+    mode: str = "reflect",
+    cval: float = 0.0,
+    **kwargs: float,
 ) -> Untyped: ...
 def generic_gradient_magnitude(
-    input,
-    derivative,
+    input: Untyped,
+    derivative: Untyped,
     output: Untyped | None = None,
     mode: str = "reflect",
     cval: float = 0.0,
-    extra_arguments=(),
-    extra_keywords: Untyped | None = None,
+    extra_arguments: tuple[object, ...] = (),
+    extra_keywords: dict[str, object] | None = None,
 ) -> Untyped: ...
 def gaussian_gradient_magnitude(
-    input, sigma, output: Untyped | None = None, mode: str = "reflect", cval: float = 0.0, **kwargs
+    input: Untyped,
+    sigma: Untyped,
+    output: Untyped | None = None,
+    mode: str = "reflect",
+    cval: float = 0.0,
+    **kwargs: Untyped,
 ) -> Untyped: ...
 def correlate(
-    input, weights, output: Untyped | None = None, mode: str = "reflect", cval: float = 0.0, origin: int = 0
+    input: Untyped,
+    weights: Untyped,
+    output: Untyped | None = None,
+    mode: str = "reflect",
+    cval: float = 0.0,
+    origin: int = 0,
 ) -> Untyped: ...
 def convolve(
-    input, weights, output: Untyped | None = None, mode: str = "reflect", cval: float = 0.0, origin: int = 0
+    input: Untyped,
+    weights: Untyped,
+    output: Untyped | None = None,
+    mode: str = "reflect",
+    cval: float = 0.0,
+    origin: int = 0,
 ) -> Untyped: ...
 def uniform_filter1d(
-    input, size, axis: int = -1, output: Untyped | None = None, mode: str = "reflect", cval: float = 0.0, origin: int = 0
+    input: Untyped,
+    size: int,
+    axis: int = -1,
+    output: Untyped | None = None,
+    mode: str = "reflect",
+    cval: float = 0.0,
+    origin: int = 0,
 ) -> Untyped: ...
 def uniform_filter(
-    input,
+    input: Untyped,
     size: int = 3,
     output: Untyped | None = None,
     mode: str = "reflect",
@@ -78,14 +159,26 @@ def uniform_filter(
     axes: Untyped | None = None,
 ) -> Untyped: ...
 def minimum_filter1d(
-    input, size, axis: int = -1, output: Untyped | None = None, mode: str = "reflect", cval: float = 0.0, origin: int = 0
+    input: Untyped,
+    size: int,
+    axis: int = -1,
+    output: Untyped | None = None,
+    mode: str = "reflect",
+    cval: float = 0.0,
+    origin: int = 0,
 ) -> Untyped: ...
 def maximum_filter1d(
-    input, size, axis: int = -1, output: Untyped | None = None, mode: str = "reflect", cval: float = 0.0, origin: int = 0
+    input: Untyped,
+    size: int,
+    axis: int = -1,
+    output: Untyped | None = None,
+    mode: str = "reflect",
+    cval: float = 0.0,
+    origin: int = 0,
 ) -> Untyped: ...
 def minimum_filter(
-    input,
-    size: Untyped | None = None,
+    input: Untyped,
+    size: int | None = None,
     footprint: Untyped | None = None,
     output: Untyped | None = None,
     mode: str = "reflect",
@@ -95,8 +188,8 @@ def minimum_filter(
     axes: Untyped | None = None,
 ) -> Untyped: ...
 def maximum_filter(
-    input,
-    size: Untyped | None = None,
+    input: Untyped,
+    size: int | None = None,
     footprint: Untyped | None = None,
     output: Untyped | None = None,
     mode: str = "reflect",
@@ -106,9 +199,9 @@ def maximum_filter(
     axes: Untyped | None = None,
 ) -> Untyped: ...
 def rank_filter(
-    input,
-    rank,
-    size: Untyped | None = None,
+    input: Untyped,
+    rank: int,
+    size: int | None = None,
     footprint: Untyped | None = None,
     output: Untyped | None = None,
     mode: str = "reflect",
@@ -118,8 +211,8 @@ def rank_filter(
     axes: Untyped | None = None,
 ) -> Untyped: ...
 def median_filter(
-    input,
-    size: Untyped | None = None,
+    input: Untyped,
+    size: int | None = None,
     footprint: Untyped | None = None,
     output: Untyped | None = None,
     mode: str = "reflect",
@@ -129,9 +222,9 @@ def median_filter(
     axes: Untyped | None = None,
 ) -> Untyped: ...
 def percentile_filter(
-    input,
-    percentile,
-    size: Untyped | None = None,
+    input: Untyped,
+    percentile: float,
+    size: int | None = None,
     footprint: Untyped | None = None,
     output: Untyped | None = None,
     mode: str = "reflect",
@@ -141,26 +234,26 @@ def percentile_filter(
     axes: Untyped | None = None,
 ) -> Untyped: ...
 def generic_filter1d(
-    input,
-    function,
-    filter_size,
+    input: Untyped,
+    function: UntypedCallable,
+    filter_size: float,
     axis: int = -1,
     output: Untyped | None = None,
     mode: str = "reflect",
     cval: float = 0.0,
     origin: int = 0,
-    extra_arguments=(),
+    extra_arguments: tuple[object, ...] = (),
     extra_keywords: Untyped | None = None,
 ) -> Untyped: ...
 def generic_filter(
-    input,
-    function,
-    size: Untyped | None = None,
+    input: Untyped,
+    function: UntypedCallable,
+    size: int | None = None,
     footprint: Untyped | None = None,
     output: Untyped | None = None,
     mode: str = "reflect",
     cval: float = 0.0,
     origin: int = 0,
-    extra_arguments=(),
-    extra_keywords: Untyped | None = None,
+    extra_arguments: tuple[object, ...] = (),
+    extra_keywords: dict[str, object] | None = None,
 ) -> Untyped: ...

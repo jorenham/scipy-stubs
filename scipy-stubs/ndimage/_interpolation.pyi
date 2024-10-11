@@ -5,15 +5,15 @@ import numpy as np
 import numpy.typing as npt
 from ._typing import (
     _BoolValueIn,
-    _ComplexArrayIn,
     _ComplexArrayOut,
-    _ComplexValueIn,
     _FloatArrayIn,
     _FloatArrayOut,
     _FloatMatrixIn,
     _FloatValueIn,
     _FloatVectorIn,
     _IntValueIn,
+    _ScalarArrayIn,
+    _ScalarValueIn,
 )
 
 __all__ = [
@@ -114,13 +114,13 @@ def geometric_transform(
 ) -> _FloatArrayOut: ...
 @overload
 def geometric_transform(
-    input: _ComplexArrayIn,
+    input: _ScalarArrayIn,
     mapping: _MappingFunc,
     output_shape: tuple[int, ...] | None = None,
     output: None = None,
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
     extra_arguments: tuple[object, ...] = ...,
     extra_keywords: dict[str, object] | None = ...,
@@ -133,7 +133,7 @@ def geometric_transform(
     output: npt.NDArray[_SCT] | type[_SCT],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
     extra_arguments: tuple[object, ...] = ...,
     extra_keywords: dict[str, object] | None = ...,
@@ -147,7 +147,7 @@ def geometric_transform(
     output: npt.NDArray[_SCT] | type[_SCT],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
     extra_arguments: tuple[object, ...] = ...,
     extra_keywords: dict[str, object] | None = ...,
@@ -161,7 +161,7 @@ def geometric_transform(
     output: type[int],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
     extra_arguments: tuple[object, ...] = ...,
     extra_keywords: dict[str, object] | None = ...,
@@ -175,7 +175,7 @@ def geometric_transform(
     output: type[float],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
     extra_arguments: tuple[object, ...] = ...,
     extra_keywords: dict[str, object] | None = ...,
@@ -189,7 +189,7 @@ def geometric_transform(
     output: type[complex],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
     extra_arguments: tuple[object, ...] = ...,
     extra_keywords: dict[str, object] | None = ...,
@@ -208,12 +208,12 @@ def map_coordinates(
 ) -> _FloatArrayOut: ...
 @overload
 def map_coordinates(
-    input: _ComplexArrayIn,
+    input: _ScalarArrayIn,
     coordinates: _FloatArrayIn,
     output: None = None,
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
 ) -> _ComplexArrayOut: ...
 @overload
@@ -223,7 +223,7 @@ def map_coordinates(
     output: npt.NDArray[_SCT] | type[_SCT],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
 ) -> npt.NDArray[_SCT]: ...
 @overload
@@ -263,7 +263,7 @@ def map_coordinates(
     output: type[complex],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
 ) -> npt.NDArray[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
 
@@ -271,8 +271,8 @@ def map_coordinates(
 @overload
 def affine_transform(
     input: _FloatArrayIn,
-    matrix: _FloatMatrixIn | _FloatVectorIn,
-    offset: _FloatVectorIn | _FloatValueIn = 0.0,
+    matrix: _FloatMatrixIn,
+    offset: _FloatVectorIn = 0.0,
     output_shape: tuple[int, ...] | None = None,
     output: None = None,
     order: _Order = 3,
@@ -282,34 +282,34 @@ def affine_transform(
 ) -> _FloatArrayOut: ...
 @overload
 def affine_transform(
-    input: _ComplexArrayIn,
-    matrix: _FloatMatrixIn | _FloatVectorIn,
-    offset: _FloatVectorIn | _FloatValueIn = 0.0,
+    input: _ScalarArrayIn,
+    matrix: _FloatMatrixIn,
+    offset: _FloatVectorIn = 0.0,
     output_shape: tuple[int, ...] | None = None,
     output: None = None,
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
 ) -> _ComplexArrayOut: ...
 @overload
 def affine_transform(
     input: npt.ArrayLike,
-    matrix: _FloatMatrixIn | _FloatVectorIn,
-    offset: _FloatVectorIn | _FloatValueIn = 0.0,
+    matrix: _FloatMatrixIn,
+    offset: _FloatVectorIn = 0.0,
     output_shape: tuple[int, ...] | None = None,
     *,
     output: npt.NDArray[_SCT] | type[_SCT],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
 ) -> npt.NDArray[_SCT]: ...
 @overload
 def affine_transform(
     input: npt.ArrayLike,
-    matrix: _FloatMatrixIn | _FloatVectorIn,
-    offset: _FloatVectorIn | _FloatValueIn = 0.0,
+    matrix: _FloatMatrixIn,
+    offset: _FloatVectorIn = 0.0,
     output_shape: tuple[int, ...] | None = None,
     *,
     output: type[int],
@@ -321,8 +321,8 @@ def affine_transform(
 @overload
 def affine_transform(
     input: npt.ArrayLike,
-    matrix: _FloatMatrixIn | _FloatVectorIn,
-    offset: _FloatVectorIn | _FloatValueIn = 0.0,
+    matrix: _FloatMatrixIn,
+    offset: _FloatVectorIn = 0.0,
     output_shape: tuple[int, ...] | None = None,
     *,
     output: type[float],
@@ -334,14 +334,14 @@ def affine_transform(
 @overload
 def affine_transform(
     input: npt.ArrayLike,
-    matrix: _FloatMatrixIn | _FloatVectorIn,
-    offset: _FloatVectorIn | _FloatValueIn = 0.0,
+    matrix: _FloatMatrixIn,
+    offset: _FloatVectorIn = 0.0,
     output_shape: tuple[int, ...] | None = None,
     *,
     output: type[complex],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
 ) -> npt.NDArray[np.complex128 | np.float64 | np.int_]: ...
 
@@ -358,12 +358,12 @@ def shift(
 ) -> _FloatArrayOut: ...
 @overload
 def shift(
-    input: _ComplexArrayIn,
+    input: _ScalarArrayIn,
     shift: _FloatArrayIn,
     output: None = None,
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
 ) -> _ComplexArrayOut: ...
 @overload
@@ -373,7 +373,7 @@ def shift(
     output: npt.NDArray[_SCT] | type[_SCT],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
 ) -> npt.NDArray[_SCT]: ...
 @overload
@@ -403,7 +403,7 @@ def shift(
     output: type[complex],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
 ) -> npt.NDArray[np.complex128 | np.float64 | np.int_]: ...
 
@@ -422,12 +422,12 @@ def zoom(
 ) -> _FloatArrayOut: ...
 @overload
 def zoom(
-    input: _ComplexArrayIn,
+    input: _ScalarArrayIn,
     zoom: _FloatArrayIn,
     output: None = None,
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
     *,
     grid_mode: bool = False,
@@ -439,7 +439,7 @@ def zoom(
     output: npt.NDArray[_SCT] | type[_SCT],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
     *,
     grid_mode: bool = False,
@@ -475,7 +475,7 @@ def zoom(
     output: type[complex],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
     *,
     grid_mode: bool = False,
@@ -496,14 +496,14 @@ def rotate(
 ) -> _FloatArrayOut: ...
 @overload
 def rotate(
-    input: _ComplexArrayIn,
+    input: _ScalarArrayIn,
     angle: _FloatValueIn,
     axes: tuple[_IntValueIn, _IntValueIn] = (1, 0),
     reshape: bool = True,
     output: None = None,
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
 ) -> _ComplexArrayOut: ...
 @overload
@@ -516,7 +516,7 @@ def rotate(
     output: npt.NDArray[_SCT] | type[_SCT],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
 ) -> npt.NDArray[_SCT]: ...
 @overload
@@ -529,7 +529,7 @@ def rotate(
     output: type[int],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
 ) -> npt.NDArray[np.int_]: ...
 @overload
@@ -542,7 +542,7 @@ def rotate(
     output: type[float],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
 ) -> npt.NDArray[np.float64 | np.int_]: ...
 @overload
@@ -555,6 +555,6 @@ def rotate(
     output: type[complex],
     order: _Order = 3,
     mode: _Mode = "constant",
-    cval: _ComplexValueIn = 0.0,
+    cval: _ScalarValueIn = 0.0,
     prefilter: _BoolValueIn = True,
 ) -> npt.NDArray[np.complex128 | np.float64 | np.int_]: ...
