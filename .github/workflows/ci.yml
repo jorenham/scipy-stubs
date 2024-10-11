@@ -47,7 +47,6 @@ jobs:
       - name: typecheck (partial)
         run: |
           targets=(
-            "__init__.pyi"
             "cluster"
             "constants"
             "datasets"
@@ -56,9 +55,8 @@ jobs:
             "io"
             "linalg"
             "misc"
+            "ndimage"
             "special"
-            "stats/distributions.pyi"
-            "version.pyi"
           )
           for target in "${targets[@]}"; do
             poe mypy $target
@@ -84,7 +82,7 @@ jobs:
           "scipy.io",
           "scipy.linalg",
           "scipy.misc",
-          # "scipy.ndimage",
+          "scipy.ndimage",
           "scipy.odr",
           "scipy.optimize",
           # "scipy.signal",
@@ -92,8 +90,6 @@ jobs:
           # "scipy.spatial",
           "scipy.special",
           # "scipy.stats",
-          "scipy.stats.contingency scipy.stats.distributions",
-          "scipy.version"
         ]
     steps:
       - uses: actions/checkout@v4

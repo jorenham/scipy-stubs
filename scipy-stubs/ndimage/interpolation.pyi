@@ -70,10 +70,19 @@ def shift(
     prefilter: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def spline_filter(input: object, order: object = ..., output: object = ..., mode: object = ...) -> object: ...
+def spline_filter(
+    input: object,
+    order: object = ...,
+    output: object = ...,
+    mode: object = ...,
+) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def spline_filter1d(
-    input: object, order: object = ..., axis: object = ..., output: object = ..., mode: object = ...
+    input: object,
+    order: object = ...,
+    axis: object = ...,
+    output: object = ...,
+    mode: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def zoom(

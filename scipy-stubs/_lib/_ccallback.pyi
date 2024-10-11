@@ -22,6 +22,12 @@ _FuncT_co = TypeVar("_FuncT_co", bound=_Function, covariant=True, default=_Funct
 _DataT_co = TypeVar("_DataT_co", bound=_UserData | None, covariant=True, default=_UserData)
 
 class LowLevelCallable(tuple[CapsuleType, _FuncT_co, _DataT_co], Generic[_FuncT_co, _DataT_co]):
+    @property
+    def function(self, /) -> _FuncT_co: ...
+    @property
+    def user_data(self, /) -> _DataT_co: ...
+    @property
+    def signature(self, /) -> str: ...
     def __new__(
         cls,
         function: _FuncT_co | LowLevelCallable[_FuncT_co, _DataT_co],
@@ -36,12 +42,6 @@ class LowLevelCallable(tuple[CapsuleType, _FuncT_co, _DataT_co], Generic[_FuncT_
         user_data: _UserData | None = None,
         signature: str | None = None,
     ) -> Self: ...
-    @override
-    def __getitem__(self, idx: Never, /) -> NoReturn: ...  # type: ignore[override]
     # NOTE: __getitem__ will raise a ValueError
-    @property
-    def function(self, /) -> _FuncT_co: ...
-    @property
-    def user_data(self, /) -> _DataT_co: ...
-    @property
-    def signature(self, /) -> str: ...
+    @override
+    def __getitem__(self, idx: Never, /) -> NoReturn: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]

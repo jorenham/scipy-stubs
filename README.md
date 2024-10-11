@@ -114,7 +114,7 @@ The exact version requirements are specified in the [`pyproject.toml`](pyproject
 | `scipy.io`          | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :full_moon:            |
 | `scipy.linalg`      | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :waxing_gibbous_moon:  |
 | ~`scipy.misc`~      | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :full_moon:            |
-| `scipy.ndimage`     | :heavy_check_mark:  | :x:                | :x:                   | :new_moon:             |
+| `scipy.ndimage`     | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark:    | :full_moon:            |
 | `scipy.odr`         | :heavy_check_mark:  | :heavy_check_mark: | :x:                   | :waxing_crescent_moon: |
 | `scipy.optimize`    | :heavy_check_mark:  | :heavy_check_mark: | :x:                   | :first_quarter_moon:   |
 | `scipy.signal`      | :heavy_check_mark:  | :x:                | :x:                   | :new_moon:             |
