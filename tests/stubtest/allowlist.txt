@@ -3,6 +3,7 @@ scipy._typing
 scipy.integrate._typing
 scipy.ndimage._typing
 scipy.optimize._typing
+scipy.stats._typing
 
 # submodules
 scipy._lib.array_api_compat.*
