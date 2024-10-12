@@ -1,6 +1,6 @@
 from typing import NamedTuple
 
-from scipy._typing import Untyped
+from scipy._typing import AnyBool, Untyped
 
 __all__ = [
     "argstoarray",
@@ -164,39 +164,41 @@ def kruskal(*args) -> Untyped: ...
 def ks_1samp(x, cdf, args=(), alternative: str = "two-sided", method: str = "auto") -> Untyped: ...
 def ks_2samp(data1, data2, alternative: str = "two-sided", method: str = "auto") -> Untyped: ...
 def kstest(data1, data2, args=(), alternative: str = "two-sided", method: str = "auto") -> Untyped: ...
-def trima(a, limits: Untyped | None = None, inclusive: tuple[bool, bool] = (True, True)) -> Untyped: ...
-def trimr(a, limits: Untyped | None = None, inclusive: tuple[bool, bool] = (True, True), axis: int | None = None) -> Untyped: ...
+def trima(a, limits: Untyped | None = None, inclusive: tuple[AnyBool, AnyBool] = (True, True)) -> Untyped: ...
+def trimr(
+    a, limits: Untyped | None = None, inclusive: tuple[AnyBool, AnyBool] = (True, True), axis: int | None = None
+) -> Untyped: ...
 def trim(
     a,
     limits: Untyped | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
+    inclusive: tuple[AnyBool, AnyBool] = (True, True),
     relative: bool = False,
     axis: int | None = None,
 ) -> Untyped: ...
 def trimboth(
     data,
     proportiontocut: float = 0.2,
-    inclusive: tuple[bool, bool] = (True, True),
+    inclusive: tuple[AnyBool, AnyBool] = (True, True),
     axis: int | None = None,
 ) -> Untyped: ...
 def trimtail(
     data,
     proportiontocut: float = 0.2,
     tail: str = "left",
-    inclusive: tuple[bool, bool] = (True, True),
+    inclusive: tuple[AnyBool, AnyBool] = (True, True),
     axis: int | None = None,
 ) -> Untyped: ...
 def trimmed_mean(
     a,
     limits=(0.1, 0.1),
-    inclusive: tuple[bool, bool] = (1, 1),
+    inclusive: tuple[AnyBool, AnyBool] = (1, 1),
     relative: bool = True,
     axis: int | None = None,
 ) -> Untyped: ...
 def trimmed_var(
     a,
     limits=(0.1, 0.1),
-    inclusive: tuple[bool, bool] = (1, 1),
+    inclusive: tuple[AnyBool, AnyBool] = (1, 1),
     relative: bool = True,
     axis: int | None = None,
     ddof: int = 0,
@@ -204,17 +206,19 @@ def trimmed_var(
 def trimmed_std(
     a,
     limits=(0.1, 0.1),
-    inclusive: tuple[bool, bool] = (1, 1),
+    inclusive: tuple[AnyBool, AnyBool] = (1, 1),
     relative: bool = True,
     axis: int | None = None,
     ddof: int = 0,
 ) -> Untyped: ...
-def trimmed_stde(a, limits=(0.1, 0.1), inclusive: tuple[bool, bool] = (1, 1), axis: int | None = None) -> Untyped: ...
-def tmean(a, limits: Untyped | None = None, inclusive: tuple[bool, bool] = (True, True), axis: int | None = None) -> Untyped: ...
+def trimmed_stde(a, limits=(0.1, 0.1), inclusive: tuple[AnyBool, AnyBool] = (1, 1), axis: int | None = None) -> Untyped: ...
+def tmean(
+    a, limits: Untyped | None = None, inclusive: tuple[AnyBool, AnyBool] = (True, True), axis: int | None = None
+) -> Untyped: ...
 def tvar(
     a,
     limits: Untyped | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
+    inclusive: tuple[AnyBool, AnyBool] = (True, True),
     axis: int = 0,
     ddof: int = 1,
 ) -> Untyped: ...
@@ -223,14 +227,14 @@ def tmax(a, upperlimit: Untyped | None = None, axis: int = 0, inclusive: bool = 
 def tsem(
     a,
     limits: Untyped | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
+    inclusive: tuple[AnyBool, AnyBool] = (True, True),
     axis: int = 0,
     ddof: int = 1,
 ) -> Untyped: ...
 def winsorize(
     a,
     limits: Untyped | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
+    inclusive: tuple[AnyBool, AnyBool] = (True, True),
     inplace: bool = False,
     axis: int | None = None,
     nan_policy: str = "propagate",

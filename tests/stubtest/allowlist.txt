@@ -96,4 +96,5 @@ scipy._lib._pep440._Version.__replace__  # py313
 scipy._lib._util.FullArgSpec.__replace__  # py313
 scipy.integrate._quadrature.QMCQuadResult.__replace__  # py313
 scipy.stats._unuran.unuran_wrapper.UError.__replace__  # py313
-scipy.stats._stats_py.(\w+).__replace__
+scipy.stats._mstats_basic.(\w+).__replace__  # py313
+scipy.stats._stats_py.(\w+).__replace__  # py313
