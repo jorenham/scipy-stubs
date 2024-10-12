@@ -63,6 +63,7 @@ scipy.spatial.transform.tests.*
 scipy.spatial.transform._rotation.__test__
 scipy.special.tests.*
 scipy.stats.tests.*
+scipy.stats._levy_stable.levyst.__test__
 scipy.stats._qmc_cy.__test__
 scipy.stats._sobol.__test__
 
