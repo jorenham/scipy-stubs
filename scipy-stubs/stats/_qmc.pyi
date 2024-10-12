@@ -143,15 +143,13 @@ class PoissonDisk(QMCEngine):
         ncandidates: AnyInt = 30,
         optimization: Literal["random-cd", "lloyd"] | None = None,
         seed: Seed | None = None,
-        l_bounds: npt.ArrayLike | None = None,
-        u_bounds: npt.ArrayLike | None = None,
     ) -> None: ...
     def fill_space(self) -> UntypedArray: ...
     @override
     def reset(self) -> PoissonDisk: ...
 
 class MultivariateNormalQMC:
-    engine: Untyped
+    engine: QMCEngine
     def __init__(
         self,
         mean: npt.ArrayLike,
@@ -167,7 +165,7 @@ class MultivariateNormalQMC:
 class MultinomialQMC:
     pvals: Untyped
     n_trials: Untyped
-    engine: Untyped
+    engine: QMCEngine
     def __init__(
         self,
         pvals: npt.ArrayLike,
