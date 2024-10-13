@@ -97,6 +97,8 @@ scipy._lib._docscrape.Parameter.__replace__
 scipy._lib._pep440._Version.__replace__
 scipy._lib._util.FullArgSpec.__replace__
 scipy.integrate._quadrature.QMCQuadResult.__replace__
+scipy.stats._binned_statistic.(\w+).__replace__
+scipy.stats._common.ConfidenceInterval.__replace__
 scipy.stats._fit.(\w+).__replace__
 scipy.stats._hypotests.(\w+).__replace__
 scipy.stats._mannwhitneyu.MannwhitneyuResult.__replace__
