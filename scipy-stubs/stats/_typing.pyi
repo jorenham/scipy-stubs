@@ -1,10 +1,10 @@
 # NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`
 
 import abc
-from typing import final, type_check_only
+from typing import Literal, TypeAlias, final, type_check_only
 from typing_extensions import Self, TypeVarTuple, Unpack
 
-__all__ = ("BaseBunch",)
+__all__ = ("BaseBunch", "PowerDivergenceStatistic")
 
 _Ts = TypeVarTuple("_Ts")
 
@@ -41,3 +41,12 @@ class BaseBunch(tuple[Unpack[_Ts]]):
 
     # NOTE: `._asdict()` includes both `{fields}` and `{extra_fields}`
     def _asdict(self, /) -> dict[str, object]: ...
+
+PowerDivergenceStatistic: TypeAlias = Literal[
+    "pearson",
+    "log-likelihood",
+    "freeman-tukey",
+    "mod-log-likelihood",
+    "neyman",
+    "cressie-read",
+]

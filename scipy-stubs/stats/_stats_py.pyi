@@ -11,7 +11,7 @@ from numpy._typing import _ArrayLikeBool_co, _ArrayLikeFloat_co, _ArrayLikeInt_c
 from scipy._typing import Alternative, AnyReal, NanPolicy, Seed
 from ._resampling import BootstrapMethod, ResamplingMethod
 from ._stats_mstats_common import siegelslopes, theilslopes
-from ._typing import BaseBunch
+from ._typing import BaseBunch, PowerDivergenceStatistic
 
 __all__ = [
     "alexandergovern",
@@ -99,14 +99,6 @@ _FloatND: TypeAlias = _GenericND[_SCT_float]
 _RealND: TypeAlias = _GenericND[_SCT_real]
 
 _Interpolation: TypeAlias = Literal["linear", "lower", "higher", "nearest", "midpoint"]
-_PowerDivergenceStatistic: TypeAlias = Literal[
-    "pearson",
-    "log-likelihood",
-    "freeman-tukey",
-    "mod-log-likelihood",
-    "neyman",
-    "cressie-read",
-]
 
 _NDT_int = TypeVar("_NDT_int", bound=int | _IntND, default=int | _IntND)
 _NDT_float = TypeVar("_NDT_float", bound=float | _FloatND, default=float | _FloatND)
@@ -713,7 +705,7 @@ def power_divergence(
     f_exp: _ArrayLikeFloat_co | None = None,
     ddof: int = 0,
     axis: int | None = 0,
-    lambda_: _PowerDivergenceStatistic | float | None = None,
+    lambda_: PowerDivergenceStatistic | float | None = None,
 ) -> Power_divergenceResult: ...
 def chisquare(
     f_obs: _ArrayLikeFloat_co,
