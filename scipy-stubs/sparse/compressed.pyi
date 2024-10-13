@@ -31,7 +31,7 @@ __all__ = [
 ]
 
 @deprecated("will be removed in SciPy v2.0.0")
-class SparseEfficiencyWarning: ...
+class SparseEfficiencyWarning(UserWarning): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 class IndexMixin:

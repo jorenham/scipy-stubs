@@ -18,7 +18,7 @@ __all__ = [
 test: ModuleType
 
 @deprecated("will be removed in SciPy v2.0.0")
-class MatrixRankWarning: ...
+class MatrixRankWarning(UserWarning): ...
 
 @final
 @deprecated("will be removed in SciPy v2.0.0")
