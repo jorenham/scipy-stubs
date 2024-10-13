@@ -1,4 +1,7 @@
 # This file is not meant for public use and will be removed in SciPy v2.0.0.
+
+from typing_extensions import deprecated
+
 from ._constants import (
     N_A,
     Avogadro,
@@ -36,7 +39,6 @@ from ._constants import (
     calorie_th,
     carat,
     centi,
-    convert_temperature,
     day,
     deci,
     degree,
@@ -87,7 +89,6 @@ from ._constants import (
     kilogram_force,
     kmh,
     knot,
-    lambda2nu,
     lb,
     lbf,
     light_year,
@@ -114,7 +115,6 @@ from ._constants import (
     nano,
     nautical_mile,
     neutron_mass,
-    nu2lambda,
     ounce,
     oz,
     parsec,
@@ -312,3 +312,14 @@ __all__ = [
     "zero_Celsius",
     "zetta",
 ]
+
+@deprecated("will be removed in SciPy v2.0.0")
+def convert_temperature(
+    val: object,
+    old_scale: object,
+    new_scale: object,
+) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def lambda2nu(lambda_: object) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def nu2lambda(nu: object) -> object: ...
