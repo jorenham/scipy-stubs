@@ -1,26 +1,27 @@
-from typing import NamedTuple
+from typing import Generic, Literal, NamedTuple, TypeAlias
+from typing_extensions import TypeVar
 
-from scipy import special as special, stats as stats
-from scipy._typing import Untyped
+import numpy as np
+import numpy.typing as npt
+from numpy._typing import _ArrayLikeFloat_co
+from scipy._typing import Alternative
+from ._resampling import PermutationMethod
 
-class _MWU:
-    def __init__(self, n1, n2) -> None: ...
-    n1: Untyped
-    n2: Untyped
-    s_array: Untyped
-    configurations: Untyped
-    def set_shapes(self, n1, n2): ...
-    def reset(self): ...
-    def pmf(self, k) -> Untyped: ...
-    def cdf(self, k) -> Untyped: ...
-    def sf(self, k) -> Untyped: ...
-    def build_sigma_array(self, a) -> Untyped: ...
-    def build_u_freqs_array(self, maxu) -> Untyped: ...
+_FloatOrArray: TypeAlias = float | np.float64 | npt.NDArray[np.float64]
+_FloatOrArrayT = TypeVar("_FloatOrArrayT", bound=_FloatOrArray, default=_FloatOrArray)
 
-class MannwhitneyuResult(NamedTuple):
-    statistic: Untyped
-    pvalue: Untyped
+class MannwhitneyuResult(NamedTuple, Generic[_FloatOrArrayT]):
+    statistic: _FloatOrArrayT
+    pvalue: _FloatOrArrayT
 
 def mannwhitneyu(
-    x, y, use_continuity: bool = True, alternative: str = "two-sided", axis: int = 0, method: str = "auto"
-) -> Untyped: ...
+    x: _ArrayLikeFloat_co,
+    y: _ArrayLikeFloat_co,
+    use_continuity: bool = True,
+    alternative: Alternative = "two-sided",
+    axis: int = 0,
+    method: Literal["auto", "asymptotic", "exact"] | PermutationMethod = "auto",
+    *,
+    nan_policy: Literal["propagate", "raise", "coerce", "omit"] = "propagate",
+    keepdims: bool = False,
+) -> MannwhitneyuResult: ...

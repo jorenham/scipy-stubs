@@ -10,19 +10,6 @@ from numpy._typing import _ArrayLikeInt_co
 import scipy._typing as spt
 from scipy.integrate._typing import QuadOpts as _QuadOpts
 
-__all__ = [
-    "_ShapeInfo",
-    "argsreduce",
-    "get_distribution_names",
-    "rv_continuous",
-    "rv_continuous_frozen",
-    "rv_discrete",
-    "rv_discrete_frozen",
-    "rv_frozen",
-    "rv_generic",
-    "rv_sample",
-]
-
 _T = TypeVar("_T")
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]

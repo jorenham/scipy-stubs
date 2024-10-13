@@ -3,8 +3,6 @@ from typing_extensions import Self
 import numpy.typing as npt
 import optype.numpy as onpt
 
-__all__ = ["CensoredData"]
-
 class CensoredData:
     def __init__(
         self,

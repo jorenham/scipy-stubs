@@ -92,7 +92,7 @@ jobs:
           # "scipy.sparse",
           "scipy.spatial",
           "scipy.special",
-          # "scipy.stats",
+          "scipy.stats",
         ]
     steps:
       - uses: actions/checkout@v4

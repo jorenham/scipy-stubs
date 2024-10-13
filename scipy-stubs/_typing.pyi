@@ -1,4 +1,5 @@
-# Helper types for internal use (type-check only).
+# NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`
+
 from os import PathLike
 from collections.abc import Callable, Sequence
 from typing import IO, Any, Literal, Protocol, TypeAlias, type_check_only
@@ -10,6 +11,7 @@ import optype.numpy as onpt
 
 __all__ = [
     "RNG",
+    "Alternative",
     "AnyBool",
     "AnyChar",
     "AnyComplex",
@@ -74,6 +76,7 @@ CorrelateMode: TypeAlias = Literal["valid", "same", "full"]
 
 # scipy literals
 NanPolicy: TypeAlias = Literal["raise", "propagate", "omit"]
+Alternative: TypeAlias = Literal["two-sided", "less", "greater"]
 
 # used in `scipy.linalg.blas` and `scipy.linalg.lapack`
 @type_check_only
