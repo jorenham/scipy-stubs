@@ -103,7 +103,7 @@ scipy.stats._fit.(\w+).__replace__
 scipy.stats._hypotests.(\w+).__replace__
 scipy.stats._mannwhitneyu.MannwhitneyuResult.__replace__
 scipy.stats._morestats.(\w+).__replace__
-scipy.stats._multicomp.DunnetResult.__replace__
+scipy.stats._multicomp.DunnettResult.__replace__
 scipy.stats._page_trend_test.PageTrendTestResult.__replace__
 scipy.stats._relative_risk.RelativeRiskResult.__replace__
 scipy.stats._resampling.(\w+).__replace__

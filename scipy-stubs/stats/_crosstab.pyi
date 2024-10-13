@@ -11,7 +11,7 @@ from ._typing import BaseBunch
 
 _SCT = TypeVar("_SCT", bound=np.generic, default=np.generic)
 
-class CrossTabResult(BaseBunch[_SCT], Generic[_SCT]):
+class CrosstabResult(BaseBunch[_SCT], Generic[_SCT]):
     @property
     def elements(self, /) -> tuple[npt.NDArray[_SCT], ...]: ...
     @property
@@ -34,40 +34,40 @@ def crosstab(
     *args: _ArrayLike[_SCT],
     levels: _ArrayLike[_SCT] | None = None,
     sparse: bool = False,
-) -> CrossTabResult[_SCT]: ...
+) -> CrosstabResult[_SCT]: ...
 @overload
 def crosstab(
     *args: Sequence[bool],
     levels: Sequence[bool] | None = None,
     sparse: bool = False,
-) -> CrossTabResult[np.bool_]: ...
+) -> CrosstabResult[np.bool_]: ...
 @overload
 def crosstab(
     *args: Sequence[int],
     levels: Sequence[int] | None = None,
     sparse: bool = False,
-) -> CrossTabResult[np.int_] | CrossTabResult[np.bool_]: ...
+) -> CrosstabResult[np.int_] | CrosstabResult[np.bool_]: ...
 @overload
 def crosstab(
     *args: Sequence[float],
     levels: Sequence[float] | None = None,
     sparse: bool = False,
-) -> CrossTabResult[np.float64] | CrossTabResult[np.int_] | CrossTabResult[np.bool_]: ...
+) -> CrosstabResult[np.float64] | CrosstabResult[np.int_] | CrosstabResult[np.bool_]: ...
 @overload
 def crosstab(
     *args: Sequence[complex],
     levels: Sequence[complex] | None = None,
     sparse: bool = False,
-) -> CrossTabResult[np.complex128] | CrossTabResult[np.float64] | CrossTabResult[np.int_] | CrossTabResult[np.bool_]: ...
+) -> CrosstabResult[np.complex128] | CrosstabResult[np.float64] | CrosstabResult[np.int_] | CrosstabResult[np.bool_]: ...
 @overload
 def crosstab(
     *args: Sequence[bytes],
     levels: Sequence[bytes] | None = None,
     sparse: bool = False,
-) -> CrossTabResult[np.bytes_]: ...
+) -> CrosstabResult[np.bytes_]: ...
 @overload
 def crosstab(
     *args: Sequence[str],
     levels: Sequence[str] | None = None,
     sparse: bool = False,
-) -> CrossTabResult[np.str_]: ...
+) -> CrosstabResult[np.str_]: ...
