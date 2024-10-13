@@ -14,16 +14,21 @@ class FitResult:
     def nllf(self, params: Untyped | None = None, data: Untyped | None = None) -> Untyped: ...
     def plot(self, ax: Untyped | None = None, *, plot_type: str = "hist") -> Untyped: ...
 
-def fit(
-    dist, data, bounds: Untyped | None = None, *, guess: Untyped | None = None, method: str = "mle", optimizer=...
-) -> Untyped: ...
-
 class GoodnessOfFitResult(NamedTuple):
     fit_result: Untyped
     statistic: Untyped
     pvalue: Untyped
     null_distribution: Untyped
 
+def fit(
+    dist,
+    data,
+    bounds: Untyped | None = None,
+    *,
+    guess: Untyped | None = None,
+    method: str = "mle",
+    optimizer=...,
+) -> Untyped: ...
 def goodness_of_fit(
     dist,
     data,

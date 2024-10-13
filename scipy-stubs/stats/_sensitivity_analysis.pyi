@@ -9,6 +9,24 @@ from scipy.stats._resampling import BootstrapResult as BootstrapResult
 
 __all__ = ["sobol_indices"]
 
+_SobolKey: TypeAlias = Literal["f_A", "f_B", "f_AB"]
+
+# exists at runtime
+class PPFDist(Protocol):
+    @property
+    def ppf(self) -> Callable[..., float]: ...
+
+@dataclass
+class BootstrapSobolResult:
+    first_order: BootstrapResult
+    total_order: BootstrapResult
+
+@dataclass
+class SobolResult:
+    first_order: spt.UntypedArray
+    total_order: spt.UntypedArray
+    def bootstrap(self, confidence_level: spt.AnyReal = 0.95, n_resamples: spt.AnyInt = 999) -> BootstrapSobolResult: ...
+
 def f_ishigami(x: npt.ArrayLike) -> spt.UntypedArray: ...
 def sample_A_B(
     n: spt.AnyInt,
@@ -21,23 +39,6 @@ def saltelli_2010(
     f_B: spt.UntypedArray,
     f_AB: spt.UntypedArray,
 ) -> tuple[spt.UntypedArray, spt.UntypedArray]: ...
-@dataclass
-class BootstrapSobolResult:
-    first_order: BootstrapResult
-    total_order: BootstrapResult
-
-@dataclass
-class SobolResult:
-    first_order: spt.UntypedArray
-    total_order: spt.UntypedArray
-    def bootstrap(self, confidence_level: spt.AnyReal = 0.95, n_resamples: spt.AnyInt = 999) -> BootstrapSobolResult: ...
-
-class PPFDist(Protocol):
-    @property
-    def ppf(self) -> Callable[..., float]: ...
-
-_SobolKey: TypeAlias = Literal["f_A", "f_B", "f_AB"]
-
 def sobol_indices(
     *,
     func: Callable[[npt.NDArray[np.number[Any]]], npt.ArrayLike] | dict[_SobolKey, npt.NDArray[np.number[Any]]],
