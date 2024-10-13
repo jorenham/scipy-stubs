@@ -99,6 +99,7 @@ scipy._lib._util.FullArgSpec.__replace__
 scipy.integrate._quadrature.QMCQuadResult.__replace__
 scipy.stats._fit.(\w+).__replace__
 scipy.stats._hypotests.(\w+).__replace__
+scipy.stats._mannwhitneyu.MannwhitneyuResult.__replace__
 scipy.stats._morestats.(\w+).__replace__
 scipy.stats._multicomp.DunnetResult.__replace__
 scipy.stats._page_trend_test.PageTrendTestResult.__replace__
