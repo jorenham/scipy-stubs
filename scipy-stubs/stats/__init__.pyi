@@ -23,7 +23,7 @@ from ._hypotests import *
 from ._kde import gaussian_kde
 from ._mannwhitneyu import mannwhitneyu
 from ._mgc import multiscale_graphcorr
-from ._morestats import *
+from ._morestats import *  # TODO:
 from ._multicomp import dunnett
 from ._multivariate import *
 from ._page_trend_test import page_trend_test

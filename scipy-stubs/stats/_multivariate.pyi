@@ -1,7 +1,6 @@
-import abc
 from collections.abc import Sequence
 from typing import Any, Final, Generic, Literal, TypeAlias, overload, type_check_only
-from typing_extensions import Self, TypeVar, override
+from typing_extensions import TypeVar, override
 
 import numpy as np
 import numpy.typing as npt
@@ -63,15 +62,11 @@ class rng_mixin:
 class multi_rv_generic(rng_mixin):
     def __init__(self, /, seed: spt.Seed | None = None) -> None: ...
     def _get_random_state(self, /, random_state: spt.Seed) -> spt.RNG: ...
-    @abc.abstractmethod
-    def __call__(self, /, *args: Any, **kwds: Any) -> multi_rv_frozen[Self]: ...
 
 class multi_rv_frozen(rng_mixin, Generic[_RVG_co]):
-    @property
-    def _dist(self, /) -> _RVG_co: ...
+    _dist: _RVG_co
 
 class multivariate_normal_gen(multi_rv_generic):
-    @override
     def __call__(
         self,
         /,
@@ -133,6 +128,7 @@ class multivariate_normal_gen(multi_rv_generic):
     def entropy(self, /, mean: _ArrayLike_uif_1d | None = None, cov: _AnyCov = 1) -> np.float64: ...
     def fit(
         self,
+        /,
         x: _ArrayLike_uif_nd,
         fix_mean: _ArrayLike_uif_1d | None = None,
         fix_cov: _ArrayLike_uif_2d | None = None,
@@ -145,6 +141,8 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen]):
     abseps: Final[float]
     releps: Final[float]
     cov_object: Final[Covariance]
+    mean: onpt.Array[tuple[int], np.float64]
+
     def __init__(
         self,
         /,
@@ -156,8 +154,6 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen]):
         abseps: float = 1e-05,
         releps: float = 1e-05,
     ) -> None: ...
-    @property
-    def mean(self, /) -> onpt.Array[tuple[int], np.float64]: ...
     @property
     def cov(self, /) -> onpt.Array[tuple[int, int], np.float64]: ...
     def logpdf(self, /, x: _ArrayLike_uif_nd) -> _ScalarOrArray_f8: ...
@@ -180,7 +176,6 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen]):
     def entropy(self, /) -> np.float64: ...
 
 class matrix_normal_gen(multi_rv_generic):
-    @override
     def __call__(
         self,
         /,
@@ -221,13 +216,14 @@ class matrix_normal_frozen(multi_rv_frozen[matrix_normal_gen]):
     colpsd: Final[_covariance._PSD]
     def __init__(
         self,
+        /,
         mean: _ArrayLike_uif_2d | None = None,
         rowcov: _ArrayLike_uif_2d | spt.AnyReal = 1,
         colcov: _ArrayLike_uif_2d | spt.AnyReal = 1,
         seed: spt.Seed | None = None,
     ) -> None: ...
-    def logpdf(self, /, x: _ArrayLike_uif_nd) -> _ScalarOrArray_f8: ...
-    def pdf(self, /, x: _ArrayLike_uif_nd) -> _ScalarOrArray_f8: ...
+    def logpdf(self, /, X: _ArrayLike_uif_nd) -> _ScalarOrArray_f8: ...
+    def pdf(self, /, X: _ArrayLike_uif_nd) -> _ScalarOrArray_f8: ...
     def rvs(
         self,
         /,
@@ -237,7 +233,6 @@ class matrix_normal_frozen(multi_rv_frozen[matrix_normal_gen]):
     def entropy(self, /) -> np.float64: ...
 
 class dirichlet_gen(multi_rv_generic):
-    @override
     def __call__(self, /, alpha: _ArrayLike_uif_1d, seed: spt.Seed | None = None) -> dirichlet_frozen: ...
     def logpdf(self, /, x: _ArrayLike_uif_nd, alpha: _ArrayLike_uif_1d) -> _ScalarOrArray_f8: ...
     def pdf(self, /, x: _ArrayLike_uif_nd, alpha: _ArrayLike_uif_1d) -> _ScalarOrArray_f8: ...
@@ -307,7 +302,6 @@ class dirichlet_frozen(multi_rv_frozen[dirichlet_gen]):
     def rvs(self, /, size: onpt.AtLeast2D, random_state: spt.Seed | None = None) -> onpt.Array[onpt.AtLeast3D, np.float64]: ...
 
 class wishart_gen(multi_rv_generic):
-    @override
     def __call__(
         self,
         /,
@@ -390,7 +384,6 @@ class invwishart_frozen(multi_rv_frozen[invwishart_gen]):
 
 # NOTE: `n` and `p` are broadcast-able (although this breaks `.rvs()` at runtime...)
 class multinomial_gen(multi_rv_generic):
-    @override
     def __call__(self, /, n: onpt.AnyIntegerArray, p: _ArrayLike_f_nd, seed: spt.Seed | None = None) -> multinomial_frozen: ...
     def logpmf(self, /, x: _ArrayLike_uif_nd, n: onpt.AnyIntegerArray, p: _ArrayLike_f_nd) -> _ScalarOrArray_f8: ...
     def pmf(self, /, x: _ArrayLike_uif_nd, n: onpt.AnyIntegerArray, p: _ArrayLike_f_nd) -> _ScalarOrArray_f8: ...
@@ -441,7 +434,7 @@ class _group_rv_gen_mixin(Generic[_RVF_co]):
         self,
         /,
         dim: spt.AnyInt,
-        size: int = 1,
+        size: int | None = 1,
         random_state: spt.Seed | None = None,
     ) -> onpt.Array[tuple[int, int, int], np.float64]: ...
 
@@ -449,7 +442,12 @@ class _group_rv_gen_mixin(Generic[_RVF_co]):
 class _group_rv_frozen_mixin:
     dim: spt.AnyInt
     def __init__(self, /, dim: spt.AnyInt | None = None, seed: spt.Seed | None = None) -> None: ...
-    def rvs(self, /, size: int = 1, random_state: spt.Seed | None = None) -> onpt.Array[tuple[int, int, int], np.float64]: ...
+    def rvs(
+        self,
+        /,
+        size: int | None = 1,
+        random_state: spt.Seed | None = None,
+    ) -> onpt.Array[tuple[int, int, int], np.float64]: ...
 
 class special_ortho_group_gen(_group_rv_gen_mixin[special_ortho_group_frozen], multi_rv_generic): ...
 class special_ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[special_ortho_group_gen]): ...
@@ -458,12 +456,28 @@ class ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[ortho_group_gen
 class unitary_group_gen(_group_rv_gen_mixin[unitary_group_frozen], multi_rv_generic): ...
 class unitary_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[unitary_group_gen]): ...
 
-# TODO: `uniform_direction` is vector-valued => make mixins generic on the shape-type, default to `tuple[int, int, int]`
-class uniform_direction_gen(_group_rv_gen_mixin[uniform_direction_frozen], multi_rv_generic): ...
-class uniform_direction_frozen(_group_rv_frozen_mixin, multi_rv_frozen[uniform_direction_gen]): ...
+# TODO(jorenham): `uniform_direction` is vector-valued, so make generic on the shape-type, default to `tuple[int, int, int]`
+class uniform_direction_gen(multi_rv_generic):
+    def __call__(self, /, dim: spt.AnyInt | None = None, seed: spt.Seed | None = None) -> uniform_direction_frozen: ...
+    def rvs(
+        self,
+        /,
+        dim: spt.AnyInt,
+        size: int | None = None,
+        random_state: spt.Seed | None = None,
+    ) -> onpt.Array[tuple[int, int, int], np.float64]: ...
+
+class uniform_direction_frozen(multi_rv_frozen[uniform_direction_gen]):
+    dim: spt.AnyInt
+    def __init__(self, /, dim: spt.AnyInt | None = None, seed: spt.Seed | None = None) -> None: ...
+    def rvs(
+        self,
+        /,
+        size: int | None = None,
+        random_state: spt.Seed | None = None,
+    ) -> onpt.Array[tuple[int, int, int], np.float64]: ...
 
 class random_correlation_gen(multi_rv_generic):
-    @override
     def __call__(
         self,
         /,
@@ -496,7 +510,6 @@ class random_correlation_frozen(multi_rv_frozen[random_correlation_gen]):
     def rvs(self, /, random_state: spt.Seed | None = None) -> npt.NDArray[np.float64]: ...
 
 class multivariate_t_gen(multi_rv_generic):
-    @override
     def __call__(
         self,
         /,
@@ -557,10 +570,10 @@ class multivariate_t_gen(multi_rv_generic):
     @overload
     def rvs(
         self,
+        /,
         loc: _ArrayLike_uif_1d | None,
         shape: spt.AnyReal | _ArrayLike_uif_2d,
         df: int,
-        /,
         size: tuple[()],
         random_state: spt.Seed | None = None,
     ) -> onpt.Array[tuple[int], np.float64]: ...
@@ -588,10 +601,10 @@ class multivariate_t_gen(multi_rv_generic):
     @overload
     def rvs(
         self,
+        /,
         loc: _ArrayLike_uif_1d | None,
         shape: spt.AnyReal | _ArrayLike_uif_2d,
         df: int,
-        /,
         size: onpt.AtLeast2D,
         random_state: spt.Seed | None = None,
     ) -> onpt.Array[onpt.AtLeast3D, np.float64]: ...
@@ -637,7 +650,6 @@ class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen]):
 
 # NOTE: `m` and `n` are broadcastable (but doing so will break `.rvs()` at runtime...)
 class multivariate_hypergeom_gen(multi_rv_generic):
-    @override
     def __call__(
         self,
         /,
@@ -690,7 +702,6 @@ class multivariate_hypergeom_frozen(multi_rv_frozen[multivariate_hypergeom_gen])
 _RandomTableRVSMethod: TypeAlias = Literal["boyett", "patefield"]
 
 class random_table_gen(multi_rv_generic):
-    @override
     def __call__(
         self,
         /,
@@ -727,7 +738,6 @@ class random_table_frozen(multi_rv_frozen[random_table_gen]):
     ) -> onpt.Array[tuple[int, int, int], np.float64]: ...
 
 class dirichlet_multinomial_gen(multi_rv_generic):
-    @override
     def __call__(
         self,
         /,
@@ -753,7 +763,6 @@ class dirichlet_multinomial_frozen(multi_rv_frozen[dirichlet_multinomial_gen]):
     def cov(self, /) -> onpt.Array[onpt.AtLeast2D, np.float64]: ...
 
 class vonmises_fisher_gen(multi_rv_generic):
-    @override
     def __call__(
         self,
         /,
@@ -786,19 +795,19 @@ class vonmises_fisher_frozen(multi_rv_frozen[vonmises_fisher_gen]):
         random_state: spt.Seed | None = None,
     ) -> onpt.Array[onpt.AtLeast2D, np.float64]: ...
 
-multivariate_normal: Final[multivariate_normal_gen]
-matrix_normal: Final[matrix_normal_gen]
-dirichlet: Final[dirichlet_gen]
-wishart: Final[wishart_gen]
-invwishart: Final[invwishart_gen]
-multinomial: Final[multinomial_gen]
-special_ortho_group: Final[special_ortho_group_gen]
-ortho_group: Final[ortho_group_gen]
-random_correlation: Final[random_correlation_gen]
-unitary_group: Final[unitary_group_gen]
-multivariate_t: Final[multivariate_t_gen]
-multivariate_hypergeom: Final[multivariate_hypergeom_gen]
-random_table: Final[random_table_gen]
-uniform_direction: Final[uniform_direction_gen]
-dirichlet_multinomial: Final[dirichlet_multinomial_gen]
-vonmises_fisher: Final[vonmises_fisher_gen]
+multivariate_normal: Final[multivariate_normal_gen] = ...
+matrix_normal: Final[matrix_normal_gen] = ...
+dirichlet: Final[dirichlet_gen] = ...
+wishart: Final[wishart_gen] = ...
+invwishart: Final[invwishart_gen] = ...
+multinomial: Final[multinomial_gen] = ...
+special_ortho_group: Final[special_ortho_group_gen] = ...
+ortho_group: Final[ortho_group_gen] = ...
+random_correlation: Final[random_correlation_gen] = ...
+unitary_group: Final[unitary_group_gen] = ...
+multivariate_t: Final[multivariate_t_gen] = ...
+multivariate_hypergeom: Final[multivariate_hypergeom_gen] = ...
+random_table: Final[random_table_gen] = ...
+uniform_direction: Final[uniform_direction_gen] = ...
+dirichlet_multinomial: Final[dirichlet_multinomial_gen] = ...
+vonmises_fisher: Final[vonmises_fisher_gen] = ...
