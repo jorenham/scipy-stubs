@@ -1,6 +1,10 @@
-# TODO
-from scipy._typing import Untyped
+from typing import Final
 
-__all__ = ["minimum_spanning_tree"]
+import numpy as np
+import numpy.typing as npt
+from scipy.sparse import csr_matrix, sparray, spmatrix
 
-def minimum_spanning_tree(*args: Untyped, **kwargs: Untyped) -> Untyped: ...
+DTYPE: Final[type[np.float64]] = ...
+ITYPE: Final[type[np.int32]] = ...
+
+def minimum_spanning_tree(csgraph: spmatrix | sparray | npt.ArrayLike, overwrite: bool = False) -> csr_matrix: ...
