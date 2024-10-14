@@ -1,5 +1,3 @@
-from typing_extensions import override
-
 from scipy._typing import Untyped
 from ._base import sparray
 from ._compressed import _cs_matrix
