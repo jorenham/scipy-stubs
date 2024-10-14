@@ -83,7 +83,6 @@ scipy.fft._pocketfft.*
 scipy.special._precompute.*
 scipy.special.libsf_error_state
 scipy.stats._rcont.rcont
-scipy.stats._unuran.unuran_wrapper
 
 # mypy bug workarounds
 scipy._lib._array_api.Array  # within `if TYPE_CHECKING`
