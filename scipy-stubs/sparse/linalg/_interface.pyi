@@ -2,7 +2,7 @@
 
 from collections.abc import Sequence
 from typing import ClassVar, Literal
-from typing_extensions import Self
+from typing_extensions import Self, override
 
 import numpy as np
 import numpy.typing as npt
@@ -100,6 +100,9 @@ class _AdjointMatrixOperator(MatrixLinearOperator):
     A: LinearOperator
     args: tuple[LinearOperator]
     shape: tuple[int, int]  # pyright: ignore[reportIncompatibleVariableOverride]
+    @property
+    @override
+    def dtype(self, /) -> np.dtype[np.generic]: ...  # type: ignore[override] # pyright: ignore[reportIncompatibleVariableOverride]
     def __init__(self, adjoint: LinearOperator) -> None: ...
 
 class IdentityOperator(LinearOperator):

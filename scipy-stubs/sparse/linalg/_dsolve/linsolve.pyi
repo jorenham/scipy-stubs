@@ -4,7 +4,7 @@ __all__ = ["MatrixRankWarning", "factorized", "spilu", "splu", "spsolve", "spsol
 
 class MatrixRankWarning(UserWarning): ...
 
-def use_solver(**kwargs): ...
+def use_solver(*, useUmfpack: bool = ..., assumeSortedIndices: bool = ...): ...
 def spsolve(A, b, permc_spec: Untyped | None = None, use_umfpack: bool = True) -> Untyped: ...
 def splu(
     A,
@@ -12,7 +12,7 @@ def splu(
     diag_pivot_thresh: Untyped | None = None,
     relax: Untyped | None = None,
     panel_size: Untyped | None = None,
-    options: Untyped | None = None,
+    options: Untyped | None = {},
 ) -> Untyped: ...
 def spilu(
     A,
