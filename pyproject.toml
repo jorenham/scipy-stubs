@@ -42,6 +42,7 @@ ruff = "^0.6.9"
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.29.0"
 pre-commit = "^4.0.1"
+tox = "^4.21.2"
 
 [tool.poe.executor]
 type = "poetry"
@@ -54,10 +55,10 @@ rm -rf
     ./**/.mypy_cache
     ./**/.ruff_cache
 """
-
 lint = "ruff check"
 format = "ruff format"
 pre-commit = "pre-commit run --all-files"
+tox = "tox -p all"
 
 _typetest_bpr = "basedpyright tests/typetests"
 _typetest_mypy = "mypy --config-file=pyproject.toml tests/typetests"
@@ -207,3 +208,21 @@ typing = ["collections.abc", "types", "typing", "typing_extensions"]
 [tool.ruff.lint.flake8-annotations]
 allow-star-arg-any = true
 mypy-init-return = true
+
+[tool.tox]
+isolated_build = true
+env_list = ["3.10", "3.11", "3.12", "3.13", "precommit"]
+
+[tool.tox.env_run_base]
+description = "stubtest with {base_python}"
+skip_install = true
+allowlist_externals = ["poetry", "poe"]
+commands_pre = [["poetry", "install"]]
+commands = [["poe", "stubtest"]]
+
+[tool.tox.env.precommit]
+description = "pre-commit"
+skip_install = true
+allowlist_externals = ["poetry", "poe"]
+commands_pre = [["poetry", "install"]]
+commands = [["poe", "pre-commit"]]
