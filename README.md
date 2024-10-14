@@ -91,7 +91,7 @@ pip install scipy-stubs
 | `odr`         | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_crescent_moon: |
 | `optimize`    | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :x:                | :first_quarter_moon:   |
 | `signal`      | :heavy_check_mark:    | :heavy_check_mark: | :x:                | :x:                | :waxing_crescent_moon: |
-| `sparse`      | :heavy_check_mark:    | :heavy_check_mark: | :x:                | :x:                | :waxing_crescent_moon: |
+| `sparse`      | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :x:                | :waxing_crescent_moon: |
 | `spatial`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_gibbous_moon:  |
 | `special`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :first_quarter_moon:   |
 | `stats`       | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :x:                | :waxing_gibbous_moon:  |
