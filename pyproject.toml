@@ -5,24 +5,19 @@ requires = ["poetry-core"]
 [tool.poetry]
 authors = ["Joren Hammudoglu <jhammudoglu@gmail.com>"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 3 - Beta",
     "Operating System :: OS Independent",
-    "Topic :: Scientific/Engineering",
     "Typing :: Stubs Only",
     "Typing :: Typed",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
 ]
-description = "Type stubs for SciPy"
+description = "Typing Stubs for SciPy"
 documentation = "https://github.com/jorenham/scipy-stubs?tab=readme-ov-file#scipy-stubs"
 license = "BSD-3-Clause"
 name = "scipy-stubs"
 packages = [{include = "scipy-stubs"}]
 readme = "README.md"
 repository = "https://github.com/jorenham/scipy-stubs/"
-version = "1.14.1.0.dev0"
+version = "1.14.1.0"
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/jorenham/scipy-stubs/issues"
