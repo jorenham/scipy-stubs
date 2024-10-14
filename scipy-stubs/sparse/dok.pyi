@@ -7,7 +7,6 @@ __all__ = [
     "IndexMixin",
     "check_shape",
     "dok_matrix",
-    "getdata",
     "getdtype",
     "isdense",
     "isintlike",
@@ -16,7 +15,6 @@ __all__ = [
     "isspmatrix_dok",
     "itertools",
     "spmatrix",
-    "to_native",
     "upcast",
     "upcast_scalar",
 ]

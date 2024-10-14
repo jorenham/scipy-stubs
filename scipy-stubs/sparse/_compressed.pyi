@@ -16,8 +16,6 @@ class _cs_matrix(_data_matrix, _minmax_mixin, IndexMixin):
         shape: Untyped | None = None,
         dtype: Untyped | None = None,
         copy: bool = False,
-        *,
-        maxprint: Untyped | None = None,
     ) -> None: ...
     @override
     def count_nonzero(self, axis: Untyped | None = None) -> int: ...

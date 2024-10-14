@@ -17,13 +17,13 @@ class _lil_base(_spbase, IndexMixin):
         shape: Untyped | None = None,
         dtype: Untyped | None = None,
         copy: bool = False,
-        *,
-        maxprint: Untyped | None = None,
     ) -> None: ...
     def getrowview(self, i) -> Untyped: ...
     def getrow(self, i) -> Untyped: ...
     @override
-    def resize(self, *shape: int): ...  # type: ignore[override]
+    def resize(self, *shape: int) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override
+    def count_nonzero(self) -> int: ...
 
 def isspmatrix_lil(x) -> Untyped: ...
 
