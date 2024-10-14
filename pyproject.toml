@@ -5,7 +5,7 @@ requires = ["poetry-core"]
 [tool.poetry]
 authors = ["Joren Hammudoglu <jhammudoglu@gmail.com>"]
 classifiers = [
-    "Development Status :: 3 - Beta",
+    "Development Status :: 4 - Beta",
     "Operating System :: OS Independent",
     "Typing :: Stubs Only",
     "Typing :: Typed",
