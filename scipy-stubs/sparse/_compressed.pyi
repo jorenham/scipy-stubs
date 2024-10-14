@@ -1,6 +1,7 @@
 from typing_extensions import override
 
 from scipy._typing import Untyped
+from ._coo import _coo_base
 from ._data import _data_matrix, _minmax_mixin
 from ._index import IndexMixin
 
@@ -35,3 +36,5 @@ class _cs_matrix(_data_matrix, _minmax_mixin, IndexMixin):
     def prune(self) -> None: ...
     @override
     def resize(self, *shape: int) -> None: ...  # type: ignore[override]
+    @override
+    def tocoo(self, copy: bool = True) -> _coo_base: ...

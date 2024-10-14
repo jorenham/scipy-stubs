@@ -48,9 +48,7 @@ scipy.sparse.csgraph._tools.__test__
 scipy.sparse.csgraph._traversal.__test__
 scipy.sparse.csgraph.tests.*
 scipy.sparse.linalg._dsolve.tests.*
-scipy.sparse.linalg._eigen.PytestTester
 scipy.sparse.linalg._eigen.arpack.tests.*
-scipy.sparse.linalg._eigen.lobpcg.PytestTester
 scipy.sparse.linalg._eigen.lobpcg.tests.*
 scipy.sparse.linalg._eigen.tests.*
 scipy.sparse.linalg._isolve.tests.*
@@ -83,6 +81,16 @@ scipy.fft._pocketfft.*
 scipy.special._precompute.*
 scipy.special.libsf_error_state
 scipy.stats._rcont.rcont
+
+# omitted methods that always raise or return `NotImplemented`
+scipy.sparse._(\w+)._(\w+).__iadd__
+scipy.sparse._(\w+)._(\w+).__idiv__
+scipy.sparse._(\w+)._(\w+).__imul__
+scipy.sparse._(\w+)._(\w+).__isub__
+scipy.sparse._(\w+)._(\w+).__itruediv__
+scipy.sparse._(\w+)._(\w+).__len__
+scipy.sparse._(\w+)._(\w+).__rdiv__
+scipy.sparse._(\w+)._(\w+).__rtruediv__
 
 # mypy bug workarounds
 scipy._lib._array_api.Array  # within `if TYPE_CHECKING`
