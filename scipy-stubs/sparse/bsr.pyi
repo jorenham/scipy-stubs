@@ -63,6 +63,8 @@ def warn(
     category: object = ...,
     stacklevel: object = ...,
     source: object = ...,
+    *,
+    skip_file_prefixes: object = ...,
 ) -> None: ...
 
 # sputils

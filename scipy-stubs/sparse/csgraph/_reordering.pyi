@@ -1,7 +1,14 @@
-# TODO
-from scipy._typing import Untyped
+from typing import Final, TypeAlias
 
-__all__ = ["reverse_cuthill_mckee", "structural_rank"]
+import numpy as np
+import optype.numpy as onpt
+from scipy.sparse import coo_array, coo_matrix, csc_array, csc_matrix, csr_array, csr_matrix
 
-def reverse_cuthill_mckee(*args: Untyped, **kwargs: Untyped) -> Untyped: ...
-def structural_rank(*args: Untyped, **kwargs: Untyped) -> Untyped: ...
+_CSXArray: TypeAlias = csr_array | csr_matrix | csc_array | csc_matrix
+_CXXArray: TypeAlias = _CSXArray | coo_array | coo_matrix
+
+DTYPE: Final[type[np.float64]] = ...
+ITYPE: Final[type[np.int32]] = ...
+
+def reverse_cuthill_mckee(graph: _CSXArray, symmetric_mode: bool = False) -> onpt.Array[tuple[int], np.int32]: ...
+def structural_rank(graph: _CXXArray) -> np.intp: ...

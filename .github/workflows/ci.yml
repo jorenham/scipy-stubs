@@ -70,30 +70,6 @@ jobs:
     needs: lint-and-typecheck
     timeout-minutes: 5
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        module: [
-          "scipy._lib",
-          "scipy.cluster",
-          "scipy.constants",
-          "scipy.datasets",
-          "scipy.fft",
-          "scipy.fftpack",
-          "scipy.integrate",
-          "scipy.interpolate",
-          "scipy.io",
-          "scipy.linalg",
-          "scipy.misc",
-          "scipy.ndimage",
-          "scipy.odr",
-          "scipy.optimize",
-          "scipy.signal",
-          # "scipy.sparse",
-          "scipy.spatial",
-          "scipy.special",
-          "scipy.stats",
-        ]
     steps:
       - uses: actions/checkout@v4
 
@@ -107,25 +83,5 @@ jobs:
       - name: install
         run: poetry install
 
-      - name: Run stubtest for ${{ matrix.module }}
-        run: poe stubtest ${{ matrix.module }} -- --ignore-unused-allowlist
-
-  stubtest-all:
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - run: pipx install poetry poethepoet
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-          cache: poetry
-
-      - name: install
-        run: poetry install
-
-      - name: Run stubtest (ignored)
-        run: poe stubtest -- --concise
-        continue-on-error: true
+      - name: Run stubtest
+        run: poe stubtest

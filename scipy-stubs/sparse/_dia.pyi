@@ -15,11 +15,11 @@ class _dia_base(_data_matrix):
         shape: Untyped | None = None,
         dtype: Untyped | None = None,
         copy: bool = False,
-        *,
-        maxprint: Untyped | None = None,
     ) -> None: ...
     @override
-    def resize(self, *shape: int): ...  # type: ignore[override]
+    def resize(self, *shape: int) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override
+    def count_nonzero(self) -> int: ...
 
 class dia_array(_dia_base, sparray): ...
 class dia_matrix(spmatrix, _dia_base): ...

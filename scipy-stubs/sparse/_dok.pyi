@@ -16,11 +16,9 @@ class _dok_base(_spbase, IndexMixin, dict[tuple[int, ...], Untyped]):  # type: i
         shape: Untyped | None = None,
         dtype: Untyped | None = None,
         copy: bool = False,
-        *,
-        maxprint: Untyped | None = None,
     ) -> None: ...
     @override
-    def update(self, val: Untyped): ...  # type: ignore[override]
+    def update(self, val: Untyped) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
     def setdefault(self, key: Untyped, default: Untyped | None = None, /) -> Untyped: ...
     @override
@@ -32,11 +30,13 @@ class _dok_base(_spbase, IndexMixin, dict[tuple[int, ...], Untyped]):  # type: i
     @override
     def __ior__(self, other: Untyped, /) -> Self: ...  # type: ignore[override]
     @override
-    def get(self, key, /, default: float = 0.0) -> Untyped: ...  # type: ignore[override]
+    def get(self, key, /, default: float = 0.0) -> Untyped: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
     def conjtransp(self) -> Untyped: ...
     @classmethod
     @override
-    def fromkeys(cls, iterable: Iterable[tuple[int, ...]], value: int = 1, /) -> Self: ...  # type: ignore[override]
+    def fromkeys(cls, iterable: Iterable[tuple[int, ...]], value: int = 1, /) -> Self: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override
+    def count_nonzero(self) -> int: ...
 
 class dok_array(_dok_base, sparray): ...  # type: ignore[misc]
 

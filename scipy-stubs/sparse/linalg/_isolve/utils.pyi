@@ -1,11 +1,8 @@
 from scipy._typing import Untyped
-from scipy.sparse.linalg._interface import (
-    IdentityOperator as IdentityOperator,
-    LinearOperator as LinearOperator,
-    aslinearoperator as aslinearoperator,
-)
 
-__docformat__: str
+__all__: list[str] = []
+
+__docformat__: str = ...
 
 def coerce(x, y) -> Untyped: ...
 def id(x) -> Untyped: ...

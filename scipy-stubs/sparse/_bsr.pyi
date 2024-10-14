@@ -21,8 +21,6 @@ class _bsr_base(_cs_matrix, _minmax_mixin):
         dtype: npt.DTypeLike | None = None,
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
-        *,
-        maxprint: Untyped | None = None,
     ) -> None: ...
     @property
     def blocksize(self) -> tuple[int, int]: ...

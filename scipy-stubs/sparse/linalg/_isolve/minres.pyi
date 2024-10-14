@@ -1,5 +1,6 @@
 from scipy._typing import Untyped
-from .utils import make_system as make_system
+
+__all__ = ["minres"]
 
 def minres(
     A,
