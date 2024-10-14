@@ -1,44 +1,141 @@
 import ctypes as ct
 from _ctypes import CFuncPtr as PyCFuncPtr
 from types import ModuleType
-from typing import Generic, Literal, NoReturn, TypeAlias
-from typing_extensions import CapsuleType, Never, Self, TypeVar, override
+from typing import ClassVar, Generic, Literal, NoReturn, Protocol, TypeAlias, final, overload, type_check_only
+from typing_extensions import CapsuleType as PyCapsule, Self, TypeVar, TypeVarTuple, Unpack, override
 
-from cffi.model import FunctionPtrType as _CFFIFuncP, PointerType as _CFFIVoidP
-from scipy._typing import Untyped
+# some quick interfaces for the relevant `cffi` types
 
-_Function: TypeAlias = CapsuleType | PyCFuncPtr | _CFFIFuncP | CData
-_UserData: TypeAlias = CapsuleType | ct.c_void_p | _CFFIVoidP
+@type_check_only
+@final
+class _CFFIBackendType(Protocol):
+    cname: str
+    kind: Literal[
+        "primitive",
+        "bool",
+        "int",
+        "float",
+        "char",
+        "byte",
+        "pointer",
+        "charp",
+        "bytep",
+        "voidp",
+        "generic",
+        "struct",
+        "union",
+        "enum",
+        "anonymous",
+        "typedef",
+        "function",
+    ]
+
+_CTs = TypeVarTuple("_CTs", default=Unpack[tuple[_CFFIType, ...]])
+_CT_co = TypeVar("_CT_co", covariant=True, bound=_CFFIType, default=_CFFIType)
+
+@type_check_only
+class _CFFIType(Protocol):
+    is_array_type: ClassVar[bool]
+    is_raw_function: ClassVar[bool]
+
+    def is_integer_type(self, /) -> bool: ...
+    def has_c_name(self, /) -> bool: ...
+    def get_c_name(self, /, replace_with: str = "", context: str = "a C file", quals: int = 0) -> str: ...
+    def get_cached_btype(self, ffi: object, finishlist: list[object], can_delay: bool = False) -> _CFFIBackendType: ...
+
+    # virtual
+    def build_backend_type(self, /, ffi: object, finishlist: list[object]) -> _CFFIBackendType: ...
+    @property
+    def c_name_with_marker(self, /) -> str: ...
+
+@type_check_only
+@final
+class _CFFIVoid(_CFFIType, Protocol):
+    is_array_type: ClassVar = False
+    is_raw_function: ClassVar = False
+
+    def __init__(self, /) -> None: ...
+
+@type_check_only
+class _CFFIFunc(_CFFIType, Protocol[_CT_co, Unpack[_CTs]]):
+    is_array_type: ClassVar = False
+
+    @property
+    def args(self, /) -> tuple[Unpack[_CTs]]: ...
+    @property
+    def result(self, /) -> _CT_co: ...
+    @property
+    def ellipsis(self, /) -> bool: ...
+    @property
+    def abi(self, /) -> int | str | None: ...
+    def __init__(self, /, args: tuple[Unpack[_CTs]], result: _CT_co, ellipsis: bool, abi: int | None = None) -> None: ...
+
+@type_check_only
+@final
+class _CFFIFuncPtr(_CFFIFunc[_CT_co, Unpack[_CTs]], Protocol[_CT_co, Unpack[_CTs]]):
+    is_raw_function: ClassVar = False
+
+    def as_raw_function(self, /) -> _CFFIFunc[_CT_co, Unpack[_CTs]]: ...
+
+@type_check_only
+class _CFFIPointerType(_CFFIType, Protocol[_CT_co]):
+    is_array_type: ClassVar = False
+    is_raw_function: ClassVar = False
+
+    @property
+    def totype(self, /) -> _CT_co: ...
+    @property
+    def quals(self, /) -> int: ...
+    def __init__(self, /, totype: _CT_co, quals: int = 0) -> None: ...
+
+_CFFIVoidP: TypeAlias = _CFFIPointerType[_CFFIVoid]
+
+# helper aliases
+
+_Function: TypeAlias = PyCapsule | PyCFuncPtr | _CFFIFuncPtr | CData
+_UserData: TypeAlias = PyCapsule | ct.c_void_p | _CFFIVoidP
 
 _FuncT_co = TypeVar("_FuncT_co", bound=_Function, covariant=True, default=_Function)
-_DataT_co = TypeVar("_DataT_co", bound=_UserData | None, covariant=True, default=_UserData)
+_DataT = TypeVar("_DataT", bound=_UserData | None)
+_DataT_co = TypeVar("_DataT_co", bound=_UserData | None, covariant=True, default=None)
 
 ffi: Literal[False] | None
 
+# public api
+
+@final
 class CData: ...
 
-class LowLevelCallable(tuple[CapsuleType, _FuncT_co, _DataT_co], Generic[_FuncT_co, _DataT_co]):
+class LowLevelCallable(tuple[PyCapsule, _FuncT_co, _DataT_co], Generic[_FuncT_co, _DataT_co]):
     @property
     def function(self, /) -> _FuncT_co: ...
     @property
     def user_data(self, /) -> _DataT_co: ...
     @property
     def signature(self, /) -> str: ...
-    def __new__(
-        cls,
-        function: _FuncT_co | LowLevelCallable[_FuncT_co, _DataT_co],
-        user_data: Untyped | None = None,
-        signature: str | None = None,
-    ) -> Self: ...
+    @overload
+    def __new__(cls, function: Self, user_data: _DataT_co | None = None, signature: str | None = None) -> Self: ...
+    @overload
+    def __new__(cls, function: _FuncT_co, user_data: _DataT_co = ..., signature: str | None = None) -> Self: ...
     @classmethod
+    @overload
     def from_cython(
         cls,
         module: ModuleType,
         name: str,
-        user_data: _UserData | None = None,
+        user_data: None = None,
         signature: str | None = None,
-    ) -> Self: ...
+    ) -> LowLevelCallable[PyCapsule, None]: ...
+    @classmethod
+    @overload
+    def from_cython(
+        cls,
+        module: ModuleType,
+        name: str,
+        user_data: _DataT,
+        signature: str | None = None,
+    ) -> LowLevelCallable[PyCapsule, _DataT]: ...
 
     # NOTE: `__getitem__` will always raise a `ValueError`
     @override
-    def __getitem__(self, idx: Never, /) -> NoReturn: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __getitem__(self, idx: object, /) -> NoReturn: ...
