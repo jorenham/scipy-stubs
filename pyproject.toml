@@ -68,8 +68,8 @@ cmd = "basedpyright scipy-stubs/$path"
 args = [{name = "path", positional = true, multiple = false, default = ""}]
 
 [tool.poe.tasks.mypy]
-cmd = "mypy --config-file=pyproject.toml scipy-stubs/$path"
-args = [{name = "path", positional = true, multiple = false, default = ""}]
+cmd = "mypy --config-file=pyproject.toml $path"
+args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs"}]
 
 [tool.poe.tasks.stubtest]
 cmd = """
