@@ -57,7 +57,7 @@ def find_peaks(
     width: float | npt.NDArray[np.float64] | tuple[float | None, float | None] | None = None,
     wlen: int | None = None,
     rel_height: float = 0.5,
-    plateau_size: float | npt.NDArray[np.intp] | tuple[int | None, int | None] | None = None,
+    plateau_size: int | npt.NDArray[np.intp] | tuple[int | None, int | None] | None = None,
 ) -> tuple[npt.NDArray[np.intp], _FindPeaksResultsDict]: ...
 def find_peaks_cwt(
     vector: npt.ArrayLike,
