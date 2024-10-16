@@ -8,6 +8,10 @@ from scipy._typing import Untyped
 __all__ = ["argrelextrema", "argrelmax", "argrelmin", "find_peaks", "find_peaks_cwt", "peak_prominences", "peak_widths"]
 
 _Mode: TypeAlias = Literal["clip", "wrap"]
+_ProminencesResult: TypeAlias = tuple[npt.NDArray[np.float64], npt.NDArray[np.intp], npt.NDArray[np.intp]]
+_WidthsResult: TypeAlias = tuple[
+    npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]
+]
 
 def argrelmin(
     data: npt.NDArray[np.generic], axis: int = 0, order: int = 1, mode: _Mode = "clip"
@@ -20,14 +24,14 @@ def argrelextrema(
     order: int = 1,
     mode: _Mode = "clip",
 ) -> tuple[npt.NDArray[np.intp], ...]: ...
-def peak_prominences(x: Untyped, peaks: Untyped, wlen: Untyped | None = None) -> Untyped: ...
+def peak_prominences(x: npt.ArrayLike, peaks: npt.ArrayLike, wlen: int | None = None) -> _ProminencesResult: ...
 def peak_widths(
-    x: Untyped,
-    peaks: Untyped,
+    x: npt.ArrayLike,
+    peaks: npt.ArrayLike,
     rel_height: float = 0.5,
-    prominence_data: Untyped | None = None,
-    wlen: Untyped | None = None,
-) -> Untyped: ...
+    prominence_data: _ProminencesResult | None = None,
+    wlen: int | None = None,
+) -> _WidthsResult: ...
 def find_peaks(
     x: Untyped,
     height: Untyped | None = None,
