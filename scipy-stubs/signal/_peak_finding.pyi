@@ -1,10 +1,25 @@
+from collections.abc import Callable
+from typing import Literal, TypeAlias
+
+import numpy as np
+import numpy.typing as npt
 from scipy._typing import Untyped
 
 __all__ = ["argrelextrema", "argrelmax", "argrelmin", "find_peaks", "find_peaks_cwt", "peak_prominences", "peak_widths"]
 
-def argrelmin(data: Untyped, axis: int = 0, order: int = 1, mode: str = "clip") -> Untyped: ...
-def argrelmax(data: Untyped, axis: int = 0, order: int = 1, mode: str = "clip") -> Untyped: ...
-def argrelextrema(data: Untyped, comparator: Untyped, axis: int = 0, order: int = 1, mode: str = "clip") -> Untyped: ...
+_Mode: TypeAlias = Literal["clip", "wrap"]
+
+def argrelmin(
+    data: npt.NDArray[np.generic], axis: int = 0, order: int = 1, mode: _Mode = "clip"
+) -> tuple[npt.NDArray[np.intp], ...]: ...
+def argrelmax(data: Untyped, axis: int = 0, order: int = 1, mode: _Mode = "clip") -> tuple[npt.NDArray[np.intp], ...]: ...
+def argrelextrema(
+    data: npt.NDArray[np.generic],
+    comparator: Callable[[npt.NDArray[np.generic], npt.NDArray[np.generic]], npt.NDArray[np.bool_]],
+    axis: int = 0,
+    order: int = 1,
+    mode: _Mode = "clip",
+) -> tuple[npt.NDArray[np.intp], ...]: ...
 def peak_prominences(x: Untyped, peaks: Untyped, wlen: Untyped | None = None) -> Untyped: ...
 def peak_widths(
     x: Untyped,
