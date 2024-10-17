@@ -6,45 +6,48 @@ import numpy.typing as npt
 
 __all__ = ["argrelextrema", "argrelmax", "argrelmin", "find_peaks", "find_peaks_cwt", "peak_prominences", "peak_widths"]
 
+_Array_n: TypeAlias = npt.NDArray[np.intp]
+_Array_f8: TypeAlias = npt.NDArray[np.float64]
 _Mode: TypeAlias = Literal["clip", "wrap"]
-_ProminencesResult: TypeAlias = tuple[npt.NDArray[np.float64], npt.NDArray[np.intp], npt.NDArray[np.intp]]
+
+_ProminencesResult: TypeAlias = tuple[_Array_f8, _Array_n, _Array_n]
 _WidthsResult: TypeAlias = tuple[
-    npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]
+    _Array_f8, _Array_f8, _Array_f8, _Array_f8
 ]
 
 class _FindPeaksResultsDict(TypedDict, total=False):
-    peak_heights: npt.NDArray[np.float64]
-    left_thresholds: npt.NDArray[np.float64]
-    right_thresholds: npt.NDArray[np.float64]
-    prominences: npt.NDArray[np.float64]
-    left_bases: npt.NDArray[np.intp]
-    right_bases: npt.NDArray[np.intp]
-    width_heights: npt.NDArray[np.float64]
-    left_ips: npt.NDArray[np.float64]
-    right_ips: npt.NDArray[np.float64]
-    plateau_sizes: npt.NDArray[np.intp]
-    left_edges: npt.NDArray[np.intp]
-    right_edges: npt.NDArray[np.intp]
+    peak_heights: _Array_f8
+    left_thresholds: _Array_f8
+    right_thresholds: _Array_f8
+    prominences: _Array_f8
+    left_bases: _Array_n
+    right_bases: _Array_n
+    width_heights: _Array_f8
+    left_ips: _Array_f8
+    right_ips: _Array_f8
+    plateau_sizes: _Array_n
+    left_edges: _Array_n
+    right_edges: _Array_n
 
 def argrelmin(
     data: npt.NDArray[np.generic],
     axis: int = 0,
     order: int = 1,
     mode: _Mode = "clip",
-) -> tuple[npt.NDArray[np.intp], ...]: ...
+) -> tuple[_Array_n, ...]: ...
 def argrelmax(
     data: npt.NDArray[np.generic],
     axis: int = 0,
     order: int = 1,
     mode: _Mode = "clip",
-) -> tuple[npt.NDArray[np.intp], ...]: ...
+) -> tuple[_Array_n, ...]: ...
 def argrelextrema(
     data: npt.NDArray[np.generic],
     comparator: Callable[[npt.NDArray[np.generic], npt.NDArray[np.generic]], npt.NDArray[np.bool_]],
     axis: int = 0,
     order: int = 1,
     mode: _Mode = "clip",
-) -> tuple[npt.NDArray[np.intp], ...]: ...
+) -> tuple[_Array_n, ...]: ...
 def peak_prominences(
     x: npt.ArrayLike,
     peaks: npt.ArrayLike,
@@ -59,19 +62,19 @@ def peak_widths(
 ) -> _WidthsResult: ...
 def find_peaks(
     x: npt.ArrayLike,
-    height: float | npt.NDArray[np.float64] | tuple[float | None, float | None] | None = None,
-    threshold: float | npt.NDArray[np.float64] | tuple[float | None, float | None] | None = None,
+    height: float | _Array_f8 | tuple[float | None, float | None] | None = None,
+    threshold: float | _Array_f8 | tuple[float | None, float | None] | None = None,
     distance: np.float64 | None = None,
-    prominence: float | npt.NDArray[np.float64] | tuple[float | None, float | None] | None = None,
-    width: float | npt.NDArray[np.float64] | tuple[float | None, float | None] | None = None,
+    prominence: float | _Array_f8 | tuple[float | None, float | None] | None = None,
+    width: float | _Array_f8 | tuple[float | None, float | None] | None = None,
     wlen: int | None = None,
     rel_height: float = 0.5,
-    plateau_size: int | npt.NDArray[np.intp] | tuple[int | None, int | None] | None = None,
-) -> tuple[npt.NDArray[np.intp], _FindPeaksResultsDict]: ...
+    plateau_size: int | _Array_n | tuple[int | None, int | None] | None = None,
+) -> tuple[_Array_n, _FindPeaksResultsDict]: ...
 def find_peaks_cwt(
     vector: npt.ArrayLike,
     widths: npt.ArrayLike,
-    wavelet: Callable[Concatenate[int, float, ...], npt.NDArray[np.float64]] | None = None,
+    wavelet: Callable[Concatenate[int, float, ...], _Array_f8] | None = None,
     max_distances: Sequence[int] | None = None,
     gap_thresh: float | None = None,
     min_length: int | None = None,
