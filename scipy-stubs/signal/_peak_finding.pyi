@@ -1,6 +1,5 @@
 from collections.abc import Callable, Sequence
 from typing import Concatenate, Literal, TypeAlias, TypedDict
-from typing_extensions import NotRequired
 
 import numpy as np
 import numpy.typing as npt
@@ -13,19 +12,19 @@ _WidthsResult: TypeAlias = tuple[
     npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]
 ]
 
-class _FindPeaksResultsDict(TypedDict):
-    peak_heights: NotRequired[npt.NDArray[np.float64]]
-    left_thresholds: NotRequired[npt.NDArray[np.float64]]
-    right_thresholds: NotRequired[npt.NDArray[np.float64]]
-    prominences: NotRequired[npt.NDArray[np.float64]]
-    left_bases: NotRequired[npt.NDArray[np.intp]]
-    right_bases: NotRequired[npt.NDArray[np.intp]]
-    width_heights: NotRequired[npt.NDArray[np.float64]]
-    left_ips: NotRequired[npt.NDArray[np.float64]]
-    right_ips: NotRequired[npt.NDArray[np.float64]]
-    plateau_sizes: NotRequired[npt.NDArray[np.intp]]
-    left_edges: NotRequired[npt.NDArray[np.intp]]
-    right_edges: NotRequired[npt.NDArray[np.intp]]
+class _FindPeaksResultsDict(TypedDict, total=False):
+    peak_heights: npt.NDArray[np.float64]
+    left_thresholds: npt.NDArray[np.float64]
+    right_thresholds: npt.NDArray[np.float64]
+    prominences: npt.NDArray[np.float64]
+    left_bases: npt.NDArray[np.intp]
+    right_bases: npt.NDArray[np.intp]
+    width_heights: npt.NDArray[np.float64]
+    left_ips: npt.NDArray[np.float64]
+    right_ips: npt.NDArray[np.float64]
+    plateau_sizes: npt.NDArray[np.intp]
+    left_edges: npt.NDArray[np.intp]
+    right_edges: npt.NDArray[np.intp]
 
 def argrelmin(
     data: npt.NDArray[np.generic], axis: int = 0, order: int = 1, mode: _Mode = "clip"
