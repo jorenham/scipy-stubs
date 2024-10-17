@@ -3,6 +3,7 @@ from typing import Concatenate, Literal, TypeAlias, TypedDict
 
 import numpy as np
 import numpy.typing as npt
+from numpy._typing import _ArrayLikeInt_co
 
 __all__ = ["argrelextrema", "argrelmax", "argrelmin", "find_peaks", "find_peaks_cwt", "peak_prominences", "peak_widths"]
 
@@ -11,9 +12,7 @@ _Array_f8: TypeAlias = npt.NDArray[np.float64]
 _Mode: TypeAlias = Literal["clip", "wrap"]
 
 _ProminencesResult: TypeAlias = tuple[_Array_f8, _Array_n, _Array_n]
-_WidthsResult: TypeAlias = tuple[
-    _Array_f8, _Array_f8, _Array_f8, _Array_f8
-]
+_WidthsResult: TypeAlias = tuple[_Array_f8, _Array_f8, _Array_f8, _Array_f8]
 
 class _FindPeaksResultsDict(TypedDict, total=False):
     peak_heights: _Array_f8
@@ -50,12 +49,12 @@ def argrelextrema(
 ) -> tuple[_Array_n, ...]: ...
 def peak_prominences(
     x: npt.ArrayLike,
-    peaks: npt.ArrayLike,
+    peaks: _ArrayLikeInt_co,
     wlen: int | None = None,
 ) -> _ProminencesResult: ...
 def peak_widths(
     x: npt.ArrayLike,
-    peaks: npt.ArrayLike,
+    peaks: _ArrayLikeInt_co,
     rel_height: float = 0.5,
     prominence_data: _ProminencesResult | None = None,
     wlen: int | None = None,
