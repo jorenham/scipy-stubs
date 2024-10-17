@@ -19,21 +19,8 @@ class SiegelslopesResult(BaseBunch[float, float]):
     def intercept(self, /) -> float: ...
 
 class TheilslopesResult(BaseBunch[np.float64, np.float64, np.float64, np.float64]):
-    def __new__(
-        _cls,
-        slope: np.float64,
-        intercept: np.float64,
-        low_slope: np.float64,
-        high_slope: np.float64,
-    ) -> Self: ...
-    def __init__(
-        self,
-        /,
-        slope: np.float64,
-        intercept: np.float64,
-        low_slope: np.float64,
-        high_slope: np.float64,
-    ) -> None: ...
+    def __new__(_cls, slope: np.float64, intercept: np.float64, low_slope: np.float64, high_slope: np.float64) -> Self: ...
+    def __init__(self, /, slope: np.float64, intercept: np.float64, low_slope: np.float64, high_slope: np.float64) -> None: ...
     @property
     def slope(self, /) -> np.float64: ...
     @property

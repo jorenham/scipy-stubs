@@ -1,5 +1,5 @@
 # /// script
-# requires-python = ">=3.11"
+# requires-python = ">=3.10"
 # dependencies = [
 #   "libcst>=1.5.0",
 # ]
@@ -13,11 +13,11 @@ from libcst.codemod.visitors import AddImportsVisitor
 
 
 class AnnotateMissing(VisitorBasedCodemodCommand):
-    DESCRIPTION: str = "Sets the default return type to `None`, and other missing annotations to `scipy._typing.Untyped`"
+    DESCRIPTION = "Sets the default return type to `None`, and other missing annotations to `scipy._typing.Untyped`"
 
     @override
     def leave_Param(self, /, original_node: cst.Param, updated_node: cst.Param) -> cst.Param:
-        if updated_node.annotation is not None or updated_node.name.value in {"self", "cls"}:
+        if updated_node.annotation is not None or updated_node.name.value in {"self", "cls", "_cls"}:
             return updated_node
 
         AddImportsVisitor.add_needed_import(self.context, "scipy._typing", "Untyped")

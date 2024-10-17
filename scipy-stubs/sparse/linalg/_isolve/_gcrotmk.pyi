@@ -3,8 +3,8 @@ from scipy._typing import Untyped
 __all__ = ["gcrotmk"]
 
 def gcrotmk(
-    A,
-    b,
+    A: Untyped,
+    b: Untyped,
     x0: Untyped | None = None,
     *,
     rtol: float = 1e-05,

@@ -1,7 +1,7 @@
 from scipy._typing import Untyped
 
 def dctn(
-    x,
+    x: Untyped,
     type: int = 2,
     s: Untyped | None = None,
     axes: Untyped | None = None,
@@ -12,7 +12,7 @@ def dctn(
     orthogonalize: Untyped | None = None,
 ) -> Untyped: ...
 def idctn(
-    x,
+    x: Untyped,
     type: int = 2,
     s: Untyped | None = None,
     axes: Untyped | None = None,
@@ -22,7 +22,7 @@ def idctn(
     orthogonalize: Untyped | None = None,
 ) -> Untyped: ...
 def dstn(
-    x,
+    x: Untyped,
     type: int = 2,
     s: Untyped | None = None,
     axes: Untyped | None = None,
@@ -32,7 +32,7 @@ def dstn(
     orthogonalize: Untyped | None = None,
 ) -> Untyped: ...
 def idstn(
-    x,
+    x: Untyped,
     type: int = 2,
     s: Untyped | None = None,
     axes: Untyped | None = None,
@@ -42,7 +42,7 @@ def idstn(
     orthogonalize: Untyped | None = None,
 ) -> Untyped: ...
 def dct(
-    x,
+    x: Untyped,
     type: int = 2,
     n: Untyped | None = None,
     axis: int = -1,
@@ -52,7 +52,7 @@ def dct(
     orthogonalize: Untyped | None = None,
 ) -> Untyped: ...
 def idct(
-    x,
+    x: Untyped,
     type: int = 2,
     n: Untyped | None = None,
     axis: int = -1,
@@ -62,7 +62,7 @@ def idct(
     orthogonalize: Untyped | None = None,
 ) -> Untyped: ...
 def dst(
-    x,
+    x: Untyped,
     type: int = 2,
     n: Untyped | None = None,
     axis: int = -1,
@@ -72,7 +72,7 @@ def dst(
     orthogonalize: Untyped | None = None,
 ) -> Untyped: ...
 def idst(
-    x,
+    x: Untyped,
     type: int = 2,
     n: Untyped | None = None,
     axis: int = -1,
