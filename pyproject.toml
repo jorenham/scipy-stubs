@@ -39,6 +39,12 @@ poethepoet = "^0.29.0"
 pre-commit = "^4.0.1"
 tox = "^4.23.0"
 
+
+[tool.poetry.group.codemods]
+optional = true
+[tool.poetry.group.codemods.dependencies]
+libcst = "^1.5.0"
+
 [tool.poe.executor]
 type = "poetry"
 
@@ -75,6 +81,18 @@ stubtest
     $modules
 """
 args = [{name = "modules", positional = true, multiple = true, default = "scipy"}]
+
+[tool.poe.tasks.codemod]
+cmd = """
+python -m libcst.tool
+    codemod -x --include-stubs
+    codemods.$name
+    $path
+"""
+args = [
+    {name = "name", positional = true, multiple = false},
+    {name = "path", positional = true, multiple = false, default = "scipy-stubs"}
+]
 
 [tool.mypy]
 python_version = "3.10"
