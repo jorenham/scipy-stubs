@@ -27,10 +27,16 @@ class _FindPeaksResultsDict(TypedDict, total=False):
     right_edges: npt.NDArray[np.intp]
 
 def argrelmin(
-    data: npt.NDArray[np.generic], axis: int = 0, order: int = 1, mode: _Mode = "clip"
+    data: npt.NDArray[np.generic],
+    axis: int = 0,
+    order: int = 1,
+    mode: _Mode = "clip",
 ) -> tuple[npt.NDArray[np.intp], ...]: ...
 def argrelmax(
-    data: npt.NDArray[np.generic], axis: int = 0, order: int = 1, mode: _Mode = "clip"
+    data: npt.NDArray[np.generic],
+    axis: int = 0,
+    order: int = 1,
+    mode: _Mode = "clip",
 ) -> tuple[npt.NDArray[np.intp], ...]: ...
 def argrelextrema(
     data: npt.NDArray[np.generic],
@@ -39,7 +45,11 @@ def argrelextrema(
     order: int = 1,
     mode: _Mode = "clip",
 ) -> tuple[npt.NDArray[np.intp], ...]: ...
-def peak_prominences(x: npt.ArrayLike, peaks: npt.ArrayLike, wlen: int | None = None) -> _ProminencesResult: ...
+def peak_prominences(
+    x: npt.ArrayLike,
+    peaks: npt.ArrayLike,
+    wlen: int | None = None,
+) -> _ProminencesResult: ...
 def peak_widths(
     x: npt.ArrayLike,
     peaks: npt.ArrayLike,
