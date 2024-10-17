@@ -40,9 +40,9 @@ pre-commit = "^4.0.1"
 tox = "^4.23.0"
 
 
-[tool.poetry.group.codemods]
+[tool.poetry.group.codegen]
 optional = true
-[tool.poetry.group.codemods.dependencies]
+[tool.poetry.group.codegen.dependencies]
 libcst = "^1.5.0"
 
 [tool.poe.executor]
@@ -86,11 +86,11 @@ args = [{name = "modules", positional = true, multiple = true, default = "scipy"
 cmd = """
 python -m libcst.tool
     codemod -x --include-stubs
-    codemods.$name
+    codegen.mods.$name
     $path
 """
 args = [
-    {name = "name", positional = true, multiple = false},
+    {name = "name", positional = true, multiple = false, required = true},
     {name = "path", positional = true, multiple = false, default = "scipy-stubs"}
 ]
 
