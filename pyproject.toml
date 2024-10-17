@@ -103,10 +103,8 @@ python_version = "3.10"
 strict = true
 disable_bytearray_promotion = true
 disable_memoryview_promotion = true
-disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[Any]`
-disallow_untyped_defs = false  # TODO
-disallow_incomplete_defs = false  # TODO
 warn_unused_ignores = true
+disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[Any]`
 
 [tool.pyright]
 include = ["scipy-stubs", "tests/typetests", "codemods.py"]

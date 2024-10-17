@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from typing_extensions import Self, override
 
 from scipy._typing import Untyped
@@ -22,10 +23,10 @@ __all__ = [
 ]
 
 class LinearTimeInvariant:
-    inputs: Untyped
-    outputs: Untyped
+    inputs: int
+    outputs: int
+    @abstractmethod
     def __new__(cls, *system: Untyped, **kwargs: Untyped) -> Self: ...
-    def __init__(self) -> None: ...
     @property
     def dt(self) -> Untyped: ...
     @property
@@ -53,8 +54,6 @@ class dlti(LinearTimeInvariant):
     def freqresp(self, w: Untyped | None = None, n: int = 10000, whole: bool = False) -> Untyped: ...
 
 class TransferFunction(LinearTimeInvariant):
-    inputs: int
-    outputs: int
     def __new__(cls, *system: Untyped, **kwargs: Untyped) -> Self: ...
     def __init__(self, *system: Untyped, **kwargs: Untyped) -> None: ...
     @property
@@ -76,8 +75,6 @@ class TransferFunctionContinuous(TransferFunction, lti):
 class TransferFunctionDiscrete(TransferFunction, dlti): ...
 
 class ZerosPolesGain(LinearTimeInvariant):
-    inputs: int
-    outputs: int
     def __new__(cls, *system: Untyped, **kwargs: Untyped) -> Self: ...
     def __init__(self, *system: Untyped, **kwargs: Untyped) -> None: ...
     @property
@@ -97,8 +94,6 @@ class ZerosPolesGainDiscrete(ZerosPolesGain, dlti): ...
 class StateSpace(LinearTimeInvariant):
     __array_priority__: float
     __array_ufunc__: Untyped
-    inputs: Untyped
-    outputs: Untyped
     def __new__(cls, *system: Untyped, **kwargs: Untyped) -> Self: ...
     def __init__(self, *system: Untyped, **kwargs: Untyped) -> None: ...
     def __mul__(self, other: Untyped) -> Untyped: ...

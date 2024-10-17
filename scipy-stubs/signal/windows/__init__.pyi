@@ -1,4 +1,4 @@
-from . import windows
+from . import windows as windows
 from ._windows import *
 
 __all__ = [

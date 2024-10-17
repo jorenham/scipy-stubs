@@ -47,29 +47,10 @@ jobs:
       - name: basedmypy
         run: poe mypy
 
-      - name: basedpyright (partial)
-        run: |
-          targets=(
-            "_lib"
-            "cluster"
-            "constants"
-            "datasets"
-            "integrate"
-            "interpolate"
-            "io"
-            "linalg"
-            "misc"
-            "ndimage"
-            "odr"
-            "spatial"
-            "special"
-          )
-          for target in "${targets[@]}"; do
-            poe pyright $target
-          done
+      - name: basedpyright
+        run: poe pyright
 
   stubtest:
-    needs: lint-and-typecheck
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
