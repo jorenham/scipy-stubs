@@ -32,7 +32,7 @@ optype = "^0.6.1"
 [tool.poetry.group.lint.dependencies]
 basedmypy = "^2.6.0"
 basedpyright = "^1.19.0"
-ruff = "^0.6.9"
+ruff = "^0.7.0"
 
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.29.0"
@@ -137,7 +137,6 @@ skip-magic-trailing-comma = false
 
 [tool.ruff.lint]
 ignore = [
-    "ANN", # TODO
     "E741",
     "COM812", # ruff format compat
     "PYI054", # numeric-literal-too-long
@@ -191,13 +190,11 @@ banned-from = [
     "optype.typing",
 ]
 [tool.ruff.lint.flake8-import-conventions.extend-aliases]
+"ctypes" = "ct"
+"datetime" = "dt"
 "numpy" = "np"
-"numpy.polynomial" = "npp"
 "numpy.typing" = "npt"
-"optype" = "op"
 "optype.numpy" = "onpt"
-"scipy" = "sp"
-"scipy._typing" = "spt"
 
 [tool.ruff.lint.isort]
 combine-as-imports = true
