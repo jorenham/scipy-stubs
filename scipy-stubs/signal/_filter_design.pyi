@@ -1,5 +1,3 @@
-import numpy as np
-from numpy import absolute as abs  # noqa: ICN003
 from scipy._typing import Untyped
 
 __all__ = [

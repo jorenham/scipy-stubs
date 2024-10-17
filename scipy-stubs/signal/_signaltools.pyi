@@ -1,7 +1,6 @@
 from typing import Literal
 from typing_extensions import deprecated
 
-import numpy as np
 import numpy.typing as npt
 from scipy._typing import Untyped, UntypedArray
 

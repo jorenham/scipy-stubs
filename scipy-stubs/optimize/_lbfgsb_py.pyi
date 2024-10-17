@@ -25,5 +25,5 @@ class LbfgsInvHessProduct(LinearOperator):
     yk: Untyped
     n_corrs: Untyped
     rho: Untyped
-    def __init__(self, sk: Untyped, yk: Untyped) -> None: ...
+    def __init__(self, sk: Untyped, yk: Untyped) -> None: ...  # pyright: ignore[reportInconsistentConstructor]
     def todense(self) -> Untyped: ...
