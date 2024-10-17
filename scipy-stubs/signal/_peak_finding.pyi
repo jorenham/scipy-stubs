@@ -3,6 +3,7 @@ from typing import Concatenate, Literal, TypeAlias, TypedDict
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 from numpy._typing import _ArrayLikeInt_co
 
 __all__ = ["argrelextrema", "argrelmax", "argrelmin", "find_peaks", "find_peaks_cwt", "peak_prominences", "peak_widths"]
@@ -30,20 +31,20 @@ class _FindPeaksResultsDict(TypedDict, total=False):
 
 def argrelmin(
     data: npt.NDArray[np.generic],
-    axis: int = 0,
+    axis: op.CanIndex = 0,
     order: int = 1,
     mode: _Mode = "clip",
 ) -> tuple[_Array_n, ...]: ...
 def argrelmax(
     data: npt.NDArray[np.generic],
-    axis: int = 0,
+    axis: op.CanIndex = 0,
     order: int = 1,
     mode: _Mode = "clip",
 ) -> tuple[_Array_n, ...]: ...
 def argrelextrema(
     data: npt.NDArray[np.generic],
     comparator: Callable[[npt.NDArray[np.generic], npt.NDArray[np.generic]], npt.NDArray[np.bool_]],
-    axis: int = 0,
+    axis: op.CanIndex = 0,
     order: int = 1,
     mode: _Mode = "clip",
 ) -> tuple[_Array_n, ...]: ...
