@@ -137,7 +137,6 @@ skip-magic-trailing-comma = false
 
 [tool.ruff.lint]
 ignore = [
-    "ANN", # TODO
     "E741",
     "COM812", # ruff format compat
     "PYI054", # numeric-literal-too-long
