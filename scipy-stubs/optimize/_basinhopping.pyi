@@ -18,7 +18,12 @@ class BasinHoppingRunner:
     incumbent_minres: Untyped
     storage: Untyped
     def __init__(
-        self, x0: Untyped, minimizer: Untyped, step_taking: Untyped, accept_tests: Untyped, disp: bool = False
+        self,
+        x0: Untyped,
+        minimizer: Untyped,
+        step_taking: Untyped,
+        accept_tests: Untyped,
+        disp: bool = False,
     ) -> None: ...
     xtrial: Untyped
     energy_trial: Untyped
@@ -36,7 +41,12 @@ class AdaptiveStepsize:
     nstep_tot: int
     naccept: int
     def __init__(
-        self, takestep: Untyped, accept_rate: float = 0.5, interval: int = 50, factor: float = 0.9, verbose: bool = True
+        self,
+        takestep: Untyped,
+        accept_rate: float = 0.5,
+        interval: int = 50,
+        factor: float = 0.9,
+        verbose: bool = True,
     ) -> None: ...
     def __call__(self, x: Untyped) -> Untyped: ...
     def take_step(self, x: Untyped) -> Untyped: ...

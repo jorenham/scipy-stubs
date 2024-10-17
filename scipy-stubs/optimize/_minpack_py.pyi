@@ -49,5 +49,10 @@ def curve_fit(
 ) -> Untyped: ...
 def check_gradient(fcn: Untyped, Dfcn: Untyped, x0: Untyped, args: Untyped = (), col_deriv: int = 0) -> Untyped: ...
 def fixed_point(
-    func: Untyped, x0: Untyped, args: Untyped = (), xtol: float = 1e-08, maxiter: int = 500, method: str = "del2"
+    func: Untyped,
+    x0: Untyped,
+    args: Untyped = (),
+    xtol: float = 1e-08,
+    maxiter: int = 500,
+    method: str = "del2",
 ) -> Untyped: ...

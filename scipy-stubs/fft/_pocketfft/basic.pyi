@@ -111,7 +111,12 @@ hfftn: Untyped
 irfftn: Untyped
 
 def r2r_fftpack(
-    forward: Untyped, x: Untyped, n: Untyped | None = None, axis: int = -1, norm: Untyped | None = None, overwrite_x: bool = False
+    forward: Untyped,
+    x: Untyped,
+    n: Untyped | None = None,
+    axis: int = -1,
+    norm: Untyped | None = None,
+    overwrite_x: bool = False,
 ) -> Untyped: ...
 
 rfft_fftpack: Untyped

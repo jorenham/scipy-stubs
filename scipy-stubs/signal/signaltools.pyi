@@ -45,7 +45,13 @@ __all__ = [
 # filter_design
 @deprecated("will be removed in SciPy v2.0.0")
 def cheby1(
-    N: object, rp: object, Wn: object, btype: object = ..., analog: object = ..., output: object = ..., fs: object = ...
+    N: object,
+    rp: object,
+    Wn: object,
+    btype: object = ...,
+    analog: object = ...,
+    output: object = ...,
+    fs: object = ...,
 ) -> object: ...
 
 # fir_filter_design
@@ -138,11 +144,22 @@ def residuez(b: object, a: object, tol: object = ..., rtype: object = ...) -> ob
 def invresz(r: object, p: object, k: object, tol: object = ..., rtype: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def resample(
-    x: object, num: object, t: object = ..., axis: object = ..., window: object = ..., domain: object = ...
+    x: object,
+    num: object,
+    t: object = ...,
+    axis: object = ...,
+    window: object = ...,
+    domain: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def resample_poly(
-    x: object, up: object, down: object, axis: object = ..., window: object = ..., padtype: object = ..., cval: object = ...
+    x: object,
+    up: object,
+    down: object,
+    axis: object = ...,
+    window: object = ...,
+    padtype: object = ...,
+    cval: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def vectorstrength(events: object, period: object) -> object: ...
@@ -175,7 +192,12 @@ def sosfilt(sos: object, x: object, axis: object = ..., zi: object = ...) -> obj
 def sosfiltfilt(sos: object, x: object, axis: object = ..., padtype: object = ..., padlen: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def decimate(
-    x: object, q: object, n: object = ..., ftype: object = ..., axis: object = ..., zero_phase: object = ...
+    x: object,
+    q: object,
+    n: object = ...,
+    ftype: object = ...,
+    axis: object = ...,
+    zero_phase: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v1.15.0")
 def cmplx_sort(p: object) -> object: ...

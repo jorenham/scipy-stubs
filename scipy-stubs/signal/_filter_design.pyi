@@ -113,13 +113,30 @@ def lp2hp_zpk(z: Untyped, p: Untyped, k: Untyped, wo: float = 1.0) -> Untyped: .
 def lp2bp_zpk(z: Untyped, p: Untyped, k: Untyped, wo: float = 1.0, bw: float = 1.0) -> Untyped: ...
 def lp2bs_zpk(z: Untyped, p: Untyped, k: Untyped, wo: float = 1.0, bw: float = 1.0) -> Untyped: ...
 def butter(
-    N: Untyped, Wn: Untyped, btype: str = "low", analog: bool = False, output: str = "ba", fs: Untyped | None = None
+    N: Untyped,
+    Wn: Untyped,
+    btype: str = "low",
+    analog: bool = False,
+    output: str = "ba",
+    fs: Untyped | None = None,
 ) -> Untyped: ...
 def cheby1(
-    N: Untyped, rp: Untyped, Wn: Untyped, btype: str = "low", analog: bool = False, output: str = "ba", fs: Untyped | None = None
+    N: Untyped,
+    rp: Untyped,
+    Wn: Untyped,
+    btype: str = "low",
+    analog: bool = False,
+    output: str = "ba",
+    fs: Untyped | None = None,
 ) -> Untyped: ...
 def cheby2(
-    N: Untyped, rs: Untyped, Wn: Untyped, btype: str = "low", analog: bool = False, output: str = "ba", fs: Untyped | None = None
+    N: Untyped,
+    rs: Untyped,
+    Wn: Untyped,
+    btype: str = "low",
+    analog: bool = False,
+    output: str = "ba",
+    fs: Untyped | None = None,
 ) -> Untyped: ...
 def ellip(
     N: Untyped,
@@ -143,19 +160,45 @@ def bessel(
 def maxflat() -> None: ...
 def yulewalk() -> None: ...
 def band_stop_obj(
-    wp: Untyped, ind: Untyped, passb: Untyped, stopb: Untyped, gpass: Untyped, gstop: Untyped, type: Untyped
+    wp: Untyped,
+    ind: Untyped,
+    passb: Untyped,
+    stopb: Untyped,
+    gpass: Untyped,
+    gstop: Untyped,
+    type: Untyped,
 ) -> Untyped: ...
 def buttord(
-    wp: Untyped, ws: Untyped, gpass: Untyped, gstop: Untyped, analog: bool = False, fs: Untyped | None = None
+    wp: Untyped,
+    ws: Untyped,
+    gpass: Untyped,
+    gstop: Untyped,
+    analog: bool = False,
+    fs: Untyped | None = None,
 ) -> Untyped: ...
 def cheb1ord(
-    wp: Untyped, ws: Untyped, gpass: Untyped, gstop: Untyped, analog: bool = False, fs: Untyped | None = None
+    wp: Untyped,
+    ws: Untyped,
+    gpass: Untyped,
+    gstop: Untyped,
+    analog: bool = False,
+    fs: Untyped | None = None,
 ) -> Untyped: ...
 def cheb2ord(
-    wp: Untyped, ws: Untyped, gpass: Untyped, gstop: Untyped, analog: bool = False, fs: Untyped | None = None
+    wp: Untyped,
+    ws: Untyped,
+    gpass: Untyped,
+    gstop: Untyped,
+    analog: bool = False,
+    fs: Untyped | None = None,
 ) -> Untyped: ...
 def ellipord(
-    wp: Untyped, ws: Untyped, gpass: Untyped, gstop: Untyped, analog: bool = False, fs: Untyped | None = None
+    wp: Untyped,
+    ws: Untyped,
+    gpass: Untyped,
+    gstop: Untyped,
+    analog: bool = False,
+    fs: Untyped | None = None,
 ) -> Untyped: ...
 def buttap(N: Untyped) -> Untyped: ...
 def cheb1ap(N: Untyped, rp: Untyped) -> Untyped: ...

@@ -18,5 +18,8 @@ class _PageL:
     def pmf(self, l: Untyped, n: Untyped) -> Untyped: ...
 
 def page_trend_test(
-    data: Untyped, ranked: bool = False, predicted_ranks: Untyped | None = None, method: str = "auto"
+    data: Untyped,
+    ranked: bool = False,
+    predicted_ranks: Untyped | None = None,
+    method: str = "auto",
 ) -> Untyped: ...

@@ -164,11 +164,18 @@ def kruskal(*args: Untyped) -> Untyped: ...
 def ks_1samp(x: Untyped, cdf: Untyped, args: Untyped = (), alternative: str = "two-sided", method: str = "auto") -> Untyped: ...
 def ks_2samp(data1: Untyped, data2: Untyped, alternative: str = "two-sided", method: str = "auto") -> Untyped: ...
 def kstest(
-    data1: Untyped, data2: Untyped, args: Untyped = (), alternative: str = "two-sided", method: str = "auto"
+    data1: Untyped,
+    data2: Untyped,
+    args: Untyped = (),
+    alternative: str = "two-sided",
+    method: str = "auto",
 ) -> Untyped: ...
 def trima(a: Untyped, limits: Untyped | None = None, inclusive: tuple[AnyBool, AnyBool] = (True, True)) -> Untyped: ...
 def trimr(
-    a: Untyped, limits: Untyped | None = None, inclusive: tuple[AnyBool, AnyBool] = (True, True), axis: int | None = None
+    a: Untyped,
+    limits: Untyped | None = None,
+    inclusive: tuple[AnyBool, AnyBool] = (True, True),
+    axis: int | None = None,
 ) -> Untyped: ...
 def trim(
     a: Untyped,
@@ -214,10 +221,16 @@ def trimmed_std(
     ddof: int = 0,
 ) -> Untyped: ...
 def trimmed_stde(
-    a: Untyped, limits: Untyped = (0.1, 0.1), inclusive: tuple[AnyBool, AnyBool] = (1, 1), axis: int | None = None
+    a: Untyped,
+    limits: Untyped = (0.1, 0.1),
+    inclusive: tuple[AnyBool, AnyBool] = (1, 1),
+    axis: int | None = None,
 ) -> Untyped: ...
 def tmean(
-    a: Untyped, limits: Untyped | None = None, inclusive: tuple[AnyBool, AnyBool] = (True, True), axis: int | None = None
+    a: Untyped,
+    limits: Untyped | None = None,
+    inclusive: tuple[AnyBool, AnyBool] = (True, True),
+    axis: int | None = None,
 ) -> Untyped: ...
 def tvar(
     a: Untyped,
