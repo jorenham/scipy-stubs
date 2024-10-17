@@ -76,7 +76,7 @@ def find_peaks(
 def find_peaks_cwt(
     vector: npt.ArrayLike,
     widths: npt.ArrayLike,
-    wavelet: Callable[Concatenate[int, float, ...], _Array_f8] | None = None,
+    wavelet: Callable[Concatenate[int, float, ...], npt.ArrayLike] | None = None,
     max_distances: Sequence[int] | None = None,
     gap_thresh: AnyInt | None = None,
     min_length: AnyInt | None = None,
