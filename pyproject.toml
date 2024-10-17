@@ -31,13 +31,13 @@ optype = "^0.6.1"
 
 [tool.poetry.group.lint.dependencies]
 basedmypy = "^2.6.0"
-basedpyright = "^1.18.4"
+basedpyright = "^1.19.0"
 ruff = "^0.6.9"
 
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.29.0"
 pre-commit = "^4.0.1"
-tox = "^4.21.2"
+tox = "^4.23.0"
 
 [tool.poe.executor]
 type = "poetry"
@@ -160,8 +160,6 @@ select = [
 [tool.ruff.lint.flake8-import-conventions]
 banned-from = [
     "numpy",
-    "numpy.dtypes",
-    "numpy.exceptions",
     "numpy.emath",
     "numpy.fft",
     "numpy.linalg",
@@ -171,7 +169,6 @@ banned-from = [
     "numpy.rec",
     "numpy.typing",
     "numpy.strings",
-    "optype",
     "optype.numpy",
     "optype.typing",
 ]
