@@ -3,12 +3,12 @@ from ._optimize import OptimizeResult as OptimizeResult
 
 izip = zip
 
-def synchronized(func) -> Untyped: ...
+def synchronized(func: Untyped) -> Untyped: ...
 def fmin_cobyla(
-    func,
-    x0,
-    cons,
-    args=(),
+    func: Untyped,
+    x0: Untyped,
+    cons: Untyped,
+    args: Untyped = (),
     consargs: Untyped | None = None,
     rhobeg: float = 1.0,
     rhoend: float = 0.0001,

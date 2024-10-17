@@ -4,9 +4,9 @@ from scipy._typing import Untyped, UntypedCallable
 
 __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle", "periodogram", "spectrogram", "stft", "welch"]
 
-def lombscargle(x, y, freqs, precenter: bool = False, normalize: bool = False) -> Untyped: ...
+def lombscargle(x: Untyped, y: Untyped, freqs: Untyped, precenter: bool = False, normalize: bool = False) -> Untyped: ...
 def periodogram(
-    x,
+    x: Untyped,
     fs: float = 1.0,
     window: str = "boxcar",
     nfft: int | None = None,
@@ -16,7 +16,7 @@ def periodogram(
     axis: int = -1,
 ) -> Untyped: ...
 def welch(
-    x,
+    x: Untyped,
     fs: float = 1.0,
     window: str = "hann",
     nperseg: int | None = None,
@@ -29,8 +29,8 @@ def welch(
     average: str = "mean",
 ) -> Untyped: ...
 def csd(
-    x,
-    y,
+    x: Untyped,
+    y: Untyped,
     fs: float = 1.0,
     window: str = "hann",
     nperseg: int | None = None,
@@ -43,9 +43,9 @@ def csd(
     average: str = "mean",
 ) -> Untyped: ...
 def spectrogram(
-    x,
+    x: Untyped,
     fs: float = 1.0,
-    window=("tukey", 0.25),
+    window: Untyped = ("tukey", 0.25),
     nperseg: int | None = None,
     noverlap: int | None = None,
     nfft: int | None = None,
@@ -55,10 +55,10 @@ def spectrogram(
     axis: int = -1,
     mode: str = "psd",
 ) -> Untyped: ...
-def check_COLA(window, nperseg: int, noverlap: int, tol: float = 1e-10) -> Untyped: ...
-def check_NOLA(window, nperseg: int, noverlap: int, tol: float = 1e-10) -> Untyped: ...
+def check_COLA(window: Untyped, nperseg: int, noverlap: int, tol: float = 1e-10) -> Untyped: ...
+def check_NOLA(window: Untyped, nperseg: int, noverlap: int, tol: float = 1e-10) -> Untyped: ...
 def stft(
-    x,
+    x: Untyped,
     fs: float = 1.0,
     window: str = "hann",
     nperseg: int = 256,
@@ -72,7 +72,7 @@ def stft(
     scaling: str = "spectrum",
 ) -> Untyped: ...
 def istft(
-    Zxx,
+    Zxx: Untyped,
     fs: float = 1.0,
     window: str = "hann",
     nperseg: int | None = None,
@@ -85,8 +85,8 @@ def istft(
     scaling: str = "spectrum",
 ) -> Untyped: ...
 def coherence(
-    x,
-    y,
+    x: Untyped,
+    y: Untyped,
     fs: float = 1.0,
     window: str = "hann",
     nperseg: int | None = None,

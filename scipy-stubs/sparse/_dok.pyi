@@ -24,13 +24,13 @@ class _dok_base(_spbase, IndexMixin, dict[tuple[int, ...], Untyped]):  # type: i
     @override
     def __delitem__(self, key: Untyped, /) -> None: ...
     @override
-    def __or__(self, other: Untyped, /): ...  # type: ignore[override]
+    def __or__(self, other: Untyped, /) -> None: ...  # type: ignore[override]
     @override
-    def __ror__(self, other: Untyped, /): ...  # type: ignore[override]
+    def __ror__(self, other: Untyped, /) -> None: ...  # type: ignore[override]
     @override
     def __ior__(self, other: Untyped, /) -> Self: ...  # type: ignore[override]
     @override
-    def get(self, key, /, default: float = 0.0) -> Untyped: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def get(self, key: Untyped, /, default: float = 0.0) -> Untyped: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
     def conjtransp(self) -> Untyped: ...
     @classmethod
     @override

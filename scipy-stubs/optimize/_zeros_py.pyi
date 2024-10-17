@@ -19,14 +19,14 @@ class RootResults(OptimizeResult):
     converged: Untyped
     flag: Untyped
     method: Untyped
-    def __init__(self, root, iterations, function_calls, flag, method) -> None: ...
+    def __init__(self, root: Untyped, iterations: Untyped, function_calls: Untyped, flag: Untyped, method: Untyped) -> None: ...
 
-def results_c(full_output, r, method) -> Untyped: ...
+def results_c(full_output: Untyped, r: Untyped, method: Untyped) -> Untyped: ...
 def newton(
-    func,
-    x0,
+    func: Untyped,
+    x0: Untyped,
     fprime: Untyped | None = None,
-    args=(),
+    args: Untyped = (),
     tol: float = 1.48e-08,
     maxiter: int = 50,
     fprime2: Untyped | None = None,
@@ -35,10 +35,50 @@ def newton(
     full_output: bool = False,
     disp: bool = True,
 ) -> Untyped: ...
-def bisect(f, a, b, args=(), xtol=..., rtol=..., maxiter=..., full_output: bool = False, disp: bool = True) -> Untyped: ...
-def ridder(f, a, b, args=(), xtol=..., rtol=..., maxiter=..., full_output: bool = False, disp: bool = True) -> Untyped: ...
-def brentq(f, a, b, args=(), xtol=..., rtol=..., maxiter=..., full_output: bool = False, disp: bool = True) -> Untyped: ...
-def brenth(f, a, b, args=(), xtol=..., rtol=..., maxiter=..., full_output: bool = False, disp: bool = True) -> Untyped: ...
+def bisect(
+    f: Untyped,
+    a: Untyped,
+    b: Untyped,
+    args: Untyped = (),
+    xtol: Untyped = ...,
+    rtol: Untyped = ...,
+    maxiter: Untyped = ...,
+    full_output: bool = False,
+    disp: bool = True,
+) -> Untyped: ...
+def ridder(
+    f: Untyped,
+    a: Untyped,
+    b: Untyped,
+    args: Untyped = (),
+    xtol: Untyped = ...,
+    rtol: Untyped = ...,
+    maxiter: Untyped = ...,
+    full_output: bool = False,
+    disp: bool = True,
+) -> Untyped: ...
+def brentq(
+    f: Untyped,
+    a: Untyped,
+    b: Untyped,
+    args: Untyped = (),
+    xtol: Untyped = ...,
+    rtol: Untyped = ...,
+    maxiter: Untyped = ...,
+    full_output: bool = False,
+    disp: bool = True,
+) -> Untyped: ...
+def brenth(
+    f: Untyped,
+    a: Untyped,
+    b: Untyped,
+    args: Untyped = (),
+    xtol: Untyped = ...,
+    rtol: Untyped = ...,
+    maxiter: Untyped = ...,
+    full_output: bool = False,
+    disp: bool = True,
+) -> Untyped: ...
 
 class TOMS748Solver:
     f: Untyped
@@ -57,22 +97,33 @@ class TOMS748Solver:
     rtol: Untyped
     maxiter: Untyped
     def __init__(self) -> None: ...
-    def configure(self, xtol, rtol, maxiter, disp, k): ...
-    def get_result(self, x, flag=...) -> Untyped: ...
-    def start(self, f, a, b, args=()) -> Untyped: ...
+    def configure(self, xtol: Untyped, rtol: Untyped, maxiter: Untyped, disp: Untyped, k: Untyped) -> None: ...
+    def get_result(self, x: Untyped, flag: Untyped = ...) -> Untyped: ...
+    def start(self, f: Untyped, a: Untyped, b: Untyped, args: Untyped = ()) -> Untyped: ...
     def get_status(self) -> Untyped: ...
     def iterate(self) -> Untyped: ...
-    def solve(self, f, a, b, args=(), xtol=..., rtol=..., k: int = 2, maxiter=..., disp: bool = True) -> Untyped: ...
+    def solve(
+        self,
+        f: Untyped,
+        a: Untyped,
+        b: Untyped,
+        args: Untyped = (),
+        xtol: Untyped = ...,
+        rtol: Untyped = ...,
+        k: int = 2,
+        maxiter: Untyped = ...,
+        disp: bool = True,
+    ) -> Untyped: ...
 
 def toms748(
-    f,
-    a,
-    b,
-    args=(),
+    f: Untyped,
+    a: Untyped,
+    b: Untyped,
+    args: Untyped = (),
     k: int = 1,
-    xtol=...,
-    rtol=...,
-    maxiter=...,
+    xtol: Untyped = ...,
+    rtol: Untyped = ...,
+    maxiter: Untyped = ...,
     full_output: bool = False,
     disp: bool = True,
 ) -> Untyped: ...

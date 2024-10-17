@@ -10,14 +10,14 @@ from scipy.optimize._constraints import (
 from scipy.sparse import issparse as issparse
 
 def differential_evolution(
-    func,
-    bounds,
-    args=(),
+    func: Untyped,
+    bounds: Untyped,
+    args: Untyped = (),
     strategy: str = "best1bin",
     maxiter: int = 1000,
     popsize: int = 15,
     tol: float = 0.01,
-    mutation=(0.5, 1),
+    mutation: Untyped = (0.5, 1),
     recombination: float = 0.7,
     seed: Untyped | None = None,
     callback: Untyped | None = None,
@@ -27,7 +27,7 @@ def differential_evolution(
     atol: int = 0,
     updating: str = "immediate",
     workers: int = 1,
-    constraints=(),
+    constraints: Untyped = (),
     x0: Untyped | None = None,
     *,
     integrality: Untyped | None = None,
@@ -60,17 +60,17 @@ class DifferentialEvolutionSolver:
     disp: Untyped
     def __init__(
         self,
-        func,
-        bounds,
-        args=(),
+        func: Untyped,
+        bounds: Untyped,
+        args: Untyped = (),
         strategy: str = "best1bin",
         maxiter: int = 1000,
         popsize: int = 15,
         tol: float = 0.01,
-        mutation=(0.5, 1),
+        mutation: Untyped = (0.5, 1),
         recombination: float = 0.7,
         seed: Untyped | None = None,
-        maxfun=...,
+        maxfun: Untyped = ...,
         callback: Untyped | None = None,
         disp: bool = False,
         polish: bool = True,
@@ -78,18 +78,18 @@ class DifferentialEvolutionSolver:
         atol: int = 0,
         updating: str = "immediate",
         workers: int = 1,
-        constraints=(),
+        constraints: Untyped = (),
         x0: Untyped | None = None,
         *,
         integrality: Untyped | None = None,
         vectorized: bool = False,
-    ): ...
+    ) -> None: ...
     population: Untyped
     population_energies: Untyped
-    def init_population_lhs(self): ...
-    def init_population_qmc(self, qmc_engine): ...
-    def init_population_random(self): ...
-    def init_population_array(self, init): ...
+    def init_population_lhs(self) -> None: ...
+    def init_population_qmc(self, qmc_engine: Untyped) -> None: ...
+    def init_population_random(self) -> None: ...
+    def init_population_array(self, init: Untyped) -> None: ...
     @property
     def x(self) -> Untyped: ...
     @property
@@ -98,7 +98,7 @@ class DifferentialEvolutionSolver:
     def solve(self) -> Untyped: ...
     def __iter__(self) -> Untyped: ...
     def __enter__(self) -> Untyped: ...
-    def __exit__(self, *args) -> Untyped: ...
+    def __exit__(self, *args: object) -> Untyped: ...
     def __next__(self) -> Untyped: ...
 
 class _ConstraintWrapper:
@@ -107,6 +107,6 @@ class _ConstraintWrapper:
     num_constr: Untyped
     parameter_count: Untyped
     bounds: Untyped
-    def __init__(self, constraint, x0) -> None: ...
-    def __call__(self, x) -> Untyped: ...
-    def violation(self, x) -> Untyped: ...
+    def __init__(self, constraint: Untyped, x0: Untyped) -> None: ...
+    def __call__(self, x: Untyped) -> Untyped: ...
+    def violation(self, x: Untyped) -> Untyped: ...

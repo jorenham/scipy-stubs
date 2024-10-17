@@ -17,7 +17,7 @@ name = "scipy-stubs"
 packages = [{include = "scipy-stubs"}]
 readme = "README.md"
 repository = "https://github.com/jorenham/scipy-stubs/"
-version = "1.14.1.0"
+version = "1.14.1.1.dev0"
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/jorenham/scipy-stubs/issues"
@@ -38,6 +38,12 @@ ruff = "^0.6.9"
 poethepoet = "^0.29.0"
 pre-commit = "^4.0.1"
 tox = "^4.23.0"
+
+
+[tool.poetry.group.codemods]
+optional = true
+[tool.poetry.group.codemods.dependencies]
+libcst = "^1.5.0"
 
 [tool.poe.executor]
 type = "poetry"
@@ -76,6 +82,18 @@ stubtest
 """
 args = [{name = "modules", positional = true, multiple = true, default = "scipy"}]
 
+[tool.poe.tasks.codemod]
+cmd = """
+python -m libcst.tool
+    codemod -x --include-stubs
+    codemods.$name
+    $path
+"""
+args = [
+    {name = "name", positional = true, multiple = false},
+    {name = "path", positional = true, multiple = false, default = "scipy-stubs"}
+]
+
 [tool.mypy]
 python_version = "3.10"
 strict = true
@@ -87,7 +105,7 @@ disallow_incomplete_defs = false  # TODO
 warn_unused_ignores = true
 
 [tool.pyright]
-include = ["scipy-stubs", "tests/typetests"]
+include = ["scipy-stubs", "tests/typetests", "codemods.py"]
 venv = ".venv"
 venvPath = "."
 stubPath = "."
@@ -111,7 +129,7 @@ force-exclude = true
 target-version = "py310"
 # https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#maximum-line-length
 line-length = 130
-src = ["scipy-stubs"]
+src = ["scipy-stubs", "codemods.py"]
 
 [tool.ruff.format]
 line-ending = "lf"

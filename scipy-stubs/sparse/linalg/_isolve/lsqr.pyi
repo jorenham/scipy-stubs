@@ -5,8 +5,8 @@ __all__ = ["lsqr"]
 eps: float = ...
 
 def lsqr(
-    A,
-    b,
+    A: Untyped,
+    b: Untyped,
     damp: float = 0.0,
     atol: float = 1e-06,
     btol: float = 1e-06,

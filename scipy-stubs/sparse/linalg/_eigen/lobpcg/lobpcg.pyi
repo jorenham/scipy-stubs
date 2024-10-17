@@ -3,8 +3,8 @@ from scipy._typing import Untyped
 __all__ = ["lobpcg"]
 
 def lobpcg(
-    A,
-    X,
+    A: Untyped,
+    X: Untyped,
     B: Untyped | None = None,
     M: Untyped | None = None,
     Y: Untyped | None = None,
