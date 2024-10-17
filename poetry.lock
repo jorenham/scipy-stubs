@@ -50,13 +50,13 @@ reports = ["lxml"]
 
 [[package]]
 name = "basedpyright"
-version = "1.18.4"
+version = "1.19.0"
 description = "static type checking for Python (but based)"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "basedpyright-1.18.4-py3-none-any.whl", hash = "sha256:0cb4e192f66bfee9e8a34ce8c35f62e71c316b1c59a48e8d46c66dff268e19b4"},
-    {file = "basedpyright-1.18.4.tar.gz", hash = "sha256:d32f8c3abab50792a61039ff8ff5a2412b68d1c13b101d4b63756cb773d9828f"},
+    {file = "basedpyright-1.19.0-py3-none-any.whl", hash = "sha256:78f2fc2e5d3f2cc1c4dfae351f9d45aa52917bfb0e9a103579a4bb005f097bec"},
+    {file = "basedpyright-1.19.0.tar.gz", hash = "sha256:847d9c75ca691c9ff0661c800e830c23b32c65793b97a4386db9cbf52c1a168a"},
 ]
 
 [package.dependencies]
@@ -539,13 +539,13 @@ files = [
 
 [[package]]
 name = "tox"
-version = "4.21.2"
+version = "4.23.0"
 description = "tox is a generic virtualenv management and test command line tool"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "tox-4.21.2-py3-none-any.whl", hash = "sha256:13d996adcd792e7c82994b0e116d85efd84f0c6d185254d83d156f73f86b2038"},
-    {file = "tox-4.21.2.tar.gz", hash = "sha256:49381ff102296753e378fa5ff30e42a35e695f149b4dbf8a2c49d15fdb5797b2"},
+    {file = "tox-4.23.0-py3-none-any.whl", hash = "sha256:46da40afb660e46238c251280eb910bdaf00b390c7557c8e4bb611f422e9db12"},
+    {file = "tox-4.23.0.tar.gz", hash = "sha256:a6bd7d54231d755348d3c3a7b450b5bf6563833716d1299a1619587a1b77a3bf"},
 ]
 
 [package.dependencies]
@@ -560,10 +560,6 @@ pyproject-api = ">=1.8"
 tomli = {version = ">=2.0.1", markers = "python_version < \"3.11\""}
 typing-extensions = {version = ">=4.12.2", markers = "python_version < \"3.11\""}
 virtualenv = ">=20.26.6"
-
-[package.extras]
-docs = ["furo (>=2024.8.6)", "sphinx (>=8.0.2)", "sphinx-argparse-cli (>=1.18.2)", "sphinx-autodoc-typehints (>=2.4.4)", "sphinx-copybutton (>=0.5.2)", "sphinx-inline-tabs (>=2023.4.21)", "sphinxcontrib-towncrier (>=0.2.1a0)", "towncrier (>=24.8)"]
-testing = ["build[virtualenv] (>=1.2.2)", "covdefaults (>=2.3)", "detect-test-pollution (>=1.2)", "devpi-process (>=1.0.2)", "diff-cover (>=9.2)", "distlib (>=0.3.8)", "flaky (>=3.8.1)", "hatch-vcs (>=0.4)", "hatchling (>=1.25)", "psutil (>=6)", "pytest (>=8.3.3)", "pytest-cov (>=5)", "pytest-mock (>=3.14)", "pytest-xdist (>=3.6.1)", "re-assert (>=1.1)", "setuptools (>=75.1)", "time-machine (>=2.15)", "wheel (>=0.44)"]
 
 [[package]]
 name = "typing-extensions"
@@ -599,4 +595,4 @@ test = ["covdefaults (>=2.3)", "coverage (>=7.2.7)", "coverage-enable-subprocess
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10.1"
-content-hash = "9c2e43ff46bf6606c8e15e82ca3a839f71ec39e0d08e04da2759ea5e6409e9f6"
+content-hash = "c7730018b76f7bd1769e77ce19993bbdd455d60365436df871e278bc5ca4f9d3"

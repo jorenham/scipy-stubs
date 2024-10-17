@@ -8,7 +8,7 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onpt
 from numpy._typing import _ArrayLikeInt
-from numpy.exceptions import (  # noqa: ICN003
+from numpy.exceptions import (
     AxisError as AxisError,
     ComplexWarning as ComplexWarning,
     DTypePromotionError as DTypePromotionError,
