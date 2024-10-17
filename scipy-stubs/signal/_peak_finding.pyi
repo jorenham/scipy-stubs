@@ -10,6 +10,7 @@ from scipy._typing import AnyInt, AnyReal
 __all__ = ["argrelextrema", "argrelmax", "argrelmin", "find_peaks", "find_peaks_cwt", "peak_prominences", "peak_widths"]
 
 _Array_n: TypeAlias = npt.NDArray[np.intp]
+_Array_n_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.intp]]
 _Array_f8: TypeAlias = npt.NDArray[np.float64]
 _Mode: TypeAlias = Literal["clip", "wrap"]
 
@@ -82,4 +83,4 @@ def find_peaks_cwt(
     min_snr: AnyReal = 1,
     noise_perc: AnyReal = 10,
     window_size: AnyInt | None = None,
-) -> npt.NDArray[np.intp]: ...
+) -> _Array_n_1d: ...
