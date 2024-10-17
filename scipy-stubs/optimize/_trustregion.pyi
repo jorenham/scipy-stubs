@@ -9,7 +9,12 @@ __all__: list[str] = []
 
 class BaseQuadraticSubproblem:
     def __init__(
-        self, x: Untyped, fun: Untyped, jac: Untyped, hess: Untyped | None = None, hessp: Untyped | None = None
+        self,
+        x: Untyped,
+        fun: Untyped,
+        jac: Untyped,
+        hess: Untyped | None = None,
+        hessp: Untyped | None = None,
     ) -> None: ...
     def __call__(self, p: Untyped) -> Untyped: ...
     @property

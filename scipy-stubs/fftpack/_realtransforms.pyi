@@ -33,14 +33,34 @@ def idstn(
     overwrite_x: bool = False,
 ) -> Untyped: ...
 def dct(
-    x: Untyped, type: int = 2, n: Untyped | None = None, axis: int = -1, norm: Untyped | None = None, overwrite_x: bool = False
+    x: Untyped,
+    type: int = 2,
+    n: Untyped | None = None,
+    axis: int = -1,
+    norm: Untyped | None = None,
+    overwrite_x: bool = False,
 ) -> Untyped: ...
 def idct(
-    x: Untyped, type: int = 2, n: Untyped | None = None, axis: int = -1, norm: Untyped | None = None, overwrite_x: bool = False
+    x: Untyped,
+    type: int = 2,
+    n: Untyped | None = None,
+    axis: int = -1,
+    norm: Untyped | None = None,
+    overwrite_x: bool = False,
 ) -> Untyped: ...
 def dst(
-    x: Untyped, type: int = 2, n: Untyped | None = None, axis: int = -1, norm: Untyped | None = None, overwrite_x: bool = False
+    x: Untyped,
+    type: int = 2,
+    n: Untyped | None = None,
+    axis: int = -1,
+    norm: Untyped | None = None,
+    overwrite_x: bool = False,
 ) -> Untyped: ...
 def idst(
-    x: Untyped, type: int = 2, n: Untyped | None = None, axis: int = -1, norm: Untyped | None = None, overwrite_x: bool = False
+    x: Untyped,
+    type: int = 2,
+    n: Untyped | None = None,
+    axis: int = -1,
+    norm: Untyped | None = None,
+    overwrite_x: bool = False,
 ) -> Untyped: ...

@@ -14,7 +14,13 @@ def gausspulse(
     retenv: bool = False,
 ) -> Untyped: ...
 def chirp(
-    t: Untyped, f0: Untyped, t1: Untyped, f1: Untyped, method: str = "linear", phi: int = 0, vertex_zero: bool = True
+    t: Untyped,
+    f0: Untyped,
+    t1: Untyped,
+    f1: Untyped,
+    method: str = "linear",
+    phi: int = 0,
+    vertex_zero: bool = True,
 ) -> Untyped: ...
 def sweep_poly(t: Untyped, poly: Untyped, phi: int = 0) -> Untyped: ...
 def unit_impulse(shape: Untyped, idx: Untyped | None = None, dtype: Untyped = ...) -> Untyped: ...

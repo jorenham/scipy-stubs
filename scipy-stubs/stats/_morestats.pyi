@@ -106,11 +106,19 @@ def probplot(
 ) -> Untyped: ...
 def ppcc_max(x: Untyped, brack: Untyped = (0.0, 1.0), dist: str = "tukeylambda") -> Untyped: ...
 def ppcc_plot(
-    x: Untyped, a: Untyped, b: Untyped, dist: str = "tukeylambda", plot: Untyped | None = None, N: int = 80
+    x: Untyped,
+    a: Untyped,
+    b: Untyped,
+    dist: str = "tukeylambda",
+    plot: Untyped | None = None,
+    N: int = 80,
 ) -> Untyped: ...
 def boxcox_llf(lmb: Untyped, data: Untyped) -> Untyped: ...
 def boxcox(
-    x: Untyped, lmbda: Untyped | None = None, alpha: Untyped | None = None, optimizer: Untyped | None = None
+    x: Untyped,
+    lmbda: Untyped | None = None,
+    alpha: Untyped | None = None,
+    optimizer: Untyped | None = None,
 ) -> Untyped: ...
 def boxcox_normmax(
     x: Untyped,

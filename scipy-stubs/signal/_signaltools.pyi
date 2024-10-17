@@ -64,7 +64,12 @@ def residue(b: Untyped, a: Untyped, tol: float = 0.001, rtype: str = "avg") -> U
 def residuez(b: Untyped, a: Untyped, tol: float = 0.001, rtype: str = "avg") -> Untyped: ...
 def invresz(r: Untyped, p: Untyped, k: Untyped, tol: float = 0.001, rtype: str = "avg") -> Untyped: ...
 def resample(
-    x: Untyped, num: Untyped, t: Untyped | None = None, axis: int = 0, window: Untyped | None = None, domain: str = "time"
+    x: Untyped,
+    num: Untyped,
+    t: Untyped | None = None,
+    axis: int = 0,
+    window: Untyped | None = None,
+    domain: str = "time",
 ) -> Untyped: ...
 def resample_poly(
     x: Untyped,
@@ -98,7 +103,12 @@ def filtfilt(
 def sosfilt(sos: Untyped, x: Untyped, axis: int = -1, zi: Untyped | None = None) -> Untyped: ...
 def sosfiltfilt(sos: Untyped, x: Untyped, axis: int = -1, padtype: str = "odd", padlen: Untyped | None = None) -> Untyped: ...
 def decimate(
-    x: Untyped, q: Untyped, n: Untyped | None = None, ftype: str = "iir", axis: int = -1, zero_phase: bool = True
+    x: Untyped,
+    q: Untyped,
+    n: Untyped | None = None,
+    ftype: str = "iir",
+    axis: int = -1,
+    zero_phase: bool = True,
 ) -> Untyped: ...
 @deprecated("Will be removed in SciPy 1.5")
 def cmplx_sort(p: Untyped) -> tuple[Untyped, Untyped]: ...

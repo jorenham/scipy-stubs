@@ -19,7 +19,13 @@ def gausspulse(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def chirp(
-    t: object, f0: object, t1: object, f1: object, method: object = ..., phi: object = ..., vertex_zero: object = ...
+    t: object,
+    f0: object,
+    t1: object,
+    f1: object,
+    method: object = ...,
+    phi: object = ...,
+    vertex_zero: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def sweep_poly(t: object, poly: object, phi: object = ...) -> object: ...
