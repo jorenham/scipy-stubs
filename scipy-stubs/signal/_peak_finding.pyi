@@ -4,7 +4,7 @@ from typing import Concatenate, Literal, TypeAlias, TypedDict
 import numpy as np
 import numpy.typing as npt
 import optype as op
-from numpy._typing import _ArrayLikeInt_co
+from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt_co
 from scipy._typing import AnyInt, AnyReal
 
 __all__ = ["argrelextrema", "argrelmax", "argrelmin", "find_peaks", "find_peaks_cwt", "peak_prominences", "peak_widths"]
@@ -64,14 +64,14 @@ def peak_widths(
 ) -> _WidthsResult: ...
 def find_peaks(
     x: npt.ArrayLike,
-    height: AnyReal | _Array_f8 | tuple[AnyReal | None, AnyReal | None] | None = None,
-    threshold: AnyReal | _Array_f8 | tuple[AnyReal | None, AnyReal | None] | None = None,
+    height: _ArrayLikeFloat_co | tuple[AnyReal | None, AnyReal | None] | None = None,
+    threshold: _ArrayLikeFloat_co | tuple[AnyReal | None, AnyReal | None] | None = None,
     distance: AnyReal | None = None,
-    prominence: AnyReal | _Array_f8 | tuple[AnyReal | None, AnyReal | None] | None = None,
-    width: AnyReal | _Array_f8 | tuple[AnyReal | None, AnyReal | None] | None = None,
+    prominence: _ArrayLikeFloat_co | tuple[AnyReal | None, AnyReal | None] | None = None,
+    width: _ArrayLikeFloat_co | tuple[AnyReal | None, AnyReal | None] | None = None,
     wlen: AnyReal | None = None,
     rel_height: AnyReal = 0.5,
-    plateau_size: AnyInt | _Array_n | tuple[AnyInt | None, AnyInt | None] | None = None,
+    plateau_size: _ArrayLikeInt_co | tuple[AnyInt | None, AnyInt | None] | None = None,
 ) -> tuple[_Array_n, _FindPeaksResultsDict]: ...
 def find_peaks_cwt(
     vector: npt.ArrayLike,
