@@ -38,16 +38,28 @@ _DUNDER_RETURN = {
 }
 
 
-class AnnotateMissing(VisitorBasedCodemodCommand):
+class _BaseMod(VisitorBasedCodemodCommand):
+    updated: int
+
+    def __init__(self, /, context: CodemodContext) -> None:
+        self.updated = 0
+        super().__init__(context)
+
+    @override
+    def leave_Module(self, original_node: cst.Module, updated_node: cst.Module) -> cst.Module:
+        if not self.updated:
+            raise SkipFile("unchanged")
+
+        return updated_node
+
+
+class AnnotateMissing(_BaseMod):
     DESCRIPTION = "Sets the default return type to `None`, and other missing annotations to `scipy._typing.Untyped`"
 
     untyped: Final[str]
-    updated: int
 
     def __init__(self, /, context: CodemodContext, *, untyped: str = "Untyped") -> None:
         self.untyped = untyped
-        self.updated = 0
-
         super().__init__(context)
 
     @override
@@ -81,9 +93,29 @@ class AnnotateMissing(VisitorBasedCodemodCommand):
 
         return updated_node
 
+
+class FixTrailingComma(_BaseMod):
+    DESCRIPTION = "Adds a trailing comma to parameters that don't fit on one line, so that ruff formats them correctly."
+
     @override
-    def leave_Module(self, original_node: cst.Module, updated_node: cst.Module) -> cst.Module:
-        if not self.updated:
-            raise SkipFile("unchanged")
+    def leave_FunctionDef(self, original_node: cst.FunctionDef, updated_node: cst.FunctionDef) -> cst.FunctionDef:
+        params = updated_node.params.params
+
+        if (
+            # there's whitespace before the parameters
+            not (newline := original_node.whitespace_before_params).empty
+            # the parameters start on a new line
+            and isinstance(newline, cst.ParenthesizedWhitespace)
+            # at least 2 parameters
+            and len(params) >= 2
+            # the first paramater has a comma
+            and (comma0 := params[0].comma) is not cst.MaybeSentinel.DEFAULT
+            # the first comma doesn't end in a newline
+            and isinstance(comma0.whitespace_after, cst.SimpleWhitespace)
+            # the last parameter has no trailing comma
+            and params[-1].comma is cst.MaybeSentinel.DEFAULT
+        ):
+            self.updated += 1
+            return updated_node.with_deep_changes(params[-1], comma=cst.Comma())
 
         return updated_node

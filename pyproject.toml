@@ -84,8 +84,12 @@ args = [{name = "modules", positional = true, multiple = true, default = "scipy"
 
 [tool.poe.tasks.codemod]
 cmd = """
-python -m libcst.tool
-    codemod -x --include-stubs
+python -m libcst.tool codemod
+    -x
+    --hide-generated-warnings
+    --hide-blacklisted-warnings
+    --hide-progress
+    --include-stubs
     codegen.mods.$name
     $path
 """
