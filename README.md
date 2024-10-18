@@ -85,7 +85,7 @@ pip install scipy-stubs
 | `integrate`   | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_gibbous_moon:  |
 | `interpolate` | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :first_quarter_moon:   |
 | `io`          | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
-| `linalg`      | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_gibbous_moon:  |
+| `linalg`      | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
 | ~`misc`~      | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
 | `ndimage`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
 | `odr`         | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_crescent_moon: |
