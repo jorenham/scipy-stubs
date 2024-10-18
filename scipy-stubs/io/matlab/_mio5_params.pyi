@@ -1,5 +1,5 @@
-from typing import Final, Literal, TypeAlias, final
-from typing_extensions import Self, override
+from typing import Final, Generic, Literal, TypeAlias, TypedDict, final, type_check_only
+from typing_extensions import Self, TypeVar, override
 
 import numpy as np
 import numpy.typing as npt
@@ -53,68 +53,153 @@ __all__ = [
     "mxUINT64_CLASS",
 ]
 
-_MType: TypeAlias = Literal[1, 2, 3, 4, 5, 6, 7, 9, 12, 13, 14, 15, 16, 17, 18]
-_MXType: TypeAlias = Literal[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+_ShapeT_co = TypeVar("_ShapeT_co", covariant=True, bound=tuple[int, ...], default=tuple[int, ...])
 
-miINT8: Final = 1
-miUINT8: Final = 2
-miINT16: Final = 3
-miUINT16: Final = 4
-miINT32: Final = 5
-miUINT32: Final = 6
-miSINGLE: Final = 7
-miDOUBLE: Final = 9
-miINT64: Final = 12
-miUINT64: Final = 13
-miMATRIX: Final = 14
-miCOMPRESSED: Final = 15
-miUTF8: Final = 16
-miUTF16: Final = 17
-miUTF32: Final = 18
+@type_check_only
+class _CodecTemplateValue(TypedDict):
+    codec: _Codec
+    width: Literal[1, 2, 4]
 
-mxCELL_CLASS: Final = 1
-mxSTRUCT_CLASS: Final = 2
-mxOBJECT_CLASS: Final = 3
-mxCHAR_CLASS: Final = 4
-mxSPARSE_CLASS: Final = 5
-mxDOUBLE_CLASS: Final = 6
-mxSINGLE_CLASS: Final = 7
-mxINT8_CLASS: Final = 8
-mxUINT8_CLASS: Final = 9
-mxINT16_CLASS: Final = 10
-mxUINT16_CLASS: Final = 11
-mxINT32_CLASS: Final = 12
-mxUINT32_CLASS: Final = 13
-mxINT64_CLASS: Final = 14
-mxUINT64_CLASS: Final = 15
-mxFUNCTION_CLASS: Final = 16
-mxOPAQUE_CLASS: Final = 17
-mxOBJECT_CLASS_FROM_MATRIX_H: Final = 18
+@type_check_only
+class _MDTypesValue(TypedDict):
+    dtypes: dict[str, np.dtype[np.generic]]
+    classes: dict[str, np.dtype[np.generic]]
+    codecs: dict[_MCodec, _CodecBO]
 
-codecs_template: dict[Literal[16, 17, 18], dict[Literal["codec", "width"], Literal["utf_8", "utf_16", "utf_32", 1, 2, 4]]]
-mdtypes_template: Final[dict[_MType | str, str | list[tuple[str, str]]]]
-mclass_info: Final[dict[_MXType, str]]
-mclass_dtypes_template: Final[dict[_MXType, str]]
+_MDTypes = TypedDict("_MDTypes", {"<": _MDTypesValue, ">": _MDTypesValue})
 
-NP_TO_MTYPES: Final[dict[str, _MType]]
-NP_TO_MXTYPES: Final[dict[str, _MXType]]
-MDTYPES: Final[dict[Literal["<", ">"], dict[str, dict[_MType, str]]]]
-OPAQUE_DTYPE: Final[np.dtypes.VoidDType[Literal[32]]]
+@type_check_only
+class _NP2M(TypedDict):
+    f8: Literal[9]
+    c32: Literal[9]
+    c24: Literal[9]
+    c16: Literal[9]
+    f4: Literal[7]
+    c8: Literal[7]
+    i8: Literal[12]
+    i4: Literal[5]
+    i2: Literal[3]
+    i1: Literal[1]
+    u8: Literal[13]
+    u4: Literal[6]
+    u2: Literal[4]
+    u1: Literal[2]
+    S1: Literal[2]
+    U1: Literal[17]
+    b1: Literal[2]
+
+@type_check_only
+class _NP2MX(TypedDict):
+    f8: Literal[6]
+    c32: Literal[6]
+    c24: Literal[6]
+    c16: Literal[6]
+    f4: Literal[7]
+    c8: Literal[7]
+    i8: Literal[14]
+    i4: Literal[12]
+    i2: Literal[10]
+    i1: Literal[8]
+    u8: Literal[15]
+    u4: Literal[13]
+    u2: Literal[11]
+    u1: Literal[9]
+    S1: Literal[9]
+    b1: Literal[9]
+
+# NOTE: TypedDict doesn't support integer keys (but the python core devs are literally incapable of admitting their mistakes)
+_CodecsTemplate: TypeAlias = dict[_MCodec, _CodecTemplateValue]
+
+_ByteOrder: TypeAlias = Literal["<", ">"]
+_Codec: TypeAlias = Literal["utf_8", "utf_16", "utf_32"]
+_CodecBO: TypeAlias = Literal["utf_8", "utf_16_le", "utf_16_be", "utf_32_le", "utf_32_be"]
+
+_MCodec: TypeAlias = Literal[16, 17, 18]
+_MType: TypeAlias = Literal[1, 2, 3, 4, 5, 6, 7, 9, 12, 13, 14, 15, _MCodec]
+_Number: TypeAlias = Literal["i1", "i2", "i4", "i8", "u1", "u2", "u4", "u8", "f4", "f8"]
+_MDTypeTemplateKey: TypeAlias = Literal[_MType, "array_flags", "file_header", "tag_full", "tag_smalldata", "U1"]
+_MDTypeTemplateValueKey: TypeAlias = Literal[
+    "description", "subsystem_offset", "version", "endian_test",
+    "mdtype", "byte_count",
+    "byte_count_mdtype", "data",
+    "data_type", "flags_class", "nzmax",
+]  # fmt: skip
+_MDTypeTemplateValueValue: TypeAlias = Literal["S2", "u2", "s4", "u4", "i8", "S116"]
+_MDTypeTemplateValueItems: TypeAlias = list[tuple[_MDTypeTemplateValueKey, _MDTypeTemplateValueValue]]
+_MDTypeTemplateValue: TypeAlias = _Number | _MDTypeTemplateValueItems
+
+_MXNumber: TypeAlias = Literal[6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+_MXType: TypeAlias = Literal[1, 2, 3, 4, 5, _MXNumber, 16, 17, 18]
+_MXName: TypeAlias = Literal[
+    "cell", "struct", "object", "char", "sparse",
+    "single", "double", "int8", "int16", "int32", "int64", "uint8", "uint16", "uint32", "uint64",
+    "function", "opaque",
+]  # fmt: skip
+
+###
+
+MDTYPES: Final[_MDTypes] = ...
+NP_TO_MTYPES: Final[_NP2M] = ...
+NP_TO_MXTYPES: Final[_NP2MX] = ...
+# TODO: use `np.dtypes.VoidDType[Literal[32]]` once we have `numpy >= 2.1.0`
+OPAQUE_DTYPE: Final[np.dtype[np.void]] = ...
+
+codecs_template: Final[_CodecsTemplate] = ...
+mdtypes_template: Final[dict[_MDTypeTemplateKey, _MDTypeTemplateValue]] = ...
+mclass_info: Final[dict[_MXType, _MXName]] = ...
+mclass_dtypes_template: Final[dict[_MXNumber, _Number]] = ...
+
+miINT8: Final[_MType] = 1
+miUINT8: Final[_MType] = 2
+miINT16: Final[_MType] = 3
+miUINT16: Final[_MType] = 4
+miINT32: Final[_MType] = 5
+miUINT32: Final[_MType] = 6
+miSINGLE: Final[_MType] = 7
+miDOUBLE: Final[_MType] = 9
+miINT64: Final[_MType] = 12
+miUINT64: Final[_MType] = 13
+miMATRIX: Final[_MType] = 14
+miCOMPRESSED: Final[_MType] = 15
+miUTF8: Final[_MType] = 16
+miUTF16: Final[_MType] = 17
+miUTF32: Final[_MType] = 18
+
+mxCELL_CLASS: Final[_MXType] = 1
+mxSTRUCT_CLASS: Final[_MXType] = 2
+mxOBJECT_CLASS: Final[_MXType] = 3
+mxCHAR_CLASS: Final[_MXType] = 4
+mxSPARSE_CLASS: Final[_MXType] = 5
+mxDOUBLE_CLASS: Final[_MXType] = 6
+mxSINGLE_CLASS: Final[_MXType] = 7
+mxINT8_CLASS: Final[_MXType] = 8
+mxUINT8_CLASS: Final[_MXType] = 9
+mxINT16_CLASS: Final[_MXType] = 10
+mxUINT16_CLASS: Final[_MXType] = 11
+mxINT32_CLASS: Final[_MXType] = 12
+mxUINT32_CLASS: Final[_MXType] = 13
+mxINT64_CLASS: Final[_MXType] = 14
+mxUINT64_CLASS: Final[_MXType] = 15
+mxFUNCTION_CLASS: Final[_MXType] = 16
+mxOPAQUE_CLASS: Final[_MXType] = 17
+mxOBJECT_CLASS_FROM_MATRIX_H: Final[_MXType] = 18
 
 @final
 class mat_struct: ...
 
-class MatlabObject(np.ndarray[tuple[int, ...], np.dtypes.VoidDType[int]]):
+class MatlabObject(np.ndarray[_ShapeT_co, np.dtype[np.void]], Generic[_ShapeT_co]):
     classname: Final[str | None]
 
     def __new__(cls, input_array: onpt.AnyVoidArray, classname: str | None = None) -> Self: ...
     @override
     def __array_finalize__(self, /, obj: None | npt.NDArray[np.void]) -> None: ...
 
-class MatlabFunction(np.ndarray[tuple[int, ...], np.dtype[np.void]]):
+class MatlabFunction(np.ndarray[_ShapeT_co, np.dtype[np.void]], Generic[_ShapeT_co]):
     @override
     def __new__(cls, input_array: onpt.AnyVoidArray) -> Self: ...
 
-class MatlabOpaque(np.ndarray[tuple[int, ...], np.dtype[np.void]]):
+class MatlabOpaque(np.ndarray[_ShapeT_co, np.dtype[np.void]], Generic[_ShapeT_co]):
     @override
     def __new__(cls, input_array: onpt.AnyVoidArray) -> Self: ...
+
+def _convert_codecs(template: _CodecsTemplate, byte_order: _ByteOrder) -> dict[_MCodec, _CodecBO]: ...
