@@ -8,6 +8,7 @@ ci:
     - verifytypes
     - typetest
     - basedmypy
+    - basedpyright
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -67,5 +68,11 @@ repos:
       - id: basedmypy
         name: basedmypy
         entry: poe mypy
+        language: system
+        types_or: [python, pyi]
+
+      - id: basedpyright
+        name: basedpyright
+        entry: poe pyright
         language: system
         types_or: [python, pyi]
