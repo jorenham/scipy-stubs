@@ -3,42 +3,45 @@ build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core"]
 
 [tool.poetry]
+name = "scipy-stubs"
+description = "Typing Stubs for SciPy"
+version = "1.14.1.1.dev0"
 authors = ["Joren Hammudoglu <jhammudoglu@gmail.com>"]
+license = "BSD-3-Clause"
+readme = "README.md"
+packages = [{include = "scipy-stubs"}]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Operating System :: OS Independent",
     "Typing :: Stubs Only",
     "Typing :: Typed",
 ]
-description = "Typing Stubs for SciPy"
-documentation = "https://github.com/jorenham/scipy-stubs?tab=readme-ov-file#scipy-stubs"
-license = "BSD-3-Clause"
-name = "scipy-stubs"
-packages = [{include = "scipy-stubs"}]
-readme = "README.md"
 repository = "https://github.com/jorenham/scipy-stubs/"
-version = "1.14.1.1.dev0"
+documentation = "https://github.com/jorenham/scipy-stubs?tab=readme-ov-file#scipy-stubs"
 
 [tool.poetry.urls]
-"Bug Tracker" = "https://github.com/jorenham/scipy-stubs/issues"
-"Changelog" = "https://github.com/jorenham/scipy-stubs/releases"
+Issues = "https://github.com/jorenham/scipy-stubs/issues"
+Changelog = "https://github.com/jorenham/scipy-stubs/releases"
+Funding = "https://github.com/sponsors/jorenham"
+
+[tool.poetry.extras]
+scipy = ["scipy"]
 
 [tool.poetry.dependencies]
 python = "^3.10.1"
-numpy = ">=1.25"
-scipy = ">=1.14.1"
 optype = "^0.6.1"
+scipy = {version = ">=1.10", optional = true}
+
+[tool.poetry.group.dev.dependencies]
+scipy = "1.14.1"
+poethepoet = "^0.29.0"
+pre-commit = "^4.0.1"
+tox = "^4.23.0"
 
 [tool.poetry.group.lint.dependencies]
 basedmypy = "^2.6.0"
 basedpyright = "^1.19.0"
 ruff = "^0.7.0"
-
-[tool.poetry.group.dev.dependencies]
-poethepoet = "^0.29.0"
-pre-commit = "^4.0.1"
-tox = "^4.23.0"
-
 
 [tool.poetry.group.codegen]
 optional = true
