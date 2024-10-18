@@ -70,7 +70,7 @@ typetest = ["_typetest_bpr", "_typetest_mypy"]
 
 [tool.poe.tasks.pyright]
 cmd = "basedpyright $path"
-args = [{name = "path", positional = true, multiple = false, default = "scipy-stubs"}]
+args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs"}]
 
 [tool.poe.tasks.mypy]
 cmd = "mypy --config-file=pyproject.toml $path"
