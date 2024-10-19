@@ -16,6 +16,7 @@ _Mode: TypeAlias = Literal["clip", "wrap"]
 
 _ProminencesResult: TypeAlias = tuple[_Array_f8, _Array_n, _Array_n]
 _WidthsResult: TypeAlias = tuple[_Array_f8, _Array_f8, _Array_f8, _Array_f8]
+_WaveletFunction: TypeAlias = Callable[Concatenate[int | np.int_ | np.float64, AnyReal, ...], npt.NDArray[np.generic]]
 
 class _FindPeaksResultsDict(TypedDict, total=False):
     peak_heights: _Array_f8
@@ -76,7 +77,7 @@ def find_peaks(
 def find_peaks_cwt(
     vector: npt.ArrayLike,
     widths: npt.ArrayLike,
-    wavelet: Callable[Concatenate[int, float, ...], npt.ArrayLike] | None = None,
+    wavelet: _WaveletFunction | None = None,
     max_distances: _ArrayLikeInt_co | None = None,
     gap_thresh: AnyReal | None = None,
     min_length: AnyInt | None = None,
