@@ -34,20 +34,20 @@ class _FindPeaksResultsDict(TypedDict, total=False):
 def argrelmin(
     data: npt.NDArray[np.generic],
     axis: op.CanIndex = 0,
-    order: int = 1,
+    order: AnyInt = 1,
     mode: _Mode = "clip",
 ) -> tuple[_Array_n, ...]: ...
 def argrelmax(
     data: npt.NDArray[np.generic],
     axis: op.CanIndex = 0,
-    order: int = 1,
+    order: AnyInt = 1,
     mode: _Mode = "clip",
 ) -> tuple[_Array_n, ...]: ...
 def argrelextrema(
     data: npt.NDArray[np.generic],
     comparator: Callable[[npt.NDArray[np.generic], npt.NDArray[np.generic]], npt.NDArray[np.bool_]],
     axis: op.CanIndex = 0,
-    order: int = 1,
+    order: AnyInt = 1,
     mode: _Mode = "clip",
 ) -> tuple[_Array_n, ...]: ...
 def peak_prominences(
