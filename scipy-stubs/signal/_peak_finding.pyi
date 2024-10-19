@@ -1,4 +1,4 @@
-from collections.abc import Callable, Sequence
+from collections.abc import Callable
 from typing import Concatenate, Literal, TypeAlias, TypedDict
 
 import numpy as np
