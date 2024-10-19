@@ -1,8 +1,8 @@
 from scipy._typing import Untyped
 
 def c2c(
-    forward,
-    x,
+    forward: Untyped,
+    x: Untyped,
     n: Untyped | None = None,
     axis: int = -1,
     norm: Untyped | None = None,
@@ -16,8 +16,8 @@ fft: Untyped
 ifft: Untyped
 
 def r2c(
-    forward,
-    x,
+    forward: Untyped,
+    x: Untyped,
     n: Untyped | None = None,
     axis: int = -1,
     norm: Untyped | None = None,
@@ -31,8 +31,8 @@ rfft: Untyped
 ihfft: Untyped
 
 def c2r(
-    forward,
-    x,
+    forward: Untyped,
+    x: Untyped,
     n: Untyped | None = None,
     axis: int = -1,
     norm: Untyped | None = None,
@@ -46,9 +46,9 @@ hfft: Untyped
 irfft: Untyped
 
 def hfft2(
-    x,
+    x: Untyped,
     s: Untyped | None = None,
-    axes=(-2, -1),
+    axes: Untyped = (-2, -1),
     norm: Untyped | None = None,
     overwrite_x: bool = False,
     workers: Untyped | None = None,
@@ -56,9 +56,9 @@ def hfft2(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def ihfft2(
-    x,
+    x: Untyped,
     s: Untyped | None = None,
-    axes=(-2, -1),
+    axes: Untyped = (-2, -1),
     norm: Untyped | None = None,
     overwrite_x: bool = False,
     workers: Untyped | None = None,
@@ -66,8 +66,8 @@ def ihfft2(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def c2cn(
-    forward,
-    x,
+    forward: Untyped,
+    x: Untyped,
     s: Untyped | None = None,
     axes: Untyped | None = None,
     norm: Untyped | None = None,
@@ -81,8 +81,8 @@ fftn: Untyped
 ifftn: Untyped
 
 def r2cn(
-    forward,
-    x,
+    forward: Untyped,
+    x: Untyped,
     s: Untyped | None = None,
     axes: Untyped | None = None,
     norm: Untyped | None = None,
@@ -96,8 +96,8 @@ rfftn: Untyped
 ihfftn: Untyped
 
 def c2rn(
-    forward,
-    x,
+    forward: Untyped,
+    x: Untyped,
     s: Untyped | None = None,
     axes: Untyped | None = None,
     norm: Untyped | None = None,
@@ -111,7 +111,12 @@ hfftn: Untyped
 irfftn: Untyped
 
 def r2r_fftpack(
-    forward, x, n: Untyped | None = None, axis: int = -1, norm: Untyped | None = None, overwrite_x: bool = False
+    forward: Untyped,
+    x: Untyped,
+    n: Untyped | None = None,
+    axis: int = -1,
+    norm: Untyped | None = None,
+    overwrite_x: bool = False,
 ) -> Untyped: ...
 
 rfft_fftpack: Untyped

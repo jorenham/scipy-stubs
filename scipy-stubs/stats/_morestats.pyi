@@ -38,7 +38,7 @@ __all__ = [
 class DirectionalStats:
     mean_direction: Untyped
     mean_resultant_length: Untyped
-    def __init__(self, mean_direction, mean_resultant_length) -> None: ...
+    def __init__(self, mean_direction: Untyped, mean_resultant_length: Untyped) -> None: ...
 
 class ShapiroResult(NamedTuple):
     statistic: Untyped
@@ -78,10 +78,10 @@ Anderson_ksampResult: Untyped
 WilcoxonResult: Untyped
 MedianTestResult: Untyped
 
-def bayes_mvs(data, alpha: float = 0.9) -> Untyped: ...
-def mvsdist(data) -> Untyped: ...
+def bayes_mvs(data: Untyped, alpha: float = 0.9) -> Untyped: ...
+def mvsdist(data: Untyped) -> Untyped: ...
 def kstat(
-    data,
+    data: Untyped,
     n: int = 2,
     *,
     axis: int | None = None,
@@ -89,7 +89,7 @@ def kstat(
     keepdims: bool = False,
 ) -> Untyped: ...
 def kstatvar(
-    data,
+    data: Untyped,
     n: int = 2,
     *,
     axis: int | None = None,
@@ -97,45 +97,57 @@ def kstatvar(
     keepdims: bool = False,
 ) -> Untyped: ...
 def probplot(
-    x,
-    sparams=(),
+    x: Untyped,
+    sparams: Untyped = (),
     dist: str = "norm",
     fit: bool = True,
     plot: Untyped | None = None,
     rvalue: bool = False,
 ) -> Untyped: ...
-def ppcc_max(x, brack=(0.0, 1.0), dist: str = "tukeylambda") -> Untyped: ...
-def ppcc_plot(x, a, b, dist: str = "tukeylambda", plot: Untyped | None = None, N: int = 80) -> Untyped: ...
-def boxcox_llf(lmb, data) -> Untyped: ...
-def boxcox(x, lmbda: Untyped | None = None, alpha: Untyped | None = None, optimizer: Untyped | None = None) -> Untyped: ...
+def ppcc_max(x: Untyped, brack: Untyped = (0.0, 1.0), dist: str = "tukeylambda") -> Untyped: ...
+def ppcc_plot(
+    x: Untyped,
+    a: Untyped,
+    b: Untyped,
+    dist: str = "tukeylambda",
+    plot: Untyped | None = None,
+    N: int = 80,
+) -> Untyped: ...
+def boxcox_llf(lmb: Untyped, data: Untyped) -> Untyped: ...
+def boxcox(
+    x: Untyped,
+    lmbda: Untyped | None = None,
+    alpha: Untyped | None = None,
+    optimizer: Untyped | None = None,
+) -> Untyped: ...
 def boxcox_normmax(
-    x,
+    x: Untyped,
     brack: Untyped | None = None,
     method: str = "pearsonr",
     optimizer: Untyped | None = None,
     *,
-    ymax=...,
+    ymax: Untyped = ...,
 ) -> Untyped: ...
-def boxcox_normplot(x, la, lb, plot: Untyped | None = None, N: int = 80) -> Untyped: ...
-def yeojohnson(x, lmbda: Untyped | None = None) -> Untyped: ...
-def yeojohnson_llf(lmb, data) -> Untyped: ...
-def yeojohnson_normmax(x, brack: Untyped | None = None) -> Untyped: ...
-def yeojohnson_normplot(x, la, lb, plot: Untyped | None = None, N: int = 80) -> Untyped: ...
-def shapiro(x, *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: bool = False) -> Untyped: ...
-def anderson(x, dist: str = "norm") -> Untyped: ...
-def anderson_ksamp(samples, midrank: bool = True, *, method: Untyped | None = None) -> Untyped: ...
+def boxcox_normplot(x: Untyped, la: Untyped, lb: Untyped, plot: Untyped | None = None, N: int = 80) -> Untyped: ...
+def yeojohnson(x: Untyped, lmbda: Untyped | None = None) -> Untyped: ...
+def yeojohnson_llf(lmb: Untyped, data: Untyped) -> Untyped: ...
+def yeojohnson_normmax(x: Untyped, brack: Untyped | None = None) -> Untyped: ...
+def yeojohnson_normplot(x: Untyped, la: Untyped, lb: Untyped, plot: Untyped | None = None, N: int = 80) -> Untyped: ...
+def shapiro(x: Untyped, *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: bool = False) -> Untyped: ...
+def anderson(x: Untyped, dist: str = "norm") -> Untyped: ...
+def anderson_ksamp(samples: Untyped, midrank: bool = True, *, method: Untyped | None = None) -> Untyped: ...
 def ansari(
-    x,
-    y,
+    x: Untyped,
+    y: Untyped,
     alternative: Alternative = "two-sided",
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> Untyped: ...
-def bartlett(*samples, axis: int = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False) -> Untyped: ...
+def bartlett(*samples: Untyped, axis: int = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False) -> Untyped: ...
 def levene(
-    *samples,
+    *samples: Untyped,
     center: str = "median",
     proportiontocut: float = 0.05,
     axis: int | None = 0,
@@ -143,7 +155,7 @@ def levene(
     keepdims: bool = False,
 ) -> Untyped: ...
 def fligner(
-    *samples,
+    *samples: Untyped,
     center: str = "median",
     proportiontocut: float = 0.05,
     axis: int | None = 0,
@@ -151,19 +163,19 @@ def fligner(
     keepdims: bool = False,
 ) -> Untyped: ...
 def mood(
-    x,
-    y,
+    x: Untyped,
+    y: Untyped,
     axis: int = 0,
     alternative: Alternative = "two-sided",
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> Untyped: ...
-def wilcoxon_result_unpacker(res) -> Untyped: ...
-def wilcoxon_result_object(statistic, pvalue, zstatistic: Untyped | None = None) -> Untyped: ...
-def wilcoxon_outputs(kwds) -> Untyped: ...
+def wilcoxon_result_unpacker(res: Untyped) -> Untyped: ...
+def wilcoxon_result_object(statistic: Untyped, pvalue: Untyped, zstatistic: Untyped | None = None) -> Untyped: ...
+def wilcoxon_outputs(kwds: Untyped) -> Untyped: ...
 def wilcoxon(
-    x,
+    x: Untyped,
     y: Untyped | None = None,
     zero_method: str = "wilcox",
     correction: bool = False,
@@ -175,15 +187,15 @@ def wilcoxon(
     keepdims: bool = False,
 ) -> Untyped: ...
 def median_test(
-    *samples,
+    *samples: Untyped,
     ties: str = "below",
     correction: bool = True,
     lambda_: int = 1,
     nan_policy: NanPolicy = "propagate",
 ) -> Untyped: ...
 def circmean(
-    samples,
-    high=...,
+    samples: Untyped,
+    high: Untyped = ...,
     low: int = 0,
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -191,8 +203,8 @@ def circmean(
     keepdims: bool = False,
 ) -> Untyped: ...
 def circvar(
-    samples,
-    high=...,
+    samples: Untyped,
+    high: Untyped = ...,
     low: int = 0,
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -200,8 +212,8 @@ def circvar(
     keepdims: bool = False,
 ) -> Untyped: ...
 def circstd(
-    samples,
-    high=...,
+    samples: Untyped,
+    high: Untyped = ...,
     low: int = 0,
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -209,5 +221,5 @@ def circstd(
     normalize: bool = False,
     keepdims: bool = False,
 ) -> Untyped: ...
-def directional_stats(samples, *, axis: int = 0, normalize: bool = True) -> Untyped: ...
-def false_discovery_control(ps, *, axis: int = 0, method: str = "bh") -> Untyped: ...
+def directional_stats(samples: Untyped, *, axis: int = 0, normalize: bool = True) -> Untyped: ...
+def false_discovery_control(ps: Untyped, *, axis: int = 0, method: str = "bh") -> Untyped: ...

@@ -1,5 +1,3 @@
-from typing import Final
-
 # 0 - 4 parameters (`'gausshyper'`)
 distcont: list[
     tuple[str, tuple[()] | tuple[float] | tuple[float, float] | tuple[float, float, float] | tuple[float, float, float, float]]

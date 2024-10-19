@@ -1,7 +1,7 @@
 from scipy._typing import Untyped
 
 def fft(
-    x,
+    x: Untyped,
     n: Untyped | None = None,
     axis: int = -1,
     norm: Untyped | None = None,
@@ -11,7 +11,7 @@ def fft(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def ifft(
-    x,
+    x: Untyped,
     n: Untyped | None = None,
     axis: int = -1,
     norm: Untyped | None = None,
@@ -21,7 +21,7 @@ def ifft(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def rfft(
-    x,
+    x: Untyped,
     n: Untyped | None = None,
     axis: int = -1,
     norm: Untyped | None = None,
@@ -31,7 +31,7 @@ def rfft(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def irfft(
-    x,
+    x: Untyped,
     n: Untyped | None = None,
     axis: int = -1,
     norm: Untyped | None = None,
@@ -41,7 +41,7 @@ def irfft(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def hfft(
-    x,
+    x: Untyped,
     n: Untyped | None = None,
     axis: int = -1,
     norm: Untyped | None = None,
@@ -51,7 +51,7 @@ def hfft(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def ihfft(
-    x,
+    x: Untyped,
     n: Untyped | None = None,
     axis: int = -1,
     norm: Untyped | None = None,
@@ -61,7 +61,7 @@ def ihfft(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def fftn(
-    x,
+    x: Untyped,
     s: Untyped | None = None,
     axes: Untyped | None = None,
     norm: Untyped | None = None,
@@ -71,7 +71,7 @@ def fftn(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def ifftn(
-    x,
+    x: Untyped,
     s: Untyped | None = None,
     axes: Untyped | None = None,
     norm: Untyped | None = None,
@@ -81,9 +81,9 @@ def ifftn(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def fft2(
-    x,
+    x: Untyped,
     s: Untyped | None = None,
-    axes=(-2, -1),
+    axes: Untyped = (-2, -1),
     norm: Untyped | None = None,
     overwrite_x: bool = False,
     workers: Untyped | None = None,
@@ -91,9 +91,9 @@ def fft2(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def ifft2(
-    x,
+    x: Untyped,
     s: Untyped | None = None,
-    axes=(-2, -1),
+    axes: Untyped = (-2, -1),
     norm: Untyped | None = None,
     overwrite_x: bool = False,
     workers: Untyped | None = None,
@@ -101,7 +101,7 @@ def ifft2(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def rfftn(
-    x,
+    x: Untyped,
     s: Untyped | None = None,
     axes: Untyped | None = None,
     norm: Untyped | None = None,
@@ -111,9 +111,9 @@ def rfftn(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def rfft2(
-    x,
+    x: Untyped,
     s: Untyped | None = None,
-    axes=(-2, -1),
+    axes: Untyped = (-2, -1),
     norm: Untyped | None = None,
     overwrite_x: bool = False,
     workers: Untyped | None = None,
@@ -121,7 +121,7 @@ def rfft2(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def irfftn(
-    x,
+    x: Untyped,
     s: Untyped | None = None,
     axes: Untyped | None = None,
     norm: Untyped | None = None,
@@ -131,9 +131,9 @@ def irfftn(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def irfft2(
-    x,
+    x: Untyped,
     s: Untyped | None = None,
-    axes=(-2, -1),
+    axes: Untyped = (-2, -1),
     norm: Untyped | None = None,
     overwrite_x: bool = False,
     workers: Untyped | None = None,
@@ -141,7 +141,7 @@ def irfft2(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def hfftn(
-    x,
+    x: Untyped,
     s: Untyped | None = None,
     axes: Untyped | None = None,
     norm: Untyped | None = None,
@@ -151,9 +151,9 @@ def hfftn(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def hfft2(
-    x,
+    x: Untyped,
     s: Untyped | None = None,
-    axes=(-2, -1),
+    axes: Untyped = (-2, -1),
     norm: Untyped | None = None,
     overwrite_x: bool = False,
     workers: Untyped | None = None,
@@ -161,7 +161,7 @@ def hfft2(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def ihfftn(
-    x,
+    x: Untyped,
     s: Untyped | None = None,
     axes: Untyped | None = None,
     norm: Untyped | None = None,
@@ -171,9 +171,9 @@ def ihfftn(
     plan: Untyped | None = None,
 ) -> Untyped: ...
 def ihfft2(
-    x,
+    x: Untyped,
     s: Untyped | None = None,
-    axes=(-2, -1),
+    axes: Untyped = (-2, -1),
     norm: Untyped | None = None,
     overwrite_x: bool = False,
     workers: Untyped | None = None,

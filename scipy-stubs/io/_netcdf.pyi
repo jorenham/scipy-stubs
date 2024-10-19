@@ -1,46 +1,76 @@
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from types import TracebackType
-from typing import IO, Final
-from typing_extensions import Self
+from typing import IO, Final, Generic, Literal, TypeAlias, overload
+from typing_extensions import Self, TypeVar
 
+import numpy as np
 import numpy.typing as npt
-from scipy._typing import FileLike, FileModeRWA, Untyped
+import optype.numpy as onpt
+from optype import CanIndex
+from scipy._typing import FileLike, FileModeRWA
 
 __all__ = ["netcdf_file", "netcdf_variable"]
 
+_ShapeT_co = TypeVar("_ShapeT_co", covariant=True, bound=tuple[int, ...], default=tuple[int, ...])
+_SCT = TypeVar("_SCT", bound=np.generic, default=np.generic)
+_SCT_co = TypeVar("_SCT_co", covariant=True, bound=np.generic, default=np.generic)
+
+_TypeCode: TypeAlias = Literal["b", "c", "h", "i", "f", "d"]
+_TypeSize: TypeAlias = Literal[1, 2, 4, 8]
+_TypeSpec: TypeAlias = tuple[_TypeCode, _TypeSize]
+_TypeNC: TypeAlias = Literal[
+    b"\x00\x00\x00\x01",
+    b"\x00\x00\x00\x02",
+    b"\x00\x00\x00\x03",
+    b"\x00\x00\x00\x04",
+    b"\x00\x00\x00\x05",
+    b"\x00\x00\x00\x06",
+    b"\x00\x00\x00\n",
+    b"\x00\x00\x00\x0b",
+    b"\x00\x00\x00\x0c",
+]
+_TypeFill: TypeAlias = Literal[
+    b"\x81",
+    b"\x00",
+    b"\x80\x01",
+    b"\x80\x00\x00\x01",
+    b"\x7c\xf0\x00\x00",
+    b"\x47\x9e\x00\x00\x00\x00\x00\x00",
+]
+
 IS_PYPY: Final[bool] = ...
 
-ABSENT: Final[bytes] = ...
-ZERO: Final[bytes] = ...
-NC_BYTE: Final[bytes] = ...
-NC_CHAR: Final[bytes] = ...
-NC_SHORT: Final[bytes] = ...
-NC_INT: Final[bytes] = ...
-NC_FLOAT: Final[bytes] = ...
-NC_DOUBLE: Final[bytes] = ...
-NC_DIMENSION: Final[bytes] = ...
-NC_VARIABLE: Final[bytes] = ...
-NC_ATTRIBUTE: Final[bytes] = ...
-FILL_BYTE: Final[bytes] = ...
-FILL_CHAR: Final[bytes] = ...
-FILL_SHORT: Final[bytes] = ...
-FILL_INT: Final[bytes] = ...
-FILL_FLOAT: Final[bytes] = ...
-FILL_DOUBLE: Final[bytes] = ...
+ABSENT: Final = b"\x00\x00\x00\x00\x00\x00\x00\x00"
+ZERO: Final = b"\x00\x00\x00\x00"
+NC_BYTE: Final[_TypeNC] = b"\x00\x00\x00\x01"
+NC_CHAR: Final[_TypeNC] = b"\x00\x00\x00\x02"
+NC_SHORT: Final[_TypeNC] = b"\x00\x00\x00\x03"
+NC_INT: Final[_TypeNC] = b"\x00\x00\x00\x04"
+NC_FLOAT: Final[_TypeNC] = b"\x00\x00\x00\x05"
+NC_DOUBLE: Final[_TypeNC] = b"\x00\x00\x00\x06"
+NC_DIMENSION: Final[_TypeNC] = b"\x00\x00\x00\n"
+NC_VARIABLE: Final[_TypeNC] = b"\x00\x00\x00\x0b"
+NC_ATTRIBUTE: Final[_TypeNC] = b"\x00\x00\x00\x0c"
+FILL_BYTE: Final[_TypeFill] = b"\x81"
+FILL_CHAR: Final[_TypeFill] = b"\x00"
+FILL_SHORT: Final[_TypeFill] = b"\x80\x01"
+FILL_INT: Final[_TypeFill] = b"\x80\x00\x00\x01"
+FILL_FLOAT: Final[_TypeFill] = b"\x7c\xf0\x00\x00"
+FILL_DOUBLE: Final[_TypeFill] = b"\x47\x9e\x00\x00\x00\x00\x00\x00"
 
-TYPEMAP: Final[dict[bytes, tuple[str, int]]]
-FILLMAP: Final[dict[bytes, bytes]]
-REVERSE: Final[dict[tuple[str, int], bytes]]
+TYPEMAP: Final[dict[_TypeNC, _TypeSpec]] = ...
+FILLMAP: Final[dict[_TypeNC, _TypeFill]]
+REVERSE: Final[dict[_TypeSpec, _TypeNC]]
 
 class netcdf_file:
-    fp: IO[bytes]
-    filename: str
-    use_mmap: bool
-    mode: FileModeRWA
-    version_byte: int
-    maskandscale: Untyped
-    dimensions: dict[str, int]
-    variables: dict[str, netcdf_variable]
+    fp: Final[IO[bytes]]
+    filename: Final[str]
+    use_mmap: Final[bool]
+    mode: Final[FileModeRWA]
+    version_byte: Final[int]
+    maskandscale: Final[bool]
+    dimensions: Final[dict[str, int]]
+    variables: Final[dict[str, netcdf_variable]]
     def __init__(
         self,
         /,
@@ -61,32 +91,41 @@ class netcdf_file:
     ) -> None: ...
     def close(self, /) -> None: ...
     def createDimension(self, /, name: str, length: int) -> None: ...
+    @overload
+    def createVariable(
+        self,
+        /,
+        name: str,
+        type: np.dtype[_SCT] | onpt.HasDType[np.dtype[_SCT]],
+        dimensions: Sequence[str],
+    ) -> netcdf_variable[tuple[int, ...], _SCT]: ...
+    @overload
     def createVariable(self, /, name: str, type: npt.DTypeLike, dimensions: Sequence[str]) -> netcdf_variable: ...
     def flush(self, /) -> None: ...
     def sync(self, /) -> None: ...
 
-class netcdf_variable:
-    data: npt.ArrayLike
-    dimensions: Sequence[str]
-    maskandscale: bool
+class netcdf_variable(Generic[_ShapeT_co, _SCT_co]):
+    data: onpt.Array[_ShapeT_co, _SCT_co]
+    dimensions: Final[Sequence[str]]
+    maskandscale: Final[bool]
     @property
-    def isrec(self, /) -> Untyped: ...
+    def isrec(self, /) -> bool: ...
     @property
-    def shape(self, /) -> Untyped: ...
+    def shape(self, /) -> _ShapeT_co: ...
     def __init__(
         self,
         /,
-        data: npt.ArrayLike,
+        data: onpt.Array[_ShapeT_co, _SCT_co],
         typecode: str,
         size: int,
-        shape: Sequence[int],
+        shape: tuple[int, ...] | list[int],
         dimensions: Sequence[str],
-        attributes: dict[str, object] | None = None,
+        attributes: Mapping[str, object] | None = None,
         maskandscale: bool = False,
     ) -> None: ...
-    def __getitem__(self, /, index: object) -> object: ...
-    def __setitem__(self, /, index: object, data: npt.ArrayLike) -> None: ...
-    def getValue(self, /) -> object: ...
+    def __getitem__(self, /, index: CanIndex | slice | tuple[CanIndex | slice, ...]) -> _SCT | npt.NDArray[_SCT]: ...
+    def __setitem__(self: netcdf_variable[tuple[int, ...], _SCT], /, index: object, data: _SCT | npt.NDArray[_SCT]) -> None: ...
+    def getValue(self, /) -> _SCT_co: ...
     def assignValue(self, /, value: object) -> None: ...
     def typecode(self, /) -> str: ...
     def itemsize(self, /) -> int: ...

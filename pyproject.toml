@@ -3,41 +3,50 @@ build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core"]
 
 [tool.poetry]
+name = "scipy-stubs"
+description = "Typing Stubs for SciPy"
+version = "1.14.1.1.dev0"
 authors = ["Joren Hammudoglu <jhammudoglu@gmail.com>"]
+license = "BSD-3-Clause"
+readme = "README.md"
+packages = [{include = "scipy-stubs"}]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Operating System :: OS Independent",
     "Typing :: Stubs Only",
     "Typing :: Typed",
 ]
-description = "Typing Stubs for SciPy"
-documentation = "https://github.com/jorenham/scipy-stubs?tab=readme-ov-file#scipy-stubs"
-license = "BSD-3-Clause"
-name = "scipy-stubs"
-packages = [{include = "scipy-stubs"}]
-readme = "README.md"
 repository = "https://github.com/jorenham/scipy-stubs/"
-version = "1.14.1.0"
+documentation = "https://github.com/jorenham/scipy-stubs?tab=readme-ov-file#scipy-stubs"
 
 [tool.poetry.urls]
-"Bug Tracker" = "https://github.com/jorenham/scipy-stubs/issues"
-"Changelog" = "https://github.com/jorenham/scipy-stubs/releases"
+Issues = "https://github.com/jorenham/scipy-stubs/issues"
+Changelog = "https://github.com/jorenham/scipy-stubs/releases"
+Funding = "https://github.com/sponsors/jorenham"
+
+[tool.poetry.extras]
+scipy = ["scipy"]
 
 [tool.poetry.dependencies]
 python = "^3.10.1"
-numpy = ">=1.25"
-scipy = ">=1.14.1"
 optype = "^0.6.1"
+scipy = {version = ">=1.10", optional = true}
+
+[tool.poetry.group.dev.dependencies]
+scipy = "1.14.1"
+poethepoet = "^0.29.0"
+pre-commit = "^4.0.1"
+tox = "^4.23.0"
 
 [tool.poetry.group.lint.dependencies]
 basedmypy = "^2.6.0"
-basedpyright = "^1.18.4"
-ruff = "^0.6.9"
+basedpyright = "^1.19.0"
+ruff = "^0.7.0"
 
-[tool.poetry.group.dev.dependencies]
-poethepoet = "^0.29.0"
-pre-commit = "^4.0.1"
-tox = "^4.21.2"
+[tool.poetry.group.codegen]
+optional = true
+[tool.poetry.group.codegen.dependencies]
+libcst = "^1.5.0"
 
 [tool.poe.executor]
 type = "poetry"
@@ -60,8 +69,8 @@ _typetest_mypy = "mypy --config-file=pyproject.toml tests/typetests"
 typetest = ["_typetest_bpr", "_typetest_mypy"]
 
 [tool.poe.tasks.pyright]
-cmd = "basedpyright scipy-stubs/$path"
-args = [{name = "path", positional = true, multiple = false, default = ""}]
+cmd = "basedpyright $path"
+args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs"}]
 
 [tool.poe.tasks.mypy]
 cmd = "mypy --config-file=pyproject.toml $path"
@@ -76,18 +85,32 @@ stubtest
 """
 args = [{name = "modules", positional = true, multiple = true, default = "scipy"}]
 
+[tool.poe.tasks.codemod]
+cmd = """
+python -m libcst.tool codemod
+    -x
+    --hide-generated-warnings
+    --hide-blacklisted-warnings
+    --hide-progress
+    --include-stubs
+    codegen.mods.$name
+    $path
+"""
+args = [
+    {name = "name", positional = true, multiple = false, required = true},
+    {name = "path", positional = true, multiple = false, default = "scipy-stubs"}
+]
+
 [tool.mypy]
 python_version = "3.10"
 strict = true
 disable_bytearray_promotion = true
 disable_memoryview_promotion = true
-disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[Any]`
-disallow_untyped_defs = false  # TODO
-disallow_incomplete_defs = false  # TODO
 warn_unused_ignores = true
+disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[Any]`
 
 [tool.pyright]
-include = ["scipy-stubs", "tests/typetests"]
+include = ["scipy-stubs", "tests/typetests", "codemods.py"]
 venv = ".venv"
 venvPath = "."
 stubPath = "."
@@ -111,7 +134,7 @@ force-exclude = true
 target-version = "py310"
 # https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#maximum-line-length
 line-length = 130
-src = ["scipy-stubs"]
+src = ["scipy-stubs", "codemods.py"]
 
 [tool.ruff.format]
 line-ending = "lf"
@@ -119,7 +142,6 @@ skip-magic-trailing-comma = false
 
 [tool.ruff.lint]
 ignore = [
-    "ANN", # TODO
     "E741",
     "COM812", # ruff format compat
     "PYI054", # numeric-literal-too-long
@@ -160,8 +182,6 @@ select = [
 [tool.ruff.lint.flake8-import-conventions]
 banned-from = [
     "numpy",
-    "numpy.dtypes",
-    "numpy.exceptions",
     "numpy.emath",
     "numpy.fft",
     "numpy.linalg",
@@ -171,18 +191,15 @@ banned-from = [
     "numpy.rec",
     "numpy.typing",
     "numpy.strings",
-    "optype",
     "optype.numpy",
     "optype.typing",
 ]
 [tool.ruff.lint.flake8-import-conventions.extend-aliases]
+"ctypes" = "ct"
+"datetime" = "dt"
 "numpy" = "np"
-"numpy.polynomial" = "npp"
 "numpy.typing" = "npt"
-"optype" = "op"
 "optype.numpy" = "onpt"
-"scipy" = "sp"
-"scipy._typing" = "spt"
 
 [tool.ruff.lint.isort]
 combine-as-imports = true

@@ -2,10 +2,10 @@ from scipy._typing import Untyped
 from scipy.sparse.linalg import LinearOperator
 
 def fmin_l_bfgs_b(
-    func,
-    x0,
+    func: Untyped,
+    x0: Untyped,
     fprime: Untyped | None = None,
-    args=(),
+    args: Untyped = (),
     approx_grad: int = 0,
     bounds: Untyped | None = None,
     m: int = 10,
@@ -25,5 +25,5 @@ class LbfgsInvHessProduct(LinearOperator):
     yk: Untyped
     n_corrs: Untyped
     rho: Untyped
-    def __init__(self, sk, yk) -> None: ...
+    def __init__(self, sk: Untyped, yk: Untyped) -> None: ...  # pyright: ignore[reportInconsistentConstructor]
     def todense(self) -> Untyped: ...

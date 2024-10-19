@@ -91,5 +91,10 @@ def curve_fit(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def fixed_point(
-    func: object, x0: object, args: object = ..., xtol: object = ..., maxiter: object = ..., method: object = ...
+    func: object,
+    x0: object,
+    args: object = ...,
+    xtol: object = ...,
+    maxiter: object = ...,
+    method: object = ...,
 ) -> object: ...

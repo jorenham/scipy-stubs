@@ -80,21 +80,21 @@ pip install scipy-stubs
 | `cluster`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
 | `constants`   | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon_with_face:  |
 | `datasets`    | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon_with_face:  |
-| `fft`         | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :x:                | :waxing_crescent_moon: |
-| `fftpack`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :x:                | :waxing_crescent_moon: |
+| `fft`         | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_crescent_moon: |
+| `fftpack`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_crescent_moon: |
 | `integrate`   | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_gibbous_moon:  |
 | `interpolate` | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :first_quarter_moon:   |
 | `io`          | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
-| `linalg`      | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_gibbous_moon:  |
+| `linalg`      | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
 | ~`misc`~      | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
 | `ndimage`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
 | `odr`         | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_crescent_moon: |
-| `optimize`    | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :x:                | :first_quarter_moon:   |
-| `signal`      | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :x:                | :waxing_crescent_moon: |
-| `sparse`      | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :x:                | :waxing_crescent_moon: |
+| `optimize`    | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :first_quarter_moon:   |
+| `signal`      | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_crescent_moon: |
+| `sparse`      | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_crescent_moon: |
 | `spatial`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_gibbous_moon:  |
 | `special`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :first_quarter_moon:   |
-| `stats`       | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :x:                | :waxing_gibbous_moon:  |
+| `stats`       | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_gibbous_moon:  |
 
 ## Version Compatibility
 

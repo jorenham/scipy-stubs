@@ -41,17 +41,37 @@ def idstn(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def dct(
-    x: object, type: object = ..., n: object = ..., axis: object = ..., norm: object = ..., overwrite_x: object = ...
+    x: object,
+    type: object = ...,
+    n: object = ...,
+    axis: object = ...,
+    norm: object = ...,
+    overwrite_x: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def idct(
-    x: object, type: object = ..., n: object = ..., axis: object = ..., norm: object = ..., overwrite_x: object = ...
+    x: object,
+    type: object = ...,
+    n: object = ...,
+    axis: object = ...,
+    norm: object = ...,
+    overwrite_x: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def dst(
-    x: object, type: object = ..., n: object = ..., axis: object = ..., norm: object = ..., overwrite_x: object = ...
+    x: object,
+    type: object = ...,
+    n: object = ...,
+    axis: object = ...,
+    norm: object = ...,
+    overwrite_x: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def idst(
-    x: object, type: object = ..., n: object = ..., axis: object = ..., norm: object = ..., overwrite_x: object = ...
+    x: object,
+    type: object = ...,
+    n: object = ...,
+    axis: object = ...,
+    norm: object = ...,
+    overwrite_x: object = ...,
 ) -> object: ...
