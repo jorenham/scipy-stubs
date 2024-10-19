@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Concatenate, Literal, TypeAlias, TypedDict
+from typing import Concatenate, Literal, TypeAlias, TypedDict, TypeVar
 
 import numpy as np
 import numpy.typing as npt
@@ -8,6 +8,8 @@ from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt_co
 from scipy._typing import AnyInt, AnyReal
 
 __all__ = ["argrelextrema", "argrelmax", "argrelmin", "find_peaks", "find_peaks_cwt", "peak_prominences", "peak_widths"]
+
+_SCT = TypeVar("_SCT", bound=np.generic)
 
 _Array_n: TypeAlias = npt.NDArray[np.intp]
 _Array_n_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.intp]]
@@ -46,7 +48,7 @@ def argrelmax(
 ) -> tuple[_Array_n, ...]: ...
 def argrelextrema(
     data: npt.NDArray[np.generic],
-    comparator: Callable[[npt.NDArray[np.generic], npt.NDArray[np.generic]], npt.NDArray[np.bool_]],
+    comparator: Callable[[npt.NDArray[_SCT], npt.NDArray[_SCT]], npt.NDArray[np.bool_]],
     axis: op.CanIndex = 0,
     order: AnyInt = 1,
     mode: _Mode = "clip",
