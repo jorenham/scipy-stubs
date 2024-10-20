@@ -78,7 +78,7 @@ def find_peaks(
     plateau_size: _ArrayLikeInt_co | tuple[AnyInt | None, AnyInt | None] | None = None,
 ) -> tuple[_Array_n, _FindPeaksResultsDict]: ...
 def find_peaks_cwt(
-    vector: npt.ArrayLike,
+    vector: npt.NDArray[np.generic],
     widths: _ArrayLikeFloat_co,
     wavelet: _WaveletFunction | None = None,
     max_distances: _ArrayLikeFloat_co | None = None,
