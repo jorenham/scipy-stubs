@@ -1,27 +1,9 @@
-from scipy import spatial as spatial
-from scipy._typing import Untyped
-from scipy.optimize import Bounds as Bounds, OptimizeResult as OptimizeResult, minimize as minimize
-from scipy.optimize._constraints import new_bounds_to_old as new_bounds_to_old
-from scipy.optimize._minimize import standardize_constraints as standardize_constraints
-from scipy.optimize._optimize import MemoizeJac as MemoizeJac
-from scipy.optimize._shgo_lib._complex import Complex as Complex
+from scipy._typing import EnterSelfMixin, Untyped
+from ._optimize import OptimizeResult
 
-def shgo(
-    func: Untyped,
-    bounds: Untyped,
-    args: Untyped = (),
-    constraints: Untyped | None = None,
-    n: int = 100,
-    iters: int = 1,
-    callback: Untyped | None = None,
-    minimizer_kwargs: Untyped | None = None,
-    options: Untyped | None = None,
-    sampling_method: str = "simplicial",
-    *,
-    workers: int = 1,
-) -> Untyped: ...
+__all__ = ["shgo"]
 
-class SHGO:
+class SHGO(EnterSelfMixin):
     func: Untyped
     bounds: Untyped
     args: Untyped
@@ -66,6 +48,23 @@ class SHGO:
     minimizer_pool: Untyped
     LMC: Untyped
     res: Untyped
+    init: Untyped
+    f_tol: Untyped
+    f_lowest: Untyped
+    x_lowest: Untyped
+    hgrd: Untyped
+    Ind_sorted: Untyped
+    Tri: Untyped
+    points: Untyped
+    minimizer_pool_F: Untyped
+    X_min: Untyped
+    X_min_cache: Untyped
+    Y: Untyped
+    Z: Untyped
+    Ss: Untyped
+    ind_f_min: Untyped
+    C: Untyped
+    Xs: Untyped
     def __init__(
         self,
         func: Untyped,
@@ -80,14 +79,8 @@ class SHGO:
         sampling_method: str = "simplicial",
         workers: int = 1,
     ) -> None: ...
-    init: Untyped
-    f_tol: Untyped
     def init_options(self, options: Untyped) -> None: ...
-    def __enter__(self) -> Untyped: ...
-    def __exit__(self, *args: object) -> Untyped: ...
     def iterate_all(self) -> None: ...
-    f_lowest: Untyped
-    x_lowest: Untyped
     def find_minima(self) -> None: ...
     def find_lowest_vertex(self) -> None: ...
     def finite_iterations(self) -> Untyped: ...
@@ -95,37 +88,24 @@ class SHGO:
     def finite_ev(self) -> None: ...
     def finite_time(self) -> None: ...
     def finite_precision(self) -> Untyped: ...
-    hgrd: Untyped
     def finite_homology_growth(self) -> Untyped: ...
     def stopping_criteria(self) -> Untyped: ...
     def iterate(self) -> None: ...
     def iterate_hypercube(self) -> None: ...
-    Ind_sorted: Untyped
-    Tri: Untyped
-    points: Untyped
     def iterate_delaunay(self) -> None: ...
-    minimizer_pool_F: Untyped
-    X_min: Untyped
-    X_min_cache: Untyped
     def minimizers(self) -> Untyped: ...
     def minimise_pool(self, force_iter: bool = False) -> None: ...
-    ind_f_min: Untyped
     def sort_min_pool(self) -> None: ...
     def trim_min_pool(self, trim_ind: Untyped) -> None: ...
-    Y: Untyped
-    Z: Untyped
-    Ss: Untyped
     def g_topograph(self, x_min: Untyped, X_min: Untyped) -> Untyped: ...
     def construct_lcb_simplicial(self, v_min: Untyped) -> Untyped: ...
     def construct_lcb_delaunay(self, v_min: Untyped, ind: Untyped | None = None) -> Untyped: ...
     def minimize(self, x_min: Untyped, ind: Untyped | None = None) -> Untyped: ...
     def sort_result(self) -> Untyped: ...
     def fail_routine(self, mes: str = "Failed to converge") -> None: ...
-    C: Untyped
     def sampled_surface(self, infty_cons_sampl: bool = False) -> None: ...
     def sampling_custom(self, n: Untyped, dim: Untyped) -> Untyped: ...
     def sampling_subspace(self) -> None: ...
-    Xs: Untyped
     def sorted_samples(self) -> Untyped: ...
     def delaunay_triangulation(self, n_prc: int = 0) -> Untyped: ...
 
@@ -149,3 +129,18 @@ class LMapCache:
     def __getitem__(self, v: Untyped) -> Untyped: ...
     def add_res(self, v: Untyped, lres: Untyped, bounds: Untyped | None = None) -> None: ...
     def sort_cache_result(self) -> Untyped: ...
+
+def shgo(
+    func: Untyped,
+    bounds: Untyped,
+    args: tuple[object, ...] = (),
+    constraints: Untyped | None = None,
+    n: int = 100,
+    iters: int = 1,
+    callback: Untyped | None = None,
+    minimizer_kwargs: Untyped | None = None,
+    options: Untyped | None = None,
+    sampling_method: str = "simplicial",
+    *,
+    workers: int = 1,
+) -> OptimizeResult: ...

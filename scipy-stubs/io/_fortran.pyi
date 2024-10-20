@@ -1,11 +1,10 @@
-from types import TracebackType
 from typing import Any, TypedDict, final, overload, type_check_only
-from typing_extensions import Self, Unpack
+from typing_extensions import Unpack
 
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onpt
-from scipy._typing import FileLike, FileModeRW
+from scipy._typing import EnterSelfMixin, FileLike, FileModeRW
 
 __all__ = ["FortranEOFError", "FortranFile", "FortranFormattingError"]
 
@@ -17,10 +16,8 @@ class _DTypeKwargs(TypedDict):
 class FortranEOFError(TypeError, OSError): ...
 class FortranFormattingError(TypeError, OSError): ...
 
-class FortranFile:
+class FortranFile(EnterSelfMixin):
     def __init__(self, /, filename: FileLike[bytes], mode: FileModeRW = "r", header_dtype: npt.DTypeLike = ...) -> None: ...
-    def __enter__(self, /) -> Self: ...
-    def __exit__(self, /, type: type[BaseException] | None, value: BaseException | None, tb: TracebackType | None) -> None: ...
     def close(self, /) -> None: ...
     def write_record(self, /, *items: npt.ArrayLike) -> None: ...
     @overload

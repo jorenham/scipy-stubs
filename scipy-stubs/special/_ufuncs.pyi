@@ -1,6 +1,5 @@
-import types
-
 import numpy as np
+from scipy._typing import EnterNoneMixin
 
 __all__ = [
     "agm",
@@ -245,15 +244,8 @@ __all__ = [
 def geterr() -> dict[str, str]: ...
 def seterr(**kwargs: str) -> dict[str, str]: ...
 
-class errstate:
+class errstate(EnterNoneMixin):
     def __init__(self, **kwargs: str) -> None: ...
-    def __enter__(self) -> None: ...
-    def __exit__(
-        self,
-        exc_type: type[BaseException] | None,
-        exc_value: BaseException | None,
-        traceback: types.TracebackType | None,
-    ) -> None: ...
 
 _cosine_cdf: np.ufunc
 _cosine_invcdf: np.ufunc

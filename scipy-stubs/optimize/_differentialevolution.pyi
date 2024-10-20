@@ -1,40 +1,11 @@
-from scipy._lib._util import MapWrapper as MapWrapper, check_random_state as check_random_state, rng_integers as rng_integers
-from scipy._typing import Untyped
-from scipy.optimize import OptimizeResult as OptimizeResult, minimize as minimize
-from scipy.optimize._constraints import (
-    Bounds as Bounds,
-    LinearConstraint as LinearConstraint,
-    NonlinearConstraint as NonlinearConstraint,
-    new_bounds_to_old as new_bounds_to_old,
-)
-from scipy.sparse import issparse as issparse
+from typing_extensions import Self
 
-def differential_evolution(
-    func: Untyped,
-    bounds: Untyped,
-    args: Untyped = (),
-    strategy: str = "best1bin",
-    maxiter: int = 1000,
-    popsize: int = 15,
-    tol: float = 0.01,
-    mutation: Untyped = (0.5, 1),
-    recombination: float = 0.7,
-    seed: Untyped | None = None,
-    callback: Untyped | None = None,
-    disp: bool = False,
-    polish: bool = True,
-    init: str = "latinhypercube",
-    atol: int = 0,
-    updating: str = "immediate",
-    workers: int = 1,
-    constraints: Untyped = (),
-    x0: Untyped | None = None,
-    *,
-    integrality: Untyped | None = None,
-    vectorized: bool = False,
-) -> Untyped: ...
+from scipy._typing import EnterSelfMixin, Untyped
+from scipy.optimize import OptimizeResult
 
-class DifferentialEvolutionSolver:
+__all__ = ["differential_evolution"]
+
+class DifferentialEvolutionSolver(EnterSelfMixin):
     mutation_func: Untyped
     strategy: Untyped
     callback: Untyped
@@ -96,9 +67,7 @@ class DifferentialEvolutionSolver:
     def convergence(self) -> Untyped: ...
     def converged(self) -> Untyped: ...
     def solve(self) -> Untyped: ...
-    def __iter__(self) -> Untyped: ...
-    def __enter__(self) -> Untyped: ...
-    def __exit__(self, *args: object) -> Untyped: ...
+    def __iter__(self) -> Self: ...
     def __next__(self) -> Untyped: ...
 
 class _ConstraintWrapper:
@@ -110,3 +79,28 @@ class _ConstraintWrapper:
     def __init__(self, constraint: Untyped, x0: Untyped) -> None: ...
     def __call__(self, x: Untyped) -> Untyped: ...
     def violation(self, x: Untyped) -> Untyped: ...
+
+def differential_evolution(
+    func: Untyped,
+    bounds: Untyped,
+    args: Untyped = (),
+    strategy: str = "best1bin",
+    maxiter: int = 1000,
+    popsize: int = 15,
+    tol: float = 0.01,
+    mutation: Untyped = (0.5, 1),
+    recombination: float = 0.7,
+    seed: Untyped | None = None,
+    callback: Untyped | None = None,
+    disp: bool = False,
+    polish: bool = True,
+    init: str = "latinhypercube",
+    atol: int = 0,
+    updating: str = "immediate",
+    workers: int = 1,
+    constraints: Untyped = (),
+    x0: Untyped | None = None,
+    *,
+    integrality: Untyped | None = None,
+    vectorized: bool = False,
+) -> OptimizeResult: ...

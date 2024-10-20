@@ -1,8 +1,10 @@
 from contextlib import _GeneratorContextManager
 from collections.abc import Callable, Iterable
-from types import NotImplementedType, TracebackType
+from types import NotImplementedType
 from typing import Final, Generic, Literal, TypeAlias, TypedDict, final, overload, type_check_only
 from typing_extensions import ParamSpec, TypeVar, Unpack
+
+from scipy._typing import EnterNoneMixin
 
 __all__ = [
     "BackendNotImplementedError",
@@ -51,20 +53,18 @@ ArgumentReplacerType: TypeAlias = Callable[
     tuple[tuple[object, ...], dict[str, object]],
 ]
 
+###
+
 @final
 class _BackendState: ...
 
 @final
-class _SetBackendContext:
+class _SetBackendContext(EnterNoneMixin):
     def __init__(self, /, *args: object, **kwargs: object) -> None: ...
-    def __enter__(self, /) -> None: ...
-    def __exit__(self, /, type: type[BaseException] | None, value: BaseException | None, tb: TracebackType | None) -> None: ...
 
 @final
-class _SkipBackendContext:
+class _SkipBackendContext(EnterNoneMixin):
     def __init__(self, /, *args: object, **kwargs: object) -> None: ...
-    def __enter__(self, /) -> None: ...
-    def __exit__(self, /, type: type[BaseException] | None, value: BaseException | None, tb: TracebackType | None) -> None: ...
 
 @final
 class _Function(Generic[_Tss, _T_co]):
