@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Concatenate, Literal, TypeAlias, TypedDict, TypeVar
+from typing import Any, Concatenate, Literal, TypeAlias, TypedDict, TypeVar
 
 import numpy as np
 import numpy.typing as npt
@@ -81,7 +81,7 @@ def find_peaks_cwt(
     vector: npt.NDArray[np.generic],
     widths: _ArrayLikeFloat_co,
     wavelet: _WaveletFunction | None = None,
-    max_distances: _ArrayLikeFloat_co | None = None,
+    max_distances: npt.NDArray[np.floating[Any] | np.integer[Any]] | None = None,
     gap_thresh: AnyReal | None = None,
     min_length: AnyInt | None = None,
     min_snr: AnyReal = 1,
