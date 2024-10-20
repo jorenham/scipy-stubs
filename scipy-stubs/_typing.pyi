@@ -31,6 +31,7 @@ __all__ = [
     "FileModeRWA",
     "FileName",
     "NanPolicy",
+    "OrderKACF",
     "Seed",
     "Untyped",
     "UntypedArray",
@@ -85,6 +86,7 @@ AnyShape: TypeAlias = op.CanIndex | Sequence[op.CanIndex]
 RNG: TypeAlias = np.random.Generator | np.random.RandomState
 Seed: TypeAlias = int | RNG
 ByteOrder: TypeAlias = Literal["S", "<", "little", ">", "big", "=", "native", "|", "I"]
+OrderKACF: TypeAlias = Literal["K", "A", "C", "F"]
 Casting: TypeAlias = Literal["no", "equiv", "safe", "same_kind", "unsafe"]
 CorrelateMode: TypeAlias = Literal["valid", "same", "full"]
 
