@@ -65,7 +65,7 @@ __all__ = [
 
 class ModeResult(NamedTuple):
     mode: Untyped
-    count: Untyped  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
+    count: Untyped
 
 class PointbiserialrResult(NamedTuple):
     correlation: Untyped
