@@ -93,6 +93,8 @@ CorrelateMode: TypeAlias = Literal["valid", "same", "full"]
 # scipy literals
 NanPolicy: TypeAlias = Literal["raise", "propagate", "omit"]
 Alternative: TypeAlias = Literal["two-sided", "less", "greater"]
+DCTType: TypeAlias = Literal[1, 2, 3, 4]
+NormalizationMode: TypeAlias = Literal["backward", "ortho", "forward"]
 
 # used in `scipy.linalg.blas` and `scipy.linalg.lapack`
 @type_check_only
