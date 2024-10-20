@@ -76,7 +76,7 @@ pip install scipy-stubs
 
 | `scipy._`     | `ruff` & `flake8-pyi` | `stubtest`         | `basedmypy`        | `basedpyright`     | phase                  |
 | :------------ | :-------------------: | :----------------: | :----------------: | :----------------: | :--------------------: |
-| `_lib`        | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_gibbous_moon:  |
+| `_lib`        | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
 | `cluster`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
 | `constants`   | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon_with_face:  |
 | `datasets`    | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon_with_face:  |
