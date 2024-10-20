@@ -10,8 +10,8 @@ __all__: list[str] = []
 
 class _data_matrix(_spbase):
     def __init__(self, /, arg1: Untyped) -> None: ...
-    def __imul__(self, other: _ScalarLike, /) -> Self: ...  # type: ignore[misc,override]
-    def __itruediv__(self, other: _ScalarLike, /) -> Self: ...  # type: ignore[misc,override]
+    def __imul__(self, other: _ScalarLike, /) -> Self: ...  # type: ignore[misc]
+    def __itruediv__(self, other: _ScalarLike, /) -> Self: ...  # type: ignore[misc]
     @property
     def dtype(self, /) -> np.dtype[np.number[Any] | np.bool_]: ...
     @dtype.setter

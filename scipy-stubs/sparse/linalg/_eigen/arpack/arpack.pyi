@@ -33,11 +33,11 @@ def choose_ncv(k: Untyped) -> Untyped: ...
 class SpLuInv(LinearOperator):
     M_lu: Untyped
     isreal: Untyped
-    def __init__(self, M: Untyped) -> None: ...  # pyright: ignore[reportInconsistentConstructor]
+    def __init__(self, M: Untyped) -> None: ...
 
 class LuInv(LinearOperator):
     M_lu: Untyped
-    def __init__(self, M: Untyped) -> None: ...  # pyright: ignore[reportInconsistentConstructor]
+    def __init__(self, M: Untyped) -> None: ...
 
 def gmres_loose(A: Untyped, b: Untyped, tol: Untyped) -> Untyped: ...
 
@@ -45,7 +45,7 @@ class IterInv(LinearOperator):
     M: Untyped
     ifunc: Untyped
     tol: Untyped
-    def __init__(self, M: Untyped, ifunc: Untyped = ..., tol: float = 0) -> None: ...  # pyright: ignore[reportInconsistentConstructor]
+    def __init__(self, M: Untyped, ifunc: Untyped = ..., tol: float = 0) -> None: ...
 
 class IterOpInv(LinearOperator):
     A: Untyped
@@ -57,7 +57,7 @@ class IterOpInv(LinearOperator):
     @property
     @override
     def dtype(self, /) -> np.dtype[np.generic]: ...  # type: ignore[override] # pyright: ignore[reportIncompatibleVariableOverride]
-    def __init__(self, A: Untyped, M: Untyped, sigma: Untyped, ifunc: Untyped = ..., tol: float = 0) -> None: ...  # pyright: ignore[reportInconsistentConstructor]
+    def __init__(self, A: Untyped, M: Untyped, sigma: Untyped, ifunc: Untyped = ..., tol: float = 0) -> None: ...
 
 def get_inv_matvec(M: Untyped, hermitian: bool = False, tol: float = 0) -> Untyped: ...
 def get_OPinv_matvec(A: Untyped, M: Untyped, sigma: Untyped, hermitian: bool = False, tol: float = 0) -> Untyped: ...
