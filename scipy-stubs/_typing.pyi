@@ -53,12 +53,12 @@ class EnterNoneMixin:
     def __exit__(self, /, type: type[BaseException] | None, value: BaseException | None, tb: TracebackType | None) -> None: ...
 
 # placeholders for missing annotations
-Untyped: TypeAlias = object
+Untyped: TypeAlias = Any
 UntypedTuple: TypeAlias = tuple[Untyped, ...]
 UntypedList: TypeAlias = list[Untyped]
 UntypedDict: TypeAlias = dict[Untyped, Untyped]
 UntypedCallable: TypeAlias = Callable[..., Untyped]
-UntypedArray: TypeAlias = onpt.Array[tuple[int, ...], np.generic]
+UntypedArray: TypeAlias = onpt.Array[Any, np.generic]
 
 # I/O
 _ByteSOrStr = TypeVar("_ByteSOrStr", bytes, str)
