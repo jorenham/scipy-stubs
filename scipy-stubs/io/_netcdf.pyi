@@ -1,13 +1,12 @@
 from collections.abc import Mapping, Sequence
-from types import TracebackType
 from typing import IO, Final, Generic, Literal, TypeAlias, overload
-from typing_extensions import Self, TypeVar
+from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onpt
 from optype import CanIndex
-from scipy._typing import FileLike, FileModeRWA
+from scipy._typing import EnterSelfMixin, FileLike, FileModeRWA
 
 __all__ = ["netcdf_file", "netcdf_variable"]
 
@@ -62,7 +61,7 @@ TYPEMAP: Final[dict[_TypeNC, _TypeSpec]] = ...
 FILLMAP: Final[dict[_TypeNC, _TypeFill]]
 REVERSE: Final[dict[_TypeSpec, _TypeNC]]
 
-class netcdf_file:
+class netcdf_file(EnterSelfMixin):
     fp: Final[IO[bytes]]
     filename: Final[str]
     use_mmap: Final[bool]
@@ -81,14 +80,6 @@ class netcdf_file:
         maskandscale: bool = False,
     ) -> None: ...
     def __del__(self, /) -> None: ...
-    def __enter__(self, /) -> Self: ...
-    def __exit__(
-        self,
-        /,
-        type: type[BaseException] | None,
-        value: BaseException | None,
-        traceback: TracebackType | None,
-    ) -> None: ...
     def close(self, /) -> None: ...
     def createDimension(self, /, name: str, length: int) -> None: ...
     @overload

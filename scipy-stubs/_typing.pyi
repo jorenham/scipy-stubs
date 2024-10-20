@@ -2,8 +2,9 @@
 
 from os import PathLike
 from collections.abc import Callable, Sequence
+from types import TracebackType
 from typing import IO, Any, Literal, Protocol, TypeAlias, type_check_only
-from typing_extensions import LiteralString, TypeVar
+from typing_extensions import LiteralString, Self, TypeVar
 
 import numpy as np
 import optype as op
@@ -23,6 +24,8 @@ __all__ = [
     "ByteOrder",
     "Casting",
     "CorrelateMode",
+    "EnterNoneMixin",
+    "EnterSelfMixin",
     "FileLike",
     "FileModeRW",
     "FileModeRWA",
@@ -37,6 +40,17 @@ __all__ = [
     "UntypedTuple",
     "_FortranFunction",
 ]
+
+# helper mixins
+@type_check_only
+class EnterSelfMixin:
+    def __enter__(self, /) -> Self: ...
+    def __exit__(self, /, type: type[BaseException] | None, value: BaseException | None, tb: TracebackType | None) -> None: ...
+
+@type_check_only
+class EnterNoneMixin:
+    def __enter__(self, /) -> None: ...
+    def __exit__(self, /, type: type[BaseException] | None, value: BaseException | None, tb: TracebackType | None) -> None: ...
 
 # placeholders for missing annotations
 Untyped: TypeAlias = object
