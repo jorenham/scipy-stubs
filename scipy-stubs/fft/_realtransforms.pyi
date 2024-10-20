@@ -1,3 +1,6 @@
+from numpy import float64, generic
+from numpy.typing import NDArray
+
 from scipy._typing import Untyped
 
 def dctn(
@@ -42,15 +45,15 @@ def idstn(
     orthogonalize: Untyped | None = None,
 ) -> Untyped: ...
 def dct(
-    x: Untyped,
-    type: int = 2,
-    n: Untyped | None = None,
+    x: NDArray[generic],
+    type: Literal[1, 2, 3, 4] = 2,
+    n: int | None = None,
     axis: int = -1,
-    norm: Untyped | None = None,
+    norm: Literal["backward", "ortho", "forward"] | None = None,
     overwrite_x: bool = False,
-    workers: Untyped | None = None,
-    orthogonalize: Untyped | None = None,
-) -> Untyped: ...
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
+) -> NDArray[float64]: ...
 def idct(
     x: Untyped,
     type: int = 2,
