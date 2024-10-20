@@ -1,14 +1,50 @@
-from scipy._typing import Untyped
+from collections.abc import Callable
+from typing import Concatenate, overload
+from typing_extensions import deprecated
+
+import numpy as np
+import optype.numpy as onpt
+from numpy._typing import _ArrayLikeFloat_co
+from scipy._typing import AnyBool, AnyInt
 
 __all__ = ["convolve", "convolve_z", "destroy_convolve_cache", "init_convolution_kernel"]
 
-def convolve(inout: Untyped, omega: Untyped, swap_real_imag: bool = False, overwrite_x: bool = False) -> Untyped: ...
-def convolve_z(inout: Untyped, omega_real: Untyped, omega_imag: Untyped, overwrite_x: bool = False) -> Untyped: ...
-def init_convolution_kernel(
-    n: int,
-    kernel_func: Untyped,
-    d: int = 0,
-    zero_nyquist: int | None = None,
-    kernel_func_extra_args: Untyped = (),
-) -> Untyped: ...
+@deprecated("this doesn't do anything; nothing is cached")
 def destroy_convolve_cache() -> None: ...
+def convolve(
+    inout: _ArrayLikeFloat_co,
+    omega: _ArrayLikeFloat_co,
+    swap_real_imag: AnyBool = False,
+    overwrite_x: AnyBool = False,
+) -> onpt.Array[tuple[int], np.float64]: ...
+def convolve_z(
+    inout: _ArrayLikeFloat_co,
+    omega_real: _ArrayLikeFloat_co,
+    omega_imag: _ArrayLikeFloat_co,
+    overwrite_x: AnyBool = False,
+) -> onpt.Array[tuple[int], np.float64]: ...
+@overload
+def init_convolution_kernel(
+    n: AnyInt,
+    kernel_func: Callable[[int], float],
+    d: AnyInt = 0,
+    zero_nyquist: AnyInt | None = None,
+    kernel_func_extra_args: tuple[()] = (),
+) -> onpt.Array[tuple[int], np.float64]: ...
+@overload
+def init_convolution_kernel(
+    n: AnyInt,
+    kernel_func: Callable[Concatenate[int, ...], float],
+    d: AnyInt,
+    zero_nyquist: AnyInt | None,
+    kernel_func_extra_args: tuple[object, ...],
+) -> onpt.Array[tuple[int], np.float64]: ...
+@overload
+def init_convolution_kernel(
+    n: AnyInt,
+    kernel_func: Callable[Concatenate[int, ...], float],
+    d: AnyInt = 0,
+    zero_nyquist: AnyInt | None = None,
+    *,
+    kernel_func_extra_args: tuple[object, ...],
+) -> onpt.Array[tuple[int], np.float64]: ...
