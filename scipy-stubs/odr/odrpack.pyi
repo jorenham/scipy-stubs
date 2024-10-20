@@ -1,115 +1,67 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
-from typing_extensions import deprecated, override
+from typing import Any, Final
+from typing_extensions import deprecated
+
+from ._odrpack import ODR as _ODR, Data as _Data, Model as _Model, Output as _Output, RealData as _RealData
 
 __all__ = ["ODR", "Data", "Model", "OdrError", "OdrStop", "OdrWarning", "Output", "RealData", "odr", "odr_error", "odr_stop"]
 
-@deprecated("will be removed in SciPy v2.0.0")
+__MESSAGE: Final = "will be removed in SciPy v2.0.0"
+
+@deprecated(__MESSAGE)
 class OdrWarning(UserWarning): ...
 
-@deprecated("will be removed in SciPy v2.0.0")
+@deprecated(__MESSAGE)
 class OdrError(Exception): ...
 
-@deprecated("will be removed in SciPy v2.0.0")
+@deprecated(__MESSAGE)
 class OdrStop(Exception): ...
 
-@deprecated("will be removed in SciPy v2.0.0")
-class Data:
-    def __init__(
-        self,
-        x: object,
-        y: object = ...,
-        we: object = ...,
-        wd: object = ...,
-        fix: object = ...,
-        meta: object = ...,
-    ) -> None: ...
-    def set_meta(self, **kwds: object) -> None: ...
-    def __getattr__(self, attr: object) -> object: ...
+@deprecated(__MESSAGE)
+class Data(_Data): ...
 
-@deprecated("will be removed in SciPy v2.0.0")
-class RealData(Data):
-    def __init__(
-        self,
-        x: object,
-        y: object = ...,
-        sx: object = ...,
-        sy: object = ...,
-        covx: object = ...,
-        covy: object = ...,
-        fix: object = ...,
-        meta: object = ...,
-    ) -> None: ...
-    @override
-    def __getattr__(self, attr: object) -> object: ...
+@deprecated(__MESSAGE)
+class RealData(_RealData): ...
 
-@deprecated("will be removed in SciPy v2.0.0")
-class Model:
-    def __init__(
-        self,
-        fcn: object,
-        fjacb: object = ...,
-        fjacd: object = ...,
-        extra_args: object = ...,
-        estimate: object = ...,
-        implicit: object = ...,
-        meta: object = ...,
-    ) -> None: ...
-    def set_meta(self, **kwds: object) -> None: ...
-    def __getattr__(self, attr: object) -> object: ...
+@deprecated(__MESSAGE)
+class Model(_Model): ...
 
-@deprecated("will be removed in SciPy v2.0.0")
-class Output:
-    def __init__(self, output: object) -> None: ...
-    def pprint(self) -> None: ...
+@deprecated(__MESSAGE)
+class Output(_Output): ...
 
-@deprecated("will be removed in SciPy v2.0.0")
-class ODR:
-    def __init__(
-        self,
-        data: object,
-        model: object,
-        beta0: object = ...,
-        delta0: object = ...,
-        ifixb: object = ...,
-        ifixx: object = ...,
-        job: object = ...,
-        iprint: object = ...,
-        errfile: object = ...,
-        rptfile: object = ...,
-        ndigit: object = ...,
-        taufac: object = ...,
-        sstol: object = ...,
-        partol: object = ...,
-        maxit: object = ...,
-        stpb: object = ...,
-        stpd: object = ...,
-        sclb: object = ...,
-        scld: object = ...,
-        work: object = ...,
-        iwork: object = ...,
-        overwrite: object = ...,
-    ) -> None: ...
-    def set_job(
-        self,
-        fit_type: object = ...,
-        deriv: object = ...,
-        var_calc: object = ...,
-        del_init: object = ...,
-        restart: object = ...,
-    ) -> None: ...
-    def set_iprint(
-        self,
-        init: object = ...,
-        so_init: object = ...,
-        iter: object = ...,
-        so_iter: object = ...,
-        iter_step: object = ...,
-        final: object = ...,
-        so_final: object = ...,
-    ) -> None: ...
-    def run(self) -> object: ...
-    def restart(self, iter: object = ...) -> object: ...
+@deprecated(__MESSAGE)
+class ODR(_ODR): ...
 
-odr: object
+@deprecated(__MESSAGE)
+def odr(
+    fcn: object,
+    beta0: object,
+    y: object,
+    x: object,
+    we: object | None = None,
+    wd: object | None = None,
+    fjacb: object | None = None,
+    fjacd: object | None = None,
+    extra_args: tuple[object, ...] | None = None,
+    ifixx: object | None = None,
+    ifixb: object | None = None,
+    job: int = 0,
+    iprint: int = 0,
+    errfile: str | None = None,
+    rptfile: str | None = None,
+    ndigit: int = 0,
+    taufac: float = 0.0,
+    sstol: float = -1.0,
+    partol: float = -1.0,
+    maxit: int = -1,
+    stpb: object | None = None,
+    stpd: object | None = None,
+    sclb: object | None = None,
+    scld: object | None = None,
+    work: object | None = None,
+    iwork: object | None = None,
+    full_output: int = 0,
+) -> Any: ...  # noqa: ANN401
+
 odr_error = OdrError
 odr_stop = OdrStop
