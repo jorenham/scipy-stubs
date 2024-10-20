@@ -5,7 +5,7 @@ from typing import Literal, TypeAlias, overload, type_check_only
 
 import numpy as np
 import numpy.typing as npt
-from numpy._typing import _ArrayLikeInt
+from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt
 from scipy._typing import AnyScalar
 from scipy.sparse import coo_matrix, dok_matrix
 
@@ -79,7 +79,7 @@ class cKDTree(_CythonMixin):
     ) -> None: ...
     def query(
         self,
-        x: npt.ArrayLike,
+        x: _ArrayLikeFloat_co,
         k: _ArrayLikeInt = 1,
         eps: float = 0.0,
         p: float = 2.0,
@@ -88,7 +88,7 @@ class cKDTree(_CythonMixin):
     ) -> tuple[float, float] | tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]: ...
     def query_ball_point(
         self,
-        x: npt.ArrayLike,
+        x: _ArrayLikeFloat_co,
         r: npt.ArrayLike,
         p: float = 2.0,
         eps: float = 0.0,
