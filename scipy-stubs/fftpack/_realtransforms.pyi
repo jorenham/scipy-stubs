@@ -1,5 +1,7 @@
 from scipy._typing import Untyped
 
+__all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
+
 def dctn(
     x: Untyped,
     type: int = 2,
