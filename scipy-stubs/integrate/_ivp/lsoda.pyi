@@ -1,30 +1,34 @@
-# TODO: Finish this
+from collections.abc import Callable
+from typing_extensions import Never
 
-from scipy._typing import Untyped, UntypedCallable
+import numpy as np
+import numpy.typing as npt
+from numpy._typing import _ArrayLikeFloat_co
 from .base import DenseOutput, OdeSolver
 
 class LSODA(OdeSolver):
     def __init__(
         self,
         /,
-        fun: UntypedCallable,
-        t0: Untyped,
-        y0: Untyped,
-        t_bound: Untyped,
-        first_step: Untyped | None = None,
+        fun: Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]],
+        t0: float,
+        y0: npt.NDArray[np.float64],
+        t_bound: float,
+        first_step: float | None = None,
         min_step: float = 0.0,
-        max_step: Untyped = ...,
-        rtol: float = 0.001,
-        atol: float = 1e-06,
-        jac: Untyped | None = None,
-        lband: Untyped | None = None,
-        uband: Untyped | None = None,
+        max_step: float = ...,
+        rtol: _ArrayLikeFloat_co = 0.001,
+        atol: _ArrayLikeFloat_co = 1e-06,
+        jac: Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]] | None = None,
+        lband: int | None = None,
+        uband: int | None = None,
         vectorized: bool = False,
-        **extraneous: Untyped,
+        **extraneous: Never,
     ) -> None: ...
 
 class LsodaDenseOutput(DenseOutput):
-    h: Untyped
-    yh: Untyped
-    p: Untyped
-    def __init__(self, /, t_old: float, t: float, h: Untyped, order: Untyped, yh: Untyped) -> None: ...
+    h: float
+    yh: npt.NDArray[np.float64]
+    p: npt.NDArray[np.intp]
+
+    def __init__(self, /, t_old: float, t: float, h: float, order: int, yh: npt.NDArray[np.float64]) -> None: ...
