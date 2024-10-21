@@ -36,7 +36,7 @@ jobs:
           cache: poetry
 
       - name: install
-        run: poetry install
+        run: poetry install --with=codegen
 
       - name: lint
         run: poe lint --output-format=github
