@@ -1,5 +1,6 @@
-from numpy import float64, generic
-from numpy.typing import NDArray
+import numpy as np
+import numpy.typing as npt
+from numpy._typing import _ArrayLikeNumber_co
 from scipy._typing import DCTType, NormalizationMode, Untyped
 
 def dctn(
@@ -9,9 +10,9 @@ def dctn(
     axes: Untyped | None = None,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
-    workers: Untyped | None = None,
+    workers: int | None = None,
     *,
-    orthogonalize: Untyped | None = None,
+    orthogonalize: bool | None = None,
 ) -> Untyped: ...
 def idctn(
     x: Untyped,
@@ -20,8 +21,8 @@ def idctn(
     axes: Untyped | None = None,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
-    workers: Untyped | None = None,
-    orthogonalize: Untyped | None = None,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> Untyped: ...
 def dstn(
     x: Untyped,
@@ -30,8 +31,8 @@ def dstn(
     axes: Untyped | None = None,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
-    workers: Untyped | None = None,
-    orthogonalize: Untyped | None = None,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> Untyped: ...
 def idstn(
     x: Untyped,
@@ -40,11 +41,14 @@ def idstn(
     axes: Untyped | None = None,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
-    workers: Untyped | None = None,
-    orthogonalize: Untyped | None = None,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> Untyped: ...
+
+# We could use overloads based on the type of x to get more accurate return type
+# see https://github.com/jorenham/scipy-stubs/pull/118#discussion_r1807957439
 def dct(
-    x: NDArray[generic],
+    x: _ArrayLikeNumber_co,
     type: DCTType = 2,
     n: int | None = None,
     axis: int = -1,
@@ -52,7 +56,7 @@ def dct(
     overwrite_x: bool = False,
     workers: int | None = None,
     orthogonalize: bool | None = None,
-) -> NDArray[float64]: ...
+) -> npt.NDArray[Untyped]: ...
 def idct(
     x: Untyped,
     type: DCTType = 2,
@@ -60,8 +64,8 @@ def idct(
     axis: int = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
-    workers: Untyped | None = None,
-    orthogonalize: Untyped | None = None,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> Untyped: ...
 def dst(
     x: Untyped,
@@ -70,8 +74,8 @@ def dst(
     axis: int = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
-    workers: Untyped | None = None,
-    orthogonalize: Untyped | None = None,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> Untyped: ...
 def idst(
     x: Untyped,
@@ -80,6 +84,6 @@ def idst(
     axis: int = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
-    workers: Untyped | None = None,
-    orthogonalize: Untyped | None = None,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> Untyped: ...
