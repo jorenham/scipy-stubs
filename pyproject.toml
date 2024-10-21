@@ -74,11 +74,11 @@ typetest = ["_typetest_bpr", "_typetest_mypy"]
 
 [tool.poe.tasks.pyright]
 cmd = "basedpyright $path"
-args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs"}]
+args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs codegen"}]
 
 [tool.poe.tasks.mypy]
 cmd = "mypy --config-file=pyproject.toml $path"
-args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs"}]
+args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs codegen"}]
 
 [tool.poe.tasks.stubtest]
 cmd = """
@@ -112,9 +112,10 @@ disable_bytearray_promotion = true
 disable_memoryview_promotion = true
 warn_unused_ignores = true
 disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[Any]`
+enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 
 [tool.pyright]
-include = ["scipy-stubs", "tests/typetests", "codemods.py"]
+include = ["scipy-stubs", "tests/typetests", "codegen"]
 venv = ".venv"
 venvPath = "."
 stubPath = "."
@@ -124,12 +125,16 @@ typeCheckingMode = "strict"
 
 deprecateTypingAliases = true
 enableTypeIgnoreComments = false
-reportDeprecated = false
 reportIgnoreCommentWithoutRule = true
 reportImplicitRelativeImport = true
 reportInvalidCast = true
-reportPrivateUsage = false
 reportUnnecessaryTypeIgnoreComment = true
+
+executionEnvironments = [
+  {root = "codegen", reportUnusedParameter = false},
+  {root = "scipy-stubs", reportDeprecated = false, reportPrivateUsage = false},
+  {root = "tests/typetests", reportPrivateUsage = false},
+]
 
 [tool.ruff]
 builtins = ["reveal_locals", "reveal_type"]
