@@ -4,11 +4,10 @@ import numpy as np
 import numpy.typing as npt
 from numpy._typing import _ArrayLikeComplex_co, _ArrayLikeFloat_co
 from optype import CanIndex
-from scipy._typing import AnyBool, AnyInt, AnyShape
+from scipy._typing import AnyBool, AnyInt, AnyShape, DCTType
 
 __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 
-_TypeKind: TypeAlias = Literal[1, 2, 3, 4]
 _NormKind: TypeAlias = Literal[None, "ortho"]
 
 _ArrayReal: TypeAlias = npt.NDArray[np.float32 | np.float64 | np.longdouble]  # no float16
@@ -20,7 +19,7 @@ _ArrayComplex: TypeAlias = npt.NDArray[np.complex64 | np.complex128 | np.clongdo
 @overload
 def dctn(
     x: _ArrayLikeFloat_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
@@ -29,7 +28,7 @@ def dctn(
 @overload
 def dctn(
     x: _ArrayLikeComplex_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
@@ -40,7 +39,7 @@ def dctn(
 @overload
 def idctn(
     x: _ArrayLikeFloat_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
@@ -49,7 +48,7 @@ def idctn(
 @overload
 def idctn(
     x: _ArrayLikeComplex_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
@@ -60,7 +59,7 @@ def idctn(
 @overload
 def dstn(
     x: _ArrayLikeFloat_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
@@ -69,7 +68,7 @@ def dstn(
 @overload
 def dstn(
     x: _ArrayLikeComplex_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
@@ -80,7 +79,7 @@ def dstn(
 @overload
 def idstn(
     x: _ArrayLikeFloat_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
@@ -89,7 +88,7 @@ def idstn(
 @overload
 def idstn(
     x: _ArrayLikeComplex_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
@@ -100,7 +99,7 @@ def idstn(
 @overload
 def dct(
     x: _ArrayLikeFloat_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     n: AnyInt | None = None,
     axis: CanIndex | None = None,
     norm: _NormKind = None,
@@ -109,7 +108,7 @@ def dct(
 @overload
 def dct(
     x: _ArrayLikeComplex_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     n: AnyInt | None = None,
     axis: CanIndex | None = None,
     norm: _NormKind = None,
@@ -120,7 +119,7 @@ def dct(
 @overload
 def idct(
     x: _ArrayLikeFloat_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     n: AnyInt | None = None,
     axis: CanIndex | None = None,
     norm: _NormKind = None,
@@ -129,7 +128,7 @@ def idct(
 @overload
 def idct(
     x: _ArrayLikeComplex_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     n: AnyInt | None = None,
     axis: CanIndex | None = None,
     norm: _NormKind = None,
@@ -140,7 +139,7 @@ def idct(
 @overload
 def dst(
     x: _ArrayLikeFloat_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     n: AnyInt | None = None,
     axis: CanIndex | None = None,
     norm: _NormKind = None,
@@ -149,7 +148,7 @@ def dst(
 @overload
 def dst(
     x: _ArrayLikeComplex_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     n: AnyInt | None = None,
     axis: CanIndex | None = None,
     norm: _NormKind = None,
@@ -160,7 +159,7 @@ def dst(
 @overload
 def idst(
     x: _ArrayLikeFloat_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     n: AnyInt | None = None,
     axis: CanIndex | None = None,
     norm: _NormKind = None,
@@ -169,7 +168,7 @@ def idst(
 @overload
 def idst(
     x: _ArrayLikeComplex_co,
-    type: _TypeKind = 2,
+    type: DCTType = 2,
     n: AnyInt | None = None,
     axis: CanIndex | None = None,
     norm: _NormKind = None,
