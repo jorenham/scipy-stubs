@@ -2,6 +2,7 @@ from typing import Literal, TypeAlias
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 
 _Array_fc_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.inexact[npt.NBitBase]]]
 _Mode: TypeAlias = Literal["mirror", "constant", "nearest", "wrap", "interp"]
@@ -20,7 +21,7 @@ def savgol_filter(
     polyorder: int,
     deriv: int = 0,
     delta: float = 1.0,
-    axis: int = -1,
+    axis: op.CanIndex = -1,
     mode: _Mode = "interp",
     cval: float = 0.0,
 ) -> npt.NDArray[np.float32 | np.float64]: ...
