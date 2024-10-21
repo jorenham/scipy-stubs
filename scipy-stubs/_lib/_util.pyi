@@ -1,3 +1,4 @@
+import sys
 from multiprocessing.pool import Pool
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from typing import Any, Concatenate, Final, Generic, NamedTuple, TypeAlias, overload
@@ -7,14 +8,25 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onpt
 from numpy._typing import _ArrayLikeInt
-from numpy.exceptions import (
-    AxisError as AxisError,
-    ComplexWarning as ComplexWarning,
-    DTypePromotionError as DTypePromotionError,
-    VisibleDeprecationWarning as VisibleDeprecationWarning,
-)
 from numpy.random import Generator as Generator  # noqa: ICN003
 from scipy._typing import RNG, EnterSelfMixin, Seed
+
+if sys.version_info >= (3, 12):
+    # Python 3.12 support requires numpy >= 1.26
+    from numpy.exceptions import (
+        AxisError as AxisError,
+        ComplexWarning as ComplexWarning,
+        DTypePromotionError as DTypePromotionError,
+        VisibleDeprecationWarning as VisibleDeprecationWarning,
+    )
+else:
+    from numpy import (  # noqa: ICN003
+        AxisError as AxisError,
+        ComplexWarning as ComplexWarning,
+        VisibleDeprecationWarning as VisibleDeprecationWarning,
+    )
+
+    DTypePromotionError = TypeError
 
 _T = TypeVar("_T", default=object)
 _T_co = TypeVar("_T_co", covariant=True, default=object)
