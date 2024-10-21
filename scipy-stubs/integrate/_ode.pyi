@@ -100,10 +100,12 @@ class IntegratorBase(Generic[_SCT_co]):
     supports_step: ClassVar[Literal[0, 1, None]] = None
     supports_solout: ClassVar[bool]
     scalar: ClassVar[type] = ...
-    handle: ClassVar[int]
+
+    handle: int
     success: Literal[0, 1] | bool | None = None
     integrator_classes: list[type[IntegratorBase]]
     istate: int | None = None
+
     def acquire_new_handle(self, /) -> None: ...
     def check_handle(self, /) -> None: ...
     def reset(self, /, n: int, has_jac: bool) -> None: ...
@@ -142,7 +144,8 @@ class IntegratorBase(Generic[_SCT_co]):
     ) -> tuple[_SCT_co, float]: ...
 
 class vode(IntegratorBase[_SCT_co], Generic[_SCT_co]):
-    messages: ClassVar[dict[int, str]]
+    messages: ClassVar[dict[int, str]] = ...
+
     active_global_handle: int
     meth: int
     with_jacobian: bool
@@ -159,6 +162,7 @@ class vode(IntegratorBase[_SCT_co], Generic[_SCT_co]):
     rwork: onpt.Array[tuple[int], np.float64]
     iwork: onpt.Array[tuple[int], np.int32]
     call_args: list[float | npt.NDArray[np.float64] | npt.NDArray[np.int32]]
+
     def __init__(
         self,
         /,
@@ -250,7 +254,7 @@ class dop853(dopri5):
 
 class lsoda(IntegratorBase[np.float64]):
     active_global_handle: ClassVar[int] = 0
-    messages: ClassVar[dict[int, str]]
+    messages: ClassVar[dict[int, str]] = ...
 
     with_jacobian: Final[bool]
     rtol: Final[float]
