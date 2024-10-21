@@ -1,123 +1,25 @@
 # typecheck-only helper types
-scipy._typing
-scipy.integrate._typing
-scipy.ndimage._typing
-scipy.optimize._typing
-scipy.stats._typing
+scipy\.(\w+\.)?_typing
 
-# submodules
-scipy._lib.array_api_compat.*
-scipy._lib.cobyqa.*
+# git submodules
+scipy\._lib\.(array_api_compat|cobyqa).*
 
-# internal testing
-scipy._lib.messagestream.__test__
-scipy._lib.test
-scipy._lib.tests.*
-scipy.cluster.tests.*
-scipy.conftest
-scipy.constants.tests.*
-scipy.datasets.tests.*
-scipy.fft._pocketfft.test
-scipy.fft._pocketfft.tests.*
-scipy.fft.tests.*
-scipy.fftpack.tests.*
-scipy.integrate._ivp.tests.*
-scipy.integrate.tests.*
-scipy.interpolate.interpnd.__test__
-scipy.interpolate.tests.*
-scipy.io._harwell_boeing.tests.*
-scipy.io.arff.tests.*
-scipy.io.matlab.tests.*
-scipy.io.tests.*
-scipy.linalg._decomp_lu_cython.__test__
-scipy.linalg._matfuncs_sqrtm_triu.__test__
-scipy.linalg._solve_toeplitz.__test__
-scipy.linalg.tests.*
-scipy.misc.tests.*
-scipy.ndimage.tests.*
-scipy.odr.tests.*
-scipy.optimize._trustregion_constr.tests.*
-scipy.optimize.tests.*
-scipy.signal.tests.*
-scipy.sparse.csgraph._flow.__test__
-scipy.sparse.csgraph._matching.__test__
-scipy.sparse.csgraph._min_spanning_tree.__test__
-scipy.sparse.csgraph._reordering.__test__
-scipy.sparse.csgraph._shortest_path.__test__
-scipy.sparse.csgraph._tools.__test__
-scipy.sparse.csgraph._traversal.__test__
-scipy.sparse.csgraph.tests.*
-scipy.sparse.linalg._dsolve.tests.*
-scipy.sparse.linalg._eigen.arpack.tests.*
-scipy.sparse.linalg._eigen.lobpcg.tests.*
-scipy.sparse.linalg._eigen.tests.*
-scipy.sparse.linalg._isolve.tests.*
-scipy.sparse.linalg.dsolve.test
-scipy.sparse.linalg.eigen.test
-scipy.sparse.linalg.isolve.test
-scipy.sparse.linalg.tests.*
-scipy.sparse.tests.*
-scipy.spatial.tests.*
-scipy.spatial.transform.tests.*
-scipy.spatial.transform._rotation.__test__
-scipy.special.tests.*
-scipy.stats.tests.*
-scipy.stats._levy_stable.levyst.__test__
-scipy.stats._qmc_cy.__test__
-scipy.stats._sobol.__test__
+# internal scipy testing code
+scipy\.conftest
+scipy\.((_|\w)+\.)+(__test__|test|tests(\..+)?)
 
-# undocumented & irrelevant internal scipy machinery
-scipy._lib.decorator.DEF
-scipy._lib.decorator.ArgSpec
-scipy._lib.decorator.FunctionMaker
-scipy._lib.decorator.__init__
-scipy._lib.decorator.append
-scipy._lib.decorator.dispatch_on
-scipy._lib.decorator.get_init
-scipy._lib.decorator.getargspec
-scipy._lib.decorator.init
-scipy._lib.decorator.n_args
-scipy.fft._pocketfft.*
-scipy.special._precompute.*
-scipy.special.libsf_error_state
-scipy.stats._rcont.rcont
+# accidental implicit exports of internal scipy machinery
+scipy\._lib\.decorator\.(DEF|ArgSpec|FunctionMaker|__init__|append|dispatch_on|get_init|getargspec|init|n_args)
+scipy\.fft\._pocketfft\..*
+scipy\.special\._precompute\..*
+scipy\.special\.libsf_error_state
+scipy\.stats\._rcont.rcont
 
-# omitted methods that always raise or return `NotImplemented`
-scipy.sparse._(\w+)._(\w+).__iadd__
-scipy.sparse._(\w+)._(\w+).__idiv__
-scipy.sparse._(\w+)._(\w+).__imul__
-scipy.sparse._(\w+)._(\w+).__isub__
-scipy.sparse._(\w+)._(\w+).__itruediv__
-scipy.sparse._(\w+)._(\w+).__len__
-scipy.sparse._(\w+)._(\w+).__rdiv__
-scipy.sparse._(\w+)._(\w+).__rtruediv__
+# omitted methods that always return `NotImplemented` or always raise
+scipy\.sparse\._(\w+)\._(\w+)\.__(iadd|idiv|imul|isub|itruediv|len|rdiv|rtruediv)__
 
-# mypy bug workarounds
-scipy._lib._array_api.Array  # within `if TYPE_CHECKING`
-scipy._lib._array_api.ArrayLike  # within `if TYPE_CHECKING`
-scipy._lib._ccallback.PyCFuncPtr  # `final(T)` is impossible
-scipy.signal._short_time_fft.FFT_MODE_TYPE  # `Literal[] != def (*, **)`?
-scipy.signal._short_time_fft.PAD_TYPE  # `Literal[] != def (*, **)`?
-
-# mypy py313 workarounds
-scipy._lib._docscrape.Parameter.__replace__
-scipy._lib._pep440._Version.__replace__
-scipy._lib._util.FullArgSpec.__replace__
-scipy.integrate._quadrature.QMCQuadResult.__replace__
-scipy.stats.(\w+).__replace__
-scipy.stats._binned_statistic.(\w+).__replace__
-scipy.stats._common.ConfidenceInterval.__replace__
-scipy.stats._fit.(\w+).__replace__
-scipy.stats._hypotests.(\w+).__replace__
-scipy.stats._mannwhitneyu.MannwhitneyuResult.__replace__
-scipy.stats._morestats.(\w+).__replace__
-scipy.stats._multicomp.DunnettResult.__replace__
-scipy.stats._page_trend_test.PageTrendTestResult.__replace__
-scipy.stats._relative_risk.RelativeRiskResult.__replace__
-scipy.stats._resampling.(\w+).__replace__
-scipy.stats._result_classes.(\w+).__replace__
-scipy.stats._sensitivity_analysis.(\w+).__replace__
-scipy.stats._survival.(\w+).__replace__
-scipy.stats._unuran.unuran_wrapper.UError.__replace__
-scipy.stats._mstats_basic.(\w+).__replace__
-scipy.stats._stats_py.(\w+).__replace__
+# workarounds for mypy bugs
+scipy\._lib\._array_api\.(Array|ArrayLike)  # these exist, but in `if TYPE_CHECKING: ...`
+scipy\._lib\._ccallback\.PyCFuncPtr  # this exists, but under `if TYPE_CHECKING: ...`
+scipy\.signal\._short_time_fft\.(FFT_MODE_TYPE|PAD_TYPE)  # `Literal[...] != def (*, **)`
+scipy\.(_lib|integrate|stats)\.((_|\w)+\.)+__replace__  # `NamedTuple` on `python >= 3.13`
