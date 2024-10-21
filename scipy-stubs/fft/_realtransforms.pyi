@@ -1,4 +1,3 @@
-import numpy as np
 import numpy.typing as npt
 from numpy._typing import _ArrayLikeNumber_co
 from scipy._typing import DCTType, NormalizationMode, Untyped
@@ -60,7 +59,7 @@ def dct(
 def idct(
     x: Untyped,
     type: DCTType = 2,
-    n: Untyped | None = None,
+    n: int | None = None,
     axis: int = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -70,7 +69,7 @@ def idct(
 def dst(
     x: Untyped,
     type: DCTType = 2,
-    n: Untyped | None = None,
+    n: int | None = None,
     axis: int = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -80,7 +79,7 @@ def dst(
 def idst(
     x: Untyped,
     type: DCTType = 2,
-    n: Untyped | None = None,
+    n: int | None = None,
     axis: int = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
