@@ -1,5 +1,16 @@
-from scipy._typing import Untyped
+from typing import Final, Literal, TypeAlias
 
-__pythran__: tuple[str, str] = ...
+from numpy._typing import _ArrayLikeFloat_co
+from ._stats_mstats_common import SiegelslopesResult
 
-def siegelslopes(y: Untyped, x: Untyped, method: Untyped) -> Untyped: ...
+_Method: TypeAlias = Literal["hierarchical", "separate"]
+
+###
+
+__pythran__: Final[tuple[str, str]] = ...
+
+def siegelslopes(
+    y: _ArrayLikeFloat_co,
+    x: _ArrayLikeFloat_co | None = None,
+    method: _Method = "hierarchical",
+) -> SiegelslopesResult: ...
