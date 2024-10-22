@@ -1,5 +1,6 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
 import operator
+import sys
 from typing import type_check_only
 from typing_extensions import deprecated
 
@@ -55,15 +56,20 @@ def coo_matvec(*args: object, **kwargs: object) -> object: ...
 def coo_tocsr(*args: object, **kwargs: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def coo_todense(*args: object, **kwargs: object) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def warn(
-    message: object,
-    category: object = ...,
-    stacklevel: object = ...,
-    source: object = ...,
-    *,
-    skip_file_prefixes: object = ...,
-) -> None: ...
+
+if sys.version_info >= (3, 12):
+    @deprecated("will be removed in SciPy v2.0.0")
+    def warn(
+        message: object,
+        category: object = ...,
+        stacklevel: object = ...,
+        source: object = ...,
+        *,
+        skip_file_prefixes: object = ...,
+    ) -> None: ...
+else:
+    @deprecated("will be removed in SciPy v2.0.0")
+    def warn(message: object, category: object = ..., stacklevel: object = ..., source: object = ...) -> None: ...
 
 # sputils
 @type_check_only

@@ -7,12 +7,6 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onpt
 from numpy._typing import _ArrayLikeInt
-from numpy.exceptions import (
-    AxisError as AxisError,
-    ComplexWarning as ComplexWarning,
-    DTypePromotionError as DTypePromotionError,
-    VisibleDeprecationWarning as VisibleDeprecationWarning,
-)
 from numpy.random import Generator as Generator  # noqa: ICN003
 from scipy._typing import RNG, EnterSelfMixin, Seed
 
@@ -23,12 +17,26 @@ _VT = TypeVar("_VT")
 _RT = TypeVar("_RT")
 _AxisT = TypeVar("_AxisT", bound=int | np.integer[Any])
 
+###
+
 np_long: Final[type[np.int32 | np.int64]] = ...
 np_ulong: Final[type[np.uint32 | np.uint64]] = ...
 copy_if_needed: Final[bool | None] = ...
 
 IntNumber: TypeAlias = int | np.integer[Any]
 DecimalNumber: TypeAlias = float | np.floating[Any] | np.integer[Any]
+
+class ComplexWarning(RuntimeWarning): ...
+class VisibleDeprecationWarning(UserWarning): ...
+class DTypePromotionError(TypeError): ...
+
+class AxisError(ValueError, IndexError):
+    axis: None | int
+    ndim: None | int
+    @overload
+    def __init__(self, /, axis: str, ndim: None = None, msg_prefix: None = None) -> None: ...
+    @overload
+    def __init__(self, /, axis: int, ndim: int, msg_prefix: str | None = None) -> None: ...
 
 class FullArgSpec(NamedTuple):
     args: Sequence[str]

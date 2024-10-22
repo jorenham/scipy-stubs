@@ -1,5 +1,6 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
 import operator
+import sys
 from typing_extensions import deprecated
 
 __all__ = [
@@ -37,15 +38,20 @@ class IndexMixin:
     def __getitem__(self, key: object, /) -> object: ...
     def __setitem__(self, key: object, x: object, /) -> None: ...
 
-@deprecated("will be removed in SciPy v2.0.0")
-def warn(
-    message: object,
-    category: object = ...,
-    stacklevel: object = ...,
-    source: object = ...,
-    *,
-    skip_file_prefixes: object = ...,
-) -> None: ...
+if sys.version_info >= (3, 12):
+    @deprecated("will be removed in SciPy v2.0.0")
+    def warn(
+        message: object,
+        category: object = ...,
+        stacklevel: object = ...,
+        source: object = ...,
+        *,
+        skip_file_prefixes: object = ...,
+    ) -> None: ...
+else:
+    @deprecated("will be removed in SciPy v2.0.0")
+    def warn(message: object, category: object = ..., stacklevel: object = ..., source: object = ...) -> None: ...
+
 @deprecated("will be removed in SciPy v2.0.0")
 def csr_column_index1(*args: object, **kwargs: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")

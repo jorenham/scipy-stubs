@@ -53,7 +53,8 @@ __all__ = [
     "mxUINT64_CLASS",
 ]
 
-_ShapeT_co = TypeVar("_ShapeT_co", covariant=True, bound=tuple[int, ...], default=tuple[int, ...])
+# NOTE: explicit covariance can't be used, because shape types are invariant in `numpy<2.1`
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
 
 @type_check_only
 class _CodecTemplateValue(TypedDict):
@@ -141,7 +142,7 @@ _MXName: TypeAlias = Literal[
 MDTYPES: Final[_MDTypes] = ...
 NP_TO_MTYPES: Final[_NP2M] = ...
 NP_TO_MXTYPES: Final[_NP2MX] = ...
-# TODO: use `np.dtypes.VoidDType[Literal[32]]` once we have `numpy >= 2.1.0`
+# TODO(jorenham): use `np.dtypes.VoidDType[Literal[32]]` once we have `numpy >= 2.1.0`
 OPAQUE_DTYPE: Final[np.dtype[np.void]] = ...
 
 codecs_template: Final[_CodecsTemplate] = ...
@@ -187,18 +188,18 @@ mxOBJECT_CLASS_FROM_MATRIX_H: Final[_MXType] = 18
 @final
 class mat_struct: ...
 
-class MatlabObject(np.ndarray[_ShapeT_co, np.dtype[np.void]], Generic[_ShapeT_co]):
+class MatlabObject(np.ndarray[_ShapeT, np.dtype[np.void]], Generic[_ShapeT]):
     classname: Final[str | None]
 
     def __new__(cls, input_array: onpt.AnyVoidArray, classname: str | None = None) -> Self: ...
     @override
     def __array_finalize__(self, /, obj: None | npt.NDArray[np.void]) -> None: ...
 
-class MatlabFunction(np.ndarray[_ShapeT_co, np.dtype[np.void]], Generic[_ShapeT_co]):
+class MatlabFunction(np.ndarray[_ShapeT, np.dtype[np.void]], Generic[_ShapeT]):
     @override
     def __new__(cls, input_array: onpt.AnyVoidArray) -> Self: ...
 
-class MatlabOpaque(np.ndarray[_ShapeT_co, np.dtype[np.void]], Generic[_ShapeT_co]):
+class MatlabOpaque(np.ndarray[_ShapeT, np.dtype[np.void]], Generic[_ShapeT]):
     @override
     def __new__(cls, input_array: onpt.AnyVoidArray) -> Self: ...
 

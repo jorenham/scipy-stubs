@@ -85,6 +85,7 @@ cmd = """
 stubtest
     --mypy-config-file=pyproject.toml
     --allowlist=tests/stubtest/allowlist.txt
+    --ignore-unused-allowlist
     $modules
 """
 args = [{name = "modules", positional = true, multiple = true, default = "scipy"}]
