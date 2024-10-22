@@ -4,7 +4,6 @@ from typing_extensions import Self
 import numpy as np
 import numpy.typing as npt
 from numpy._typing import _ArrayLikeFloat_co
-from scipy._typing import Untyped
 from ._crosstab import crosstab
 from ._odds_ratio import odds_ratio
 from ._relative_risk import relative_risk
@@ -49,4 +48,4 @@ def association(
     method: Literal["cramer", "tschuprow", "pearson"] = "cramer",
     correction: bool = False,
     lambda_: PowerDivergenceStatistic | float | None = None,
-) -> Untyped: ...
+) -> float: ...
