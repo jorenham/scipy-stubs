@@ -8,7 +8,7 @@ from scipy._typing import AnyInt, AnyReal
 
 __all__ = ["cspline1d", "cspline1d_eval", "gauss_spline", "qspline1d", "qspline1d_eval", "spline_filter"]
 
-_SCT_fc = TypeVar("_SCT_fc", np.float64, np.float32, np.complex128, np.complex64)
+_SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
 
 @overload
 def gauss_spline(x: _ArrayLikeInt_co, n: AnyInt) -> npt.NDArray[np.float64]: ...

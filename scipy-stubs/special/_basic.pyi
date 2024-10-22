@@ -9,7 +9,6 @@ from typing_extensions import TypeVar
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onpt
-from numpy import sinc  # noqa: ICN003
 from numpy._typing import _ArrayLikeComplex_co, _ArrayLikeFloat_co, _ArrayLikeInt_co  # don't try this at home, kids
 import scipy._typing as spt
 from ._ufuncs import psi as digamma  # completely different greek letters, but oh well...
@@ -84,6 +83,7 @@ _tuple8: TypeAlias = tuple[_T0, _T1, _T1, _T1, _T1, _T1, _T1, _T1]
 
 _ArrayT = TypeVar("_ArrayT", bound=onpt.Array)
 _SCT = TypeVar("_SCT", bound=np.generic)
+_SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
 _scalar_or_array: TypeAlias = _SCT | onpt.Array[tuple[int, ...], _SCT]
 _array_0d: TypeAlias = onpt.Array[tuple[()], _SCT]
 _array_1d: TypeAlias = onpt.Array[tuple[int], _SCT]
@@ -105,6 +105,18 @@ _c8: TypeAlias = np.complex64
 _c16: TypeAlias = np.complex128
 _c: TypeAlias = _c8 | _c16 | np.clongdouble
 
+@overload
+def sinc(x: np.integer[Any] | np.bool_) -> np.float64: ...
+@overload
+def sinc(x: _SCT_fc) -> _SCT_fc: ...
+@overload
+def sinc(x: npt.NDArray[np.integer[Any] | np.bool_]) -> npt.NDArray[np.float64]: ...
+@overload
+def sinc(x: npt.NDArray[_SCT_fc]) -> npt.NDArray[_SCT_fc]: ...
+@overload
+def sinc(x: _ArrayLikeFloat_co) -> np.floating[Any] | npt.NDArray[np.floating[Any]]: ...
+@overload
+def sinc(x: _ArrayLikeComplex_co) -> np.inexact[Any] | npt.NDArray[np.inexact[Any]]: ...
 def diric(x: _ArrayLikeFloat_co, n: spt.AnyInt) -> npt.NDArray[np.floating[Any]]: ...
 def jnjnp_zeros(nt: spt.AnyInt) -> _tuple4[_array_1d[_f8], _array_1d[_i4]]: ...
 def jnyn_zeros(n: spt.AnyInt, nt: spt.AnyInt) -> _tuple4[_array_1d[_f8]]: ...
