@@ -23,3 +23,7 @@ scipy\._lib\._array_api\.(Array|ArrayLike)  # these exist, but in `if TYPE_CHECK
 scipy\._lib\._ccallback\.PyCFuncPtr  # this exists, but under `if TYPE_CHECKING: ...`
 scipy\.signal\._short_time_fft\.(FFT_MODE_TYPE|PAD_TYPE)  # `Literal[...] != def (*, **)`
 scipy\.(_lib|integrate|stats)\.((_|\w)+\.)+__replace__  # `NamedTuple` on `python >= 3.13`
+
+# stubtest doesn't understand `if sys.version_info >= _: ...` blocks
+scipy\.fftpack\.helper\.fftfreq
+scipy\.sparse\.(\w+)\.warn
