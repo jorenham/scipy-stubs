@@ -92,6 +92,7 @@ _Real1D: TypeAlias = _Int1D | _Float1D
 _SCT_int = TypeVar("_SCT_int", bound=_Int1D, default=_Int1D)
 _SCT_float = TypeVar("_SCT_float", bound=_Float1D, default=_Float1D)
 _SCT_real = TypeVar("_SCT_real", bound=_Real1D, default=_Real1D)
+_SCT_real_co = TypeVar("_SCT_real_co", covariant=True, bound=_Real1D, default=_Real1D)
 
 _GenericND: TypeAlias = _SCT | npt.NDArray[_SCT]
 _IntND: TypeAlias = _GenericND[_SCT_int]
@@ -100,9 +101,10 @@ _RealND: TypeAlias = _GenericND[_SCT_real]
 
 _Interpolation: TypeAlias = Literal["linear", "lower", "higher", "nearest", "midpoint"]
 
-_NDT_int = TypeVar("_NDT_int", bound=int | _IntND, default=int | _IntND)
+_NDT_int_co = TypeVar("_NDT_int_co", covariant=True, bound=int | _IntND, default=int | _IntND)
 _NDT_float = TypeVar("_NDT_float", bound=float | _FloatND, default=float | _FloatND)
-_NDT_real = TypeVar("_NDT_real", bound=float | _RealND, default=float | _RealND)
+_NDT_float_co = TypeVar("_NDT_float_co", covariant=True, bound=float | _FloatND, default=float | _FloatND)
+_NDT_real_co = TypeVar("_NDT_real_co", covariant=True, bound=float | _RealND, default=float | _RealND)
 
 @type_check_only
 class _RVSCallable(Protocol):
@@ -134,36 +136,36 @@ class _SimpleChi2:
     def sf(self, /, x: np.float32 | np.uint16 | np.int16 | np.uint8 | np.int8) -> np.float32: ...
 
 @type_check_only
-class _TestResultTuple(NamedTuple, Generic[_NDT_float]):
-    statistic: _NDT_float
-    pvalue: _NDT_float
+class _TestResultTuple(NamedTuple, Generic[_NDT_float_co]):
+    statistic: _NDT_float_co
+    pvalue: _NDT_float_co
 
-class SkewtestResult(_TestResultTuple[_NDT_float], Generic[_NDT_float]): ...
-class KurtosistestResult(_TestResultTuple[_NDT_float], Generic[_NDT_float]): ...
-class NormaltestResult(_TestResultTuple[_NDT_float], Generic[_NDT_float]): ...
-class Ttest_indResult(_TestResultTuple[_NDT_float], Generic[_NDT_float]): ...
-class Power_divergenceResult(_TestResultTuple[_NDT_float], Generic[_NDT_float]): ...
-class RanksumsResult(_TestResultTuple[_NDT_float], Generic[_NDT_float]): ...
-class KruskalResult(_TestResultTuple[_NDT_float], Generic[_NDT_float]): ...
-class FriedmanchisquareResult(_TestResultTuple[_NDT_float], Generic[_NDT_float]): ...
-class BrunnerMunzelResult(_TestResultTuple[_NDT_float], Generic[_NDT_float]): ...
-class F_onewayResult(_TestResultTuple[_NDT_float], Generic[_NDT_float]): ...
+class SkewtestResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
+class KurtosistestResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
+class NormaltestResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
+class Ttest_indResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
+class Power_divergenceResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
+class RanksumsResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
+class KruskalResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
+class FriedmanchisquareResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
+class BrunnerMunzelResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
+class F_onewayResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
 
-class ConfidenceInterval(NamedTuple, Generic[_NDT_float]):
-    low: _NDT_float
-    high: _NDT_float
+class ConfidenceInterval(NamedTuple, Generic[_NDT_float_co]):
+    low: _NDT_float_co
+    high: _NDT_float_co
 
-class DescribeResult(NamedTuple, Generic[_NDT_real, _NDT_float]):
+class DescribeResult(NamedTuple, Generic[_NDT_real_co, _NDT_float_co]):
     nobs: int
-    minmax: tuple[_NDT_real, _NDT_real]
-    mean: _NDT_float
-    variance: _NDT_float
-    skewness: _NDT_float
-    kurtosis: _NDT_float
+    minmax: tuple[_NDT_real_co, _NDT_real_co]
+    mean: _NDT_float_co
+    variance: _NDT_float_co
+    skewness: _NDT_float_co
+    kurtosis: _NDT_float_co
 
-class ModeResult(NamedTuple, Generic[_NDT_real, _NDT_int]):
-    mode: _NDT_real
-    count: _NDT_int  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
+class ModeResult(NamedTuple, Generic[_NDT_real_co, _NDT_int_co]):
+    mode: _NDT_real_co
+    count: _NDT_int_co  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
 
 class HistogramResult(NamedTuple):
     count: onpt.Array[tuple[int], np.float64]  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
@@ -183,10 +185,10 @@ class RelfreqResult(NamedTuple):
     binsize: onpt.Array[tuple[int], np.float64]
     extrapoints: int
 
-class SigmaclipResult(NamedTuple, Generic[_SCT_real, _SCT_float]):
-    clipped: onpt.Array[tuple[int], _SCT_real]
-    lower: _SCT_float
-    upper: _SCT_float
+class SigmaclipResult(NamedTuple, Generic[_SCT_real_co, _NDT_float_co]):
+    clipped: onpt.Array[tuple[int], _SCT_real_co]
+    lower: _NDT_float_co
+    upper: _NDT_float_co
 
 class RepeatedResults(NamedTuple):
     values: onpt.Array[tuple[int], np.float64]
@@ -208,29 +210,29 @@ class QuantileTestResult:
     def confidence_interval(self, confidence_level: float = 0.95) -> float: ...
 
 @type_check_only
-class _TestResultBunch(BaseBunch[_NDT_float, _NDT_float], Generic[_NDT_float]):
+class _TestResultBunch(BaseBunch[_NDT_float_co, _NDT_float_co], Generic[_NDT_float_co]):  # pyright: ignore[reportInvalidTypeArguments]
     @property
-    def statistic(self, /) -> _NDT_float: ...
+    def statistic(self, /) -> _NDT_float_co: ...
     @property
-    def pvalue(self, /) -> _NDT_float: ...
-    def __new__(_cls, statistic: _NDT_float, pvalue: _NDT_float) -> Self: ...
-    def __init__(self, /, statistic: _NDT_float, pvalue: _NDT_float) -> None: ...
+    def pvalue(self, /) -> _NDT_float_co: ...
+    def __new__(_cls, statistic: _NDT_float_co, pvalue: _NDT_float_co) -> Self: ...
+    def __init__(self, /, statistic: _NDT_float_co, pvalue: _NDT_float_co) -> None: ...
 
-class SignificanceResult(_TestResultBunch[_NDT_float]): ...
-class PearsonRResultBase(_TestResultBunch[_NDT_float], Generic[_NDT_float]): ...
+class SignificanceResult(_TestResultBunch[_NDT_float_co], Generic[_NDT_float_co]): ...
+class PearsonRResultBase(_TestResultBunch[_NDT_float_co], Generic[_NDT_float_co]): ...
 
-class PearsonRResult(PearsonRResultBase[_NDT_float], Generic[_NDT_float]):
+class PearsonRResult(PearsonRResultBase[_NDT_float_co], Generic[_NDT_float_co]):
     _alternative: Alternative
     _n: int
     _x: npt.NDArray[_Real1D]
     _y: npt.NDArray[_Real1D]
     _axis: int
-    correlation: _NDT_float  # alias for `statistic`
+    correlation: _NDT_float_co  # alias for `statistic`
     def __init__(  # pyright: ignore[reportInconsistentConstructor]
         self,
         /,
-        statistic: _NDT_float,
-        pvalue: _NDT_float,
+        statistic: _NDT_float_co,
+        pvalue: _NDT_float_co,
         alternative: Alternative,
         n: int,
         x: npt.NDArray[_Real1D],
@@ -242,35 +244,35 @@ class PearsonRResult(PearsonRResultBase[_NDT_float], Generic[_NDT_float]):
         /,
         confidence_level: float = 0.95,
         method: BootstrapMethod | None = None,
-    ) -> ConfidenceInterval[_NDT_float]: ...
+    ) -> ConfidenceInterval[_NDT_float_co]: ...
 
-class TtestResultBase(_TestResultBunch[_NDT_float], Generic[_NDT_float]):
+class TtestResultBase(_TestResultBunch[_NDT_float_co], Generic[_NDT_float_co]):
     @property
-    def df(self, /) -> _NDT_float: ...
-    def __new__(_cls, statistic: _NDT_float, pvalue: _NDT_float, *, df: _NDT_float) -> Self: ...
-    def __init__(self, /, statistic: _NDT_float, pvalue: _NDT_float, *, df: _NDT_float) -> None: ...
+    def df(self, /) -> _NDT_float_co: ...
+    def __new__(_cls, statistic: _NDT_float_co, pvalue: _NDT_float_co, *, df: _NDT_float_co) -> Self: ...
+    def __init__(self, /, statistic: _NDT_float_co, pvalue: _NDT_float_co, *, df: _NDT_float_co) -> None: ...
 
-class TtestResult(TtestResultBase[_NDT_float], Generic[_NDT_float]):
+class TtestResult(TtestResultBase[_NDT_float_co], Generic[_NDT_float_co]):
     _alternative: Alternative
-    _standard_error: _NDT_float
-    _estimate: _NDT_float
-    _statistic_np: _NDT_float
+    _standard_error: _NDT_float_co
+    _estimate: _NDT_float_co
+    _statistic_np: _NDT_float_co
     _dtype: np.dtype[np.floating[Any]]
     _xp: ModuleType
 
     def __init__(  # pyright: ignore[reportInconsistentConstructor]
         self,
         /,
-        statistic: _NDT_float,
-        pvalue: _NDT_float,
-        df: _NDT_float,
+        statistic: _NDT_float_co,
+        pvalue: _NDT_float_co,
+        df: _NDT_float_co,
         alternative: Alternative,
-        standard_error: _NDT_float,
-        estimate: _NDT_float,
-        statistic_np: _NDT_float | None = None,
+        standard_error: _NDT_float_co,
+        estimate: _NDT_float_co,
+        statistic_np: _NDT_float_co | None = None,
         xp: ModuleType | None = None,
     ) -> None: ...
-    def confidence_interval(self, /, confidence_level: float = 0.95) -> ConfidenceInterval[_NDT_float]: ...
+    def confidence_interval(self, /, confidence_level: float = 0.95) -> ConfidenceInterval[_NDT_float_co]: ...
 
 class KstestResult(_TestResultBunch[np.float64]):
     @property

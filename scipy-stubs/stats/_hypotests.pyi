@@ -7,7 +7,7 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onpt
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt_co
-from scipy._typing import Alternative, AnyReal, NanPolicy, Untyped
+from scipy._typing import Alternative, AnyReal, NanPolicy
 from ._common import ConfidenceInterval
 from ._stats_py import SignificanceResult
 
@@ -44,7 +44,7 @@ class TukeyHSDResult:
         pvalue: npt.NDArray[np.float64],
         _nobs: int,
         _ntreatments: int,
-        _stand_err: Untyped,
+        _stand_err: float,
     ) -> None: ...
     def confidence_interval(self, confidence_level: float = 0.95) -> ConfidenceInterval: ...
 

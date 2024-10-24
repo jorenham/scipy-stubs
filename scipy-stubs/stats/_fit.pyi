@@ -6,14 +6,14 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onpt
 from numpy._typing import _ArrayLikeFloat_co
-from scipy._typing import AnyReal, Seed, Untyped
+from scipy._typing import AnyReal, Seed
 from scipy.optimize import OptimizeResult
 from ._distn_infrastructure import rv_continuous, rv_continuous_frozen, rv_discrete
 
 _Ts = TypeVarTuple("_Ts", default=Unpack[tuple[AnyReal, ...]])
 
-# matplotlib.lines.Line2D
-_MPL_Line2D: TypeAlias = Any
+# matplotlib.lines.Axes
+_MPL_Axes: TypeAlias = Any
 
 _RealVectorLike: TypeAlias = Sequence[AnyReal] | onpt.CanArray[Any, np.dtype[np.floating[Any] | np.integer[Any] | np.bool_]]
 _Bounds: TypeAlias = Mapping[str, tuple[AnyReal, AnyReal]] | Sequence[tuple[AnyReal, AnyReal]]
@@ -22,19 +22,6 @@ _Optimizer: TypeAlias = Callable[Concatenate[Callable[..., AnyReal], ...], Optim
 
 _GOFStatName: TypeAlias = Literal["ad", "ks", "cvm", "filliben"]
 _GOFStatFunc: TypeAlias = Callable[[rv_continuous_frozen, npt.NDArray[np.float64]], float | np.float32 | np.float64]
-
-@type_check_only
-class _MPL_Axes(Protocol):
-    # matplotlib.axes.Axes
-    def plot(
-        self,
-        /,
-        *args: object,
-        scalex: bool = True,
-        scaley: bool = True,
-        data: npt.ArrayLike | None = None,
-        **kwargs: object,
-    ) -> list[_MPL_Line2D]: ...
 
 @type_check_only
 class _PXF(Protocol[Unpack[_Ts]]):
@@ -57,7 +44,7 @@ class FitResult(Generic[Unpack[_Ts]]):
         res: OptimizeResult,
     ) -> None: ...
     def nllf(self, params: tuple[AnyReal, ...] | None = None, data: _ArrayLikeFloat_co | None = None) -> np.float64: ...
-    def plot(self, ax: _MPL_Axes | None = None, *, plot_type: Literal["hist", "qq", "pp", "cdf"] = "hist") -> Untyped: ...
+    def plot(self, ax: _MPL_Axes | None = None, *, plot_type: Literal["hist", "qq", "pp", "cdf"] = "hist") -> _MPL_Axes: ...
 
 class GoodnessOfFitResult(NamedTuple):
     fit_result: FitResult

@@ -1,7 +1,7 @@
 # NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`
 
 import abc
-from typing import Literal, TypeAlias, final, type_check_only
+from typing import Generic, Literal, TypeAlias, final, type_check_only
 from typing_extensions import Self, TypeVarTuple, Unpack
 
 __all__ = ("BaseBunch", "PowerDivergenceStatistic")
@@ -9,7 +9,7 @@ __all__ = ("BaseBunch", "PowerDivergenceStatistic")
 _Ts = TypeVarTuple("_Ts")
 
 @type_check_only
-class BaseBunch(tuple[Unpack[_Ts]]):
+class BaseBunch(tuple[Unpack[_Ts]], Generic[Unpack[_Ts]]):
     # A helper baseclass for annotating the return type of a *specific*
     # `scipy._lib.bunch._make_tuple_bunch` call.
     #

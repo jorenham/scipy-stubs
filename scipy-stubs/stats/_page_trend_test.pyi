@@ -1,25 +1,19 @@
 from dataclasses import dataclass
+from typing import Literal
 
-from scipy._typing import Untyped
+import numpy as np
+from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt
+from optype import CanBool
 
 @dataclass
 class PageTrendTestResult:
-    statistic: float
-    pvalue: float
-    method: str
-
-class _PageL:
-    all_pmfs: Untyped
-    def __init__(self) -> None: ...
-    k: Untyped
-    def set_k(self, k: Untyped) -> None: ...
-    def sf(self, l: Untyped, n: Untyped) -> Untyped: ...
-    def p_l_k_1(self) -> Untyped: ...
-    def pmf(self, l: Untyped, n: Untyped) -> Untyped: ...
+    statistic: np.float64
+    pvalue: np.float64
+    method: Literal["asymptotic", "exact"]
 
 def page_trend_test(
-    data: Untyped,
-    ranked: bool = False,
-    predicted_ranks: Untyped | None = None,
-    method: str = "auto",
-) -> Untyped: ...
+    data: _ArrayLikeFloat_co,
+    ranked: CanBool = False,
+    predicted_ranks: _ArrayLikeInt | None = None,
+    method: Literal["auto", "asymptotic", "exact"] = "auto",
+) -> PageTrendTestResult: ...
