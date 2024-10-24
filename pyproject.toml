@@ -5,7 +5,7 @@ requires = ["poetry-core"]
 [tool.poetry]
 name = "scipy-stubs"
 description = "Typing Stubs for SciPy"
-version = "1.14.1.1"
+version = "1.14.1.2.dev0"
 authors = ["Joren Hammudoglu <jhammudoglu@gmail.com>"]
 license = "BSD-3-Clause"
 readme = "README.md"
@@ -40,11 +40,11 @@ scipy = {version = ">=1.10", optional = true}
 scipy = "1.14.1"
 poethepoet = "^0.29.0"
 pre-commit = "^4.0.1"
-tox = "^4.23.0"
+tox = "^4.23.2"
 
 [tool.poetry.group.lint.dependencies]
 basedmypy = "^2.6.0"
-basedpyright = "^1.19.0"
+basedpyright = "^1.19.1"
 ruff = "^0.7.0"
 
 [tool.poetry.group.codegen]
