@@ -1,3 +1,5 @@
+from contextlib import _GeneratorContextManager
+
 from ._backend import register_backend, set_backend, set_global_backend, skip_backend
 from ._basic import (
     fft,
@@ -21,7 +23,6 @@ from ._basic import (
 )
 from ._fftlog import fht, fhtoffset, ifht
 from ._helper import fftfreq, fftshift, ifftshift, next_fast_len, prev_fast_len, rfftfreq
-from ._pocketfft.helper import get_workers, set_workers
 from ._realtransforms import dct, dctn, dst, dstn, idct, idctn, idst, idstn
 
 __all__ = [
@@ -67,3 +68,7 @@ __all__ = [
     "set_workers",
     "skip_backend",
 ]
+
+# originally defined in `scipy.fft._pocketfft.helper`
+def set_workers(workers: int) -> _GeneratorContextManager[None]: ...
+def get_workers() -> int: ...
