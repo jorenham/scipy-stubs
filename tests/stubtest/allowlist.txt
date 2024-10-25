@@ -4,13 +4,15 @@ scipy\.(\w+\.)?_typing
 # git submodules
 scipy\._lib\.(array_api_compat|cobyqa).*
 
+# private bundled pypocketfft library
+scipy\.fft\._pocketfft\..*
+
 # internal scipy testing code
 scipy\.conftest
 scipy\.((_|\w)+\.)+(__test__|test|tests(\..+)?)
 
 # accidental implicit exports of internal scipy machinery
 scipy\._lib\.decorator\.(DEF|ArgSpec|FunctionMaker|__init__|append|dispatch_on|get_init|getargspec|init|n_args)
-scipy\.fft\._pocketfft\..*
 scipy\.special\._precompute\..*
 scipy\.special\.libsf_error_state
 scipy\.stats\._rcont.rcont
