@@ -1,11 +1,9 @@
-from scipy._typing import Untyped
+from typing import final
 
-class NumPyBackend:
-    __ua_domain__: str
-    @staticmethod
-    def __ua_function__(method: Untyped, args: Untyped, kwargs: Untyped) -> Untyped: ...
+from ._backend import _BaseBackend
 
-class EchoBackend:
-    __ua_domain__: str
-    @staticmethod
-    def __ua_function__(method: Untyped, args: Untyped, kwargs: Untyped) -> None: ...
+@final
+class NumPyBackend(_BaseBackend): ...
+
+@final
+class EchoBackend(_BaseBackend[None]): ...
