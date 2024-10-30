@@ -96,7 +96,7 @@ def power(
 ) -> PowerResult: ...
 def permutation_test(
     data: _ArrayLikeFloat_co,
-    statistic: Callable[[Any], AnyReal],
+    statistic: Callable[..., AnyReal],
     *,
     permutation_type: str = "independent",
     vectorized: bool | None = None,
