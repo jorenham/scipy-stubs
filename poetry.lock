@@ -50,13 +50,13 @@ reports = ["lxml"]
 
 [[package]]
 name = "basedpyright"
-version = "1.19.1"
+version = "1.20.0"
 description = "static type checking for Python (but based)"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "basedpyright-1.19.1-py3-none-any.whl", hash = "sha256:976744146fcecb7413a726fbb8e52f4606738e02820a7dfbe310199f8915311e"},
-    {file = "basedpyright-1.19.1.tar.gz", hash = "sha256:2863e619296ddd7f9f566c44e4fa8f781d727a83fa2da6ef62951e0b657655f6"},
+    {file = "basedpyright-1.20.0-py3-none-any.whl", hash = "sha256:65de9f930ca327e74f2281da8e9b51d56a04efb25a1ba8ec5767c21751cdb2c3"},
+    {file = "basedpyright-1.20.0.tar.gz", hash = "sha256:0a9573b3947927dad915b13db520f48810676b9b0b894128743d5f442134b361"},
 ]
 
 [package.dependencies]
@@ -64,17 +64,17 @@ nodejs-wheel-binaries = ">=20.13.1"
 
 [[package]]
 name = "basedtyping"
-version = "0.1.4"
+version = "0.1.5"
 description = "Utilities for basedmypy"
 optional = false
-python-versions = "<4.0,>=3.8"
+python-versions = "<4.0,>=3.9"
 files = [
-    {file = "basedtyping-0.1.4-py3-none-any.whl", hash = "sha256:d4832ab7af178e6a5394199725dc55f26e36e1ad5fae68db41b956c1cb99a0d2"},
-    {file = "basedtyping-0.1.4.tar.gz", hash = "sha256:8a3ba80d4628eb2f6a205759a8151e6df7341ceba03e5daf6b395fcc873a7967"},
+    {file = "basedtyping-0.1.5-py3-none-any.whl", hash = "sha256:ac6cd896081ba6595984769e2cdd9cd5a5c33945394804fa6c5f47d08e9f62ec"},
+    {file = "basedtyping-0.1.5.tar.gz", hash = "sha256:a2dfc656d5c5173c616dbf82905acfc74969deab540181114c1f50e19bb64a75"},
 ]
 
 [package.dependencies]
-typing_extensions = ">=4.1,<5.0"
+typing_extensions = ">=4.12.2,<5.0.0"
 
 [[package]]
 name = "cachetools"
@@ -231,18 +231,18 @@ files = [
 
 [[package]]
 name = "nodejs-wheel-binaries"
-version = "20.18.0"
+version = "22.11.0"
 description = "unoffical Node.js package"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "nodejs_wheel_binaries-20.18.0-py2.py3-none-macosx_10_15_x86_64.whl", hash = "sha256:74273eab1c2423c04d034d3f707f517da32d3a2b20ca244b5667f3a4e38003ac"},
-    {file = "nodejs_wheel_binaries-20.18.0-py2.py3-none-macosx_11_0_arm64.whl", hash = "sha256:f95fb0989dfc54fd6932850e589000a8d6fc902527cebe7afd747696561d94b8"},
-    {file = "nodejs_wheel_binaries-20.18.0-py2.py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f62e38288d3a129b962dcba61b911d72b3d691935b8a2facfc0fa9433d9260b5"},
-    {file = "nodejs_wheel_binaries-20.18.0-py2.py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:33b138288dbeb9aafc6d54f43fbca6545b37e8fd9cbb8f68275ff2a47d4fed07"},
-    {file = "nodejs_wheel_binaries-20.18.0-py2.py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:bb4009d4d6abfb6765fabb62f322efdc520b6930d041af1d7f64d58445ce3e91"},
-    {file = "nodejs_wheel_binaries-20.18.0-py2.py3-none-win_amd64.whl", hash = "sha256:51c0cecb429a111351a54346909e672a57b96233a363c79cc0a2bbdbfa397304"},
-    {file = "nodejs_wheel_binaries-20.18.0.tar.gz", hash = "sha256:1d574a3d0e503b42414e80b4529da9fc71104b0d5e1d75606b3fb5802960fb6f"},
+    {file = "nodejs_wheel_binaries-22.11.0-py2.py3-none-macosx_11_0_arm64.whl", hash = "sha256:00afada277fd6e945a74f881831aaf1bb7f853a15e15e8c998238ab88d327f6a"},
+    {file = "nodejs_wheel_binaries-22.11.0-py2.py3-none-macosx_11_0_x86_64.whl", hash = "sha256:f29471263d65a66520a04a0e74ff641a775df1135283f0b4d1826048932b289d"},
+    {file = "nodejs_wheel_binaries-22.11.0-py2.py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:bd2ff0e20389f22927e311ccab69c1ecb34c3431fa809d1548e7000dc8248680"},
+    {file = "nodejs_wheel_binaries-22.11.0-py2.py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a9545cc43f1ba2c9f467f3444e9cd7f8db059933be1a5215135610dee5b38bf3"},
+    {file = "nodejs_wheel_binaries-22.11.0-py2.py3-none-musllinux_1_2_x86_64.whl", hash = "sha256:43a277cbabf4b68e0a4798578a4f17e5f518ada1f79a174bfde06eb2bb47e730"},
+    {file = "nodejs_wheel_binaries-22.11.0-py2.py3-none-win_amd64.whl", hash = "sha256:8310ab182ee159141e08c85bc07f11e67ac3044922e6e4958f4a8f3ba6860185"},
+    {file = "nodejs_wheel_binaries-22.11.0.tar.gz", hash = "sha256:e67f4e4a646bba24baa2150460c9cfbde0f75169ba37e58a2341930a5c1456ee"},
 ]
 
 [[package]]
@@ -623,13 +623,13 @@ files = [
 
 [[package]]
 name = "virtualenv"
-version = "20.27.0"
+version = "20.27.1"
 description = "Virtual Python Environment builder"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "virtualenv-20.27.0-py3-none-any.whl", hash = "sha256:44a72c29cceb0ee08f300b314848c86e57bf8d1f13107a5e671fb9274138d655"},
-    {file = "virtualenv-20.27.0.tar.gz", hash = "sha256:2ca56a68ed615b8fe4326d11a0dca5dfbe8fd68510fb6c6349163bed3c15f2b2"},
+    {file = "virtualenv-20.27.1-py3-none-any.whl", hash = "sha256:f11f1b8a29525562925f745563bfd48b189450f61fb34c4f9cc79dd5aa32a1f4"},
+    {file = "virtualenv-20.27.1.tar.gz", hash = "sha256:142c6be10212543b32c6c45d3d3893dff89112cc588b7d0879ae5a1ec03a47ba"},
 ]
 
 [package.dependencies]
@@ -647,4 +647,4 @@ scipy = ["scipy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10.1"
-content-hash = "92a8aebc67612d952b1ae6599a2f23ea061e8238d679aba43b9acf95a42f66fd"
+content-hash = "940adee3a1f5dac5beefda748b8601ebe1ecc29c2e20315cc76b1226e16f26c3"
