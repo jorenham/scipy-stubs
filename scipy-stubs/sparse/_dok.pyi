@@ -11,13 +11,7 @@ __all__ = ["dok_array", "dok_matrix", "isspmatrix_dok"]
 
 class _dok_base(_spbase, IndexMixin, dict[tuple[int, ...], Untyped]):  # type: ignore[misc]  # pyright: ignore[reportIncompatibleMethodOverride]
     dtype: Untyped
-    def __init__(
-        self,
-        arg1: Untyped,
-        shape: Untyped | None = None,
-        dtype: Untyped | None = None,
-        copy: bool = False,
-    ) -> None: ...
+    def __init__(self, arg1: Untyped, shape: Untyped | None = None, dtype: Untyped | None = None, copy: bool = False) -> None: ...
     @override
     def update(self, val: Untyped) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
@@ -31,7 +25,7 @@ class _dok_base(_spbase, IndexMixin, dict[tuple[int, ...], Untyped]):  # type: i
     @override
     def __ior__(self, other: Never, /) -> Self: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
-    def get(self, key: Untyped, /, default: float = 0.0) -> Untyped: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def get(self, key: Untyped, /, default: float = 0.0) -> Untyped: ...  # type: ignore[override]
     def conjtransp(self) -> Untyped: ...
     @classmethod
     @override
