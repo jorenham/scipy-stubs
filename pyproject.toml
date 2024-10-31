@@ -45,7 +45,12 @@ tox = "^4.23.2"
 [tool.poetry.group.lint.dependencies]
 basedmypy = "^2.6.0"
 basedpyright = "^1.20.0"
+codespell = "^2.3.0"
+mdformat-gfm = "^0.3.7"
+mdformat-gfm-alerts = "^1.0.1"
+mdformat-pyproject = "^0.0.1"
 ruff = "^0.7.1"
+sp-repo-review = {version = "^2024.8.19", extras = ["cli"]}
 
 [tool.poetry.group.codegen]
 optional = true
@@ -63,8 +68,15 @@ rm -rf
     ./**/.mypy_cache
     ./**/.ruff_cache
 """
-lint = "ruff check"
-format = "ruff format"
+_mdformat = "mdformat --check CODE_OF_CONDUCT.md CONTRIBUTING.md README.md SECURITY.md"
+_ruff_format = "ruff format"
+_ruff_check = "ruff check --show-fixes"
+codespell = "codespell"
+repo-review = "repo-review ."
+format = ["_mdformat", "_ruff_format"]
+ruff = ["_ruff_format", "_ruff_check"]
+check = ["repo-review", "codespell", "ruff"]
+lint = ["check", "format"]
 pre-commit = "pre-commit run --all-files"
 tox = "tox -p all"
 
@@ -106,12 +118,21 @@ args = [
     {name = "path", positional = true, multiple = false, default = "scipy-stubs"}
 ]
 
+[tool.codespell]
+context = 2
+skip = "*.lock,*.pyi"
+
+[tool.mdformat]
+end_of_line = "lf"
+exclude = [".tox/**", ".venv/**", "**/*.m[!d]", "**/*.[!m]d"]  # python >= 3.13
+
 [tool.mypy]
 python_version = "3.10"
 strict = true
 disable_bytearray_promotion = true
 disable_memoryview_promotion = true
 warn_unused_ignores = true
+warn_unreachable = true
 disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[Any]`
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 
@@ -132,9 +153,19 @@ reportInvalidCast = true
 reportUnnecessaryTypeIgnoreComment = true
 
 executionEnvironments = [
-  {root = "codegen", reportUnusedParameter = false},
-  {root = "scipy-stubs", reportDeprecated = false, reportPrivateUsage = false},
-  {root = "tests/typetests", reportPrivateUsage = false},
+    {root = "codegen", reportUnusedParameter = false},
+    {root = "scipy-stubs", reportDeprecated = false, reportPrivateUsage = false},
+    {root = "tests/typetests", reportPrivateUsage = false},
+]
+
+[tool.repo-review]
+ignore = [
+    "PY004", # no docs folder
+    "PP301", # pytest is irrelevant
+    "PC111", # no blacken-docs because markdown has no code
+    "PC140", # manual typecheck pre-commit hooks
+    "PC170", # no pygrep-hooks because no rST
+    "RTD", # no RTD
 ]
 
 [tool.ruff]
@@ -153,8 +184,9 @@ skip-magic-trailing-comma = false
 [tool.ruff.lint]
 ignore = [
     "E741",
-    "COM812", # ruff format compat
-    "PYI054", # numeric-literal-too-long
+    "B006",  # https://github.com/astral-sh/ruff/issues/14026
+    "COM812",  # ruff format compat
+    "PYI054",  # numeric-literal-too-long
 ]
 preview = true
 select = [
@@ -163,6 +195,7 @@ select = [
     "I",
     "UP",
     "ANN",
+    "B",
     "COM",
     "EXE",
     "ICN",
@@ -233,7 +266,7 @@ mypy-init-return = true
 
 [tool.tox]
 isolated_build = true
-env_list = ["3.10", "3.11", "3.12", "3.13", "precommit"]
+env_list = ["repo-review", "pre-commit", "3.10", "3.11", "3.12", "3.13"]
 
 [tool.tox.env_run_base]
 description = "stubtest with {base_python}"
@@ -242,9 +275,16 @@ allowlist_externals = ["poetry", "poe"]
 commands_pre = [["poetry", "install"]]
 commands = [["poe", "stubtest"]]
 
-[tool.tox.env.precommit]
+[tool.tox.env.pre-commit]
 description = "pre-commit"
 skip_install = true
 allowlist_externals = ["poetry", "poe"]
 commands_pre = [["poetry", "install"]]
 commands = [["poe", "pre-commit"]]
+
+[tool.tox.env.repo-review]
+description = "repo-review"
+skip_install = true
+allowlist_externals = ["poetry", "poe"]
+commands_pre = [["poetry", "install"]]
+commands = [["poe", "repo-review"]]

@@ -108,7 +108,7 @@ class FixTrailingComma(_BaseMod):
             and isinstance(newline, cst.ParenthesizedWhitespace)
             # at least 2 parameters
             and len(params) >= 2
-            # the first paramater has a comma
+            # the first parameter has a comma
             and (comma0 := params[0].comma) is not cst.MaybeSentinel.DEFAULT
             # the first comma doesn't end in a newline
             and isinstance(comma0.whitespace_after, cst.SimpleWhitespace)

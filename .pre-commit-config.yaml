@@ -3,6 +3,7 @@ ci:
   autoupdate_commit_msg: "update pre-commit hooks"
   skip:
     - markdownlint
+    - codespell
     - ruff
     - ruff-format
     - verifytypes
@@ -46,6 +47,22 @@ repos:
     rev: v0.42.0
     hooks:
       - id: markdownlint
+
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.18  # Use the ref you want to point at
+    hooks:
+      - id: mdformat
+        additional_dependencies:
+          - mdformat-gfm
+          - mdformat-gfm-alerts
+          - mdformat-pyproject
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.3.0
+    hooks:
+      - id: codespell
+        additional_dependencies:
+          - tomli
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.7.1

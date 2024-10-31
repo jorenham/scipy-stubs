@@ -2,7 +2,7 @@ default: true
 no-hard-tabs: true
 
 MD007:
-  indent: 4
+  indent: 2
 MD013:
   line_length: 130
 MD031:
