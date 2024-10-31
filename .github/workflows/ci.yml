@@ -39,7 +39,7 @@ jobs:
         run: poetry install --with=codegen
 
       - name: lint
-        run: poe lint --output-format=github
+        run: poe lint
 
       - name: typetest
         run: poe typetest
