@@ -68,7 +68,7 @@ rm -rf
     ./**/.mypy_cache
     ./**/.ruff_cache
 """
-_mdformat = "mdformat ."
+_mdformat = "mdformat --check CODE_OF_CONDUCT.md CONTRIBUTING.md README.md SECURITY.md"
 _ruff_format = "ruff format"
 _ruff_check = "ruff check --show-fixes"
 codespell = "codespell"
@@ -124,7 +124,7 @@ skip = "*.lock,*.pyi"
 
 [tool.mdformat]
 end_of_line = "lf"
-exclude = [".venv/**", "**/*.txt", "**/*.m[!d]", "**/*.[!m]d"]
+exclude = [".tox/**", ".venv/**", "**/*.m[!d]", "**/*.[!m]d"]  # python >= 3.13
 
 [tool.mypy]
 python_version = "3.10"
