@@ -63,10 +63,13 @@ type = "poetry"
 [tool.poe.tasks]
 clean = """
 rm -rf
+    codegen/*.pyc
+    codegen/__pycache__
     scipy-stubs/**/*.pyc
     scipy-stubs/**/__pycache__
     ./**/.mypy_cache
     ./**/.ruff_cache
+    ./**/.tox
 """
 _mdformat = "mdformat --check CODE_OF_CONDUCT.md CONTRIBUTING.md README.md SECURITY.md"
 _ruff_format = "ruff format"
