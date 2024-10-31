@@ -10,7 +10,7 @@ Only the latest release is supported.
 
 ## Reporting a Vulnerability
 
-To report an issue, go to [github.com/jorenham/scipy-stubs/security][SECURITY].
+To report an issue, go to [github.com/jorenham/scipy-stubs/security][security].
 We commit to respond to any issue within 42 days and promptly release any fixes.
 
-[SECURITY]: https://github.com/jorenham/scipy-stubs/security
+[security]: https://github.com/jorenham/scipy-stubs/security

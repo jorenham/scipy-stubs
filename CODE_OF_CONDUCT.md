@@ -1,6 +1,6 @@
 # Code of Conduct - `scipy-stubs`
 
-- Don't be a c*nt
+- Don't be a c\*nt
 - Critize ideas, not people
 - Embrace axioms, abolish dogma
 - Objectivity beats subjectivity
