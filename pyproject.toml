@@ -43,7 +43,7 @@ pre-commit = "^4.0.1"
 tox = "^4.23.2"
 
 [tool.poetry.group.lint.dependencies]
-basedmypy = "^2.7.0"
+basedmypy = {version = "^2.7.0", extras = ["faster-cache"]}
 basedpyright = "^1.20.0"
 codespell = "^2.3.0"
 mdformat-gfm = "^0.3.7"
