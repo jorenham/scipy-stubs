@@ -71,21 +71,28 @@ rm -rf
     ./**/.ruff_cache
     ./**/.tox
 """
-_mdformat = "mdformat --check CODE_OF_CONDUCT.md CONTRIBUTING.md README.md SECURITY.md"
+mdformat = """
+mdformat
+    CODE_OF_CONDUCT.md
+    CONTRIBUTING.md
+    README.md
+    SECURITY.md
+    tests/README.md
+"""
 _ruff_format = "ruff format"
 _ruff_check = "ruff check --show-fixes"
 codespell = "codespell"
 repo-review = "repo-review ."
-format = ["_mdformat", "_ruff_format"]
+format = ["mdformat", "_ruff_format"]
 ruff = ["_ruff_format", "_ruff_check"]
-check = ["repo-review", "codespell", "ruff"]
+check = ["mdformat --check", "repo-review", "codespell", "ruff"]
 lint = ["check", "format"]
 pre-commit = "pre-commit run --all-files"
 tox = "tox -p all"
 
-_typetest_bpr = "basedpyright tests/typetests"
-_typetest_mypy = "mypy --config-file=pyproject.toml tests/typetests"
-typetest = ["_typetest_bpr", "_typetest_mypy"]
+_test_bpr = "basedpyright tests"
+_test_mypy = "mypy --config-file=pyproject.toml tests"
+typetest = ["_test_bpr", "_test_mypy"]
 
 [tool.poe.tasks.pyright]
 cmd = "basedpyright $path"
@@ -99,7 +106,7 @@ args = [{name = "path", positional = true, multiple = true, default = "scipy-stu
 cmd = """
 stubtest
     --mypy-config-file=pyproject.toml
-    --allowlist=tests/stubtest/allowlist.txt
+    --allowlist=.mypyignore
     --ignore-unused-allowlist
     $modules
 """
@@ -158,7 +165,7 @@ reportUnnecessaryTypeIgnoreComment = true
 executionEnvironments = [
     {root = "codegen", reportUnusedParameter = false},
     {root = "scipy-stubs", reportDeprecated = false, reportPrivateUsage = false},
-    {root = "tests/typetests", reportPrivateUsage = false},
+    {root = "tests", reportPrivateUsage = false, reportInvalidStubStatement = false},
 ]
 
 [tool.repo-review]
