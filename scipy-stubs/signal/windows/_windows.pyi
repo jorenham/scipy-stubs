@@ -142,31 +142,11 @@ def dpss(
     *,
     M: int,
     NW: AnyReal,
-    Kmax: int = ...,
+    Kmax: op.CanIndex,
     sym: op.CanBool = True,
     norm: _Norm | None = None,
-    return_ratios: Literal[False] = ...,
+    return_ratios: Literal[False] = False,
 ) -> _Array_f8_2d: ...
-@overload
-def dpss(
-    *,
-    M: int,
-    NW: AnyReal,
-    Kmax: None = ...,
-    sym: op.CanBool = True,
-    norm: _Norm | None = None,
-    return_ratios: Literal[False] = ...,
-) -> _Array_f8_1d: ...
-@overload
-def dpss(
-    *,
-    M: int,
-    NW: AnyReal,
-    Kmax: int = ...,
-    sym: op.CanBool = True,
-    norm: _Norm | None = None,
-    return_ratios: Literal[True] = ...,
-) -> tuple[_Array_f8_2d, _Array_f8_1d]: ...
 @overload
 def dpss(
     *,
@@ -175,8 +155,28 @@ def dpss(
     Kmax: None = None,
     sym: op.CanBool = True,
     norm: _Norm | None = None,
-    return_ratios: Literal[True] = ...,
-) -> tuple[_Array_f8_1d, AnyReal]: ...
+    return_ratios: Literal[False] = False,
+) -> _Array_f8_1d: ...
+@overload
+def dpss(
+    *,
+    M: int,
+    NW: AnyReal,
+    Kmax: op.CanIndex,
+    return_ratios: Literal[True],
+    sym: op.CanBool = True,
+    norm: _Norm | None = None,
+) -> tuple[_Array_f8_2d, _Array_f8_1d]: ...
+@overload
+def dpss(
+    *,
+    M: int,
+    NW: AnyReal,
+    return_ratios: Literal[True],
+    Kmax: None = None,
+    sym: op.CanBool = True,
+    norm: _Norm | None = None,
+) -> tuple[_Array_f8_1d, np.float64]: ...
 
 #
 def get_window(
