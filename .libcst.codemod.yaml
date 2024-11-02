@@ -1,0 +1,5 @@
+generated_code_marker: "@generated"
+formatter: ["./.venv/bin/ruff", "format", "--stdin-filename=__generated__.pyi", "-"]
+blacklist_patterns: []
+modules: ["libcst.codemod.commands", "codegen.mods"]
+repo_root: "."

@@ -209,8 +209,8 @@ gibi: Final = 0x4000_0000
 tebi: Final = 0x100_0000_0000
 pebi: Final = 0x4_0000_0000_0000
 exbi: Final = 0x1000_0000_0000_0000
-zebi: Final = 0x40_0000_0000_0000_0000
-yobi: Final = 0x1_0000_0000_0000_0000_0000
+zebi: Final[int] = ...  # 0x40_0000_0000_0000_0000
+yobi: Final[int] = ...  # 0x1_0000_0000_0000_0000_0000
 
 # physical constants
 c: Final = 299792458.0

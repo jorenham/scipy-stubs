@@ -1,21 +1,25 @@
-from typing import Final
+from typing import Any, Final, TypeAlias
 
 import numpy as np
 import numpy.typing as npt
-from scipy._typing import Untyped
+import optype.numpy as onpt
+from numpy._typing import _ArrayLikeFloat_co
+from scipy.sparse import sparray, spmatrix
 
-DTYPE: Final = np.float64
+_GraphLike: TypeAlias = sparray | spmatrix | _ArrayLikeFloat_co
+
+DTYPE: Final[type[np.float64]] = ...
 
 def validate_graph(
-    csgraph: Untyped,
-    directed: Untyped,
+    csgraph: _GraphLike,
+    directed: bool,
     dtype: npt.DTypeLike = ...,
     csr_output: bool = True,
     dense_output: bool = True,
     copy_if_dense: bool = False,
     copy_if_sparse: bool = False,
-    null_value_in: int = 0,
-    null_value_out: Untyped = ...,
+    null_value_in: float = 0,
+    null_value_out: float = ...,
     infinity_null: bool = True,
     nan_null: bool = True,
-) -> Untyped: ...
+) -> onpt.Array[tuple[int, int], np.floating[Any]]: ...

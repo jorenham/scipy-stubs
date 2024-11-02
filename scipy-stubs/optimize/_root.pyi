@@ -4,9 +4,9 @@ from ._optimize import OptimizeResult
 __all__ = ["root"]
 
 def root(
-    fun,
-    x0,
-    args=(),
+    fun: Untyped,
+    x0: Untyped,
+    args: Untyped = (),
     method: str = "hybr",
     jac: Untyped | None = None,
     tol: Untyped | None = None,

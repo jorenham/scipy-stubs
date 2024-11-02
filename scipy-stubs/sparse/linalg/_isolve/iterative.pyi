@@ -1,11 +1,10 @@
 from scipy._typing import Untyped
-from scipy.linalg import get_lapack_funcs as get_lapack_funcs
-from scipy.sparse.linalg._interface import LinearOperator as LinearOperator
-from .utils import make_system as make_system
+
+__all__ = ["bicg", "bicgstab", "cg", "cgs", "gmres", "qmr"]
 
 def bicg(
-    A,
-    b,
+    A: Untyped,
+    b: Untyped,
     x0: Untyped | None = None,
     *,
     rtol: float = 1e-05,
@@ -15,8 +14,8 @@ def bicg(
     callback: Untyped | None = None,
 ) -> Untyped: ...
 def bicgstab(
-    A,
-    b,
+    A: Untyped,
+    b: Untyped,
     x0: Untyped | None = None,
     *,
     rtol: float = 1e-05,
@@ -26,8 +25,8 @@ def bicgstab(
     callback: Untyped | None = None,
 ) -> Untyped: ...
 def cg(
-    A,
-    b,
+    A: Untyped,
+    b: Untyped,
     x0: Untyped | None = None,
     *,
     rtol: float = 1e-05,
@@ -37,8 +36,8 @@ def cg(
     callback: Untyped | None = None,
 ) -> Untyped: ...
 def cgs(
-    A,
-    b,
+    A: Untyped,
+    b: Untyped,
     x0: Untyped | None = None,
     *,
     rtol: float = 1e-05,
@@ -48,8 +47,8 @@ def cgs(
     callback: Untyped | None = None,
 ) -> Untyped: ...
 def gmres(
-    A,
-    b,
+    A: Untyped,
+    b: Untyped,
     x0: Untyped | None = None,
     *,
     rtol: float = 1e-05,
@@ -61,8 +60,8 @@ def gmres(
     callback_type: Untyped | None = None,
 ) -> Untyped: ...
 def qmr(
-    A,
-    b,
+    A: Untyped,
+    b: Untyped,
     x0: Untyped | None = None,
     *,
     rtol: float = 1e-05,

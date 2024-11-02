@@ -1,3 +1,5 @@
+from typing import Final
+
 from ._backend import *
 
-__version__: str
+__version__: Final[str] = ...

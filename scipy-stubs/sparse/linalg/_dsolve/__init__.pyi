@@ -1,6 +1,5 @@
-from . import linsolve
+from . import linsolve as linsolve
 from ._superlu import SuperLU
 from .linsolve import *
 
-__all__ = ["SuperLU"]
-__all__ += linsolve.__all__
+__all__ = ["MatrixRankWarning", "SuperLU", "factorized", "spilu", "splu", "spsolve", "spsolve_triangular", "use_solver"]

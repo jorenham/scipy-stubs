@@ -5,7 +5,7 @@ from ._constraints import Bounds as Bounds, LinearConstraint as LinearConstraint
 from ._optimize import OptimizeResult as OptimizeResult
 
 def milp(
-    c,
+    c: Untyped,
     *,
     integrality: Untyped | None = None,
     bounds: Untyped | None = None,

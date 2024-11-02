@@ -29,7 +29,14 @@ class UnivariateSpline:
     ) -> None: ...
     @staticmethod
     def validate_input(
-        x: object, y: object, w: object, bbox: object, k: object, s: object, ext: object, check_finite: object
+        x: object,
+        y: object,
+        w: object,
+        bbox: object,
+        k: object,
+        s: object,
+        ext: object,
+        check_finite: object,
     ) -> object: ...
     def set_smoothing_factor(self, s: object) -> None: ...
     def __call__(self, x: object, nu: object = ..., ext: object = ...) -> object: ...
@@ -108,7 +115,14 @@ class LSQBivariateSpline:
 @deprecated("will be removed in SciPy v2.0.0")
 class RectBivariateSpline:
     def __init__(
-        self, x: object, y: object, z: object, bbox: object = ..., kx: object = ..., ky: object = ..., s: object = ...
+        self,
+        x: object,
+        y: object,
+        z: object,
+        bbox: object = ...,
+        kx: object = ...,
+        ky: object = ...,
+        s: object = ...,
     ) -> None: ...
 
 @deprecated("will be removed in SciPy v2.0.0")
@@ -119,7 +133,14 @@ class SmoothSphereBivariateSpline:
 @deprecated("will be removed in SciPy v2.0.0")
 class LSQSphereBivariateSpline:
     def __init__(
-        self, theta: object, phi: object, r: object, tt: object, tp: object, w: object = ..., eps: object = ...
+        self,
+        theta: object,
+        phi: object,
+        r: object,
+        tt: object,
+        tp: object,
+        w: object = ...,
+        eps: object = ...,
     ) -> None: ...
     def __call__(self, theta: object, phi: object, dtheta: object = ..., dphi: object = ..., grid: object = ...) -> object: ...
 

@@ -1,9 +1,10 @@
 from scipy._typing import Untyped
-from scipy.sparse.linalg._interface import aslinearoperator as aslinearoperator
+
+__all__ = ["lsmr"]
 
 def lsmr(
-    A,
-    b,
+    A: Untyped,
+    b: Untyped,
     damp: float = 0.0,
     atol: float = 1e-06,
     btol: float = 1e-06,

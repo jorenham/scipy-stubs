@@ -1,0 +1,31 @@
+# typecheck-only helper types
+scipy\.(\w+\.)?_typing
+
+# git submodules
+scipy\._lib\.(array_api_compat|cobyqa).*
+
+# private bundled pypocketfft library
+scipy\.fft\._pocketfft\..*
+
+# internal scipy testing code
+scipy\.conftest
+scipy\.((_|\w)+\.)+(__test__|test|tests(\..+)?)
+
+# accidental implicit exports of internal scipy machinery
+scipy\._lib\.decorator\.(DEF|ArgSpec|FunctionMaker|__init__|append|dispatch_on|get_init|getargspec|init|n_args)
+scipy\.special\._precompute\..*
+scipy\.special\.libsf_error_state
+scipy\.stats\._rcont.rcont
+
+# omitted methods that always return `NotImplemented` or always raise
+scipy\.sparse\._(\w+)\._(\w+)\.__(iadd|idiv|imul|isub|itruediv|len|rdiv|rtruediv)__
+
+# workarounds for mypy bugs
+scipy\._lib\._array_api\.(Array|ArrayLike)  # these exist, but in `if TYPE_CHECKING: ...`
+scipy\._lib\._ccallback\.PyCFuncPtr  # this exists, but under `if TYPE_CHECKING: ...`
+scipy\.signal\._short_time_fft\.(FFT_MODE_TYPE|PAD_TYPE)  # `Literal[...] != def (*, **)`
+scipy\.(_lib|integrate|stats)\.((_|\w)+\.)+__replace__  # `NamedTuple` on `python >= 3.13`
+
+# stubtest doesn't understand `if sys.version_info >= _: ...` blocks
+scipy\.fftpack\.helper\.fftfreq
+scipy\.sparse\.(\w+)\.warn

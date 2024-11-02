@@ -1,8 +1,10 @@
-# Helper types for internal use (type-check only).
+# NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`
+
 from os import PathLike
 from collections.abc import Callable, Sequence
+from types import TracebackType
 from typing import IO, Any, Literal, Protocol, TypeAlias, type_check_only
-from typing_extensions import LiteralString, TypeVar
+from typing_extensions import LiteralString, Self, TypeVar
 
 import numpy as np
 import optype as op
@@ -10,6 +12,7 @@ import optype.numpy as onpt
 
 __all__ = [
     "RNG",
+    "Alternative",
     "AnyBool",
     "AnyChar",
     "AnyComplex",
@@ -21,11 +24,14 @@ __all__ = [
     "ByteOrder",
     "Casting",
     "CorrelateMode",
+    "EnterNoneMixin",
+    "EnterSelfMixin",
     "FileLike",
     "FileModeRW",
     "FileModeRWA",
     "FileName",
     "NanPolicy",
+    "OrderKACF",
     "Seed",
     "Untyped",
     "UntypedArray",
@@ -36,13 +42,24 @@ __all__ = [
     "_FortranFunction",
 ]
 
+# helper mixins
+@type_check_only
+class EnterSelfMixin:
+    def __enter__(self, /) -> Self: ...
+    def __exit__(self, /, type: type[BaseException] | None, value: BaseException | None, tb: TracebackType | None) -> None: ...
+
+@type_check_only
+class EnterNoneMixin:
+    def __enter__(self, /) -> None: ...
+    def __exit__(self, /, type: type[BaseException] | None, value: BaseException | None, tb: TracebackType | None) -> None: ...
+
 # placeholders for missing annotations
-Untyped: TypeAlias = object
+Untyped: TypeAlias = Any
 UntypedTuple: TypeAlias = tuple[Untyped, ...]
 UntypedList: TypeAlias = list[Untyped]
 UntypedDict: TypeAlias = dict[Untyped, Untyped]
 UntypedCallable: TypeAlias = Callable[..., Untyped]
-UntypedArray: TypeAlias = onpt.Array[tuple[int, ...], np.generic]
+UntypedArray: TypeAlias = onpt.Array[Any, np.generic]
 
 # I/O
 _ByteSOrStr = TypeVar("_ByteSOrStr", bytes, str)
@@ -69,11 +86,15 @@ AnyShape: TypeAlias = op.CanIndex | Sequence[op.CanIndex]
 RNG: TypeAlias = np.random.Generator | np.random.RandomState
 Seed: TypeAlias = int | RNG
 ByteOrder: TypeAlias = Literal["S", "<", "little", ">", "big", "=", "native", "|", "I"]
+OrderKACF: TypeAlias = Literal["K", "A", "C", "F"]
 Casting: TypeAlias = Literal["no", "equiv", "safe", "same_kind", "unsafe"]
 CorrelateMode: TypeAlias = Literal["valid", "same", "full"]
 
 # scipy literals
 NanPolicy: TypeAlias = Literal["raise", "propagate", "omit"]
+Alternative: TypeAlias = Literal["two-sided", "less", "greater"]
+DCTType: TypeAlias = Literal[1, 2, 3, 4]
+NormalizationMode: TypeAlias = Literal["backward", "ortho", "forward"]
 
 # used in `scipy.linalg.blas` and `scipy.linalg.lapack`
 @type_check_only

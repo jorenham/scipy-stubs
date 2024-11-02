@@ -1,4 +1,4 @@
-from . import arpack
+from . import arpack as arpack
 from ._svds import svds
 from .arpack import *
 from .lobpcg import *

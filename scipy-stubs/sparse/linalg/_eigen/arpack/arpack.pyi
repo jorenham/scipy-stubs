@@ -1,5 +1,7 @@
 from typing import Final
+from typing_extensions import override
 
+import numpy as np
 from scipy._typing import Untyped
 from scipy.sparse.linalg._interface import LinearOperator
 
@@ -19,124 +21,31 @@ DSEUPD_ERRORS: Final[dict[int, str]]
 SSEUPD_ERRORS: Final[dict[int, str]]
 
 class ArpackError(RuntimeError):
-    def __init__(self, info, infodict=...) -> None: ...
+    def __init__(self, info: Untyped, infodict: Untyped = ...) -> None: ...
 
 class ArpackNoConvergence(ArpackError):
     eigenvalues: Untyped
     eigenvectors: Untyped
-    def __init__(self, msg, eigenvalues, eigenvectors) -> None: ...
+    def __init__(self, msg: Untyped, eigenvalues: Untyped, eigenvectors: Untyped) -> None: ...
 
-def choose_ncv(k) -> Untyped: ...
-
-class _ArpackParams:
-    resid: Untyped
-    sigma: int
-    v: Untyped
-    iparam: Untyped
-    mode: Untyped
-    n: Untyped
-    tol: Untyped
-    k: Untyped
-    maxiter: Untyped
-    ncv: Untyped
-    which: Untyped
-    tp: Untyped
-    info: Untyped
-    converged: bool
-    ido: int
-    def __init__(
-        self,
-        n,
-        k,
-        tp,
-        mode: int = 1,
-        sigma: Untyped | None = None,
-        ncv: Untyped | None = None,
-        v0: Untyped | None = None,
-        maxiter: Untyped | None = None,
-        which: str = "LM",
-        tol: int = 0,
-    ): ...
-
-class _SymmetricArpackParams(_ArpackParams):
-    OP: Untyped
-    B: Untyped
-    bmat: str
-    OPa: Untyped
-    OPb: Untyped
-    A_matvec: Untyped
-    workd: Untyped
-    workl: Untyped
-    iterate_infodict: Untyped
-    extract_infodict: Untyped
-    ipntr: Untyped
-    def __init__(
-        self,
-        n,
-        k,
-        tp,
-        matvec,
-        mode: int = 1,
-        M_matvec: Untyped | None = None,
-        Minv_matvec: Untyped | None = None,
-        sigma: Untyped | None = None,
-        ncv: Untyped | None = None,
-        v0: Untyped | None = None,
-        maxiter: Untyped | None = None,
-        which: str = "LM",
-        tol: int = 0,
-    ): ...
-    converged: bool
-    def extract(self, return_eigenvectors) -> Untyped: ...
-
-class _UnsymmetricArpackParams(_ArpackParams):
-    OP: Untyped
-    B: Untyped
-    bmat: str
-    OPa: Untyped
-    OPb: Untyped
-    matvec: Untyped
-    workd: Untyped
-    workl: Untyped
-    iterate_infodict: Untyped
-    extract_infodict: Untyped
-    ipntr: Untyped
-    rwork: Untyped
-    def __init__(
-        self,
-        n,
-        k,
-        tp,
-        matvec,
-        mode: int = 1,
-        M_matvec: Untyped | None = None,
-        Minv_matvec: Untyped | None = None,
-        sigma: Untyped | None = None,
-        ncv: Untyped | None = None,
-        v0: Untyped | None = None,
-        maxiter: Untyped | None = None,
-        which: str = "LM",
-        tol: int = 0,
-    ): ...
-    converged: bool
-    def extract(self, return_eigenvectors) -> Untyped: ...
+def choose_ncv(k: Untyped) -> Untyped: ...
 
 class SpLuInv(LinearOperator):
     M_lu: Untyped
     isreal: Untyped
-    def __init__(self, M) -> None: ...
+    def __init__(self, M: Untyped) -> None: ...
 
 class LuInv(LinearOperator):
     M_lu: Untyped
-    def __init__(self, M) -> None: ...
+    def __init__(self, M: Untyped) -> None: ...
 
-def gmres_loose(A, b, tol) -> Untyped: ...
+def gmres_loose(A: Untyped, b: Untyped, tol: Untyped) -> Untyped: ...
 
 class IterInv(LinearOperator):
     M: Untyped
     ifunc: Untyped
     tol: Untyped
-    def __init__(self, M, ifunc=..., tol: int = 0): ...
+    def __init__(self, M: Untyped, ifunc: Untyped = ..., tol: float = 0) -> None: ...
 
 class IterOpInv(LinearOperator):
     A: Untyped
@@ -145,12 +54,15 @@ class IterOpInv(LinearOperator):
     OP: Untyped
     ifunc: Untyped
     tol: Untyped
-    def __init__(self, A, M, sigma, ifunc=..., tol: int = 0): ...
+    @property
+    @override
+    def dtype(self, /) -> np.dtype[np.generic]: ...  # type: ignore[override] # pyright: ignore[reportIncompatibleVariableOverride]
+    def __init__(self, A: Untyped, M: Untyped, sigma: Untyped, ifunc: Untyped = ..., tol: float = 0) -> None: ...
 
-def get_inv_matvec(M, hermitian: bool = False, tol: int = 0) -> Untyped: ...
-def get_OPinv_matvec(A, M, sigma, hermitian: bool = False, tol: int = 0) -> Untyped: ...
+def get_inv_matvec(M: Untyped, hermitian: bool = False, tol: float = 0) -> Untyped: ...
+def get_OPinv_matvec(A: Untyped, M: Untyped, sigma: Untyped, hermitian: bool = False, tol: float = 0) -> Untyped: ...
 def eigs(
-    A,
+    A: Untyped,
     k: int = 6,
     M: Untyped | None = None,
     sigma: Untyped | None = None,
@@ -158,14 +70,14 @@ def eigs(
     v0: Untyped | None = None,
     ncv: Untyped | None = None,
     maxiter: Untyped | None = None,
-    tol: int = 0,
+    tol: float = 0,
     return_eigenvectors: bool = True,
     Minv: Untyped | None = None,
     OPinv: Untyped | None = None,
     OPpart: Untyped | None = None,
 ) -> Untyped: ...
 def eigsh(
-    A,
+    A: Untyped,
     k: int = 6,
     M: Untyped | None = None,
     sigma: Untyped | None = None,
@@ -173,7 +85,7 @@ def eigsh(
     v0: Untyped | None = None,
     ncv: Untyped | None = None,
     maxiter: Untyped | None = None,
-    tol: int = 0,
+    tol: float = 0,
     return_eigenvectors: bool = True,
     Minv: Untyped | None = None,
     OPinv: Untyped | None = None,

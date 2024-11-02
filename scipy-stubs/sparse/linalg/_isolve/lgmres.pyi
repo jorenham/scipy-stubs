@@ -1,10 +1,10 @@
 from scipy._typing import Untyped
-from scipy.linalg import get_blas_funcs as get_blas_funcs
-from .utils import make_system as make_system
+
+__all__ = ["lgmres"]
 
 def lgmres(
-    A,
-    b,
+    A: Untyped,
+    b: Untyped,
     x0: Untyped | None = None,
     *,
     rtol: float = 1e-05,

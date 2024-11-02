@@ -1,12 +1,12 @@
 from scipy._typing import Untyped
-from scipy.sparse._sputils import convert_pydata_sparse_to_scipy as convert_pydata_sparse_to_scipy
-from scipy.sparse.linalg._interface import aslinearoperator as aslinearoperator
 
-eps: Untyped
+__all__ = ["lsqr"]
+
+eps: float = ...
 
 def lsqr(
-    A,
-    b,
+    A: Untyped,
+    b: Untyped,
     damp: float = 0.0,
     atol: float = 1e-06,
     btol: float = 1e-06,

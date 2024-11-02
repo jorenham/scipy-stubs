@@ -4,12 +4,12 @@ from scipy._typing import Untyped, UntypedArray
 
 __all__ = ["firls", "firwin", "firwin2", "kaiser_atten", "kaiser_beta", "kaiserord", "minimum_phase", "remez"]
 
-def kaiser_beta(a) -> Untyped: ...
+def kaiser_beta(a: Untyped) -> Untyped: ...
 def kaiser_atten(numtaps: int, width: float | None) -> Untyped: ...
-def kaiserord(ripple, width: float | None) -> Untyped: ...
+def kaiserord(ripple: Untyped, width: float | None) -> Untyped: ...
 def firwin(
     numtaps: int,
-    cutoff,
+    cutoff: Untyped,
     *,
     width: Untyped | None = None,
     window: str = "hamming",
@@ -19,8 +19,8 @@ def firwin(
 ) -> Untyped: ...
 def firwin2(
     numtaps: int,
-    freq,
-    gain,
+    freq: Untyped,
+    gain: Untyped,
     *,
     nfreqs: Untyped | None = None,
     window: str = "hamming",
@@ -29,8 +29,8 @@ def firwin2(
 ) -> Untyped: ...
 def remez(
     numtaps: int,
-    bands,
-    desired,
+    bands: Untyped,
+    desired: Untyped,
     *,
     weight: Untyped | None = None,
     type: str = "bandpass",
@@ -40,8 +40,8 @@ def remez(
 ) -> Untyped: ...
 def firls(
     numtaps: int,
-    bands,
-    desired,
+    bands: Untyped,
+    desired: Untyped,
     *,
     weight: Untyped | None = None,
     fs: float | None = None,

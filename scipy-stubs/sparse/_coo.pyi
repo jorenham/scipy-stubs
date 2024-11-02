@@ -17,8 +17,6 @@ class _coo_base(_data_matrix, _minmax_mixin):
         shape: Untyped | None = None,
         dtype: Untyped | None = None,
         copy: bool = False,
-        *,
-        maxprint: Untyped | None = None,
     ) -> None: ...
     @property
     def row(self) -> Untyped: ...

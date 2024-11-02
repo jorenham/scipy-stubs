@@ -1,4 +1,4 @@
-from . import models as models, odrpack
+from . import models, odrpack
 from ._models import *
 from ._odrpack import *
 

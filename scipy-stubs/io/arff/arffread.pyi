@@ -1,22 +1,22 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
 
+from typing import Final
 from typing_extensions import deprecated
+
+from ._arffread import MetaData as _MetaData
 
 __all__ = ["ArffError", "MetaData", "ParseArffError", "loadarff"]
 
-@deprecated("will be removed in SciPy v2.0.0")
+_msg: Final = "will be removed in SciPy v2.0.0"
+
+@deprecated(_msg)
 class ArffError(OSError): ...
 
-@deprecated("will be removed in SciPy v2.0.0")
+@deprecated(_msg)
 class ParseArffError(ArffError): ...
 
-@deprecated("will be removed in SciPy v2.0.0")
-class MetaData:
-    def __init__(self, /, rel: object, attr: object) -> None: ...
-    def __getitem__(self, key: object, /) -> object: ...
-    def __iter__(self, /) -> object: ...
-    def names(self, /) -> object: ...
-    def types(self, /) -> object: ...
+@deprecated(_msg)
+class MetaData(_MetaData): ...
 
-@deprecated("will be removed in SciPy v2.0.0")
+@deprecated(_msg)
 def loadarff(f: object) -> object: ...

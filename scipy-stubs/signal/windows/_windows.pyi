@@ -34,6 +34,7 @@ __all__ = [
     "tukey",
 ]
 
+
 _Array_f8_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
 _Array_f8_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.float64]]
 

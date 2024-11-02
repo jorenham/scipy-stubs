@@ -1,7 +1,7 @@
 <h1 align="center">scipy-stubs</h1>
 
 <p align="center">
-    Type stubs for <a href="https://github.com/scipy/scipy">SciPy</a>.
+    Typing stubs for <a href="https://github.com/scipy/scipy">SciPy</a>.
 </p>
 
 <p align="center">
@@ -38,12 +38,12 @@
         />
     </a>
     <!-- TODO -->
-    <!-- <a href="https://github.com/pre-commit/pre-commit">
+    <a href="https://github.com/pre-commit/pre-commit">
         <img
             alt="scipy-stubs - pre-commit"
             src="https://img.shields.io/badge/pre--commit-enabled-teal?logo=pre-commit"
         />
-    </a> -->
+    </a>
     <a href="https://github.com/KotlinIsland/basedmypy">
         <img
             alt="scipy-stubs - basedmypy"
@@ -64,7 +64,7 @@
     </a>
 </p>
 
----
+______________________________________________________________________
 
 ## Installation
 
@@ -74,27 +74,27 @@ pip install scipy-stubs
 
 ## Development Status
 
-| `scipy._`     | `ruff` & `flake8-pyi` | `stubtest`         | `basedmypy`        | `basedpyright`     | phase                  |
-| :------------ | :-------------------: | :----------------: | :----------------: | :----------------: | :--------------------: |
-| `_lib`        | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_gibbous_moon:  |
-| `cluster`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
-| `constants`   | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon_with_face:  |
-| `datasets`    | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon_with_face:  |
-| `fft`         | :heavy_check_mark:    | :heavy_check_mark: | :x:                | :x:                | :waxing_crescent_moon: |
-| `fftpack`     | :heavy_check_mark:    | :heavy_check_mark: | :x:                | :x:                | :waxing_crescent_moon: |
-| `integrate`   | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_gibbous_moon:  |
-| `interpolate` | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :first_quarter_moon:   |
-| `io`          | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
-| `linalg`      | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_gibbous_moon:  |
-| ~`misc`~      | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
-| `ndimage`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :full_moon:            |
-| `odr`         | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_crescent_moon: |
-| `optimize`    | :heavy_check_mark:    | :heavy_check_mark: | :x:                | :x:                | :first_quarter_moon:   |
-| `signal`      | :heavy_check_mark:    | :heavy_check_mark: | :x:                | :x:                | :waxing_crescent_moon: |
-| `sparse`      | :heavy_check_mark:    | :x:                | :x:                | :x:                | :waxing_crescent_moon: |
-| `spatial`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :waxing_gibbous_moon:  |
-| `special`     | :heavy_check_mark:    | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | :first_quarter_moon:   |
-| `stats`       | :heavy_check_mark:    | :x:                | :x:                | :x:                | :first_quarter_moon:   |
+| `scipy._`     | `ruff` & `flake8-pyi` | `stubtest` | `basedmypy` | `basedpyright` | phase |
+| :------------ | :-------------------: | :--------: | :---------: | :------------: | :---: |
+| `_lib`        |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| `cluster`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| `constants`   |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌝   |
+| `datasets`    |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌝   |
+| `fft`         |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
+| `fftpack`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
+| `integrate`   |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
+| `interpolate` |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌓   |
+| `io`          |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| `linalg`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| ~`misc`~      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| `ndimage`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| `odr`         |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| `optimize`    |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌓   |
+| `signal`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌒   |
+| `sparse`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌒   |
+| `spatial`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| `special`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌓   |
+| `stats`       |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 
 ## Version Compatibility
 
