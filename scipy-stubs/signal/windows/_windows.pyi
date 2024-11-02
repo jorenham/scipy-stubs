@@ -1,4 +1,9 @@
-from scipy._typing import Untyped
+from collections.abc import Sequence
+from typing import Literal, TypeAlias, overload
+from typing_extensions import Unpack
+
+import numpy as np
+from scipy._typing import AnyReal
 
 __all__ = [
     "barthann",
@@ -29,36 +34,148 @@ __all__ = [
     "tukey",
 ]
 
-def general_cosine(M, a, sym: bool = True) -> Untyped: ...
-def boxcar(M, sym: bool = True) -> Untyped: ...
-def triang(M, sym: bool = True) -> Untyped: ...
-def parzen(M, sym: bool = True) -> Untyped: ...
-def bohman(M, sym: bool = True) -> Untyped: ...
-def blackman(M, sym: bool = True) -> Untyped: ...
-def nuttall(M, sym: bool = True) -> Untyped: ...
-def blackmanharris(M, sym: bool = True) -> Untyped: ...
-def flattop(M, sym: bool = True) -> Untyped: ...
-def bartlett(M, sym: bool = True) -> Untyped: ...
-def hann(M, sym: bool = True) -> Untyped: ...
-def tukey(M, alpha: float = 0.5, sym: bool = True) -> Untyped: ...
-def barthann(M, sym: bool = True) -> Untyped: ...
-def general_hamming(M, alpha, sym: bool = True) -> Untyped: ...
-def hamming(M, sym: bool = True) -> Untyped: ...
-def kaiser(M, beta, sym: bool = True) -> Untyped: ...
-def kaiser_bessel_derived(M, beta, *, sym: bool = True) -> Untyped: ...
-def gaussian(M, std, sym: bool = True) -> Untyped: ...
-def general_gaussian(M, p, sig, sym: bool = True) -> Untyped: ...
-def chebwin(M, at, sym: bool = True) -> Untyped: ...
-def cosine(M, sym: bool = True) -> Untyped: ...
-def exponential(M, center: Untyped | None = None, tau: float = 1.0, sym: bool = True) -> Untyped: ...
-def taylor(M, nbar: int = 4, sll: int = 30, norm: bool = True, sym: bool = True) -> Untyped: ...
+_Array_f8_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
+_Array_f8_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.float64]]
+
+_Window: TypeAlias = Literal[
+    "barthann",
+    "brthan",
+    "bth",
+    "bartlett",
+    "bart",
+    "brt",
+    "blackman",
+    "black",
+    "blk",
+    "blackmanharris",
+    "blackharr",
+    "bkh",
+    "bohman",
+    "bman",
+    "bmn",
+    "boxcar",
+    "box",
+    "ones",
+    "rect",
+    "rectangular",
+    "cosine",
+    "halfcosine",
+    "exponential",
+    "poisson",
+    "flattop",
+    "flat",
+    "flt",
+    "hamming",
+    "hamm",
+    "ham",
+    "hann",
+    "han",
+    "lanczos",
+    "sinc",
+    "nuttall",
+    "nutl",
+    "nut",
+    "parzen",
+    "parz",
+    "par",
+    "taylor",
+    "taylorwin",
+    "triangle",
+    "triang",
+    "tri",
+    "tukey",
+    "tuk",
+]
+_WindowNeedsParams: TypeAlias = Literal[
+    "chebwin",
+    "cheb",
+    "dpss",
+    "gaussian",
+    "gauss",
+    "gss",
+    "general cosine",
+    "general_cosine",
+    "general gaussian",
+    "general_gaussian",
+    "general gauss",
+    "general_gauss",
+    "ggs",
+    "general hamming",
+    "general_hamming",
+    "kaiser",
+    "ksr",
+    "kaiser bessel derived",
+    "kbd",
+]
+
+def general_cosine(M: int, a: Sequence[AnyReal], sym: bool = True) -> _Array_f8_1d: ...
+def boxcar(M: int, sym: bool = True) -> _Array_f8_1d: ...
+def triang(M: int, sym: bool = True) -> _Array_f8_1d: ...
+def parzen(M: int, sym: bool = True) -> _Array_f8_1d: ...
+def bohman(M: int, sym: bool = True) -> _Array_f8_1d: ...
+def blackman(M: int, sym: bool = True) -> _Array_f8_1d: ...
+def nuttall(M: int, sym: bool = True) -> _Array_f8_1d: ...
+def blackmanharris(M: int, sym: bool = True) -> _Array_f8_1d: ...
+def flattop(M: int, sym: bool = True) -> _Array_f8_1d: ...
+def bartlett(M: int, sym: bool = True) -> _Array_f8_1d: ...
+def hann(M: int, sym: bool = True) -> _Array_f8_1d: ...
+def tukey(M: int, alpha: AnyReal = 0.5, sym: bool = True) -> _Array_f8_1d: ...
+def barthann(M: int, sym: bool = True) -> _Array_f8_1d: ...
+def general_hamming(M: int, alpha: AnyReal, sym: bool = True) -> _Array_f8_1d: ...
+def hamming(M: int, sym: bool = True) -> _Array_f8_1d: ...
+def kaiser(M: int, beta: AnyReal, sym: bool = True) -> _Array_f8_1d: ...
+def kaiser_bessel_derived(M: int, beta: AnyReal, *, sym: bool = True) -> _Array_f8_1d: ...
+def gaussian(M: int, std: AnyReal, sym: bool = True) -> _Array_f8_1d: ...
+def general_gaussian(M: int, p: AnyReal, sig: AnyReal, sym: bool = True) -> _Array_f8_1d: ...
+def chebwin(M: int, at: AnyReal, sym: bool = True) -> _Array_f8_1d: ...
+def cosine(M: int, sym: bool = True) -> _Array_f8_1d: ...
+def exponential(M: int, center: AnyReal | None = None, tau: AnyReal = 1.0, sym: bool = True) -> _Array_f8_1d: ...
+def taylor(M: int, nbar: int = 4, sll: int = 30, norm: bool = True, sym: bool = True) -> _Array_f8_1d: ...
+def lanczos(M: int, *, sym: bool = True) -> _Array_f8_1d: ...
+
+#
+@overload
 def dpss(
-    M,
-    NW,
-    Kmax: Untyped | None = None,
+    *,
+    M: int,
+    NW: AnyReal,
+    Kmax: int = ...,
     sym: bool = True,
-    norm: Untyped | None = None,
-    return_ratios: bool = False,
-) -> Untyped: ...
-def lanczos(M, *, sym: bool = True) -> Untyped: ...
-def get_window(window: Untyped, Nx: Untyped, fftbins: bool = True) -> Untyped: ...
+    norm: Literal[2, "approximate", "subsample "] | None = None,
+    return_ratios: Literal[False] = ...,
+) -> _Array_f8_2d: ...
+@overload
+def dpss(
+    *,
+    M: int,
+    NW: AnyReal,
+    Kmax: None = ...,
+    sym: bool = True,
+    norm: Literal[2, "approximate", "subsample "] | None = None,
+    return_ratios: Literal[False] = ...,
+) -> _Array_f8_1d: ...
+@overload
+def dpss(
+    *,
+    M: int,
+    NW: AnyReal,
+    Kmax: int = ...,
+    sym: bool = True,
+    norm: Literal[2, "approximate", "subsample "] | None = None,
+    return_ratios: Literal[True] = ...,
+) -> tuple[_Array_f8_2d, _Array_f8_1d]: ...
+@overload
+def dpss(
+    *,
+    M: int,
+    NW: AnyReal,
+    Kmax: None = None,
+    sym: bool = True,
+    norm: Literal[2, "approximate", "subsample "] | None = None,
+    return_ratios: Literal[True] = ...,
+) -> tuple[_Array_f8_1d, AnyReal]: ...
+
+#
+def get_window(
+    window: _Window | AnyReal | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]], Nx: int, fftbins: bool = True
+) -> _Array_f8_1d: ...
