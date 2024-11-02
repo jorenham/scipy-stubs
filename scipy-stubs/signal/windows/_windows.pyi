@@ -140,7 +140,6 @@ def lanczos(M: _WindowLength, *, sym: op.CanBool = True) -> _Array_f8_1d: ...
 #
 @overload
 def dpss(
-    *,
     M: _WindowLength,
     NW: AnyReal,
     Kmax: op.CanIndex,
@@ -150,7 +149,6 @@ def dpss(
 ) -> _Array_f8_2d: ...
 @overload
 def dpss(
-    *,
     M: _WindowLength,
     NW: AnyReal,
     Kmax: None = None,
@@ -160,7 +158,6 @@ def dpss(
 ) -> _Array_f8_1d: ...
 @overload
 def dpss(
-    *,
     M: _WindowLength,
     NW: AnyReal,
     Kmax: op.CanIndex,
@@ -170,7 +167,6 @@ def dpss(
 ) -> tuple[_Array_f8_2d, _Array_f8_1d]: ...
 @overload
 def dpss(
-    *,
     M: _WindowLength,
     NW: AnyReal,
     return_ratios: Literal[True],
