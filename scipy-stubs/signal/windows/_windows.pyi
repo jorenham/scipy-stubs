@@ -38,6 +38,7 @@ __all__ = [
 _Array_f8_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
 _Array_f8_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.float64]]
 
+_Norm: TypeAlias = Literal[2, "approximate", "subsample "]
 _Window: TypeAlias = Literal[
     "barthann",
     "brthan",
@@ -142,7 +143,7 @@ def dpss(
     NW: AnyReal,
     Kmax: int = ...,
     sym: bool = True,
-    norm: Literal[2, "approximate", "subsample "] | None = None,
+    norm: _Norm | None = None,
     return_ratios: Literal[False] = ...,
 ) -> _Array_f8_2d: ...
 @overload
@@ -152,7 +153,7 @@ def dpss(
     NW: AnyReal,
     Kmax: None = ...,
     sym: bool = True,
-    norm: Literal[2, "approximate", "subsample "] | None = None,
+    norm: _Norm | None = None,
     return_ratios: Literal[False] = ...,
 ) -> _Array_f8_1d: ...
 @overload
@@ -162,7 +163,7 @@ def dpss(
     NW: AnyReal,
     Kmax: int = ...,
     sym: bool = True,
-    norm: Literal[2, "approximate", "subsample "] | None = None,
+    norm: _Norm | None = None,
     return_ratios: Literal[True] = ...,
 ) -> tuple[_Array_f8_2d, _Array_f8_1d]: ...
 @overload
@@ -172,7 +173,7 @@ def dpss(
     NW: AnyReal,
     Kmax: None = None,
     sym: bool = True,
-    norm: Literal[2, "approximate", "subsample "] | None = None,
+    norm: _Norm | None = None,
     return_ratios: Literal[True] = ...,
 ) -> tuple[_Array_f8_1d, AnyReal]: ...
 
