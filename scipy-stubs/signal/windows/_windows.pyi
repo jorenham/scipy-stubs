@@ -4,7 +4,7 @@ from typing_extensions import Unpack
 
 import numpy as np
 import optype as op
-from scipy._typing import AnyReal
+from scipy._typing import AnyInt, AnyReal
 
 __all__ = [
     "barthann",
@@ -34,7 +34,6 @@ __all__ = [
     "triang",
     "tukey",
 ]
-
 
 _Array_f8_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
 _Array_f8_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.float64]]
@@ -134,7 +133,9 @@ def general_gaussian(M: _WindowLength, p: AnyReal, sig: AnyReal, sym: op.CanBool
 def chebwin(M: _WindowLength, at: AnyReal, sym: op.CanBool = True) -> _Array_f8_1d: ...
 def cosine(M: _WindowLength, sym: op.CanBool = True) -> _Array_f8_1d: ...
 def exponential(M: _WindowLength, center: AnyReal | None = None, tau: AnyReal = 1.0, sym: op.CanBool = True) -> _Array_f8_1d: ...
-def taylor(M: _WindowLength, nbar: int = 4, sll: int = 30, norm: bool = True, sym: op.CanBool = True) -> _Array_f8_1d: ...
+def taylor(
+    M: _WindowLength, nbar: AnyInt = 4, sll: AnyInt = 30, norm: op.CanBool = True, sym: op.CanBool = True
+) -> _Array_f8_1d: ...
 def lanczos(M: _WindowLength, *, sym: op.CanBool = True) -> _Array_f8_1d: ...
 
 #
@@ -177,5 +178,7 @@ def dpss(
 
 #
 def get_window(
-    window: _Window | AnyReal | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]], Nx: int, fftbins: bool = True
+    window: _Window | AnyReal | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]],
+    Nx: _WindowLength,
+    fftbins: op.CanBool = True,
 ) -> _Array_f8_1d: ...
