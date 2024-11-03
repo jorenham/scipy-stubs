@@ -1,26 +1,28 @@
 # type-check-only typing utilities for internal usage
-from typing import Literal, TypeAlias, TypedDict, type_check_only
+from typing import Any, Literal, TypeAlias, TypedDict, type_check_only
 from typing_extensions import NotRequired
 
 import numpy as np
 import numpy.typing as npt
-import optype as op
 import optype.numpy as onpt
-import scipy._typing as spt
+from numpy._typing import _ArrayLikeFloat_co
 
 __all__ = "ODEInfoDict", "QuadInfoDict", "QuadOpts", "QuadWeights"
+
+_IntLike: TypeAlias = int | np.integer[Any]
+_FloatLike: TypeAlias = float | np.floating[Any]
 
 QuadWeights: TypeAlias = Literal["cos", "sin", "alg", "alg-loga", "alg-logb", "alg-log", "cauchy"]
 
 @type_check_only
 class QuadOpts(TypedDict, total=False):
-    epsabs: float
-    epsrel: float
-    limit: int
-    points: op.CanGetitem[int, spt.AnyReal]
+    epsabs: _FloatLike
+    epsrel: _FloatLike
+    limit: _IntLike
+    points: _ArrayLikeFloat_co
     weight: QuadWeights
-    wvar: float | tuple[float, float]
-    wopts: tuple[int, npt.NDArray[np.float32 | np.float64]]
+    wvar: _FloatLike | tuple[_FloatLike, _FloatLike]
+    wopts: tuple[_IntLike, npt.NDArray[np.float32 | np.float64]]
 
 @type_check_only
 class QuadInfoDict(TypedDict):
