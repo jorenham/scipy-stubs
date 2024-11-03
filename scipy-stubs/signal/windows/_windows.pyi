@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Literal, TypeAlias, overload
+from typing import Any, Literal, TypeAlias, overload
 from typing_extensions import Unpack
 
 import numpy as np
@@ -37,6 +37,12 @@ __all__ = [
 
 _Array_f8_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
 _Array_f8_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.float64]]
+_Weights: TypeAlias = (
+    Sequence[AnyReal]
+    | np.ndarray[tuple[int], np.dtype[np.floating[Any]]]
+    | np.ndarray[tuple[int], np.dtype[np.integer[Any]]]
+    | np.ndarray[tuple[int], np.dtype[np.bool_]]
+)
 
 _Norm: TypeAlias = Literal[2, "approximate", "subsample"]
 _WindowLength: TypeAlias = int | np.int16 | np.int32 | np.int64
@@ -111,7 +117,7 @@ _WindowNeedsParams: TypeAlias = Literal[
     "kbd",
 ]
 
-def general_cosine(M: _WindowLength, a: Sequence[AnyReal], sym: op.CanBool = True) -> _Array_f8_1d: ...
+def general_cosine(M: _WindowLength, a: _Weights, sym: op.CanBool = True) -> _Array_f8_1d: ...
 def boxcar(M: _WindowLength, sym: op.CanBool = True) -> _Array_f8_1d: ...
 def triang(M: _WindowLength, sym: op.CanBool = True) -> _Array_f8_1d: ...
 def parzen(M: _WindowLength, sym: op.CanBool = True) -> _Array_f8_1d: ...
