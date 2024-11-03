@@ -38,7 +38,7 @@ __all__ = [
 _Array_f8_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
 _Array_f8_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.float64]]
 
-_Norm: TypeAlias = Literal[2, "approximate", "subsample "]
+_Norm: TypeAlias = Literal[2, "approximate", "subsample"]
 _WindowLength: TypeAlias = int | np.int16 | np.int32 | np.int64
 _Window: TypeAlias = Literal[
     "barthann",
