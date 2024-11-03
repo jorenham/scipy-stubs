@@ -138,7 +138,7 @@ def taylor(
 ) -> _Array_f8_1d: ...
 def lanczos(M: _WindowLength, *, sym: op.CanBool = True) -> _Array_f8_1d: ...
 
-#
+# Overloads where `return_ratios` is `False`.
 @overload
 def dpss(
     M: _WindowLength,
@@ -157,23 +157,52 @@ def dpss(
     norm: _Norm | None = None,
     return_ratios: Literal[False] = False,
 ) -> _Array_f8_1d: ...
+
+# Overloads where `return_ratios` is `True`.
+# `return_ratios` as a positional argument
 @overload
 def dpss(
     M: _WindowLength,
     NW: AnyReal,
     Kmax: op.CanIndex,
+    sym: op.CanBool,
+    norm: _Norm | None,
     return_ratios: Literal[True],
-    sym: op.CanBool = True,
-    norm: _Norm | None = None,
 ) -> tuple[_Array_f8_2d, _Array_f8_1d]: ...
+
+# `return_ratios` as a keyword argument
 @overload
 def dpss(
     M: _WindowLength,
     NW: AnyReal,
+    Kmax: op.CanIndex,
+    sym: op.CanBool = True,
+    norm: _Norm | None = None,
+    *,
     return_ratios: Literal[True],
+) -> tuple[_Array_f8_2d, _Array_f8_1d]: ...
+
+# `return_ratios` as a positional argument
+@overload
+def dpss(
+    M: _WindowLength,
+    NW: AnyReal,
+    Kmax: None,
+    sym: op.CanBool,
+    norm: _Norm | None,
+    return_ratios: Literal[True],
+) -> tuple[_Array_f8_1d, np.float64]: ...
+
+# `return_ratios` as a keyword argument
+@overload
+def dpss(
+    M: _WindowLength,
+    NW: AnyReal,
     Kmax: None = None,
     sym: op.CanBool = True,
     norm: _Norm | None = None,
+    *,
+    return_ratios: Literal[True],
 ) -> tuple[_Array_f8_1d, np.float64]: ...
 
 #
