@@ -122,7 +122,7 @@ def check_COLA(
     nperseg: AnyInt,
     noverlap: AnyInt,
     tol: AnyReal = 1e-10,
-) -> np.bool: ...
+) -> np.bool_: ...
 def check_NOLA(
     window: _GetWindowArgument | _ArrayLikeFloat_co,
     nperseg: AnyInt,
