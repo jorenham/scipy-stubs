@@ -1,8 +1,14 @@
-from typing import Literal
+from typing import Literal, TypeAlias
+from typing_extensions import Unpack
 
-from scipy._typing import Untyped, UntypedCallable
+import optype as op
+from numpy._typing import _ArrayLikeFloat_co
+from scipy._typing import AnyInt, AnyReal, Untyped, UntypedCallable
+from scipy.signal.windows._windows import _Window, _WindowNeedsParams
 
 __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle", "periodogram", "spectrogram", "stft", "welch"]
+
+_GetWindowArgument: TypeAlias = _Window | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]]
 
 def lombscargle(x: Untyped, y: Untyped, freqs: Untyped, precenter: bool = False, normalize: bool = False) -> Untyped: ...
 def periodogram(
@@ -55,8 +61,18 @@ def spectrogram(
     axis: int = -1,
     mode: str = "psd",
 ) -> Untyped: ...
-def check_COLA(window: Untyped, nperseg: int, noverlap: int, tol: float = 1e-10) -> Untyped: ...
-def check_NOLA(window: Untyped, nperseg: int, noverlap: int, tol: float = 1e-10) -> Untyped: ...
+def check_COLA(
+    window: _GetWindowArgument | _ArrayLikeFloat_co,
+    nperseg: AnyInt,
+    noverlap: AnyInt,
+    tol: AnyReal = 1e-10,
+) -> bool: ...
+def check_NOLA(
+    window: _GetWindowArgument | _ArrayLikeFloat_co,
+    nperseg: AnyInt,
+    noverlap: AnyInt,
+    tol: AnyReal = 1e-10,
+) -> bool: ...
 def stft(
     x: Untyped,
     fs: float = 1.0,
