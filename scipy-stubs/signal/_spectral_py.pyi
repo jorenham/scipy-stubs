@@ -19,7 +19,9 @@ _ArrayComplex: TypeAlias = npt.NDArray[np.complexfloating[Any, Any]]
 _GetWindowArgument: TypeAlias = _Window | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]]
 _Detrend: TypeAlias = Literal["literal", "constant", False] | Callable[[npt.NDArray[np.generic]], npt.NDArray[np.generic]]
 _Scaling: TypeAlias = Literal["density", "spectrum"]
+_LegacyScaling: TypeAlias = Literal["psd", "spectrum"]
 _Average: TypeAlias = Literal["mean", "median"]
+_Boundary: TypeAlias = Literal["even", "odd", "constant", "zeros"] | None
 
 # NOTE(pavyamsiri): This function was actually recently updated, adding new arguments and return types.
 def lombscargle(
@@ -133,32 +135,84 @@ def check_NOLA(
     tol: AnyReal = 1e-10,
 ) -> bool: ...
 def stft(
-    x: Untyped,
-    fs: float = 1.0,
-    window: str = "hann",
-    nperseg: int = 256,
-    noverlap: int | None = None,
-    nfft: int | None = None,
-    detrend: bool = False,
-    return_onesided: bool = True,
-    boundary: str = "zeros",
-    padded: bool = True,
-    axis: int = -1,
-    scaling: str = "spectrum",
-) -> Untyped: ...
+    x: _ArrayLikeComplex_co,
+    fs: AnyReal = 1.0,
+    window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
+    nperseg: AnyInt = 256,
+    noverlap: AnyInt | None = None,
+    nfft: AnyInt | None = None,
+    detrend: _Detrend = False,
+    return_onesided: op.CanBool = True,
+    boundary: _Boundary = "zeros",
+    padded: op.CanBool = True,
+    axis: op.CanIndex = -1,
+    scaling: _LegacyScaling = "spectrum",
+) -> tuple[_Array_f8, _Array_f8, _ArrayComplex]: ...
+
+# def istft(
+#     Zxx: _ArrayLikeComplex_co,
+#     fs: AnyReal = 1.0,
+#     window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
+#     nperseg: AnyInt | None = None,
+#     noverlap: AnyInt | None = None,
+#     nfft: AnyInt | None = None,
+#     input_onesided: op.CanBool = True,
+#     boundary: op.CanBool = True,
+#     time_axis: op.CanIndex = -1,
+#     freq_axis: op.CanIndex = -2,
+#     scaling: _LegacyScaling = "spectrum",
+# ) -> tuple[_Array_f8]: ...
+
+# input_onesided is `True`
+@overload
 def istft(
-    Zxx: Untyped,
-    fs: float = 1.0,
-    window: str = "hann",
-    nperseg: int | None = None,
-    noverlap: int | None = None,
-    nfft: int | None = None,
-    input_onesided: bool = True,
-    boundary: bool = True,
-    time_axis: int = -1,
-    freq_axis: int = -2,
-    scaling: str = "spectrum",
-) -> Untyped: ...
+    Zxx: _ArrayLikeComplex_co,
+    fs: AnyReal = 1.0,
+    window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
+    nperseg: AnyInt | None = None,
+    noverlap: AnyInt | None = None,
+    nfft: AnyInt | None = None,
+    input_onesided: Literal[True] = True,
+    boundary: op.CanBool = True,
+    time_axis: op.CanIndex = -1,
+    freq_axis: op.CanIndex = -2,
+    scaling: _LegacyScaling = "spectrum",
+) -> tuple[_Array_f8, _ArrayReal]: ...
+
+# input_onesided is `False` (positional)
+@overload
+def istft(
+    Zxx: _ArrayLikeComplex_co,
+    fs: AnyReal,
+    window: _GetWindowArgument | _ArrayLikeFloat_co,
+    nperseg: AnyInt | None,
+    noverlap: AnyInt | None,
+    nfft: AnyInt | None,
+    input_onesided: Literal[False],
+    boundary: op.CanBool = True,
+    time_axis: op.CanIndex = -1,
+    freq_axis: op.CanIndex = -2,
+    scaling: _LegacyScaling = "spectrum",
+) -> tuple[_Array_f8, _ArrayComplex]: ...
+
+# input_onesided is `False` (keyword)
+@overload
+def istft(
+    Zxx: _ArrayLikeComplex_co,
+    fs: AnyReal = 1.0,
+    window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
+    nperseg: AnyInt | None = None,
+    noverlap: AnyInt | None = None,
+    nfft: AnyInt | None = None,
+    *,
+    input_onesided: Literal[False],
+    boundary: op.CanBool = True,
+    time_axis: op.CanIndex = -1,
+    freq_axis: op.CanIndex = -2,
+    scaling: _LegacyScaling = "spectrum",
+) -> tuple[_Array_f8, _ArrayComplex]: ...
+
+#
 def coherence(
     x: Untyped,
     y: Untyped,
