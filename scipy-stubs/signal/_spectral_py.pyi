@@ -6,7 +6,7 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 from numpy._typing import _ArrayLikeComplex_co, _ArrayLikeFloat_co
-from scipy._typing import AnyInt, AnyReal, Untyped, UntypedCallable
+from scipy._typing import AnyInt, AnyReal
 from scipy.signal.windows._windows import _Window, _WindowNeedsParams
 
 __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle", "periodogram", "spectrogram", "stft", "welch"]
@@ -214,13 +214,13 @@ def istft(
 
 #
 def coherence(
-    x: Untyped,
-    y: Untyped,
-    fs: float = 1.0,
-    window: str = "hann",
-    nperseg: int | None = None,
-    noverlap: int | None = None,
-    nfft: int | None = None,
-    detrend: str | Literal[False] | UntypedCallable = "constant",
-    axis: int = -1,
-) -> Untyped: ...
+    x: _ArrayLikeComplex_co,
+    y: _ArrayLikeComplex_co,
+    fs: AnyReal = 1.0,
+    window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
+    nperseg: AnyInt | None = None,
+    noverlap: AnyInt | None = None,
+    nfft: AnyInt | None = None,
+    detrend: _Detrend = "constant",
+    axis: op.CanIndex = -1,
+) -> tuple[_Array_f8, _ArrayReal]: ...
