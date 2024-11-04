@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, Literal, TypeAlias
+from typing import Any, Literal, TypeAlias, overload
 from typing_extensions import Unpack
 
 import numpy as np
@@ -11,7 +11,10 @@ from scipy.signal.windows._windows import _Window, _WindowNeedsParams
 
 __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle", "periodogram", "spectrogram", "stft", "welch"]
 
+_Array_f8: TypeAlias = npt.NDArray[np.float64]
 _Array_f8_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
+_ArrayReal: TypeAlias = npt.NDArray[np.floating[Any]]
+_ArrayComplex: TypeAlias = npt.NDArray[np.complexfloating[Any, Any]]
 
 _GetWindowArgument: TypeAlias = _Window | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]]
 _Detrend: TypeAlias = Literal["literal", "constant", False] | Callable[[npt.NDArray[np.generic]], npt.NDArray[np.generic]]
@@ -37,7 +40,7 @@ def periodogram(
     return_onesided: op.CanBool = True,
     scaling: _Scaling = "density",
     axis: op.CanIndex = -1,
-) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.floating[Any]]]: ...
+) -> tuple[_Array_f8, _ArrayReal]: ...
 def welch(
     x: _ArrayLikeComplex_co,
     fs: AnyReal = 1.0,
@@ -50,7 +53,7 @@ def welch(
     scaling: _Scaling = "density",
     axis: op.CanIndex = -1,
     average: _Average = "mean",
-) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.floating[Any]]]: ...
+) -> tuple[_Array_f8, _ArrayReal]: ...
 def csd(
     x: _ArrayLikeComplex_co,
     y: _ArrayLikeComplex_co,
@@ -64,20 +67,59 @@ def csd(
     scaling: _Scaling = "density",
     axis: op.CanIndex = -1,
     average: _Average = "mean",
-) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.complexfloating[Any, Any]]]: ...
+) -> tuple[_Array_f8, _ArrayComplex]: ...
+
+#
+@overload
 def spectrogram(
-    x: Untyped,
-    fs: float = 1.0,
-    window: Untyped = ("tukey", 0.25),
-    nperseg: int | None = None,
-    noverlap: int | None = None,
-    nfft: int | None = None,
-    detrend: str | Literal[False] | UntypedCallable = "constant",
-    return_onesided: bool = True,
-    scaling: str = "density",
-    axis: int = -1,
-    mode: str = "psd",
-) -> Untyped: ...
+    x: npt.NDArray[np.generic],
+    fs: AnyReal = 1.0,
+    window: _GetWindowArgument | _ArrayLikeFloat_co = ("tukey", 0.25),
+    nperseg: AnyInt | None = None,
+    noverlap: AnyInt | None = None,
+    nfft: AnyInt | None = None,
+    detrend: _Detrend = "constant",
+    return_onesided: op.CanBool = True,
+    scaling: _Scaling = "density",
+    axis: op.CanIndex = -1,
+    mode: Literal["psd", "magnitude", "angle", "phase"] = "psd",
+) -> tuple[_Array_f8, _Array_f8, _ArrayReal]: ...
+
+# complex mode (positional)
+@overload
+def spectrogram(
+    x: npt.NDArray[np.generic],
+    fs: AnyReal,
+    window: _GetWindowArgument | _ArrayLikeFloat_co,
+    nperseg: AnyInt | None,
+    noverlap: AnyInt | None,
+    nfft: AnyInt | None,
+    detrend: _Detrend,
+    return_onesided: op.CanBool,
+    scaling: _Scaling,
+    axis: op.CanIndex,
+    mode: Literal["complex"],
+) -> tuple[_Array_f8, _Array_f8, _ArrayComplex]: ...
+
+# complex mode (keyword)
+
+@overload
+def spectrogram(
+    x: npt.NDArray[np.generic],
+    fs: AnyReal = 1.0,
+    window: _GetWindowArgument | _ArrayLikeFloat_co = ("tukey", 0.25),
+    nperseg: AnyInt | None = None,
+    noverlap: AnyInt | None = None,
+    nfft: AnyInt | None = None,
+    detrend: _Detrend = "constant",
+    return_onesided: op.CanBool = True,
+    scaling: _Scaling = "density",
+    axis: op.CanIndex = -1,
+    *,
+    mode: Literal["complex"],
+) -> tuple[_Array_f8, _Array_f8, _ArrayComplex]: ...
+
+#
 def check_COLA(
     window: _GetWindowArgument | _ArrayLikeFloat_co,
     nperseg: AnyInt,
