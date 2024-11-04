@@ -23,7 +23,6 @@ _LegacyScaling: TypeAlias = Literal["psd", "spectrum"]
 _Average: TypeAlias = Literal["mean", "median"]
 _Boundary: TypeAlias = Literal["even", "odd", "constant", "zeros"] | None
 
-# NOTE(pavyamsiri): This function was actually recently updated, adding new arguments and return types.
 def lombscargle(
     x: _ArrayLikeFloat_co,
     y: _ArrayLikeFloat_co,
@@ -31,8 +30,6 @@ def lombscargle(
     precenter: op.CanBool = False,
     normalize: op.CanBool = False,
 ) -> _Array_f8_1d: ...
-
-# NOTE(pavyamsiri): The docs don't allow `None` for `window` but the body does?
 def periodogram(
     x: _ArrayLikeComplex_co,
     fs: AnyReal = 1.0,
@@ -148,20 +145,6 @@ def stft(
     axis: op.CanIndex = -1,
     scaling: _LegacyScaling = "spectrum",
 ) -> tuple[_Array_f8, _Array_f8, _ArrayComplex]: ...
-
-# def istft(
-#     Zxx: _ArrayLikeComplex_co,
-#     fs: AnyReal = 1.0,
-#     window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
-#     nperseg: AnyInt | None = None,
-#     noverlap: AnyInt | None = None,
-#     nfft: AnyInt | None = None,
-#     input_onesided: op.CanBool = True,
-#     boundary: op.CanBool = True,
-#     time_axis: op.CanIndex = -1,
-#     freq_axis: op.CanIndex = -2,
-#     scaling: _LegacyScaling = "spectrum",
-# ) -> tuple[_Array_f8]: ...
 
 # input_onesided is `True`
 @overload
