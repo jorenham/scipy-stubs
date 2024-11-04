@@ -13,8 +13,8 @@ __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle
 
 _Array_f8: TypeAlias = npt.NDArray[np.float64]
 _Array_f8_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
-_ArrayFloat: TypeAlias = npt.NDArray[np.float32 | np.float64 | np.float128]
-_ArrayComplex: TypeAlias = npt.NDArray[np.complex64 | np.complex128 | np.complex256]
+_ArrayFloat: TypeAlias = npt.NDArray[np.float32 | np.float64 | np.longdouble]
+_ArrayComplex: TypeAlias = npt.NDArray[np.complex64 | np.complex128 | np.clongdouble]
 
 _GetWindowArgument: TypeAlias = _Window | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]]
 _Detrend: TypeAlias = Literal["literal", "constant", False] | Callable[[npt.NDArray[np.generic]], npt.NDArray[np.generic]]
