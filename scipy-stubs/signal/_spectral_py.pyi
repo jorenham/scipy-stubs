@@ -69,8 +69,8 @@ def csd(
 ) -> tuple[_Array_f8, _ArrayComplex]: ...
 
 #
-# non-complex mode (positional and keyword)
 @overload
+# non-complex mode (positional and keyword)
 def spectrogram(
     x: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
