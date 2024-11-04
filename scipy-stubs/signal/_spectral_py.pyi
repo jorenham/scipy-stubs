@@ -17,6 +17,7 @@ _ArrayFloat: TypeAlias = npt.NDArray[np.float32 | np.float64 | np.longdouble]
 _ArrayComplex: TypeAlias = npt.NDArray[np.complex64 | np.complex128 | np.clongdouble]
 
 _GetWindowArgument: TypeAlias = _Window | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]]
+_WindowLike: TypeAlias = _GetWindowArgument | _ArrayLikeFloat_co
 _Detrend: TypeAlias = Literal["literal", "constant", False] | Callable[[npt.NDArray[np.generic]], npt.NDArray[np.generic]]
 _Scaling: TypeAlias = Literal["density", "spectrum"]
 _LegacyScaling: TypeAlias = Literal["psd", "spectrum"]
@@ -33,7 +34,7 @@ def lombscargle(
 def periodogram(
     x: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
-    window: _GetWindowArgument | _ArrayLikeFloat_co | None = "boxcar",
+    window: _WindowLike | None = "boxcar",
     nfft: AnyInt | None = None,
     detrend: _Detrend = "constant",
     return_onesided: op.CanBool = True,
@@ -43,7 +44,7 @@ def periodogram(
 def welch(
     x: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
-    window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
+    window: _WindowLike = "hann",
     nperseg: AnyInt | None = None,
     noverlap: AnyInt | None = None,
     nfft: AnyInt | None = None,
@@ -57,7 +58,7 @@ def csd(
     x: _ArrayLikeNumber_co,
     y: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
-    window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
+    window: _WindowLike = "hann",
     nperseg: AnyInt | None = None,
     noverlap: AnyInt | None = None,
     nfft: AnyInt | None = None,
@@ -74,7 +75,7 @@ def csd(
 def spectrogram(
     x: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
-    window: _GetWindowArgument | _ArrayLikeFloat_co = ("tukey", 0.25),
+    window: _WindowLike = ("tukey", 0.25),
     nperseg: AnyInt | None = None,
     noverlap: AnyInt | None = None,
     nfft: AnyInt | None = None,
@@ -89,7 +90,7 @@ def spectrogram(
 def spectrogram(
     x: _ArrayLikeNumber_co,
     fs: AnyReal,
-    window: _GetWindowArgument | _ArrayLikeFloat_co,
+    window: _WindowLike,
     nperseg: AnyInt | None,
     noverlap: AnyInt | None,
     nfft: AnyInt | None,
@@ -104,7 +105,7 @@ def spectrogram(
 def spectrogram(
     x: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
-    window: _GetWindowArgument | _ArrayLikeFloat_co = ("tukey", 0.25),
+    window: _WindowLike = ("tukey", 0.25),
     nperseg: AnyInt | None = None,
     noverlap: AnyInt | None = None,
     nfft: AnyInt | None = None,
@@ -118,13 +119,13 @@ def spectrogram(
 
 #
 def check_COLA(
-    window: _GetWindowArgument | _ArrayLikeFloat_co,
+    window: _WindowLike,
     nperseg: AnyInt,
     noverlap: AnyInt,
     tol: AnyReal = 1e-10,
 ) -> np.bool_: ...
 def check_NOLA(
-    window: _GetWindowArgument | _ArrayLikeFloat_co,
+    window: _WindowLike,
     nperseg: AnyInt,
     noverlap: AnyInt,
     tol: AnyReal = 1e-10,
@@ -132,7 +133,7 @@ def check_NOLA(
 def stft(
     x: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
-    window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
+    window: _WindowLike = "hann",
     nperseg: AnyInt = 256,
     noverlap: AnyInt | None = None,
     nfft: AnyInt | None = None,
@@ -150,7 +151,7 @@ def stft(
 def istft(
     Zxx: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
-    window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
+    window: _WindowLike = "hann",
     nperseg: AnyInt | None = None,
     noverlap: AnyInt | None = None,
     nfft: AnyInt | None = None,
@@ -165,7 +166,7 @@ def istft(
 def istft(
     Zxx: _ArrayLikeNumber_co,
     fs: AnyReal,
-    window: _GetWindowArgument | _ArrayLikeFloat_co,
+    window: _WindowLike,
     nperseg: AnyInt | None,
     noverlap: AnyInt | None,
     nfft: AnyInt | None,
@@ -180,7 +181,7 @@ def istft(
 def istft(
     Zxx: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
-    window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
+    window: _WindowLike = "hann",
     nperseg: AnyInt | None = None,
     noverlap: AnyInt | None = None,
     nfft: AnyInt | None = None,
@@ -197,7 +198,7 @@ def coherence(
     x: _ArrayLikeNumber_co,
     y: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
-    window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
+    window: _WindowLike = "hann",
     nperseg: AnyInt | None = None,
     noverlap: AnyInt | None = None,
     nfft: AnyInt | None = None,
