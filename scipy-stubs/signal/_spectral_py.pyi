@@ -5,15 +5,15 @@ from typing_extensions import Unpack
 import numpy as np
 import numpy.typing as npt
 import optype as op
-from numpy._typing import _ArrayLikeComplex_co, _ArrayLikeFloat_co
+from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
 from scipy._typing import AnyInt, AnyReal
-from scipy.signal.windows._windows import _Window, _WindowNeedsParams
+from .windows._windows import _Window, _WindowNeedsParams
 
 __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle", "periodogram", "spectrogram", "stft", "welch"]
 
+_Array_f: TypeAlias = npt.NDArray[np.floating[Any]]
 _Array_f8: TypeAlias = npt.NDArray[np.float64]
 _Array_f8_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
-_ArrayReal: TypeAlias = npt.NDArray[np.floating[Any]]
 _ArrayComplex: TypeAlias = npt.NDArray[np.complexfloating[Any, Any]]
 
 _GetWindowArgument: TypeAlias = _Window | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]]
@@ -31,7 +31,7 @@ def lombscargle(
     normalize: op.CanBool = False,
 ) -> _Array_f8_1d: ...
 def periodogram(
-    x: _ArrayLikeComplex_co,
+    x: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
     window: _GetWindowArgument | _ArrayLikeFloat_co | None = "boxcar",
     nfft: AnyInt | None = None,
@@ -39,9 +39,9 @@ def periodogram(
     return_onesided: op.CanBool = True,
     scaling: _Scaling = "density",
     axis: op.CanIndex = -1,
-) -> tuple[_Array_f8, _ArrayReal]: ...
+) -> tuple[_Array_f8, _Array_f]: ...
 def welch(
-    x: _ArrayLikeComplex_co,
+    x: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
     window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
     nperseg: AnyInt | None = None,
@@ -52,10 +52,10 @@ def welch(
     scaling: _Scaling = "density",
     axis: op.CanIndex = -1,
     average: _Average = "mean",
-) -> tuple[_Array_f8, _ArrayReal]: ...
+) -> tuple[_Array_f8, _Array_f]: ...
 def csd(
-    x: _ArrayLikeComplex_co,
-    y: _ArrayLikeComplex_co,
+    x: _ArrayLikeNumber_co,
+    y: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
     window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
     nperseg: AnyInt | None = None,
@@ -69,9 +69,10 @@ def csd(
 ) -> tuple[_Array_f8, _ArrayComplex]: ...
 
 #
+# non-complex mode (positional and keyword)
 @overload
 def spectrogram(
-    x: npt.NDArray[np.generic],
+    x: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
     window: _GetWindowArgument | _ArrayLikeFloat_co = ("tukey", 0.25),
     nperseg: AnyInt | None = None,
@@ -82,12 +83,11 @@ def spectrogram(
     scaling: _Scaling = "density",
     axis: op.CanIndex = -1,
     mode: Literal["psd", "magnitude", "angle", "phase"] = "psd",
-) -> tuple[_Array_f8, _Array_f8, _ArrayReal]: ...
-
-# complex mode (positional)
+) -> tuple[_Array_f8, _Array_f8, _Array_f]: ...
 @overload
+# complex mode (positional)
 def spectrogram(
-    x: npt.NDArray[np.generic],
+    x: _ArrayLikeNumber_co,
     fs: AnyReal,
     window: _GetWindowArgument | _ArrayLikeFloat_co,
     nperseg: AnyInt | None,
@@ -99,12 +99,10 @@ def spectrogram(
     axis: op.CanIndex,
     mode: Literal["complex"],
 ) -> tuple[_Array_f8, _Array_f8, _ArrayComplex]: ...
-
-# complex mode (keyword)
-
 @overload
+# complex mode (keyword)
 def spectrogram(
-    x: npt.NDArray[np.generic],
+    x: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
     window: _GetWindowArgument | _ArrayLikeFloat_co = ("tukey", 0.25),
     nperseg: AnyInt | None = None,
@@ -124,15 +122,15 @@ def check_COLA(
     nperseg: AnyInt,
     noverlap: AnyInt,
     tol: AnyReal = 1e-10,
-) -> bool: ...
+) -> np.bool: ...
 def check_NOLA(
     window: _GetWindowArgument | _ArrayLikeFloat_co,
     nperseg: AnyInt,
     noverlap: AnyInt,
     tol: AnyReal = 1e-10,
-) -> bool: ...
+) -> np.bool: ...
 def stft(
-    x: _ArrayLikeComplex_co,
+    x: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
     window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
     nperseg: AnyInt = 256,
@@ -146,49 +144,48 @@ def stft(
     scaling: _LegacyScaling = "spectrum",
 ) -> tuple[_Array_f8, _Array_f8, _ArrayComplex]: ...
 
-# input_onesided is `True`
+#
 @overload
+# input_onesided is `True`
 def istft(
-    Zxx: _ArrayLikeComplex_co,
+    Zxx: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
     window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
     nperseg: AnyInt | None = None,
     noverlap: AnyInt | None = None,
     nfft: AnyInt | None = None,
-    input_onesided: Literal[True] = True,
+    input_onesided: Literal[True, 1] = True,
     boundary: op.CanBool = True,
     time_axis: op.CanIndex = -1,
     freq_axis: op.CanIndex = -2,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_Array_f8, _ArrayReal]: ...
-
-# input_onesided is `False` (positional)
+) -> tuple[_Array_f8, _Array_f]: ...
 @overload
+# input_onesided is `False` (positional)
 def istft(
-    Zxx: _ArrayLikeComplex_co,
+    Zxx: _ArrayLikeNumber_co,
     fs: AnyReal,
     window: _GetWindowArgument | _ArrayLikeFloat_co,
     nperseg: AnyInt | None,
     noverlap: AnyInt | None,
     nfft: AnyInt | None,
-    input_onesided: Literal[False],
+    input_onesided: Literal[False, 0],
     boundary: op.CanBool = True,
     time_axis: op.CanIndex = -1,
     freq_axis: op.CanIndex = -2,
     scaling: _LegacyScaling = "spectrum",
 ) -> tuple[_Array_f8, _ArrayComplex]: ...
-
-# input_onesided is `False` (keyword)
 @overload
+# input_onesided is `False` (keyword)
 def istft(
-    Zxx: _ArrayLikeComplex_co,
+    Zxx: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
     window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
     nperseg: AnyInt | None = None,
     noverlap: AnyInt | None = None,
     nfft: AnyInt | None = None,
     *,
-    input_onesided: Literal[False],
+    input_onesided: Literal[False, 0],
     boundary: op.CanBool = True,
     time_axis: op.CanIndex = -1,
     freq_axis: op.CanIndex = -2,
@@ -197,8 +194,8 @@ def istft(
 
 #
 def coherence(
-    x: _ArrayLikeComplex_co,
-    y: _ArrayLikeComplex_co,
+    x: _ArrayLikeNumber_co,
+    y: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
     window: _GetWindowArgument | _ArrayLikeFloat_co = "hann",
     nperseg: AnyInt | None = None,
@@ -206,4 +203,4 @@ def coherence(
     nfft: AnyInt | None = None,
     detrend: _Detrend = "constant",
     axis: op.CanIndex = -1,
-) -> tuple[_Array_f8, _ArrayReal]: ...
+) -> tuple[_Array_f8, _Array_f]: ...
