@@ -70,7 +70,7 @@ class KDTree(cKDTree):
         p: AnyReal = 2.0,
         distance_upper_bound: float = ...,  # inf
         workers: int | None = None,
-    ) -> tuple[float, float] | tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]: ...
+    ) -> tuple[float, np.intp] | tuple[npt.NDArray[np.float64], npt.NDArray[np.intp]]: ...
     @override
     def query_ball_point(
         self,
