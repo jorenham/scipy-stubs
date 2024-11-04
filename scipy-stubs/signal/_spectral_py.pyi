@@ -128,7 +128,7 @@ def check_NOLA(
     nperseg: AnyInt,
     noverlap: AnyInt,
     tol: AnyReal = 1e-10,
-) -> np.bool: ...
+) -> np.bool_: ...
 def stft(
     x: _ArrayLikeNumber_co,
     fs: AnyReal = 1.0,
