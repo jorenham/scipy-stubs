@@ -2,8 +2,6 @@ import abc
 
 import numpy as np
 from scipy._typing import Untyped
-from scipy.optimize._differentiable_functions import FD_METHODS as FD_METHODS
-from scipy.optimize._hessian_update_strategy import HessianUpdateStrategy as HessianUpdateStrategy
 
 __all__: list[str] = []
 
