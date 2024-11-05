@@ -4,6 +4,8 @@ from scipy.optimize import Bounds as Bounds, OptimizeResult as OptimizeResult, m
 from scipy.optimize._constraints import new_bounds_to_old as new_bounds_to_old
 from scipy.special import gammaln as gammaln
 
+__all__ = ["dual_annealing"]
+
 class VisitingDistribution:
     TAIL_LIMIT: float
     MIN_VISIT_BOUND: float

@@ -1,7 +1,8 @@
-from scipy._lib._array_api import array_namespace as array_namespace
+from typing import Final
+
 from scipy._typing import Untyped
 
-description: str
+description: Final[str] = ...
 
 def f1(x: Untyped) -> Untyped: ...
 def f1_fp(x: Untyped) -> Untyped: ...

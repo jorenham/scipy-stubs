@@ -1,2 +1,4 @@
-has_umfpack: bool
-has_cholmod: bool
+from typing import Final
+
+has_umfpack: Final[bool] = ...
+has_cholmod: Final[bool] = ...

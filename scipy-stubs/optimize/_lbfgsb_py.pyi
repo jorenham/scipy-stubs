@@ -1,6 +1,8 @@
 from scipy._typing import Untyped
 from scipy.sparse.linalg import LinearOperator
 
+__all__ = ["LbfgsInvHessProduct", "fmin_l_bfgs_b"]
+
 def fmin_l_bfgs_b(
     func: Untyped,
     x0: Untyped,
