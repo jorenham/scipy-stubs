@@ -1,48 +1,34 @@
-from collections.abc import Sequence
-from typing import Any, Generic, Literal, Protocol, TypeAlias, type_check_only
-from typing_extensions import NotRequired, TypedDict, TypeVar, TypeVarTuple, Unpack
+from collections.abc import Callable, Sequence
+from typing import Concatenate, Literal, TypeAlias, type_check_only
+from typing_extensions import NotRequired, TypedDict
 
 import numpy as np
 import optype.numpy as onpt
+from numpy._typing import _ArrayLikeFloat_co
+from scipy._typing import AnyReal
+from scipy.sparse.linalg import LinearOperator
 from ._constraints import Bounds as _Bounds, LinearConstraint, NonlinearConstraint
 from ._optimize import OptimizeResult as _OptimizeResult
 
-_Ts = TypeVarTuple("_Ts")
-_Ts0 = TypeVarTuple("_Ts0", default=Unpack[tuple[()]])
-_T_co = TypeVar("_T_co", covariant=True)
-_T_contra = TypeVar("_T_contra", contravariant=True)
-
-_SCT_f = TypeVar("_SCT_f", bound=np.floating[Any], default=np.float32 | np.float64)
-_ScalarLike_f: TypeAlias = float | np.floating[Any]
-_ScalarLike_f_co: TypeAlias = float | np.floating[Any] | np.integer[Any]
-
-# any objective function
-@type_check_only
-class ObjectiveFunc(Protocol[_T_contra, Unpack[_Ts], _T_co]):
-    def __call__(self, x: _T_contra, /, *args: Unpack[_Ts]) -> _T_co: ...
+_Array_1d_f8: TypeAlias = onpt.Array[tuple[int], np.float64]
+_Array_2d_f8: TypeAlias = onpt.Array[tuple[int, int], np.float64]
 
 # bounds
-Bound: TypeAlias = tuple[_ScalarLike_f_co | None, _ScalarLike_f_co | None]
+Bound: TypeAlias = tuple[AnyReal | None, AnyReal | None]
 Bounds: TypeAlias = Sequence[Bound] | _Bounds
 
 # constaints
 @type_check_only
-class ConstraintDict(TypedDict, Generic[Unpack[_Ts0]]):
+class ConstraintDict(TypedDict):
     type: Literal["eq", "ineq"]
-    fun: ObjectiveFunc[onpt.Array[tuple[int], np.floating[Any]], Unpack[_Ts0], _ScalarLike_f_co]
-    jac: NotRequired[
-        ObjectiveFunc[
-            onpt.Array[tuple[int], np.floating[Any]],
-            Unpack[_Ts0],
-            Sequence[_ScalarLike_f] | onpt.CanArray[tuple[int, ...], np.dtype[np.floating[Any]]],
-        ]
-    ]
-    args: NotRequired[tuple[Unpack[_Ts0]]]
+    fun: Callable[Concatenate[_Array_1d_f8, ...], AnyReal]
+    jac: NotRequired[Callable[Concatenate[_Array_1d_f8, ...], _ArrayLikeFloat_co]]
+    args: NotRequired[tuple[object, ...]]
 
 Constraint: TypeAlias = LinearConstraint | NonlinearConstraint | ConstraintDict
 Constraints: TypeAlias = Constraint | Sequence[Constraint]
 
-Brack: TypeAlias = tuple[_ScalarLike_f_co, _ScalarLike_f_co] | tuple[_ScalarLike_f_co, _ScalarLike_f_co, _ScalarLike_f_co]
+Brack: TypeAlias = tuple[AnyReal, AnyReal] | tuple[AnyReal, AnyReal, AnyReal]
 
 Solver: TypeAlias = Literal["minimize", "minimize_scalar", "root", "root_salar", "linprog", "quadratic_assignment"]
 
@@ -92,38 +78,41 @@ MethodAll: TypeAlias = Literal[
 SolverLSQ: TypeAlias = Literal["exact", "lsmr", None]
 MethodLSQ: TypeAlias = Literal["trf", "dogbox", "lm"]
 
-_NT = TypeVar("_NT", bound=int, default=int)
-
 @type_check_only
-class OptimizeResultMinimize(_OptimizeResult[_NT, _SCT_f], Generic[_NT, _SCT_f]):
-    jac: onpt.Array[tuple[_NT], _SCT_f]
+class OptimizeResult_minimize_scalar(_OptimizeResult):
+    x: float | np.float64
+    fun: float | np.float64
+
+    success: bool
+    message: str
+    nit: int
     nfev: int
-    njev: int
 
 @type_check_only
-class OptimizeResultMinimizeHess(OptimizeResultMinimize[_NT, _SCT_f], Generic[_NT, _SCT_f]):
-    hess: onpt.Array[tuple[int, int], _SCT_f]
-    hess_inv: onpt.Array[tuple[int, int], _SCT_f]
-    nhev: int
+class OptimizeResult_minimize(_OptimizeResult):
+    x: _Array_1d_f8
+    fun: float | np.float64
+    jac: _Array_1d_f8  # requires `jac`
+    hess: _Array_2d_f8  # requires `hess` or `hessp`
+    hess_inv: _Array_2d_f8 | LinearOperator  # requires `hess` or `hessp`, depends on solver
+
+    success: bool
+    status: int
+    message: str
+    nit: int
+    nfev: int
+    njev: int  # requires `jac`
+    nhev: int  # requires `hess` or `hessp`
+    maxcv: float  # requires `bounds`
 
 @type_check_only
-class OptimizeResultMinimizeConstr(OptimizeResultMinimize[_NT, _SCT_f], Generic[_NT, _SCT_f]):
-    maxcv: float
+class OptimizeResult_linprog(OptimizeResult_minimize):
+    slack: _Array_1d_f8
+    con: _Array_1d_f8
 
 @type_check_only
-class OptimizeResultMinimizeHessConstr(OptimizeResultMinimize[_NT, _SCT_f], Generic[_NT, _SCT_f]):
-    hess: onpt.Array[tuple[_NT, _NT], _SCT_f]
-    hess_inv: onpt.Array[tuple[_NT, _NT], _SCT_f]
-    maxcv: float
-
-@type_check_only
-class OptimizeResultLinprog(OptimizeResultMinimize[_NT, _SCT_f], Generic[_NT, _SCT_f]):
-    slack: onpt.Array[tuple[_NT], _SCT_f]
-    con: onpt.Array[tuple[int], _SCT_f]
-
-@type_check_only
-class OptimizeResultLSQ(OptimizeResultMinimize[_NT, _SCT_f], Generic[_NT, _SCT_f]):
-    cost: float | _SCT_f
-    optimality: float | _SCT_f
-    grad: onpt.Array[tuple[_NT], _SCT_f]
+class OptimizeResult_lsq(OptimizeResult_minimize):
+    cost: float | np.float64
+    optimality: float | np.float64
+    grad: _Array_1d_f8
     active_mask: onpt.Array[tuple[int], np.bool_]

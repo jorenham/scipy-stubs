@@ -9,8 +9,14 @@ from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 from ._constraints import Bounds
 from ._hessian_update_strategy import HessianUpdateStrategy
-from ._optimize import OptimizeResult
-from ._typing import Constraint, MethodJac, MethodMimimize, MethodMinimizeScalar
+from ._typing import (
+    Constraint,
+    MethodJac,
+    MethodMimimize,
+    MethodMinimizeScalar,
+    OptimizeResult_minimize,
+    OptimizeResult_minimize_scalar,
+)
 
 __all__ = ["minimize", "minimize_scalar"]
 
@@ -30,7 +36,7 @@ _FunctionHess: TypeAlias = Callable[Concatenate[_RealVector, ...], _RealMatrixLi
 
 @type_check_only
 class _CallbackResult(Protocol):
-    def __call__(self, /, intermediate_result: OptimizeResult) -> None: ...
+    def __call__(self, /, intermediate_result: OptimizeResult_minimize) -> None: ...
 
 @type_check_only
 class _CallbackVector(Protocol):
@@ -131,7 +137,7 @@ def minimize(
     fun: _FunctionObj,
     x0: _RealVectorLike,
     args: tuple[object, ...] = (),
-    method: MethodMimimize | Callable[..., OptimizeResult] | None = None,
+    method: MethodMimimize | Callable[..., OptimizeResult_minimize] | None = None,
     jac: _FunctionJac | MethodJac | Literal[False] | None = None,
     hess: _FunctionHess | MethodJac | HessianUpdateStrategy | None = None,
     hessp: Callable[Concatenate[_RealVector, _RealVector, ...], _RealVectorLike] | None = None,
@@ -140,13 +146,13 @@ def minimize(
     tol: float | None = None,
     callback: _CallbackResult | _CallbackVector | None = None,
     options: _MinimizeOptions | None = None,
-) -> OptimizeResult: ...
+) -> OptimizeResult_minimize: ...
 @overload
 def minimize(
     fun: _FunctionObjJac,
     x0: _RealVectorLike,
     args: tuple[object, ...],
-    method: MethodMimimize | Callable[..., OptimizeResult] | None,
+    method: MethodMimimize | Callable[..., OptimizeResult_minimize] | None,
     jac: Literal[True],
     hess: _FunctionHess | MethodJac | HessianUpdateStrategy | None = None,
     hessp: Callable[Concatenate[_RealVector, _RealVector, ...], _RealVectorLike] | None = None,
@@ -155,13 +161,13 @@ def minimize(
     tol: float | None = None,
     callback: _CallbackResult | _CallbackVector | None = None,
     options: _MinimizeOptions | None = None,
-) -> OptimizeResult: ...
+) -> OptimizeResult_minimize: ...
 @overload
 def minimize(
     fun: _FunctionObjJac,
     x0: _RealVectorLike,
     args: tuple[object, ...] = (),
-    method: MethodMimimize | Callable[..., OptimizeResult] | None = None,
+    method: MethodMimimize | Callable[..., OptimizeResult_minimize] | None = None,
     *,
     jac: Literal[True],
     hess: _FunctionHess | MethodJac | HessianUpdateStrategy | None = None,
@@ -171,7 +177,7 @@ def minimize(
     tol: float | None = None,
     callback: _CallbackResult | _CallbackVector | None = None,
     options: _MinimizeOptions | None = None,
-) -> OptimizeResult: ...
+) -> OptimizeResult_minimize: ...
 
 #
 def minimize_scalar(
@@ -179,10 +185,10 @@ def minimize_scalar(
     bracket: Sequence[tuple[float, float] | tuple[float, float, float]] | None = None,
     bounds: _Bound | None = None,
     args: tuple[object, ...] = (),
-    method: MethodMinimizeScalar | Callable[..., OptimizeResult] | None = None,
+    method: MethodMinimizeScalar | Callable[..., OptimizeResult_minimize_scalar] | None = None,
     tol: float | None = None,
     options: Mapping[str, object] | None = None,
-) -> OptimizeResult: ...
+) -> OptimizeResult_minimize_scalar: ...
 
 #
 def standardize_bounds(  # undocumented

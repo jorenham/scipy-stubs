@@ -1,7 +1,7 @@
 from typing import Final
 
 from scipy._typing import Untyped
-from ._optimize import OptimizeResult as OptimizeResult
+from ._optimize import OptimizeResult
 
 __all__ = ["RootResults", "bisect", "brenth", "brentq", "newton", "ridder", "toms748"]
 
