@@ -1,15 +1,22 @@
-from typing import type_check_only
+from typing import Final, final
 
 import numpy as np
-import numpy.typing as npt
-from ._optimize import OptimizeResult
+import optype as op
+import optype.numpy as onpt
+from numpy._typing import _ArrayLikeFloat_co
+from ._optimize import OptimizeResult as _OptimizeResult
 
 __all__ = ["isotonic_regression"]
 
-@type_check_only
-class _OptimizeResult(OptimizeResult):
-    x: npt.NDArray[np.float64]
-    weights: npt.NDArray[np.float64]
-    blocks: npt.NDArray[np.intp]
+@final
+class OptimizeResult(_OptimizeResult):
+    x: Final[onpt.Array[tuple[int], np.float64]]
+    weights: Final[onpt.Array[tuple[int], np.float64]]
+    blocks: Final[onpt.Array[tuple[int], np.intp]]
 
-def isotonic_regression(y: npt.ArrayLike, *, weights: npt.ArrayLike | None = None, increasing: bool = True) -> OptimizeResult: ...
+def isotonic_regression(
+    y: _ArrayLikeFloat_co,
+    *,
+    weights: _ArrayLikeFloat_co | None = None,
+    increasing: op.CanBool = True,
+) -> OptimizeResult: ...
