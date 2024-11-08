@@ -1,10 +1,21 @@
-from scipy._lib._util import check_random_state as check_random_state
+from typing import type_check_only
+
+import numpy as np
+import numpy.typing as npt
 from scipy._typing import Untyped
-from scipy.optimize import Bounds as Bounds, OptimizeResult as OptimizeResult, minimize as minimize
-from scipy.optimize._constraints import new_bounds_to_old as new_bounds_to_old
-from scipy.special import gammaln as gammaln
+from scipy.optimize import OptimizeResult
 
 __all__ = ["dual_annealing"]
+
+@type_check_only
+class _OptimizeResult(OptimizeResult):
+    message: str
+    success: bool
+    status: int
+    fun: float
+    x: npt.NDArray[np.float64]  # 1d
+    nit: int
+    nfev: int
 
 class VisitingDistribution:
     TAIL_LIMIT: float
@@ -97,4 +108,4 @@ def dual_annealing(
     no_local_search: bool = False,
     callback: Untyped | None = None,
     x0: Untyped | None = None,
-) -> Untyped: ...
+) -> _OptimizeResult: ...

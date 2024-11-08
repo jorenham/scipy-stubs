@@ -1,23 +1,55 @@
-from scipy._typing import EnterSelfMixin, Untyped
-from ._optimize import OptimizeResult
+from collections.abc import Callable, Iterable, Mapping, Sequence
+from typing import Any, Final, Literal, TypeAlias, TypeVar
+
+import numpy as np
+import numpy.typing as npt
+import optype.numpy as onpt
+from scipy._typing import EnterSelfMixin, Untyped, UntypedArray, UntypedCallable
+from ._optimize import OptimizeResult as _OptimizeResult
+from ._typing import Constraints
 
 __all__ = ["shgo"]
 
+_MinimizerKwargs: TypeAlias = Mapping[str, object]  # TODO(jorenham): TypedDict
+_Options: TypeAlias = Mapping[str, object]  # TODO(jorenham): TypedDict
+
+_SamplingMethodName: TypeAlias = Literal["simplicial", "halton", "sobol"]
+_SamplingMethodFunc: TypeAlias = Callable[[int, int], npt.NDArray[np.float64]]
+_SamplingMethod: TypeAlias = _SamplingMethodName | _SamplingMethodFunc
+
+_VT = TypeVar("_VT")
+_RT = TypeVar("_RT")
+
+class OptimizeResult(_OptimizeResult):
+    x: npt.NDArray[np.float64]
+    xl: list[npt.NDArray[np.float64]]
+    fun: float | np.float64
+    funl: list[float | np.float64]
+    success: bool
+    message: str
+    nfev: int
+    nlfev: int
+    nljev: int  # undocumented
+    nlhev: int  # undocumented
+    nit: int
+
+###
+
 class SHGO(EnterSelfMixin):
-    func: Untyped
+    func: UntypedCallable
     bounds: Untyped
-    args: Untyped
-    callback: Untyped
-    dim: Untyped
-    constraints: Untyped
+    args: tuple[object, ...]
+    callback: UntypedCallable
+    dim: int
+    constraints: Constraints
     min_cons: Untyped
     g_cons: Untyped
     g_args: Untyped
-    minimizer_kwargs: Untyped
+    minimizer_kwargs: _MinimizerKwargs
     f_min_true: Untyped
     minimize_every_iter: bool
-    maxiter: Untyped
-    maxfev: Untyped
+    maxiter: int
+    maxfev: int
     maxev: Untyped
     maxtime: Untyped
     minhgrd: Untyped
@@ -28,9 +60,9 @@ class SHGO(EnterSelfMixin):
     min_solver_args: Untyped
     stop_global: bool
     break_routine: bool
-    iters: Untyped
+    iters: int
     iters_done: int
-    n: Untyped
+    n: int
     nc: int
     n_prc: int
     n_sampled: int
@@ -67,16 +99,16 @@ class SHGO(EnterSelfMixin):
     Xs: Untyped
     def __init__(
         self,
-        func: Untyped,
+        func: UntypedCallable,
         bounds: Untyped,
-        args: Untyped = (),
-        constraints: Untyped | None = None,
+        args: tuple[object, ...] = (),
+        constraints: Constraints | None = None,
         n: Untyped | None = None,
         iters: Untyped | None = None,
-        callback: Untyped | None = None,
-        minimizer_kwargs: Untyped | None = None,
-        options: Untyped | None = None,
-        sampling_method: str = "simplicial",
+        callback: UntypedCallable | None = None,
+        minimizer_kwargs: Mapping[str, Any] | None = None,
+        options: Mapping[str, Any] | None = None,
+        sampling_method: _SamplingMethod = "simplicial",
         workers: int = 1,
     ) -> None: ...
     def init_options(self, options: Untyped) -> None: ...
@@ -109,38 +141,42 @@ class SHGO(EnterSelfMixin):
     def sorted_samples(self) -> Untyped: ...
     def delaunay_triangulation(self, n_prc: int = 0) -> Untyped: ...
 
+# undocumented
 class LMap:
     v: Untyped
     x_l: Untyped
     lres: Untyped
     f_min: Untyped
-    lbounds: Untyped
-    def __init__(self, v: Untyped) -> None: ...
+    lbounds: list[Untyped]
+    def __init__(self, /, v: Untyped) -> None: ...
 
+# undocumented
 class LMapCache:
-    cache: Untyped
-    v_maps: Untyped
-    xl_maps: Untyped
-    xl_maps_set: Untyped
-    f_maps: Untyped
-    lbound_maps: Untyped
+    cache: Final[dict[tuple[np.number[Any], ...], Untyped]]
+    xl_maps_set: Final[set[Untyped]]
+    v_maps: Final[list[Untyped]]
+    lbound_maps: Final[list[Untyped]]
+
+    xl_maps: list[Untyped] | UntypedArray
+    f_maps: list[Untyped]
     size: int
-    def __init__(self) -> None: ...
-    def __getitem__(self, v: Untyped) -> Untyped: ...
-    def add_res(self, v: Untyped, lres: Untyped, bounds: Untyped | None = None) -> None: ...
-    def sort_cache_result(self) -> Untyped: ...
+
+    def __init__(self, /) -> None: ...
+    def __getitem__(self, v: npt.ArrayLike, /) -> Untyped: ...
+    def add_res(self, /, v: Untyped, lres: Untyped, bounds: Untyped | None = None) -> None: ...
+    def sort_cache_result(self, /) -> dict[str, Untyped]: ...  # TODO(jorenham): TypedDict
 
 def shgo(
-    func: Untyped,
+    func: UntypedCallable,
     bounds: Untyped,
     args: tuple[object, ...] = (),
-    constraints: Untyped | None = None,
+    constraints: Constraints | None = None,
     n: int = 100,
     iters: int = 1,
-    callback: Untyped | None = None,
-    minimizer_kwargs: Untyped | None = None,
-    options: Untyped | None = None,
-    sampling_method: str = "simplicial",
+    callback: Callable[[onpt.Array[tuple[int], np.float64]], None] | None = None,
+    minimizer_kwargs: _MinimizerKwargs | None = None,  # TODO(jorenham): TypedDict
+    options: _Options | None = None,  # TODO(jorenham): TypedDict
+    sampling_method: _SamplingMethod = "simplicial",
     *,
-    workers: int = 1,
+    workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
 ) -> OptimizeResult: ...

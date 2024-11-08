@@ -1,6 +1,7 @@
 from collections.abc import Callable, Iterable
-from typing import Any
+from typing import Any, type_check_only
 
+import numpy as np
 import numpy.typing as npt
 from scipy._typing import Untyped
 from ._constraints import Bounds
@@ -8,8 +9,18 @@ from ._optimize import OptimizeResult
 
 __all__ = ["direct"]
 
-ERROR_MESSAGES: tuple[str, ...]
-SUCCESS_MESSAGES: tuple[str, ...]
+ERROR_MESSAGES: tuple[str, ...] = ...
+SUCCESS_MESSAGES: tuple[str, ...] = ...
+
+@type_check_only
+class _OptimizeResult(OptimizeResult):
+    message: str
+    success: bool
+    status: int
+    fun: float
+    x: npt.NDArray[np.float64]  # 1d
+    nit: int
+    nfev: int
 
 def direct(
     func: Callable[[npt.ArrayLike, tuple[Any]], float],
@@ -25,4 +36,4 @@ def direct(
     vol_tol: float = 1e-16,
     len_tol: float = 1e-06,
     callback: Callable[[npt.ArrayLike], None] | None = None,
-) -> OptimizeResult: ...
+) -> _OptimizeResult: ...

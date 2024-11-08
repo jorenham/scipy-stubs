@@ -1,12 +1,12 @@
-from scipy._typing import Untyped
+from scipy._typing import NanPolicy, Untyped, UntypedCallable
 
 __all__ = ["curve_fit", "fixed_point", "fsolve", "leastsq"]
 
 def fsolve(
-    func: Untyped,
+    func: UntypedCallable,
     x0: Untyped,
-    args: Untyped = (),
-    fprime: Untyped | None = None,
+    args: tuple[object, ...] = (),
+    fprime: UntypedCallable | None = None,
     full_output: int = 0,
     col_deriv: int = 0,
     xtol: float = ...,
@@ -17,10 +17,10 @@ def fsolve(
     diag: Untyped | None = None,
 ) -> Untyped: ...
 def leastsq(
-    func: Untyped,
+    func: UntypedCallable,
     x0: Untyped,
-    args: Untyped = (),
-    Dfun: Untyped | None = None,
+    args: tuple[object, ...] = (),
+    Dfun: UntypedCallable | None = None,
     full_output: bool = False,
     col_deriv: bool = False,
     ftol: float = ...,
@@ -32,7 +32,7 @@ def leastsq(
     diag: Untyped | None = None,
 ) -> Untyped: ...
 def curve_fit(
-    f: Untyped,
+    f: UntypedCallable,
     xdata: Untyped,
     ydata: Untyped,
     p0: Untyped | None = None,
@@ -44,14 +44,20 @@ def curve_fit(
     jac: Untyped | None = None,
     *,
     full_output: bool = False,
-    nan_policy: Untyped | None = None,
-    **kwargs: Untyped,
+    nan_policy: NanPolicy | None = None,
+    **kwargs: tuple[object, ...],
 ) -> Untyped: ...
-def check_gradient(fcn: Untyped, Dfcn: Untyped, x0: Untyped, args: Untyped = (), col_deriv: int = 0) -> Untyped: ...
-def fixed_point(
-    func: Untyped,
+def check_gradient(
+    fcn: UntypedCallable,
+    Dfcn: UntypedCallable,
     x0: Untyped,
-    args: Untyped = (),
+    args: tuple[object, ...] = (),
+    col_deriv: int = 0,
+) -> Untyped: ...
+def fixed_point(
+    func: UntypedCallable,
+    x0: Untyped,
+    args: tuple[object, ...] = (),
     xtol: float = 1e-08,
     maxiter: int = 500,
     method: str = "del2",

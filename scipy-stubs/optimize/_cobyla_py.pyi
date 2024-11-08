@@ -1,20 +1,27 @@
-from scipy._typing import Untyped
-from ._optimize import OptimizeResult as OptimizeResult
+from collections.abc import Callable
+from typing import Literal, TypeAlias
 
-izip = zip
+import numpy as np
+import optype.numpy as onpt
+from scipy._typing import AnyInt, AnyReal, Untyped, UntypedCallable
 
-def synchronized(func: Untyped) -> Untyped: ...
+__all__ = ["fmin_cobyla"]
+
+_Array_1d_f8: TypeAlias = onpt.Array[tuple[int], np.float64]
+
+###
+
 def fmin_cobyla(
-    func: Untyped,
+    func: UntypedCallable,
     x0: Untyped,
     cons: Untyped,
-    args: Untyped = (),
-    consargs: Untyped | None = None,
-    rhobeg: float = 1.0,
-    rhoend: float = 0.0001,
-    maxfun: int = 1000,
-    disp: Untyped | None = None,
-    catol: float = 0.0002,
+    args: tuple[object, ...] = (),
+    consargs: tuple[object, ...] | None = None,
+    rhobeg: AnyReal = 1.0,
+    rhoend: AnyReal = 0.0001,
+    maxfun: AnyInt = 1000,
+    disp: Literal[0, 1, 2, 3] | None = None,
+    catol: AnyReal = 0.0002,
     *,
-    callback: Untyped | None = None,
-) -> Untyped: ...
+    callback: Callable[[_Array_1d_f8], None] | None = None,
+) -> _Array_1d_f8: ...
