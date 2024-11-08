@@ -49,7 +49,7 @@ codespell = "^2.3.0"
 mdformat-gfm = "^0.3.7"
 mdformat-gfm-alerts = "^1.0.1"
 mdformat-pyproject = "^0.0.1"
-ruff = "^0.7.2"
+ruff = "^0.7.3"
 sp-repo-review = {version = "^2024.8.19", extras = ["cli"]}
 
 [tool.poetry.group.codegen]
