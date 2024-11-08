@@ -29,11 +29,12 @@ _FunResid: TypeAlias = Callable[[_VectorFloat[_N_x]], _VectorFloat[_N_f]]
 _FunJac: TypeAlias = Callable[[_VectorFloat[_N_x], _VectorFloat[_N_f]], _MatrixFloat[_N_f, _N_x]]
 _FunLoss: TypeAlias = Callable[[_VectorFloat[_N_x]], _ValueFloat]
 
-def lsmr_operator(
-    Jop: LinearOperator,
-    d: _VectorFloat[_N_x, _SCT_f],
-    active_set: _VectorBool[_N_x],
-) -> LinearOperator: ...
+###
+
+#
+def lsmr_operator(Jop: LinearOperator, d: _VectorFloat[_N_x, _SCT_f], active_set: _VectorBool[_N_x]) -> LinearOperator: ...
+
+#
 def find_intersection(
     x: _VectorFloat[_N_x],
     tr_bounds: _VectorFloat[_N_x],
@@ -47,6 +48,8 @@ def find_intersection(
     _VectorBool[_N_x],
     _VectorBool[_N_x],
 ]: ...
+
+#
 def dogleg_step(
     x: _VectorFloat[_N_x],
     newton_step: _VectorFloat[_N_x],
@@ -57,6 +60,8 @@ def dogleg_step(
     lb: _VectorFloat[_N_x],
     ub: _VectorFloat[_N_x],
 ) -> tuple[_VectorFloat[_N_x], _VectorInt[_N_x], np.bool_]: ...
+
+# undocumented
 def dogbox(
     fun: _FunResid[_N_x, _N_f],
     jac: _FunJac[_N_x, _N_f],

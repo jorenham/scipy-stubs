@@ -1,5 +1,5 @@
 from collections.abc import Callable, Mapping
-from typing import Literal, TypeAlias
+from typing import Literal, TypeAlias, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -20,8 +20,23 @@ _FunObj: TypeAlias = Callable[[_ArrayFloat[tuple[int]], _ValueFloat], _MatrixFlo
 _FunJac: TypeAlias = Callable[[_ArrayFloat[tuple[int]], _ValueFloat], _MatrixFloat]
 _FunLoss: TypeAlias = Callable[[_ValueFloat], _ValueFloat]
 
-# TODO: custom `OptimizeResult``
+@type_check_only
+class _OptimizeResult(OptimizeResult):
+    x: _ArrayFloat
+    jac: _MatrixFloat
+    cost: _ValueFloat
+    f0: _ValueFloat
+    J0: _MatrixFloat
+    ftol: _ValueFloat
+    xtol: _ValueFloat
+    gtol: _ValueFloat
+    max_nfev: int
+    x_scale: _ValueFloat | _ArrayFloat
+    loss_function: _ValueFloat | _ArrayFloat
+    tr_solver: SolverLSQ
+    tr_options: Mapping[str, object]
 
+# undocumented
 def trf(
     fun: _FunObj,
     jac: _FunJac,
@@ -39,7 +54,9 @@ def trf(
     tr_solver: SolverLSQ,
     tr_options: Mapping[str, object],
     verbose: bool,
-) -> OptimizeResult: ...
+) -> _OptimizeResult: ...
+
+# undocumented
 def trf_bounds(
     fun: _FunObj,
     jac: _FunJac,
@@ -57,7 +74,9 @@ def trf_bounds(
     tr_solver: SolverLSQ,
     tr_options: Mapping[str, object],
     verbose: bool,
-) -> OptimizeResult: ...
+) -> _OptimizeResult: ...
+
+# undocumented
 def trf_no_bounds(
     fun: _FunObj,
     jac: _FunJac,
@@ -73,7 +92,9 @@ def trf_no_bounds(
     tr_solver: SolverLSQ,
     tr_options: Mapping[str, object],
     verbose: bool,
-) -> OptimizeResult: ...
+) -> _OptimizeResult: ...
+
+# undocumented
 def select_step(
     x: _ArrayFloat,
     J_h: _MatrixFloat,

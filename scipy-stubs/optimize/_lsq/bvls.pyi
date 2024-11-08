@@ -2,25 +2,25 @@ from typing import Any, Literal, type_check_only
 
 import numpy as np
 import numpy.typing as npt
-from scipy._typing import AnyInt, AnyReal, Untyped
+from scipy._typing import AnyInt, AnyReal
 from scipy.optimize import OptimizeResult
 
 @type_check_only
 class _OptimizeResult(OptimizeResult):
     x: npt.NDArray[np.float64]
     fun: float | np.float64
-    cost: Untyped
-    optimality: Untyped
-    active_mask: Untyped
+    cost: float | np.float64
+    initial_cost: float | np.float64
+    optimality: float | np.float64
+    active_mask: npt.NDArray[np.float64]
     nit: int
     status: int
-    initial_cost: Untyped
 
 # undocumented
 def compute_kkt_optimality(
-    g: npt.NDArray[np.floating[Any]] | AnyReal,
-    on_bound: AnyReal,
-) -> np.floating[Any] | float: ...
+    g: npt.NDArray[np.float64],
+    on_bound: npt.NDArray[np.float64],
+) -> np.float64: ...
 
 # undocumented
 def bvls(
@@ -30,7 +30,7 @@ def bvls(
     lb: npt.NDArray[np.floating[Any]],
     ub: npt.NDArray[np.floating[Any]],
     tol: AnyReal,
-    max_iter: AnyInt,
+    max_iter: AnyInt | None,
     verbose: Literal[0, 1, 2],
     rcond: AnyReal | None = None,
 ) -> _OptimizeResult: ...
