@@ -1,15 +1,16 @@
 import abc
 import numbers
 from collections.abc import Callable, Mapping, Sequence
-from typing import Any, ClassVar, Final, Literal, Protocol, TypeAlias, TypeVar, overload, type_check_only
-from typing_extensions import Self
+from typing import Any, ClassVar, Final, Literal, Protocol, TypeAlias, overload, type_check_only
+from typing_extensions import Self, TypeVar
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 import optype.numpy as onpt
+import optype.typing as opt
 from numpy._typing import _ArrayLikeInt
-from optype import CanBool, CanFloat, CanIndex, CanInt, CanLen
-from scipy._typing import RNG, AnyBool, AnyInt, AnyReal, Seed
+from scipy._typing import RNG, AnyInt, AnyReal, Seed
 from scipy.spatial.distance import _MetricCallback, _MetricKind
 
 __all__ = [
@@ -34,7 +35,9 @@ _ArrayT_f = TypeVar("_ArrayT_f", bound=npt.NDArray[np.floating[Any]])
 _N = TypeVar("_N", bound=int)
 
 @type_check_only
-class _CanLenArray(CanLen, onpt.CanArray[Any, np.dtype[_SCT_co]], Protocol[_SCT_co]): ...
+class _CanLenArray(Protocol[_SCT_co]):
+    def __len__(self, /) -> int: ...
+    def __array__(self, /) -> npt.NDArray[_SCT_co]: ...
 
 _Scalar_f_co: TypeAlias = np.floating[Any] | np.integer[Any] | np.bool_
 
@@ -66,19 +69,19 @@ class QMCEngine(abc.ABC):
 
     @abc.abstractmethod
     def __init__(self, /, d: AnyInt, *, optimization: _MethodOptimize | None = None, seed: Seed | None = None) -> None: ...
-    def random(self, /, n: AnyInt = 1, *, workers: AnyInt = 1) -> _Array2D_f8: ...
+    def random(self, /, n: opt.AnyInt = 1, *, workers: AnyInt = 1) -> _Array2D_f8: ...
     def integers(
         self,
         /,
         l_bounds: _ArrayLikeInt,
         *,
         u_bounds: _ArrayLikeInt | None = None,
-        n: AnyInt = 1,
-        endpoint: AnyBool = False,
-        workers: AnyInt = 1,
+        n: opt.AnyInt = 1,
+        endpoint: op.CanBool = False,
+        workers: opt.AnyInt = 1,
     ) -> _Array2D[np.int64]: ...
     def reset(self, /) -> Self: ...
-    def fast_forward(self, /, n: AnyInt) -> Self: ...
+    def fast_forward(self, /, n: opt.AnyInt) -> Self: ...
 
 class Halton(QMCEngine):
     base: list[int]
@@ -121,7 +124,7 @@ class Sobol(QMCEngine):
         /,
         d: AnyInt,
         *,
-        scramble: CanBool = True,
+        scramble: op.CanBool = True,
         bits: AnyInt | None = None,
         seed: Seed | None = None,
         optimization: _MethodOptimize | None = None,
@@ -172,7 +175,7 @@ class MultivariateNormalQMC:
         cov: _Any2D_f_co | None = None,
         *,
         cov_root: _Any2D_f_co | None = None,
-        inv_transform: CanBool = True,
+        inv_transform: op.CanBool = True,
         engine: QMCEngine | None = None,
         seed: Seed | None = None,
     ) -> None: ...
@@ -204,11 +207,17 @@ def scale(
     l_bounds: _Any1D_f_co | AnyReal,
     u_bounds: _Any1D_f_co | AnyReal,
     *,
-    reverse: CanBool = False,
+    reverse: op.CanBool = False,
 ) -> _Array2D_f8: ...
-def discrepancy(sample: _Any2D_f, *, iterative: CanBool = False, method: _MethodDisc = "CD", workers: CanInt = 1) -> float: ...
+def discrepancy(
+    sample: _Any2D_f,
+    *,
+    iterative: op.CanBool = False,
+    method: _MethodDisc = "CD",
+    workers: op.CanInt = 1,
+) -> float: ...
 def geometric_discrepancy(sample: _Any2D_f, method: _MethodDist = "mindist", metric: _MetricDist = "euclidean") -> np.float64: ...
-def update_discrepancy(x_new: _Any1D_f, sample: _Any2D_f, initial_disc: CanFloat) -> float: ...
+def update_discrepancy(x_new: _Any1D_f, sample: _Any2D_f, initial_disc: op.CanFloat) -> float: ...
 def primes_from_2_to(n: AnyInt) -> _Array1D[np.int_]: ...
 def n_primes(n: AnyInt) -> list[int] | _Array1D[np.int_]: ...
 
@@ -230,41 +239,41 @@ def _ensure_in_unit_hypercube(sample: _Any2D_f) -> _Array2D_f8: ...
 @overload
 def _perturb_discrepancy(
     sample: _Array2D[np.integer[Any] | np.bool_],
-    i1: CanIndex,
-    i2: CanIndex,
-    k: CanIndex,
+    i1: op.CanIndex,
+    i2: op.CanIndex,
+    k: op.CanIndex,
     disc: AnyReal,
 ) -> np.float64: ...
 @overload
 def _perturb_discrepancy(
     sample: _Array2D[_SCT_fc],
-    i1: CanIndex,
-    i2: CanIndex,
-    k: CanIndex,
+    i1: op.CanIndex,
+    i2: op.CanIndex,
+    k: op.CanIndex,
     disc: AnyReal,
 ) -> _SCT_fc: ...
 @overload
-def _van_der_corput_permutation(base: CanIndex, *, random_state: Seed | None = None) -> _Array2D[np.int_]: ...
+def _van_der_corput_permutation(base: op.CanIndex, *, random_state: Seed | None = None) -> _Array2D[np.int_]: ...
 @overload
-def _van_der_corput_permutation(base: CanFloat, *, random_state: Seed | None = None) -> _Array2D_f8: ...
+def _van_der_corput_permutation(base: op.CanFloat, *, random_state: Seed | None = None) -> _Array2D_f8: ...
 def van_der_corput(
-    n: CanInt,
+    n: op.CanInt,
     base: AnyInt = 2,
     *,
     start_index: AnyInt = 0,
-    scramble: CanBool = False,
+    scramble: op.CanBool = False,
     permutations: _ArrayLikeInt | None = None,
     seed: Seed | None = None,
-    workers: CanInt = 1,
+    workers: op.CanInt = 1,
 ) -> _Array1D_f8: ...
 
 #
 @overload
-def _validate_workers(workers: CanInt[Literal[1]] | CanIndex[Literal[1]] | Literal[1] = 1) -> Literal[1]: ...
+def _validate_workers(workers: op.CanInt[Literal[1]] | op.CanIndex[Literal[1]] | Literal[1] = 1) -> Literal[1]: ...
 @overload
 def _validate_workers(workers: _N) -> _N: ...
 @overload
-def _validate_workers(workers: CanInt[_N] | CanIndex[_N]) -> _N: ...
+def _validate_workers(workers: op.CanInt[_N] | op.CanIndex[_N]) -> _N: ...
 def _validate_bounds(
     l_bounds: _Any1D_f_co,
     u_bounds: _Any1D_f_co,
