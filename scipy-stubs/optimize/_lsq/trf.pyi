@@ -5,7 +5,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype.numpy as onpt
 from scipy.optimize import OptimizeResult
-from scipy.optimize._typing import SolverLSQ
+from scipy.optimize._typing import TRSolver
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
@@ -33,7 +33,7 @@ class _OptimizeResult(OptimizeResult):
     max_nfev: int
     x_scale: _ValueFloat | _ArrayFloat
     loss_function: _ValueFloat | _ArrayFloat
-    tr_solver: SolverLSQ
+    tr_solver: TRSolver
     tr_options: Mapping[str, object]
 
 # undocumented
@@ -51,7 +51,7 @@ def trf(
     max_nfev: int,
     x_scale: Literal["jac"] | _ValueFloat | _ArrayFloat,
     loss_function: _FunLoss,
-    tr_solver: SolverLSQ,
+    tr_solver: TRSolver,
     tr_options: Mapping[str, object],
     verbose: bool,
 ) -> _OptimizeResult: ...
@@ -71,7 +71,7 @@ def trf_bounds(
     max_nfev: int,
     x_scale: Literal["jac"] | _ValueFloat | _ArrayFloat,
     loss_function: _FunLoss,
-    tr_solver: SolverLSQ,
+    tr_solver: TRSolver,
     tr_options: Mapping[str, object],
     verbose: bool,
 ) -> _OptimizeResult: ...
@@ -89,7 +89,7 @@ def trf_no_bounds(
     max_nfev: int,
     x_scale: Literal["jac"] | _ValueFloat | _ArrayFloat,
     loss_function: _FunLoss,
-    tr_solver: SolverLSQ,
+    tr_solver: TRSolver,
     tr_options: Mapping[str, object],
     verbose: bool,
 ) -> _OptimizeResult: ...

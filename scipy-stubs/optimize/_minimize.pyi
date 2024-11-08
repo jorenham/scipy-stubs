@@ -4,43 +4,32 @@ from typing import Any, Concatenate, Final, Literal, Protocol, TypeAlias, TypedD
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onpt
-from numpy._typing import _ArrayLike
-from scipy.sparse import sparray, spmatrix
+from numpy._typing import _ArrayLikeFloat_co
+from scipy._typing import AnyReal
 from scipy.sparse.linalg import LinearOperator
-from ._constraints import Bounds
 from ._hessian_update_strategy import HessianUpdateStrategy
-from ._typing import (
-    Constraint,
-    MethodJac,
-    MethodMimimize,
-    MethodMinimizeScalar,
-    OptimizeResult_minimize,
-    OptimizeResult_minimize_scalar,
-)
+from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
+from .optimize import OptimizeResult as _OptimizeResult
 
 __all__ = ["minimize", "minimize_scalar"]
 
-_RealScalar: TypeAlias = np.floating[Any] | np.integer[Any] | np.bool_
-_RealVector: TypeAlias = onpt.Array[tuple[int], np.floating[Any]]
+_Array_f8_1d: TypeAlias = onpt.Array[tuple[int], np.float64]
+_Array_f8_2d: TypeAlias = onpt.Array[tuple[int, int], np.float64]
 
-_RealScalarLike: TypeAlias = float | _RealScalar
-_RealVectorLike: TypeAlias = _ArrayLike[_RealScalar] | Sequence[_RealScalarLike]
-_RealMatrixLike: TypeAlias = _ArrayLike[_RealScalar] | Sequence[Sequence[_RealScalarLike]] | spmatrix | sparray | LinearOperator
+_FunctionObj: TypeAlias = Callable[Concatenate[_Array_f8_1d, ...], AnyReal]
+_FunctionJac: TypeAlias = Callable[Concatenate[_Array_f8_1d, ...], _ArrayLikeFloat_co]
+_FunctionObjJac: TypeAlias = Callable[Concatenate[_Array_f8_1d, ...], tuple[AnyReal, _ArrayLikeFloat_co]]
+_FunctionHess: TypeAlias = Callable[Concatenate[_Array_f8_1d, ...], _ArrayLikeFloat_co]
 
-_Bound: TypeAlias = tuple[_RealScalarLike | None, _RealScalarLike | None]
-
-_FunctionObj: TypeAlias = Callable[Concatenate[_RealVector, ...], _RealScalarLike]
-_FunctionJac: TypeAlias = Callable[Concatenate[_RealVector, ...], _RealVectorLike]
-_FunctionObjJac: TypeAlias = Callable[Concatenate[_RealVector, ...], tuple[_RealScalarLike, _RealVectorLike]]
-_FunctionHess: TypeAlias = Callable[Concatenate[_RealVector, ...], _RealMatrixLike]
+_MethodJac: TypeAlias = Literal["2-point", "3-point", "cs"]
 
 @type_check_only
 class _CallbackResult(Protocol):
-    def __call__(self, /, intermediate_result: OptimizeResult_minimize) -> None: ...
+    def __call__(self, /, intermediate_result: OptimizeResult) -> None: ...
 
 @type_check_only
 class _CallbackVector(Protocol):
-    def __call__(self, /, xk: _RealVector) -> None: ...
+    def __call__(self, /, xk: _Array_f8_1d) -> None: ...
 
 @type_check_only
 class _MinimizeOptions(TypedDict, total=False):
@@ -54,6 +43,11 @@ class _MinimizeOptions(TypedDict, total=False):
     maxfev: int
     # TNC
     maxCGit: int
+    offset: float
+    stepmx: float
+    accuracy: float
+    minfev: float
+    rescale: float
     # L-BFGS-B, TNC
     maxfun: int
     # L-BFGS-B
@@ -61,11 +55,8 @@ class _MinimizeOptions(TypedDict, total=False):
     iprint: int
     maxls: int
     # Nelder-Mead
-    initial_simplex: _RealMatrixLike
+    initial_simplex: _ArrayLikeFloat_co
     adaptive: bool
-    # COBYLA
-    tol: float
-    # Nelder-Mead
     xatol: float
     fatol: float
     # CG, BFGS, L-BFGS-B, dogleg, trust-ncg, trust-exact, TNC, trust-constr
@@ -76,14 +67,15 @@ class _MinimizeOptions(TypedDict, total=False):
     ftol: float
     # BFGS
     xrtol: float
+    hess_inv0: npt.NDArray[np.floating[Any]]
     # COBYLA
+    tol: float
     catool: float
+    rhobeg: float
+    f_target: float
     # COBYQA
     feasibility_tol: float
-    # trust-constr
-    barrier_tol: float
-    # BFGS
-    hess_inv0: npt.NDArray[np.floating[Any]]
+    final_tr_radius: float
     # Powell
     direc: npt.NDArray[np.floating[Any]]
     # CG, BFGS, Newton-CG, L-BFGS-B, TNC, SLSQP
@@ -94,112 +86,117 @@ class _MinimizeOptions(TypedDict, total=False):
     # CG, BFGS
     norm: float
     # CG, BFGS, L-BFGS-B, TNC, SLSQP, trust-constr
-    finite_diff_rel_step: _RealScalarLike | _RealVectorLike
+    finite_diff_rel_step: AnyReal | _ArrayLikeFloat_co
     # dogleg, trust-ncg, trust-exact
     initial_trust_radius: float
     max_trust_radius: float
     # COBYQA, trust-constr
     initial_tr_radius: float
-    # COBYQA
-    final_tr_radius: float
     # trust-constr
+    barrier_tol: float
     sparse_jacobian: bool
     initial_constr_penalty: float
     initial_barrier_parameter: float
     initial_barrier_tolerance: float
     factorization_method: Literal["NormalEquation", "AugmentedSystem", "QRFactorization", "SVDFactorization"]
+    verbose: Literal[0, 1, 2, 3]
     # dogleg, trust-ncg, trust-exact, TNC
     eta: float
     # trust-krylov
     inexact: bool
     # TNC (list of floats), COBYQA (bool)
     scale: Sequence[float] | bool
-    # TNC
-    offset: float
-    stepmx: float
-    accuracy: float
-    minfev: float
-    rescale: float
-    # COBYLA
-    rhobeg: float
-    f_target: float
-    # trust-constr
-    verbose: Literal[0, 1, 2, 3]
+
+@type_check_only
+class _OptimizeResult_scalar(_OptimizeResult):
+    x: float | np.float64
+    fun: float | np.float64
+
+    success: bool
+    message: str
+    nit: int
+    nfev: int
+
+class OptimizeResult(_OptimizeResult):
+    x: _Array_f8_1d
+    fun: float | np.float64
+    jac: _Array_f8_1d  # requires `jac`
+    hess: _Array_f8_2d  # requires `hess` or `hessp`
+    hess_inv: _Array_f8_2d | LinearOperator  # requires `hess` or `hessp`, depends on solver
+
+    success: bool
+    status: int
+    message: str
+    nit: int
+    nfev: int
+    njev: int  # requires `jac`
+    nhev: int  # requires `hess` or `hessp`
+    maxcv: float  # requires `bounds`
 
 ###
 
-MINIMIZE_METHODS: Final[Sequence[MethodMimimize]] = ...
-MINIMIZE_METHODS_NEW_CB: Final[Sequence[MethodMimimize]] = ...
-MINIMIZE_SCALAR_METHODS: Final[Sequence[MethodMinimizeScalar]] = ...
+MINIMIZE_METHODS: Final[list[MethodMimimize]] = ...
+MINIMIZE_METHODS_NEW_CB: Final[list[MethodMimimize]] = ...
+MINIMIZE_SCALAR_METHODS: Final[list[MethodMinimizeScalar]] = ...
 
-@overload
+@overload  # jac: False = ...
 def minimize(
     fun: _FunctionObj,
-    x0: _RealVectorLike,
+    x0: _ArrayLikeFloat_co,
     args: tuple[object, ...] = (),
-    method: MethodMimimize | Callable[..., OptimizeResult_minimize] | None = None,
-    jac: _FunctionJac | MethodJac | Literal[False] | None = None,
-    hess: _FunctionHess | MethodJac | HessianUpdateStrategy | None = None,
-    hessp: Callable[Concatenate[_RealVector, _RealVector, ...], _RealVectorLike] | None = None,
-    bounds: Bounds | Sequence[_Bound] | None = None,
-    constraints: Constraint | Sequence[Constraint] | tuple[()] = (),
-    tol: float | None = None,
+    method: MethodMimimize | Callable[..., OptimizeResult] | None = None,
+    jac: _FunctionJac | _MethodJac | Literal[False] | None = None,
+    hess: _FunctionHess | _MethodJac | HessianUpdateStrategy | None = None,
+    hessp: Callable[Concatenate[_Array_f8_1d, _Array_f8_1d, ...], _ArrayLikeFloat_co] | None = None,
+    bounds: Bounds | None = None,
+    constraints: Constraints = (),
+    tol: AnyReal | None = None,
     callback: _CallbackResult | _CallbackVector | None = None,
     options: _MinimizeOptions | None = None,
-) -> OptimizeResult_minimize: ...
-@overload
+) -> OptimizeResult: ...
+@overload  # jac: True  (positional)
 def minimize(
     fun: _FunctionObjJac,
-    x0: _RealVectorLike,
+    x0: _ArrayLikeFloat_co,
     args: tuple[object, ...],
-    method: MethodMimimize | Callable[..., OptimizeResult_minimize] | None,
-    jac: Literal[True],
-    hess: _FunctionHess | MethodJac | HessianUpdateStrategy | None = None,
-    hessp: Callable[Concatenate[_RealVector, _RealVector, ...], _RealVectorLike] | None = None,
-    bounds: Bounds | Sequence[_Bound] | None = None,
-    constraints: Constraint | Sequence[Constraint] = (),
-    tol: float | None = None,
+    method: MethodMimimize | Callable[..., OptimizeResult] | None,
+    jac: Literal[1, True],
+    hess: _FunctionHess | _MethodJac | HessianUpdateStrategy | None = None,
+    hessp: Callable[Concatenate[_Array_f8_1d, _Array_f8_1d, ...], _ArrayLikeFloat_co] | None = None,
+    bounds: Bounds | None = None,
+    constraints: Constraints = (),
+    tol: AnyReal | None = None,
     callback: _CallbackResult | _CallbackVector | None = None,
     options: _MinimizeOptions | None = None,
-) -> OptimizeResult_minimize: ...
-@overload
+) -> OptimizeResult: ...
+@overload  # jac: True  (keyword)
 def minimize(
     fun: _FunctionObjJac,
-    x0: _RealVectorLike,
+    x0: _ArrayLikeFloat_co,
     args: tuple[object, ...] = (),
-    method: MethodMimimize | Callable[..., OptimizeResult_minimize] | None = None,
+    method: MethodMimimize | Callable[..., OptimizeResult] | None = None,
     *,
-    jac: Literal[True],
-    hess: _FunctionHess | MethodJac | HessianUpdateStrategy | None = None,
-    hessp: Callable[Concatenate[_RealVector, _RealVector, ...], _RealVectorLike] | None = None,
-    bounds: Bounds | Sequence[_Bound] | None = None,
-    constraints: Constraint | Sequence[Constraint] | tuple[()] = (),
-    tol: float | None = None,
+    jac: Literal[1, True],
+    hess: _FunctionHess | _MethodJac | HessianUpdateStrategy | None = None,
+    hessp: Callable[Concatenate[_Array_f8_1d, _Array_f8_1d, ...], _ArrayLikeFloat_co] | None = None,
+    bounds: Bounds | None = None,
+    constraints: Constraints = (),
+    tol: AnyReal | None = None,
     callback: _CallbackResult | _CallbackVector | None = None,
     options: _MinimizeOptions | None = None,
-) -> OptimizeResult_minimize: ...
+) -> OptimizeResult: ...
 
 #
 def minimize_scalar(
-    fun: Callable[Concatenate[float, ...], float | np.floating[Any]],
-    bracket: Sequence[tuple[float, float] | tuple[float, float, float]] | None = None,
-    bounds: _Bound | None = None,
+    fun: Callable[Concatenate[float, ...], AnyReal] | Callable[Concatenate[np.float64, ...], AnyReal],
+    bracket: Sequence[tuple[AnyReal, AnyReal] | tuple[AnyReal, AnyReal, AnyReal]] | None = None,
+    bounds: Bound | None = None,
     args: tuple[object, ...] = (),
-    method: MethodMinimizeScalar | Callable[..., OptimizeResult_minimize_scalar] | None = None,
-    tol: float | None = None,
-    options: Mapping[str, object] | None = None,
-) -> OptimizeResult_minimize_scalar: ...
+    method: MethodMinimizeScalar | Callable[..., _OptimizeResult_scalar] | None = None,
+    tol: AnyReal | None = None,
+    options: Mapping[str, object] | None = None,  # TODO(jorenham): TypedDict
+) -> _OptimizeResult_scalar: ...
 
-#
-def standardize_bounds(  # undocumented
-    bounds: Sequence[_Bound] | Bounds,
-    x0: _RealVectorLike,
-    meth: MethodMimimize,
-) -> Bounds | list[_Bound]: ...
-
-#
-def standardize_constraints(  # undocumented
-    constraints: Constraint | Sequence[Constraint],
-    x0: _RealVectorLike,
-    meth: object,  # unused
-) -> list[Constraint]: ...
+# undocumented
+def standardize_bounds(bounds: Constraints, x0: _ArrayLikeFloat_co, meth: MethodMimimize) -> Bounds | list[Bound]: ...
+def standardize_constraints(constraints: Constraints, x0: _ArrayLikeFloat_co, meth: MethodMimimize) -> list[Constraint]: ...

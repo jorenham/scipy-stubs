@@ -4,7 +4,7 @@ from typing import Literal, TypeAlias
 import numpy as np
 import optype.numpy as onpt
 from scipy.optimize import OptimizeResult as _OptimizeResult
-from scipy.optimize._typing import SolverLSQ
+from scipy.optimize._typing import TRSolver
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
@@ -72,7 +72,7 @@ def dogbox(
     max_nfev: int,
     x_scale: Literal["jac"] | _Scalar_f8 | _Vector_f8,
     loss_function: _FunLoss,
-    tr_solver: SolverLSQ,
+    tr_solver: TRSolver,
     tr_options: Mapping[str, object],
     verbose: bool,
 ) -> OptimizeResult: ...
