@@ -38,7 +38,7 @@ scipy = {version = ">=1.10", optional = true}
 
 [tool.poetry.group.dev.dependencies]
 scipy = "1.14.1"
-poethepoet = "^0.29.0"
+poethepoet = ">=0.29,<0.31"
 pre-commit = "^4.0.1"
 tox = "^4.23.2"
 
