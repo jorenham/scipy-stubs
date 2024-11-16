@@ -217,7 +217,6 @@ ignore = [
 builtins = ["reveal_locals", "reveal_type"]
 exclude = [".venv"]
 force-exclude = true
-target-version = "py310"
 # https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#maximum-line-length
 line-length = 130
 src = ["scipy-stubs", "codegen"]
