@@ -50,3 +50,32 @@ _test_mypy:
     mypy --config-file=pyproject.toml tests
 
 typetest: _test_bpr _test_mypy
+
+# Commands with arguments
+
+[positional-arguments]
+pyright *paths='scipy-stubs codegen':
+    basedpyright {{paths}}
+
+[positional-arguments]
+mypy *paths='scipy-stubs codegen':
+    mypy --config-file=pyproject.toml {{paths}}
+
+[positional-arguments]
+stubtest *modules='scipy':
+    stubtest \
+        --mypy-config-file=pyproject.toml \
+        --allowlist=.mypyignore \
+        --ignore-unused-allowlist \
+        {{modules}}
+
+[positional-arguments]
+codemod name path='scipy-stubs':
+    python -m libcst.tool codemod \
+        -x \
+        --hide-generated-warnings \
+        --hide-blacklisted-warnings \
+        --hide-progress \
+        --include-stubs \
+        codegen.mods.{{name}} \
+        {{path}}
