@@ -33,7 +33,10 @@ jobs:
         uses: astral-sh/setup-uv@v4
 
       - name: install
-        run: uv sync --frozen --python 3.13
+        run: |
+          uv sync --frozen --no-install-project --python 3.13
+          uv build
+          uv pip install "$(find ./dist -name '*.whl')"
 
       - name: lint
         run: uv run poe lint
@@ -54,7 +57,10 @@ jobs:
         uses: astral-sh/setup-uv@v4
 
       - name: install
-        run: uv sync --frozen --python 3.13
+        run: |
+          uv sync --frozen --no-install-project --python 3.13
+          uv build
+          uv pip install "$(find ./dist -name '*.whl')"
 
       - name: typetest
         run: uv run poe typetest
@@ -73,7 +79,9 @@ jobs:
 
       - name: install
         run: |
-          uv sync --frozen --python=$OLDEST_SUPPORTED_PYTHON
+          uv sync --frozen --no-install-project --python=$OLDEST_SUPPORTED_PYTHON
+          uv build
+          uv pip install "$(find ./dist -name '*.whl')"
           uv pip install --upgrade numpy==$OLDEST_SUPPORTED_NUMPY
 
       - name: typetest
