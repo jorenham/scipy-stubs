@@ -182,12 +182,11 @@ Enhancement suggestions are tracked as [GitHub issues][bug].
 
 ### Your First Code Contribution
 
-Ensure you have [`poetry`](https://python-poetry.org/docs/#installation) and
-[`poe`](https://poethepoet.natn.io/installation.html) installed.
-Now you can install the dev dependencies:
+Ensure you have [`uv`](https://docs.astral.sh/uv/)installed.
+Now you can install the dev dependencies (and the [`just`](https://github.com/casey/just) command runner):
 
 ```bash
-poetry install
+uv sync
 ```
 
 ### pre-commit
@@ -196,7 +195,7 @@ poetry install
 formatted and typed correctly when committing the changes.
 
 ```bash
-poe pre-commit
+just pre-commit
 ```
 
 > [!NOTE]
@@ -208,7 +207,7 @@ poe pre-commit
 The pre-commit hooks and `stubtest` can easily be run with [tox](https://github.com/tox-dev/tox):
 
 ```bash
-poe tox
+just tox
 ```
 
 This will run `stubtest` in parallel on all supported Python versions, as well as `pre-commit`.
