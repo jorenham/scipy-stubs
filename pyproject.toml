@@ -36,6 +36,7 @@ scipy = {version = ">=1.10", optional = true}
 scipy = "1.14.1"
 poethepoet = "^0.31.1"
 pre-commit = "^4.0.1"
+rust-just = "^1.36.0"
 tox = "^4.23.2"
 
 [tool.poetry.group.lint.dependencies]
