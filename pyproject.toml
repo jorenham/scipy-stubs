@@ -266,21 +266,21 @@ env_list = ["repo-review", "pre-commit", "3.10", "3.11", "3.12", "3.13"]
 
 [tool.tox.env_run_base]
 description = "stubtest with {base_python}"
-skip_install = true
-allowlist_externals = ["poetry", "poe"]
-commands_pre = [["poetry", "install"]]
-commands = [["poe", "stubtest"]]
+runner = "uv-venv-lock-runner"
+# use_develop = true
+commands_pre = [["uv", "sync", "--frozen"]]  # TODO: remove the sync when the above works
+commands = [["just", "stubtest"]]
 
 [tool.tox.env.pre-commit]
 description = "pre-commit"
-skip_install = true
-allowlist_externals = ["poetry", "poe"]
-commands_pre = [["poetry", "install"]]
-commands = [["poe", "pre-commit"]]
+runner = "uv-venv-lock-runner"
+# use_develop = true
+commands_pre = [["uv", "sync", "--frozen"]]  # TODO: remove the sync when the above works
+commands = [["just", "pre-commit"]]
 
 [tool.tox.env.repo-review]
 description = "repo-review"
-skip_install = true
-allowlist_externals = ["poetry", "poe"]
-commands_pre = [["poetry", "install"]]
-commands = [["poe", "repo-review"]]
+runner = "uv-venv-lock-runner"
+# use_develop = true
+commands_pre = [["uv", "sync", "--frozen"]]  # TODO: remove the sync when the above works
+commands = [["just", "repo-review"]]

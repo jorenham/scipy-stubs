@@ -77,20 +77,20 @@ repos:
   - repo: local
     hooks:
       - id: typetest
-        name: poe typetest
-        entry: poe typetest
+        name: just typetest
+        entry: just typetest
         language: system
         always_run: true
         pass_filenames: false
 
       - id: basedmypy
         name: basedmypy
-        entry: poe mypy
+        entry: just mypy
         language: system
         types_or: [python, pyi]
 
       - id: basedpyright
         name: basedpyright
-        entry: poe pyright
+        entry: just pyright
         language: system
         types_or: [python, pyi]
