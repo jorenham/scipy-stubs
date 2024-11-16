@@ -1,61 +1,86 @@
 [build-system]
-build-backend = "poetry.core.masonry.api"
-requires = ["poetry-core"]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
+[project]
 name = "scipy-stubs"
-description = "Typing Stubs for SciPy"
-version = "1.14.1.5.dev0"
+version = "1.14.1.3"
+description = "Typing stubs for SciPy"
+readme = "README.md"
 authors = ["Joren Hammudoglu <jhammudoglu@gmail.com>"]
 license = "BSD-3-Clause"
-readme = "README.md"
-packages = [{include = "scipy-stubs"}]
 classifiers = [
     "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Typing :: Stubs Only",
     "Typing :: Typed",
 ]
-repository = "https://github.com/jorenham/scipy-stubs/"
-documentation = "https://github.com/jorenham/scipy-stubs?tab=readme-ov-file#scipy-stubs"
+requires-python = ">=3.10"
+dependencies = ["optype>=0.7.3"]
 
-[tool.poetry.urls]
+[project.optional-dependencies]
+scipy = ["scipy>=1.10"]
+
+[project.urls]
+Repository = "https://github.com/jorenham/scipy-stubs/"
 Issues = "https://github.com/jorenham/scipy-stubs/issues"
 Changelog = "https://github.com/jorenham/scipy-stubs/releases"
 Funding = "https://github.com/sponsors/jorenham"
 
-[tool.poetry.extras]
-scipy = ["scipy"]
+[tool.hatch.build.targets.sdist]
+packages = ["scipy-stubs"]
+exclude = [
+    "/.cache",
+    "/.github",
+    "/.mypy_cache",
+    "/.pytest_cache",
+    "/.ruff_cache",
+    "/.tox",
+    "/.venv",
+    "/.vscode",
+    "/dist",
+    "/tests",
+    ".editorconfig",
+    ".gitignore",
+    ".mardownlint.yaml",
+    ".pre-commit-config.yaml",
+    ".python-version",
+    "CODE_OF_CONDUCT.md",
+    "README.md",
+    "SECURITY.md",
+    "uv.lock",
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-optype = ">=0.7.3"
-scipy = {version = ">=1.10", optional = true}
+[tool.uv]
+dev-dependencies = [
+    "scipy>=1.10",
 
-[tool.poetry.group.dev.dependencies]
-scipy = "1.14.1"
-poethepoet = "^0.31.1"
-pre-commit = "^4.0.1"
-rust-just = "^1.36.0"
-tox = "^4.23.2"
+    # linting
+    "basedmypy[faster-cache]>=2.7.0",
+    "basedpyright>=1.22.0",
+    "mdformat-gfm>=0.3.7,<1.0",
+    "mdformat-gfm-alerts>=1.0.1,<2.0",
+    "mdformat-pyproject>=0.0.2,<1.0",
+    "ruff>=0.8.1",
+    "sp-repo-review[cli]>=2024.8.19",
 
-[tool.poetry.group.lint.dependencies]
-basedmypy = {version = "^2.7.0", extras = ["faster-cache"]}
-basedpyright = "^1.22.0"
-codespell = "^2.3.0"
-mdformat = "^0.7.19"
-mdformat-gfm = "^0.3.7"
-mdformat-gfm-alerts = "^1.0.1"
-mdformat-pyproject = "^0.0.2"
-ruff = "^0.8.1"
-sp-repo-review = {version = "^2024.8.19", extras = ["cli"]}
+    # task runners
+    "poethepoet>=0.29.0,<0.31",
+    "pre-commit>=4.0.1",
+    "tox>=4.23.2",
 
-[tool.poetry.group.codegen]
-optional = true
-dependencies = {libcst = "^1.5.1"}
-
-[tool.poe.executor]
-type = "poetry"
+    # codemodding
+    "libcst>=1.5.1",
+]
 
 [tool.poe.tasks]
 clean = """
@@ -113,7 +138,7 @@ args = [{name = "modules", positional = true, multiple = true, default = "scipy"
 cmd = "python -m libcst.tool codemod -x --hide-progress --include-stubs codegen.mods.$name $path"
 args = [
     {name = "name", positional = true, multiple = false, required = true},
-    {name = "path", positional = true, multiple = false, default = "scipy-stubs"}
+    {name = "path", positional = true, multiple = false, default = "scipy-stubs"},
 ]
 
 [tool.codespell]
@@ -122,7 +147,7 @@ skip = "*.lock,*.pyi"
 
 [tool.mdformat]
 end_of_line = "lf"
-exclude = [".tox/**", ".venv/**", "**/*.m[!d]", "**/*.[!m]d"]  # python >= 3.13
+exclude = [".tox/**", ".venv/**", "**/*.m[!d]", "**/*.[!m]d"] # python >= 3.13
 
 [tool.mypy]
 python_version = "3.10"
@@ -131,7 +156,7 @@ disable_bytearray_promotion = true
 disable_memoryview_promotion = true
 warn_unused_ignores = true
 warn_unreachable = true
-disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[Any]`
+disallow_any_explicit = false                                                # no other way to type e.g. `float64 <: number[Any]`
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 # plugins = ["numpy.typing.mypy_plugin"]
 
@@ -146,30 +171,30 @@ pythonPlatform = "All"
 typeCheckingMode = "strict"
 # ignore comments
 enableTypeIgnoreComments = false
-reportIgnoreCommentWithoutRule = true  # based
+reportIgnoreCommentWithoutRule = true     # based
 reportUnnecessaryTypeIgnoreComment = true
 # imports
-reportImplicitRelativeImport = true  # based
-reportPrivateLocalImportUsage = false  # based
+reportImplicitRelativeImport = true   # based
+reportPrivateLocalImportUsage = false # based
 reportShadowedImports = true
 # classes and inheritance
-reportUnsafeMultipleInheritance = true  # based
-reportImplicitAbstractClass = true  # based
+reportUnsafeMultipleInheritance = true # based
+reportImplicitAbstractClass = true     # based
 reportImplicitOverride = true
-reportUnannotatedClassAttribute = true  # based
+reportUnannotatedClassAttribute = true # based
 # linting
 deprecateTypingAliases = true
-enableReachabilityAnalysis = false  # discouraged
+enableReachabilityAnalysis = false       # discouraged
 reportCallInDefaultInitializer = true
-reportImplicitStringConcatenation = true  # based
+reportImplicitStringConcatenation = true # based
 reportPrivateUsage = false
 # narrowing
-strictGenericNarrowing = true  # based
+strictGenericNarrowing = true # based
 # TODO: enable once nothing is `Untyped`
-reportAny = false  # based
-reportExplicitAny = false  # based
+reportAny = false         # based
+reportExplicitAny = false # based
 # environment
-failOnWarnings = true  # based
+failOnWarnings = true # based
 executionEnvironments = [
     {root = "scipy-stubs", reportDeprecated = false, reportUnsafeMultipleInheritance = false, reportUnreachable = false},
     {root = "codegen", reportAny = true, reportExplicitAny = true, reportInvalidCast = true, reportPrivateUsage = true},
@@ -183,7 +208,7 @@ ignore = [
     "PC111", # no blacken-docs because markdown has no code
     "PC140", # manual typecheck pre-commit hooks
     "PC170", # no pygrep-hooks because no rST
-    "RTD", # no RTD
+    "RTD",   # no RTD
 ]
 
 [tool.ruff]
@@ -223,13 +248,7 @@ banned-from = ["numpy", "numpy.typing", "optype", "optype.numpy", "optype.typing
 combine-as-imports = true
 known-first-party = ["scipy"]
 no-lines-before = ["typing", "first-party", "local-folder"]
-section-order = [
-    "standard-library",
-    "typing",
-    "third-party",
-    "first-party",
-    "local-folder",
-]
+section-order = ["standard-library", "typing", "third-party", "first-party", "local-folder"]
 split-on-trailing-comma = true
 
 [tool.ruff.lint.isort.sections]
