@@ -172,7 +172,7 @@ class cKDTree(_CythonMixin):
         other: cKDTree,
         r: npt.ArrayLike,
         p: AnyReal = 2.0,
-        weights: None | tuple[None, None] = ...,
+        weights: tuple[None, None] | None = ...,
         cumulative: bool = True,
     ) -> np.float64 | np.intp | npt.NDArray[np.intp]: ...
     @overload
