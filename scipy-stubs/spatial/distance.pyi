@@ -1,9 +1,11 @@
 # NOTE: Scipy already has a `distance.pyi` stub, but it has several errors, which are fixed here
-
-from typing import Any, Literal, Protocol, SupportsFloat, SupportsIndex, TypeAlias, overload, type_check_only
+import sys
+from typing import Any, Literal, Protocol, TypeAlias, overload, type_check_only
+from typing_extensions import Buffer
 
 import numpy as np
 import numpy.typing as npt
+import optype.typing as opt
 
 __all__ = [
     "braycurtis",
@@ -39,17 +41,20 @@ __all__ = [
 
 # Anything that can be parsed by `np.float64.__init__` and is thus
 # compatible with `npt.NDArray.__setitem__` (for a float64 array)
-_FloatValue: TypeAlias = None | str | bytes | SupportsFloat | SupportsIndex
+if sys.version_info >= (3, 12):
+    _FloatValue: TypeAlias = str | Buffer | opt.AnyFloat
+else:
+    _FloatValue: TypeAlias = str | bytes | memoryview | bytearray | opt.AnyFloat
 
 @type_check_only
 class _MetricCallback1(Protocol):
-    def __call__(self, xa: npt.NDArray[np.generic], xb: npt.NDArray[np.generic], /) -> _FloatValue: ...
+    def __call__(self, xa: npt.NDArray[np.generic], xb: npt.NDArray[np.generic], /) -> _FloatValue | None: ...
 
 @type_check_only
 class _MetricCallback2(Protocol):
-    def __call__(self, xa: npt.NDArray[np.generic], xb: npt.NDArray[np.generic], /, **kwargs: object) -> _FloatValue: ...
+    def __call__(self, xa: npt.NDArray[np.generic], xb: npt.NDArray[np.generic], /, **kwargs: object) -> _FloatValue | None: ...
 
-# NOTE(jorenham): PEP 612 won't work with this, as it requires both `*args` and `**kwargs` to be used.
+# NOTE(jorenham): PEP 612 won't work here, becayse it requires both `*args` and `**kwargs` to be used.
 _MetricCallback: TypeAlias = _MetricCallback1 | _MetricCallback2
 
 _MetricKind: TypeAlias = Literal[

@@ -66,7 +66,7 @@ class FastGeneratorInversion:
     def qrvs(
         self,
         /,
-        size: None | tuple[Literal[1]] = None,
+        size: tuple[Literal[1]] | None = None,
         d: int | None = None,
         qmc_engine: QMCEngine | None = None,
     ) -> np.float64: ...
