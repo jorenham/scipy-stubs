@@ -3,17 +3,22 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     target-branch: master
+    labels:
+      - "meta: CI"
     schedule:
-      interval: weekly
+      interval: daily
     groups:
       actions:
         patterns:
           - "*"
+
   - package-ecosystem: pip
     directory: /
     target-branch: master
+    labels:
+      - "meta: deps"
     schedule:
-      interval: weekly
+      interval: daily
     groups:
       actions:
         patterns:
