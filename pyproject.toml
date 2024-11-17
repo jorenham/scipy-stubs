@@ -38,18 +38,18 @@ scipy = {version = ">=1.10", optional = true}
 
 [tool.poetry.group.dev.dependencies]
 scipy = "1.14.1"
-poethepoet = ">=0.29,<0.31"
+poethepoet = ">=0.30"
 pre-commit = "^4.0.1"
 tox = "^4.23.2"
 
 [tool.poetry.group.lint.dependencies]
 basedmypy = {version = "^2.7.0", extras = ["faster-cache"]}
-basedpyright = "^1.21.0"
+basedpyright = "^1.21.1"
 codespell = "^2.3.0"
 mdformat-gfm = "^0.3.7"
 mdformat-gfm-alerts = "^1.0.1"
 mdformat-pyproject = "^0.0.1"
-ruff = "^0.7.3"
+ruff = "^0.7.4"
 sp-repo-review = {version = "^2024.8.19", extras = ["cli"]}
 
 [tool.poetry.group.codegen]
@@ -147,7 +147,7 @@ disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[An
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 
 [tool.pyright]
-include = ["scipy-stubs", "tests/typetests", "codegen"]
+include = ["codegen", "scipy-stubs", "tests"]
 venv = ".venv"
 venvPath = "."
 stubPath = "."
@@ -194,7 +194,6 @@ skip-magic-trailing-comma = false
 [tool.ruff.lint]
 ignore = [
     "E741",
-    "B006",  # https://github.com/astral-sh/ruff/issues/14026
     "COM812",  # ruff format compat
     "PYI054",  # numeric-literal-too-long
 ]
@@ -252,6 +251,8 @@ banned-from = [
 "datetime" = "dt"
 "numpy" = "np"
 "numpy.typing" = "npt"
+"optype" = "op"
+"optype.typing" = "opt"
 "optype.numpy" = "onpt"
 
 [tool.ruff.lint.isort]
