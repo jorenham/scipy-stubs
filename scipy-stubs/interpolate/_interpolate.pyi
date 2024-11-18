@@ -1,10 +1,25 @@
-from scipy._typing import Untyped
+from typing import Final, Generic, Literal, NoReturn, TypeAlias
+from typing_extensions import Self, TypeVar, deprecated
+
+import numpy as np
+import numpy.typing as npt
+import optype as op
+import optype.numpy as onpt
+from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt, _ArrayLikeNumber_co
+from scipy._typing import AnyReal, Untyped
 from ._polyint import _Interpolator1D
+
+_CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
+
+_Extrapolate: TypeAlias = bool | Literal["periodic"]
+
+###
 
 __all__ = ["BPoly", "NdPPoly", "PPoly", "interp1d", "interp2d", "lagrange"]
 
 err_mesg: str  # undocumented
 
+@deprecated("removed in 1.14.0")
 class interp2d:
     def __init__(
         self,
@@ -15,8 +30,9 @@ class interp2d:
         copy: bool = True,
         bounds_error: bool = False,
         fill_value: Untyped | None = None,
-    ) -> None: ...
+    ) -> NoReturn: ...
 
+@deprecated("legacy")
 class interp1d(_Interpolator1D):
     bounds_error: Untyped
     copy: Untyped
@@ -24,6 +40,7 @@ class interp1d(_Interpolator1D):
     y: Untyped
     x: Untyped
     x_bds: Untyped
+
     def __init__(
         self,
         x: Untyped,
@@ -38,53 +55,102 @@ class interp1d(_Interpolator1D):
     @property
     def fill_value(self) -> Untyped: ...
     @fill_value.setter
-    def fill_value(self, fill_value: Untyped) -> None: ...
+    def fill_value(self, fill_value: Untyped, /) -> None: ...
 
-class _PPolyBase:
-    c: Untyped
-    x: Untyped
-    extrapolate: Untyped
-    axis: Untyped
-    def __init__(self, c: Untyped, x: Untyped, extrapolate: Untyped | None = None, axis: int = 0) -> None: ...
-    @classmethod
-    def construct_fast(cls, c: Untyped, x: Untyped, extrapolate: Untyped | None = None, axis: int = 0) -> Untyped: ...
-    def extend(self, c: Untyped, x: Untyped) -> None: ...
-    def __call__(self, x: Untyped, nu: int = 0, extrapolate: Untyped | None = None) -> Untyped: ...
+class _PPolyBase(Generic[_CT_co]):
+    c: onpt.Array[onpt.AtLeast2D, _CT_co]
+    x: onpt.Array[tuple[int], np.float64]
+    extrapolate: Final[_Extrapolate]
+    axis: Final[int]
 
-class PPoly(_PPolyBase):
-    def derivative(self, nu: int = 1) -> Untyped: ...
-    def antiderivative(self, nu: int = 1) -> Untyped: ...
-    def integrate(self, a: Untyped, b: Untyped, extrapolate: Untyped | None = None) -> Untyped: ...
-    def solve(self, y: float = 0.0, discontinuity: bool = True, extrapolate: Untyped | None = None) -> Untyped: ...
-    def roots(self, discontinuity: bool = True, extrapolate: Untyped | None = None) -> Untyped: ...
     @classmethod
-    def from_spline(cls, tck: Untyped, extrapolate: Untyped | None = None) -> Untyped: ...
-    @classmethod
-    def from_bernstein_basis(cls, bp: Untyped, extrapolate: Untyped | None = None) -> Untyped: ...
+    def construct_fast(
+        cls,
+        c: _ArrayLikeNumber_co,
+        x: _ArrayLikeFloat_co,
+        extrapolate: _Extrapolate | None = None,
+        axis: int = 0,
+    ) -> Self: ...
+    def __init__(
+        self,
+        /,
+        c: _ArrayLikeNumber_co,
+        x: _ArrayLikeFloat_co,
+        extrapolate: _Extrapolate | None = None,
+        axis: int = 0,
+    ) -> None: ...
+    def __call__(
+        self,
+        /,
+        x: _ArrayLikeFloat_co,
+        nu: int = 0,
+        extrapolate: _Extrapolate | None = None,
+    ) -> onpt.Array[onpt.AtLeast2D, _CT_co]: ...
+    def extend(self, /, c: _ArrayLikeNumber_co, x: _ArrayLikeFloat_co) -> None: ...
 
-class BPoly(_PPolyBase):
-    def derivative(self, nu: int = 1) -> Untyped: ...
-    def antiderivative(self, nu: int = 1) -> Untyped: ...
-    def integrate(self, a: Untyped, b: Untyped, extrapolate: Untyped | None = None) -> Untyped: ...
+class PPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
     @classmethod
-    def from_power_basis(cls, pp: Untyped, extrapolate: Untyped | None = None) -> Untyped: ...
+    def from_spline(cls, tck: Untyped, extrapolate: _Extrapolate | None = None) -> Self: ...
+    @classmethod
+    def from_bernstein_basis(cls, bp: BPoly[_CT_co], extrapolate: _Extrapolate | None = None) -> Self: ...
+    def derivative(self, nu: int = 1) -> Self: ...
+    def antiderivative(self, nu: int = 1) -> Self: ...
+    def integrate(self, a: AnyReal, b: AnyReal, extrapolate: _Extrapolate | None = None) -> npt.NDArray[_CT_co]: ...
+    def solve(
+        self,
+        y: AnyReal = 0.0,
+        discontinuity: bool = True,
+        extrapolate: _Extrapolate | None = None,
+    ) -> _CT_co | npt.NDArray[_CT_co]: ...
+    def roots(self, discontinuity: bool = True, extrapolate: _Extrapolate | None = None) -> _CT_co | npt.NDArray[_CT_co]: ...
+
+class BPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
+    @classmethod
+    def from_power_basis(cls, pp: PPoly[_CT_co], extrapolate: _Extrapolate | None = None) -> Self: ...
     @classmethod
     def from_derivatives(
         cls,
-        xi: Untyped,
-        yi: Untyped,
-        orders: Untyped | None = None,
-        extrapolate: Untyped | None = None,
-    ) -> Untyped: ...
+        xi: _ArrayLikeNumber_co,
+        yi: _ArrayLikeNumber_co,
+        orders: _ArrayLikeInt | None = None,
+        extrapolate: _Extrapolate | None = None,
+    ) -> Self: ...
+    def derivative(self, nu: int = 1) -> Self: ...
+    def antiderivative(self, nu: int = 1) -> Self: ...
+    def integrate(self, a: AnyReal, b: AnyReal, extrapolate: _Extrapolate | None = None) -> npt.NDArray[_CT_co]: ...
 
-class NdPPoly:
-    def __init__(self, c: Untyped, x: Untyped, extrapolate: Untyped | None = None) -> None: ...
+class NdPPoly(Generic[_CT_co]):
+    c: onpt.Array[onpt.AtLeast2D, _CT_co]
+    x: tuple[onpt.Array[tuple[int], np.float64], ...]
+
     @classmethod
-    def construct_fast(cls, c: Untyped, x: Untyped, extrapolate: Untyped | None = None) -> Untyped: ...
-    def __call__(self, x: Untyped, nu: Untyped | None = None, extrapolate: Untyped | None = None) -> Untyped: ...
-    def derivative(self, nu: Untyped) -> Untyped: ...
-    def antiderivative(self, nu: Untyped) -> Untyped: ...
-    def integrate_1d(self, a: Untyped, b: Untyped, axis: Untyped, extrapolate: Untyped | None = None) -> Untyped: ...
-    def integrate(self, ranges: Untyped, extrapolate: Untyped | None = None) -> Untyped: ...
+    def construct_fast(
+        cls,
+        c: _ArrayLikeNumber_co,
+        x: tuple[_ArrayLikeFloat_co, ...],
+        extrapolate: bool | None = None,
+    ) -> Self: ...
+    def __init__(
+        self,
+        c: _ArrayLikeNumber_co,
+        x: tuple[_ArrayLikeFloat_co, ...],
+        extrapolate: bool | None = None,
+    ) -> None: ...
+    def __call__(
+        self,
+        x: _ArrayLikeFloat_co,
+        nu: tuple[int, ...] | None = None,
+        extrapolate: bool | None = None,
+    ) -> npt.NDArray[_CT_co]: ...
+    def derivative(self, nu: tuple[int, ...]) -> Self: ...
+    def antiderivative(self, nu: tuple[int, ...]) -> Self: ...
+    def integrate_1d(
+        self,
+        a: AnyReal,
+        b: AnyReal,
+        axis: op.CanIndex,
+        extrapolate: bool | None = None,
+    ) -> Self | npt.NDArray[_CT_co]: ...
+    def integrate(self, ranges: tuple[tuple[AnyReal, AnyReal]], extrapolate: bool | None = None) -> npt.NDArray[_CT_co]: ...
 
-def lagrange(x: Untyped, w: Untyped) -> Untyped: ...
+def lagrange(x: _ArrayLikeNumber_co, w: _ArrayLikeNumber_co) -> np.poly1d: ...
