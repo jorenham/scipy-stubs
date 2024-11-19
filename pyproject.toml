@@ -55,7 +55,7 @@ sp-repo-review = {version = "^2024.8.19", extras = ["cli"]}
 [tool.poetry.group.codegen]
 optional = true
 [tool.poetry.group.codegen.dependencies]
-libcst = "^1.5.0"
+libcst = "^1.5.1"
 
 [tool.poe.executor]
 type = "poetry"
