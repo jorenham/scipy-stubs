@@ -6,7 +6,7 @@ from typing_extensions import Unpack, override
 import numpy as np
 import numpy.typing as npt
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeNumber_co
 from scipy._typing import AnyInt, AnyReal
 from scipy.sparse import sparray, spmatrix
@@ -32,8 +32,8 @@ _Inexact: TypeAlias = _Floating | _ComplexFloating
 
 _Array_f: TypeAlias = npt.NDArray[_Floating]
 _Array_fc: TypeAlias = npt.NDArray[_Inexact]
-_Array_fc_1d: TypeAlias = onpt.Array[tuple[int], _Inexact]
-_Array_fc_2d: TypeAlias = onpt.Array[tuple[int, int], _Inexact]
+_Array_fc_1d: TypeAlias = onp.Array[tuple[int], _Inexact]
+_Array_fc_2d: TypeAlias = onp.Array[tuple[int, int], _Inexact]
 
 _SparseArray: TypeAlias = sparray | spmatrix
 

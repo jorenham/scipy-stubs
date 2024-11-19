@@ -4,7 +4,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy._typing import AnyBool, OrderKACF
 
 __all__ = ["_asarray", "array_namespace", "device", "size"]
@@ -72,6 +72,6 @@ def device(x: _HasDevice[_DeviceT], /) -> _DeviceT: ...
 @overload
 def size(x: _HasShape[tuple[()] | tuple[_0, ...]]) -> _0: ...
 @overload
-def size(x: _HasShape[tuple[_SizeT] | onpt.AtLeast1D[_SizeT, _1] | tuple[_1, _SizeT]]) -> _SizeT: ...
+def size(x: _HasShape[tuple[_SizeT] | onp.AtLeast1D[_SizeT, _1] | tuple[_1, _SizeT]]) -> _SizeT: ...
 @overload
 def size(x: _HasShape) -> int: ...

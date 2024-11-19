@@ -3,7 +3,7 @@ from typing import Any, ClassVar, Final, Generic, Literal, TypeVar, overload
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
 from scipy._typing import AnyReal
 
@@ -59,7 +59,7 @@ class DenseOutput:
 
     def __init__(self, /, t_old: AnyReal, t: AnyReal) -> None: ...
     @overload
-    def __call__(self, /, t: AnyReal) -> onpt.Array[tuple[int], np.inexact[Any]]: ...
+    def __call__(self, /, t: AnyReal) -> onp.Array[tuple[int], np.inexact[Any]]: ...
     @overload
     def __call__(self, /, t: _ArrayLikeFloat_co) -> npt.NDArray[np.inexact[Any]]: ...
 

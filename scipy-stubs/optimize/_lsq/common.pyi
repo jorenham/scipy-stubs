@@ -2,7 +2,7 @@ from typing import Any, Final, Literal, TypeAlias
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 import scipy._typing as spt
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
@@ -26,12 +26,12 @@ def solve_lsq_trust_region(
     initial_alpha: spt.AnyReal | None = None,
     rtol: spt.AnyReal = 0.01,
     max_iter: spt.AnyInt = 10,
-) -> tuple[onpt.Array[tuple[int], np.float64], float, int]: ...
+) -> tuple[onp.Array[tuple[int], np.float64], float, int]: ...
 def solve_trust_region_2d(
     B: npt.ArrayLike,
     g: npt.ArrayLike,
     Delta: spt.AnyReal,
-) -> tuple[onpt.Array[tuple[Literal[2]], np.float64], bool]: ...
+) -> tuple[onp.Array[tuple[Literal[2]], np.float64], bool]: ...
 def update_tr_radius(
     Delta: spt.AnyReal,
     actual_reduction: spt.AnyReal,
@@ -58,7 +58,7 @@ def evaluate_quadratic(
     g: npt.NDArray[np.floating[Any]],
     s: npt.NDArray[np.floating[Any]],
     diag: npt.NDArray[np.floating[Any]] | None = None,
-) -> np.float64 | onpt.Array[tuple[int], np.float64]: ...
+) -> np.float64 | onp.Array[tuple[int], np.float64]: ...
 def in_bounds(x: npt.NDArray[np.floating[Any]], lb: npt.ArrayLike, ub: npt.ArrayLike) -> np.bool_: ...
 def step_size_to_bound(
     x: npt.ArrayLike,

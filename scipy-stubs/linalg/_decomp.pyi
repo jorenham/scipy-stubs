@@ -4,7 +4,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLike, _ArrayLikeNumber_co
 from scipy._typing import AnyInt, AnyReal
 
@@ -60,7 +60,7 @@ _DriverAuto: TypeAlias = Literal["auto"]
 
 _N1: TypeAlias = tuple[int]
 _N2: TypeAlias = tuple[int, int]
-_N2_: TypeAlias = onpt.AtLeast2D
+_N2_: TypeAlias = onp.AtLeast2D
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
 
@@ -68,8 +68,8 @@ _SCT_f = TypeVar("_SCT_f", bound=_Scalar_f, default=_Scalar_f0)
 _SCT2_f = TypeVar("_SCT2_f", bound=_Scalar_f, default=_Scalar_f0)
 _SCT_fc = TypeVar("_SCT_fc", bound=_Scalar_fc, default=_Scalar_fc0)
 
-_Array_f: TypeAlias = onpt.Array[_ShapeT, _SCT_f]
-_Array_fc: TypeAlias = onpt.Array[_ShapeT, _SCT_fc]
+_Array_f: TypeAlias = onp.Array[_ShapeT, _SCT_f]
+_Array_fc: TypeAlias = onp.Array[_ShapeT, _SCT_fc]
 
 ###
 

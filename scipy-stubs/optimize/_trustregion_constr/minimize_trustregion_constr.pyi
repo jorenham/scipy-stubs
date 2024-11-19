@@ -2,7 +2,7 @@ from typing import Final, Literal
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy._typing import Untyped, UntypedCallable
 from scipy.optimize._optimize import OptimizeResult as _OptimizeResult
 from scipy.sparse import spmatrix
@@ -13,12 +13,12 @@ from scipy.sparse.linalg import LinearOperator
 TERMINATION_MESSAGES: dict[Literal[0, 1, 2, 3], str]  # undocumented
 
 class OptimizeResult(_OptimizeResult):
-    x: onpt.Array[tuple[int], np.float64]
+    x: onp.Array[tuple[int], np.float64]
     optimality: float | np.float64
     const_violation: float | np.float64
     fun: float | np.float64
-    grad: onpt.Array[tuple[int], np.float64]
-    lagrangian_grad: onpt.Array[tuple[int], np.float64]
+    grad: onp.Array[tuple[int], np.float64]
+    lagrangian_grad: onp.Array[tuple[int], np.float64]
     nit: int | np.intp
     nfev: int | np.intp
     njev: int | np.intp
@@ -26,7 +26,7 @@ class OptimizeResult(_OptimizeResult):
     cg_niter: int
     method: Literal["equality_constrained_sqp", "tr_interior_point"]
     constr: list[float | np.float64]
-    jac: list[onpt.Array[tuple[int, int], np.float64] | spmatrix]
+    jac: list[onp.Array[tuple[int, int], np.float64] | spmatrix]
     v: list[npt.NDArray[np.float64]]
     constr_nfev: list[int]
     constr_njev: list[int]

@@ -8,7 +8,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeComplex_co, _ArrayLikeFloat_co, _ArrayLikeInt_co  # don't try this at home, kids
 import scipy._typing as spt
 from ._ufuncs import psi as digamma  # completely different greek letters, but oh well...
@@ -81,14 +81,14 @@ _tuple2: TypeAlias = tuple[_T0, _T0]
 _tuple4: TypeAlias = tuple[_T0, _T1, _T1, _T1]
 _tuple8: TypeAlias = tuple[_T0, _T1, _T1, _T1, _T1, _T1, _T1, _T1]
 
-_ArrayT = TypeVar("_ArrayT", bound=onpt.Array)
+_ArrayT = TypeVar("_ArrayT", bound=onp.Array)
 _SCT = TypeVar("_SCT", bound=np.generic)
 _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
-_scalar_or_array: TypeAlias = _SCT | onpt.Array[tuple[int, ...], _SCT]
-_array_0d: TypeAlias = onpt.Array[tuple[()], _SCT]
-_array_1d: TypeAlias = onpt.Array[tuple[int], _SCT]
-_array_2d: TypeAlias = onpt.Array[tuple[int, int], _SCT]
-_array: TypeAlias = onpt.Array[tuple[int, ...], _SCT]
+_scalar_or_array: TypeAlias = _SCT | onp.Array[tuple[int, ...], _SCT]
+_array_0d: TypeAlias = onp.Array[tuple[()], _SCT]
+_array_1d: TypeAlias = onp.Array[tuple[int], _SCT]
+_array_2d: TypeAlias = onp.Array[tuple[int, int], _SCT]
+_array: TypeAlias = onp.Array[tuple[int, ...], _SCT]
 
 _i1: TypeAlias = np.int8
 _i2: TypeAlias = np.int16

@@ -4,9 +4,9 @@ from typing_extensions import TypedDict, TypeVar, Unpack
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype as op
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
-from optype import CanFloat
 from scipy._lib._util import _RichResult
 from scipy._typing import AnyInt, AnyReal
 from scipy.sparse import sparray, spmatrix
@@ -19,8 +19,8 @@ _FuncSol: TypeAlias = Callable[[float], npt.NDArray[_SCT_cf]]
 _FuncEvent: TypeAlias = Callable[[float, npt.NDArray[_SCT_cf]], float]
 _Events: TypeAlias = Sequence[_FuncEvent[_SCT_cf]]
 
-_VectorIntP: TypeAlias = onpt.Array[tuple[int], np.intp]
-_VectorFloat: TypeAlias = onpt.Array[tuple[int], np.float64]
+_VectorIntP: TypeAlias = onp.Array[tuple[int], np.intp]
+_VectorFloat: TypeAlias = onp.Array[tuple[int], np.float64]
 
 _IVPMethod: TypeAlias = Literal["RK23", "RK45", "DOP853", "Radau", "BDF", "LSODA"]
 
@@ -52,7 +52,7 @@ class OdeResult(
     Generic[_SCT_cf],
 ):
     t: _VectorFloat
-    y: onpt.Array[tuple[int, int], _SCT_cf]
+    y: onp.Array[tuple[int, int], _SCT_cf]
     sol: OdeSolution | None
     t_events: list[_VectorFloat] | None
     y_events: list[npt.NDArray[_SCT_cf]] | None
@@ -79,8 +79,8 @@ def find_active_events(g: _ArrayLikeFloat_co, g_new: _ArrayLikeFloat_co, directi
 #
 @overload
 def solve_ivp(
-    fun: Callable[Concatenate[float, onpt.Array[tuple[int], _SCT_cf], ...], npt.NDArray[_SCT_cf]],
-    t_span: Sequence[CanFloat],
+    fun: Callable[Concatenate[float, onp.Array[tuple[int], _SCT_cf], ...], npt.NDArray[_SCT_cf]],
+    t_span: Sequence[op.CanFloat],
     y0: _ArrayLikeNumber_co,
     method: _IVPMethod | type[OdeSolver] = "RK45",
     t_eval: _ArrayLikeFloat_co | None = None,
@@ -92,8 +92,8 @@ def solve_ivp(
 ) -> OdeResult[_SCT_cf]: ...
 @overload
 def solve_ivp(
-    fun: Callable[Concatenate[_VectorFloat, onpt.Array[tuple[int, int], _SCT_cf], ...], npt.NDArray[_SCT_cf]],
-    t_span: Sequence[CanFloat],
+    fun: Callable[Concatenate[_VectorFloat, onp.Array[tuple[int, int], _SCT_cf], ...], npt.NDArray[_SCT_cf]],
+    t_span: Sequence[op.CanFloat],
     y0: _ArrayLikeNumber_co,
     method: _IVPMethod | type[OdeSolver] = "RK45",
     t_eval: _ArrayLikeFloat_co | None = None,

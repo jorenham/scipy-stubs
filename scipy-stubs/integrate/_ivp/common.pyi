@@ -3,7 +3,7 @@ from typing import Any, Final, Literal, Protocol, TypeAlias, TypeVar, overload, 
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
 from scipy._typing import AnyBool, AnyReal
 from scipy.sparse import csc_matrix
@@ -22,8 +22,8 @@ class _CanLenArray(Protocol[_SCT_co]):
     def __len__(self, /) -> int: ...
     def __array__(self, /) -> npt.NDArray[_SCT_co]: ...
 
-_Vector: TypeAlias = onpt.Array[tuple[int], _SCT]
-_Matrix: TypeAlias = onpt.Array[tuple[int, int], _SCT]
+_Vector: TypeAlias = onp.Array[tuple[int], _SCT]
+_Matrix: TypeAlias = onp.Array[tuple[int, int], _SCT]
 
 ###
 

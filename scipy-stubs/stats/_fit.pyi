@@ -4,7 +4,7 @@ from typing_extensions import TypeVarTuple, Unpack
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
 from scipy._typing import AnyReal, Seed
 from scipy.optimize import OptimizeResult
@@ -15,7 +15,7 @@ _Ts = TypeVarTuple("_Ts", default=Unpack[tuple[AnyReal, ...]])
 # matplotlib.lines.Axes
 _MPL_Axes: TypeAlias = Any
 
-_RealVectorLike: TypeAlias = Sequence[AnyReal] | onpt.CanArray[Any, np.dtype[np.floating[Any] | np.integer[Any] | np.bool_]]
+_RealVectorLike: TypeAlias = Sequence[AnyReal] | onp.CanArray[Any, np.dtype[np.floating[Any] | np.integer[Any] | np.bool_]]
 _Bounds: TypeAlias = Mapping[str, tuple[AnyReal, AnyReal]] | Sequence[tuple[AnyReal, AnyReal]]
 # TODO: make more specific
 _Optimizer: TypeAlias = Callable[Concatenate[Callable[..., AnyReal], ...], OptimizeResult]
@@ -50,7 +50,7 @@ class GoodnessOfFitResult(NamedTuple):
     fit_result: FitResult
     statistic: float | np.float64
     pvalue: float | np.float64
-    null_distribution: onpt.Array[tuple[int], np.float64]
+    null_distribution: onp.Array[tuple[int], np.float64]
 
 @overload
 def fit(

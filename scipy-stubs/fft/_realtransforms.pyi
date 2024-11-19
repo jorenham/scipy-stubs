@@ -2,8 +2,8 @@ from typing import TypeAlias
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 from numpy._typing import _ArrayLikeInt, _ArrayLikeNumber_co
-from optype import CanBool, CanIndex
 from scipy._typing import AnyInt, AnyShape, DCTType, NormalizationMode
 
 __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
@@ -22,10 +22,10 @@ def dctn(
     s: _ArrayLikeInt | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: CanBool = False,
+    overwrite_x: op.CanBool = False,
     workers: AnyInt | None = None,
     *,
-    orthogonalize: CanBool | None = None,
+    orthogonalize: op.CanBool | None = None,
 ) -> _ArrayReal: ...
 def idctn(
     x: _ArrayLikeNumber_co,
@@ -33,9 +33,9 @@ def idctn(
     s: _ArrayLikeInt | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: CanBool = False,
+    overwrite_x: op.CanBool = False,
     workers: AnyInt | None = None,
-    orthogonalize: CanBool | None = None,
+    orthogonalize: op.CanBool | None = None,
 ) -> _ArrayReal: ...
 def dstn(
     x: _ArrayLikeNumber_co,
@@ -43,9 +43,9 @@ def dstn(
     s: _ArrayLikeInt | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: CanBool = False,
+    overwrite_x: op.CanBool = False,
     workers: AnyInt | None = None,
-    orthogonalize: CanBool | None = None,
+    orthogonalize: op.CanBool | None = None,
 ) -> _ArrayReal: ...
 def idstn(
     x: _ArrayLikeNumber_co,
@@ -53,47 +53,47 @@ def idstn(
     s: _ArrayLikeInt | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: CanBool = False,
+    overwrite_x: op.CanBool = False,
     workers: AnyInt | None = None,
-    orthogonalize: CanBool | None = None,
+    orthogonalize: op.CanBool | None = None,
 ) -> _ArrayReal: ...
 def dct(
     x: _ArrayLikeNumber_co,
     type: DCTType = 2,
     n: AnyInt | None = None,
-    axis: CanIndex = -1,
+    axis: op.CanIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: CanBool = False,
+    overwrite_x: op.CanBool = False,
     workers: AnyInt | None = None,
-    orthogonalize: CanBool | None = None,
+    orthogonalize: op.CanBool | None = None,
 ) -> _ArrayReal: ...
 def idct(
     x: _ArrayLikeNumber_co,
     type: DCTType = 2,
     n: AnyInt | None = None,
-    axis: CanIndex = -1,
+    axis: op.CanIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: CanBool = False,
+    overwrite_x: op.CanBool = False,
     workers: AnyInt | None = None,
-    orthogonalize: CanBool | None = None,
+    orthogonalize: op.CanBool | None = None,
 ) -> _ArrayReal: ...
 def dst(
     x: _ArrayLikeNumber_co,
     type: DCTType = 2,
     n: AnyInt | None = None,
-    axis: CanIndex = -1,
+    axis: op.CanIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: CanBool = False,
+    overwrite_x: op.CanBool = False,
     workers: AnyInt | None = None,
-    orthogonalize: CanBool | None = None,
+    orthogonalize: op.CanBool | None = None,
 ) -> _ArrayReal: ...
 def idst(
     x: _ArrayLikeNumber_co,
     type: DCTType = 2,
     n: AnyInt | None = None,
-    axis: CanIndex = -1,
+    axis: op.CanIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: CanBool = False,
+    overwrite_x: op.CanBool = False,
     workers: AnyInt | None = None,
-    orthogonalize: CanBool | None = None,
+    orthogonalize: op.CanBool | None = None,
 ) -> _ArrayReal: ...

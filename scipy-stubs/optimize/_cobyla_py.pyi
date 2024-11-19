@@ -2,12 +2,12 @@ from collections.abc import Callable
 from typing import Literal, TypeAlias
 
 import numpy as np
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy._typing import AnyInt, AnyReal, Untyped, UntypedCallable
 
 __all__ = ["fmin_cobyla"]
 
-_Array_1d_f8: TypeAlias = onpt.Array[tuple[int], np.float64]
+_Array_1d_f8: TypeAlias = onp.Array[tuple[int], np.float64]
 
 ###
 

@@ -2,12 +2,12 @@ from typing import Any, Literal, TypeAlias, overload
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
-_LaplacianMatrix: TypeAlias = onpt.Array[tuple[int, int], np.number[Any]] | sparray | spmatrix | LinearOperator
-_LaplacianDiag: TypeAlias = onpt.Array[tuple[int], np.number[Any]]
+_LaplacianMatrix: TypeAlias = onp.Array[tuple[int, int], np.number[Any]] | sparray | spmatrix | LinearOperator
+_LaplacianDiag: TypeAlias = onp.Array[tuple[int], np.number[Any]]
 
 @overload
 def laplacian(

@@ -4,7 +4,7 @@ from typing import Any, Concatenate, Literal, TypeAlias, TypedDict, TypeVar, typ
 import numpy as np
 import numpy.typing as npt
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeBool_co, _ArrayLikeFloat_co, _ArrayLikeInt_co, _ArrayLikeNumber_co
 from scipy._typing import AnyInt, AnyReal
 
@@ -49,10 +49,10 @@ class _FindPeaksResultsDict(TypedDict, total=False):
 
 ###
 
-def argrelmin(data: onpt.Array, axis: op.CanIndex = 0, order: AnyInt = 1, mode: _Mode = "clip") -> _ArgRel: ...
-def argrelmax(data: onpt.Array, axis: op.CanIndex = 0, order: AnyInt = 1, mode: _Mode = "clip") -> _ArgRel: ...
+def argrelmin(data: onp.Array, axis: op.CanIndex = 0, order: AnyInt = 1, mode: _Mode = "clip") -> _ArgRel: ...
+def argrelmax(data: onp.Array, axis: op.CanIndex = 0, order: AnyInt = 1, mode: _Mode = "clip") -> _ArgRel: ...
 def argrelextrema(
-    data: onpt.Array,
+    data: onp.Array,
     comparator: Callable[[npt.NDArray[_SCT], npt.NDArray[_SCT]], _ArrayLikeBool_co],
     axis: op.CanIndex = 0,
     order: AnyInt = 1,
@@ -82,7 +82,7 @@ def find_peaks(
     plateau_size: _ArrayLikeInt_co | Sequence[AnyInt | None] | None = None,
 ) -> tuple[_Array_n_1d, _FindPeaksResultsDict]: ...
 def find_peaks_cwt(
-    vector: onpt.Array,
+    vector: onp.Array,
     widths: _ArrayLikeFloat_co,
     wavelet: _WaveletFunc | None = None,
     max_distances: npt.NDArray[np.floating[Any] | np.integer[Any]] | None = None,

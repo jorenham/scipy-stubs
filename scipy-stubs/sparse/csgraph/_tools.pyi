@@ -2,7 +2,7 @@ from typing import Any, Final, TypeAlias
 from typing_extensions import TypeVar
 
 import numpy as np
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
 from scipy.sparse import csc_array, csc_matrix, csr_array, csr_matrix, lil_array, lil_matrix, sparray, spmatrix
 
@@ -31,7 +31,7 @@ def csgraph_from_dense(
     nan_null: bool = True,
     infinity_null: bool = True,
 ) -> csr_matrix: ...
-def csgraph_to_dense(csgraph: _SparseGraph, null_value: float | None = 0) -> onpt.Array[tuple[int, int], np.floating[Any]]: ...
+def csgraph_to_dense(csgraph: _SparseGraph, null_value: float | None = 0) -> onp.Array[tuple[int, int], np.floating[Any]]: ...
 def csgraph_to_masked(csgraph: _SparseGraph) -> _MaskedArray[tuple[int, int], np.floating[Any]]: ...
 def reconstruct_path(csgraph: _GraphLike, predecessors: _ArrayLikeFloat_co, directed: bool = True) -> csr_matrix: ...
 def construct_dist_matrix(
@@ -39,4 +39,4 @@ def construct_dist_matrix(
     predecessors: _ArrayLikeFloat_co,
     directed: bool = True,
     null_value: float = ...,
-) -> onpt.Array[tuple[int, int], np.floating[Any]]: ...
+) -> onp.Array[tuple[int, int], np.floating[Any]]: ...

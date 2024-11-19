@@ -4,15 +4,15 @@ from typing import Any, Concatenate, Final, Literal, Protocol, TypeAlias, type_c
 import numpy as np
 import numpy.typing as npt
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
 from scipy._typing import AnyInt, AnyReal
 from scipy.optimize import Bounds, OptimizeResult
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
-_Array_1d_f8: TypeAlias = onpt.Array[tuple[int], np.float64]
-_Array_nd_f8: TypeAlias = onpt.Array[onpt.AtLeast1D, np.float64]
+_Array_1d_f8: TypeAlias = onp.Array[tuple[int], np.float64]
+_Array_nd_f8: TypeAlias = onp.Array[onp.AtLeast1D, np.float64]
 
 _LeastSquaresMethod: TypeAlias = Literal["trf", "dogbox", "lm"]
 _JacMethod: TypeAlias = Literal["2-point", "3-point", "cs"]

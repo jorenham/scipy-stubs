@@ -187,7 +187,7 @@ force-exclude = true
 target-version = "py310"
 # https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#maximum-line-length
 line-length = 130
-src = ["scipy-stubs", "codemods.py"]
+src = ["scipy-stubs", "codegen"]
 
 [tool.ruff.format]
 line-ending = "lf"
@@ -236,15 +236,9 @@ select = [
 [tool.ruff.lint.flake8-import-conventions]
 banned-from = [
     "numpy",
-    "numpy.emath",
-    "numpy.fft",
-    "numpy.linalg",
     "numpy.ma",
-    "numpy.polynomial",
-    "numpy.random",
-    "numpy.rec",
     "numpy.typing",
-    "numpy.strings",
+    "optype",
     "optype.numpy",
     "optype.typing",
 ]
@@ -255,7 +249,7 @@ banned-from = [
 "numpy.typing" = "npt"
 "optype" = "op"
 "optype.typing" = "opt"
-"optype.numpy" = "onpt"
+"optype.numpy" = "onp"
 
 [tool.ruff.lint.isort]
 combine-as-imports = true

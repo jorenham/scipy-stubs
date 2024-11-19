@@ -3,15 +3,15 @@ from typing_extensions import assert_type
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy.signal import istft, spectrogram
 
 _Array_f8: TypeAlias = npt.NDArray[np.float64]
 _ArrayFloat: TypeAlias = npt.NDArray[np.float32 | np.float64 | np.longdouble]
 _ArrayComplex: TypeAlias = npt.NDArray[np.complex64 | np.complex128 | np.clongdouble]
 
-array_f8_1d: onpt.Array[tuple[Literal[256]], np.float64]
-array_c16_1d: onpt.Array[tuple[Literal[256]], np.complex128]
+array_f8_1d: onp.Array[tuple[Literal[256]], np.float64]
+array_c16_1d: onp.Array[tuple[Literal[256]], np.complex128]
 spectrogram_mode_real: Literal["psd", "magnitude", "angle", "phase"]
 
 # test spectrogram function overloads

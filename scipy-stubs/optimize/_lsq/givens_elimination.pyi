@@ -1,8 +1,8 @@
 import numpy as np
-import optype.numpy as onpt
+import optype.numpy as onp
 
 def givens_elimination(
-    S: onpt.Array[tuple[int, int], np.float64],
-    v: onpt.Array[tuple[int], np.float64],
-    diag: onpt.Array[tuple[int], np.float64],
+    S: onp.Array[tuple[int, int], np.float64],
+    v: onp.Array[tuple[int], np.float64],
+    diag: onp.Array[tuple[int], np.float64],
 ) -> None: ...

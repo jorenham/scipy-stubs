@@ -3,7 +3,7 @@ from typing import Literal, overload
 import numpy as np
 import numpy.typing as npt
 import optype.typing as opt
-from numpy.linalg import LinAlgError  # noqa: ICN003
+from numpy.linalg import LinAlgError
 from scipy._typing import AnyBool
 
 __all__ = ["LinAlgError", "LinAlgWarning", "norm"]

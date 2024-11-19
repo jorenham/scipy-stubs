@@ -3,7 +3,7 @@ from typing import Any, TypeAlias
 
 import numpy as np
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy._typing import Untyped, UntypedCallable, UntypedTuple
 from ._vertex import VertexBase, VertexCacheBase
 
@@ -79,19 +79,19 @@ class Complex:
     def connect_vertex_non_symm(
         self,
         /,
-        v_x: tuple[float | np.floating[Any]] | onpt.Array[tuple[int], np.floating[Any]],
+        v_x: tuple[float | np.floating[Any]] | onp.Array[tuple[int], np.floating[Any]],
         near: set[VertexBase] | list[VertexBase] | None = None,
     ) -> bool | None: ...
     def in_simplex(
         self,
         /,
-        S: Sequence[float | np.floating[Any]] | onpt.Array[tuple[int, ...], np.floating[Any]],
-        v_x: onpt.Array[tuple[int], np.floating[Any]],
-        A_j0: onpt.Array[tuple[int, ...], np.floating[Any]] | None = None,
+        S: Sequence[float | np.floating[Any]] | onp.Array[tuple[int, ...], np.floating[Any]],
+        v_x: onp.Array[tuple[int], np.floating[Any]],
+        A_j0: onp.Array[tuple[int, ...], np.floating[Any]] | None = None,
     ) -> Untyped: ...
     def deg_simplex(
         self,
         /,
-        S: onpt.Array[tuple[int, ...], np.floating[Any]],
-        proj: onpt.Array[tuple[int, ...], np.floating[Any]] | None = None,
+        S: onp.Array[tuple[int, ...], np.floating[Any]],
+        proj: onp.Array[tuple[int, ...], np.floating[Any]] | None = None,
     ) -> Untyped: ...

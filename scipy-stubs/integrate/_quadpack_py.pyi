@@ -4,8 +4,8 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 from numpy._typing import _ArrayLikeComplex_co, _ArrayLikeFloat_co
-from optype import CanSequence
 from scipy._lib._ccallback import LowLevelCallable
 from scipy._typing import AnyComplex, AnyReal
 from ._typing import QuadInfoDict, QuadOpts, QuadWeights
@@ -83,7 +83,7 @@ class _CanLenAndIter(Protocol[_T_co]):
     def __len__(self, /) -> int: ...
     def __iter__(self, /) -> Iterator[_T_co]: ...
 
-_SizedIterable: TypeAlias = _CanLenAndIter[_T] | CanSequence[int, _T]
+_SizedIterable: TypeAlias = _CanLenAndIter[_T] | op.CanSequence[int, _T]
 _QuadRange: TypeAlias = _SizedIterable[float]
 _RangeT = TypeVar("_RangeT", bound=_QuadRange, default=_QuadRange)
 _RangeT_co = TypeVar("_RangeT_co", bound=_QuadRange, covariant=True, default=_QuadRange)

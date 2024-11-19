@@ -3,13 +3,13 @@ from typing import Concatenate, TypeAlias, overload
 from typing_extensions import deprecated
 
 import numpy as np
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
 from scipy._typing import AnyBool, AnyInt
 
 __all__ = ["convolve", "convolve_z", "destroy_convolve_cache", "init_convolution_kernel"]
 
-_VectorF8: TypeAlias = onpt.Array[tuple[int], np.float64]
+_VectorF8: TypeAlias = onp.Array[tuple[int], np.float64]
 
 @deprecated("this doesn't do anything; nothing is cached")
 def destroy_convolve_cache() -> None: ...

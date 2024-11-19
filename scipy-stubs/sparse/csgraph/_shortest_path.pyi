@@ -1,16 +1,16 @@
 from typing import Final, Literal, TypeAlias, overload
 
 import numpy as np
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt
 from scipy.sparse import sparray, spmatrix
 
 _GraphArrayLike: TypeAlias = _ArrayLikeFloat_co | sparray | spmatrix
 
-_DVector: TypeAlias = onpt.Array[tuple[int], np.float64]
-_DMatrix: TypeAlias = onpt.Array[tuple[int, int], np.float64]
-_IVector: TypeAlias = onpt.Array[tuple[int], np.int32]
-_IMatrix: TypeAlias = onpt.Array[tuple[int, int], np.int32]
+_DVector: TypeAlias = onp.Array[tuple[int], np.float64]
+_DMatrix: TypeAlias = onp.Array[tuple[int, int], np.float64]
+_IVector: TypeAlias = onp.Array[tuple[int], np.int32]
+_IMatrix: TypeAlias = onp.Array[tuple[int, int], np.int32]
 
 DTYPE: Final[type[np.float64]] = ...
 ITYPE: Final[type[np.int32]] = ...

@@ -3,7 +3,7 @@ from typing import Literal, TypeAlias, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy.optimize import OptimizeResult
 from scipy.optimize._typing import TRSolver
 from scipy.sparse import sparray, spmatrix
@@ -13,8 +13,8 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
 
 _ValueFloat: TypeAlias = float | np.float64
 
-_ArrayFloat: TypeAlias = onpt.Array[_ShapeT, np.float64]
-_MatrixFloat: TypeAlias = onpt.Array[_ShapeT, np.float64] | sparray | spmatrix | LinearOperator
+_ArrayFloat: TypeAlias = onp.Array[_ShapeT, np.float64]
+_MatrixFloat: TypeAlias = onp.Array[_ShapeT, np.float64] | sparray | spmatrix | LinearOperator
 
 _FunObj: TypeAlias = Callable[[_ArrayFloat[tuple[int]], _ValueFloat], _MatrixFloat]
 _FunJac: TypeAlias = Callable[[_ArrayFloat[tuple[int]], _ValueFloat], _MatrixFloat]

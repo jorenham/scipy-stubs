@@ -5,7 +5,7 @@ from typing_extensions import LiteralString, Self, TypeVar, Unpack, override
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeInt_co
 import scipy._typing as spt
 from scipy.integrate._typing import QuadOpts as _QuadOpts
@@ -25,17 +25,17 @@ _Scalar_i8: TypeAlias = int | np.int64
 _Scalar_f8: TypeAlias = float | np.float64
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
-_Arr_b1: TypeAlias = onpt.Array[_ShapeT, np.bool_]
-_Arr_i8: TypeAlias = onpt.Array[_ShapeT, np.int64]
-_Arr_f8: TypeAlias = onpt.Array[_ShapeT, np.float64]
+_Arr_b1: TypeAlias = onp.Array[_ShapeT, np.bool_]
+_Arr_i8: TypeAlias = onp.Array[_ShapeT, np.int64]
+_Arr_f8: TypeAlias = onp.Array[_ShapeT, np.float64]
 
 _ArrLike_b1: TypeAlias = _Scalar_b1 | _Arr_b1
 _ArrLike_i8: TypeAlias = _Scalar_i8 | _Arr_i8
 _ArrLike_f8: TypeAlias = _Scalar_f8 | _Arr_f8
 
 _Scalar_f8_co: TypeAlias = float | _Scalar_if
-_Arr_f8_co: TypeAlias = onpt.Array[_ShapeT, _Scalar_if]
-_ArrLike_f8_co: TypeAlias = _ArrLike_f8 | onpt.CanArray[tuple[int, ...], np.dtype[_Scalar_if]] | Sequence[_ArrLike_f8_co]
+_Arr_f8_co: TypeAlias = onp.Array[_ShapeT, _Scalar_if]
+_ArrLike_f8_co: TypeAlias = _ArrLike_f8 | onp.CanArray[tuple[int, ...], np.dtype[_Scalar_if]] | Sequence[_ArrLike_f8_co]
 
 _ArgT = TypeVar("_ArgT", bound=_ArrLike_f8_co, default=_ArrLike_f8_co)
 # there are at most 4 + 2 args
@@ -1020,9 +1020,9 @@ _XKT_co = TypeVar("_XKT_co", bound=np.number[Any], covariant=True, default=np.nu
 _PKT_co = TypeVar("_PKT_co", bound=_Scalar_f, covariant=True, default=_Scalar_f)
 
 class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
-    xk: onpt.Array[tuple[int], _XKT_co]
-    pk: onpt.Array[tuple[int], _PKT_co]
-    qvals: onpt.Array[tuple[int], _PKT_co]
+    xk: onp.Array[tuple[int], _XKT_co]
+    pk: onp.Array[tuple[int], _PKT_co]
+    qvals: onp.Array[tuple[int], _PKT_co]
     def __init__(  # pyright: ignore[reportInconsistentConstructor]
         self,
         /,

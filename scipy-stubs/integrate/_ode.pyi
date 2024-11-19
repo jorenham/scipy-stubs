@@ -4,7 +4,7 @@ from typing_extensions import Self, TypeVar, TypeVarTuple, Unpack, override
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeNumber_co
 
 __all__ = ["complex_ode", "ode"]
@@ -55,7 +55,7 @@ class _ODEFuncC(Protocol[Unpack[_Ts]]):
         *args: Unpack[_Ts],
     ) -> complex | npt.NDArray[np.complexfloating[Any, Any]]: ...
 
-_SolOutFunc: TypeAlias = Callable[[float, onpt.Array[tuple[int], np.inexact[Any]]], Literal[0, -1]]
+_SolOutFunc: TypeAlias = Callable[[float, onp.Array[tuple[int], np.inexact[Any]]], Literal[0, -1]]
 
 ###
 
@@ -81,7 +81,7 @@ class ode(Generic[Unpack[_Ts]]):
 class complex_ode(ode[Unpack[_Ts]], Generic[Unpack[_Ts]]):
     cf: _ODEFuncC[Unpack[_Ts]]
     cjac: _ODEFuncC[Unpack[_Ts]] | None
-    tmp: onpt.Array[tuple[int], np.float64]
+    tmp: onp.Array[tuple[int], np.float64]
     def __init__(self, /, f: _ODEFuncC[Unpack[_Ts]], jac: _ODEFuncC[Unpack[_Ts]] | None = None) -> None: ...
     @property
     @override
@@ -159,8 +159,8 @@ class vode(IntegratorBase[_SCT_co], Generic[_SCT_co]):
     min_step: float
     first_step: float
     initialized: bool
-    rwork: onpt.Array[tuple[int], np.float64]
-    iwork: onpt.Array[tuple[int], np.int32]
+    rwork: onp.Array[tuple[int], np.float64]
+    iwork: onp.Array[tuple[int], np.int32]
     call_args: list[float | npt.NDArray[np.float64] | npt.NDArray[np.int32]]
 
     def __init__(
@@ -181,7 +181,7 @@ class vode(IntegratorBase[_SCT_co], Generic[_SCT_co]):
 
 class zvode(vode[np.complex128]):
     active_global_handle: int
-    zwork: onpt.Array[tuple[int], np.complex128]
+    zwork: onp.Array[tuple[int], np.complex128]
     call_args: list[float | npt.NDArray[np.complex128] | npt.NDArray[np.float64] | npt.NDArray[np.int32]]  # type: ignore[assignment] # pyright: ignore[reportIncompatibleVariableOverride]
     initialized: bool
 
@@ -199,11 +199,11 @@ class dopri5(IntegratorBase[np.float64]):
     dfactor: Final[float]
     beta: Final[float]
     verbosity: Final[int]
-    solout: Callable[[float, onpt.Array[tuple[int], np.inexact[Any]]], Literal[0, -1]] | None
+    solout: Callable[[float, onp.Array[tuple[int], np.inexact[Any]]], Literal[0, -1]] | None
     solout_cmplx: bool
     iout: int
-    work: onpt.Array[tuple[int], np.float64]
-    iwork: onpt.Array[tuple[int], np.int32]
+    work: onp.Array[tuple[int], np.float64]
+    iwork: onp.Array[tuple[int], np.int32]
     call_args: list[float | Callable[..., Literal[0, -1, 1]] | npt.NDArray[np.float64] | npt.NDArray[np.int32]]
 
     def __init__(
@@ -228,7 +228,7 @@ class dopri5(IntegratorBase[np.float64]):
         nr: int,  # unused
         xold: object,  # unused
         x: float,
-        y: onpt.Array[tuple[int], np.floating[Any]],
+        y: onp.Array[tuple[int], np.floating[Any]],
         nd: int,  # unused
         icomp: int,  # unused
         con: object,  # unused
@@ -270,9 +270,9 @@ class lsoda(IntegratorBase[np.float64]):
     ixpr: Final[int]
     max_hnil: Final[int]
     initialized: Final[bool]
-    rwork: onpt.Array[tuple[int], np.float64]
-    iwork: onpt.Array[tuple[int], np.int32]
-    call_args: list[float | onpt.Array[tuple[int], np.float64] | onpt.Array[tuple[int], np.int32]]
+    rwork: onp.Array[tuple[int], np.float64]
+    iwork: onp.Array[tuple[int], np.int32]
+    call_args: list[float | onp.Array[tuple[int], np.float64] | onp.Array[tuple[int], np.int32]]
     def __init__(
         self,
         /,

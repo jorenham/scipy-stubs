@@ -8,7 +8,7 @@ from typing_extensions import LiteralString, Self, TypeVar
 
 import numpy as np
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 
 __all__ = [
     "RNG",
@@ -59,7 +59,7 @@ UntypedTuple: TypeAlias = tuple[Untyped, ...]
 UntypedList: TypeAlias = list[Untyped]
 UntypedDict: TypeAlias = dict[Untyped, Untyped]
 UntypedCallable: TypeAlias = Callable[..., Untyped]
-UntypedArray: TypeAlias = onpt.Array[Any, np.generic]
+UntypedArray: TypeAlias = onp.Array[Any, np.generic]
 
 # I/O
 _ByteSOrStr = TypeVar("_ByteSOrStr", bytes, str)

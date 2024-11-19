@@ -3,7 +3,7 @@ from typing import Any, Concatenate, Final, Literal, Protocol, TypeAlias, TypedD
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
 from scipy._typing import AnyReal
 from scipy.sparse.linalg import LinearOperator
@@ -13,8 +13,8 @@ from .optimize import OptimizeResult as _OptimizeResult
 
 __all__ = ["minimize", "minimize_scalar"]
 
-_Array_f8_1d: TypeAlias = onpt.Array[tuple[int], np.float64]
-_Array_f8_2d: TypeAlias = onpt.Array[tuple[int, int], np.float64]
+_Array_f8_1d: TypeAlias = onp.Array[tuple[int], np.float64]
+_Array_f8_2d: TypeAlias = onp.Array[tuple[int, int], np.float64]
 
 _FunctionObj: TypeAlias = Callable[Concatenate[_Array_f8_1d, ...], AnyReal]
 _FunctionJac: TypeAlias = Callable[Concatenate[_Array_f8_1d, ...], _ArrayLikeFloat_co]

@@ -4,7 +4,7 @@ from typing_extensions import Never
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
 from scipy._typing import AnyReal
 from scipy.sparse import sparray, spmatrix
@@ -96,5 +96,5 @@ def solve_collocation_system(
     LU_real: _LU,
     LU_complex: _LU,
     solve_lu: _FuncSolveLU,
-) -> tuple[bool, int, onpt.Array[tuple[Literal[3], int], np.float64], float | None]: ...
+) -> tuple[bool, int, onp.Array[tuple[Literal[3], int], np.float64], float | None]: ...
 def predict_factor(h_abs: AnyReal, h_abs_old: AnyReal, error_norm: AnyReal, error_norm_old: AnyReal) -> AnyReal: ...

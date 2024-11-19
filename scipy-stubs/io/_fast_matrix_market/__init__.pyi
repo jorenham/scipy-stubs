@@ -4,7 +4,7 @@ from typing_extensions import TypedDict, Unpack, override
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy._typing import FileName
 from scipy.sparse import coo_matrix, sparray, spmatrix
 
@@ -44,7 +44,7 @@ class _TextToBytesWrapper(io.BufferedReader):
 def mmread(source: FileName) -> npt.NDArray[np.generic] | coo_matrix: ...
 def mmwrite(
     target: FileName,
-    a: onpt.CanArray | list[object] | tuple[object, ...] | sparray | spmatrix,
+    a: onp.CanArray | list[object] | tuple[object, ...] | sparray | spmatrix,
     comment: str | None = None,
     field: _Field | None = None,
     precision: int | None = None,

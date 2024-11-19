@@ -2,7 +2,7 @@ from typing import Any, Literal, TypeAlias
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 
 __all__ = ["_output_len", "upfirdn"]
 
@@ -20,8 +20,8 @@ class _UpFIRDn:
     ) -> npt.NDArray[np.floating[Any]]: ...
 
 def upfirdn(
-    h: onpt.AnyFloatingArray,
-    x: onpt.AnyIntegerArray | onpt.AnyFloatingArray,
+    h: onp.AnyFloatingArray,
+    x: onp.AnyIntegerArray | onp.AnyFloatingArray,
     up: int = 1,
     down: int = 1,
     axis: int = -1,

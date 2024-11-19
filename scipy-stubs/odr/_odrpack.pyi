@@ -3,7 +3,7 @@ from typing import Any, Concatenate, Final, Literal, TypeAlias, TypedDict, overl
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt
 from scipy._typing import AnyBool
 
@@ -12,8 +12,8 @@ __all__ = ["ODR", "Data", "Model", "OdrError", "OdrStop", "OdrWarning", "Output"
 _Int_co: TypeAlias = np.integer[Any] | np.bool_
 _Float_co: TypeAlias = np.floating[Any] | _Int_co
 
-_VectorF8: TypeAlias = onpt.Array[tuple[int], np.float64]
-_MatrixF8: TypeAlias = onpt.Array[tuple[int, int], np.float64]
+_VectorF8: TypeAlias = onp.Array[tuple[int], np.float64]
+_MatrixF8: TypeAlias = onp.Array[tuple[int, int], np.float64]
 _ArrayF8: TypeAlias = npt.NDArray[np.float64]
 _FCN: TypeAlias = Callable[Concatenate[_VectorF8, _ArrayF8, ...], npt.NDArray[_Float_co]]
 
@@ -35,7 +35,7 @@ class _FullOutput(TypedDict):
     rel_error: float
     work: _VectorF8
     work_ind: dict[str, int]
-    iwork: onpt.Array[tuple[int], np.int32]
+    iwork: onp.Array[tuple[int], np.int32]
     info: int
 
 ###
@@ -191,9 +191,9 @@ class Model:
     def set_meta(self, **kwds: object) -> None: ...
 
 class Output:
-    beta: Final[onpt.Array[tuple[int], _Float_co]]
-    sd_beta: Final[onpt.Array[tuple[int], _Float_co]]
-    cov_beta: Final[onpt.Array[tuple[int], _Float_co]]
+    beta: Final[onp.Array[tuple[int], _Float_co]]
+    sd_beta: Final[onp.Array[tuple[int], _Float_co]]
+    cov_beta: Final[onp.Array[tuple[int], _Float_co]]
     stopreason: Final[list[str]]
 
     def __init__(self, /, output: npt.NDArray[_Float_co]) -> None: ...
@@ -202,26 +202,26 @@ class Output:
 class ODR:
     data: Final[Data]
     model: Final[Model]
-    beta0: Final[onpt.Array[tuple[int], _Float_co]]
-    delta0: Final[onpt.Array[tuple[int], _Float_co] | None]
-    ifixx: Final[onpt.Array[tuple[int], np.int32] | None]
-    ifixb: Final[onpt.Array[tuple[int], np.int32] | None]
+    beta0: Final[onp.Array[tuple[int], _Float_co]]
+    delta0: Final[onp.Array[tuple[int], _Float_co] | None]
+    ifixx: Final[onp.Array[tuple[int], np.int32] | None]
+    ifixb: Final[onp.Array[tuple[int], np.int32] | None]
     errfile: Final[str | None]
     rptfile: Final[str | None]
     ndigit: Final[int | None]
     taufac: Final[float | None]
     sstol: Final[float | None]
     partol: Final[float | None]
-    stpb: Final[onpt.Array[tuple[int], _Float_co] | None]
-    stpd: Final[onpt.Array[tuple[int], _Float_co] | None]
-    sclb: Final[onpt.Array[tuple[int], _Float_co] | None]
-    scld: Final[onpt.Array[tuple[int], _Float_co] | None]
+    stpb: Final[onp.Array[tuple[int], _Float_co] | None]
+    stpd: Final[onp.Array[tuple[int], _Float_co] | None]
+    sclb: Final[onp.Array[tuple[int], _Float_co] | None]
+    scld: Final[onp.Array[tuple[int], _Float_co] | None]
 
     job: int | None
     iprint: int | None
     maxit: int | None
-    work: onpt.Array[tuple[int], _Float_co] | None
-    iwork: onpt.Array[tuple[int], _Int_co] | None
+    work: onp.Array[tuple[int], _Float_co] | None
+    iwork: onp.Array[tuple[int], _Int_co] | None
     output: Output | None
 
     def __init__(
