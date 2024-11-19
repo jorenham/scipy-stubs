@@ -3,7 +3,8 @@ from typing import Any, Literal
 
 import numpy as np
 import numpy.typing as npt
-from scipy._typing import Alternative, AnyReal, Seed
+import optype.numpy as onp
+from scipy._typing import Alternative, Seed
 from ._common import ConfidenceInterval
 
 __all__ = ["dunnett"]
@@ -24,7 +25,7 @@ class DunnettResult:
     _ci: ConfidenceInterval | None = None
     _ci_cl: float | np.floating[Any] | np.integer[Any] | None = None
 
-    def confidence_interval(self, /, confidence_level: AnyReal = 0.95) -> ConfidenceInterval: ...
+    def confidence_interval(self, /, confidence_level: onp.ToFloat = 0.95) -> ConfidenceInterval: ...
 
 def dunnett(
     *samples: npt.ArrayLike,

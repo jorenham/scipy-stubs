@@ -79,19 +79,19 @@ class Complex:
     def connect_vertex_non_symm(
         self,
         /,
-        v_x: tuple[float | np.floating[Any]] | onp.Array[tuple[int], np.floating[Any]],
+        v_x: tuple[float | np.floating[Any]] | onp.Array1D[np.floating[Any]],
         near: set[VertexBase] | list[VertexBase] | None = None,
     ) -> bool | None: ...
     def in_simplex(
         self,
         /,
-        S: Sequence[float | np.floating[Any]] | onp.Array[tuple[int, ...], np.floating[Any]],
-        v_x: onp.Array[tuple[int], np.floating[Any]],
-        A_j0: onp.Array[tuple[int, ...], np.floating[Any]] | None = None,
+        S: onp.ToFloat1D,
+        v_x: onp.Array1D[np.floating[Any]],
+        A_j0: onp.ArrayND[np.floating[Any]] | None = None,
     ) -> Untyped: ...
     def deg_simplex(
         self,
         /,
-        S: onp.Array[tuple[int, ...], np.floating[Any]],
-        proj: onp.Array[tuple[int, ...], np.floating[Any]] | None = None,
+        S: onp.ArrayND[np.floating[Any]],
+        proj: onp.ArrayND[np.floating[Any]] | None = None,
     ) -> Untyped: ...

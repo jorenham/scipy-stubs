@@ -5,7 +5,6 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
-from scipy._typing import AnyReal
 
 __all__ = [
     "compare_medians_ms",
@@ -74,7 +73,7 @@ def hdquantiles_sd(
 #
 def trimmed_mean_ci(
     data: _ArrayLikeFloat_co,
-    limits: tuple[AnyReal, AnyReal] | None = (0.2, 0.2),
+    limits: tuple[onp.ToFloat, onp.ToFloat] | None = (0.2, 0.2),
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     alpha: float | np.floating[Any] = 0.05,
     axis: op.CanIndex | None = None,
@@ -121,7 +120,9 @@ def median_cihs(
 def compare_medians_ms(group_1: _ArrayLikeFloat_co, group_2: _ArrayLikeFloat_co, axis: None = None) -> np.float64: ...
 @overload
 def compare_medians_ms(
-    group_1: _ArrayLikeFloat_co, group_2: _ArrayLikeFloat_co, axis: op.CanIndex
+    group_1: _ArrayLikeFloat_co,
+    group_2: _ArrayLikeFloat_co,
+    axis: op.CanIndex,
 ) -> npt.NDArray[np.float64]: ...
 
 #

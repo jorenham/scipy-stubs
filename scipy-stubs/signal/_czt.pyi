@@ -2,13 +2,13 @@ from collections.abc import Sequence
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeComplex_co
-from scipy._typing import AnyComplex, AnyReal
 
 __all__ = ["CZT", "ZoomFFT", "czt", "czt_points", "zoom_fft"]
 
 class CZT:
-    def __init__(self, n: int, m: int | None = None, w: AnyComplex | None = None, a: AnyComplex = 1 + 0j) -> None: ...
+    def __init__(self, n: int, m: int | None = None, w: onp.ToComplex | None = None, a: onp.ToComplex = 1 + 0j) -> None: ...
     def __call__(self, x: _ArrayLikeComplex_co, *, axis: int = -1) -> npt.NDArray[np.complex128 | np.complex64]: ...
     def points(self) -> npt.NDArray[np.complex128 | np.complex64]: ...
 
@@ -19,32 +19,32 @@ class ZoomFFT(CZT):
     m: int
     n: int
 
-    f1: AnyReal
-    f2: AnyReal
-    fs: AnyReal
+    f1: onp.ToFloat
+    f2: onp.ToFloat
+    fs: onp.ToFloat
 
     def __init__(
         self,
         n: int,
-        fn: Sequence[AnyReal] | AnyReal,
+        fn: Sequence[onp.ToFloat] | onp.ToFloat,
         m: int | None = None,
         *,
-        fs: AnyReal = 2,
+        fs: onp.ToFloat = 2,
         endpoint: bool = False,
     ) -> None: ...
 
-def czt_points(m: int, w: AnyComplex | None = None, a: AnyComplex = ...) -> npt.NDArray[np.complex128 | np.complex64]: ...
+def czt_points(m: int, w: onp.ToComplex | None = None, a: onp.ToComplex = ...) -> npt.NDArray[np.complex128 | np.complex64]: ...
 def czt(
     x: _ArrayLikeComplex_co,
     m: int | None = None,
-    w: AnyComplex | None = None,
-    a: AnyComplex = 1 + 0j,
+    w: onp.ToComplex | None = None,
+    a: onp.ToComplex = 1 + 0j,
     *,
     axis: int = -1,
 ) -> npt.NDArray[np.complex128 | np.complex64]: ...
 def zoom_fft(
     x: _ArrayLikeComplex_co,
-    fn: Sequence[AnyReal] | AnyReal,
+    fn: Sequence[onp.ToFloat] | onp.ToFloat,
     m: int | None = None,
     *,
     fs: int = 2,

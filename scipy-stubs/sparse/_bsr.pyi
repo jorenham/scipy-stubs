@@ -1,7 +1,7 @@
 from collections.abc import Sequence
 
 import numpy.typing as npt
-import scipy._typing as spt
+import optype.numpy as onp
 from scipy._typing import Untyped
 from ._base import sparray
 from ._compressed import _cs_matrix
@@ -17,7 +17,7 @@ class _bsr_base(_cs_matrix, _minmax_mixin):
     def __init__(
         self,
         arg1: Untyped,
-        shape: spt.AnyInt | Sequence[spt.AnyInt] | None = None,
+        shape: onp.ToInt | Sequence[onp.ToInt] | None = None,
         dtype: npt.DTypeLike | None = None,
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,

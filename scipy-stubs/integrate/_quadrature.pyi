@@ -6,7 +6,6 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-import scipy._typing as spt
 from scipy.stats.qmc import QMCEngine
 
 __all__ = [
@@ -23,11 +22,7 @@ __all__ = [
     "trapezoid",
 ]
 
-_NestedReal: TypeAlias = Sequence[float] | Sequence[_NestedReal]
-_NestedComplex: TypeAlias = Sequence[complex] | Sequence[_NestedComplex]
-_ArrayLike_uif: TypeAlias = _NestedReal | onp.AnyFloatingArray | onp.AnyIntegerArray
-_ArrayLike_uifc: TypeAlias = _NestedComplex | onp.AnyNumberArray
-_QuadFuncOut: TypeAlias = onp.Array[tuple[int, ...], np.floating[Any]] | Sequence[float]
+_QuadFuncOut: TypeAlias = onp.ArrayND[np.floating[Any]] | Sequence[float]
 
 _NDT_f = TypeVar("_NDT_f", bound=_QuadFuncOut)
 _NDT_f_co = TypeVar("_NDT_f_co", bound=_QuadFuncOut, covariant=True)
@@ -35,7 +30,7 @@ _Ts = TypeVarTuple("_Ts")
 
 @type_check_only
 class _VectorizedQuadFunc(Protocol[_NDT_f_co, Unpack[_Ts]]):
-    def __call__(self, x: onp.Array[tuple[int], np.float64], /, *args: Unpack[_Ts]) -> _NDT_f_co: ...
+    def __call__(self, x: onp.Array1D[np.float64], /, *args: Unpack[_Ts]) -> _NDT_f_co: ...
 
 class AccuracyWarning(Warning): ...
 
@@ -46,45 +41,45 @@ class QMCQuadResult(NamedTuple):
 # sample-based integration
 @overload
 def trapezoid(
-    y: _ArrayLike_uif,
-    x: _ArrayLike_uif | None = None,
-    dx: spt.AnyReal = 1.0,
+    y: onp.ToFloatND,
+    x: onp.ToFloatND | None = None,
+    dx: onp.ToFloat = 1.0,
     axis: op.CanIndex = -1,
 ) -> np.floating[Any] | npt.NDArray[np.floating[Any]]: ...
 @overload
 def trapezoid(
-    y: _ArrayLike_uifc,
-    x: _ArrayLike_uif | None = None,
-    dx: spt.AnyReal = 1.0,
+    y: onp.ToComplexND,
+    x: onp.ToFloatND | None = None,
+    dx: onp.ToFloat = 1.0,
     axis: op.CanIndex = -1,
 ) -> np.inexact[Any] | npt.NDArray[np.inexact[Any]]: ...
 @overload
 def simpson(
-    y: _ArrayLike_uif,
+    y: onp.ToFloatND,
     *,
-    x: _ArrayLike_uif | None = None,
-    dx: spt.AnyReal = 1.0,
+    x: onp.ToFloatND | None = None,
+    dx: onp.ToFloat = 1.0,
     axis: op.CanIndex = -1,
 ) -> np.floating[Any] | npt.NDArray[np.floating[Any]]: ...
 @overload
 def simpson(
-    y: _ArrayLike_uifc,
+    y: onp.ToComplexND,
     *,
-    x: _ArrayLike_uif | None = None,
-    dx: spt.AnyReal = 1.0,
+    x: onp.ToFloatND | None = None,
+    dx: onp.ToFloat = 1.0,
     axis: op.CanIndex = -1,
 ) -> np.inexact[Any] | npt.NDArray[np.inexact[Any]]: ...
 @overload
 def romb(
-    y: _ArrayLike_uif,
-    dx: spt.AnyReal = 1.0,
+    y: onp.ToFloatND,
+    dx: onp.ToFloat = 1.0,
     axis: op.CanIndex = -1,
     show: bool = False,
 ) -> np.floating[Any] | npt.NDArray[np.floating[Any]]: ...
 @overload
 def romb(
-    y: _ArrayLike_uifc,
-    dx: spt.AnyReal = 1.0,
+    y: onp.ToComplexND,
+    dx: onp.ToFloat = 1.0,
     axis: op.CanIndex = -1,
     show: bool = False,
 ) -> np.inexact[Any] | npt.NDArray[np.inexact[Any]]: ...
@@ -92,61 +87,61 @@ def romb(
 # sample-based cumulative integration
 @overload
 def cumulative_trapezoid(
-    y: _ArrayLike_uif,
-    x: _ArrayLike_uif | None = None,
-    dx: spt.AnyReal = 1.0,
+    y: onp.ToFloatND,
+    x: onp.ToFloatND | None = None,
+    dx: onp.ToFloat = 1.0,
     axis: op.CanIndex = -1,
     initial: Literal[0] | None = None,
 ) -> npt.NDArray[np.floating[Any]]: ...
 @overload
 def cumulative_trapezoid(
-    y: _ArrayLike_uifc,
-    x: _ArrayLike_uif | None = None,
-    dx: spt.AnyReal = 1.0,
+    y: onp.ToComplexND,
+    x: onp.ToFloatND | None = None,
+    dx: onp.ToFloat = 1.0,
     axis: op.CanIndex = -1,
     initial: Literal[0] | None = None,
 ) -> npt.NDArray[np.inexact[Any]]: ...
 @overload
 def cumulative_simpson(
-    y: _ArrayLike_uif,
+    y: onp.ToFloatND,
     *,
-    x: _ArrayLike_uif | None = None,
-    dx: spt.AnyReal = 1.0,
+    x: onp.ToFloatND | None = None,
+    dx: onp.ToFloat = 1.0,
     axis: op.CanIndex = -1,
-    initial: _ArrayLike_uif | None = None,
+    initial: onp.ToFloatND | None = None,
 ) -> npt.NDArray[np.floating[Any]]: ...
 @overload
 def cumulative_simpson(
-    y: _ArrayLike_uifc,
+    y: onp.ToComplexND,
     *,
-    x: _ArrayLike_uif | None = None,
-    dx: spt.AnyReal = 1.0,
+    x: onp.ToFloatND | None = None,
+    dx: onp.ToFloat = 1.0,
     axis: op.CanIndex = -1,
-    initial: _ArrayLike_uifc | None = None,
+    initial: onp.ToComplexND | None = None,
 ) -> npt.NDArray[np.inexact[Any]]: ...
 
 # function-based
 @overload
 def fixed_quad(
     func: _VectorizedQuadFunc[_NDT_f, Unpack[_Ts]],
-    a: spt.AnyReal,
-    b: spt.AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     args: tuple[Unpack[_Ts]],
     n: op.CanIndex = 5,
 ) -> _NDT_f: ...
 @overload
 def fixed_quad(
     # func: _VectorizedQuadFunc[_NDT_f],
-    func: Callable[[onp.Array[tuple[int], np.float64]], _NDT_f],
-    a: spt.AnyReal,
-    b: spt.AnyReal,
+    func: Callable[[onp.Array1D[np.float64]], _NDT_f],
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     args: tuple[()] = (),
     n: op.CanIndex = 5,
 ) -> _NDT_f: ...
 def qmc_quad(
-    func: Callable[[onp.Array[tuple[int, int], np.float64]], npt.NDArray[np.floating[Any]]],
-    a: Sequence[spt.AnyReal] | onp.AnyFloatingArray,
-    b: Sequence[spt.AnyReal] | onp.AnyFloatingArray,
+    func: Callable[[onp.Array2D[np.float64]], npt.NDArray[np.floating[Any]]],
+    a: onp.ToFloat1D,
+    b: onp.ToFloat1D,
     *,
     n_estimates: int = 8,
     n_points: int = 1024,
@@ -179,4 +174,4 @@ def romberg(
 ) -> float: ...
 
 # low-level
-def newton_cotes(rn: int, equal: int = 0) -> tuple[onp.Array[tuple[int], np.float64], float]: ...
+def newton_cotes(rn: int, equal: int = 0) -> tuple[onp.Array1D[np.float64], float]: ...

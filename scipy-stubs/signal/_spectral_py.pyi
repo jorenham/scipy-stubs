@@ -5,8 +5,8 @@ from typing_extensions import Unpack
 import numpy as np
 import numpy.typing as npt
 import optype as op
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
-from scipy._typing import AnyInt, AnyReal
 from .windows._windows import _Window, _WindowNeedsParams
 
 __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle", "periodogram", "spectrogram", "stft", "welch"]
@@ -33,9 +33,9 @@ def lombscargle(
 ) -> _Array_f8_1d: ...
 def periodogram(
     x: _ArrayLikeNumber_co,
-    fs: AnyReal = 1.0,
+    fs: onp.ToFloat = 1.0,
     window: _WindowLike | None = "boxcar",
-    nfft: AnyInt | None = None,
+    nfft: onp.ToInt | None = None,
     detrend: _Detrend = "constant",
     return_onesided: op.CanBool = True,
     scaling: _Scaling = "density",
@@ -43,11 +43,11 @@ def periodogram(
 ) -> tuple[_Array_f8, _ArrayFloat]: ...
 def welch(
     x: _ArrayLikeNumber_co,
-    fs: AnyReal = 1.0,
+    fs: onp.ToFloat = 1.0,
     window: _WindowLike = "hann",
-    nperseg: AnyInt | None = None,
-    noverlap: AnyInt | None = None,
-    nfft: AnyInt | None = None,
+    nperseg: onp.ToInt | None = None,
+    noverlap: onp.ToInt | None = None,
+    nfft: onp.ToInt | None = None,
     detrend: _Detrend = "constant",
     return_onesided: op.CanBool = True,
     scaling: _Scaling = "density",
@@ -57,11 +57,11 @@ def welch(
 def csd(
     x: _ArrayLikeNumber_co,
     y: _ArrayLikeNumber_co,
-    fs: AnyReal = 1.0,
+    fs: onp.ToFloat = 1.0,
     window: _WindowLike = "hann",
-    nperseg: AnyInt | None = None,
-    noverlap: AnyInt | None = None,
-    nfft: AnyInt | None = None,
+    nperseg: onp.ToInt | None = None,
+    noverlap: onp.ToInt | None = None,
+    nfft: onp.ToInt | None = None,
     detrend: _Detrend = "constant",
     return_onesided: op.CanBool = True,
     scaling: _Scaling = "density",
@@ -74,11 +74,11 @@ def csd(
 # non-complex mode (positional and keyword)
 def spectrogram(
     x: _ArrayLikeNumber_co,
-    fs: AnyReal = 1.0,
+    fs: onp.ToFloat = 1.0,
     window: _WindowLike = ("tukey", 0.25),
-    nperseg: AnyInt | None = None,
-    noverlap: AnyInt | None = None,
-    nfft: AnyInt | None = None,
+    nperseg: onp.ToInt | None = None,
+    noverlap: onp.ToInt | None = None,
+    nfft: onp.ToInt | None = None,
     detrend: _Detrend = "constant",
     return_onesided: op.CanBool = True,
     scaling: _Scaling = "density",
@@ -89,11 +89,11 @@ def spectrogram(
 # complex mode (positional)
 def spectrogram(
     x: _ArrayLikeNumber_co,
-    fs: AnyReal,
+    fs: onp.ToFloat,
     window: _WindowLike,
-    nperseg: AnyInt | None,
-    noverlap: AnyInt | None,
-    nfft: AnyInt | None,
+    nperseg: onp.ToInt | None,
+    noverlap: onp.ToInt | None,
+    nfft: onp.ToInt | None,
     detrend: _Detrend,
     return_onesided: op.CanBool,
     scaling: _Scaling,
@@ -104,11 +104,11 @@ def spectrogram(
 # complex mode (keyword)
 def spectrogram(
     x: _ArrayLikeNumber_co,
-    fs: AnyReal = 1.0,
+    fs: onp.ToFloat = 1.0,
     window: _WindowLike = ("tukey", 0.25),
-    nperseg: AnyInt | None = None,
-    noverlap: AnyInt | None = None,
-    nfft: AnyInt | None = None,
+    nperseg: onp.ToInt | None = None,
+    noverlap: onp.ToInt | None = None,
+    nfft: onp.ToInt | None = None,
     detrend: _Detrend = "constant",
     return_onesided: op.CanBool = True,
     scaling: _Scaling = "density",
@@ -120,23 +120,23 @@ def spectrogram(
 #
 def check_COLA(
     window: _WindowLike,
-    nperseg: AnyInt,
-    noverlap: AnyInt,
-    tol: AnyReal = 1e-10,
+    nperseg: onp.ToInt,
+    noverlap: onp.ToInt,
+    tol: onp.ToFloat = 1e-10,
 ) -> np.bool_: ...
 def check_NOLA(
     window: _WindowLike,
-    nperseg: AnyInt,
-    noverlap: AnyInt,
-    tol: AnyReal = 1e-10,
+    nperseg: onp.ToInt,
+    noverlap: onp.ToInt,
+    tol: onp.ToFloat = 1e-10,
 ) -> np.bool_: ...
 def stft(
     x: _ArrayLikeNumber_co,
-    fs: AnyReal = 1.0,
+    fs: onp.ToFloat = 1.0,
     window: _WindowLike = "hann",
-    nperseg: AnyInt = 256,
-    noverlap: AnyInt | None = None,
-    nfft: AnyInt | None = None,
+    nperseg: onp.ToInt = 256,
+    noverlap: onp.ToInt | None = None,
+    nfft: onp.ToInt | None = None,
     detrend: _Detrend = False,
     return_onesided: op.CanBool = True,
     boundary: _Boundary = "zeros",
@@ -150,11 +150,11 @@ def stft(
 # input_onesided is `True`
 def istft(
     Zxx: _ArrayLikeNumber_co,
-    fs: AnyReal = 1.0,
+    fs: onp.ToFloat = 1.0,
     window: _WindowLike = "hann",
-    nperseg: AnyInt | None = None,
-    noverlap: AnyInt | None = None,
-    nfft: AnyInt | None = None,
+    nperseg: onp.ToInt | None = None,
+    noverlap: onp.ToInt | None = None,
+    nfft: onp.ToInt | None = None,
     input_onesided: Literal[True, 1] = True,
     boundary: op.CanBool = True,
     time_axis: op.CanIndex = -1,
@@ -165,11 +165,11 @@ def istft(
 # input_onesided is `False` (positional)
 def istft(
     Zxx: _ArrayLikeNumber_co,
-    fs: AnyReal,
+    fs: onp.ToFloat,
     window: _WindowLike,
-    nperseg: AnyInt | None,
-    noverlap: AnyInt | None,
-    nfft: AnyInt | None,
+    nperseg: onp.ToInt | None,
+    noverlap: onp.ToInt | None,
+    nfft: onp.ToInt | None,
     input_onesided: Literal[False, 0],
     boundary: op.CanBool = True,
     time_axis: op.CanIndex = -1,
@@ -180,11 +180,11 @@ def istft(
 # input_onesided is `False` (keyword)
 def istft(
     Zxx: _ArrayLikeNumber_co,
-    fs: AnyReal = 1.0,
+    fs: onp.ToFloat = 1.0,
     window: _WindowLike = "hann",
-    nperseg: AnyInt | None = None,
-    noverlap: AnyInt | None = None,
-    nfft: AnyInt | None = None,
+    nperseg: onp.ToInt | None = None,
+    noverlap: onp.ToInt | None = None,
+    nfft: onp.ToInt | None = None,
     *,
     input_onesided: Literal[False, 0],
     boundary: op.CanBool = True,
@@ -197,11 +197,11 @@ def istft(
 def coherence(
     x: _ArrayLikeNumber_co,
     y: _ArrayLikeNumber_co,
-    fs: AnyReal = 1.0,
+    fs: onp.ToFloat = 1.0,
     window: _WindowLike = "hann",
-    nperseg: AnyInt | None = None,
-    noverlap: AnyInt | None = None,
-    nfft: AnyInt | None = None,
+    nperseg: onp.ToInt | None = None,
+    noverlap: onp.ToInt | None = None,
+    nfft: onp.ToInt | None = None,
     detrend: _Detrend = "constant",
     axis: op.CanIndex = -1,
 ) -> tuple[_Array_f8, _ArrayFloat]: ...

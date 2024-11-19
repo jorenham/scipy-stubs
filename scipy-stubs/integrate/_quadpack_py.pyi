@@ -5,9 +5,9 @@ from typing_extensions import TypeVar
 import numpy as np
 import numpy.typing as npt
 import optype as op
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeComplex_co, _ArrayLikeFloat_co
 from scipy._lib._ccallback import LowLevelCallable
-from scipy._typing import AnyComplex, AnyReal
 from ._typing import QuadInfoDict, QuadOpts, QuadWeights
 
 __all__ = ["IntegrationWarning", "dblquad", "nquad", "quad", "tplquad"]
@@ -132,8 +132,8 @@ class IntegrationWarning(UserWarning): ...
 @overload
 def quad(
     func: _QuadFunc10[_FloatLike],
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     args: tuple[()] = (),
     full_output: _Falsy = 0,
     epsabs: _FloatLike = 1.49e-08,
@@ -152,8 +152,8 @@ def quad(
 @overload
 def quad(
     func: _QuadFunc1N[_FloatLike],
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     args: tuple[object, ...],
     full_output: _Falsy = 0,
     epsabs: _FloatLike = 1.49e-08,
@@ -172,8 +172,8 @@ def quad(
 @overload
 def quad(
     func: _QuadFunc10[_FloatLike],
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     args: tuple[()],
     full_output: _Truthy,
     epsabs: _FloatLike = 1.49e-08,
@@ -194,8 +194,8 @@ def quad(
 @overload
 def quad(
     func: _QuadFunc10[_FloatLike],
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     args: tuple[()] = (),
     *,
     full_output: _Truthy,
@@ -219,8 +219,8 @@ def quad(
 @overload
 def quad(
     func: _QuadFunc1N[_FloatLike],
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     args: tuple[object, ...],
     full_output: _Truthy,
     epsabs: _FloatLike = 1.49e-08,
@@ -243,8 +243,8 @@ def quad(
 @overload
 def quad(
     func: _QuadFunc10[_ComplexLike],
-    a: AnyComplex,
-    b: AnyComplex,
+    a: onp.ToComplex,
+    b: onp.ToComplex,
     args: tuple[()],
     full_output: _Falsy,
     epsabs: _FloatLike,
@@ -261,8 +261,8 @@ def quad(
 @overload
 def quad(
     func: _QuadFunc10[_ComplexLike],
-    a: AnyComplex,
-    b: AnyComplex,
+    a: onp.ToComplex,
+    b: onp.ToComplex,
     args: tuple[()] = (),
     full_output: _Falsy = 0,
     epsabs: _FloatLike = 1.49e-08,
@@ -282,8 +282,8 @@ def quad(
 @overload
 def quad(
     func: _QuadFunc10[_ComplexLike],
-    a: AnyComplex,
-    b: AnyComplex,
+    a: onp.ToComplex,
+    b: onp.ToComplex,
     args: tuple[()],
     full_output: _Truthy,
     epsabs: _FloatLike,
@@ -300,8 +300,8 @@ def quad(
 @overload
 def quad(
     func: _QuadFunc10[_ComplexLike],
-    a: AnyComplex,
-    b: AnyComplex,
+    a: onp.ToComplex,
+    b: onp.ToComplex,
     args: tuple[()],
     full_output: _Truthy,
     epsabs: _FloatLike = 1.49e-08,
@@ -319,8 +319,8 @@ def quad(
 @overload
 def quad(
     func: _QuadFunc10[_ComplexLike],
-    a: AnyComplex,
-    b: AnyComplex,
+    a: onp.ToComplex,
+    b: onp.ToComplex,
     args: tuple[()] = (),
     *,
     full_output: _Truthy,
@@ -340,8 +340,8 @@ def quad(
 @overload
 def quad(
     func: _QuadFunc1N[_ComplexLike],
-    a: AnyComplex,
-    b: AnyComplex,
+    a: onp.ToComplex,
+    b: onp.ToComplex,
     args: tuple[object, ...],
     full_output: _Falsy,
     epsabs: _FloatLike,
@@ -358,8 +358,8 @@ def quad(
 @overload
 def quad(
     func: _QuadFunc1N[_ComplexLike],
-    a: AnyComplex,
-    b: AnyComplex,
+    a: onp.ToComplex,
+    b: onp.ToComplex,
     args: tuple[object, ...],
     full_output: _Falsy = 0,
     epsabs: _FloatLike = 1.49e-08,
@@ -379,8 +379,8 @@ def quad(
 @overload
 def quad(
     func: _QuadFunc1N[_ComplexLike],
-    a: AnyComplex,
-    b: AnyComplex,
+    a: onp.ToComplex,
+    b: onp.ToComplex,
     args: tuple[object, ...],
     full_output: _Truthy,
     epsabs: _FloatLike,
@@ -397,8 +397,8 @@ def quad(
 @overload
 def quad(
     func: _QuadFunc1N[_ComplexLike],
-    a: AnyComplex,
-    b: AnyComplex,
+    a: onp.ToComplex,
+    b: onp.ToComplex,
     args: tuple[object, ...],
     full_output: _Truthy,
     epsabs: _FloatLike = 1.49e-08,
@@ -419,8 +419,8 @@ def quad(
 @overload
 def dblquad(
     func: _QuadFunc20,
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     gfun: _GHFunc,
     hfun: _GHFunc,
     args: tuple[()] = (),
@@ -430,8 +430,8 @@ def dblquad(
 @overload
 def dblquad(
     func: _QuadFunc2N,
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     gfun: _GHFunc,
     hfun: _GHFunc,
     args: tuple[object, ...],
@@ -444,8 +444,8 @@ def dblquad(
 @overload
 def tplquad(
     func: _QuadFunc30,
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     gfun: _GHFunc,
     hfun: _GHFunc,
     qfun: _QRFunc,
@@ -457,8 +457,8 @@ def tplquad(
 @overload
 def tplquad(
     func: _QuadFunc3N,
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     gfun: _GHFunc,
     hfun: _GHFunc,
     qfun: _QRFunc,

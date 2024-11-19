@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from typing import Any, Literal, TypeAlias, overload
 
 import numpy as np
@@ -7,140 +6,138 @@ import optype.numpy as onp
 
 __all__ = ["qr", "qr_multiply", "rq"]
 
-_ArrayLike_2d_fc: TypeAlias = onp.AnyNumberArray | Sequence[Sequence[complex | np.number[Any]]]
-_Array_i_1d: TypeAlias = onp.Array[tuple[int], np.int_]
-_Array_fc_2d: TypeAlias = onp.Array[tuple[int, int], np.inexact[npt.NBitBase]]
+_Inexact2D: TypeAlias = onp.Array2D[np.inexact[Any]]
 
 # 5/11 of these overloads could've been avoided with keyword-only parameters; so please use them ;)
 @overload
 def qr(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     overwrite_a: bool = False,
     lwork: int | None = None,
     mode: Literal["full", "economic"] = "full",
     pivoting: Literal[False] = False,
     check_finite: bool = True,
-) -> tuple[_Array_fc_2d, _Array_fc_2d]: ...
+) -> tuple[_Inexact2D, _Inexact2D]: ...
 @overload
 def qr(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     overwrite_a: bool,
     lwork: int | None,
     mode: Literal["r"],
     pivoting: Literal[False] = False,
     check_finite: bool = True,
-) -> tuple[_Array_fc_2d]: ...
+) -> tuple[_Inexact2D]: ...
 @overload
 def qr(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     overwrite_a: bool = False,
     lwork: int | None = None,
     *,
     mode: Literal["r"],
     pivoting: Literal[False] = False,
     check_finite: bool = True,
-) -> tuple[_Array_fc_2d]: ...
+) -> tuple[_Inexact2D]: ...
 @overload
 def qr(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     overwrite_a: bool,
     lwork: int | None,
     mode: Literal["raw"],
     pivoting: Literal[False] = False,
     check_finite: bool = True,
-) -> tuple[tuple[_Array_fc_2d, _Array_fc_2d], _Array_fc_2d]: ...
+) -> tuple[tuple[_Inexact2D, _Inexact2D], _Inexact2D]: ...
 @overload
 def qr(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     overwrite_a: bool = False,
     lwork: int | None = None,
     *,
     mode: Literal["raw"],
     pivoting: Literal[False] = False,
     check_finite: bool = True,
-) -> tuple[tuple[_Array_fc_2d, _Array_fc_2d], _Array_fc_2d]: ...
+) -> tuple[tuple[_Inexact2D, _Inexact2D], _Inexact2D]: ...
 @overload
 def qr(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     overwrite_a: bool,
     lwork: int | None,
     mode: Literal["full", "economic"],
     pivoting: Literal[True],
     check_finite: bool = True,
-) -> tuple[_Array_fc_2d, _Array_fc_2d, _Array_i_1d]: ...
+) -> tuple[_Inexact2D, _Inexact2D, onp.Array1D[np.int_]]: ...
 @overload
 def qr(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     overwrite_a: bool = False,
     lwork: int | None = None,
     mode: Literal["full", "economic"] = "full",
     *,
     pivoting: Literal[True],
     check_finite: bool = True,
-) -> tuple[_Array_fc_2d, _Array_fc_2d, _Array_i_1d]: ...
+) -> tuple[_Inexact2D, _Inexact2D, onp.Array1D[np.int_]]: ...
 @overload
 def qr(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     overwrite_a: bool,
     lwork: int | None,
     mode: Literal["r"],
     pivoting: Literal[True],
     check_finite: bool = True,
-) -> tuple[_Array_fc_2d, _Array_i_1d]: ...
+) -> tuple[_Inexact2D, onp.Array1D[np.int_]]: ...
 @overload
 def qr(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     overwrite_a: bool = False,
     lwork: int | None = None,
     *,
     mode: Literal["r"],
     pivoting: Literal[True],
     check_finite: bool = True,
-) -> tuple[_Array_fc_2d, _Array_i_1d]: ...
+) -> tuple[_Inexact2D, onp.Array1D[np.int_]]: ...
 @overload
 def qr(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     overwrite_a: bool,
     lwork: int | None,
     mode: Literal["raw"],
     pivoting: Literal[True],
     check_finite: bool = True,
-) -> tuple[tuple[_Array_fc_2d, _Array_fc_2d], _Array_fc_2d, _Array_i_1d]: ...
+) -> tuple[tuple[_Inexact2D, _Inexact2D], _Inexact2D, onp.Array1D[np.int_]]: ...
 @overload
 def qr(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     overwrite_a: bool = False,
     lwork: int | None = None,
     *,
     mode: Literal["raw"],
     pivoting: Literal[True],
     check_finite: bool = True,
-) -> tuple[tuple[_Array_fc_2d, _Array_fc_2d], _Array_fc_2d, _Array_i_1d]: ...
+) -> tuple[tuple[_Inexact2D, _Inexact2D], _Inexact2D, onp.Array1D[np.int_]]: ...
 
 #
 @overload
 def qr_multiply(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     c: npt.ArrayLike,
     mode: Literal["left", "right"] = "right",
     pivoting: Literal[False] = False,
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[_Array_fc_2d, _Array_fc_2d]: ...
+) -> tuple[_Inexact2D, _Inexact2D]: ...
 @overload
 def qr_multiply(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     c: npt.ArrayLike,
     mode: Literal["left", "right"],
     pivoting: Literal[True],
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[_Array_fc_2d, _Array_fc_2d, _Array_i_1d]: ...
+) -> tuple[_Inexact2D, _Inexact2D, onp.Array1D[np.int_]]: ...
 @overload
 def qr_multiply(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     c: npt.ArrayLike,
     mode: Literal["left", "right"] = "right",
     *,
@@ -148,31 +145,31 @@ def qr_multiply(
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[_Array_fc_2d, _Array_fc_2d, _Array_i_1d]: ...
+) -> tuple[_Inexact2D, _Inexact2D, onp.Array1D[np.int_]]: ...
 
 #
 @overload
 def rq(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     overwrite_a: bool = False,
     lwork: int | None = None,
     mode: Literal["full", "economic"] = "full",
     check_finite: bool = True,
-) -> tuple[_Array_fc_2d, _Array_fc_2d]: ...
+) -> tuple[_Inexact2D, _Inexact2D]: ...
 @overload
 def rq(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     overwrite_a: bool,
     lwork: int | None,
     mode: Literal["r"],
     check_finite: bool = True,
-) -> _Array_fc_2d: ...
+) -> _Inexact2D: ...
 @overload
 def rq(
-    a: _ArrayLike_2d_fc,
+    a: onp.ToComplex2D,
     overwrite_a: bool = False,
     lwork: int | None = None,
     *,
     mode: Literal["r"],
     check_finite: bool = True,
-) -> _Array_fc_2d: ...
+) -> _Inexact2D: ...

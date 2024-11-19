@@ -4,7 +4,8 @@ from typing import Any, Literal, Protocol, TypeAlias
 
 import numpy as np
 import numpy.typing as npt
-from scipy._typing import AnyInt, AnyReal, Seed
+import optype.numpy as onp
+from scipy._typing import Seed
 from ._resampling import BootstrapResult
 
 __all__ = ["sobol_indices"]
@@ -40,13 +41,13 @@ class SobolResult:
     _AB: npt.NDArray[np.float64] | None = None
     _bootstrap_result: BootstrapResult | None = None
 
-    def bootstrap(self, confidence_level: AnyReal = 0.95, n_resamples: AnyInt = 999) -> BootstrapSobolResult: ...
+    def bootstrap(self, confidence_level: onp.ToFloat = 0.95, n_resamples: onp.ToInt = 999) -> BootstrapSobolResult: ...
 
 #
 def f_ishigami(x: npt.ArrayLike) -> npt.NDArray[np.floating[Any]]: ...
 
 #
-def sample_A_B(n: AnyInt, dists: Sequence[PPFDist], random_state: Seed | None = None) -> npt.NDArray[np.float64]: ...
+def sample_A_B(n: onp.ToInt, dists: Sequence[PPFDist], random_state: Seed | None = None) -> npt.NDArray[np.float64]: ...
 def sample_AB(A: npt.NDArray[np.float64], B: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]: ...
 
 #
@@ -60,7 +61,7 @@ def saltelli_2010(
 def sobol_indices(
     *,
     func: Callable[[npt.NDArray[np.float64]], npt.ArrayLike] | Mapping[_SobolKey, npt.NDArray[np.number[Any]]],
-    n: AnyInt,
+    n: onp.ToInt,
     dists: Sequence[PPFDist] | None = None,
     method: _SobolMethod | Literal["saltelli_2010"] = "saltelli_2010",
     random_state: Seed | None = None,

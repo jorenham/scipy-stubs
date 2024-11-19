@@ -3,7 +3,7 @@ import re
 from typing import Final, Generic, Literal, TypeAlias, TypeVar, type_check_only
 from typing_extensions import Self
 
-import scipy._typing as spt
+import optype.numpy as onp
 
 __all__ = ["BadFortranFormat", "ExpFormat", "FortranFormatParser", "IntFormat"]
 
@@ -52,4 +52,4 @@ class FortranFormatParser:
     tokenizer: Final[Tokenizer]
     def parse(self, /, s: str) -> IntFormat | ExpFormat: ...
 
-def number_digits(n: spt.AnyInt) -> int: ...
+def number_digits(n: onp.ToInt) -> int: ...

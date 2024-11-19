@@ -10,7 +10,7 @@ __all__ = ["ascent", "central_diff_weights", "derivative", "electrocardiogram", 
 # this module proofs the existance of an afterlife, because we're currently on scipy 1.14.1 -_-
 
 @deprecated("will be completely removed in SciPy 1.12.0")
-def central_diff_weights(Np: int, ndiv: int = 1) -> onp.Array[tuple[int], np.float64]: ...
+def central_diff_weights(Np: int, ndiv: int = 1) -> onp.Array1D[np.float64]: ...
 @deprecated("will be completely removed in SciPy 1.12.0")
 def derivative(
     func: Callable[Concatenate[float, ...], float],

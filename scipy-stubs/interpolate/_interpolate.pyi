@@ -6,7 +6,7 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt, _ArrayLikeNumber_co
-from scipy._typing import AnyReal, Untyped
+from scipy._typing import Untyped
 from ._polyint import _Interpolator1D
 
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
@@ -59,7 +59,7 @@ class interp1d(_Interpolator1D):
 
 class _PPolyBase(Generic[_CT_co]):
     c: onp.Array[onp.AtLeast2D, _CT_co]
-    x: onp.Array[tuple[int], np.float64]
+    x: onp.Array1D[np.float64]
     extrapolate: Final[_Extrapolate]
     axis: Final[int]
 
@@ -95,10 +95,10 @@ class PPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
     def from_bernstein_basis(cls, bp: BPoly[_CT_co], extrapolate: _Extrapolate | None = None) -> Self: ...
     def derivative(self, nu: int = 1) -> Self: ...
     def antiderivative(self, nu: int = 1) -> Self: ...
-    def integrate(self, a: AnyReal, b: AnyReal, extrapolate: _Extrapolate | None = None) -> npt.NDArray[_CT_co]: ...
+    def integrate(self, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None) -> npt.NDArray[_CT_co]: ...
     def solve(
         self,
-        y: AnyReal = 0.0,
+        y: onp.ToFloat = 0.0,
         discontinuity: bool = True,
         extrapolate: _Extrapolate | None = None,
     ) -> _CT_co | npt.NDArray[_CT_co]: ...
@@ -117,11 +117,11 @@ class BPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
     ) -> Self: ...
     def derivative(self, nu: int = 1) -> Self: ...
     def antiderivative(self, nu: int = 1) -> Self: ...
-    def integrate(self, a: AnyReal, b: AnyReal, extrapolate: _Extrapolate | None = None) -> npt.NDArray[_CT_co]: ...
+    def integrate(self, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None) -> npt.NDArray[_CT_co]: ...
 
 class NdPPoly(Generic[_CT_co]):
     c: onp.Array[onp.AtLeast2D, _CT_co]
-    x: tuple[onp.Array[tuple[int], np.float64], ...]
+    x: tuple[onp.Array1D[np.float64], ...]
 
     @classmethod
     def construct_fast(
@@ -146,11 +146,15 @@ class NdPPoly(Generic[_CT_co]):
     def antiderivative(self, nu: tuple[int, ...]) -> Self: ...
     def integrate_1d(
         self,
-        a: AnyReal,
-        b: AnyReal,
+        a: onp.ToFloat,
+        b: onp.ToFloat,
         axis: op.CanIndex,
         extrapolate: bool | None = None,
     ) -> Self | npt.NDArray[_CT_co]: ...
-    def integrate(self, ranges: tuple[tuple[AnyReal, AnyReal]], extrapolate: bool | None = None) -> npt.NDArray[_CT_co]: ...
+    def integrate(
+        self,
+        ranges: tuple[tuple[onp.ToFloat, onp.ToFloat]],
+        extrapolate: bool | None = None,
+    ) -> npt.NDArray[_CT_co]: ...
 
 def lagrange(x: _ArrayLikeNumber_co, w: _ArrayLikeNumber_co) -> np.poly1d: ...

@@ -3,10 +3,10 @@ from typing import Concatenate, Final, Generic, Literal, overload, type_check_on
 from typing_extensions import TypeVar
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
 from scipy._lib._util import _RichResult
-from scipy._typing import AnyBool, AnyInt, AnyReal
 
 _SCT = TypeVar("_SCT")
 
@@ -33,33 +33,33 @@ class _NSumResult(_RichResult[bool | int | _SCT], Generic[_SCT]):
 #
 @overload
 def _tanhsinh(
-    f: Callable[Concatenate[onp.Array[tuple[int], np.float64], ...], _ArrayLikeFloat_co],
+    f: Callable[Concatenate[onp.Array1D[np.float64], ...], _ArrayLikeFloat_co],
     a: _ArrayLikeFloat_co,
     b: _ArrayLikeFloat_co,
     *,
     args: tuple[object, ...] = (),
-    log: AnyBool = False,
-    maxfun: AnyInt | None = None,
-    maxlevel: AnyInt | None = None,
-    minlevel: AnyInt | None = 2,
-    atol: AnyReal | None = None,
-    rtol: AnyReal | None = None,
+    log: op.CanBool = False,
+    maxfun: onp.ToInt | None = None,
+    maxlevel: onp.ToInt | None = None,
+    minlevel: onp.ToInt | None = 2,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
     preserve_shape: bool = False,
     callback: Callable[[_TanhSinhResult[np.float64]], None] | None = None,
 ) -> _TanhSinhResult[np.float64]: ...
 @overload
 def _tanhsinh(
-    f: Callable[Concatenate[onp.Array[tuple[int], np.float64 | np.complex128], ...], _ArrayLikeNumber_co],
+    f: Callable[Concatenate[onp.Array1D[np.float64 | np.complex128], ...], _ArrayLikeNumber_co],
     a: _ArrayLikeNumber_co,
     b: _ArrayLikeNumber_co,
     *,
     args: tuple[object, ...] = (),
-    log: AnyBool = False,
-    maxfun: AnyInt | None = None,
-    maxlevel: AnyInt | None = None,
-    minlevel: AnyInt | None = 2,
-    atol: AnyReal | None = None,
-    rtol: AnyReal | None = None,
+    log: op.CanBool = False,
+    maxfun: onp.ToInt | None = None,
+    maxlevel: onp.ToInt | None = None,
+    minlevel: onp.ToInt | None = 2,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
     preserve_shape: bool = False,
     callback: Callable[[_TanhSinhResult[np.float64 | np.complex128]], None] | None = None,
 ) -> _TanhSinhResult[np.float64 | np.complex128]: ...
@@ -67,25 +67,25 @@ def _tanhsinh(
 #
 @overload
 def _nsum(
-    f: Callable[Concatenate[onp.Array[tuple[int], np.float64], ...], _ArrayLikeFloat_co],
+    f: Callable[Concatenate[onp.Array1D[np.float64], ...], _ArrayLikeFloat_co],
     a: _ArrayLikeFloat_co,
     b: _ArrayLikeFloat_co,
     step: _ArrayLikeFloat_co = 1,
     args: tuple[object, ...] = (),
-    log: AnyBool = False,
-    maxterms: AnyInt = 0x10_00_00,
-    atol: AnyReal | None = None,
-    rtol: AnyReal | None = None,
+    log: op.CanBool = False,
+    maxterms: onp.ToInt = 0x10_00_00,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
 ) -> _NSumResult[np.float64]: ...
 @overload
 def _nsum(
-    f: Callable[Concatenate[onp.Array[tuple[int], np.float64 | np.complex128], ...], _ArrayLikeNumber_co],
+    f: Callable[Concatenate[onp.Array1D[np.float64 | np.complex128], ...], _ArrayLikeNumber_co],
     a: _ArrayLikeNumber_co,
     b: _ArrayLikeNumber_co,
     step: _ArrayLikeFloat_co = 1,
     args: tuple[object, ...] = (),
-    log: AnyBool = False,
-    maxterms: AnyInt = 0x10_00_00,
-    atol: AnyReal | None = None,
-    rtol: AnyReal | None = None,
+    log: op.CanBool = False,
+    maxterms: onp.ToInt = 0x10_00_00,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
 ) -> _NSumResult[np.float64 | np.complex128]: ...

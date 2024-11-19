@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from typing import Any, Literal, Protocol, overload, type_check_only
 from typing_extensions import TypeVar, TypeVarTuple, Unpack
 
@@ -10,7 +9,7 @@ from ._typing import ODEInfoDict
 __all__ = ["ODEintWarning", "odeint"]
 
 _Ts = TypeVarTuple("_Ts", default=Unpack[tuple[()]])
-_YT = TypeVar("_YT", bound=onp.AnyFloatingArray | Sequence[float] | float)
+_YT = TypeVar("_YT", bound=onp.ToFloat1D | onp.ToFloat)
 
 @type_check_only
 class _ODEFunc(Protocol[_YT, Unpack[_Ts]]):
@@ -27,7 +26,7 @@ class ODEintWarning(Warning): ...
 def odeint(
     func: _ODEFunc[_YT],
     y0: _YT,
-    t: npt.NDArray[np.integer[Any]] | Sequence[int],
+    t: onp.ToInt1D,
     args: tuple[()] = (),
     Dfun: _ODEFunc[_YT] | None = None,
     col_deriv: Literal[False, 0, True, 1] = 0,
@@ -47,12 +46,12 @@ def odeint(
     mxords: int = 5,
     printmessg: Literal[False, 0, True, 1] = 0,
     tfirst: Literal[False, 0, None] = False,
-) -> onp.Array[tuple[int, int], np.floating[Any]]: ...
+) -> onp.Array2D[np.floating[Any]]: ...
 @overload
 def odeint(
     func: _ODEFunc[_YT],
     y0: _YT,
-    t: npt.NDArray[np.integer[Any]] | Sequence[int],
+    t: onp.ToInt1D,
     args: tuple[()] = (),
     Dfun: _ODEFunc[_YT] | None = None,
     col_deriv: Literal[False, 0, True, 1] = 0,
@@ -73,12 +72,12 @@ def odeint(
     printmessg: Literal[False, 0, True, 1] = 0,
     *,
     tfirst: Literal[True, 1],
-) -> onp.Array[tuple[int, int], np.floating[Any]]: ...
+) -> onp.Array2D[np.floating[Any]]: ...
 @overload
 def odeint(
     func: _ODEFunc[_YT],
     y0: _YT,
-    t: npt.NDArray[np.integer[Any]] | Sequence[int],
+    t: onp.ToInt1D,
     args: tuple[()] = (),
     Dfun: _ODEFunc[_YT] | None = None,
     col_deriv: Literal[False, 0, True, 1] = 0,
@@ -99,12 +98,12 @@ def odeint(
     mxords: int = 5,
     printmessg: Literal[False, 0, True, 1] = 0,
     tfirst: Literal[False, 0, None] = False,
-) -> tuple[onp.Array[tuple[int, int], np.floating[Any]], ODEInfoDict]: ...
+) -> tuple[onp.Array2D[np.floating[Any]], ODEInfoDict]: ...
 @overload
 def odeint(
     func: _ODEFunc[_YT],
     y0: _YT,
-    t: npt.NDArray[np.integer[Any]] | Sequence[int],
+    t: onp.ToInt1D,
     args: tuple[()] = (),
     Dfun: _ODEFunc[_YT] | None = None,
     col_deriv: Literal[False, 0, True, 1] = 0,
@@ -125,14 +124,14 @@ def odeint(
     mxords: int = 5,
     printmessg: Literal[False, 0, True, 1] = 0,
     tfirst: Literal[True, 1],
-) -> tuple[onp.Array[tuple[int, int], np.floating[Any]], ODEInfoDict]: ...
+) -> tuple[onp.Array2D[np.floating[Any]], ODEInfoDict]: ...
 
 # specified args
 @overload
 def odeint(
     func: _ODEFunc[_YT, Unpack[_Ts]],
     y0: _YT,
-    t: npt.NDArray[np.integer[Any]] | Sequence[int],
+    t: onp.ToInt1D,
     args: tuple[Unpack[_Ts]] = ...,
     Dfun: _ODEFunc[_YT, Unpack[_Ts]] | None = None,
     col_deriv: Literal[False, 0, True, 1] = 0,
@@ -152,12 +151,12 @@ def odeint(
     mxords: int = 5,
     printmessg: Literal[False, 0, True, 1] = 0,
     tfirst: Literal[False, 0, None] = False,
-) -> onp.Array[tuple[int, int], np.floating[Any]]: ...
+) -> onp.Array2D[np.floating[Any]]: ...
 @overload
 def odeint(
     func: _ODEFuncInv[_YT, Unpack[_Ts]],
     y0: _YT,
-    t: npt.NDArray[np.integer[Any]] | Sequence[int],
+    t: onp.ToInt1D,
     args: tuple[Unpack[_Ts]] = ...,
     Dfun: _ODEFuncInv[_YT, Unpack[_Ts]] | None = None,
     col_deriv: Literal[False, 0, True, 1] = 0,
@@ -178,12 +177,12 @@ def odeint(
     printmessg: Literal[False, 0, True, 1] = 0,
     *,
     tfirst: Literal[True, 1],
-) -> onp.Array[tuple[int, int], np.floating[Any]]: ...
+) -> onp.Array2D[np.floating[Any]]: ...
 @overload
 def odeint(
     func: _ODEFunc[_YT, Unpack[_Ts]],
     y0: _YT,
-    t: npt.NDArray[np.integer[Any]] | Sequence[int],
+    t: onp.ToInt1D,
     args: tuple[Unpack[_Ts]] = ...,
     Dfun: _ODEFunc[_YT, Unpack[_Ts]] | None = None,
     col_deriv: Literal[False, 0, True, 1] = 0,
@@ -204,12 +203,12 @@ def odeint(
     mxords: int = 5,
     printmessg: Literal[False, 0, True, 1] = 0,
     tfirst: Literal[False, 0, None] = False,
-) -> tuple[onp.Array[tuple[int, int], np.floating[Any]], ODEInfoDict]: ...
+) -> tuple[onp.Array2D[np.floating[Any]], ODEInfoDict]: ...
 @overload
 def odeint(
     func: _ODEFuncInv[_YT, Unpack[_Ts]],
     y0: _YT,
-    t: npt.NDArray[np.integer[Any]] | Sequence[int],
+    t: onp.ToInt1D,
     args: tuple[Unpack[_Ts]] = ...,
     Dfun: _ODEFuncInv[_YT, Unpack[_Ts]] | None = None,
     col_deriv: Literal[False, 0, True, 1] = 0,
@@ -230,4 +229,4 @@ def odeint(
     mxords: int = 5,
     printmessg: Literal[False, 0, True, 1] = 0,
     tfirst: Literal[True, 1],
-) -> tuple[onp.Array[tuple[int, int], np.floating[Any]], ODEInfoDict]: ...
+) -> tuple[onp.Array2D[np.floating[Any]], ODEInfoDict]: ...

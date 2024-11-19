@@ -6,8 +6,8 @@ import optype.numpy as onp
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
-_LaplacianMatrix: TypeAlias = onp.Array[tuple[int, int], np.number[Any]] | sparray | spmatrix | LinearOperator
-_LaplacianDiag: TypeAlias = onp.Array[tuple[int], np.number[Any]]
+_LaplacianMatrix: TypeAlias = onp.Array2D[np.number[Any]] | sparray | spmatrix | LinearOperator
+_LaplacianDiag: TypeAlias = onp.Array1D[np.number[Any]]
 
 @overload
 def laplacian(

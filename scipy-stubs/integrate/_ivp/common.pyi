@@ -3,9 +3,9 @@ from typing import Any, Final, Literal, Protocol, TypeAlias, TypeVar, overload, 
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
-from scipy._typing import AnyBool, AnyReal
 from scipy.sparse import csc_matrix
 from .base import DenseOutput
 
@@ -15,15 +15,15 @@ _Float64_co: TypeAlias = np.float16 | np.float32 | np.float64 | np.integer[Any] 
 
 _SCT = TypeVar("_SCT", bound=np.generic)
 _SCT_co = TypeVar("_SCT_co", covariant=True, bound=np.generic)
-_AnyRealT = TypeVar("_AnyRealT", bound=AnyReal)
+_ToFloatT = TypeVar("_ToFloatT", bound=onp.ToFloat)
 
 @type_check_only
 class _CanLenArray(Protocol[_SCT_co]):
     def __len__(self, /) -> int: ...
     def __array__(self, /) -> npt.NDArray[_SCT_co]: ...
 
-_Vector: TypeAlias = onp.Array[tuple[int], _SCT]
-_Matrix: TypeAlias = onp.Array[tuple[int, int], _SCT]
+_Vector: TypeAlias = onp.Array1D[_SCT]
+_Matrix: TypeAlias = onp.Array2D[_SCT]
 
 ###
 
@@ -50,7 +50,7 @@ class OdeSolution:
         /,
         ts: _ArrayLikeFloat_co,
         interpolants: _Interpolants,
-        alt_segment: AnyBool = False,
+        alt_segment: op.CanBool = False,
     ) -> None: ...
     @overload
     def __call__(self, /, t: float | _Float64_co) -> _Vector[np.float64]: ...
@@ -75,8 +75,8 @@ class OdeSolution:
     @overload
     def __call__(self, /, t: Sequence[complex]) -> _Matrix[np.float64 | np.complex128]: ...
 
-def validate_first_step(first_step: _AnyRealT, t0: AnyReal, t_bound: AnyReal) -> _AnyRealT: ...
-def validate_max_step(max_step: _AnyRealT) -> _AnyRealT: ...
+def validate_first_step(first_step: _ToFloatT, t0: onp.ToFloat, t_bound: onp.ToFloat) -> _ToFloatT: ...
+def validate_max_step(max_step: _ToFloatT) -> _ToFloatT: ...
 def warn_extraneous(extraneous: dict[str, object]) -> None: ...
 def validate_tol(
     rtol: npt.NDArray[np.floating[Any]],

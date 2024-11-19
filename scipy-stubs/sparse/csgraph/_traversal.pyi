@@ -15,7 +15,7 @@ def connected_components(
     directed: bool = True,
     connection: Literal["weak", "strong"] = "weak",
     return_labels: bool = True,
-) -> tuple[int, onp.Array[tuple[int], np.int32]]: ...
+) -> tuple[int, onp.Array1D[np.int32]]: ...
 def breadth_first_tree(csgraph: _GraphLike, i_start: int, directed: bool = True) -> csr_matrix: ...
 def depth_first_tree(csgraph: _GraphLike, i_start: int, directed: bool = True) -> csr_matrix: ...
 
@@ -26,14 +26,14 @@ def breadth_first_order(
     i_start: int,
     directed: bool = True,
     return_predecessors: Literal[True] = True,
-) -> tuple[onp.Array[tuple[int], np.int32], onp.Array[tuple[int], np.int32]]: ...
+) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]]: ...
 @overload
 def breadth_first_order(
     csgraph: _GraphLike,
     i_start: int,
     directed: bool,
     return_predecessors: Literal[False],
-) -> onp.Array[tuple[int], np.int32]: ...
+) -> onp.Array1D[np.int32]: ...
 @overload
 def breadth_first_order(
     csgraph: _GraphLike,
@@ -41,21 +41,21 @@ def breadth_first_order(
     directed: bool = True,
     *,
     return_predecessors: Literal[False],
-) -> onp.Array[tuple[int], np.int32]: ...
+) -> onp.Array1D[np.int32]: ...
 @overload
 def depth_first_order(
     csgraph: _GraphLike,
     i_start: int,
     directed: bool = True,
     return_predecessors: Literal[True] = True,
-) -> tuple[onp.Array[tuple[int], np.int32], onp.Array[tuple[int], np.int32]]: ...
+) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]]: ...
 @overload
 def depth_first_order(
     csgraph: _GraphLike,
     i_start: int,
     directed: bool,
     return_predecessors: Literal[False],
-) -> onp.Array[tuple[int], np.int32]: ...
+) -> onp.Array1D[np.int32]: ...
 @overload
 def depth_first_order(
     csgraph: _GraphLike,
@@ -63,4 +63,4 @@ def depth_first_order(
     directed: bool = True,
     *,
     return_predecessors: Literal[False],
-) -> onp.Array[tuple[int], np.int32]: ...
+) -> onp.Array1D[np.int32]: ...

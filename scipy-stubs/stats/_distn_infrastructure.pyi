@@ -5,6 +5,7 @@ from typing_extensions import LiteralString, Self, TypeVar, Unpack, override
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeInt_co
 import scipy._typing as spt
@@ -313,9 +314,9 @@ class rv_generic:
     @overload
     def entropy(self, /, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> _ArrLike_f8: ...
     @overload
-    def moment(self, /, order: spt.AnyInt, *args: _Scalar_f8_co, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def moment(self, /, order: onp.ToInt, *args: _Scalar_f8_co, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
     @overload
-    def moment(self, /, order: spt.AnyInt, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> _ArrLike_f8: ...
+    def moment(self, /, order: onp.ToInt, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> _ArrLike_f8: ...
     @overload
     def median(self, /, *args: _Scalar_f8_co, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
     @overload
@@ -740,7 +741,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         scale: _Scalar_f8_co = 1,
         lb: _Scalar_f8_co | None = None,
         ub: _Scalar_f8_co | None = None,
-        conditional: spt.AnyBool = False,
+        conditional: op.CanBool = False,
         **kwds: Unpack[_QuadOpts],
     ) -> _Scalar_f8: ...
 
@@ -996,12 +997,12 @@ class rv_discrete(_rv_mixin, rv_generic):
         func: Callable[[npt.NDArray[np.int_]], _Arr_f8_co] | None = None,
         args: tuple[_Scalar_f8_co, ...] = (),
         loc: _Scalar_f8_co = 0,
-        lb: spt.AnyInt | None = None,
-        ub: spt.AnyInt | None = None,
-        conditional: spt.AnyBool = False,
-        maxcount: spt.AnyInt = 1000,
+        lb: onp.ToInt | None = None,
+        ub: onp.ToInt | None = None,
+        conditional: op.CanBool = False,
+        maxcount: onp.ToInt = 1000,
         tolerance: _Scalar_f8_co = 1e-10,
-        chunksize: spt.AnyInt = 32,
+        chunksize: onp.ToInt = 32,
     ) -> _Scalar_f8: ...
 
     #
@@ -1020,9 +1021,9 @@ _XKT_co = TypeVar("_XKT_co", bound=np.number[Any], covariant=True, default=np.nu
 _PKT_co = TypeVar("_PKT_co", bound=_Scalar_f, covariant=True, default=_Scalar_f)
 
 class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
-    xk: onp.Array[tuple[int], _XKT_co]
-    pk: onp.Array[tuple[int], _PKT_co]
-    qvals: onp.Array[tuple[int], _PKT_co]
+    xk: onp.Array1D[_XKT_co]
+    pk: onp.Array1D[_PKT_co]
+    qvals: onp.Array1D[_PKT_co]
     def __init__(  # pyright: ignore[reportInconsistentConstructor]
         self,
         /,

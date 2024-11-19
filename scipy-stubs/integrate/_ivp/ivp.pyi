@@ -8,7 +8,6 @@ import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
 from scipy._lib._util import _RichResult
-from scipy._typing import AnyInt, AnyReal
 from scipy.sparse import sparray, spmatrix
 from .base import DenseOutput, OdeSolver
 from .common import OdeSolution
@@ -19,15 +18,15 @@ _FuncSol: TypeAlias = Callable[[float], npt.NDArray[_SCT_cf]]
 _FuncEvent: TypeAlias = Callable[[float, npt.NDArray[_SCT_cf]], float]
 _Events: TypeAlias = Sequence[_FuncEvent[_SCT_cf]]
 
-_VectorIntP: TypeAlias = onp.Array[tuple[int], np.intp]
-_VectorFloat: TypeAlias = onp.Array[tuple[int], np.float64]
+_VectorIntP: TypeAlias = onp.Array1D[np.intp]
+_VectorFloat: TypeAlias = onp.Array1D[np.float64]
 
 _IVPMethod: TypeAlias = Literal["RK23", "RK45", "DOP853", "Radau", "BDF", "LSODA"]
 
 @type_check_only
 class _SolverOptions(TypedDict, Generic[_SCT_cf], total=False):
-    first_step: AnyReal | None
-    max_step: AnyReal
+    first_step: onp.ToFloat | None
+    max_step: onp.ToFloat
     rtol: _ArrayLikeFloat_co
     atol: _ArrayLikeFloat_co
     jac: (
@@ -38,9 +37,9 @@ class _SolverOptions(TypedDict, Generic[_SCT_cf], total=False):
         | None
     )
     jac_sparsity: _ArrayLikeFloat_co | spmatrix | sparray | None
-    lband: AnyInt | None
-    uband: AnyInt | None
-    min_step: AnyReal
+    lband: onp.ToInt | None
+    uband: onp.ToInt | None
+    min_step: onp.ToFloat
 
 ###
 
@@ -52,7 +51,7 @@ class OdeResult(
     Generic[_SCT_cf],
 ):
     t: _VectorFloat
-    y: onp.Array[tuple[int, int], _SCT_cf]
+    y: onp.Array2D[_SCT_cf]
     sol: OdeSolution | None
     t_events: list[_VectorFloat] | None
     y_events: list[npt.NDArray[_SCT_cf]] | None
@@ -79,7 +78,7 @@ def find_active_events(g: _ArrayLikeFloat_co, g_new: _ArrayLikeFloat_co, directi
 #
 @overload
 def solve_ivp(
-    fun: Callable[Concatenate[float, onp.Array[tuple[int], _SCT_cf], ...], npt.NDArray[_SCT_cf]],
+    fun: Callable[Concatenate[float, onp.Array1D[_SCT_cf], ...], npt.NDArray[_SCT_cf]],
     t_span: Sequence[op.CanFloat],
     y0: _ArrayLikeNumber_co,
     method: _IVPMethod | type[OdeSolver] = "RK45",
@@ -92,7 +91,7 @@ def solve_ivp(
 ) -> OdeResult[_SCT_cf]: ...
 @overload
 def solve_ivp(
-    fun: Callable[Concatenate[_VectorFloat, onp.Array[tuple[int, int], _SCT_cf], ...], npt.NDArray[_SCT_cf]],
+    fun: Callable[Concatenate[_VectorFloat, onp.Array2D[_SCT_cf], ...], npt.NDArray[_SCT_cf]],
     t_span: Sequence[op.CanFloat],
     y0: _ArrayLikeNumber_co,
     method: _IVPMethod | type[OdeSolver] = "RK45",

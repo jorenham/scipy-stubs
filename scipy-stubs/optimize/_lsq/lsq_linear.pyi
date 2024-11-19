@@ -4,15 +4,15 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
-from scipy._typing import AnyInt, AnyReal, Untyped
+from scipy._typing import Untyped
 from scipy.optimize import OptimizeResult
 from scipy.optimize._typing import Bound
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
 _Scalar_f8: TypeAlias = float | np.float64
-_Vector_i0: TypeAlias = onp.Array[tuple[int], np.intp]
-_Vector_f8: TypeAlias = onp.Array[tuple[int], np.float64]
+_Vector_i0: TypeAlias = onp.Array1D[np.intp]
+_Vector_f8: TypeAlias = onp.Array1D[np.float64]
 
 _BoundsLike: TypeAlias = tuple[_ArrayLikeFloat_co, _ArrayLikeFloat_co] | Bound
 _TerminationStatus: TypeAlias = Literal[-1, 0, 1, 2, 3]
@@ -39,13 +39,13 @@ def lsq_linear(
     b: _ArrayLikeFloat_co,
     bounds: _BoundsLike = ...,
     method: Literal["trf", "bvls"] = "trf",
-    tol: AnyReal = 1e-10,
+    tol: onp.ToFloat = 1e-10,
     lsq_solver: Literal["exact", "lsmr"] | None = None,
-    lsmr_tol: AnyReal | Literal["auto"] | None = None,
-    max_iter: AnyInt | None = None,
+    lsmr_tol: onp.ToFloat | Literal["auto"] | None = None,
+    max_iter: onp.ToInt | None = None,
     verbose: Literal[0, 1, 2] = 0,
     *,
-    lsmr_maxiter: AnyInt | None = None,
+    lsmr_maxiter: onp.ToInt | None = None,
 ) -> _OptimizeResult: ...
 
 # undocumented

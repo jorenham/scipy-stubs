@@ -5,7 +5,7 @@ from typing_extensions import Unpack
 import numpy as np
 import numpy.typing as npt
 import optype as op
-from scipy._typing import AnyInt, AnyReal
+import optype.numpy as onp
 
 __all__ = [
     "barthann",
@@ -38,7 +38,7 @@ __all__ = [
 
 _Array_f8_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
 _Array_f8_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.float64]]
-_Weights: TypeAlias = Sequence[AnyReal] | npt.NDArray[np.floating[Any]] | npt.NDArray[np.integer[Any]] | npt.NDArray[np.bool_]
+_Weights: TypeAlias = Sequence[onp.ToFloat] | npt.NDArray[np.floating[Any]] | npt.NDArray[np.integer[Any]] | npt.NDArray[np.bool_]
 
 _Norm: TypeAlias = Literal[2, "approximate", "subsample"]
 _WindowLength: TypeAlias = int | np.int16 | np.int32 | np.int64
@@ -124,19 +124,28 @@ def blackmanharris(M: _WindowLength, sym: op.CanBool = True) -> _Array_f8_1d: ..
 def flattop(M: _WindowLength, sym: op.CanBool = True) -> _Array_f8_1d: ...
 def bartlett(M: _WindowLength, sym: op.CanBool = True) -> _Array_f8_1d: ...
 def hann(M: _WindowLength, sym: op.CanBool = True) -> _Array_f8_1d: ...
-def tukey(M: _WindowLength, alpha: AnyReal = 0.5, sym: op.CanBool = True) -> _Array_f8_1d: ...
+def tukey(M: _WindowLength, alpha: onp.ToFloat = 0.5, sym: op.CanBool = True) -> _Array_f8_1d: ...
 def barthann(M: _WindowLength, sym: op.CanBool = True) -> _Array_f8_1d: ...
-def general_hamming(M: _WindowLength, alpha: AnyReal, sym: op.CanBool = True) -> _Array_f8_1d: ...
+def general_hamming(M: _WindowLength, alpha: onp.ToFloat, sym: op.CanBool = True) -> _Array_f8_1d: ...
 def hamming(M: _WindowLength, sym: op.CanBool = True) -> _Array_f8_1d: ...
-def kaiser(M: _WindowLength, beta: AnyReal, sym: op.CanBool = True) -> _Array_f8_1d: ...
-def kaiser_bessel_derived(M: _WindowLength, beta: AnyReal, *, sym: op.CanBool = True) -> _Array_f8_1d: ...
-def gaussian(M: _WindowLength, std: AnyReal, sym: op.CanBool = True) -> _Array_f8_1d: ...
-def general_gaussian(M: _WindowLength, p: AnyReal, sig: AnyReal, sym: op.CanBool = True) -> _Array_f8_1d: ...
-def chebwin(M: _WindowLength, at: AnyReal, sym: op.CanBool = True) -> _Array_f8_1d: ...
+def kaiser(M: _WindowLength, beta: onp.ToFloat, sym: op.CanBool = True) -> _Array_f8_1d: ...
+def kaiser_bessel_derived(M: _WindowLength, beta: onp.ToFloat, *, sym: op.CanBool = True) -> _Array_f8_1d: ...
+def gaussian(M: _WindowLength, std: onp.ToFloat, sym: op.CanBool = True) -> _Array_f8_1d: ...
+def general_gaussian(M: _WindowLength, p: onp.ToFloat, sig: onp.ToFloat, sym: op.CanBool = True) -> _Array_f8_1d: ...
+def chebwin(M: _WindowLength, at: onp.ToFloat, sym: op.CanBool = True) -> _Array_f8_1d: ...
 def cosine(M: _WindowLength, sym: op.CanBool = True) -> _Array_f8_1d: ...
-def exponential(M: _WindowLength, center: AnyReal | None = None, tau: AnyReal = 1.0, sym: op.CanBool = True) -> _Array_f8_1d: ...
+def exponential(
+    M: _WindowLength,
+    center: onp.ToFloat | None = None,
+    tau: onp.ToFloat = 1.0,
+    sym: op.CanBool = True,
+) -> _Array_f8_1d: ...
 def taylor(
-    M: _WindowLength, nbar: AnyInt = 4, sll: AnyInt = 30, norm: op.CanBool = True, sym: op.CanBool = True
+    M: _WindowLength,
+    nbar: onp.ToInt = 4,
+    sll: onp.ToInt = 30,
+    norm: op.CanBool = True,
+    sym: op.CanBool = True,
 ) -> _Array_f8_1d: ...
 def lanczos(M: _WindowLength, *, sym: op.CanBool = True) -> _Array_f8_1d: ...
 
@@ -144,7 +153,7 @@ def lanczos(M: _WindowLength, *, sym: op.CanBool = True) -> _Array_f8_1d: ...
 @overload
 def dpss(
     M: _WindowLength,
-    NW: AnyReal,
+    NW: onp.ToFloat,
     Kmax: op.CanIndex,
     sym: op.CanBool = True,
     norm: _Norm | None = None,
@@ -153,7 +162,7 @@ def dpss(
 @overload
 def dpss(
     M: _WindowLength,
-    NW: AnyReal,
+    NW: onp.ToFloat,
     Kmax: None = None,
     sym: op.CanBool = True,
     norm: _Norm | None = None,
@@ -165,7 +174,7 @@ def dpss(
 @overload
 def dpss(
     M: _WindowLength,
-    NW: AnyReal,
+    NW: onp.ToFloat,
     Kmax: op.CanIndex,
     sym: op.CanBool,
     norm: _Norm | None,
@@ -176,7 +185,7 @@ def dpss(
 @overload
 def dpss(
     M: _WindowLength,
-    NW: AnyReal,
+    NW: onp.ToFloat,
     Kmax: op.CanIndex,
     sym: op.CanBool = True,
     norm: _Norm | None = None,
@@ -188,7 +197,7 @@ def dpss(
 @overload
 def dpss(
     M: _WindowLength,
-    NW: AnyReal,
+    NW: onp.ToFloat,
     Kmax: None,
     sym: op.CanBool,
     norm: _Norm | None,
@@ -199,7 +208,7 @@ def dpss(
 @overload
 def dpss(
     M: _WindowLength,
-    NW: AnyReal,
+    NW: onp.ToFloat,
     Kmax: None = None,
     sym: op.CanBool = True,
     norm: _Norm | None = None,
@@ -209,7 +218,7 @@ def dpss(
 
 #
 def get_window(
-    window: _Window | AnyReal | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]],
+    window: _Window | onp.ToFloat | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]],
     Nx: _WindowLength,
     fftbins: op.CanBool = True,
 ) -> _Array_f8_1d: ...

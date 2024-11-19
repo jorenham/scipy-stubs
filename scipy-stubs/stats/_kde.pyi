@@ -6,13 +6,13 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt_co
-from scipy._typing import AnyReal, Seed
+from scipy._typing import Seed
 
 __all__ = ["gaussian_kde"]
 
-_VectorFloat: TypeAlias = onp.Array[tuple[int], np.float64 | np.float32]
-_MatrixFloat: TypeAlias = onp.Array[tuple[int, int], np.float64 | np.float32]
-_BWMethod: TypeAlias = Literal["scott", "silverman"] | AnyReal | Callable[[gaussian_kde], AnyReal]
+_VectorFloat: TypeAlias = onp.Array1D[np.float64 | np.float32]
+_MatrixFloat: TypeAlias = onp.Array2D[np.float64 | np.float32]
+_BWMethod: TypeAlias = Literal["scott", "silverman"] | onp.ToFloat | Callable[[gaussian_kde], onp.ToFloat]
 
 ###
 
@@ -41,7 +41,7 @@ class gaussian_kde:
     def pdf(self, /, x: _ArrayLikeFloat_co) -> _VectorFloat: ...
     def logpdf(self, /, x: _ArrayLikeFloat_co) -> _VectorFloat: ...
     def integrate_gaussian(self, /, mean: _ArrayLikeFloat_co, cov: _ArrayLikeFloat_co) -> np.float64 | np.float32: ...
-    def integrate_box_1d(self, /, low: AnyReal, high: AnyReal) -> np.float64 | np.float32: ...
+    def integrate_box_1d(self, /, low: onp.ToFloat, high: onp.ToFloat) -> np.float64 | np.float32: ...
     def integrate_box(
         self,
         /,

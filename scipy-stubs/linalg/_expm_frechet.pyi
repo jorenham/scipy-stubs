@@ -1,5 +1,4 @@
-from collections.abc import Sequence
-from typing import Any, Literal, TypeAlias, overload
+from typing import Literal, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -7,34 +6,36 @@ import optype.numpy as onp
 __all__ = ["expm_cond", "expm_frechet"]
 
 _Method: TypeAlias = Literal["SPS", "blockEnlarge"]
+_Float2D: TypeAlias = onp.Array2D[np.float64]
+_Complex2D: TypeAlias = onp.Array2D[np.complex128]
 
-_ArrayLike_2d_fc: TypeAlias = onp.AnyNumberArray | Sequence[Sequence[complex | np.number[Any]]]
-_Array_2d_f8: TypeAlias = onp.Array[tuple[int, int], np.float64]
-_Array_2d_c16: TypeAlias = onp.Array[tuple[int, int], np.complex128]
+###
 
 @overload
 def expm_frechet(
-    A: _ArrayLike_2d_fc,
-    E: _ArrayLike_2d_fc,
+    A: onp.ToComplex2D,
+    E: onp.ToComplex2D,
     method: _Method | None = None,
     compute_expm: Literal[True] = True,
     check_finite: bool = True,
-) -> tuple[_Array_2d_f8, _Array_2d_f8] | tuple[_Array_2d_f8 | _Array_2d_c16, _Array_2d_c16]: ...
+) -> tuple[_Float2D, _Float2D] | tuple[_Float2D | _Complex2D, _Complex2D]: ...
 @overload
 def expm_frechet(
-    A: _ArrayLike_2d_fc,
-    E: _ArrayLike_2d_fc,
+    A: onp.ToComplex2D,
+    E: onp.ToComplex2D,
     method: _Method | None,
     compute_expm: Literal[False],
     check_finite: bool = True,
-) -> tuple[_Array_2d_f8, _Array_2d_f8] | tuple[_Array_2d_f8 | _Array_2d_c16, _Array_2d_c16]: ...
+) -> tuple[_Float2D, _Float2D] | tuple[_Float2D | _Complex2D, _Complex2D]: ...
 @overload
 def expm_frechet(
-    A: _ArrayLike_2d_fc,
-    E: _ArrayLike_2d_fc,
+    A: onp.ToComplex2D,
+    E: onp.ToComplex2D,
     method: _Method | None = None,
     *,
     compute_expm: Literal[False],
     check_finite: bool = True,
-) -> tuple[_Array_2d_f8, _Array_2d_f8] | tuple[_Array_2d_f8 | _Array_2d_c16, _Array_2d_c16]: ...
-def expm_cond(A: _ArrayLike_2d_fc, check_finite: bool = True) -> np.float64: ...
+) -> tuple[_Float2D, _Float2D] | tuple[_Float2D | _Complex2D, _Complex2D]: ...
+
+#
+def expm_cond(A: onp.ToComplex2D, check_finite: bool = True) -> np.float64: ...

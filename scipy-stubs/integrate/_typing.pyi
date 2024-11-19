@@ -28,39 +28,39 @@ class QuadOpts(TypedDict, total=False):
 class QuadInfoDict(TypedDict):
     neval: int
     last: int
-    alist: onp.Array[tuple[int], np.float64]
-    blist: onp.Array[tuple[int], np.float64]
-    rlist: onp.Array[tuple[int], np.float64]
-    elist: onp.Array[tuple[int], np.float64]
-    iord: onp.Array[tuple[int], np.int_]
+    alist: onp.Array1D[np.float64]
+    blist: onp.Array1D[np.float64]
+    rlist: onp.Array1D[np.float64]
+    elist: onp.Array1D[np.float64]
+    iord: onp.Array1D[np.int_]
 
     # if `points` is provided
-    pts: NotRequired[onp.Array[tuple[int], np.float64]]
-    level: NotRequired[onp.Array[tuple[int], np.int_]]
-    ndin: NotRequired[onp.Array[tuple[int], np.int_]]
+    pts: NotRequired[onp.Array1D[np.float64]]
+    level: NotRequired[onp.Array1D[np.int_]]
+    ndin: NotRequired[onp.Array1D[np.int_]]
 
     # finite integration limits
     momcom: NotRequired[float | np.float64]
-    nnlog: NotRequired[onp.Array[tuple[int], np.int_]]
+    nnlog: NotRequired[onp.Array1D[np.int_]]
     chebmo: NotRequired[onp.Array[tuple[Literal[25], int], np.int_]]
 
     # single infitite integration limit and numerical error
     lst: NotRequired[int]
-    rslst: NotRequired[onp.Array[tuple[int], np.float64]]
-    erlst: NotRequired[onp.Array[tuple[int], np.float64]]
-    ierlst: NotRequired[onp.Array[tuple[int], np.float64]]
+    rslst: NotRequired[onp.Array1D[np.float64]]
+    erlst: NotRequired[onp.Array1D[np.float64]]
+    ierlst: NotRequired[onp.Array1D[np.float64]]
 
 @type_check_only
 class ODEInfoDict(TypedDict):
-    hu: onp.Array[tuple[int], np.float64]
-    tcur: onp.Array[tuple[int], np.float64]
-    tolsf: onp.Array[tuple[int], np.float64]
+    hu: onp.Array1D[np.float64]
+    tcur: onp.Array1D[np.float64]
+    tolsf: onp.Array1D[np.float64]
     tsw: float
     nst: int
     nfe: int
     nje: int
-    nqu: onp.Array[tuple[int], np.int_]
+    nqu: onp.Array1D[np.int_]
     imxer: int
     lenrw: int
     leniw: int
-    mused: onp.Array[tuple[int], np.int_]
+    mused: onp.Array1D[np.int_]

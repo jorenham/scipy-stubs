@@ -4,8 +4,9 @@ from typing import Any, Literal, Protocol, TypeAlias, type_check_only
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
-from scipy._typing import Alternative, AnyReal, Seed
+from scipy._typing import Alternative, Seed
 from ._common import ConfidenceInterval
 
 __all__ = ["bootstrap", "monte_carlo_test", "permutation_test"]
@@ -59,7 +60,7 @@ class BootstrapMethod(ResamplingMethod):
 
 def bootstrap(
     data: _ArrayLikeFloat_co,
-    statistic: Callable[[Any], AnyReal],
+    statistic: Callable[[Any], onp.ToFloat],
     *,
     n_resamples: int = 9999,
     batch: int | None = None,
@@ -75,7 +76,7 @@ def bootstrap(
 def monte_carlo_test(
     data: _ArrayLikeFloat_co,
     rvs: _RVSCallable,
-    statistic: Callable[[Any], AnyReal],
+    statistic: Callable[[Any], onp.ToFloat],
     *,
     vectorized: bool | None = None,
     n_resamples: int = 9999,
@@ -96,7 +97,7 @@ def power(
 ) -> PowerResult: ...
 def permutation_test(
     data: _ArrayLikeFloat_co,
-    statistic: Callable[..., AnyReal],
+    statistic: Callable[..., onp.ToFloat],
     *,
     permutation_type: str = "independent",
     vectorized: bool | None = None,

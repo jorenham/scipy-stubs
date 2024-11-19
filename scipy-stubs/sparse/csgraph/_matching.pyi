@@ -7,7 +7,7 @@ from scipy.sparse._coo import coo_array, coo_matrix
 from scipy.sparse._csc import csc_array, csc_matrix
 
 _CXXArray: TypeAlias = csr_array | csr_matrix | csc_array | csc_matrix | coo_array | coo_matrix
-_IntVector: TypeAlias = onp.Array[tuple[int], np.int32 | np.intp]
+_IntVector: TypeAlias = onp.Array1D[np.int32 | np.intp]
 
 DTYPE: Final[type[np.float64]] = ...
 ITYPE: Final[type[np.int32]] = ...

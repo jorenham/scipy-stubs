@@ -3,6 +3,7 @@ from typing import Literal, TypeAlias, overload
 import numpy as np
 import numpy.typing as npt
 import optype as op
+import optype.typing as opt
 
 __all__ = ["cossin"]
 
@@ -13,8 +14,8 @@ _Array_c_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.complexfloating
 @overload
 def cossin(
     X: npt.ArrayLike | op.CanIter[op.CanNext[npt.ArrayLike]],
-    p: op.typing.AnyInt | None = None,
-    q: op.typing.AnyInt | None = None,
+    p: opt.AnyInt | None = None,
+    q: opt.AnyInt | None = None,
     separate: Literal[False] = False,
     swap_sign: bool = False,
     compute_u: bool = True,
@@ -23,8 +24,8 @@ def cossin(
 @overload
 def cossin(
     X: npt.ArrayLike | op.CanIter[op.CanNext[npt.ArrayLike]],
-    p: op.typing.AnyInt | None = None,
-    q: op.typing.AnyInt | None = None,
+    p: opt.AnyInt | None = None,
+    q: opt.AnyInt | None = None,
     *,
     separate: Literal[True],
     swap_sign: bool = False,

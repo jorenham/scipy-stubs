@@ -5,8 +5,8 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.typing as opt
 from numpy._typing import _ArrayLike, _ArrayLikeNumber_co
-from scipy._typing import AnyInt, AnyReal
 
 __all__ = [
     "cdf2rdf",
@@ -47,8 +47,8 @@ _SelectRange: TypeAlias = Sequence[float | _Scalar_i | _Scalar_f]
 _SelectRangeI: TypeAlias = Sequence[int | np.int16 | np.int32 | np.int64]  # no bool, int8 or unsigned ints
 
 _EigHType: TypeAlias = Literal[1, 2, 3]
-_EigHSubsetByIndex: TypeAlias = Iterable[op.typing.AnyInt]
-_EigHSubsetByValue: TypeAlias = Iterable[AnyReal]
+_EigHSubsetByIndex: TypeAlias = Iterable[opt.AnyInt]
+_EigHSubsetByValue: TypeAlias = Iterable[onp.ToFloat]
 
 # LAPACK drivers
 _DriverEV: TypeAlias = Literal["ev", "evd", "evx", "evr"]
@@ -225,7 +225,7 @@ def eig_banded(
     overwrite_a_band: op.CanBool = False,
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
-    max_ev: AnyInt = 0,
+    max_ev: onp.ToInt = 0,
     check_finite: op.CanBool = True,
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: True  (positional), select: _SelectA = ...
@@ -236,7 +236,7 @@ def eig_banded(
     overwrite_a_band: op.CanBool = False,
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
-    max_ev: AnyInt = 0,
+    max_ev: onp.ToInt = 0,
     check_finite: op.CanBool = True,
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: True  (keyword), select: _SelectA = ... (keyword)
@@ -248,7 +248,7 @@ def eig_banded(
     overwrite_a_band: op.CanBool = False,
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
-    max_ev: AnyInt = 0,
+    max_ev: onp.ToInt = 0,
     check_finite: op.CanBool = True,
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: False = ..., select: _SelectV (keyword)
@@ -260,7 +260,7 @@ def eig_banded(
     *,
     select: _SelectV,
     select_range: _SelectRange,
-    max_ev: AnyInt = 0,
+    max_ev: onp.ToInt = 0,
     check_finite: op.CanBool = True,
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: True  (positional), select: _SelectV (keyword)
@@ -272,7 +272,7 @@ def eig_banded(
     *,
     select: _SelectV,
     select_range: _SelectRange,
-    max_ev: AnyInt = 0,
+    max_ev: onp.ToInt = 0,
     check_finite: op.CanBool = True,
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: True  (keyword), select: _SelectV (keyword)
@@ -284,7 +284,7 @@ def eig_banded(
     overwrite_a_band: op.CanBool = False,
     select: _SelectV,
     select_range: _SelectRange,
-    max_ev: AnyInt = 0,
+    max_ev: onp.ToInt = 0,
     check_finite: op.CanBool = True,
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: False = ..., select: _SelectI (keyword)
@@ -296,7 +296,7 @@ def eig_banded(
     *,
     select: _SelectI,
     select_range: _SelectRangeI,
-    max_ev: AnyInt = 0,
+    max_ev: onp.ToInt = 0,
     check_finite: op.CanBool = True,
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: True (positional), select: _SelectI (keyword)
@@ -308,7 +308,7 @@ def eig_banded(
     *,
     select: _SelectI,
     select_range: _SelectRangeI,
-    max_ev: AnyInt = 0,
+    max_ev: onp.ToInt = 0,
     check_finite: op.CanBool = True,
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: True (keyword), select: _SelectI (keyword)
@@ -320,7 +320,7 @@ def eig_banded(
     overwrite_a_band: op.CanBool = False,
     select: _SelectI,
     select_range: _SelectRangeI,
-    max_ev: AnyInt = 0,
+    max_ev: onp.ToInt = 0,
     check_finite: op.CanBool = True,
 ) -> _Array_fc[_N1]: ...
 
@@ -405,7 +405,7 @@ def eigvalsh_tridiagonal(
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
     check_finite: op.CanBool = True,
-    tol: AnyReal = 0.0,
+    tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> _Array_fc[_N1]: ...
 @overload  # select: _SelectV
@@ -415,7 +415,7 @@ def eigvalsh_tridiagonal(
     select: _SelectV,
     select_range: _SelectRange,
     check_finite: op.CanBool = True,
-    tol: AnyReal = 0.0,
+    tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> _Array_fc[_N1]: ...
 @overload  # select: _SelectI
@@ -425,7 +425,7 @@ def eigvalsh_tridiagonal(
     select: _SelectI,
     select_range: _SelectRangeI,
     check_finite: op.CanBool = True,
-    tol: AnyReal = 0.0,
+    tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> _Array_fc[_N1]: ...
 
@@ -438,7 +438,7 @@ def eigh_tridiagonal(
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
     check_finite: op.CanBool = True,
-    tol: AnyReal = 0.0,
+    tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: False, select: _SelectV (positional)
@@ -449,7 +449,7 @@ def eigh_tridiagonal(
     select: _SelectV,
     select_range: _SelectRange,
     check_finite: op.CanBool = True,
-    tol: AnyReal = 0.0,
+    tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: False = ..., select: _SelectV (keyword)
@@ -461,7 +461,7 @@ def eigh_tridiagonal(
     select: _SelectV,
     select_range: _SelectRange,
     check_finite: op.CanBool = True,
-    tol: AnyReal = 0.0,
+    tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: False, select: _SelectI (positional)
@@ -472,7 +472,7 @@ def eigh_tridiagonal(
     select: _SelectI,
     select_range: _SelectRangeI,
     check_finite: op.CanBool = True,
-    tol: AnyReal = 0.0,
+    tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: False = ..., select: _SelectI (keyword)
@@ -484,7 +484,7 @@ def eigh_tridiagonal(
     select: _SelectI,
     select_range: _SelectRangeI,
     check_finite: op.CanBool = True,
-    tol: AnyReal = 0.0,
+    tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: True, select: _SelectA = ...
@@ -495,7 +495,7 @@ def eigh_tridiagonal(
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
     check_finite: op.CanBool = True,
-    tol: AnyReal = 0.0,
+    tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: True, select: _SelectV
@@ -506,7 +506,7 @@ def eigh_tridiagonal(
     select: _SelectV,
     select_range: _SelectRange,
     check_finite: op.CanBool = True,
-    tol: AnyReal = 0.0,
+    tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: True, select: _SelectI
@@ -517,7 +517,7 @@ def eigh_tridiagonal(
     select: _SelectI,
     select_range: _SelectRangeI,
     check_finite: op.CanBool = True,
-    tol: AnyReal = 0.0,
+    tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> _Array_fc[_N1]: ...
 

@@ -4,8 +4,9 @@ from typing import Any, Concatenate, Final, Generic, Literal, TypeAlias, TypeVar
 import numpy as np
 import numpy.typing as npt
 import optype as op
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeNumber_co
-from scipy._typing import AnyReal, Untyped, UntypedCallable
+from scipy._typing import Untyped, UntypedCallable
 from ._optimize import OptimizeResult
 
 __all__ = ["RootResults", "bisect", "brenth", "brentq", "newton", "ridder", "toms748"]
@@ -62,12 +63,12 @@ class TOMS748Solver:
     e: Untyped
     fe: Untyped
     disp: op.CanBool
-    xtol: AnyReal
+    xtol: onp.ToFloat
     rtol: _Floating
     maxiter: op.CanIndex
 
     def __init__(self) -> None: ...
-    def configure(self, xtol: AnyReal, rtol: _Floating, maxiter: op.CanIndex, disp: Untyped, k: Untyped) -> None: ...
+    def configure(self, xtol: onp.ToFloat, rtol: _Floating, maxiter: op.CanIndex, disp: Untyped, k: Untyped) -> None: ...
     def get_result(self, x: Untyped, flag: Untyped = ...) -> Untyped: ...
     def start(self, f: UntypedCallable, a: Untyped, b: Untyped, args: tuple[object, ...] = ()) -> Untyped: ...
     def get_status(self) -> Untyped: ...
@@ -78,7 +79,7 @@ class TOMS748Solver:
         a: Untyped,
         b: Untyped,
         args: tuple[object, ...] = (),
-        xtol: AnyReal = ...,
+        xtol: onp.ToFloat = ...,
         rtol: _Floating = ...,
         k: int = 2,
         maxiter: op.CanIndex = ...,
@@ -112,10 +113,10 @@ def newton(
 # TODO: overload `full_output`: falsy | truthy => root | (root, r)
 def bisect(
     f: _Fn_f_0d,
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     args: tuple[object, ...] = (),
-    xtol: AnyReal = 2e-12,
+    xtol: onp.ToFloat = 2e-12,
     rtol: _Floating = ...,
     maxiter: op.CanIndex = 100,
     full_output: op.CanBool = False,
@@ -123,10 +124,10 @@ def bisect(
 ) -> _Float | tuple[_Float, RootResults]: ...
 def ridder(
     f: _Fn_f_0d,
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     args: tuple[object, ...] = (),
-    xtol: AnyReal = 2e-12,
+    xtol: onp.ToFloat = 2e-12,
     rtol: _Floating = ...,
     maxiter: op.CanIndex = 100,
     full_output: op.CanBool = False,
@@ -134,10 +135,10 @@ def ridder(
 ) -> _Float | tuple[_Float, RootResults]: ...
 def brentq(
     f: _Fn_f_0d,
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     args: tuple[object, ...] = (),
-    xtol: AnyReal = 2e-12,
+    xtol: onp.ToFloat = 2e-12,
     rtol: _Floating = ...,
     maxiter: op.CanIndex = 100,
     full_output: op.CanBool = False,
@@ -145,10 +146,10 @@ def brentq(
 ) -> _Float | tuple[_Float, RootResults]: ...
 def brenth(
     f: _Fn_f_0d,
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     args: tuple[object, ...] = (),
-    xtol: AnyReal = 2e-12,
+    xtol: onp.ToFloat = 2e-12,
     rtol: _Floating = ...,
     maxiter: op.CanIndex = 100,
     full_output: op.CanBool = False,
@@ -156,11 +157,11 @@ def brenth(
 ) -> _Float | tuple[_Float, RootResults]: ...
 def toms748(
     f: _Fn_f_0d,
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     args: tuple[object, ...] = (),
     k: int = 1,
-    xtol: AnyReal = 2e-12,
+    xtol: onp.ToFloat = 2e-12,
     rtol: _Floating = ...,
     maxiter: op.CanIndex = 100,
     full_output: op.CanBool = False,

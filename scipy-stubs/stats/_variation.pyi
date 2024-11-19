@@ -5,8 +5,9 @@ from typing_extensions import TypeVar
 import numpy as np
 import numpy.typing as npt
 import optype as op
+import optype.numpy as onp
 from numpy._typing import _ArrayLike, _ArrayLikeInt_co, _NestedSequence
-from scipy._typing import AnyBool, AnyInt, NanPolicy
+from scipy._typing import AnyBool, NanPolicy
 
 _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
 
@@ -21,7 +22,7 @@ def variation(
     a: _ArrayLike[_SCT_fc],
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    ddof: AnyInt = 0,
+    ddof: onp.ToInt = 0,
     *,
     keepdims: Literal[0, False] = False,
 ) -> _SCT_fc: ...
@@ -30,7 +31,7 @@ def variation(
     a: _ArrayLike[_SCT_fc],
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: AnyInt = 0,
+    ddof: onp.ToInt = 0,
     *,
     keepdims: Literal[1, True],
 ) -> npt.NDArray[_SCT_fc]: ...
@@ -39,7 +40,7 @@ def variation(
     a: _ArrayLike[_SCT_fc],
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: AnyInt = 0,
+    ddof: onp.ToInt = 0,
     *,
     keepdims: AnyBool = False,
 ) -> _SCT_fc | npt.NDArray[_SCT_fc]: ...
@@ -50,7 +51,7 @@ def variation(
     a: Sequence[float],
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: AnyInt = 0,
+    ddof: onp.ToInt = 0,
     *,
     keepdims: Literal[0, False] = False,
 ) -> np.float64: ...
@@ -59,7 +60,7 @@ def variation(
     a: _ArrayLikeInt_co | _NestedSequence[float],
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    ddof: AnyInt = 0,
+    ddof: onp.ToInt = 0,
     *,
     keepdims: Literal[0, False] = False,
 ) -> np.float64: ...
@@ -68,7 +69,7 @@ def variation(
     a: _ArrayLikeInt_co | _NestedSequence[float],
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: AnyInt = 0,
+    ddof: onp.ToInt = 0,
     *,
     keepdims: Literal[1, True],
 ) -> npt.NDArray[np.float64]: ...
@@ -77,7 +78,7 @@ def variation(
     a: _ArrayLikeInt_co | _NestedSequence[float],
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: AnyInt = 0,
+    ddof: onp.ToInt = 0,
     *,
     keepdims: AnyBool = False,
 ) -> np.float64 | npt.NDArray[np.float64]: ...
@@ -89,7 +90,7 @@ def variation(
     a: Sequence[complex],
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: AnyInt = 0,
+    ddof: onp.ToInt = 0,
     *,
     keepdims: Literal[0, False] = False,
 ) -> np.complex128 | np.float64: ...
@@ -98,7 +99,7 @@ def variation(
     a: _NestedSequence[complex],
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    ddof: AnyInt = 0,
+    ddof: onp.ToInt = 0,
     *,
     keepdims: Literal[0, False] = False,
 ) -> np.complex128 | np.float64: ...
@@ -107,7 +108,7 @@ def variation(
     a: _NestedSequence[complex],
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: AnyInt = 0,
+    ddof: onp.ToInt = 0,
     *,
     keepdims: Literal[1, True],
 ) -> npt.NDArray[np.complex128 | np.float64]: ...
@@ -116,7 +117,7 @@ def variation(
     a: _NestedSequence[complex],
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: AnyInt = 0,
+    ddof: onp.ToInt = 0,
     *,
     keepdims: AnyBool = False,
 ) -> np.complex128 | np.float64 | npt.NDArray[np.complex128 | np.float64]: ...
@@ -127,7 +128,7 @@ def variation(
     a: npt.ArrayLike,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: AnyInt = 0,
+    ddof: onp.ToInt = 0,
     *,
     keepdims: AnyBool = False,
 ) -> np.inexact[Any] | npt.NDArray[np.inexact[Any]]: ...

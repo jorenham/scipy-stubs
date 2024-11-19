@@ -5,27 +5,26 @@ from typing_extensions import NotRequired, TypedDict
 import numpy as np
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
-from scipy._typing import AnyReal
 from ._constraints import Bounds as _Bounds, LinearConstraint, NonlinearConstraint
 
-_Array_1d_f8: TypeAlias = onp.Array[tuple[int], np.float64]
+_Array_1d_f8: TypeAlias = onp.Array1D[np.float64]
 
 # bounds
-Bound: TypeAlias = tuple[AnyReal | None, AnyReal | None]
+Bound: TypeAlias = tuple[onp.ToFloat | None, onp.ToFloat | None]
 Bounds: TypeAlias = Sequence[Bound] | _Bounds
 
 # constaints
 @type_check_only
 class _ConstraintDict(TypedDict):
     type: Literal["eq", "ineq"]
-    fun: Callable[Concatenate[_Array_1d_f8, ...], AnyReal]
+    fun: Callable[Concatenate[_Array_1d_f8, ...], onp.ToFloat]
     jac: NotRequired[Callable[Concatenate[_Array_1d_f8, ...], _ArrayLikeFloat_co]]
     args: NotRequired[tuple[object, ...]]
 
 Constraint: TypeAlias = LinearConstraint | NonlinearConstraint | _ConstraintDict
 Constraints: TypeAlias = Constraint | Sequence[Constraint]
 
-Brack: TypeAlias = tuple[AnyReal, AnyReal] | tuple[AnyReal, AnyReal, AnyReal]
+Brack: TypeAlias = tuple[onp.ToFloat, onp.ToFloat] | tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat]
 
 Solver: TypeAlias = Literal["minimize", "minimize_scalar", "root", "root_salar", "linprog", "quadratic_assignment"]
 TRSolver: TypeAlias = Literal["exact", "lsmr", None]
