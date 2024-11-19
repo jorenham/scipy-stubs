@@ -13,10 +13,6 @@ packages = [{include = "scipy-stubs"}]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
     "Typing :: Stubs Only",
     "Typing :: Typed",
 ]
@@ -32,8 +28,8 @@ Funding = "https://github.com/sponsors/jorenham"
 scipy = ["scipy"]
 
 [tool.poetry.dependencies]
-python = "^3.10.1"
-optype = "^0.6.1"
+python = "^3.10"
+optype = "^0.7.0"
 scipy = {version = ">=1.10", optional = true}
 
 [tool.poetry.group.dev.dependencies]

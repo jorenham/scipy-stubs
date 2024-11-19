@@ -522,20 +522,20 @@ files = [
 
 [[package]]
 name = "optype"
-version = "0.6.1"
+version = "0.7.0"
 description = "Building blocks for precise & flexible type hints"
 optional = false
-python-versions = "<4.0.0,>=3.10.1"
+python-versions = ">=3.10"
 files = [
-    {file = "optype-0.6.1-py3-none-any.whl", hash = "sha256:ba45f940b7d858225c2995e273f404f1c7c8b2f1d71041b1413e5105104d2515"},
-    {file = "optype-0.6.1.tar.gz", hash = "sha256:3a410d65632a449e63a03182eb504d03f404427a99724868e7e393eb8e376207"},
+    {file = "optype-0.7.0-py3-none-any.whl", hash = "sha256:516595066ae6333c62f6a2284f028e36e93d98b954426dc7361c79ea4158bcfd"},
+    {file = "optype-0.7.0.tar.gz", hash = "sha256:c41232d18712b7c0a90349f231a47b9e2a1f803533a6d77b628dde37350e1504"},
 ]
 
 [package.dependencies]
-typing-extensions = {version = ">=4.8", markers = "python_version < \"3.13\""}
+typing-extensions = {version = ">=4.10", markers = "python_version < \"3.13\""}
 
 [package.extras]
-numpy = ["numpy (>=1.24,<3)"]
+numpy = ["numpy (>=1.24)"]
 
 [[package]]
 name = "orjson"
@@ -1055,5 +1055,5 @@ scipy = ["scipy"]
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.10.1"
-content-hash = "cee256a82a4ac70154e425d41ad7fa860bf4f15bdafdc13902fefabdd472fc68"
+python-versions = "^3.10"
+content-hash = "6cc76b6e156bd98bc85cefccb0edd701f4e3d35094332f14052d70122b412f1f"
