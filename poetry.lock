@@ -302,13 +302,13 @@ testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions"]
 
 [[package]]
 name = "mdformat"
-version = "0.7.19"
+version = "0.7.18"
 description = "CommonMark compliant Markdown formatter"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "mdformat-0.7.19-py3-none-any.whl", hash = "sha256:5c360992adc118cf1479cbbe92bb3bd66dcd7f1a5a3a2ad6675915622c678cf1"},
-    {file = "mdformat-0.7.19.tar.gz", hash = "sha256:a7d22df9802383432367864da907d2d147485b5cb6872e2d66937c1333e4d58a"},
+    {file = "mdformat-0.7.18-py3-none-any.whl", hash = "sha256:0060cff2a9d53a2c29a4b2be56ff90cc210d2e8506684fa482c9846166f05e22"},
+    {file = "mdformat-0.7.18.tar.gz", hash = "sha256:42cba8bc5a6bb12d50bdf7c1e470c1f837a8ab8ce81571d4e53b9e62051f6e4f"},
 ]
 
 [package.dependencies]
@@ -1056,4 +1056,4 @@ scipy = ["scipy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10.1"
-content-hash = "c96d5f3f322a6c0a093939aebc48b391641675796760d112933f51a2133e207d"
+content-hash = "cee256a82a4ac70154e425d41ad7fa860bf4f15bdafdc13902fefabdd472fc68"
