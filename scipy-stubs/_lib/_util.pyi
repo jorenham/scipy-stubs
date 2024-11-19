@@ -9,7 +9,7 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onpt
 from numpy._typing import _ArrayLikeInt
-from numpy.random import Generator as Generator  # noqa: ICN003
+from numpy.random import Generator as Generator
 from scipy._typing import RNG, EnterSelfMixin
 
 _AnyRNG = TypeVar("_AnyRNG", np.random.RandomState, np.random.Generator)
