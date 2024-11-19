@@ -6,21 +6,20 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt, _ArrayLikeNumber_co
-from scipy._typing import AnyInt, AnyReal
 from ._ckdtree import cKDTree, cKDTreeNode
 
 __all__ = ["KDTree", "Rectangle", "distance_matrix", "minkowski_distance", "minkowski_distance_p"]
 
 class Rectangle:
-    maxes: Final[onp.Array[tuple[int], np.float64]]
-    mins: Final[onp.Array[tuple[int], np.float64]]
+    maxes: Final[onp.Array1D[np.float64]]
+    mins: Final[onp.Array1D[np.float64]]
     def __init__(self, /, maxes: _ArrayLikeFloat_co, mins: _ArrayLikeFloat_co) -> None: ...
     def volume(self, /) -> np.float64: ...
-    def split(self, /, d: op.CanIndex, split: AnyReal) -> tuple[Self, Self]: ...
-    def min_distance_point(self, /, x: _ArrayLikeFloat_co, p: AnyReal = 2.0) -> npt.NDArray[np.float64]: ...
-    def max_distance_point(self, /, x: _ArrayLikeFloat_co, p: AnyReal = 2.0) -> npt.NDArray[np.float64]: ...
-    def min_distance_rectangle(self, /, other: Rectangle, p: AnyReal = 2.0) -> npt.NDArray[np.float64]: ...
-    def max_distance_rectangle(self, /, other: Rectangle, p: AnyReal = 2.0) -> npt.NDArray[np.float64]: ...
+    def split(self, /, d: op.CanIndex, split: onp.ToFloat) -> tuple[Self, Self]: ...
+    def min_distance_point(self, /, x: _ArrayLikeFloat_co, p: onp.ToFloat = 2.0) -> npt.NDArray[np.float64]: ...
+    def max_distance_point(self, /, x: _ArrayLikeFloat_co, p: onp.ToFloat = 2.0) -> npt.NDArray[np.float64]: ...
+    def min_distance_rectangle(self, /, other: Rectangle, p: onp.ToFloat = 2.0) -> npt.NDArray[np.float64]: ...
+    def max_distance_rectangle(self, /, other: Rectangle, p: onp.ToFloat = 2.0) -> npt.NDArray[np.float64]: ...
 
 class KDTree(cKDTree):
     class node:
@@ -54,7 +53,7 @@ class KDTree(cKDTree):
         self,
         /,
         data: _ArrayLikeFloat_co,
-        leafsize: AnyInt = 10,
+        leafsize: onp.ToInt = 10,
         compact_nodes: bool = True,
         copy_data: bool = False,
         balanced_tree: bool = True,
@@ -66,8 +65,8 @@ class KDTree(cKDTree):
         /,
         x: _ArrayLikeFloat_co,
         k: _ArrayLikeInt = 1,
-        eps: AnyReal = 0,
-        p: AnyReal = 2.0,
+        eps: onp.ToFloat = 0,
+        p: onp.ToFloat = 2.0,
         distance_upper_bound: float = ...,  # inf
         workers: int | None = None,
     ) -> tuple[float, np.intp] | tuple[npt.NDArray[np.float64], npt.NDArray[np.intp]]: ...
@@ -77,8 +76,8 @@ class KDTree(cKDTree):
         /,
         x: _ArrayLikeFloat_co,
         r: npt.ArrayLike,
-        p: AnyReal = 2.0,
-        eps: AnyReal = 0,
+        p: onp.ToFloat = 2.0,
+        eps: onp.ToFloat = 0,
         workers: int | None = None,
         return_sorted: bool | None = None,
         return_length: bool = False,
@@ -88,9 +87,9 @@ class KDTree(cKDTree):
         self,
         /,
         other: cKDTree,
-        r: AnyReal,
-        p: AnyReal = 2.0,
-        eps: AnyReal = 0,
+        r: onp.ToFloat,
+        p: onp.ToFloat = 2.0,
+        eps: onp.ToFloat = 0,
     ) -> list[list[int]]: ...
 
 def minkowski_distance_p(
@@ -108,4 +107,4 @@ def distance_matrix(
     y: _ArrayLikeNumber_co,
     p: int = 2,
     threshold: int = 1_000_000,
-) -> onp.Array[tuple[int, int], np.float64 | np.complex128]: ...
+) -> onp.Array2D[np.float64 | np.complex128]: ...

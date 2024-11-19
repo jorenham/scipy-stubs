@@ -11,8 +11,8 @@ class SuperLU:
     L: csc_matrix
     U: csc_matrix
     nnz: int
-    perm_r: onp.Array[tuple[int], np.intp]
-    perm_c: onp.Array[tuple[int], np.intp]
+    perm_r: onp.Array1D[np.intp]
+    perm_c: onp.Array1D[np.intp]
     shape: tuple[int, ...]
 
     def solve(self, /, rhs: npt.NDArray[np.number[Any]]) -> npt.NDArray[np.number[Any]]: ...

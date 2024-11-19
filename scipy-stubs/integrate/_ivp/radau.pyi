@@ -6,7 +6,6 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
-from scipy._typing import AnyReal
 from scipy.sparse import sparray, spmatrix
 from .base import DenseOutput, OdeSolver
 
@@ -58,12 +57,12 @@ class Radau(OdeSolver):
         self,
         /,
         fun: Callable[[float, npt.NDArray[np.float64]], _ArrayLikeFloat_co],
-        t0: AnyReal,
+        t0: onp.ToFloat,
         y0: _ArrayLikeFloat_co,
-        t_bound: AnyReal,
-        max_step: AnyReal = ...,
-        rtol: AnyReal = 0.001,
-        atol: AnyReal = 1e-06,
+        t_bound: onp.ToFloat,
+        max_step: onp.ToFloat = ...,
+        rtol: onp.ToFloat = 0.001,
+        atol: onp.ToFloat = 1e-06,
         jac: (
             _ArrayLikeFloat_co
             | spmatrix
@@ -73,7 +72,7 @@ class Radau(OdeSolver):
         ) = None,
         jac_sparsity: _ArrayLikeFloat_co | spmatrix | sparray | None = None,
         vectorized: bool = False,
-        first_step: AnyReal | None = None,
+        first_step: onp.ToFloat | None = None,
         **extraneous: Never,
     ) -> None: ...
 
@@ -87,14 +86,19 @@ class RadauDenseOutput(DenseOutput):
 
 def solve_collocation_system(
     fun: Callable[[float, npt.NDArray[np.float64]], _ArrayLikeFloat_co],
-    t: AnyReal,
+    t: onp.ToFloat,
     y: npt.NDArray[np.float64],
-    h: AnyReal,
+    h: onp.ToFloat,
     Z0: npt.NDArray[np.float64],
     scale: npt.NDArray[np.float64],
-    tol: AnyReal,
+    tol: onp.ToFloat,
     LU_real: _LU,
     LU_complex: _LU,
     solve_lu: _FuncSolveLU,
 ) -> tuple[bool, int, onp.Array[tuple[Literal[3], int], np.float64], float | None]: ...
-def predict_factor(h_abs: AnyReal, h_abs_old: AnyReal, error_norm: AnyReal, error_norm_old: AnyReal) -> AnyReal: ...
+def predict_factor(
+    h_abs: onp.ToFloat,
+    h_abs_old: onp.ToFloat,
+    error_norm: onp.ToFloat,
+    error_norm_old: onp.ToFloat,
+) -> onp.ToFloat: ...

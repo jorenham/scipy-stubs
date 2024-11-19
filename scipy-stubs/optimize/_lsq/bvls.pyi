@@ -2,7 +2,7 @@ from typing import Any, Literal, type_check_only
 
 import numpy as np
 import numpy.typing as npt
-from scipy._typing import AnyInt, AnyReal
+import optype.numpy as onp
 from scipy.optimize import OptimizeResult
 
 @type_check_only
@@ -29,8 +29,8 @@ def bvls(
     x_lsq: npt.NDArray[np.floating[Any]],
     lb: npt.NDArray[np.floating[Any]],
     ub: npt.NDArray[np.floating[Any]],
-    tol: AnyReal,
-    max_iter: AnyInt | None,
+    tol: onp.ToFloat,
+    max_iter: onp.ToInt | None,
     verbose: Literal[0, 1, 2],
-    rcond: AnyReal | None = None,
+    rcond: onp.ToFloat | None = None,
 ) -> _OptimizeResult: ...

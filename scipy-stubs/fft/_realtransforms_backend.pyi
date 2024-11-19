@@ -1,6 +1,7 @@
 import optype as op
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeInt, _ArrayLikeNumber_co
-from scipy._typing import AnyInt, AnyShape, DCTType, NormalizationMode
+from scipy._typing import AnyShape, DCTType, NormalizationMode
 from ._realtransforms import _ArrayReal, dct, dctn, dst, dstn, idct, idst
 
 __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
@@ -13,7 +14,7 @@ def idctn(
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
     overwrite_x: op.CanBool = False,
-    workers: AnyInt | None = None,
+    workers: onp.ToInt | None = None,
     *,
     orthogonalize: op.CanBool | None = None,
 ) -> _ArrayReal: ...
@@ -24,7 +25,7 @@ def idstn(
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
     overwrite_x: op.CanBool = False,
-    workers: AnyInt | None = None,
+    workers: onp.ToInt | None = None,
     *,
     orthogonalize: op.CanBool | None = None,
 ) -> _ArrayReal: ...

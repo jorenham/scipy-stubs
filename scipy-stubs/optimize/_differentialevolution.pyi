@@ -4,7 +4,8 @@ from typing_extensions import Self
 
 import numpy as np
 import numpy.typing as npt
-from scipy._typing import AnyReal, EnterSelfMixin, Seed, Untyped, UntypedCallable
+import optype.numpy as onp
+from scipy._typing import EnterSelfMixin, Seed, Untyped, UntypedCallable
 from scipy.optimize import OptimizeResult
 
 __all__ = ["differential_evolution"]
@@ -30,15 +31,15 @@ def differential_evolution(
     strategy: str | UntypedCallable = "best1bin",
     maxiter: int = 1000,
     popsize: int = 15,
-    tol: AnyReal = 0.01,
-    mutation: AnyReal | tuple[AnyReal, AnyReal] = (0.5, 1),
-    recombination: AnyReal = 0.7,
+    tol: onp.ToFloat = 0.01,
+    mutation: onp.ToFloat | tuple[onp.ToFloat, onp.ToFloat] = (0.5, 1),
+    recombination: onp.ToFloat = 0.7,
     seed: Seed | None = None,
     callback: UntypedCallable | None = None,
     disp: bool = False,
     polish: bool = True,
     init: str | npt.ArrayLike = "latinhypercube",
-    atol: AnyReal = 0,
+    atol: onp.ToFloat = 0,
     updating: Literal["immediate", "deferred"] = "immediate",
     workers: int | UntypedCallable = 1,
     constraints: Untyped = (),

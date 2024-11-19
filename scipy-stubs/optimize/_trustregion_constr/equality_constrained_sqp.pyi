@@ -14,7 +14,7 @@ def equality_constrained_sqp(
     fun_and_constr: Untyped,
     grad_and_jac: Untyped,
     lagr_hess: Untyped,
-    x0: onp.Array[tuple[int], np.floating[Any]],
+    x0: onp.Array1D[np.floating[Any]],
     fun0: Untyped,
     grad0: Untyped,
     constr0: Untyped,
@@ -27,4 +27,4 @@ def equality_constrained_sqp(
     trust_lb: Untyped | None = None,
     trust_ub: Untyped | None = None,
     scaling: UntypedCallable = ...,
-) -> tuple[onp.Array[tuple[int], np.floating[Any]], _StateT]: ...
+) -> tuple[onp.Array1D[np.floating[Any]], _StateT]: ...

@@ -19,7 +19,7 @@ __all__ = [
 
 _ScalarB1: TypeAlias = bool | np.bool_
 _ScalarF8: TypeAlias = float | np.float64
-_VectorF8: TypeAlias = onp.Array[tuple[int], np.float64]
+_VectorF8: TypeAlias = onp.Array1D[np.float64]
 
 _ScalarInt_co: TypeAlias = np.integer[Any]
 _ScalarFloat_co: TypeAlias = np.floating[Any] | _ScalarInt_co
@@ -105,18 +105,18 @@ def reinforce_box_boundaries(
     ub: onp.Array[_ShapeT, _SCT_float],
 ) -> onp.Array[_ShapeT, _SCT_float]: ...
 def modified_dogleg(
-    A: LinearOperator | _SparseArray | onp.Array[tuple[int, ...], _ScalarFloat_co],
-    Y: LinearOperator | _SparseArray | onp.Array[tuple[int, ...], _ScalarFloat_co],
+    A: LinearOperator | _SparseArray | onp.ArrayND[_ScalarFloat_co],
+    Y: LinearOperator | _SparseArray | onp.ArrayND[_ScalarFloat_co],
     b: _VectorLikeFloat_co,
     trust_radius: _ScalarLikeFloat_co,
     lb: _VectorLikeFloat_co,
     ub: _VectorLikeFloat_co,
 ) -> _VectorF8: ...
 def projected_cg(
-    H: LinearOperator | _SparseArray | onp.Array[tuple[int, ...], _ScalarFloat_co],
+    H: LinearOperator | _SparseArray | onp.ArrayND[_ScalarFloat_co],
     c: _VectorLikeFloat_co,
-    Z: LinearOperator | _SparseArray | onp.Array[tuple[int, ...], _ScalarFloat_co],
-    Y: LinearOperator | _SparseArray | onp.Array[tuple[int, ...], _ScalarFloat_co],
+    Z: LinearOperator | _SparseArray | onp.ArrayND[_ScalarFloat_co],
+    Y: LinearOperator | _SparseArray | onp.ArrayND[_ScalarFloat_co],
     b: _VectorLikeFloat_co,
     trust_radius: _ScalarLikeFloat_co = ...,
     lb: _ScalarLikeFloat_co | None = None,

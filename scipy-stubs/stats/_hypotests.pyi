@@ -7,7 +7,7 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt_co
-from scipy._typing import Alternative, AnyReal, NanPolicy
+from scipy._typing import Alternative, NanPolicy
 from ._common import ConfidenceInterval
 from ._stats_py import SignificanceResult
 
@@ -52,7 +52,7 @@ class TukeyHSDResult:
 class SomersDResult:
     statistic: float | np.float64
     pvalue: float | np.float64
-    table: onp.Array[tuple[int, int], np.float64]
+    table: onp.Array2D[np.float64]
 
 @dataclass
 class BarnardExactResult:
@@ -85,7 +85,7 @@ def poisson_means_test(
 def cramervonmises(
     rvs: _ArrayLikeFloat_co,
     cdf: str | Callable[Concatenate[float, ...], float | np.float64 | np.float32],
-    args: tuple[AnyReal, ...] = (),
+    args: tuple[onp.ToFloat, ...] = (),
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",

@@ -14,13 +14,7 @@ __all__ = [
     "RNG",
     "Alternative",
     "AnyBool",
-    "AnyChar",
-    "AnyComplex",
-    "AnyInt",
-    "AnyReal",
-    "AnyScalar",
     "AnyShape",
-    "Array0D",
     "ByteOrder",
     "Casting",
     "CorrelateMode",
@@ -68,16 +62,8 @@ FileLike: TypeAlias = IO[_ByteSOrStr] | FileName
 FileModeRW: TypeAlias = Literal["r", "w"]
 FileModeRWA: TypeAlias = Literal[FileModeRW, "a"]
 
-_SCT = TypeVar("_SCT", bound=np.generic, default=np.generic)
-Array0D: TypeAlias = np.ndarray[tuple[()], np.dtype[_SCT]]
-
 # keep in sync with `numpy._typing._scalars`
 AnyBool: TypeAlias = bool | np.bool_ | Literal[0, 1]
-AnyInt: TypeAlias = int | np.integer[Any] | np.bool_
-AnyReal: TypeAlias = int | float | np.floating[Any] | np.integer[Any] | np.bool_
-AnyComplex: TypeAlias = int | float | complex | np.number[Any] | np.bool_
-AnyChar: TypeAlias = str | bytes  # `np.str_ <: builtins.str` and `np.bytes_ <: builtins.bytes`
-AnyScalar: TypeAlias = int | float | complex | AnyChar | np.generic
 
 # equivalent to `numpy._typing._shape._ShapeLike`
 AnyShape: TypeAlias = op.CanIndex | Sequence[op.CanIndex]

@@ -12,7 +12,7 @@ from scipy._typing import Untyped, UntypedTuple
 _SCT = TypeVar("_SCT", bound=np.number[Any], default=np.floating[Any])
 _SCT_co = TypeVar("_SCT_co", bound=np.number[Any], covariant=True, default=np.floating[Any])
 
-_Vector: TypeAlias = onp.Array[tuple[int], _SCT]
+_Vector: TypeAlias = onp.Array1D[_SCT]
 _VectorLike: TypeAlias = tuple[float | _SCT, ...] | _Vector[_SCT]
 
 _ScalarField: TypeAlias = Callable[[_Vector[_SCT]], float | _SCT]

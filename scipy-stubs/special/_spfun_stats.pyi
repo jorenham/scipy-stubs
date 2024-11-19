@@ -1,8 +1,12 @@
+from typing import overload
+
 import numpy as np
 import numpy.typing as npt
-from numpy._typing import _ArrayLikeFloat_co
-import scipy._typing as spt
+import optype.numpy as onp
 
 __all__ = ["multigammaln"]
 
-def multigammaln(a: _ArrayLikeFloat_co, d: spt.AnyInt) -> np.float64 | npt.NDArray[np.float64]: ...
+@overload
+def multigammaln(a: onp.ToFloat, d: onp.ToInt) -> np.float64: ...
+@overload
+def multigammaln(a: onp.ToFloatND, d: onp.ToInt) -> npt.NDArray[np.float64]: ...

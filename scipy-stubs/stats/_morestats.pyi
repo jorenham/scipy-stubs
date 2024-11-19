@@ -8,7 +8,7 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
-from scipy._typing import Alternative, AnyBool, AnyInt, AnyReal, NanPolicy
+from scipy._typing import Alternative, AnyBool, NanPolicy
 from scipy.optimize import OptimizeResult
 from ._distn_infrastructure import rv_continuous_frozen
 from ._fit import FitResult
@@ -84,7 +84,7 @@ class _HasX(Protocol):
 
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
-_VectorF8: TypeAlias = onp.Array[tuple[int], np.float64]
+_VectorF8: TypeAlias = onp.Array1D[np.float64]
 
 _FuncObjective1D: TypeAlias = Callable[[float], float | np.floating[Any]]
 _FuncMinimize1D: TypeAlias = Callable[[_FuncObjective1D], _HasX] | Callable[[_FuncObjective1D], OptimizeResult]
@@ -254,7 +254,7 @@ class MedianTestResult(BaseBunch[np.float64, np.float64, np.float64, onp.Array[t
         table: onp.Array[tuple[Literal[2], int], np.float64],
     ) -> None: ...
 
-def bayes_mvs(data: _ArrayLikeFloat_co, alpha: AnyReal = 0.9) -> tuple[Mean, Variance, Std_dev]: ...
+def bayes_mvs(data: _ArrayLikeFloat_co, alpha: onp.ToFloat = 0.9) -> tuple[Mean, Variance, Std_dev]: ...
 def mvsdist(data: _ArrayLikeFloat_co) -> _Tuple3[rv_continuous_frozen]: ...
 
 #
@@ -338,7 +338,7 @@ def probplot(
 @overload
 def probplot(
     x: _ArrayLikeFloat_co,
-    sparams: tuple[AnyReal, ...],
+    sparams: tuple[onp.ToFloat, ...],
     dist: str | _CanPPF = "norm",
     fit: Literal[True] = True,
     plot: _CanPlotText | ModuleType | None = None,
@@ -347,7 +347,7 @@ def probplot(
 @overload
 def probplot(
     x: _ArrayLikeFloat_co,
-    sparams: tuple[AnyReal],
+    sparams: tuple[onp.ToFloat],
     dist: str | _CanPPF = "norm",
     *,
     fit: Literal[False],
@@ -358,20 +358,20 @@ def probplot(
 #
 def ppcc_max(
     x: _ArrayLikeFloat_co,
-    brack: _Tuple2[AnyReal] | _Tuple3[AnyReal] = (0.0, 1.0),
+    brack: _Tuple2[onp.ToFloat] | _Tuple3[onp.ToFloat] = (0.0, 1.0),
     dist: _RVC1 | _CanPPF = "tukeylambda",
 ) -> np.float64: ...
 def ppcc_plot(
     x: _ArrayLikeFloat_co,
-    a: AnyReal,
-    b: AnyReal,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
     dist: _RVC1 | _CanPPF = "tukeylambda",
     plot: _CanPlotText | ModuleType | None = None,
     N: int = 80,
 ) -> _Tuple2[npt.NDArray[np.float64]]: ...
 
 #
-def boxcox_llf(lmb: AnyReal, data: _ArrayLikeFloat_co) -> np.float64 | npt.NDArray[np.float64]: ...
+def boxcox_llf(lmb: onp.ToFloat, data: _ArrayLikeFloat_co) -> np.float64 | npt.NDArray[np.float64]: ...
 @overload
 def boxcox(
     x: _ArrayLikeFloat_co,
@@ -382,7 +382,7 @@ def boxcox(
 @overload
 def boxcox(
     x: _ArrayLikeFloat_co,
-    lmbda: AnyReal,
+    lmbda: onp.ToFloat,
     alpha: float | np.floating[Any] | None = None,
     optimizer: _FuncMinimize1D | None = None,
 ) -> _VectorF8: ...
@@ -404,51 +404,51 @@ def boxcox(
 @overload
 def boxcox_normmax(
     x: _ArrayLikeFloat_co,
-    brack: _Tuple2[AnyReal] | None = None,
+    brack: _Tuple2[onp.ToFloat] | None = None,
     method: Literal["pearsonr", "mle"] = "pearsonr",
     optimizer: _FuncMinimize1D | None = None,
     *,
-    ymax: AnyReal | _BigFloat = ...,
+    ymax: onp.ToFloat | _BigFloat = ...,
 ) -> np.float64: ...
 @overload
 def boxcox_normmax(
     x: _ArrayLikeFloat_co,
-    brack: _Tuple2[AnyReal] | None = None,
+    brack: _Tuple2[onp.ToFloat] | None = None,
     *,
     method: Literal["all"],
     optimizer: _FuncMinimize1D | None = None,
-    ymax: AnyReal | _BigFloat = ...,
+    ymax: onp.ToFloat | _BigFloat = ...,
 ) -> onp.Array[tuple[Literal[2]], np.float64]: ...
 @overload
 def boxcox_normmax(
     x: _ArrayLikeFloat_co,
-    brack: _Tuple2[AnyReal] | None,
+    brack: _Tuple2[onp.ToFloat] | None,
     method: Literal["all"],
     optimizer: _FuncMinimize1D | None = None,
     *,
-    ymax: AnyReal | _BigFloat = ...,
+    ymax: onp.ToFloat | _BigFloat = ...,
 ) -> onp.Array[tuple[Literal[2]], np.float64]: ...
 def boxcox_normplot(
     x: _ArrayLikeFloat_co,
-    la: AnyReal,
-    lb: AnyReal,
+    la: onp.ToFloat,
+    lb: onp.ToFloat,
     plot: _CanPlotText | ModuleType | None = None,
-    N: AnyInt = 80,
+    N: onp.ToInt = 80,
 ) -> _Tuple2[npt.NDArray[np.float64]]: ...
 
 #
-def yeojohnson_llf(lmb: AnyReal, data: _ArrayLikeFloat_co) -> onp.Array[tuple[()], np.float64]: ...
+def yeojohnson_llf(lmb: onp.ToFloat, data: _ArrayLikeFloat_co) -> onp.Array[tuple[()], np.float64]: ...
 @overload
 def yeojohnson(x: _ArrayLikeFloat_co, lmbda: None = None) -> tuple[_VectorF8, np.float64]: ...
 @overload
-def yeojohnson(x: _ArrayLikeFloat_co, lmbda: AnyReal) -> _VectorF8: ...
-def yeojohnson_normmax(x: _ArrayLikeFloat_co, brack: _Tuple2[AnyReal] | None = None) -> np.float64: ...
+def yeojohnson(x: _ArrayLikeFloat_co, lmbda: onp.ToFloat) -> _VectorF8: ...
+def yeojohnson_normmax(x: _ArrayLikeFloat_co, brack: _Tuple2[onp.ToFloat] | None = None) -> np.float64: ...
 def yeojohnson_normplot(
     x: _ArrayLikeFloat_co,
-    la: AnyReal,
-    lb: AnyReal,
+    la: onp.ToFloat,
+    lb: onp.ToFloat,
     plot: _CanPlotText | ModuleType | None = None,
-    N: AnyInt = 80,
+    N: onp.ToInt = 80,
 ) -> _Tuple2[npt.NDArray[np.float64]]: ...
 
 #
@@ -546,7 +546,7 @@ def bartlett(
 def levene(
     *samples: _ArrayLikeFloat_co,
     center: _CenterMethod = "median",
-    proportiontocut: AnyReal = 0.05,
+    proportiontocut: onp.ToFloat = 0.05,
     axis: None,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[0, False] = False,
@@ -555,7 +555,7 @@ def levene(
 def levene(
     *samples: _ArrayLikeFloat_co,
     center: _CenterMethod = "median",
-    proportiontocut: AnyReal = 0.05,
+    proportiontocut: onp.ToFloat = 0.05,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[1, True],
@@ -564,7 +564,7 @@ def levene(
 def levene(
     *samples: _ArrayLikeFloat_co,
     center: _CenterMethod = "median",
-    proportiontocut: AnyReal = 0.05,
+    proportiontocut: onp.ToFloat = 0.05,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: AnyBool = False,
@@ -575,7 +575,7 @@ def levene(
 def fligner(
     *samples: _ArrayLikeFloat_co,
     center: _CenterMethod = "median",
-    proportiontocut: AnyReal = 0.05,
+    proportiontocut: onp.ToFloat = 0.05,
     axis: None,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[0, False] = False,
@@ -584,7 +584,7 @@ def fligner(
 def fligner(
     *samples: _ArrayLikeFloat_co,
     center: _CenterMethod = "median",
-    proportiontocut: AnyReal = 0.05,
+    proportiontocut: onp.ToFloat = 0.05,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[1, True],
@@ -593,7 +593,7 @@ def fligner(
 def fligner(
     *samples: _ArrayLikeFloat_co,
     center: _CenterMethod = "median",
-    proportiontocut: AnyReal = 0.05,
+    proportiontocut: onp.ToFloat = 0.05,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: AnyBool = False,
@@ -686,7 +686,7 @@ def median_test(
     *samples: _ArrayLikeFloat_co,
     ties: Literal["below", "above", "ignore"] = "below",
     correction: AnyBool = True,
-    lambda_: AnyReal | str = 1,
+    lambda_: onp.ToFloat | str = 1,
     nan_policy: NanPolicy = "propagate",
 ) -> MedianTestResult: ...
 
@@ -694,8 +694,8 @@ def median_test(
 @overload
 def circmean(
     samples: _ArrayLikeFloat_co,
-    high: AnyReal = ...,
-    low: AnyReal = 0,
+    high: onp.ToFloat = ...,
+    low: onp.ToFloat = 0,
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -704,8 +704,8 @@ def circmean(
 @overload
 def circmean(
     samples: _ArrayLikeFloat_co,
-    high: AnyReal = ...,
-    low: AnyReal = 0,
+    high: onp.ToFloat = ...,
+    low: onp.ToFloat = 0,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -714,8 +714,8 @@ def circmean(
 @overload
 def circmean(
     samples: _ArrayLikeFloat_co,
-    high: AnyReal = ...,
-    low: AnyReal = 0,
+    high: onp.ToFloat = ...,
+    low: onp.ToFloat = 0,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -726,8 +726,8 @@ def circmean(
 @overload
 def circvar(
     samples: _ArrayLikeFloat_co,
-    high: AnyReal = ...,
-    low: AnyReal = 0,
+    high: onp.ToFloat = ...,
+    low: onp.ToFloat = 0,
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -736,8 +736,8 @@ def circvar(
 @overload
 def circvar(
     samples: _ArrayLikeFloat_co,
-    high: AnyReal = ...,
-    low: AnyReal = 0,
+    high: onp.ToFloat = ...,
+    low: onp.ToFloat = 0,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -746,8 +746,8 @@ def circvar(
 @overload
 def circvar(
     samples: _ArrayLikeFloat_co,
-    high: AnyReal = ...,
-    low: AnyReal = 0,
+    high: onp.ToFloat = ...,
+    low: onp.ToFloat = 0,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -758,8 +758,8 @@ def circvar(
 @overload
 def circstd(
     samples: _ArrayLikeFloat_co,
-    high: AnyReal = ...,
-    low: AnyReal = 0,
+    high: onp.ToFloat = ...,
+    low: onp.ToFloat = 0,
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -769,8 +769,8 @@ def circstd(
 @overload
 def circstd(
     samples: _ArrayLikeFloat_co,
-    high: AnyReal = ...,
-    low: AnyReal = 0,
+    high: onp.ToFloat = ...,
+    low: onp.ToFloat = 0,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -780,8 +780,8 @@ def circstd(
 @overload
 def circstd(
     samples: _ArrayLikeFloat_co,
-    high: AnyReal = ...,
-    low: AnyReal = 0,
+    high: onp.ToFloat = ...,
+    low: onp.ToFloat = 0,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
     *,

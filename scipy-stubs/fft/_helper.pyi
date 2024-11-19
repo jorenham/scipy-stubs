@@ -6,7 +6,7 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLike, _ArrayLikeInt_co, _ArrayLikeNumber_co, _NestedSequence
-from scipy._typing import AnyReal, AnyShape
+from scipy._typing import AnyShape
 
 _SCT = TypeVar("_SCT", bound=np.inexact[Any])
 
@@ -18,11 +18,11 @@ def prev_fast_len(target: op.CanIndex, real: op.CanBool = False) -> int: ...
 @overload  # xp: None -> np.fft.fftfreq
 def fftfreq(
     n: int | np.integer[Any],
-    d: AnyReal = 1.0,
+    d: onp.ToFloat = 1.0,
     *,
     xp: None = None,
     device: Literal["cpu"] | None = None,
-) -> onp.Array[tuple[int], np.float64]: ...
+) -> onp.Array1D[np.float64]: ...
 @overload  # xp: ModuleType -> xp.fft.fftfreq
 def fftfreq(n: int, d: float = 1.0, *, xp: ModuleType, device: object | None = None) -> Any: ...  # noqa: ANN401
 
@@ -31,11 +31,11 @@ def fftfreq(n: int, d: float = 1.0, *, xp: ModuleType, device: object | None = N
 @overload  # np.fft.rfftfreq
 def rfftfreq(
     n: int | np.integer[Any],
-    d: AnyReal = 1.0,
+    d: onp.ToFloat = 1.0,
     *,
     xp: None = None,
     device: Literal["cpu"] | None = None,
-) -> onp.Array[tuple[int], np.float64]: ...
+) -> onp.Array1D[np.float64]: ...
 @overload  # xp.fft.fftfreq
 def rfftfreq(n: int, d: float = 1.0, *, xp: ModuleType, device: object | None = None) -> Any: ...  # noqa: ANN401
 

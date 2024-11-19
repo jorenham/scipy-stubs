@@ -7,10 +7,10 @@ from scipy.sparse import sparray, spmatrix
 
 _GraphArrayLike: TypeAlias = _ArrayLikeFloat_co | sparray | spmatrix
 
-_DVector: TypeAlias = onp.Array[tuple[int], np.float64]
-_DMatrix: TypeAlias = onp.Array[tuple[int, int], np.float64]
-_IVector: TypeAlias = onp.Array[tuple[int], np.int32]
-_IMatrix: TypeAlias = onp.Array[tuple[int, int], np.int32]
+_DVector: TypeAlias = onp.Array1D[np.float64]
+_DMatrix: TypeAlias = onp.Array2D[np.float64]
+_IVector: TypeAlias = onp.Array1D[np.int32]
+_IMatrix: TypeAlias = onp.Array2D[np.int32]
 
 DTYPE: Final[type[np.float64]] = ...
 ITYPE: Final[type[np.int32]] = ...

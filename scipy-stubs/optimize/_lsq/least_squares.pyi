@@ -6,12 +6,11 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
-from scipy._typing import AnyInt, AnyReal
 from scipy.optimize import Bounds, OptimizeResult
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
-_Array_1d_f8: TypeAlias = onp.Array[tuple[int], np.float64]
+_Array_1d_f8: TypeAlias = onp.Array1D[np.float64]
 _Array_nd_f8: TypeAlias = onp.Array[onp.AtLeast1D, np.float64]
 
 _LeastSquaresMethod: TypeAlias = Literal["trf", "dogbox", "lm"]
@@ -45,17 +44,17 @@ def least_squares(
     jac: _JacMethod | _JacFunction = "2-point",
     bounds: tuple[_ArrayLikeFloat_co, _ArrayLikeFloat_co] | Bounds = ...,
     method: _LeastSquaresMethod = "trf",
-    ftol: AnyReal | None = 1e-08,
-    xtol: AnyReal | None = 1e-08,
-    gtol: AnyReal | None = 1e-08,
+    ftol: onp.ToFloat | None = 1e-08,
+    xtol: onp.ToFloat | None = 1e-08,
+    gtol: onp.ToFloat | None = 1e-08,
     x_scale: _ArrayLikeFloat_co | _XScaleMethod = 1.0,
     loss: _LossMethod | _LossFunction = "linear",
-    f_scale: AnyReal = 1.0,
+    f_scale: onp.ToFloat = 1.0,
     diff_step: _ArrayLikeFloat_co | None = None,
     tr_solver: Literal["exact", "lsmr"] | None = None,
     tr_options: Mapping[str, object] = {},
     jac_sparsity: _ArrayLikeFloat_co | _spbase | None = None,
-    max_nfev: AnyInt | None = None,
+    max_nfev: onp.ToInt | None = None,
     verbose: Literal[0, 1, 2] = 0,
     args: Iterable[object] = (),
     kwargs: Mapping[str, object] = {},
@@ -66,11 +65,11 @@ def call_minpack(
     fun: _ResidFunction,
     x0: _ArrayLikeFloat_co,
     jac: _JacMethod | _JacFunction | None,
-    ftol: AnyReal,
-    xtol: AnyReal,
-    gtol: AnyReal,
-    max_nfev: AnyInt | None,
-    x_scale: AnyReal | _Array_nd_f8,
+    ftol: onp.ToFloat,
+    xtol: onp.ToFloat,
+    gtol: onp.ToFloat,
+    max_nfev: onp.ToInt | None,
+    x_scale: onp.ToFloat | _Array_nd_f8,
     diff_step: _ArrayLikeFloat_co | None,
 ) -> _OptimizeResult: ...
 
@@ -79,23 +78,23 @@ def prepare_bounds(bounds: Iterable[_ArrayLikeFloat_co], n: op.CanIndex) -> tupl
 
 # undocumented
 def check_tolerance(
-    ftol: AnyReal | None,
-    xtol: AnyReal | None,
-    gtol: AnyReal | None,
+    ftol: onp.ToFloat | None,
+    xtol: onp.ToFloat | None,
+    gtol: onp.ToFloat | None,
     method: _LeastSquaresMethod,
-) -> tuple[AnyReal, AnyReal, AnyReal]: ...
+) -> tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat]: ...
 def check_x_scale(x_scale: _ArrayLikeFloat_co | _XScaleMethod, x0: npt.NDArray[np.floating[Any]]) -> _Array_nd_f8: ...
-def check_jac_sparsity(jac_sparsity: _ArrayLikeFloat_co | _spbase | None, m: AnyInt, n: AnyInt) -> _Array_1d_f8: ...
+def check_jac_sparsity(jac_sparsity: _ArrayLikeFloat_co | _spbase | None, m: onp.ToInt, n: onp.ToInt) -> _Array_1d_f8: ...
 
 # undocumented
 def huber(z: npt.NDArray[np.float64], rho: npt.NDArray[np.float64], cost_only: op.CanBool) -> None: ...
 def soft_l1(z: npt.NDArray[np.float64], rho: npt.NDArray[np.float64], cost_only: op.CanBool) -> None: ...
 def cauchy(z: npt.NDArray[np.float64], rho: npt.NDArray[np.float64], cost_only: op.CanBool) -> None: ...
-def arctan(z: AnyReal, rho: npt.NDArray[np.float64], cost_only: op.CanBool) -> None: ...
+def arctan(z: onp.ToFloat, rho: npt.NDArray[np.float64], cost_only: op.CanBool) -> None: ...
 
 # undocumented
 def construct_loss_function(
     m: op.CanIndex,
     loss: _LossMethod | _LossFunction,
-    f_scale: AnyReal,
+    f_scale: onp.ToFloat,
 ) -> Callable[[_Array_1d_f8], _Array_1d_f8]: ...

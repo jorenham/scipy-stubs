@@ -4,8 +4,8 @@ from typing import Final, type_check_only
 from typing_extensions import LiteralString
 
 import numpy as np
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt_co
-from scipy._typing import AnyInt, AnyReal
 
 @type_check_only
 class _FortranObject_dkblck:
@@ -19,9 +19,9 @@ class _FortranFunction_mvnun:
         upper: _ArrayLikeFloat_co,
         means: _ArrayLikeFloat_co,
         covar: _ArrayLikeFloat_co,
-        maxpts: AnyInt = ...,
-        abseps: AnyReal = 1e-6,
-        releps: AnyReal = 1e-6,
+        maxpts: onp.ToInt = ...,
+        abseps: onp.ToFloat = 1e-6,
+        releps: onp.ToFloat = 1e-6,
     ) -> tuple[float, int]: ...
 
 @type_check_only
@@ -33,9 +33,9 @@ class _FortranFunction_mvnun_weighted:
         means: _ArrayLikeFloat_co,
         weights: _ArrayLikeFloat_co,
         covar: _ArrayLikeFloat_co,
-        maxpts: AnyInt = ...,
-        abseps: AnyReal = 1e-6,
-        releps: AnyReal = 1e-6,
+        maxpts: onp.ToInt = ...,
+        abseps: onp.ToFloat = 1e-6,
+        releps: onp.ToFloat = 1e-6,
     ) -> tuple[float, int]: ...
 
 @type_check_only
@@ -46,9 +46,9 @@ class _FortranFunction_mvndst:
         upper: _ArrayLikeFloat_co,
         infin: _ArrayLikeInt_co,
         correl: _ArrayLikeFloat_co,
-        maxpts: AnyInt = 2000,
-        abseps: AnyReal = 1e-6,
-        releps: AnyReal = 1e-6,
+        maxpts: onp.ToInt = 2000,
+        abseps: onp.ToFloat = 1e-6,
+        releps: onp.ToFloat = 1e-6,
     ) -> tuple[float, float, int]: ...
 
 __f2py_numpy_version__: Final[LiteralString] = ...

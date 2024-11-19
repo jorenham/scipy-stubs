@@ -4,8 +4,8 @@ from typing_extensions import Never, TypeVar
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
-from scipy._typing import AnyReal
 from scipy.sparse import sparray, spmatrix
 from .base import DenseOutput, OdeSolver
 
@@ -47,12 +47,12 @@ class BDF(OdeSolver, Generic[_SCT_co]):
         self,
         /,
         fun: Callable[[float, npt.NDArray[_SCT_co]], _ArrayLikeNumber_co],
-        t0: AnyReal,
+        t0: onp.ToFloat,
         y0: npt.NDArray[_SCT_co] | _ArrayLikeNumber_co,
-        t_bound: AnyReal,
-        max_step: AnyReal = ...,
-        rtol: AnyReal = 0.001,
-        atol: AnyReal = 1e-06,
+        t_bound: onp.ToFloat,
+        max_step: onp.ToFloat = ...,
+        rtol: onp.ToFloat = 0.001,
+        atol: onp.ToFloat = 1e-06,
         jac: (
             _ArrayLikeNumber_co
             | spmatrix
@@ -62,7 +62,7 @@ class BDF(OdeSolver, Generic[_SCT_co]):
         ) = None,
         jac_sparsity: _ArrayLikeFloat_co | spmatrix | sparray | None = None,
         vectorized: bool = False,
-        first_step: AnyReal | None = None,
+        first_step: onp.ToFloat | None = None,
         **extraneous: Never,
     ) -> None: ...
 
@@ -77,7 +77,7 @@ def compute_R(order: int, factor: float) -> npt.NDArray[np.float64]: ...
 def change_D(D: npt.NDArray[np.float64], order: int, factor: float) -> None: ...
 def solve_bdf_system(
     fun: Callable[[float, npt.NDArray[_SCT_co]], _ArrayLikeNumber_co],
-    t_new: AnyReal,
+    t_new: onp.ToFloat,
     y_predict: npt.NDArray[_SCT_co],
     c: float,
     psi: npt.NDArray[np.float64],

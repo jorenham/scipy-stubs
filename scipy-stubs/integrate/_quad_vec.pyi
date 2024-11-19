@@ -64,7 +64,7 @@ class _Bunch(Generic[_SCT_f_co]):
         neval: int,
         message: str,
         intervals: onp.Array[tuple[int, Literal[2]], np.float64],
-        errors: onp.Array[tuple[int], np.float64],
+        errors: onp.Array1D[np.float64],
         integrals: onp.Array[tuple[int, Literal[2]], _SCT_f_co],
     ) -> None: ...
     success: Final[bool]
@@ -72,7 +72,7 @@ class _Bunch(Generic[_SCT_f_co]):
     neval: Final[int]
     message: Final[str]
     intervals: Final[onp.Array[tuple[int, Literal[2]], np.float64]]
-    errors: Final[onp.Array[tuple[int], np.float64]]
+    errors: Final[onp.Array1D[np.float64]]
     integrals: onp.Array[tuple[int, Literal[2]], _SCT_f_co]
 
 @overload

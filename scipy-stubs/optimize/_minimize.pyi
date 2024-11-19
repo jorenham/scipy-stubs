@@ -5,7 +5,6 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
-from scipy._typing import AnyReal
 from scipy.sparse.linalg import LinearOperator
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
@@ -13,12 +12,12 @@ from .optimize import OptimizeResult as _OptimizeResult
 
 __all__ = ["minimize", "minimize_scalar"]
 
-_Array_f8_1d: TypeAlias = onp.Array[tuple[int], np.float64]
-_Array_f8_2d: TypeAlias = onp.Array[tuple[int, int], np.float64]
+_Array_f8_1d: TypeAlias = onp.Array1D[np.float64]
+_Array_f8_2d: TypeAlias = onp.Array2D[np.float64]
 
-_FunctionObj: TypeAlias = Callable[Concatenate[_Array_f8_1d, ...], AnyReal]
+_FunctionObj: TypeAlias = Callable[Concatenate[_Array_f8_1d, ...], onp.ToFloat]
 _FunctionJac: TypeAlias = Callable[Concatenate[_Array_f8_1d, ...], _ArrayLikeFloat_co]
-_FunctionObjJac: TypeAlias = Callable[Concatenate[_Array_f8_1d, ...], tuple[AnyReal, _ArrayLikeFloat_co]]
+_FunctionObjJac: TypeAlias = Callable[Concatenate[_Array_f8_1d, ...], tuple[onp.ToFloat, _ArrayLikeFloat_co]]
 _FunctionHess: TypeAlias = Callable[Concatenate[_Array_f8_1d, ...], _ArrayLikeFloat_co]
 
 _MethodJac: TypeAlias = Literal["2-point", "3-point", "cs"]
@@ -86,7 +85,7 @@ class _MinimizeOptions(TypedDict, total=False):
     # CG, BFGS
     norm: float
     # CG, BFGS, L-BFGS-B, TNC, SLSQP, trust-constr
-    finite_diff_rel_step: AnyReal | _ArrayLikeFloat_co
+    finite_diff_rel_step: onp.ToFloat | _ArrayLikeFloat_co
     # dogleg, trust-ncg, trust-exact
     initial_trust_radius: float
     max_trust_radius: float
@@ -150,7 +149,7 @@ def minimize(
     hessp: Callable[Concatenate[_Array_f8_1d, _Array_f8_1d, ...], _ArrayLikeFloat_co] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
-    tol: AnyReal | None = None,
+    tol: onp.ToFloat | None = None,
     callback: _CallbackResult | _CallbackVector | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult: ...
@@ -165,7 +164,7 @@ def minimize(
     hessp: Callable[Concatenate[_Array_f8_1d, _Array_f8_1d, ...], _ArrayLikeFloat_co] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
-    tol: AnyReal | None = None,
+    tol: onp.ToFloat | None = None,
     callback: _CallbackResult | _CallbackVector | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult: ...
@@ -181,19 +180,19 @@ def minimize(
     hessp: Callable[Concatenate[_Array_f8_1d, _Array_f8_1d, ...], _ArrayLikeFloat_co] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
-    tol: AnyReal | None = None,
+    tol: onp.ToFloat | None = None,
     callback: _CallbackResult | _CallbackVector | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult: ...
 
 #
 def minimize_scalar(
-    fun: Callable[Concatenate[float, ...], AnyReal] | Callable[Concatenate[np.float64, ...], AnyReal],
-    bracket: Sequence[tuple[AnyReal, AnyReal] | tuple[AnyReal, AnyReal, AnyReal]] | None = None,
+    fun: Callable[Concatenate[float, ...], onp.ToFloat] | Callable[Concatenate[np.float64, ...], onp.ToFloat],
+    bracket: Sequence[tuple[onp.ToFloat, onp.ToFloat] | tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat]] | None = None,
     bounds: Bound | None = None,
     args: tuple[object, ...] = (),
     method: MethodMinimizeScalar | Callable[..., _OptimizeResult_scalar] | None = None,
-    tol: AnyReal | None = None,
+    tol: onp.ToFloat | None = None,
     options: Mapping[str, object] | None = None,  # TODO(jorenham): TypedDict
 ) -> _OptimizeResult_scalar: ...
 

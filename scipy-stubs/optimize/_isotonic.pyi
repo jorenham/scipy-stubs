@@ -10,9 +10,9 @@ __all__ = ["isotonic_regression"]
 
 @final
 class OptimizeResult(_OptimizeResult):
-    x: Final[onp.Array[tuple[int], np.float64]]
-    weights: Final[onp.Array[tuple[int], np.float64]]
-    blocks: Final[onp.Array[tuple[int], np.intp]]
+    x: Final[onp.Array1D[np.float64]]
+    weights: Final[onp.Array1D[np.float64]]
+    blocks: Final[onp.Array1D[np.intp]]
 
 def isotonic_regression(
     y: _ArrayLikeFloat_co,

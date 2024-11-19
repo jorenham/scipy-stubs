@@ -4,8 +4,8 @@ from typing_extensions import TypeVar, override
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
-from scipy._typing import AnyInt
 from ._interpolate import PPoly
 
 _T = TypeVar("_T")
@@ -71,7 +71,7 @@ class CubicSpline(CubicHermiteSpline[_CT_co], Generic[_CT_co]):
         self: CubicSpline[np.float64],
         x: _ArrayLikeFloat_co,
         y: _ArrayLikeFloat_co,
-        axis: AnyInt = 0,
+        axis: onp.ToInt = 0,
         bc_type: _CubicBCType = "not-a-knot",
         extrapolate: _Extrapolate | None = None,
     ) -> None: ...
@@ -80,7 +80,7 @@ class CubicSpline(CubicHermiteSpline[_CT_co], Generic[_CT_co]):
         self: CubicSpline[np.float64 | np.complex128],
         x: _ArrayLikeFloat_co,
         y: _ArrayLikeNumber_co,
-        axis: AnyInt = 0,
+        axis: onp.ToInt = 0,
         bc_type: _CubicBCType = "not-a-knot",
         extrapolate: _Extrapolate | None = None,
     ) -> None: ...

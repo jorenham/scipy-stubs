@@ -3,7 +3,8 @@ from typing import Any, Literal, TypeAlias, type_check_only
 
 import numpy as np
 import numpy.typing as npt
-from scipy._typing import AnyReal, UntypedCallable
+import optype.numpy as onp
+from scipy._typing import UntypedCallable
 from ._optimize import OptimizeResult
 
 __all__ = ["root"]
@@ -36,7 +37,7 @@ def root(
     args: tuple[object, ...] = (),
     method: _RootMethod = "hybr",
     jac: bool | np.bool_ | UntypedCallable | None = None,
-    tol: AnyReal | None = None,
+    tol: onp.ToFloat | None = None,
     callback: UntypedCallable | None = None,
     options: Mapping[str, object] | None = None,
 ) -> _OptimizeResult: ...

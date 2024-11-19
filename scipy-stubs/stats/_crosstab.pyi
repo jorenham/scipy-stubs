@@ -16,17 +16,17 @@ class CrosstabResult(BaseBunch[_SCT], Generic[_SCT]):
     def elements(self, /) -> tuple[npt.NDArray[_SCT], ...]: ...
     @property
     @override
-    def count(self, /) -> onp.Array[tuple[int, int], np.intp] | coo_matrix: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def count(self, /) -> onp.Array2D[np.intp] | coo_matrix: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
     def __new__(
         _cls,
         elements: tuple[npt.NDArray[_SCT], ...],
-        count: onp.Array[tuple[int, int], np.intp] | coo_matrix,
+        count: onp.Array2D[np.intp] | coo_matrix,
     ) -> Self: ...
     def __init__(
         self,
         /,
         elements: tuple[npt.NDArray[_SCT], ...],
-        count: onp.Array[tuple[int, int], np.intp] | coo_matrix,
+        count: onp.Array2D[np.intp] | coo_matrix,
     ) -> None: ...
 
 @overload

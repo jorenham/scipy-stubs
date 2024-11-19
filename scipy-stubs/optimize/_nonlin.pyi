@@ -8,7 +8,6 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeNumber_co
-from scipy._typing import AnyInt, AnyReal
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
@@ -32,8 +31,8 @@ _Inexact: TypeAlias = _Floating | _ComplexFloating
 
 _Array_f: TypeAlias = npt.NDArray[_Floating]
 _Array_fc: TypeAlias = npt.NDArray[_Inexact]
-_Array_fc_1d: TypeAlias = onp.Array[tuple[int], _Inexact]
-_Array_fc_2d: TypeAlias = onp.Array[tuple[int, int], _Inexact]
+_Array_fc_1d: TypeAlias = onp.Array1D[_Inexact]
+_Array_fc_2d: TypeAlias = onp.Array2D[_Inexact]
 
 _SparseArray: TypeAlias = sparray | spmatrix
 
@@ -53,7 +52,7 @@ _LineSearch: TypeAlias = Literal["armijo", "wolfe"]
 _Callback: TypeAlias = (
     Callable[[npt.NDArray[np.float64], np.float64], None] | Callable[[npt.NDArray[np.complex128], np.float64], None]
 )
-_ResidFunc: TypeAlias = Callable[[npt.NDArray[np.float64]], AnyReal] | Callable[[npt.NDArray[np.complex128]], AnyReal]
+_ResidFunc: TypeAlias = Callable[[npt.NDArray[np.float64]], onp.ToFloat] | Callable[[npt.NDArray[np.complex128]], onp.ToFloat]
 
 _JacobianLike: TypeAlias = (
     Jacobian
@@ -72,14 +71,14 @@ class _SupportsJacobian(Protocol):
     def shape(self, /) -> tuple[int, ...]: ...
     @property
     def dtype(self, /) -> np.dtype[np.generic]: ...
-    def solve(self, /, v: _ArrayLikeNumber_co, tol: AnyReal = 0) -> _Array_fc_2d: ...
+    def solve(self, /, v: _ArrayLikeNumber_co, tol: onp.ToFloat = 0) -> _Array_fc_2d: ...
 
 @type_check_only
 class _JacobianKwargs(TypedDict, total=False):
-    solve: Callable[[_Array_fc], _Array_fc_2d] | Callable[[_Array_fc, AnyReal], _Array_fc_2d]
-    rsolve: Callable[[_Array_fc], _Array_fc_2d] | Callable[[_Array_fc, AnyReal], _Array_fc_2d]
-    matvec: Callable[[_Array_fc], _Array_fc_1d] | Callable[[_Array_fc, AnyReal], _Array_fc_1d]
-    rmatvec: Callable[[_Array_fc], _Array_fc_1d] | Callable[[_Array_fc, AnyReal], _Array_fc_1d]
+    solve: Callable[[_Array_fc], _Array_fc_2d] | Callable[[_Array_fc, onp.ToFloat], _Array_fc_2d]
+    rsolve: Callable[[_Array_fc], _Array_fc_2d] | Callable[[_Array_fc, onp.ToFloat], _Array_fc_2d]
+    matvec: Callable[[_Array_fc], _Array_fc_1d] | Callable[[_Array_fc, onp.ToFloat], _Array_fc_1d]
+    rmatvec: Callable[[_Array_fc], _Array_fc_1d] | Callable[[_Array_fc, onp.ToFloat], _Array_fc_1d]
     matmat: Callable[[_Array_fc], _Array_fc_2d]
     update: Callable[[_Array_fc, _Array_fc], None]
     todense: Callable[[], _Array_fc_2d]
@@ -131,8 +130,8 @@ class Jacobian:
 # TODO(jorenham): Make generic on shape an dtype
 class InverseJacobian:  # undocumented
     jacobian: Final[Jacobian]
-    matvec: Final[Callable[[_Array_fc], _Array_fc_1d] | Callable[[_Array_fc, AnyReal], _Array_fc_1d]]
-    rmatvec: Final[Callable[[_Array_fc], _Array_fc_1d] | Callable[[_Array_fc, AnyReal], _Array_fc_1d]]
+    matvec: Final[Callable[[_Array_fc], _Array_fc_1d] | Callable[[_Array_fc, onp.ToFloat], _Array_fc_1d]]
+    rmatvec: Final[Callable[[_Array_fc], _Array_fc_1d] | Callable[[_Array_fc, onp.ToFloat], _Array_fc_1d]]
 
     @property
     def shape(self, /) -> tuple[int, ...]: ...
@@ -271,14 +270,14 @@ def nonlin_solve(
     F: _ResidFunc,
     x0: _ArrayLikeNumber_co,
     jacobian: _JacobianMethod | _JacobianLike = "krylov",
-    iter: AnyInt | None = None,
+    iter: onp.ToInt | None = None,
     verbose: op.CanBool = False,
-    maxiter: AnyInt | None = None,
-    f_tol: AnyReal | None = None,
-    f_rtol: AnyReal | None = None,
-    x_tol: AnyReal | None = None,
-    x_rtol: AnyReal | None = None,
-    tol_norm: AnyReal | None = None,
+    maxiter: onp.ToInt | None = None,
+    f_tol: onp.ToFloat | None = None,
+    f_rtol: onp.ToFloat | None = None,
+    x_tol: onp.ToFloat | None = None,
+    x_rtol: onp.ToFloat | None = None,
+    tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch = "armijo",
     callback: _Callback | None = None,
     full_output: op.CanBool = False,
@@ -289,116 +288,116 @@ def nonlin_solve(
 def broyden1(
     F: _ResidFunc,
     xin: _ArrayLikeNumber_co,
-    iter: AnyInt | None = None,
-    alpha: AnyReal | None = None,
+    iter: onp.ToInt | None = None,
+    alpha: onp.ToFloat | None = None,
     reduction_method: _ReductionMethod = "restart",
-    max_rank: AnyInt | None = None,
+    max_rank: onp.ToInt | None = None,
     verbose: op.CanBool = False,
-    maxiter: AnyInt | None = None,
-    f_tol: AnyReal | None = None,
-    f_rtol: AnyReal | None = None,
-    x_tol: AnyReal | None = None,
-    x_rtol: AnyReal | None = None,
-    tol_norm: AnyReal | None = None,
+    maxiter: onp.ToInt | None = None,
+    f_tol: onp.ToFloat | None = None,
+    f_rtol: onp.ToFloat | None = None,
+    x_tol: onp.ToFloat | None = None,
+    x_rtol: onp.ToFloat | None = None,
+    tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
 ) -> _Array_fc: ...
 def broyden2(
     F: _ResidFunc,
     xin: _ArrayLikeNumber_co,
-    iter: AnyInt | None = None,
-    alpha: AnyReal | None = None,
+    iter: onp.ToInt | None = None,
+    alpha: onp.ToFloat | None = None,
     reduction_method: _ReductionMethod = "restart",
-    max_rank: AnyInt | None = None,
+    max_rank: onp.ToInt | None = None,
     verbose: op.CanBool = False,
-    maxiter: AnyInt | None = None,
-    f_tol: AnyReal | None = None,
-    f_rtol: AnyReal | None = None,
-    x_tol: AnyReal | None = None,
-    x_rtol: AnyReal | None = None,
-    tol_norm: AnyReal | None = None,
+    maxiter: onp.ToInt | None = None,
+    f_tol: onp.ToFloat | None = None,
+    f_rtol: onp.ToFloat | None = None,
+    x_tol: onp.ToFloat | None = None,
+    x_rtol: onp.ToFloat | None = None,
+    tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
 ) -> _Array_fc: ...
 def anderson(
     F: _ResidFunc,
     xin: _ArrayLikeNumber_co,
-    iter: AnyInt | None = None,
-    alpha: AnyReal | None = None,
-    w0: AnyReal = 0.01,
-    M: AnyInt = 5,
+    iter: onp.ToInt | None = None,
+    alpha: onp.ToFloat | None = None,
+    w0: onp.ToFloat = 0.01,
+    M: onp.ToInt = 5,
     verbose: op.CanBool = False,
-    maxiter: AnyInt | None = None,
-    f_tol: AnyReal | None = None,
-    f_rtol: AnyReal | None = None,
-    x_tol: AnyReal | None = None,
-    x_rtol: AnyReal | None = None,
-    tol_norm: AnyReal | None = None,
+    maxiter: onp.ToInt | None = None,
+    f_tol: onp.ToFloat | None = None,
+    f_rtol: onp.ToFloat | None = None,
+    x_tol: onp.ToFloat | None = None,
+    x_rtol: onp.ToFloat | None = None,
+    tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
 ) -> _Array_fc: ...
 def linearmixing(
     F: _ResidFunc,
     xin: _ArrayLikeNumber_co,
-    iter: AnyInt | None = None,
-    alpha: AnyReal | None = None,
+    iter: onp.ToInt | None = None,
+    alpha: onp.ToFloat | None = None,
     verbose: op.CanBool = False,
     maxiter: int | None = None,
-    f_tol: AnyInt | None = None,
-    f_rtol: AnyReal | None = None,
-    x_tol: AnyReal | None = None,
-    x_rtol: AnyReal | None = None,
-    tol_norm: AnyReal | None = None,
+    f_tol: onp.ToInt | None = None,
+    f_rtol: onp.ToFloat | None = None,
+    x_tol: onp.ToFloat | None = None,
+    x_rtol: onp.ToFloat | None = None,
+    tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
 ) -> _Array_fc: ...
 def diagbroyden(
     F: _ResidFunc,
     xin: _ArrayLikeNumber_co,
-    iter: AnyInt | None = None,
-    alpha: AnyReal | None = None,
+    iter: onp.ToInt | None = None,
+    alpha: onp.ToFloat | None = None,
     verbose: op.CanBool = False,
-    maxiter: AnyInt | None = None,
-    f_tol: AnyReal | None = None,
-    f_rtol: AnyReal | None = None,
-    x_tol: AnyReal | None = None,
-    x_rtol: AnyReal | None = None,
-    tol_norm: AnyReal | None = None,
+    maxiter: onp.ToInt | None = None,
+    f_tol: onp.ToFloat | None = None,
+    f_rtol: onp.ToFloat | None = None,
+    x_tol: onp.ToFloat | None = None,
+    x_rtol: onp.ToFloat | None = None,
+    tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
 ) -> _Array_fc: ...
 def excitingmixing(
     F: _ResidFunc,
     xin: _ArrayLikeNumber_co,
-    iter: AnyInt | None = None,
-    alpha: AnyReal | None = None,
-    alphamax: AnyReal = 1.0,
+    iter: onp.ToInt | None = None,
+    alpha: onp.ToFloat | None = None,
+    alphamax: onp.ToFloat = 1.0,
     verbose: op.CanBool = False,
-    maxiter: AnyInt | None = None,
-    f_tol: AnyReal | None = None,
-    f_rtol: AnyReal | None = None,
-    x_tol: AnyReal | None = None,
-    x_rtol: AnyReal | None = None,
-    tol_norm: AnyReal | None = None,
+    maxiter: onp.ToInt | None = None,
+    f_tol: onp.ToFloat | None = None,
+    f_rtol: onp.ToFloat | None = None,
+    x_tol: onp.ToFloat | None = None,
+    x_rtol: onp.ToFloat | None = None,
+    tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
 ) -> _Array_fc: ...
 def newton_krylov(
     F: _ResidFunc,
     xin: _ArrayLikeNumber_co,
-    iter: AnyInt | None = None,
-    rdiff: AnyReal | None = None,
+    iter: onp.ToInt | None = None,
+    rdiff: onp.ToFloat | None = None,
     method: _KrylovMethod = "lgmres",
-    inner_maxiter: AnyInt = 20,
+    inner_maxiter: onp.ToInt = 20,
     inner_M: LinearOperator | InverseJacobian | None = None,
-    outer_k: AnyInt = 10,
+    outer_k: onp.ToInt = 10,
     verbose: op.CanBool = False,
-    maxiter: AnyInt | None = None,
-    f_tol: AnyReal | None = None,
-    f_rtol: AnyReal | None = None,
-    x_tol: AnyReal | None = None,
-    x_rtol: AnyReal | None = None,
-    tol_norm: AnyReal | None = None,
+    maxiter: onp.ToInt | None = None,
+    f_tol: onp.ToFloat | None = None,
+    f_rtol: onp.ToFloat | None = None,
+    x_tol: onp.ToFloat | None = None,
+    x_rtol: onp.ToFloat | None = None,
+    tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
 ) -> _Array_fc: ...

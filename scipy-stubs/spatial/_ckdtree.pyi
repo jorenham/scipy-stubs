@@ -2,8 +2,8 @@ from typing import Literal as L, TypeAlias, overload, type_check_only
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt
-from scipy._typing import AnyReal, AnyScalar
 from scipy.sparse import coo_matrix, dok_matrix
 
 __all__ = ["cKDTree"]
@@ -81,8 +81,8 @@ class cKDTree(_CythonMixin):
         /,
         x: _ArrayLikeFloat_co,
         k: _ArrayLikeInt = 1,
-        eps: AnyReal = 0.0,
-        p: AnyReal = 2.0,
+        eps: onp.ToFloat = 0.0,
+        p: onp.ToFloat = 2.0,
         distance_upper_bound: float = ...,  # inf
         workers: int | None = None,
     ) -> tuple[float, np.intp] | tuple[npt.NDArray[np.float64], npt.NDArray[np.intp]]: ...
@@ -93,42 +93,49 @@ class cKDTree(_CythonMixin):
         /,
         x: _ArrayLikeFloat_co,
         r: npt.ArrayLike,
-        p: AnyReal = 2.0,
-        eps: AnyReal = 0.0,
+        p: onp.ToFloat = 2.0,
+        eps: onp.ToFloat = 0.0,
         workers: int | None = None,
         return_sorted: bool | None = None,
         return_length: bool = False,
     ) -> list[int] | npt.NDArray[np.object_]: ...
 
     #
-    def query_ball_tree(self, /, other: cKDTree, r: AnyReal, p: AnyReal = 2.0, eps: AnyReal = 0.0) -> list[list[int]]: ...
+    def query_ball_tree(
+        self,
+        /,
+        other: cKDTree,
+        r: onp.ToFloat,
+        p: onp.ToFloat = 2.0,
+        eps: onp.ToFloat = 0.0,
+    ) -> list[list[int]]: ...
 
     #
     @overload
     def query_pairs(
         self,
         /,
-        r: AnyReal,
-        p: AnyReal = 2.0,
-        eps: AnyReal = 0,
+        r: onp.ToFloat,
+        p: onp.ToFloat = 2.0,
+        eps: onp.ToFloat = 0,
         output_type: L["set"] = "set",
     ) -> set[tuple[int, int]]: ...
     @overload
     def query_pairs(
         self,
         /,
-        r: AnyReal,
-        p: AnyReal,
-        eps: AnyReal,
+        r: onp.ToFloat,
+        p: onp.ToFloat,
+        eps: onp.ToFloat,
         output_type: L["ndarray"],
     ) -> npt.NDArray[np.intp]: ...
     @overload
     def query_pairs(
         self,
         /,
-        r: AnyReal,
-        p: AnyReal = 2.0,
-        eps: AnyReal = 0,
+        r: onp.ToFloat,
+        p: onp.ToFloat = 2.0,
+        eps: onp.ToFloat = 0,
         *,
         output_type: L["ndarray"],
     ) -> npt.NDArray[np.intp]: ...
@@ -139,8 +146,8 @@ class cKDTree(_CythonMixin):
         self,
         /,
         other: cKDTree,
-        r: AnyScalar,
-        p: AnyReal = 2.0,
+        r: onp.ToScalar,
+        p: onp.ToFloat = 2.0,
         weights: tuple[None, None] | None = None,
         cumulative: bool = True,
     ) -> np.intp: ...
@@ -149,8 +156,8 @@ class cKDTree(_CythonMixin):
         self,
         /,
         other: cKDTree,
-        r: AnyScalar,
-        p: AnyReal,
+        r: onp.ToScalar,
+        p: onp.ToFloat,
         weights: _Weights,
         cumulative: bool = True,
     ) -> np.float64: ...
@@ -159,8 +166,8 @@ class cKDTree(_CythonMixin):
         self,
         /,
         other: cKDTree,
-        r: AnyScalar,
-        p: AnyReal = 2.0,
+        r: onp.ToScalar,
+        p: onp.ToFloat = 2.0,
         *,
         weights: _Weights,
         cumulative: bool = True,
@@ -171,7 +178,7 @@ class cKDTree(_CythonMixin):
         /,
         other: cKDTree,
         r: npt.ArrayLike,
-        p: AnyReal = 2.0,
+        p: onp.ToFloat = 2.0,
         weights: tuple[None, None] | None = ...,
         cumulative: bool = True,
     ) -> np.float64 | np.intp | npt.NDArray[np.intp]: ...
@@ -181,7 +188,7 @@ class cKDTree(_CythonMixin):
         /,
         other: cKDTree,
         r: npt.ArrayLike,
-        p: AnyReal,
+        p: onp.ToFloat,
         weights: _Weights,
         cumulative: bool = True,
     ) -> np.float64 | np.intp | npt.NDArray[np.float64]: ...
@@ -191,7 +198,7 @@ class cKDTree(_CythonMixin):
         /,
         other: cKDTree,
         r: npt.ArrayLike,
-        p: AnyReal = 2.0,
+        p: onp.ToFloat = 2.0,
         *,
         weights: _Weights,
         cumulative: bool = True,
@@ -203,8 +210,8 @@ class cKDTree(_CythonMixin):
         self,
         /,
         other: cKDTree,
-        max_distance: AnyReal,
-        p: AnyReal = 2.0,
+        max_distance: onp.ToFloat,
+        p: onp.ToFloat = 2.0,
         output_type: L["dok_matrix"] = ...,
     ) -> dok_matrix: ...
     @overload
@@ -212,8 +219,8 @@ class cKDTree(_CythonMixin):
         self,
         /,
         other: cKDTree,
-        max_distance: AnyReal,
-        p: AnyReal = 2.0,
+        max_distance: onp.ToFloat,
+        p: onp.ToFloat = 2.0,
         *,
         output_type: L["coo_matrix"],
     ) -> coo_matrix: ...
@@ -222,8 +229,8 @@ class cKDTree(_CythonMixin):
         self,
         /,
         other: cKDTree,
-        max_distance: AnyReal,
-        p: AnyReal = 2.0,
+        max_distance: onp.ToFloat,
+        p: onp.ToFloat = 2.0,
         *,
         output_type: L["dict"],
     ) -> dict[tuple[int, int], float]: ...
@@ -232,8 +239,8 @@ class cKDTree(_CythonMixin):
         self,
         /,
         other: cKDTree,
-        max_distance: AnyReal,
-        p: AnyReal = 2.0,
+        max_distance: onp.ToFloat,
+        p: onp.ToFloat = 2.0,
         *,
         output_type: L["ndarray"],
     ) -> npt.NDArray[np.void]: ...

@@ -5,7 +5,6 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
-from scipy._typing import AnyReal
 
 _VT = TypeVar("_VT", bound=npt.NDArray[np.inexact[Any]], default=npt.NDArray[np.inexact[Any]])
 
@@ -30,9 +29,9 @@ class OdeSolver:
     def __init__(
         self,
         fun: Callable[[float, npt.NDArray[np.float64]], _ArrayLikeFloat_co],
-        t0: AnyReal,
+        t0: onp.ToFloat,
         y0: _ArrayLikeFloat_co,
-        t_bound: AnyReal,
+        t_bound: onp.ToFloat,
         vectorized: bool,
         support_complex: bool = False,
     ) -> None: ...
@@ -40,9 +39,9 @@ class OdeSolver:
     def __init__(
         self,
         fun: Callable[[float, npt.NDArray[np.float64 | np.complex128]], _ArrayLikeNumber_co],
-        t0: AnyReal,
+        t0: onp.ToFloat,
         y0: _ArrayLikeNumber_co,
-        t_bound: AnyReal,
+        t_bound: onp.ToFloat,
         vectorized: bool,
         support_complex: Literal[True],
     ) -> None: ...
@@ -57,15 +56,15 @@ class DenseOutput:
     t_min: Final[float]
     t_max: Final[float]
 
-    def __init__(self, /, t_old: AnyReal, t: AnyReal) -> None: ...
+    def __init__(self, /, t_old: onp.ToFloat, t: onp.ToFloat) -> None: ...
     @overload
-    def __call__(self, /, t: AnyReal) -> onp.Array[tuple[int], np.inexact[Any]]: ...
+    def __call__(self, /, t: onp.ToFloat) -> onp.Array1D[np.inexact[Any]]: ...
     @overload
     def __call__(self, /, t: _ArrayLikeFloat_co) -> npt.NDArray[np.inexact[Any]]: ...
 
 class ConstantDenseOutput(DenseOutput, Generic[_VT]):
     value: _VT
-    def __init__(self, /, t_old: AnyReal, t: AnyReal, value: _VT) -> None: ...
+    def __init__(self, /, t_old: onp.ToFloat, t: onp.ToFloat, value: _VT) -> None: ...
 
 def check_arguments(
     fun: Callable[[float, npt.NDArray[np.float64]], _ArrayLikeNumber_co],

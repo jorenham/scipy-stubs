@@ -3,8 +3,9 @@ from typing import Literal, TypeAlias, overload
 import numpy as np
 import numpy.typing as npt
 import optype as op
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeComplex_co, _ArrayLikeFloat_co
-from scipy._typing import AnyBool, AnyInt, AnyShape, DCTType
+from scipy._typing import AnyBool, AnyShape, DCTType
 
 __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 
@@ -100,7 +101,7 @@ def idstn(
 def dct(
     x: _ArrayLikeFloat_co,
     type: DCTType = 2,
-    n: AnyInt | None = None,
+    n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
     overwrite_x: AnyBool = False,
@@ -109,7 +110,7 @@ def dct(
 def dct(
     x: _ArrayLikeComplex_co,
     type: DCTType = 2,
-    n: AnyInt | None = None,
+    n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
     overwrite_x: AnyBool = False,
@@ -120,7 +121,7 @@ def dct(
 def idct(
     x: _ArrayLikeFloat_co,
     type: DCTType = 2,
-    n: AnyInt | None = None,
+    n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
     overwrite_x: AnyBool = False,
@@ -129,7 +130,7 @@ def idct(
 def idct(
     x: _ArrayLikeComplex_co,
     type: DCTType = 2,
-    n: AnyInt | None = None,
+    n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
     overwrite_x: AnyBool = False,
@@ -140,7 +141,7 @@ def idct(
 def dst(
     x: _ArrayLikeFloat_co,
     type: DCTType = 2,
-    n: AnyInt | None = None,
+    n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
     overwrite_x: AnyBool = False,
@@ -149,7 +150,7 @@ def dst(
 def dst(
     x: _ArrayLikeComplex_co,
     type: DCTType = 2,
-    n: AnyInt | None = None,
+    n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
     overwrite_x: AnyBool = False,
@@ -160,7 +161,7 @@ def dst(
 def idst(
     x: _ArrayLikeFloat_co,
     type: DCTType = 2,
-    n: AnyInt | None = None,
+    n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
     overwrite_x: AnyBool = False,
@@ -169,7 +170,7 @@ def idst(
 def idst(
     x: _ArrayLikeComplex_co,
     type: DCTType = 2,
-    n: AnyInt | None = None,
+    n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
     overwrite_x: AnyBool = False,

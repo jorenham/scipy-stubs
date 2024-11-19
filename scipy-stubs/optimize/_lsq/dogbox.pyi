@@ -8,12 +8,12 @@ from scipy.optimize._typing import TRSolver
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
-_Vector_b1: TypeAlias = onp.Array[tuple[int], np.bool_]
-_Vector_i0: TypeAlias = onp.Array[tuple[int], np.int_]
+_Vector_b1: TypeAlias = onp.Array1D[np.bool_]
+_Vector_i0: TypeAlias = onp.Array1D[np.int_]
 
 _Scalar_f8: TypeAlias = float | np.float64
-_Vector_f8: TypeAlias = onp.Array[tuple[int], np.float64]
-_Matrix_f8: TypeAlias = onp.Array[tuple[int, int], np.float64] | _spbase | LinearOperator
+_Vector_f8: TypeAlias = onp.Array1D[np.float64]
+_Matrix_f8: TypeAlias = onp.Array2D[np.float64] | _spbase | LinearOperator
 
 _FunResid: TypeAlias = Callable[[_Vector_f8], _Vector_f8]
 # this type-alias is a workaround to get the correct oder of type params

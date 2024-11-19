@@ -10,7 +10,7 @@ import optype as op
 import optype.numpy as onp
 import optype.typing as opt
 from numpy._typing import _ArrayLikeInt
-from scipy._typing import RNG, AnyInt, AnyReal, Seed
+from scipy._typing import RNG, Seed
 from scipy.spatial.distance import _MetricCallback, _MetricKind
 
 __all__ = [
@@ -43,14 +43,14 @@ class _CanLenArray(Protocol[_SCT_co]):
 _Scalar_f_co: TypeAlias = np.floating[Any] | np.integer[Any] | np.bool_
 _ScalarLike_f: TypeAlias = float | np.floating[Any]
 
-_Array1D: TypeAlias = onp.Array[tuple[int], _SCT0]
-_Array2D: TypeAlias = onp.Array[tuple[int, int], _SCT0]
+_Array1D: TypeAlias = onp.Array1D[_SCT0]
+_Array2D: TypeAlias = onp.Array2D[_SCT0]
 _Array1D_f_co: TypeAlias = _Array1D[_Scalar_f_co]
 
 _Any1D_f: TypeAlias = _CanLenArray[np.floating[Any]] | Sequence[_ScalarLike_f]
-_Any1D_f_co: TypeAlias = _CanLenArray[_Scalar_f_co] | Sequence[AnyReal]
+_Any1D_f_co: TypeAlias = _CanLenArray[_Scalar_f_co] | Sequence[onp.ToFloat]
 _Any2D_f: TypeAlias = _CanLenArray[np.floating[Any]] | Sequence[Sequence[_ScalarLike_f]] | Sequence[_Any1D_f]
-_Any2D_f_co: TypeAlias = _CanLenArray[_Scalar_f_co] | Sequence[Sequence[AnyReal]] | Sequence[_Any1D_f_co]
+_Any2D_f_co: TypeAlias = _CanLenArray[_Scalar_f_co] | Sequence[Sequence[onp.ToFloat]] | Sequence[_Any1D_f_co]
 
 _MethodQMC: TypeAlias = Literal["random-cd", "lloyd"]
 _MethodDisc: TypeAlias = Literal["CD", "WD", "MD", "L2-star"]
@@ -69,8 +69,8 @@ class QMCEngine(abc.ABC):
     num_generated: int
 
     @abc.abstractmethod
-    def __init__(self, /, d: AnyInt, *, optimization: _MethodQMC | None = None, seed: Seed | None = None) -> None: ...
-    def random(self, /, n: opt.AnyInt = 1, *, workers: AnyInt = 1) -> _Array2D: ...
+    def __init__(self, /, d: onp.ToInt, *, optimization: _MethodQMC | None = None, seed: Seed | None = None) -> None: ...
+    def random(self, /, n: opt.AnyInt = 1, *, workers: onp.ToInt = 1) -> _Array2D: ...
     def integers(
         self,
         /,
@@ -91,7 +91,7 @@ class Halton(QMCEngine):
     def __init__(
         self,
         /,
-        d: AnyInt,
+        d: onp.ToInt,
         *,
         scramble: bool = True,
         optimization: _MethodQMC | None = None,
@@ -105,7 +105,7 @@ class LatinHypercube(QMCEngine):
     def __init__(
         self,
         /,
-        d: AnyInt,
+        d: onp.ToInt,
         *,
         scramble: bool = True,
         strength: int = 1,
@@ -123,14 +123,14 @@ class Sobol(QMCEngine):
     def __init__(
         self,
         /,
-        d: AnyInt,
+        d: onp.ToInt,
         *,
         scramble: op.CanBool = True,
-        bits: AnyInt | None = None,
+        bits: onp.ToInt | None = None,
         optimization: _MethodQMC | None = None,
         seed: Seed | None = None,
     ) -> None: ...
-    def random_base2(self, /, m: AnyInt) -> _Array2D: ...
+    def random_base2(self, /, m: onp.ToInt) -> _Array2D: ...
 
 @type_check_only
 class _HypersphereMethod(Protocol):
@@ -138,16 +138,16 @@ class _HypersphereMethod(Protocol):
         self,
         /,
         center: npt.NDArray[_Scalar_f_co],
-        radius: AnyReal,
-        candidates: AnyInt = 1,
+        radius: onp.ToFloat,
+        candidates: onp.ToInt = 1,
     ) -> _Array2D: ...
 
 class PoissonDisk(QMCEngine):
     hypersphere_method: Final[_HypersphereMethod]
     radius_factor: Final[float]
-    radius: Final[AnyReal]
-    radius_squared: Final[AnyReal]
-    ncandidates: Final[AnyInt]
+    radius: Final[onp.ToFloat]
+    radius_squared: Final[onp.ToFloat]
+    ncandidates: Final[onp.ToInt]
     cell_size: Final[np.float64]
     grid_size: Final[_Array1D[np.int_]]
 
@@ -157,11 +157,11 @@ class PoissonDisk(QMCEngine):
     def __init__(
         self,
         /,
-        d: AnyInt,
+        d: onp.ToInt,
         *,
-        radius: AnyReal = 0.05,
+        radius: onp.ToFloat = 0.05,
         hypersphere: Literal["volume", "surface"] = "volume",
-        ncandidates: AnyInt = 30,
+        ncandidates: onp.ToInt = 30,
         optimization: _MethodQMC | None = None,
         seed: Seed | None = None,
     ) -> None: ...
@@ -171,7 +171,7 @@ class PoissonDisk(QMCEngine):
 class _QMCDistribution:
     engine: Final[QMCEngine]  # defaults to `Sobol`
     def __init__(self, /, *, engine: QMCEngine | None = None, seed: Seed | None = None) -> None: ...
-    def random(self, /, n: AnyInt = 1) -> _Array2D: ...
+    def random(self, /, n: onp.ToInt = 1) -> _Array2D: ...
 
 class MultivariateNormalQMC(_QMCDistribution):
     @override
@@ -189,14 +189,14 @@ class MultivariateNormalQMC(_QMCDistribution):
 
 class MultinomialQMC(_QMCDistribution):
     pvals: Final[_Array1D[np.floating[Any]]]
-    n_trials: Final[AnyInt]
+    n_trials: Final[onp.ToInt]
 
     @override
     def __init__(
         self,
         /,
         pvals: _Any1D_f | float | np.floating[Any],
-        n_trials: AnyInt,
+        n_trials: onp.ToInt,
         *,
         engine: QMCEngine | None = None,
         seed: Seed | None = None,
@@ -211,8 +211,8 @@ def check_random_state(seed: _RNGT) -> _RNGT: ...
 #
 def scale(
     sample: _Any2D_f,
-    l_bounds: _Any1D_f_co | AnyReal,
-    u_bounds: _Any1D_f_co | AnyReal,
+    l_bounds: _Any1D_f_co | onp.ToFloat,
+    u_bounds: _Any1D_f_co | onp.ToFloat,
     *,
     reverse: op.CanBool = False,
 ) -> _Array2D: ...
@@ -233,19 +233,19 @@ def geometric_discrepancy(
     metric: _MetricDist = "euclidean",
 ) -> float | np.float64: ...
 def update_discrepancy(x_new: _Any1D_f, sample: _Any2D_f, initial_disc: opt.AnyFloat) -> float: ...
-def primes_from_2_to(n: AnyInt) -> _Array1D[np.int_]: ...
-def n_primes(n: AnyInt) -> list[int] | _Array1D[np.int_]: ...
+def primes_from_2_to(n: onp.ToInt) -> _Array1D[np.int_]: ...
+def n_primes(n: onp.ToInt) -> list[int] | _Array1D[np.int_]: ...
 
 #
 def _select_optimizer(optimization: _MethodQMC | None, config: Mapping[str, object]) -> _FuncOptimize | None: ...
-def _random_cd(best_sample: _ArrayT_f, n_iters: AnyInt, n_nochange: AnyInt, rng: RNG) -> _ArrayT_f: ...
+def _random_cd(best_sample: _ArrayT_f, n_iters: onp.ToInt, n_nochange: onp.ToInt, rng: RNG) -> _ArrayT_f: ...
 def _l1_norm(sample: _Any2D_f) -> float | np.float64: ...
-def _lloyd_iteration(sample: _ArrayT_f, decay: AnyReal, qhull_options: str | None) -> _ArrayT_f: ...
+def _lloyd_iteration(sample: _ArrayT_f, decay: onp.ToFloat, qhull_options: str | None) -> _ArrayT_f: ...
 def _lloyd_centroidal_voronoi_tessellation(
     sample: _Any2D_f,
     *,
-    tol: AnyReal = 1e-5,
-    maxiter: AnyInt = 10,
+    tol: onp.ToFloat = 1e-5,
+    maxiter: onp.ToInt = 10,
     qhull_options: str | None = None,
 ) -> _Array2D: ...
 def _ensure_in_unit_hypercube(sample: _Any2D_f) -> _Array2D: ...
@@ -257,7 +257,7 @@ def _perturb_discrepancy(
     i1: op.CanIndex,
     i2: op.CanIndex,
     k: op.CanIndex,
-    disc: AnyReal,
+    disc: onp.ToFloat,
 ) -> float | np.float64: ...
 @overload
 def _perturb_discrepancy(
@@ -265,7 +265,7 @@ def _perturb_discrepancy(
     i1: op.CanIndex,
     i2: op.CanIndex,
     k: op.CanIndex,
-    disc: AnyReal,
+    disc: onp.ToFloat,
 ) -> _SCT_fc: ...
 
 #
@@ -277,9 +277,9 @@ def _van_der_corput_permutation(base: op.CanFloat, *, random_state: Seed | None 
 #
 def van_der_corput(
     n: op.CanInt,
-    base: AnyInt = 2,
+    base: onp.ToInt = 2,
     *,
-    start_index: AnyInt = 0,
+    start_index: onp.ToInt = 0,
     scramble: op.CanBool = False,
     permutations: _ArrayLikeInt | None = None,
     seed: Seed | None = None,
@@ -295,4 +295,4 @@ def _validate_workers(workers: _N) -> _N: ...
 def _validate_workers(workers: opt.AnyInt[_N]) -> _N: ...
 
 #
-def _validate_bounds(l_bounds: _Any1D_f_co, u_bounds: _Any1D_f_co, d: AnyInt) -> tuple[_Array1D_f_co, _Array1D_f_co]: ...
+def _validate_bounds(l_bounds: _Any1D_f_co, u_bounds: _Any1D_f_co, d: onp.ToInt) -> tuple[_Array1D_f_co, _Array1D_f_co]: ...

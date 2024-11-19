@@ -1,13 +1,11 @@
 from collections.abc import Callable
-from typing import Literal, TypeAlias
+from typing import Literal
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import AnyInt, AnyReal, Untyped, UntypedCallable
+from scipy._typing import Untyped, UntypedCallable
 
 __all__ = ["fmin_cobyla"]
-
-_Array_1d_f8: TypeAlias = onp.Array[tuple[int], np.float64]
 
 ###
 
@@ -17,11 +15,11 @@ def fmin_cobyla(
     cons: Untyped,
     args: tuple[object, ...] = (),
     consargs: tuple[object, ...] | None = None,
-    rhobeg: AnyReal = 1.0,
-    rhoend: AnyReal = 0.0001,
-    maxfun: AnyInt = 1000,
+    rhobeg: onp.ToFloat = 1.0,
+    rhoend: onp.ToFloat = 0.0001,
+    maxfun: onp.ToInt = 1000,
     disp: Literal[0, 1, 2, 3] | None = None,
-    catol: AnyReal = 0.0002,
+    catol: onp.ToFloat = 0.0002,
     *,
-    callback: Callable[[_Array_1d_f8], None] | None = None,
-) -> _Array_1d_f8: ...
+    callback: Callable[[onp.Array1D[np.float64]], None] | None = None,
+) -> onp.Array1D[np.float64]: ...
