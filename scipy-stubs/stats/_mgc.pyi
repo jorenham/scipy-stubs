@@ -4,7 +4,7 @@ from typing_extensions import Self, TypeVar
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy._typing import Seed
 from ._typing import BaseBunch
 
@@ -13,9 +13,9 @@ _R = TypeVar("_R")
 
 @type_check_only
 class _MGCDict(TypedDict):
-    mgc_map: onpt.Array[tuple[int, int], np.float64]
+    mgc_map: onp.Array[tuple[int, int], np.float64]
     opt_scale: Sequence[int | np.intp]  # list of size 2
-    null_dist: onpt.Array[tuple[int], np.float64]
+    null_dist: onp.Array[tuple[int], np.float64]
 
 class MGCResult(BaseBunch[np.float64, np.float64, _MGCDict]):
     @property

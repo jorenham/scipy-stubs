@@ -3,7 +3,7 @@ from typing import Any, Final, Literal, TypeAlias, TypeVar
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy._typing import EnterSelfMixin, Untyped, UntypedArray, UntypedCallable
 from ._optimize import OptimizeResult as _OptimizeResult
 from ._typing import Constraints
@@ -173,7 +173,7 @@ def shgo(
     constraints: Constraints | None = None,
     n: int = 100,
     iters: int = 1,
-    callback: Callable[[onpt.Array[tuple[int], np.float64]], None] | None = None,
+    callback: Callable[[onp.Array[tuple[int], np.float64]], None] | None = None,
     minimizer_kwargs: _MinimizerKwargs | None = None,  # TODO(jorenham): TypedDict
     options: _Options | None = None,  # TODO(jorenham): TypedDict
     sampling_method: _SamplingMethod = "simplicial",

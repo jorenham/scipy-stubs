@@ -4,7 +4,7 @@ from typing_extensions import Self, TypeVar, deprecated
 import numpy as np
 import numpy.typing as npt
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt, _ArrayLikeNumber_co
 from scipy._typing import AnyReal, Untyped
 from ._polyint import _Interpolator1D
@@ -58,8 +58,8 @@ class interp1d(_Interpolator1D):
     def fill_value(self, fill_value: Untyped, /) -> None: ...
 
 class _PPolyBase(Generic[_CT_co]):
-    c: onpt.Array[onpt.AtLeast2D, _CT_co]
-    x: onpt.Array[tuple[int], np.float64]
+    c: onp.Array[onp.AtLeast2D, _CT_co]
+    x: onp.Array[tuple[int], np.float64]
     extrapolate: Final[_Extrapolate]
     axis: Final[int]
 
@@ -85,7 +85,7 @@ class _PPolyBase(Generic[_CT_co]):
         x: _ArrayLikeFloat_co,
         nu: int = 0,
         extrapolate: _Extrapolate | None = None,
-    ) -> onpt.Array[onpt.AtLeast2D, _CT_co]: ...
+    ) -> onp.Array[onp.AtLeast2D, _CT_co]: ...
     def extend(self, /, c: _ArrayLikeNumber_co, x: _ArrayLikeFloat_co) -> None: ...
 
 class PPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
@@ -120,8 +120,8 @@ class BPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
     def integrate(self, a: AnyReal, b: AnyReal, extrapolate: _Extrapolate | None = None) -> npt.NDArray[_CT_co]: ...
 
 class NdPPoly(Generic[_CT_co]):
-    c: onpt.Array[onpt.AtLeast2D, _CT_co]
-    x: tuple[onpt.Array[tuple[int], np.float64], ...]
+    c: onp.Array[onp.AtLeast2D, _CT_co]
+    x: tuple[onp.Array[tuple[int], np.float64], ...]
 
     @classmethod
     def construct_fast(

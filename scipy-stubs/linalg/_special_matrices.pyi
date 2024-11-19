@@ -3,7 +3,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 import scipy._typing as spt
 
 __all__ = [
@@ -28,7 +28,7 @@ __all__ = [
 
 _SCT = TypeVar("_SCT", bound=np.generic, default=np.generic)
 
-_Matrix: TypeAlias = onpt.Array[tuple[int, int], _SCT]
+_Matrix: TypeAlias = onp.Array[tuple[int, int], _SCT]
 _Kind: TypeAlias = Literal["symmetric", "upper", "lower"]
 
 ###

@@ -4,7 +4,7 @@ from typing_extensions import LiteralString, deprecated, override
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy._typing import Seed
 from ._distn_infrastructure import _rv_continuous_0, rv_continuous
 
@@ -227,7 +227,7 @@ __all__ = [
 ]
 
 _Scalar_f8_in: TypeAlias = np.float64 | np.float32 | np.float16 | np.integer[Any] | np.bool_
-_AnyArray_f8_in: TypeAlias = float | onpt.CanArray[tuple[int, ...], np.dtype[_Scalar_f8_in]] | Sequence[_AnyArray_f8_in]
+_AnyArray_f8_in: TypeAlias = float | onp.CanArray[tuple[int, ...], np.dtype[_Scalar_f8_in]] | Sequence[_AnyArray_f8_in]
 
 # without shape params
 class anglit_gen(_rv_continuous_0): ...

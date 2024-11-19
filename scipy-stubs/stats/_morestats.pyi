@@ -5,7 +5,7 @@ from typing_extensions import Self, TypeVar
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
 from optype import CanIndex
 from scipy._typing import Alternative, AnyBool, AnyInt, AnyReal, NanPolicy
@@ -84,7 +84,7 @@ class _HasX(Protocol):
 
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
-_VectorF8: TypeAlias = onpt.Array[tuple[int], np.float64]
+_VectorF8: TypeAlias = onp.Array[tuple[int], np.float64]
 
 _FuncObjective1D: TypeAlias = Callable[[float], float | np.floating[Any]]
 _FuncMinimize1D: TypeAlias = Callable[[_FuncObjective1D], _HasX] | Callable[[_FuncObjective1D], OptimizeResult]
@@ -229,7 +229,7 @@ class WilcoxonResult(BaseBunch[_NDT_co, _NDT_co], Generic[_NDT_co]):  # pyright:
     def __new__(_cls, statistic: _NDT_co, pvalue: _NDT_co) -> Self: ...
     def __init__(self, /, statistic: _NDT_co, pvalue: _NDT_co) -> None: ...
 
-class MedianTestResult(BaseBunch[np.float64, np.float64, np.float64, onpt.Array[tuple[Literal[2], int], np.float64]]):
+class MedianTestResult(BaseBunch[np.float64, np.float64, np.float64, onp.Array[tuple[Literal[2], int], np.float64]]):
     @property
     def statistic(self) -> np.float64: ...
     @property
@@ -237,13 +237,13 @@ class MedianTestResult(BaseBunch[np.float64, np.float64, np.float64, onpt.Array[
     @property
     def median(self) -> np.float64: ...
     @property
-    def table(self) -> onpt.Array[tuple[Literal[2], int], np.float64]: ...
+    def table(self) -> onp.Array[tuple[Literal[2], int], np.float64]: ...
     def __new__(
         _cls,
         statistic: np.float64,
         pvalue: np.float64,
         median: np.float64,
-        table: onpt.Array[tuple[Literal[2], int], np.float64],
+        table: onp.Array[tuple[Literal[2], int], np.float64],
     ) -> Self: ...
     def __init__(
         self,
@@ -251,7 +251,7 @@ class MedianTestResult(BaseBunch[np.float64, np.float64, np.float64, onpt.Array[
         statistic: np.float64,
         pvalue: np.float64,
         median: np.float64,
-        table: onpt.Array[tuple[Literal[2], int], np.float64],
+        table: onp.Array[tuple[Literal[2], int], np.float64],
     ) -> None: ...
 
 def bayes_mvs(data: _ArrayLikeFloat_co, alpha: AnyReal = 0.9) -> tuple[Mean, Variance, Std_dev]: ...
@@ -418,7 +418,7 @@ def boxcox_normmax(
     method: Literal["all"],
     optimizer: _FuncMinimize1D | None = None,
     ymax: AnyReal | _BigFloat = ...,
-) -> onpt.Array[tuple[Literal[2]], np.float64]: ...
+) -> onp.Array[tuple[Literal[2]], np.float64]: ...
 @overload
 def boxcox_normmax(
     x: _ArrayLikeFloat_co,
@@ -427,7 +427,7 @@ def boxcox_normmax(
     optimizer: _FuncMinimize1D | None = None,
     *,
     ymax: AnyReal | _BigFloat = ...,
-) -> onpt.Array[tuple[Literal[2]], np.float64]: ...
+) -> onp.Array[tuple[Literal[2]], np.float64]: ...
 def boxcox_normplot(
     x: _ArrayLikeFloat_co,
     la: AnyReal,
@@ -437,7 +437,7 @@ def boxcox_normplot(
 ) -> _Tuple2[npt.NDArray[np.float64]]: ...
 
 #
-def yeojohnson_llf(lmb: AnyReal, data: _ArrayLikeFloat_co) -> onpt.Array[tuple[()], np.float64]: ...
+def yeojohnson_llf(lmb: AnyReal, data: _ArrayLikeFloat_co) -> onp.Array[tuple[()], np.float64]: ...
 @overload
 def yeojohnson(x: _ArrayLikeFloat_co, lmbda: None = None) -> tuple[_VectorF8, np.float64]: ...
 @overload

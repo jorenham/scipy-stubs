@@ -3,13 +3,13 @@ from typing import Any, Literal, TypeAlias, overload
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 
 __all__ = ["qr", "qr_multiply", "rq"]
 
-_ArrayLike_2d_fc: TypeAlias = onpt.AnyNumberArray | Sequence[Sequence[complex | np.number[Any]]]
-_Array_i_1d: TypeAlias = onpt.Array[tuple[int], np.int_]
-_Array_fc_2d: TypeAlias = onpt.Array[tuple[int, int], np.inexact[npt.NBitBase]]
+_ArrayLike_2d_fc: TypeAlias = onp.AnyNumberArray | Sequence[Sequence[complex | np.number[Any]]]
+_Array_i_1d: TypeAlias = onp.Array[tuple[int], np.int_]
+_Array_fc_2d: TypeAlias = onp.Array[tuple[int, int], np.inexact[npt.NBitBase]]
 
 # 5/11 of these overloads could've been avoided with keyword-only parameters; so please use them ;)
 @overload

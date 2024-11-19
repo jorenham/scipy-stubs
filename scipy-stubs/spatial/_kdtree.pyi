@@ -3,7 +3,7 @@ from typing_extensions import Self, override
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt, _ArrayLikeNumber_co
 from optype import CanIndex
 from scipy._typing import AnyInt, AnyReal
@@ -12,8 +12,8 @@ from ._ckdtree import cKDTree, cKDTreeNode
 __all__ = ["KDTree", "Rectangle", "distance_matrix", "minkowski_distance", "minkowski_distance_p"]
 
 class Rectangle:
-    maxes: Final[onpt.Array[tuple[int], np.float64]]
-    mins: Final[onpt.Array[tuple[int], np.float64]]
+    maxes: Final[onp.Array[tuple[int], np.float64]]
+    mins: Final[onp.Array[tuple[int], np.float64]]
     def __init__(self, /, maxes: _ArrayLikeFloat_co, mins: _ArrayLikeFloat_co) -> None: ...
     def volume(self, /) -> np.float64: ...
     def split(self, /, d: CanIndex, split: AnyReal) -> tuple[Self, Self]: ...
@@ -108,4 +108,4 @@ def distance_matrix(
     y: _ArrayLikeNumber_co,
     p: int = 2,
     threshold: int = 1_000_000,
-) -> onpt.Array[tuple[int, int], np.float64 | np.complex128]: ...
+) -> onp.Array[tuple[int, int], np.float64 | np.complex128]: ...

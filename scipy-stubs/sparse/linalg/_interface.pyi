@@ -6,7 +6,7 @@ from typing_extensions import Self, override
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 import scipy._typing as spt
 from scipy._typing import Untyped, UntypedArray, UntypedTuple
 
@@ -32,12 +32,12 @@ class LinearOperator:
     def dot(self, /, x: LinearOperator | npt.ArrayLike) -> _ProductLinearOperator | _ScaledLinearOperator | UntypedArray: ...
     def __matmul__(
         self,
-        other: LinearOperator | onpt.CanArray[tuple[int, ...], np.dtype[np.generic]],
+        other: LinearOperator | onp.CanArray[tuple[int, ...], np.dtype[np.generic]],
         /,
     ) -> _ScaledLinearOperator | UntypedArray: ...
     def __rmatmul__(
         self,
-        other: LinearOperator | onpt.CanArray[tuple[int, ...], np.dtype[np.generic]],
+        other: LinearOperator | onp.CanArray[tuple[int, ...], np.dtype[np.generic]],
         /,
     ) -> _ScaledLinearOperator | UntypedArray: ...
     def __rmul__(self, x: LinearOperator | npt.ArrayLike, /) -> Untyped: ...

@@ -4,7 +4,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from optype import CanIndex
 from scipy._typing import EnterSelfMixin, FileLike, FileModeRWA
 
@@ -87,7 +87,7 @@ class netcdf_file(EnterSelfMixin):
         self,
         /,
         name: str,
-        type: np.dtype[_SCT] | onpt.HasDType[np.dtype[_SCT]],
+        type: np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]],
         dimensions: Sequence[str],
     ) -> netcdf_variable[tuple[int, ...], _SCT]: ...
     @overload
@@ -96,7 +96,7 @@ class netcdf_file(EnterSelfMixin):
     def sync(self, /) -> None: ...
 
 class netcdf_variable(Generic[_ShapeT_co, _SCT_co]):
-    data: onpt.Array[_ShapeT_co, _SCT_co]
+    data: onp.Array[_ShapeT_co, _SCT_co]
     dimensions: Final[Sequence[str]]
     maskandscale: Final[bool]
     @property
@@ -106,7 +106,7 @@ class netcdf_variable(Generic[_ShapeT_co, _SCT_co]):
     def __init__(
         self,
         /,
-        data: onpt.Array[_ShapeT_co, _SCT_co],
+        data: onp.Array[_ShapeT_co, _SCT_co],
         typecode: str,
         size: int,
         shape: tuple[int, ...] | list[int],

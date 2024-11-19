@@ -3,7 +3,7 @@ from typing import Any, Concatenate, Final, Generic, Literal, Protocol, TypeAlia
 from typing_extensions import TypeVar
 
 import numpy as np
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
 from scipy._lib._util import _RichResult
 from scipy._typing import AnyBool, AnyInt, AnyReal, Seed
@@ -52,13 +52,13 @@ _Scalar: TypeAlias = complex | np.number[Any] | np.bool_
 _Scalar_f: TypeAlias = float | np.floating[Any]
 _Scalar_f8: TypeAlias = float | np.float64  # equivalent to `np.float64` in `numpy>=2.2`
 
-_Array: TypeAlias = onpt.Array[tuple[int, ...], np.number[Any] | np.bool_ | np.object_]
-_Array_f: TypeAlias = onpt.Array[tuple[int, ...], np.floating[Any]]
-_Array_f_co: TypeAlias = onpt.Array[tuple[int, ...], np.floating[Any] | np.integer[Any] | np.bool_]
-_Array_1d: TypeAlias = onpt.Array[tuple[int], np.number[Any] | np.bool_]
-_Array_1d_i0: TypeAlias = onpt.Array[tuple[int], np.intp]
-_Array_1d_f8: TypeAlias = onpt.Array[tuple[int], np.float64]
-_Array_2d_f8: TypeAlias = onpt.Array[tuple[int, int], np.float64]
+_Array: TypeAlias = onp.Array[tuple[int, ...], np.number[Any] | np.bool_ | np.object_]
+_Array_f: TypeAlias = onp.Array[tuple[int, ...], np.floating[Any]]
+_Array_f_co: TypeAlias = onp.Array[tuple[int, ...], np.floating[Any] | np.integer[Any] | np.bool_]
+_Array_1d: TypeAlias = onp.Array[tuple[int], np.number[Any] | np.bool_]
+_Array_1d_i0: TypeAlias = onp.Array[tuple[int], np.intp]
+_Array_1d_f8: TypeAlias = onp.Array[tuple[int], np.float64]
+_Array_2d_f8: TypeAlias = onp.Array[tuple[int, int], np.float64]
 
 _Args: TypeAlias = tuple[object, ...]
 _Brack: TypeAlias = tuple[float, float] | tuple[float, float, float]
@@ -138,7 +138,7 @@ class Brent(Generic[_ValueT_co]):
 @overload
 def is_finite_scalar(x: _Scalar) -> np.bool_: ...
 @overload  # returns a `np.ndarray` of `size = 1`, but could have any `ndim`
-def is_finite_scalar(x: _Array) -> Literal[False] | onpt.Array[tuple[Literal[1], ...], np.bool_]: ...
+def is_finite_scalar(x: _Array) -> Literal[False] | onp.Array[tuple[Literal[1], ...], np.bool_]: ...
 
 # undocumented
 @overload
@@ -571,8 +571,8 @@ def brute(
 ) -> tuple[
     _Array_1d_f8,
     np.float64,
-    onpt.Array[tuple[Literal[2], int, int], np.float64],
-    onpt.Array[tuple[int, int], np.floating[Any]],
+    onp.Array[tuple[Literal[2], int, int], np.float64],
+    onp.Array[tuple[int, int], np.floating[Any]],
 ]: ...
 
 #

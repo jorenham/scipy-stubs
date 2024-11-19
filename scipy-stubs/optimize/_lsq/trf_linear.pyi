@@ -2,13 +2,13 @@ from typing import Any, Literal, TypeAlias, type_check_only
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy._typing import Untyped
 from scipy.optimize import OptimizeResult
 
 _Scalar_i: TypeAlias = int | np.integer[Any]
 _Scalar_f8: TypeAlias = float | np.float64
-_Vector_f8: TypeAlias = onpt.Array[tuple[int], np.float64]
+_Vector_f8: TypeAlias = onp.Array[tuple[int], np.float64]
 
 @type_check_only
 class _OptimizeResult(OptimizeResult):

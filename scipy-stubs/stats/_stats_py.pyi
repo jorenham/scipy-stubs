@@ -6,7 +6,7 @@ from typing_extensions import NamedTuple, Self, TypeVar
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeBool_co, _ArrayLikeFloat_co, _ArrayLikeInt_co
 from scipy._typing import Alternative, AnyReal, NanPolicy, Seed
 from ._resampling import BootstrapMethod, ResamplingMethod
@@ -168,31 +168,31 @@ class ModeResult(NamedTuple, Generic[_NDT_real_co, _NDT_int_co]):
     count: _NDT_int_co  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
 
 class HistogramResult(NamedTuple):
-    count: onpt.Array[tuple[int], np.float64]  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
+    count: onp.Array[tuple[int], np.float64]  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
     lowerlimit: Literal[0] | np.floating[Any]
-    binsize: onpt.Array[tuple[int], np.float64]
+    binsize: onp.Array[tuple[int], np.float64]
     extrapoints: int
 
 class CumfreqResult(NamedTuple):
-    cumcount: onpt.Array[tuple[int], np.float64]
+    cumcount: onp.Array[tuple[int], np.float64]
     lowerlimit: Literal[0] | np.floating[Any]
-    binsize: onpt.Array[tuple[int], np.float64]
+    binsize: onp.Array[tuple[int], np.float64]
     extrapoints: int
 
 class RelfreqResult(NamedTuple):
-    frequency: onpt.Array[tuple[int], np.float64]
+    frequency: onp.Array[tuple[int], np.float64]
     lowerlimit: Literal[0] | np.floating[Any]
-    binsize: onpt.Array[tuple[int], np.float64]
+    binsize: onp.Array[tuple[int], np.float64]
     extrapoints: int
 
 class SigmaclipResult(NamedTuple, Generic[_SCT_real_co, _NDT_float_co]):
-    clipped: onpt.Array[tuple[int], _SCT_real_co]
+    clipped: onp.Array[tuple[int], _SCT_real_co]
     lower: _NDT_float_co
     upper: _NDT_float_co
 
 class RepeatedResults(NamedTuple):
-    values: onpt.Array[tuple[int], np.float64]
-    counts: onpt.Array[tuple[int], np.intp]
+    values: onp.Array[tuple[int], np.float64]
+    counts: onp.Array[tuple[int], np.intp]
 
 @dataclass
 class AlexanderGovernResult:
@@ -529,7 +529,7 @@ def relfreq(
 #
 def obrientransform(
     *samples: _ArrayLikeFloat_co,
-) -> onpt.Array[tuple[int, int], _Float1D] | onpt.Array[tuple[int], np.object_]: ...
+) -> onp.Array[tuple[int, int], _Float1D] | onp.Array[tuple[int], np.object_]: ...
 
 #
 def sem(

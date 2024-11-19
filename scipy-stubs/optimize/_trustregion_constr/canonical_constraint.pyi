@@ -4,7 +4,7 @@ from typing_extensions import Self
 
 import numpy as np
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy._typing import Untyped
 from scipy.optimize._constraints import PreparedConstraint
 from scipy.sparse import csr_matrix
@@ -13,11 +13,11 @@ from scipy.sparse.linalg._interface import LinearOperator
 _T = TypeVar("_T")
 _Tuple2: TypeAlias = tuple[_T, _T]
 
-_FunConstr: TypeAlias = Callable[[onpt.Array[tuple[int], np.float64]], _Tuple2[onpt.Array[tuple[int], np.float64]]]
-_FunJac: TypeAlias = Callable[[onpt.Array[tuple[int], np.float64]], _Tuple2[onpt.Array[tuple[int, int], np.float64] | csr_matrix]]
+_FunConstr: TypeAlias = Callable[[onp.Array[tuple[int], np.float64]], _Tuple2[onp.Array[tuple[int], np.float64]]]
+_FunJac: TypeAlias = Callable[[onp.Array[tuple[int], np.float64]], _Tuple2[onp.Array[tuple[int, int], np.float64] | csr_matrix]]
 _FunHess: TypeAlias = Callable[
-    [onpt.Array[tuple[int], np.float64], onpt.Array[tuple[int], np.float64], onpt.Array[tuple[int], np.float64]],
-    _Tuple2[onpt.Array[tuple[int, int], np.float64] | csr_matrix | LinearOperator],
+    [onp.Array[tuple[int], np.float64], onp.Array[tuple[int], np.float64], onp.Array[tuple[int], np.float64]],
+    _Tuple2[onp.Array[tuple[int, int], np.float64] | csr_matrix | LinearOperator],
 ]
 
 # tighter than `Iterable[PreparedConstraint]` ;)
@@ -38,7 +38,7 @@ class CanonicalConstraint:
         fun: _FunConstr,
         jac: _FunJac,
         hess: _FunHess,
-        keep_feasible: onpt.Array[tuple[int], np.bool_],
+        keep_feasible: onp.Array[tuple[int], np.bool_],
     ) -> None: ...
     @classmethod
     def from_PreparedConstraint(cls, constraint: PreparedConstraint) -> Self: ...
@@ -52,8 +52,8 @@ def initial_constraints_as_canonical(
     prepared_constraints: _PreparedConstraints,
     sparse_jacobian: bool | np.bool_,
 ) -> tuple[
-    onpt.Array[onpt.AtMost2D, np.float64],
-    onpt.Array[onpt.AtMost2D, np.float64],
-    onpt.Array[tuple[int, int], np.float64] | csr_matrix,
-    onpt.Array[tuple[int, int], np.float64] | csr_matrix,
+    onp.Array[onp.AtMost2D, np.float64],
+    onp.Array[onp.AtMost2D, np.float64],
+    onp.Array[tuple[int, int], np.float64] | csr_matrix,
+    onp.Array[tuple[int, int], np.float64] | csr_matrix,
 ]: ...

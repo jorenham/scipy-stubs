@@ -4,15 +4,15 @@ from typing_extensions import Never, TypeIs
 
 import numpy as np
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy._typing import Untyped, UntypedArray
 from scipy.sparse import spmatrix
 
 _SupportedScalar: TypeAlias = np.bool_ | np.integer[Any] | np.float32 | np.float64 | np.longdouble | np.complexfloating[Any, Any]
 _ShapeLike: TypeAlias = Iterable[op.CanIndex]
-_ScalarLike: TypeAlias = complex | str | bytes | memoryview | np.generic | onpt.Array[tuple[()]]
-_SequenceLike: TypeAlias = tuple[()] | tuple[_ScalarLike, ...] | list[Never] | list[_ScalarLike] | onpt.Array[tuple[int]]
-_MatrixLike: TypeAlias = tuple[_SequenceLike, ...] | list[_SequenceLike] | onpt.Array[tuple[int, int]]
+_ScalarLike: TypeAlias = complex | str | bytes | memoryview | np.generic | onp.Array[tuple[()]]
+_SequenceLike: TypeAlias = tuple[()] | tuple[_ScalarLike, ...] | list[Never] | list[_ScalarLike] | onp.Array[tuple[int]]
+_MatrixLike: TypeAlias = tuple[_SequenceLike, ...] | list[_SequenceLike] | onp.Array[tuple[int, int]]
 
 @type_check_only
 class _ReshapeKwargs(TypedDict, total=False):
@@ -51,7 +51,7 @@ def isscalarlike(x: object) -> TypeIs[_ScalarLike]: ...
 def isshape(x: _SizedIndexIterable, nonneg: bool = False, *, allow_1d: bool = False) -> bool: ...
 def issequence(t: object) -> TypeIs[_SequenceLike]: ...
 def ismatrix(t: object) -> TypeIs[_MatrixLike]: ...
-def isdense(x: object) -> TypeIs[onpt.Array]: ...
+def isdense(x: object) -> TypeIs[onp.Array]: ...
 
 # NOTE: this checks for a `sparse.SparseArray`, which has no stubs at the moment
 @overload

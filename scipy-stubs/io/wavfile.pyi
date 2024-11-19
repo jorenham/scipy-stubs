@@ -2,7 +2,7 @@ from enum import IntEnum
 from typing import TypeAlias
 
 import numpy as np
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy._typing import FileLike
 
 __all__ = ["WavFileWarning", "read", "write"]
@@ -285,5 +285,5 @@ class WAVE_FORMAT(IntEnum):
     EXTENSIBLE: int
     DEVELOPMENT: int
 
-def read(filename: FileLike[bytes], mmap: bool = False) -> onpt.Array[_Shape1D | _Shape2D, _ScalarR]: ...
-def write(filename: FileLike[bytes], rate: int, data: onpt.Array[_Shape1D | _Shape2D, _ScalarW]) -> None: ...
+def read(filename: FileLike[bytes], mmap: bool = False) -> onp.Array[_Shape1D | _Shape2D, _ScalarR]: ...
+def write(filename: FileLike[bytes], rate: int, data: onp.Array[_Shape1D | _Shape2D, _ScalarW]) -> None: ...

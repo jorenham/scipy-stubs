@@ -7,7 +7,7 @@ from typing_extensions import TypeVar, override
 import numpy as np
 import numpy.typing as npt
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeInt
 from numpy.random import Generator as Generator
 from scipy._typing import RNG, EnterSelfMixin
@@ -96,7 +96,7 @@ def rng_integers(
     low: _ArrayLikeInt,
     high: _ArrayLikeInt | None = None,
     size: tuple[()] | None = None,
-    dtype: onpt.AnyIntegerDType = "int64",
+    dtype: onp.AnyIntegerDType = "int64",
     endpoint: op.CanBool = False,
 ) -> np.integer[Any]: ...
 @overload
@@ -105,7 +105,7 @@ def rng_integers(
     low: _ArrayLikeInt,
     high: _ArrayLikeInt | None = None,
     size: op.CanIndex | Sequence[op.CanIndex] | None = None,
-    dtype: onpt.AnyIntegerDType = "int64",
+    dtype: onp.AnyIntegerDType = "int64",
     endpoint: op.CanBool = False,
 ) -> np.integer[Any] | npt.NDArray[np.integer[Any]]: ...
 

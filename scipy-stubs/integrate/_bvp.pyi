@@ -4,7 +4,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
 from scipy._typing import AnyReal
 from scipy.interpolate import PPoly
@@ -13,9 +13,9 @@ from scipy.sparse import csc_matrix
 _SCT = TypeVar("_SCT", bound=np.generic, default=np.float64)
 _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any], default=np.float64 | np.complex128)
 
-_Array_1d: TypeAlias = onpt.Array[tuple[int], _SCT]
-_Array_2d: TypeAlias = onpt.Array[tuple[int, int], _SCT]
-_Array_3d: TypeAlias = onpt.Array[tuple[int, int, int], _SCT]
+_Array_1d: TypeAlias = onp.Array[tuple[int], _SCT]
+_Array_2d: TypeAlias = onp.Array[tuple[int, int], _SCT]
+_Array_3d: TypeAlias = onp.Array[tuple[int, int, int], _SCT]
 
 _FunRHS: TypeAlias = Callable[[_Array_1d, _Array_2d[_SCT_fc]], npt.NDArray[_SCT_fc]]
 _FunRHS_p: TypeAlias = Callable[[_Array_1d, _Array_2d[_SCT_fc], _Array_1d], npt.NDArray[_SCT_fc]]

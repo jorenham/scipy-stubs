@@ -4,7 +4,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 import scipy._typing as spt
 
 _PointsWeights: TypeAlias = tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
@@ -87,8 +87,8 @@ class orthopoly1d(np.poly1d):
     @overload
     def __call__(  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
-        v: onpt.CanArray[_ShapeT, np.dtype[np.floating[Any] | np.integer[Any] | np.bool_]] | Sequence[npt.ArrayLike],
-    ) -> onpt.Array[_ShapeT, np.floating[Any]]: ...
+        v: onp.CanArray[_ShapeT, np.dtype[np.floating[Any] | np.integer[Any] | np.bool_]] | Sequence[npt.ArrayLike],
+    ) -> onp.Array[_ShapeT, np.floating[Any]]: ...
 
 @overload
 def roots_jacobi(n: spt.AnyInt, alpha: spt.AnyReal, beta: spt.AnyReal, mu: Literal[False] = ...) -> _PointsWeights: ...

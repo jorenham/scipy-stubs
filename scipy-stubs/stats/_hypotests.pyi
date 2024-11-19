@@ -5,7 +5,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt_co
 from scipy._typing import Alternative, AnyReal, NanPolicy
 from ._common import ConfidenceInterval
@@ -52,7 +52,7 @@ class TukeyHSDResult:
 class SomersDResult:
     statistic: float | np.float64
     pvalue: float | np.float64
-    table: onpt.Array[tuple[int, int], np.float64]
+    table: onp.Array[tuple[int, int], np.float64]
 
 @dataclass
 class BarnardExactResult:

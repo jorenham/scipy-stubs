@@ -3,11 +3,11 @@ from typing import Any, Literal, TypeAlias, overload
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 
 __all__ = ["lu", "lu_factor", "lu_solve"]
 
-_ArrayLike_2d_fc: TypeAlias = onpt.AnyNumberArray | Sequence[Sequence[complex | np.number[Any]]]
+_ArrayLike_2d_fc: TypeAlias = onp.AnyNumberArray | Sequence[Sequence[complex | np.number[Any]]]
 _Array_i: TypeAlias = np.ndarray[tuple[int, ...], np.dtype[np.intp]]
 _Array_fc: TypeAlias = np.ndarray[tuple[int, ...], np.dtype[np.inexact[npt.NBitBase]]]
 _Array_fc_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.inexact[npt.NBitBase]]]

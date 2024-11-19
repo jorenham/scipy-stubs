@@ -1,7 +1,7 @@
 from typing import Any, Literal, TypeAlias
 
 import numpy as np
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeInt_co
 from ._common import ConfidenceInterval
 
@@ -11,7 +11,7 @@ class OddsRatioResult:
     statistic: float
     def __init__(
         self,
-        _table: onpt.Array[tuple[Literal[2], Literal[2]], np.integer[Any]],
+        _table: onp.Array[tuple[Literal[2], Literal[2]], np.integer[Any]],
         _kind: _Kind,
         statistic: float,
     ) -> None: ...

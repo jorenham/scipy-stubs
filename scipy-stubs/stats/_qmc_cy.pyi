@@ -2,12 +2,12 @@ from typing import TypeAlias
 
 import numpy as np
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 import optype.typing as opt
 
-_Vector_i8: TypeAlias = onpt.Array[tuple[int, int], np.int64]
-_Vector_f8: TypeAlias = onpt.Array[tuple[int], np.float64]
-_Matrix_f8: TypeAlias = onpt.Array[tuple[int, int], np.float64]
+_Vector_i8: TypeAlias = onp.Array[tuple[int, int], np.int64]
+_Vector_f8: TypeAlias = onp.Array[tuple[int], np.float64]
+_Matrix_f8: TypeAlias = onp.Array[tuple[int, int], np.float64]
 
 def _cy_wrapper_centered_discrepancy(sample: _Matrix_f8, iterative: op.CanBool, workers: opt.AnyInt) -> float: ...
 def _cy_wrapper_wrap_around_discrepancy(sample: _Matrix_f8, iterative: op.CanBool, workers: opt.AnyInt) -> float: ...

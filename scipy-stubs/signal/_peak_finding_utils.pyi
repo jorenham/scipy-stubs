@@ -2,13 +2,13 @@
 from typing import TypeAlias
 
 import numpy as np
-import optype.numpy as onpt
+import optype.numpy as onp
 
 __all__ = ["_local_maxima_1d", "_peak_prominences", "_peak_widths", "_select_by_peak_distance"]
 
-_Array_b_1d: TypeAlias = onpt.Array[tuple[int], np.bool_]
-_Array_n_1d: TypeAlias = onpt.Array[tuple[int], np.intp]
-_Array_f8_1d: TypeAlias = onpt.Array[tuple[int], np.float64]
+_Array_b_1d: TypeAlias = onp.Array[tuple[int], np.bool_]
+_Array_n_1d: TypeAlias = onp.Array[tuple[int], np.intp]
+_Array_f8_1d: TypeAlias = onp.Array[tuple[int], np.float64]
 
 class PeakPropertyWarning(RuntimeWarning): ...  # undocumented
 

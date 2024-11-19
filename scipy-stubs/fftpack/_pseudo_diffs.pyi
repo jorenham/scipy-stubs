@@ -1,15 +1,15 @@
 from typing import TypeAlias, overload
 
 import numpy as np
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
 from scipy._typing import AnyReal
 
 __all__ = ["cc_diff", "cs_diff", "diff", "hilbert", "ihilbert", "itilbert", "sc_diff", "shift", "ss_diff", "tilbert"]
 
 # the suffix correspond to the relevant dtype charcode(s)
-_Vec_d: TypeAlias = onpt.Array[tuple[int], np.float64]
-_Vec_dD: TypeAlias = onpt.Array[tuple[int], np.float64 | np.complex128]
+_Vec_d: TypeAlias = onp.Array[tuple[int], np.float64]
+_Vec_dD: TypeAlias = onp.Array[tuple[int], np.float64 | np.complex128]
 
 _Cache: TypeAlias = dict[tuple[AnyReal, ...], _Vec_d]  # {n: kernel}
 

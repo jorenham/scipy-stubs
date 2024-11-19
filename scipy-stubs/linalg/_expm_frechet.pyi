@@ -2,15 +2,15 @@ from collections.abc import Sequence
 from typing import Any, Literal, TypeAlias, overload
 
 import numpy as np
-import optype.numpy as onpt
+import optype.numpy as onp
 
 __all__ = ["expm_cond", "expm_frechet"]
 
 _Method: TypeAlias = Literal["SPS", "blockEnlarge"]
 
-_ArrayLike_2d_fc: TypeAlias = onpt.AnyNumberArray | Sequence[Sequence[complex | np.number[Any]]]
-_Array_2d_f8: TypeAlias = onpt.Array[tuple[int, int], np.float64]
-_Array_2d_c16: TypeAlias = onpt.Array[tuple[int, int], np.complex128]
+_ArrayLike_2d_fc: TypeAlias = onp.AnyNumberArray | Sequence[Sequence[complex | np.number[Any]]]
+_Array_2d_f8: TypeAlias = onp.Array[tuple[int, int], np.float64]
+_Array_2d_c16: TypeAlias = onp.Array[tuple[int, int], np.complex128]
 
 @overload
 def expm_frechet(

@@ -2,7 +2,7 @@ from typing import Any, Literal, overload
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
 from optype import CanBool, CanIndex
 from scipy._typing import AnyReal
@@ -26,14 +26,14 @@ def hdquantiles(
     prob: _ArrayLikeFloat_co = [0.25, 0.5, 0.75],
     axis: CanIndex | None = None,
     var: Literal[0, False] = False,
-) -> np.ma.MaskedArray[onpt.AtLeast1D, np.dtype[np.float64]]: ...
+) -> np.ma.MaskedArray[onp.AtLeast1D, np.dtype[np.float64]]: ...
 @overload
 def hdquantiles(
     data: _ArrayLikeFloat_co,
     prob: _ArrayLikeFloat_co,
     axis: CanIndex | None,
     var: Literal[1, True],
-) -> np.ma.MaskedArray[onpt.AtLeast2D, np.dtype[np.float64]]: ...
+) -> np.ma.MaskedArray[onp.AtLeast2D, np.dtype[np.float64]]: ...
 @overload
 def hdquantiles(
     data: _ArrayLikeFloat_co,
@@ -41,7 +41,7 @@ def hdquantiles(
     axis: CanIndex | None = None,
     *,
     var: Literal[1, True],
-) -> np.ma.MaskedArray[onpt.AtLeast2D, np.dtype[np.float64]]: ...
+) -> np.ma.MaskedArray[onp.AtLeast2D, np.dtype[np.float64]]: ...
 
 #
 @overload
@@ -49,27 +49,27 @@ def hdmedian(
     data: _ArrayLikeFloat_co,
     axis: CanIndex | None = -1,
     var: Literal[0, False] = False,
-) -> np.ma.MaskedArray[onpt.AtLeast0D, np.dtype[np.float64]]: ...
+) -> np.ma.MaskedArray[onp.AtLeast0D, np.dtype[np.float64]]: ...
 @overload
 def hdmedian(
     data: _ArrayLikeFloat_co,
     axis: CanIndex | None,
     var: Literal[1, True],
-) -> np.ma.MaskedArray[onpt.AtLeast1D, np.dtype[np.float64]]: ...
+) -> np.ma.MaskedArray[onp.AtLeast1D, np.dtype[np.float64]]: ...
 @overload
 def hdmedian(
     data: _ArrayLikeFloat_co,
     axis: CanIndex | None = -1,
     *,
     var: Literal[1, True],
-) -> np.ma.MaskedArray[onpt.AtLeast1D, np.dtype[np.float64]]: ...
+) -> np.ma.MaskedArray[onp.AtLeast1D, np.dtype[np.float64]]: ...
 
 #
 def hdquantiles_sd(
     data: _ArrayLikeFloat_co,
     prob: _ArrayLikeFloat_co = [0.25, 0.5, 0.75],
     axis: CanIndex | None = None,
-) -> np.ma.MaskedArray[onpt.AtLeast1D, np.dtype[np.float64]]: ...
+) -> np.ma.MaskedArray[onp.AtLeast1D, np.dtype[np.float64]]: ...
 
 #
 def trimmed_mean_ci(
@@ -126,7 +126,7 @@ def compare_medians_ms(group_1: _ArrayLikeFloat_co, group_2: _ArrayLikeFloat_co,
 @overload
 def idealfourths(data: _ArrayLikeFloat_co, axis: None = None) -> list[np.float64]: ...
 @overload
-def idealfourths(data: _ArrayLikeFloat_co, axis: CanIndex) -> np.ma.MaskedArray[onpt.AtLeast1D, np.dtype[np.float64]]: ...
+def idealfourths(data: _ArrayLikeFloat_co, axis: CanIndex) -> np.ma.MaskedArray[onp.AtLeast1D, np.dtype[np.float64]]: ...
 
 #
 def rsh(data: _ArrayLikeFloat_co, points: _ArrayLikeFloat_co | None = None) -> np.float64: ...

@@ -4,7 +4,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 
 __all__ = ["diagsvd", "null_space", "orth", "subspace_angles", "svd", "svdvals"]
 
@@ -13,12 +13,12 @@ _LapackDriver: TypeAlias = Literal["gesdd", "gesvd"]
 _SCT = TypeVar("_SCT", bound=np.generic)
 _DT = TypeVar("_DT", bound=np.dtype[np.generic])
 
-_Array_1d: TypeAlias = onpt.Array[tuple[int], _SCT]
-_Array_2d: TypeAlias = onpt.Array[tuple[int, int], _SCT]
+_Array_1d: TypeAlias = onp.Array[tuple[int], _SCT]
+_Array_2d: TypeAlias = onp.Array[tuple[int, int], _SCT]
 
-_ArrayLike_2d_f: TypeAlias = Sequence[Sequence[float]] | onpt.AnyFloatingArray
-_ArrayLike_2d_c: TypeAlias = onpt.AnyComplexFloatingArray  # because `float <: complex` (type-check only), complex is excluded
-_ArrayLike_2d_fc: TypeAlias = Sequence[Sequence[complex]] | onpt.AnyNumberArray
+_ArrayLike_2d_f: TypeAlias = Sequence[Sequence[float]] | onp.AnyFloatingArray
+_ArrayLike_2d_c: TypeAlias = onp.AnyComplexFloatingArray  # because `float <: complex` (type-check only), complex is excluded
+_ArrayLike_2d_fc: TypeAlias = Sequence[Sequence[complex]] | onp.AnyNumberArray
 
 _Array_1d_f: TypeAlias = _Array_1d[np.float32 | np.float64]
 _Array_2d_f: TypeAlias = _Array_2d[np.float32 | np.float64]
@@ -76,7 +76,7 @@ def svdvals(a: _ArrayLike_2d_fc, overwrite_a: bool = False, check_finite: bool =
 
 # beware the overlapping overloads for bool <: int (<: float)
 @overload
-def diagsvd(s: onpt.CanArray[tuple[int, ...], _DT], M: op.CanIndex, N: op.CanIndex) -> np.ndarray[tuple[int, int], _DT]: ...
+def diagsvd(s: onp.CanArray[tuple[int, ...], _DT], M: op.CanIndex, N: op.CanIndex) -> np.ndarray[tuple[int, int], _DT]: ...
 @overload
 def diagsvd(s: Sequence[_SCT], M: op.CanIndex, N: op.CanIndex) -> _Array_2d[_SCT]: ...
 @overload

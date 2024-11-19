@@ -7,7 +7,7 @@ from typing_extensions import Self, TypeVar, override
 import numpy as np
 import numpy.typing as npt
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 import optype.typing as opt
 from numpy._typing import _ArrayLikeInt
 from scipy._typing import RNG, AnyInt, AnyReal, Seed
@@ -43,8 +43,8 @@ class _CanLenArray(Protocol[_SCT_co]):
 _Scalar_f_co: TypeAlias = np.floating[Any] | np.integer[Any] | np.bool_
 _ScalarLike_f: TypeAlias = float | np.floating[Any]
 
-_Array1D: TypeAlias = onpt.Array[tuple[int], _SCT0]
-_Array2D: TypeAlias = onpt.Array[tuple[int, int], _SCT0]
+_Array1D: TypeAlias = onp.Array[tuple[int], _SCT0]
+_Array2D: TypeAlias = onp.Array[tuple[int, int], _SCT0]
 _Array1D_f_co: TypeAlias = _Array1D[_Scalar_f_co]
 
 _Any1D_f: TypeAlias = _CanLenArray[np.floating[Any]] | Sequence[_ScalarLike_f]

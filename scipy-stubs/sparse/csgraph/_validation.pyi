@@ -2,7 +2,7 @@ from typing import Any, Final, TypeAlias
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
 from scipy.sparse import sparray, spmatrix
 
@@ -22,4 +22,4 @@ def validate_graph(
     null_value_out: float = ...,
     infinity_null: bool = True,
     nan_null: bool = True,
-) -> onpt.Array[tuple[int, int], np.floating[Any]]: ...
+) -> onp.Array[tuple[int, int], np.floating[Any]]: ...

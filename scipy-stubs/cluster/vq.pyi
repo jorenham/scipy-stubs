@@ -4,30 +4,30 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 
 __all__ = ["kmeans", "kmeans2", "vq", "whiten"]
 
 _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
-_ArrayLike_1d_fc: TypeAlias = onpt.AnyNumberArray | Sequence[complex | np.number[Any]]
-_ArrayLike_2d_fc: TypeAlias = onpt.AnyNumberArray | Sequence[Sequence[complex | np.number[Any]]]
+_ArrayLike_1d_fc: TypeAlias = onp.AnyNumberArray | Sequence[complex | np.number[Any]]
+_ArrayLike_2d_fc: TypeAlias = onp.AnyNumberArray | Sequence[Sequence[complex | np.number[Any]]]
 
 class ClusterError(Exception): ...
 
 @overload
-def whiten(obs: npt.NDArray[_SCT_fc], check_finite: bool = True) -> onpt.Array[tuple[int, int], _SCT_fc]: ...
+def whiten(obs: npt.NDArray[_SCT_fc], check_finite: bool = True) -> onp.Array[tuple[int, int], _SCT_fc]: ...
 @overload
-def whiten(obs: _ArrayLike_2d_fc, check_finite: bool = True) -> onpt.Array[tuple[int, int], np.inexact[Any]]: ...
+def whiten(obs: _ArrayLike_2d_fc, check_finite: bool = True) -> onp.Array[tuple[int, int], np.inexact[Any]]: ...
 def vq(
     obs: _ArrayLike_2d_fc,
     code_book: _ArrayLike_2d_fc,
     check_finite: bool = True,
-) -> tuple[onpt.Array[tuple[int], np.int32 | np.intp], onpt.Array[tuple[int], _SCT_fc]]: ...
+) -> tuple[onp.Array[tuple[int], np.int32 | np.intp], onp.Array[tuple[int], _SCT_fc]]: ...
 def py_vq(
     obs: _ArrayLike_2d_fc,
     code_book: _ArrayLike_2d_fc,
     check_finite: bool = True,
-) -> tuple[onpt.Array[tuple[int], np.intp], onpt.Array[tuple[int], _SCT_fc]]: ...
+) -> tuple[onp.Array[tuple[int], np.intp], onp.Array[tuple[int], _SCT_fc]]: ...
 def kmeans(
     obs: _ArrayLike_2d_fc,
     k_or_guess: npt.ArrayLike,
@@ -36,7 +36,7 @@ def kmeans(
     check_finite: bool = True,
     *,
     seed: int | np.random.Generator | np.random.RandomState | None = None,
-) -> tuple[onpt.Array[tuple[int, int], np.inexact[Any]], float]: ...
+) -> tuple[onp.Array[tuple[int, int], np.inexact[Any]], float]: ...
 def kmeans2(
     data: _ArrayLike_1d_fc | _ArrayLike_2d_fc,
     k: npt.ArrayLike,
@@ -47,4 +47,4 @@ def kmeans2(
     check_finite: bool = True,
     *,
     seed: int | np.random.Generator | np.random.RandomState | None = None,
-) -> tuple[onpt.Array[tuple[int, int], np.inexact[Any]], onpt.Array[tuple[int], np.int32]]: ...
+) -> tuple[onp.Array[tuple[int, int], np.inexact[Any]], onp.Array[tuple[int], np.int32]]: ...

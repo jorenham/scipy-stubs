@@ -4,7 +4,7 @@ from typing_extensions import Self, TypeVar, override
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLike
 from scipy.sparse import coo_matrix
 from ._typing import BaseBunch
@@ -16,17 +16,17 @@ class CrosstabResult(BaseBunch[_SCT], Generic[_SCT]):
     def elements(self, /) -> tuple[npt.NDArray[_SCT], ...]: ...
     @property
     @override
-    def count(self, /) -> onpt.Array[tuple[int, int], np.intp] | coo_matrix: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def count(self, /) -> onp.Array[tuple[int, int], np.intp] | coo_matrix: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
     def __new__(
         _cls,
         elements: tuple[npt.NDArray[_SCT], ...],
-        count: onpt.Array[tuple[int, int], np.intp] | coo_matrix,
+        count: onp.Array[tuple[int, int], np.intp] | coo_matrix,
     ) -> Self: ...
     def __init__(
         self,
         /,
         elements: tuple[npt.NDArray[_SCT], ...],
-        count: onpt.Array[tuple[int, int], np.intp] | coo_matrix,
+        count: onp.Array[tuple[int, int], np.intp] | coo_matrix,
     ) -> None: ...
 
 @overload

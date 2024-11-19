@@ -4,7 +4,7 @@ from typing import Any, Literal, TypeAlias, TypeVar, overload
 import numpy as np
 import numpy.typing as npt
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 from scipy.ndimage._typing import _ScalarValueIn, _ScalarValueOut
 
 _Mode: TypeAlias = Literal["nearest", "wrap", "reflect", "grid-mirror", "mirror", "constant", "grid-wrap", "grid-constant"]
@@ -27,23 +27,23 @@ def _normalize_sequence(input: _T, rank: int) -> list[_T]: ...
 #
 @overload
 def _get_output(
-    output: onpt.Array[_ShapeT, _ScalarT] | type[_ScalarT] | np.dtype[_ScalarT] | None,
-    input: onpt.Array[_ShapeT | tuple[int, ...], _ScalarT],
+    output: onp.Array[_ShapeT, _ScalarT] | type[_ScalarT] | np.dtype[_ScalarT] | None,
+    input: onp.Array[_ShapeT | tuple[int, ...], _ScalarT],
     shape: _ShapeT | None = None,
     complex_output: Literal[False] = False,
 ) -> npt.NDArray[_ScalarT]: ...
 @overload
 def _get_output(
-    output: onpt.Array[_ShapeT, _ComplexT] | type[_ComplexT] | np.dtype[_ComplexT] | None,
-    input: onpt.Array[_ShapeT | tuple[int, ...], _ComplexT],
+    output: onp.Array[_ShapeT, _ComplexT] | type[_ComplexT] | np.dtype[_ComplexT] | None,
+    input: onp.Array[_ShapeT | tuple[int, ...], _ComplexT],
     shape: _ShapeT | None = None,
     *,
     complex_output: Literal[True],
 ) -> npt.NDArray[_ComplexT]: ...
 @overload
 def _get_output(
-    output: onpt.Array[_ShapeT, _ScalarValueOut] | type[_ScalarValueIn] | np.dtype[_ScalarValueOut] | None,
-    input: onpt.Array[_ShapeT | tuple[int, ...], _ScalarValueOut],
+    output: onp.Array[_ShapeT, _ScalarValueOut] | type[_ScalarValueIn] | np.dtype[_ScalarValueOut] | None,
+    input: onp.Array[_ShapeT | tuple[int, ...], _ScalarValueOut],
     shape: _ShapeT | None = None,
     *,
     complex_output: Literal[True],

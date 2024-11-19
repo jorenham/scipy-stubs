@@ -4,14 +4,14 @@ from typing_extensions import Self
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt_co
 from scipy._typing import AnyReal, Seed
 
 __all__ = ["gaussian_kde"]
 
-_VectorFloat: TypeAlias = onpt.Array[tuple[int], np.float64 | np.float32]
-_MatrixFloat: TypeAlias = onpt.Array[tuple[int, int], np.float64 | np.float32]
+_VectorFloat: TypeAlias = onp.Array[tuple[int], np.float64 | np.float32]
+_MatrixFloat: TypeAlias = onp.Array[tuple[int, int], np.float64 | np.float32]
 _BWMethod: TypeAlias = Literal["scott", "silverman"] | AnyReal | Callable[[gaussian_kde], AnyReal]
 
 ###

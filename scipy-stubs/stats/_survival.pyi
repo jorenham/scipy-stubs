@@ -4,7 +4,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
 from scipy._typing import Alternative, AnyReal
 from ._censored_data import CensoredData
@@ -15,8 +15,8 @@ __all__ = ["ecdf", "logrank"]
 _EDFKind: TypeAlias = Literal["cdf", "sf"]
 _CIMethod: TypeAlias = Literal["linear", "log-log"]
 
-_VectorInt: TypeAlias = onpt.Array[tuple[int], np.int_]
-_VectorFloat: TypeAlias = onpt.Array[tuple[int], np.float64]
+_VectorInt: TypeAlias = onp.Array[tuple[int], np.int_]
+_VectorFloat: TypeAlias = onp.Array[tuple[int], np.float64]
 
 _KwargsT = TypeVar("_KwargsT")
 _KwargsT_contra = TypeVar("_KwargsT_contra", contravariant=True)

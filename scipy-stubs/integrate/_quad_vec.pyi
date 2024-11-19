@@ -6,7 +6,7 @@ from typing_extensions import Never, TypeVar, TypeVarTuple, Unpack, override
 import numpy as np
 import numpy.typing as npt
 import optype as op
-import optype.numpy as onpt
+import optype.numpy as onp
 
 _Ts = TypeVarTuple("_Ts", default=Unpack[tuple[()]])
 _S = TypeVar("_S")
@@ -63,17 +63,17 @@ class _Bunch(Generic[_SCT_f_co]):
         status: Literal[0, 1, 2],
         neval: int,
         message: str,
-        intervals: onpt.Array[tuple[int, Literal[2]], np.float64],
-        errors: onpt.Array[tuple[int], np.float64],
-        integrals: onpt.Array[tuple[int, Literal[2]], _SCT_f_co],
+        intervals: onp.Array[tuple[int, Literal[2]], np.float64],
+        errors: onp.Array[tuple[int], np.float64],
+        integrals: onp.Array[tuple[int, Literal[2]], _SCT_f_co],
     ) -> None: ...
     success: Final[bool]
     status: Final[Literal[0, 1, 2]]
     neval: Final[int]
     message: Final[str]
-    intervals: Final[onpt.Array[tuple[int, Literal[2]], np.float64]]
-    errors: Final[onpt.Array[tuple[int], np.float64]]
-    integrals: onpt.Array[tuple[int, Literal[2]], _SCT_f_co]
+    intervals: Final[onp.Array[tuple[int, Literal[2]], np.float64]]
+    errors: Final[onp.Array[tuple[int], np.float64]]
+    integrals: onp.Array[tuple[int, Literal[2]], _SCT_f_co]
 
 @overload
 def quad_vec(
@@ -161,4 +161,4 @@ def quad_vec(
     *,
     full_output: Literal[True, 1],
     args: tuple[Unpack[_Ts]] = ...,
-) -> tuple[onpt.Array[_ShapeT, np.floating[_NBT]], float, _Bunch[np.floating[_NBT]]]: ...
+) -> tuple[onp.Array[_ShapeT, np.floating[_NBT]], float, _Bunch[np.floating[_NBT]]]: ...

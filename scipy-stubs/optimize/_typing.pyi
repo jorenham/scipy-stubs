@@ -3,12 +3,12 @@ from typing import Concatenate, Literal, TypeAlias, type_check_only
 from typing_extensions import NotRequired, TypedDict
 
 import numpy as np
-import optype.numpy as onpt
+import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
 from scipy._typing import AnyReal
 from ._constraints import Bounds as _Bounds, LinearConstraint, NonlinearConstraint
 
-_Array_1d_f8: TypeAlias = onpt.Array[tuple[int], np.float64]
+_Array_1d_f8: TypeAlias = onp.Array[tuple[int], np.float64]
 
 # bounds
 Bound: TypeAlias = tuple[AnyReal | None, AnyReal | None]
