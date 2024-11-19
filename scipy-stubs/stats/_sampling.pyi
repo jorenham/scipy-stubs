@@ -4,8 +4,8 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 from numpy._typing import _ArrayLikeFloat_co
-from optype import CanFloat
 from scipy._typing import AnyReal, AnyShape, Seed
 from ._distn_infrastructure import rv_frozen
 from .qmc import QMCEngine
@@ -92,10 +92,10 @@ def argus_pdf(x: AnyReal, chi: AnyReal) -> float: ...  # undocumented
 def argus_gamma_trf(x: AnyReal, chi: AnyReal) -> np.float64: ...  # undocumented
 def argus_gamma_inv_trf(x: AnyReal, chi: AnyReal) -> AnyReal: ...  # undocumented
 def betaprime_pdf(x: AnyReal, a: AnyReal, b: AnyReal) -> float | np.float64: ...  # undocumented
-def beta_valid_params(a: CanFloat, b: CanFloat) -> bool: ...  # undocumented
-def gamma_pdf(x: AnyReal, a: CanFloat) -> float: ...  # undocumented
-def invgamma_pdf(x: AnyReal, a: CanFloat) -> float: ...  # undocumented
-def burr_pdf(x: AnyReal, cc: CanFloat, dd: CanFloat) -> np.float64 | Literal[0]: ...  # undocumented
+def beta_valid_params(a: op.CanFloat, b: op.CanFloat) -> bool: ...  # undocumented
+def gamma_pdf(x: AnyReal, a: op.CanFloat) -> float: ...  # undocumented
+def invgamma_pdf(x: AnyReal, a: op.CanFloat) -> float: ...  # undocumented
+def burr_pdf(x: AnyReal, cc: op.CanFloat, dd: op.CanFloat) -> np.float64 | Literal[0]: ...  # undocumented
 def burr12_pdf(x: AnyReal, cc: AnyReal, dd: AnyReal) -> float: ...  # undocumented
 def chi_pdf(x: AnyReal, a: AnyReal) -> float: ...  # undocumented
 def chi2_pdf(x: AnyReal, df: AnyReal) -> float: ...  # undocumented
@@ -106,7 +106,7 @@ def weibull_min_pdf(x: AnyReal, c: AnyReal) -> AnyReal: ...  # undocumented
 def weibull_max_pdf(x: AnyReal, c: AnyReal) -> AnyReal: ...  # undocumented
 def invweibull_pdf(x: AnyReal, c: AnyReal) -> AnyReal: ...  # undocumented
 def wald_pdf(x: AnyReal) -> float: ...  # undocumented
-def geninvgauss_mode(p: CanFloat, b: AnyReal) -> AnyReal: ...  # undocumented
+def geninvgauss_mode(p: op.CanFloat, b: AnyReal) -> AnyReal: ...  # undocumented
 def geninvgauss_pdf(x: AnyReal, p: AnyReal, b: AnyReal) -> float: ...  # undocumented
 def invgauss_mode(mu: AnyReal) -> float: ...  # undocumented
 def invgauss_pdf(x: AnyReal, mu: AnyReal) -> float: ...  # undocumented

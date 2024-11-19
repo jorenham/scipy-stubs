@@ -4,9 +4,9 @@ from typing_extensions import TypedDict, TypeVar, Unpack
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
-from optype import CanFloat
 from scipy._lib._util import _RichResult
 from scipy._typing import AnyInt, AnyReal
 from scipy.sparse import sparray, spmatrix
@@ -80,7 +80,7 @@ def find_active_events(g: _ArrayLikeFloat_co, g_new: _ArrayLikeFloat_co, directi
 @overload
 def solve_ivp(
     fun: Callable[Concatenate[float, onp.Array[tuple[int], _SCT_cf], ...], npt.NDArray[_SCT_cf]],
-    t_span: Sequence[CanFloat],
+    t_span: Sequence[op.CanFloat],
     y0: _ArrayLikeNumber_co,
     method: _IVPMethod | type[OdeSolver] = "RK45",
     t_eval: _ArrayLikeFloat_co | None = None,
@@ -93,7 +93,7 @@ def solve_ivp(
 @overload
 def solve_ivp(
     fun: Callable[Concatenate[_VectorFloat, onp.Array[tuple[int, int], _SCT_cf], ...], npt.NDArray[_SCT_cf]],
-    t_span: Sequence[CanFloat],
+    t_span: Sequence[op.CanFloat],
     y0: _ArrayLikeNumber_co,
     method: _IVPMethod | type[OdeSolver] = "RK45",
     t_eval: _ArrayLikeFloat_co | None = None,

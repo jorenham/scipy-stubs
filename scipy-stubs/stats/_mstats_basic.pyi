@@ -4,6 +4,7 @@ from typing_extensions import Self, TypeVar
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 from numpy._typing import (
     _ArrayLike,
     _ArrayLikeBool_co,
@@ -12,7 +13,6 @@ from numpy._typing import (
     _ArrayLikeNumber_co,
     _NestedSequence,
 )
-from optype import CanBool, CanIndex
 from scipy._typing import Alternative, AnyBool, AnyComplex, AnyInt, AnyReal, NanPolicy
 from ._stats_mstats_common import SiegelslopesResult, TheilslopesResult
 from ._stats_py import KstestResult, LinregressResult, SignificanceResult
@@ -163,8 +163,8 @@ class SenSeasonalSlopesResult(BaseBunch[_MArrayND[np.float64], np.float64]):
 def argstoarray(*args: _ArrayLikeFloat_co) -> _MArrayND[np.float64]: ...
 def find_repeats(arr: _ArrayLikeFloat_co) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.intp]]: ...
 def count_tied_groups(x: _ArrayLikeFloat_co, use_missing: bool = False) -> dict[np.intp, np.intp]: ...
-def rankdata(data: _ArrayLikeFloat_co, axis: CanIndex | None = None, use_missing: bool = False) -> npt.NDArray[np.float64]: ...
-def mode(a: _ArrayLikeFloat_co, axis: CanIndex | None = 0) -> ModeResult: ...
+def rankdata(data: _ArrayLikeFloat_co, axis: op.CanIndex | None = None, use_missing: bool = False) -> npt.NDArray[np.float64]: ...
+def mode(a: _ArrayLikeFloat_co, axis: op.CanIndex | None = 0) -> ModeResult: ...
 
 #
 @overload
@@ -180,7 +180,7 @@ def spearmanr(
     x: _ArrayLikeFloat_co,
     y: _ArrayLikeFloat_co | None = None,
     use_ties: bool = True,
-    axis: CanIndex | None = None,
+    axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
 ) -> SignificanceResult: ...
@@ -212,23 +212,23 @@ def sen_seasonal_slopes(x: _ArrayLikeFloat_co) -> SenSeasonalSlopesResult: ...
 def ttest_1samp(
     a: _ArrayLikeFloat_co,
     popmean: _ArrayLikeFloat_co,
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     alternative: Alternative = "two-sided",
 ) -> Ttest_1sampResult: ...
 def ttest_ind(
     a: _ArrayLikeFloat_co,
     b: _ArrayLikeFloat_co,
-    axis: CanIndex | None = 0,
-    equal_var: CanBool = True,
+    axis: op.CanIndex | None = 0,
+    equal_var: op.CanBool = True,
     alternative: Alternative = "two-sided",
 ) -> Ttest_indResult: ...
 def ttest_rel(
     a: _ArrayLikeFloat_co,
     b: _ArrayLikeFloat_co,
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     alternative: Alternative = "two-sided",
 ) -> Ttest_relResult: ...
-def mannwhitneyu(x: _ArrayLikeFloat_co, y: _ArrayLikeFloat_co, use_continuity: CanBool = True) -> MannwhitneyuResult: ...
+def mannwhitneyu(x: _ArrayLikeFloat_co, y: _ArrayLikeFloat_co, use_continuity: op.CanBool = True) -> MannwhitneyuResult: ...
 def kruskal(*args: _ArrayLikeFloat_co) -> KruskalResult: ...
 
 #
@@ -258,19 +258,19 @@ def kstest(
 def trima(
     a: _ArrayLike[_SCT_bifc],
     limits: tuple[AnyComplex, AnyComplex] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
 ) -> _MArrayND[_SCT_bifc]: ...
 @overload
 def trima(
     a: _NestedSequence[float],
     limits: tuple[AnyReal, AnyReal] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
 ) -> _MArrayND[np.float64 | np.int_ | np.bool_]: ...
 @overload
 def trima(
     a: _NestedSequence[complex],
     limits: tuple[AnyComplex, AnyComplex] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
 ) -> _MArrayND[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
 
 #
@@ -278,22 +278,22 @@ def trima(
 def trimr(
     a: _ArrayLike[_SCT_bifc],
     limits: tuple[AnyComplex, AnyComplex] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND[_SCT_bifc]: ...
 @overload
 def trimr(
     a: _NestedSequence[float],
     limits: tuple[AnyReal, AnyReal] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND[np.float64 | np.int_ | np.bool_]: ...
 @overload
 def trimr(
     a: _NestedSequence[complex],
     limits: tuple[AnyComplex, AnyComplex] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
 
 #
@@ -301,25 +301,25 @@ def trimr(
 def trim(
     a: _ArrayLike[_SCT_bifc],
     limits: tuple[AnyComplex, AnyComplex] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    relative: CanBool = False,
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    relative: op.CanBool = False,
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND[_SCT_bifc]: ...
 @overload
 def trim(
     a: _NestedSequence[float],
     limits: tuple[AnyReal, AnyReal] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    relative: CanBool = False,
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    relative: op.CanBool = False,
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND[np.float64 | np.int_ | np.bool_]: ...
 @overload
 def trim(
     a: _NestedSequence[complex],
     limits: tuple[AnyComplex, AnyComplex] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    relative: CanBool = False,
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    relative: op.CanBool = False,
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
 
 #
@@ -327,22 +327,22 @@ def trim(
 def trimboth(
     data: _ArrayLike[_SCT_bifc],
     proportiontocut: float | np.floating[Any] = 0.2,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND[_SCT_bifc]: ...
 @overload
 def trimboth(
     data: _NestedSequence[float],
     proportiontocut: float | np.floating[Any] = 0.2,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND[np.float64 | np.int_ | np.bool_]: ...
 @overload
 def trimboth(
     data: _NestedSequence[complex],
     proportiontocut: float | np.floating[Any] = 0.2,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
 
 #
@@ -351,24 +351,24 @@ def trimtail(
     data: _ArrayLike[_SCT_bifc],
     proportiontocut: float | np.floating[Any] = 0.2,
     tail: Literal["left", "right"] = "left",
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND[_SCT_bifc]: ...
 @overload
 def trimtail(
     data: _NestedSequence[float],
     proportiontocut: float | np.floating[Any] = 0.2,
     tail: Literal["left", "right"] = "left",
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND[np.float64 | np.int_ | np.bool_]: ...
 @overload
 def trimtail(
     data: _NestedSequence[complex],
     proportiontocut: float | np.floating[Any] = 0.2,
     tail: Literal["left", "right"] = "left",
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
 
 #
@@ -376,108 +376,108 @@ def trimtail(
 def trimmed_mean(
     a: _ArrayLikeFloat_co,
     limits: tuple[AnyReal, AnyReal] = (0.1, 0.1),
-    inclusive: tuple[CanBool, CanBool] = (1, 1),
-    relative: CanBool = True,
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: op.CanBool = True,
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND0[np.floating[Any]]: ...
 @overload
 def trimmed_mean(
     a: _ArrayLikeNumber_co,
     limits: tuple[AnyComplex, AnyComplex] = (0.1, 0.1),
-    inclusive: tuple[CanBool, CanBool] = (1, 1),
-    relative: CanBool = True,
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: op.CanBool = True,
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND0[np.floating[Any] | np.complex128]: ...
 def trimmed_var(
     a: _ArrayLikeNumber_co,
     limits: tuple[AnyReal, AnyReal] = (0.1, 0.1),
-    inclusive: tuple[CanBool, CanBool] = (1, 1),
-    relative: CanBool = True,
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: op.CanBool = True,
+    axis: op.CanIndex | None = None,
     ddof: AnyInt = 0,
 ) -> _MArrayND0[np.float64]: ...
 def trimmed_std(
     a: _ArrayLikeNumber_co,
     limits: tuple[AnyReal, AnyReal] = (0.1, 0.1),
-    inclusive: tuple[CanBool, CanBool] = (1, 1),
-    relative: CanBool = True,
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: op.CanBool = True,
+    axis: op.CanIndex | None = None,
     ddof: AnyInt = 0,
 ) -> _MArrayND0[np.float64]: ...
 def trimmed_stde(
     a: _ArrayLikeNumber_co,
     limits: tuple[AnyReal, AnyReal] = (0.1, 0.1),
-    inclusive: tuple[CanBool, CanBool] = (1, 1),
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND0[np.float64]: ...
 @overload
 def tmean(
     a: _ArrayLikeFloat_co,
     limits: tuple[AnyReal, AnyReal] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND0[np.floating[Any]]: ...
 @overload
 def tmean(
     a: _ArrayLikeNumber_co,
     limits: tuple[AnyComplex, AnyComplex] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    axis: CanIndex | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
 ) -> _MArrayND0[np.inexact[Any]]: ...
 def tvar(
     a: _MArrayND,
     limits: tuple[AnyReal, AnyReal] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    axis: CanIndex | None = 0,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = 0,
     ddof: AnyInt = 1,
 ) -> _MArrayND0[np.floating[Any]]: ...
 @overload
 def tmin(
     a: _ArrayLike[_SCT_bifc],
     lowerlimit: AnyComplex | None = None,
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,
 ) -> _MArrayND0[_SCT_bifc]: ...
 @overload
 def tmin(
     a: _NestedSequence[float],
     lowerlimit: AnyReal | None = None,
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,
 ) -> _MArrayND0[np.float64 | np.int_ | np.bool_]: ...
 @overload
 def tmin(
     a: _NestedSequence[complex],
     lowerlimit: AnyComplex | None = None,
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,
 ) -> _MArrayND0[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
 @overload
 def tmax(
     a: _ArrayLike[_SCT_bifc],
     upperlimit: AnyComplex | None = None,
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,
 ) -> _MArrayND0[_SCT_bifc]: ...
 @overload
 def tmax(
     a: _NestedSequence[float],
     upperlimit: AnyReal | None = None,
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,
 ) -> _MArrayND0[np.float64 | np.int_ | np.bool_]: ...
 @overload
 def tmax(
     a: _NestedSequence[complex],
     upperlimit: AnyComplex | None = None,
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,
 ) -> _MArrayND0[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
 def tsem(
     a: _ArrayLikeNumber_co,
     limits: tuple[AnyReal, AnyReal] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
-    axis: CanIndex | None = 0,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = 0,
     ddof: AnyInt = 1,
 ) -> _MArrayND0: ...
 
@@ -486,101 +486,101 @@ def tsem(
 def winsorize(
     a: _ArrayLike[_SCT_f],
     limits: tuple[AnyReal, AnyReal] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     inplace: AnyBool = False,
-    axis: CanIndex | None = None,
+    axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
 ) -> _MArrayND[_SCT_f]: ...
 @overload
 def winsorize(
     a: _ArrayLikeBool_co,
     limits: tuple[AnyReal, AnyReal] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     inplace: AnyBool = False,
-    axis: CanIndex | None = None,
+    axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
 ) -> _MArrayND[np.bool_]: ...
 @overload
 def winsorize(
     a: _ArrayLikeInt_co,
     limits: tuple[AnyReal, AnyReal] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     inplace: AnyBool = False,
-    axis: CanIndex | None = None,
+    axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
 ) -> _MArrayND[np.bool_ | np.int_]: ...
 @overload
 def winsorize(
     a: _ArrayLikeFloat_co,
     limits: tuple[AnyReal, AnyReal] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     inplace: AnyBool = False,
-    axis: CanIndex | None = None,
+    axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
 ) -> _MArrayND[np.bool_ | np.int_ | np.floating[Any]]: ...
 @overload
 def winsorize(
     a: _ArrayLikeNumber_co,
     limits: tuple[AnyComplex, AnyComplex] | None = None,
-    inclusive: tuple[CanBool, CanBool] = (True, True),
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     inplace: AnyBool = False,
-    axis: CanIndex | None = None,
+    axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
 ) -> _MArrayND[np.bool_ | np.int_ | np.floating[Any] | np.complex128]: ...
 
 # TODO(jorenham): Overloads for complex array-likes
-def moment(a: _ArrayLikeFloat_co, moment: _ArrayLikeInt_co = 1, axis: CanIndex | None = 0) -> _MArrayND0[np.floating[Any]]: ...
-def variation(a: _ArrayLikeFloat_co, axis: CanIndex | None = 0, ddof: AnyInt = 0) -> _MArrayND0[np.floating[Any]]: ...
-def skew(a: _ArrayLikeFloat_co, axis: CanIndex | None = 0, bias: CanBool = True) -> _MArrayND0[np.floating[Any]]: ...
+def moment(a: _ArrayLikeFloat_co, moment: _ArrayLikeInt_co = 1, axis: op.CanIndex | None = 0) -> _MArrayND0[np.floating[Any]]: ...
+def variation(a: _ArrayLikeFloat_co, axis: op.CanIndex | None = 0, ddof: AnyInt = 0) -> _MArrayND0[np.floating[Any]]: ...
+def skew(a: _ArrayLikeFloat_co, axis: op.CanIndex | None = 0, bias: op.CanBool = True) -> _MArrayND0[np.floating[Any]]: ...
 def kurtosis(
     a: _ArrayLikeFloat_co,
-    axis: CanIndex | None = 0,
-    fisher: CanBool = True,
-    bias: CanBool = True,
+    axis: op.CanIndex | None = 0,
+    fisher: op.CanBool = True,
+    bias: op.CanBool = True,
 ) -> _MArrayND0[np.floating[Any]]: ...
 def describe(
     a: _ArrayLikeFloat_co,
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     ddof: AnyInt = 0,
-    bias: CanBool = True,
+    bias: op.CanBool = True,
 ) -> DescribeResult: ...
 
 #
 @overload
-def stde_median(data: _ArrayLikeFloat_co, axis: CanIndex | None = None) -> _MArrayND0[np.floating[Any]]: ...
+def stde_median(data: _ArrayLikeFloat_co, axis: op.CanIndex | None = None) -> _MArrayND0[np.floating[Any]]: ...
 @overload
-def stde_median(data: _ArrayLikeNumber_co, axis: CanIndex | None = None) -> _MArrayND0[np.inexact[Any]]: ...
+def stde_median(data: _ArrayLikeNumber_co, axis: op.CanIndex | None = None) -> _MArrayND0[np.inexact[Any]]: ...
 @overload
 def skewtest(
     a: _ArrayLikeFloat_co,
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     alternative: Alternative = "two-sided",
 ) -> SkewtestResult[_MArrayND0[np.float64], _MArrayND0[np.float64]]: ...
 @overload
 def skewtest(
     a: _ArrayLikeNumber_co,
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     alternative: Alternative = "two-sided",
 ) -> SkewtestResult[_MArrayND0[np.float64], _MArrayND0[np.float64 | np.complex128]]: ...
 @overload
 def kurtosistest(
     a: _ArrayLikeFloat_co,
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     alternative: Alternative = "two-sided",
 ) -> KurtosistestResult[_MArrayND0[np.float64], _MArrayND0[np.float64]]: ...
 @overload
 def kurtosistest(
     a: _ArrayLikeNumber_co,
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     alternative: Alternative = "two-sided",
 ) -> KurtosistestResult[_MArrayND0[np.float64], _MArrayND0[np.float64 | np.complex128]]: ...
-def normaltest(a: _ArrayLikeFloat_co, axis: CanIndex | None = 0) -> NormaltestResult[_MArrayND0[np.float64]]: ...
+def normaltest(a: _ArrayLikeFloat_co, axis: op.CanIndex | None = 0) -> NormaltestResult[_MArrayND0[np.float64]]: ...
 def mquantiles(
     a: _ArrayLikeFloat_co,
     prob: _ArrayLikeFloat_co = [0.25, 0.5, 0.75],
     alphap: AnyReal = 0.4,
     betap: AnyReal = 0.4,
-    axis: CanIndex | None = None,
+    axis: op.CanIndex | None = None,
     limit: tuple[AnyReal, AnyReal] | tuple[()] = (),
 ) -> _MArrayND: ...
 def scoreatpercentile(
@@ -592,7 +592,7 @@ def scoreatpercentile(
 ) -> _MArrayND: ...
 def plotting_positions(data: _ArrayLikeFloat_co, alpha: AnyReal = 0.4, beta: AnyReal = 0.4) -> _MArrayND: ...
 def obrientransform(*args: _ArrayLikeFloat_co) -> _MArrayND: ...
-def sem(a: _ArrayLikeFloat_co, axis: CanIndex | None = 0, ddof: AnyInt = 1) -> np.float64 | _MArrayND: ...
+def sem(a: _ArrayLikeFloat_co, axis: op.CanIndex | None = 0, ddof: AnyInt = 1) -> np.float64 | _MArrayND: ...
 def f_oneway(*args: _ArrayLikeFloat_co) -> F_onewayResult: ...
 def friedmanchisquare(*args: _ArrayLikeFloat_co) -> FriedmanchisquareResult: ...
 def brunnermunzel(

@@ -1,6 +1,6 @@
 import numpy as np
 import numpy.typing as npt
-from optype import CanBool
+import optype as op
 from scipy._typing import AnyInt, AnyReal
 from ._fftlog import fht, fhtoffset, ifht
 
@@ -12,5 +12,5 @@ def fhtcoeff(
     mu: AnyReal,
     offset: AnyReal = 0.0,
     bias: AnyReal = 0.0,
-    inverse: CanBool = False,
+    inverse: op.CanBool = False,
 ) -> npt.NDArray[np.complex128]: ...

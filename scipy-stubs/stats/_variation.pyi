@@ -4,8 +4,8 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 from numpy._typing import _ArrayLike, _ArrayLikeInt_co, _NestedSequence
-from optype import CanIndex
 from scipy._typing import AnyBool, AnyInt, NanPolicy
 
 _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
@@ -28,7 +28,7 @@ def variation(
 @overload
 def variation(
     a: _ArrayLike[_SCT_fc],
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: AnyInt = 0,
     *,
@@ -37,7 +37,7 @@ def variation(
 @overload
 def variation(
     a: _ArrayLike[_SCT_fc],
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: AnyInt = 0,
     *,
@@ -48,7 +48,7 @@ def variation(
 @overload
 def variation(
     a: Sequence[float],
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: AnyInt = 0,
     *,
@@ -66,7 +66,7 @@ def variation(
 @overload
 def variation(
     a: _ArrayLikeInt_co | _NestedSequence[float],
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: AnyInt = 0,
     *,
@@ -75,7 +75,7 @@ def variation(
 @overload
 def variation(
     a: _ArrayLikeInt_co | _NestedSequence[float],
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: AnyInt = 0,
     *,
@@ -87,7 +87,7 @@ def variation(
 @overload
 def variation(
     a: Sequence[complex],
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: AnyInt = 0,
     *,
@@ -105,7 +105,7 @@ def variation(
 @overload
 def variation(
     a: _NestedSequence[complex],
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: AnyInt = 0,
     *,
@@ -114,7 +114,7 @@ def variation(
 @overload
 def variation(
     a: _NestedSequence[complex],
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: AnyInt = 0,
     *,
@@ -125,7 +125,7 @@ def variation(
 @overload
 def variation(
     a: npt.ArrayLike,
-    axis: CanIndex | None = 0,
+    axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: AnyInt = 0,
     *,

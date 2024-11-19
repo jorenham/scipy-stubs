@@ -1,7 +1,9 @@
+import optype as op
 from numpy._typing import _ArrayLikeInt, _ArrayLikeNumber_co
-from optype import CanBool
 from scipy._typing import AnyInt, AnyShape, DCTType, NormalizationMode
-from ._realtransforms import _ArrayReal, dct as dct, dctn as dctn, dst as dst, dstn as dstn, idct as idct, idst as idst
+from ._realtransforms import _ArrayReal, dct, dctn, dst, dstn, idct, idst
+
+__all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 
 # NOTE: Unlike the ones in `scipy.fft._realtransforms`, `orthogonalize` is keyword-only here.
 def idctn(
@@ -10,10 +12,10 @@ def idctn(
     s: _ArrayLikeInt | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: CanBool = False,
+    overwrite_x: op.CanBool = False,
     workers: AnyInt | None = None,
     *,
-    orthogonalize: CanBool | None = None,
+    orthogonalize: op.CanBool | None = None,
 ) -> _ArrayReal: ...
 def idstn(
     x: _ArrayLikeNumber_co,
@@ -21,8 +23,8 @@ def idstn(
     s: _ArrayLikeInt | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: CanBool = False,
+    overwrite_x: op.CanBool = False,
     workers: AnyInt | None = None,
     *,
-    orthogonalize: CanBool | None = None,
+    orthogonalize: op.CanBool | None = None,
 ) -> _ArrayReal: ...
