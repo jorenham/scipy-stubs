@@ -215,7 +215,7 @@ This will run `stubtest` in parallel on all supported Python versions, as well a
 
 ### Improving The Documentation
 
-All \[documentation\] lives in the `README.md`. Please read it carefully before
+All [documentation] lives in the `README.md`. Please read it carefully before
 proposing any changes. Ensure that the markdown is formatted correctly with
 [markdownlint](https://github.com/DavidAnson/markdownlint/tree/main).
 

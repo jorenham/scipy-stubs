@@ -67,7 +67,7 @@ add_one([])  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
 If the input is accepted, mypy will report that there's an unused ignore comment, because
 [`warn_unused_ignores = true`][mypy-warn-ignore] has been set in the mypy configuration.
 In the same way, pyright requires that the ignored error is actually reported because it
-is configured with  [`reportUnnecessaryTypeIgnoreComment = true`][bpr-rules] and
+is configured with [`reportUnnecessaryTypeIgnoreComment = true`][bpr-rules] and
 [`enableTypeIgnoreComments = false`][bpr-rules].
 
 [assert_type]: https://docs.python.org/3/library/typing.html#typing.assert_type
