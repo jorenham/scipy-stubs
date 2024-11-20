@@ -71,13 +71,13 @@ nodejs-wheel-binaries = ">=20.13.1"
 
 [[package]]
 name = "basedtyping"
-version = "0.1.8"
+version = "0.1.9"
 description = "Utilities for basedmypy"
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "basedtyping-0.1.8-py3-none-any.whl", hash = "sha256:1cb551ebb18d9d3ab3fc7cb30f242ce94558211258f1c5b5bbd3675c72587844"},
-    {file = "basedtyping-0.1.8.tar.gz", hash = "sha256:9573bfd2ab36d2179049fc8ec16f56b1b3bee42598c05097e4753ba9676fc407"},
+    {file = "basedtyping-0.1.9-py3-none-any.whl", hash = "sha256:899e1e58909b9362d50d612b4c694c61be72a54608fb04446cfc4436cc755100"},
+    {file = "basedtyping-0.1.9.tar.gz", hash = "sha256:d92ac27144bd7e00d20c9302e8863263d6c7fc42997604ca047c8108827f2f60"},
 ]
 
 [package.dependencies]
@@ -302,13 +302,13 @@ testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions"]
 
 [[package]]
 name = "mdformat"
-version = "0.7.18"
+version = "0.7.19"
 description = "CommonMark compliant Markdown formatter"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "mdformat-0.7.18-py3-none-any.whl", hash = "sha256:0060cff2a9d53a2c29a4b2be56ff90cc210d2e8506684fa482c9846166f05e22"},
-    {file = "mdformat-0.7.18.tar.gz", hash = "sha256:42cba8bc5a6bb12d50bdf7c1e470c1f837a8ab8ce81571d4e53b9e62051f6e4f"},
+    {file = "mdformat-0.7.19-py3-none-any.whl", hash = "sha256:5c360992adc118cf1479cbbe92bb3bd66dcd7f1a5a3a2ad6675915622c678cf1"},
+    {file = "mdformat-0.7.19.tar.gz", hash = "sha256:a7d22df9802383432367864da907d2d147485b5cb6872e2d66937c1333e4d58a"},
 ]
 
 [package.dependencies]
@@ -353,13 +353,13 @@ test = ["pytest (>=7.4.4)", "pytest-beartype (>=0.0.2)", "pytest-cov (>=4.1.0)"]
 
 [[package]]
 name = "mdformat-pyproject"
-version = "0.0.1"
+version = "0.0.2"
 description = "An mdformat plugin for..."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "mdformat_pyproject-0.0.1-py3-none-any.whl", hash = "sha256:35fe74984ca86c3c5219280be7ea8a161fdc0d0a27bd0a788dcec5d9e322a871"},
-    {file = "mdformat_pyproject-0.0.1.tar.gz", hash = "sha256:a2a03b8f77ec43a60060ab5da4402f613c7d83eca51ff9f19373d590ecdba3aa"},
+    {file = "mdformat_pyproject-0.0.2-py3-none-any.whl", hash = "sha256:e0791a335e53264d5589be353c519e230ac555b64fa076005bc64ca037717710"},
+    {file = "mdformat_pyproject-0.0.2.tar.gz", hash = "sha256:1638c4be0d239f49eea72089aafd06dc4ec603068ccc4868f91f0958b15b82c8"},
 ]
 
 [package.dependencies]
@@ -1056,4 +1056,4 @@ scipy = ["scipy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "c903befcafde3221aec5d828f0e18045680e7c854184bb6906d06d1779ba7165"
+content-hash = "c05e0f4fbbb5aff5017eda192452a45eda6b8cee3834d57bb3fb11916a4e2e88"
