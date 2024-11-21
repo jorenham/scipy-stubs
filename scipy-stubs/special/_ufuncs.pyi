@@ -795,7 +795,7 @@ kve: np.ufunc
 yv: np.ufunc
 yve: np.ufunc
 
-# fff->f; (ll|dd)d->d
+# fff->f; (ll|dl|dd)d->d
 # TODO
 _beta_pdf: _UFunc31f[L["_beta_pdf"], L[0]]
 _beta_ppf: _UFunc31f[L["_beta_ppf"], L[0]]
@@ -827,6 +827,9 @@ _ncx2_isf: _UFunc31f[L["_ncx2_isf"], L[0]]
 _ncx2_pdf: _UFunc31f[L["_ncx2_pdf"], L[0]]
 _ncx2_ppf: _UFunc31f[L["_ncx2_ppf"], L[0]]
 _ncx2_sf: _UFunc31f[L["_ncx2_sf"], L[0]]
+bdtr: _UFunc31f[L["bdtr"], L[0]]
+bdtrc: _UFunc31f[L["bdtrc"], L[0]]
+bdtri: _UFunc31f[L["bdtri"], L[0]]
 bdtrik: _UFunc31f[L["bdtrik"], L[0]]
 bdtrin: _UFunc31f[L["bdtrin"], L[0]]
 besselpoly: _UFunc31f[L["besselpoly"], L[0]]
@@ -906,9 +909,6 @@ _struve_bessel_series: np.ufunc
 _struve_power_series: np.ufunc
 airy: np.ufunc
 airye: np.ufunc
-bdtr: np.ufunc
-bdtrc: np.ufunc
-bdtri: np.ufunc
 ellipj: np.ufunc
 elliprc: np.ufunc
 elliprd: np.ufunc
