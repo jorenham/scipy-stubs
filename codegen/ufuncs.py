@@ -1,3 +1,0 @@
-"""
-Generates the `scipy.special`
-"""
