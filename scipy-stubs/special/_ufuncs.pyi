@@ -382,13 +382,27 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     def types(self) -> list[L["ff->f", "dd->d"]]: ...
     #
     @overload
-    def __call__(self, a: _ToSubFloat, b: _ToSubFloat, /, out: tuple[None] | None = None, **kwargs: Unpack[_Kw21f]) -> _Float: ...
-    @overload
-    def __call__(self, a: _FloatNDT, b: _FloatNDT, /, out: tuple[None] | None = None, **kwargs: Unpack[_Kw21f]) -> _FloatNDT: ...
+    def __call__(
+        self,
+        a: _ToSubFloat,
+        b: _ToSubFloat,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw21f],
+    ) -> _Float: ...
     @overload
     def __call__(
         self,
-        a: onp.ToFloat,
+        a: _FloatNDT | _ToSubFloat,
+        b: _FloatNDT | _ToSubFloat,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw21f],
+    ) -> _FloatNDT: ...
+    @overload
+    def __call__(
+        self,
+        a: onp.ToFloat | onp.ToFloatND,
         b: onp.ToFloatND,
         /,
         out: tuple[None] | None = None,
@@ -512,6 +526,86 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         *,
         out: tuple[_OutT] | _OutT,
         **kwargs: Unpack[_Kw21f],
+    ) -> _OutT: ...
+
+@type_check_only
+class _Kw31f(_KwBase, TypedDict, total=False):
+    dtype: _ToFloatDType | None
+    signature: L["fff->f", "ddd->d"] | _Tuple3[_ToFloatDType]
+
+@type_check_only
+@final
+class _UFunc31f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+    @property
+    def nin(self) -> L[3]: ...
+    @property
+    def nout(self) -> L[1]: ...
+    @property
+    def nargs(self) -> L[4]: ...
+    @property
+    def ntypes(self) -> L[2]: ...
+    @property
+    def types(self) -> list[L["fff->f", "ddd->d"]]: ...
+    #
+    @overload
+    def __call__(
+        self,
+        a: _ToSubFloat,
+        b: _ToSubFloat,
+        x: _ToSubFloat,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw31f],
+    ) -> _Float: ...
+    @overload
+    def __call__(
+        self,
+        a: _FloatNDT | _ToSubFloat,
+        b: _FloatNDT | _ToSubFloat,
+        x: _FloatNDT | _ToSubFloat,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw31f],
+    ) -> _FloatNDT: ...
+    @overload
+    def __call__(
+        self,
+        a: onp.ToFloat | onp.ToFloatND,
+        b: onp.ToFloat | onp.ToFloatND,
+        x: onp.ToFloatND,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw31f],
+    ) -> onp.ArrayND[_Float]: ...
+    @overload
+    def __call__(
+        self,
+        a: onp.ToFloat | onp.ToFloatND,
+        b: onp.ToFloatND,
+        x: onp.ToFloat | onp.ToFloatND,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw31f],
+    ) -> onp.ArrayND[_Float]: ...
+    @overload
+    def __call__(
+        self,
+        a: onp.ToFloatND,
+        b: onp.ToFloat | onp.ToFloatND,
+        x: onp.ToFloat | onp.ToFloatND,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw31f],
+    ) -> onp.ArrayND[_Float]: ...
+    @overload
+    def __call__(
+        self,
+        a: onp.ToFloat | onp.ToFloatND,
+        b: onp.ToFloat | onp.ToFloatND,
+        x: onp.ToFloat | onp.ToFloatND,
+        /,
+        out: tuple[_OutT] | _OutT,
+        **kwargs: Unpack[_Kw31f],
     ) -> _OutT: ...
 
 ###
@@ -685,76 +779,76 @@ eval_sh_legendre: np.ufunc
 
 # fff->f; ddd->d
 # TODO
-_beta_pdf: np.ufunc
-_beta_ppf: np.ufunc
-_binom_cdf: np.ufunc
-_binom_isf: np.ufunc
-_binom_pmf: np.ufunc
-_binom_ppf: np.ufunc
-_binom_sf: np.ufunc
-_hypergeom_mean: np.ufunc
-_hypergeom_skewness: np.ufunc
-_hypergeom_variance: np.ufunc
-_invgauss_isf: np.ufunc
-_invgauss_ppf: np.ufunc
-_nbinom_cdf: np.ufunc
-_nbinom_isf: np.ufunc
-_nbinom_pmf: np.ufunc
-_nbinom_ppf: np.ufunc
-_nbinom_sf: np.ufunc
-_ncf_kurtosis_excess: np.ufunc
-_ncf_mean: np.ufunc
-_ncf_skewness: np.ufunc
-_ncf_variance: np.ufunc
-_nct_cdf: np.ufunc
-_nct_isf: np.ufunc
-_nct_ppf: np.ufunc
-_nct_sf: np.ufunc
-_ncx2_cdf: np.ufunc
-_ncx2_isf: np.ufunc
-_ncx2_pdf: np.ufunc
-_ncx2_ppf: np.ufunc
-_ncx2_sf: np.ufunc
-bdtrik: np.ufunc
-bdtrin: np.ufunc
-besselpoly: np.ufunc
-betainc: np.ufunc
-betaincc: np.ufunc
-betainccinv: np.ufunc
-betaincinv: np.ufunc
-btdtr: np.ufunc
-btdtri: np.ufunc
-btdtria: np.ufunc
-btdtrib: np.ufunc
-chndtr: np.ufunc
-chndtridf: np.ufunc
-chndtrinc: np.ufunc
-chndtrix: np.ufunc
-fdtr: np.ufunc
-fdtrc: np.ufunc
-fdtri: np.ufunc
-fdtridfd: np.ufunc
-gdtr: np.ufunc
-gdtrc: np.ufunc
-gdtria: np.ufunc
-gdtrib: np.ufunc
-gdtrix: np.ufunc
-hyperu: np.ufunc
-log_wright_bessel: np.ufunc
-lpmv: np.ufunc
-nbdtrik: np.ufunc
-nbdtrin: np.ufunc
-nctdtr: np.ufunc
-nctdtridf: np.ufunc
-nctdtrinc: np.ufunc
-nctdtrit: np.ufunc
-nrdtrimn: np.ufunc
-nrdtrisd: np.ufunc
-obl_cv: np.ufunc
-pro_cv: np.ufunc
-radian: np.ufunc
-voigt_profile: np.ufunc
-wright_bessel: np.ufunc
+_beta_pdf: _UFunc31f[L["_beta_pdf"], L[0]]
+_beta_ppf: _UFunc31f[L["_beta_ppf"], L[0]]
+_binom_cdf: _UFunc31f[L["_binom_cdf"], L[0]]
+_binom_isf: _UFunc31f[L["_binom_isf"], L[0]]
+_binom_pmf: _UFunc31f[L["_binom_pmf"], L[0]]
+_binom_ppf: _UFunc31f[L["_binom_ppf"], L[0]]
+_binom_sf: _UFunc31f[L["_binom_sf"], L[0]]
+_hypergeom_mean: _UFunc31f[L["_hypergeom_mean"], L[0]]
+_hypergeom_skewness: _UFunc31f[L["_hypergeom_skewness"], L[0]]
+_hypergeom_variance: _UFunc31f[L["_hypergeom_variance"], L[0]]
+_invgauss_isf: _UFunc31f[L["_invgauss_isf"], L[0]]
+_invgauss_ppf: _UFunc31f[L["_invgauss_ppf"], L[0]]
+_nbinom_cdf: _UFunc31f[L["_nbinom_cdf"], L[0]]
+_nbinom_isf: _UFunc31f[L["_nbinom_isf"], L[0]]
+_nbinom_pmf: _UFunc31f[L["_nbinom_pmf"], L[0]]
+_nbinom_ppf: _UFunc31f[L["_nbinom_ppf"], L[0]]
+_nbinom_sf: _UFunc31f[L["_nbinom_sf"], L[0]]
+_ncf_kurtosis_excess: _UFunc31f[L["_ncf_kurtosis_excess"], L[0]]
+_ncf_mean: _UFunc31f[L["_ncf_mean"], L[0]]
+_ncf_skewness: _UFunc31f[L["_ncf_skewness"], L[0]]
+_ncf_variance: _UFunc31f[L["_ncf_variance"], L[0]]
+_nct_cdf: _UFunc31f[L["_nct_cdf"], L[0]]
+_nct_isf: _UFunc31f[L["_nct_isf"], L[0]]
+_nct_ppf: _UFunc31f[L["_nct_ppf"], L[0]]
+_nct_sf: _UFunc31f[L["_nct_sf"], L[0]]
+_ncx2_cdf: _UFunc31f[L["_ncx2_cdf"], L[0]]
+_ncx2_isf: _UFunc31f[L["_ncx2_isf"], L[0]]
+_ncx2_pdf: _UFunc31f[L["_ncx2_pdf"], L[0]]
+_ncx2_ppf: _UFunc31f[L["_ncx2_ppf"], L[0]]
+_ncx2_sf: _UFunc31f[L["_ncx2_sf"], L[0]]
+bdtrik: _UFunc31f[L["bdtrik"], L[0]]
+bdtrin: _UFunc31f[L["bdtrin"], L[0]]
+besselpoly: _UFunc31f[L["besselpoly"], L[0]]
+betainc: _UFunc31f[L["betainc"], L[0]]
+betaincc: _UFunc31f[L["betaincc"], L[0]]
+betainccinv: _UFunc31f[L["betainccinv"], L[0]]
+betaincinv: _UFunc31f[L["betaincinv"], L[0]]
+btdtr: _UFunc31f[L["btdtr"], L[0]]
+btdtri: _UFunc31f[L["btdtri"], L[0]]
+btdtria: _UFunc31f[L["btdtria"], L[0]]
+btdtrib: _UFunc31f[L["btdtrib"], L[0]]
+chndtr: _UFunc31f[L["chndtr"], L[0]]
+chndtridf: _UFunc31f[L["chndtridf"], L[0]]
+chndtrinc: _UFunc31f[L["chndtrinc"], L[0]]
+chndtrix: _UFunc31f[L["chndtrix"], L[0]]
+fdtr: _UFunc31f[L["fdtr"], L[0]]
+fdtrc: _UFunc31f[L["fdtrc"], L[0]]
+fdtri: _UFunc31f[L["fdtri"], L[0]]
+fdtridfd: _UFunc31f[L["fdtridfd"], L[0]]
+gdtr: _UFunc31f[L["gdtr"], L[0]]
+gdtrc: _UFunc31f[L["gdtrc"], L[0]]
+gdtria: _UFunc31f[L["gdtria"], L[0]]
+gdtrib: _UFunc31f[L["gdtrib"], L[0]]
+gdtrix: _UFunc31f[L["gdtrix"], L[0]]
+hyperu: _UFunc31f[L["hyperu"], L[0]]
+log_wright_bessel: _UFunc31f[L["log_wright_bessel"]]
+lpmv: _UFunc31f[L["lpmv"], L[0]]
+nbdtrik: _UFunc31f[L["nbdtrik"], L[0]]
+nbdtrin: _UFunc31f[L["nbdtrin"], L[0]]
+nctdtr: _UFunc31f[L["nctdtr"], L[0]]
+nctdtridf: _UFunc31f[L["nctdtridf"], L[0]]
+nctdtrinc: _UFunc31f[L["nctdtrinc"], L[0]]
+nctdtrit: _UFunc31f[L["nctdtrit"], L[0]]
+nrdtrimn: _UFunc31f[L["nrdtrimn"], L[0]]
+nrdtrisd: _UFunc31f[L["nrdtrisd"], L[0]]
+obl_cv: _UFunc31f[L["obl_cv"]]
+pro_cv: _UFunc31f[L["pro_cv"]]
+radian: _UFunc31f[L["radian"], L[0]]
+voigt_profile: _UFunc31f[L["voigt_profile"], L[0]]
+wright_bessel: _UFunc31f[L["wright_bessel"]]
 
 # ffff->f; dddd->d
 # TODO
