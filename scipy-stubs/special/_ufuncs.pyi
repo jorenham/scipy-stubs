@@ -318,13 +318,13 @@ class _UFunc11f(_UFuncBase[_NameT_co, _IdentityT_co], _NotABinOp, Generic[_NameT
     def types(self) -> list[L["f->f", "d->d"]]: ...
     #
     @overload
-    def __call__(self, x: _ToSubFloat, /, out: None = None, **kw: Unpack[_Kw11f]) -> _Float: ...
+    def __call__(self, x: _ToSubFloat, /, out: tuple[None] | None = None, **kw: Unpack[_Kw11f]) -> _Float: ...
     @overload
-    def __call__(self, x: _FloatNDT, /, out: None = None, **kw: Unpack[_Kw11f]) -> _FloatNDT: ...
+    def __call__(self, x: _FloatNDT, /, out: tuple[None] | None = None, **kw: Unpack[_Kw11f]) -> _FloatNDT: ...
     @overload
-    def __call__(self, x: onp.ToFloatND, /, out: None = None, **kw: Unpack[_Kw11f]) -> onp.ArrayND[_Float]: ...
+    def __call__(self, x: onp.ToFloatND, /, out: tuple[None] | None = None, **kw: Unpack[_Kw11f]) -> onp.ArrayND[_Float]: ...
     @overload
-    def __call__(self, x: onp.ToFloat | onp.ToFloatND, /, out: _OutT, **kw: Unpack[_Kw11f]) -> _OutT: ...
+    def __call__(self, x: onp.ToFloat | onp.ToFloatND, /, out: tuple[_OutT] | _OutT, **kw: Unpack[_Kw11f]) -> _OutT: ...
     #
     def at(self, a: onp.ArrayND[_Float | _SubFloat], indices: _Indices, /) -> None: ...
 
@@ -348,17 +348,17 @@ class _UFunc11fc(_UFuncBase[_NameT_co, _IdentityT_co], _NotABinOp, Generic[_Name
     def types(self) -> list[L["f->f", "d->d", "F->F", "D->D"]]: ...
     #
     @overload
-    def __call__(self, x: _ToSubFloat, /, out: None = None, **kw: Unpack[_Kw11fc]) -> _Float: ...
+    def __call__(self, x: _ToSubFloat, /, out: tuple[None] | None = None, **kw: Unpack[_Kw11fc]) -> _Float: ...
     @overload
-    def __call__(self, x: complex | _ToSubFloat, /, out: None = None, **kw: Unpack[_Kw11fc]) -> _Inexact: ...
+    def __call__(self, x: complex | _ToSubFloat, /, out: tuple[None] | None = None, **kw: Unpack[_Kw11fc]) -> _Inexact: ...
     @overload
-    def __call__(self, x: _InexactNDT, /, out: None = None, **kw: Unpack[_Kw11fc]) -> _InexactNDT: ...
+    def __call__(self, x: _InexactNDT, /, out: tuple[None] | None = None, **kw: Unpack[_Kw11fc]) -> _InexactNDT: ...
     @overload
-    def __call__(self, x: onp.ToFloatND, /, out: None = None, **kw: Unpack[_Kw11fc]) -> onp.ArrayND[_Float]: ...
+    def __call__(self, x: onp.ToFloatND, /, out: tuple[None] | None = None, **kw: Unpack[_Kw11fc]) -> onp.ArrayND[_Float]: ...
     @overload
-    def __call__(self, x: onp.ToComplexND, /, out: None = None, **kw: Unpack[_Kw11fc]) -> onp.ArrayND[_Inexact]: ...
+    def __call__(self, x: onp.ToComplexND, /, out: tuple[None] | None = None, **kw: Unpack[_Kw11fc]) -> onp.ArrayND[_Inexact]: ...
     @overload
-    def __call__(self, x: onp.ToComplex | onp.ToComplexND, /, out: _OutT, **kw: Unpack[_Kw11fc]) -> _OutT: ...
+    def __call__(self, x: onp.ToComplex | onp.ToComplexND, /, out: tuple[_OutT] | _OutT, **kw: Unpack[_Kw11fc]) -> _OutT: ...
     #
     def at(self, a: onp.ArrayND[_Inexact | _SubFloat], indices: _Indices, /) -> None: ...
 
@@ -382,16 +382,16 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     def types(self) -> list[L["ff->f", "dd->d"]]: ...
     #
     @overload
-    def __call__(self, a: _ToSubFloat, b: _ToSubFloat, /, out: None = None, **kwargs: Unpack[_Kw21f]) -> _Float: ...
+    def __call__(self, a: _ToSubFloat, b: _ToSubFloat, /, out: tuple[None] | None = None, **kwargs: Unpack[_Kw21f]) -> _Float: ...
     @overload
-    def __call__(self, a: _FloatNDT, b: _FloatNDT, /, out: None = None, **kwargs: Unpack[_Kw21f]) -> _FloatNDT: ...
+    def __call__(self, a: _FloatNDT, b: _FloatNDT, /, out: tuple[None] | None = None, **kwargs: Unpack[_Kw21f]) -> _FloatNDT: ...
     @overload
     def __call__(
         self,
         a: onp.ToFloat,
         b: onp.ToFloatND,
         /,
-        out: None = None,
+        out: tuple[None] | None = None,
         **kwargs: Unpack[_Kw21f],
     ) -> onp.ArrayND[_Float]: ...
     @overload
@@ -400,7 +400,7 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         a: onp.ToFloatND,
         b: onp.ToFloat | onp.ToFloatND,
         /,
-        out: None = None,
+        out: tuple[None] | None = None,
         **kwargs: Unpack[_Kw21f],
     ) -> onp.ArrayND[_Float]: ...
     @overload
@@ -409,11 +409,20 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         a: onp.ToFloat | onp.ToFloatND,
         b: onp.ToFloat | onp.ToFloatND,
         /,
-        out: _OutT,
+        out: tuple[_OutT] | _OutT,
         **kwargs: Unpack[_Kw21f],
     ) -> _OutT: ...
     #
     def at(self, a: onp.ArrayND[_Float | _SubFloat], indices: _Indices, b: onp.ToFloatND, /) -> None: ...
+    #
+    def accumulate(
+        self,
+        /,
+        array: onp.ToFloatND,
+        axis: op.CanIndex = 0,
+        dtype: _ToFloatDType | None = None,
+        out: tuple[onp.ArrayND[_Float] | None] | onp.ArrayND[_Float] | None = None,
+    ) -> onp.ArrayND[_Float]: ...
     #
     @overload
     def reduce(
@@ -422,7 +431,7 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         array: onp.ToFloatND,
         axis: None,
         dtype: onp.AnyFloat32DType | onp.AnyFloat64DType | None = None,
-        out: None = None,
+        out: tuple[None] | None = None,
         keepdims: L[False] = False,
         initial: onp.ToFloat = ...,
         where: onp.ToBool | onp.ToBoolND = True,
@@ -434,7 +443,7 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         array: onp.ToFloatND,
         axis: AnyShape | None = 0,
         dtype: onp.AnyFloat32DType | onp.AnyFloat64DType | None = None,
-        out: None = None,
+        out: tuple[None] | None = None,
         keepdims: L[False] = False,
         initial: onp.ToFloat = ...,
         where: onp.ToBool | onp.ToBoolND = True,
@@ -446,7 +455,7 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         array: onp.ToFloatND,
         axis: AnyShape | None = 0,
         dtype: onp.AnyFloat32DType | onp.AnyFloat64DType | None = None,
-        out: None = None,
+        out: tuple[None] | None = None,
         *,
         keepdims: L[True],
         initial: onp.ToFloat = ...,
@@ -459,7 +468,7 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         array: onp.ToFloatND,
         axis: AnyShape | None,
         dtype: onp.AnyFloat32DType | onp.AnyFloat64DType | None,
-        out: _OutT,
+        out: tuple[_OutT] | _OutT,
         keepdims: bool = False,
         initial: onp.ToFloat = ...,
         where: onp.ToBool | onp.ToBoolND = True,
@@ -472,13 +481,12 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         axis: AnyShape | None = 0,
         dtype: onp.AnyFloat32DType | onp.AnyFloat64DType | None = None,
         *,
-        out: _OutT,
+        out: tuple[_OutT] | _OutT,
         keepdims: bool = False,
         initial: onp.ToFloat = ...,
         where: onp.ToBool | onp.ToBoolND = True,
     ) -> _OutT: ...
 
-    # TODO: at
     # TODO: accumulate
     # TODO: reduceat
     # TODO: outer
