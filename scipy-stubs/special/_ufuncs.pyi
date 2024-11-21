@@ -484,17 +484,17 @@ class errstate(EnterNoneMixin):
 _sf_error_test_function: np.ufunc
 
 # f->f; d->d
-_cosine_cdf: np.ufunc
-_cosine_invcdf: np.ufunc
-_factorial: np.ufunc
-_kolmogc: np.ufunc
-_kolmogci: np.ufunc
-_kolmogp: np.ufunc
-_lanczos_sum_expg_scaled: np.ufunc
-_lgam1p: np.ufunc
-_log1pmx: np.ufunc
-_riemann_zeta: np.ufunc
-_scaled_exp1: np.ufunc
+_cosine_cdf: _UFunc11f[L["_cosine_cdf"], L[0]]
+_cosine_invcdf: _UFunc11f[L["_cosine_invcdf"], L[0]]
+_factorial: _UFunc11f[L["_factorial"], L[0]]
+_kolmogc: _UFunc11f[L["_kolmogc"], L[0]]
+_kolmogci: _UFunc11f[L["_kolmogci"], L[0]]
+_kolmogp: _UFunc11f[L["_kolmogp"], L[0]]
+_lanczos_sum_expg_scaled: _UFunc11f[L["_lanczos_sum_expg_scaled"], L[0]]
+_lgam1p: _UFunc11f[L["_lgam1p"], L[0]]
+_log1pmx: _UFunc11f[L["_log1pmx"], L[0]]
+_riemann_zeta: _UFunc11f[L["_riemann_zeta"], L[0]]
+_scaled_exp1: _UFunc11f[L["_scaled_exp1"], None]
 bei: _UFunc11f[L["bei"], None]
 beip: _UFunc11f[L["beip"], None]
 ber: _UFunc11f[L["ber"], None]
@@ -553,8 +553,8 @@ logit: np.ufunc
 wofz: np.ufunc
 
 # f->f; d->d; F->F; D->D
-_cospi: np.ufunc
-_sinpi: np.ufunc
+_cospi: _UFunc11fc[L["_cospi"], None]
+_sinpi: _UFunc11fc[L["_sinpi"], None]
 dawsn: _UFunc11fc[L["dawsn"], L[0]]
 erf: _UFunc11fc[L["erf"], L[0]]
 erfc: _UFunc11fc[L["erfc"], L[0]]
@@ -574,18 +574,18 @@ spence: _UFunc11fc[L["spence"], L[0]]
 wrightomega: _UFunc11fc[L["wrightomega"], L[0]]
 
 # ff->f; dd->d
-_igam_fac: np.ufunc
-_iv_ratio: np.ufunc
-_nbinom_mean: np.ufunc
-_nbinom_variance: np.ufunc
-_nbinom_skewness: np.ufunc
-_nbinom_kurtosis_excess: np.ufunc
-_nct_mean: np.ufunc
-_nct_variance: np.ufunc
-_nct_skewness: np.ufunc
-_nct_kurtosis_excess: np.ufunc
-_stirling2_inexact: np.ufunc
-_zeta: np.ufunc
+_igam_fac: _UFunc21f[L["_igam_fac"], L[0]]
+_iv_ratio: _UFunc21f[L["_iv_ratio"], L[0]]
+_nbinom_mean: _UFunc21f[L["_nbinom_mean"], L[0]]
+_nbinom_variance: _UFunc21f[L["_nbinom_variance"], L[0]]
+_nbinom_skewness: _UFunc21f[L["_nbinom_skewness"], L[0]]
+_nbinom_kurtosis_excess: _UFunc21f[L["_nbinom_kurtosis_excess"], L[0]]
+_nct_mean: _UFunc21f[L["_nct_mean"], L[0]]
+_nct_variance: _UFunc21f[L["_nct_variance"], L[0]]
+_nct_skewness: _UFunc21f[L["_nct_skewness"], L[0]]
+_nct_kurtosis_excess: _UFunc21f[L["_nct_kurtosis_excess"], L[0]]
+_stirling2_inexact: _UFunc21f[L["_stirling2_inexact"], None]
+_zeta: _UFunc21f[L["_zeta"], L[0]]
 agm: _UFunc21f[L["agm"], L[0]]
 beta: _UFunc21f[L["beta"], L[0]]
 betaln: _UFunc21f[L["betaln"], L[0]]
