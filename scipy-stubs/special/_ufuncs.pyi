@@ -496,7 +496,23 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         dtype: _ToFloatDType | None = None,
         out: tuple[onp.ArrayND[_Float] | None] | onp.ArrayND[_Float] | None = None,
     ) -> onp.ArrayND[_Float]: ...
-    # TODO: outer
+    #
+    @overload
+    def outer(self, a: onp.ToFloat, b: onp.ToFloat, /, **kwargs: Unpack[_Kw21f]) -> _Float: ...
+    @overload
+    def outer(self, a: onp.ToFloat | onp.ToFloatND, b: onp.ToFloatND, /, **kwargs: Unpack[_Kw21f]) -> onp.ArrayND[_Float]: ...
+    @overload
+    def outer(self, a: onp.ToFloatND, b: onp.ToFloat | onp.ToFloatND, /, **kwargs: Unpack[_Kw21f]) -> onp.ArrayND[_Float]: ...
+    @overload
+    def outer(
+        self,
+        a: onp.ToFloat | onp.ToFloatND,
+        b: onp.ToFloat | onp.ToFloatND,
+        /,
+        *,
+        out: tuple[_OutT] | _OutT,
+        **kwargs: Unpack[_Kw21f],
+    ) -> _OutT: ...
 
 ###
 
