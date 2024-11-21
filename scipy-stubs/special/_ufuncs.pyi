@@ -854,9 +854,9 @@ gdtrix: _UFunc31f[L["gdtrix"], L[0]]
 hyperu: _UFunc31f[L["hyperu"], L[0]]
 log_wright_bessel: _UFunc31f[L["log_wright_bessel"]]
 lpmv: _UFunc31f[L["lpmv"], L[0]]
-nbdtr: np.ufunc
-nbdtrc: np.ufunc
-nbdtri: np.ufunc
+nbdtr: _UFunc31f[L["nbdtr"], L[0]]
+nbdtrc: _UFunc31f[L["nbdtrc"], L[0]]
+nbdtri: _UFunc31f[L["nbdtri"], L[0]]
 nbdtrik: _UFunc31f[L["nbdtrik"], L[0]]
 nbdtrin: _UFunc31f[L["nbdtrin"], L[0]]
 nctdtr: _UFunc31f[L["nctdtr"], L[0]]
