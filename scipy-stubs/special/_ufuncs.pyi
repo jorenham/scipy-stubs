@@ -260,15 +260,20 @@ _Tuple3: TypeAlias = tuple[_T, _T, _T]
 
 _Float: TypeAlias = np.float32 | np.float64
 _LFloat: TypeAlias = _Float | np.longdouble
-_SubFloat: TypeAlias = np.float16 | np.integer[Any] | np.bool_
-_ToSubFloat: TypeAlias = float | _SubFloat
-_Inexact: TypeAlias = _Float | np.complex64 | np.complex128
+_Complex: TypeAlias = np.complex64 | np.complex128
+_Inexact: TypeAlias = _Float | _Complex
 _FloatNDT = TypeVar("_FloatNDT", bound=_Float | onp.ArrayND[_Float])
 _LFloatNDT = TypeVar("_LFloatNDT", bound=_LFloat | onp.ArrayND[_LFloat])
+_ComplexNDT = TypeVar("_ComplexNDT", bound=_Complex | onp.ArrayND[_Complex])
 _InexactNDT = TypeVar("_InexactNDT", bound=_Inexact | onp.ArrayND[_Inexact])
 
+_SubFloat: TypeAlias = np.float16 | np.integer[Any] | np.bool_
+_ToSubFloat: TypeAlias = float | _SubFloat
+
 _ToFloatDType: TypeAlias = onp.AnyFloat32DType | onp.AnyFloat64DType
-_ToInexactDType: TypeAlias = _ToFloatDType | onp.AnyComplex64DType | onp.AnyComplex128DType
+_ToLFloatDType: TypeAlias = _ToFloatDType | onp.AnyLongDoubleDType
+_ToComplexDType: TypeAlias = onp.AnyComplex64DType | onp.AnyComplex128DType
+_ToInexactDType: TypeAlias = _ToFloatDType | _ToComplexDType
 
 _Indices: TypeAlias = op.CanIndex | slice | EllipsisType | tuple[op.CanIndex | slice | EllipsisType, ...] | onp.ToIntND
 
@@ -332,8 +337,8 @@ class _UFunc11f(_UFuncBase[_NameT_co, _IdentityT_co], _NotABinOp, Generic[_NameT
 
 @type_check_only
 class _Kw11g(_KwBase, TypedDict, total=False):
-    dtype: _ToFloatDType | None
-    signature: L["f->f", "d->d", "g->g"] | _Tuple2[_ToFloatDType]
+    dtype: _ToLFloatDType | None
+    signature: L["f->f", "d->d", "g->g"] | _Tuple2[_ToLFloatDType]
 
 @type_check_only
 @final
@@ -359,6 +364,36 @@ class _UFunc11g(_UFuncBase[_NameT_co, _IdentityT_co], _NotABinOp, Generic[_NameT
     def __call__(self, x: onp.ToFloat | onp.ToFloatND, /, out: tuple[_OutT] | _OutT, **kw: Unpack[_Kw11g]) -> _OutT: ...
     #
     def at(self, a: onp.ArrayND[_LFloat | _SubFloat], indices: _Indices, /) -> None: ...
+
+@type_check_only
+class _Kw11c(_KwBase, TypedDict, total=False):
+    dtype: _ToComplexDType | None
+    signature: L["F->F", "D->D"] | _Tuple2[_ToComplexDType]
+
+@type_check_only
+@final
+class _UFunc11c(_UFuncBase[_NameT_co, _IdentityT_co], _NotABinOp, Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+    @property
+    def nin(self) -> L[1]: ...
+    @property
+    def nout(self) -> L[1]: ...
+    @property
+    def nargs(self) -> L[2]: ...
+    @property
+    def ntypes(self) -> L[2]: ...
+    @property
+    def types(self) -> list[L["F->F", "D->D"]]: ...
+    #
+    @overload
+    def __call__(self, x: onp.ToFloat, /, out: tuple[None] | None = None, **kw: Unpack[_Kw11c]) -> _Complex: ...
+    @overload
+    def __call__(self, x: _ComplexNDT, /, out: tuple[None] | None = None, **kw: Unpack[_Kw11c]) -> _ComplexNDT: ...
+    @overload
+    def __call__(self, x: onp.ToComplexND, /, out: tuple[None] | None = None, **kw: Unpack[_Kw11c]) -> onp.ArrayND[_Complex]: ...
+    @overload
+    def __call__(self, x: onp.ToComplex | onp.ToComplexND, /, out: tuple[_OutT] | _OutT, **kw: Unpack[_Kw11c]) -> _OutT: ...
+    #
+    def at(self, a: onp.ArrayND[_Inexact | _SubFloat], indices: _Indices, /) -> None: ...
 
 @type_check_only
 class _Kw11fc(_KwBase, TypedDict, total=False):
@@ -716,8 +751,7 @@ log_expit: _UFunc11g[L["log_expit"]]
 logit: _UFunc11g[L["logit"]]
 
 # F->F; D->D
-# TODO (identity=0)
-wofz: np.ufunc
+wofz: _UFunc11c[L["wofz"], L[0]]
 
 # f->f; d->d; F->F; D->D
 _cospi: _UFunc11fc[L["_cospi"]]
