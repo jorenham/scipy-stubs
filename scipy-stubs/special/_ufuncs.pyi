@@ -709,7 +709,12 @@ rgamma: _UFunc11fc[L["rgamma"]]
 spence: _UFunc11fc[L["spence"], L[0]]
 wrightomega: _UFunc11fc[L["wrightomega"], L[0]]
 
-# ff->f; dd->d
+# ld->d
+# TODO (identity=0)
+eval_hermite: np.ufunc
+eval_hermitenorm: np.ufunc
+
+# ff->f; (l|d)d->d
 _igam_fac: _UFunc21f[L["_igam_fac"], L[0]]
 _iv_ratio: _UFunc21f[L["_iv_ratio"], L[0]]
 _nbinom_mean: _UFunc21f[L["_nbinom_mean"], L[0]]
@@ -720,6 +725,9 @@ _nct_mean: _UFunc21f[L["_nct_mean"], L[0]]
 _nct_variance: _UFunc21f[L["_nct_variance"], L[0]]
 _nct_skewness: _UFunc21f[L["_nct_skewness"], L[0]]
 _nct_kurtosis_excess: _UFunc21f[L["_nct_kurtosis_excess"], L[0]]
+_smirnovc: _UFunc21f[L["_smirnovc"], L[0]]
+_smirnovci: _UFunc21f[L["_smirnovci"], L[0]]
+_smirnovp: _UFunc21f[L["_smirnovp"], L[0]]
 _stirling2_inexact: _UFunc21f[L["_stirling2_inexact"]]
 _zeta: _UFunc21f[L["_zeta"], L[0]]
 agm: _UFunc21f[L["agm"], L[0]]
@@ -734,6 +742,7 @@ chdtri: _UFunc21f[L["chdtri"], L[0]]
 chdtriv: _UFunc21f[L["chdtriv"], L[0]]
 ellipeinc: _UFunc21f[L["ellipeinc"], L[0]]
 ellipkinc: _UFunc21f[L["ellipkinc"], L[0]]
+expn: _UFunc21f[L["expn"], L[0]]
 gammainc: _UFunc21f[L["gammainc"], L[0]]
 gammaincc: _UFunc21f[L["gammaincc"], L[0]]
 gammainccinv: _UFunc21f[L["gammainccinv"], L[0]]
@@ -742,6 +751,7 @@ huber: _UFunc21f[L["huber"], L[0]]
 inv_boxcox1p: _UFunc21f[L["inv_boxcox1p"], L[0]]
 inv_boxcox: _UFunc21f[L["inv_boxcox"], L[0]]
 kl_div: _UFunc21f[L["kl_div"], L[0]]
+kn: _UFunc21f[L["kn"], L[0]]
 mathieu_a: _UFunc21f[L["mathieu_a"]]
 mathieu_b: _UFunc21f[L["mathieu_b"]]
 modstruve: _UFunc21f[L["modstruve"], L[0]]
@@ -754,19 +764,17 @@ poch: _UFunc21f[L["poch"], L[0]]
 powm1: _UFunc21f[L["powm1"], L[0]]
 pseudo_huber: _UFunc21f[L["pseudo_huber"], L[0]]
 rel_entr: _UFunc21f[L["rel_entr"], L[0]]
+smirnov: _UFunc21f[L["smirnov"], L[0]]
+smirnovi: _UFunc21f[L["smirnovi"], L[0]]
 stdtr: _UFunc21f[L["stdtr"], L[0]]
 stdtridf: _UFunc21f[L["stdtridf"], L[0]]
 stdtrit: _UFunc21f[L["stdtrit"], L[0]]
 struve: _UFunc21f[L["struve"], L[0]]
 tklmbda: _UFunc21f[L["tklmbda"], L[0]]
+yn: _UFunc21f[L["yn"], L[0]]
 
-# ld->d
-# TODO (identity=0)
-eval_hermite: np.ufunc
-eval_hermitenorm: np.ufunc
-
-# ld->d; ff->f; fF->F; dd->d; dD->D
-# TODO (identity=0)
+# ff->f; (l|d)d->d; fF->F; dD->D
+# TODO
 eval_chebyc: np.ufunc
 eval_chebys: np.ufunc
 eval_chebyt: np.ufunc
@@ -776,8 +784,18 @@ eval_legendre: np.ufunc
 eval_sh_chebyt: np.ufunc
 eval_sh_chebyu: np.ufunc
 eval_sh_legendre: np.ufunc
+hyp0f1: np.ufunc
+iv: np.ufunc
+ive: np.ufunc
+jn: np.ufunc
+jv: np.ufunc
+jve: np.ufunc
+kv: np.ufunc
+kve: np.ufunc
+yv: np.ufunc
+yve: np.ufunc
 
-# fff->f; ddd->d
+# fff->f; (ll|dd)d->d
 # TODO
 _beta_pdf: _UFunc31f[L["_beta_pdf"], L[0]]
 _beta_ppf: _UFunc31f[L["_beta_ppf"], L[0]]
@@ -836,6 +854,9 @@ gdtrix: _UFunc31f[L["gdtrix"], L[0]]
 hyperu: _UFunc31f[L["hyperu"], L[0]]
 log_wright_bessel: _UFunc31f[L["log_wright_bessel"]]
 lpmv: _UFunc31f[L["lpmv"], L[0]]
+nbdtr: np.ufunc
+nbdtrc: np.ufunc
+nbdtri: np.ufunc
 nbdtrik: _UFunc31f[L["nbdtrik"], L[0]]
 nbdtrin: _UFunc31f[L["nbdtrin"], L[0]]
 nctdtr: _UFunc31f[L["nctdtr"], L[0]]
@@ -872,9 +893,6 @@ ncfdtrinc: np.ufunc
 # TODO
 _ellip_harm: np.ufunc
 _lambertw: np.ufunc
-_smirnovc: np.ufunc
-_smirnovci: np.ufunc
-_smirnovp: np.ufunc
 _spherical_n: np.ufunc
 _spherical_in_d: np.ufunc
 _spherical_jn: np.ufunc
@@ -901,13 +919,11 @@ eval_gegenbauer: np.ufunc
 eval_genlaguerre: np.ufunc
 eval_jacobi: np.ufunc
 eval_sh_jacobi: np.ufunc
-expn: np.ufunc
 fresnel: np.ufunc
 hankel1: np.ufunc
 hankel1e: np.ufunc
 hankel2: np.ufunc
 hankel2e: np.ufunc
-hyp0f1: np.ufunc
 hyp1f1: np.ufunc
 hyp2f1: np.ufunc
 it2i0k0: np.ufunc
@@ -915,15 +931,7 @@ it2j0y0: np.ufunc
 itairy: np.ufunc
 iti0k0: np.ufunc
 itj0y0: np.ufunc
-iv: np.ufunc
-ive: np.ufunc
-jn: np.ufunc
-jv: np.ufunc
-jve: np.ufunc
 kelvin: np.ufunc
-kn: np.ufunc
-kv: np.ufunc
-kve: np.ufunc
 mathieu_cem: np.ufunc
 mathieu_modcem1: np.ufunc
 mathieu_modcem2: np.ufunc
@@ -932,9 +940,6 @@ mathieu_modsem2: np.ufunc
 mathieu_sem: np.ufunc
 modfresnelm: np.ufunc
 modfresnelp: np.ufunc
-nbdtr: np.ufunc
-nbdtrc: np.ufunc
-nbdtri: np.ufunc
 obl_ang1: np.ufunc
 obl_ang1_cv: np.ufunc
 obl_rad1: np.ufunc
@@ -952,11 +957,6 @@ pro_rad2: np.ufunc
 pro_rad2_cv: np.ufunc
 shichi: np.ufunc
 sici: np.ufunc
-smirnov: np.ufunc
-smirnovi: np.ufunc
 sph_harm: np.ufunc
 xlog1py: np.ufunc
 xlogy: np.ufunc
-yn: np.ufunc
-yv: np.ufunc
-yve: np.ufunc
