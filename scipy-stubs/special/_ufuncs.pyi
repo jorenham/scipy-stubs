@@ -262,6 +262,7 @@ _Float: TypeAlias = np.float32 | np.float64
 _LFloat: TypeAlias = _Float | np.longdouble
 _Complex: TypeAlias = np.complex64 | np.complex128
 _Inexact: TypeAlias = _Float | _Complex
+
 _FloatNDT = TypeVar("_FloatNDT", bound=_Float | onp.ArrayND[_Float])
 _LFloatNDT = TypeVar("_LFloatNDT", bound=_LFloat | onp.ArrayND[_LFloat])
 _ComplexNDT = TypeVar("_ComplexNDT", bound=_Complex | onp.ArrayND[_Complex])
@@ -430,6 +431,85 @@ class _UFunc11fc(_UFuncBase[_NameT_co, _IdentityT_co], _NotABinOp, Generic[_Name
     def at(self, a: onp.ArrayND[_Inexact | _SubFloat], indices: _Indices, /) -> None: ...
 
 @type_check_only
+class _Kw21ld(_KwBase, TypedDict, total=False):
+    dtype: _ToFloatDType | None
+    signature: L["ld->d"] | tuple[onp.AnyLongDType, onp.AnyFloat64DType, onp.AnyFloat64DType]
+
+@type_check_only
+@final
+class _UFunc21ld(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+    @property
+    def nin(self) -> L[2]: ...
+    @property
+    def nout(self) -> L[1]: ...
+    @property
+    def nargs(self) -> L[3]: ...
+    @property
+    def ntypes(self) -> L[1]: ...
+    @property
+    def types(self) -> list[L["ld->d"]]: ...
+    #
+    @overload
+    def __call__(
+        self,
+        n: onp.ToInt,
+        x: onp.ToFloat,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw21ld],
+    ) -> np.float64: ...
+    @overload
+    def __call__(
+        self,
+        n: onp.ToInt | onp.ToIntND,
+        x: onp.ToFloatND,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw21ld],
+    ) -> onp.ArrayND[np.float64]: ...
+    @overload
+    def __call__(
+        self,
+        n: onp.ToIntND,
+        x: onp.ToFloat | onp.ToFloatND,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw21ld],
+    ) -> onp.ArrayND[np.float64]: ...
+    @overload
+    def __call__(
+        self,
+        n: onp.ToInt | onp.ToIntND,
+        x: onp.ToFloat | onp.ToFloatND,
+        /,
+        out: tuple[_OutT] | _OutT,
+        **kwargs: Unpack[_Kw21ld],
+    ) -> _OutT: ...
+    #
+    def at(self, a: onp.ArrayND[np.integer[Any] | np.bool_], indices: _Indices, b: onp.ToFloatND, /) -> None: ...
+    #
+    @overload
+    def outer(self, n: onp.ToInt, x: onp.ToFloat, /, **kwargs: Unpack[_Kw21ld]) -> np.float64: ...
+    @overload
+    def outer(self, n: onp.ToInt | onp.ToFloatND, x: onp.ToFloatND, /, **kwargs: Unpack[_Kw21ld]) -> onp.ArrayND[np.float64]: ...
+    @overload
+    def outer(self, n: onp.ToIntND, x: onp.ToFloat | onp.ToFloatND, /, **kwargs: Unpack[_Kw21ld]) -> onp.ArrayND[np.float64]: ...
+    @overload
+    def outer(
+        self,
+        n: onp.ToInt | onp.ToIntND,
+        x: onp.ToFloat | onp.ToFloatND,
+        /,
+        *,
+        out: tuple[_OutT] | _OutT,
+        **kwargs: Unpack[_Kw21ld],
+    ) -> _OutT: ...
+    #
+    def accumulate(self, /, *args: Never, **kwargs: Never) -> Never: ...
+    def reduce(self, /, *args: Never, **kwargs: Never) -> Never: ...
+    def reduceat(self, /, *args: Never, **kwargs: Never) -> Never: ...
+
+@type_check_only
 class _Kw21f(_KwBase, TypedDict, total=False):
     dtype: _ToFloatDType | None
     signature: L["ff->f", "dd->d"] | _Tuple3[_ToFloatDType]
@@ -451,8 +531,8 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     @overload
     def __call__(
         self,
-        a: _ToSubFloat,
-        b: _ToSubFloat,
+        a: onp.ToFloat,
+        b: onp.ToFloat,
         /,
         out: tuple[None] | None = None,
         **kwargs: Unpack[_Kw21f],
@@ -617,9 +697,9 @@ class _UFunc31f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     @overload
     def __call__(
         self,
-        a: _ToSubFloat,
-        b: _ToSubFloat,
-        x: _ToSubFloat,
+        a: onp.ToFloat,
+        b: onp.ToFloat,
+        x: onp.ToFloat,
         /,
         out: tuple[None] | None = None,
         **kwargs: Unpack[_Kw31f],
@@ -775,9 +855,8 @@ spence: _UFunc11fc[L["spence"], L[0]]
 wrightomega: _UFunc11fc[L["wrightomega"], L[0]]
 
 # ld->d
-# TODO (identity=0)
-eval_hermite: np.ufunc
-eval_hermitenorm: np.ufunc
+eval_hermite: _UFunc21ld[L["eval_hermite"], L[0]]
+eval_hermitenorm: _UFunc21ld[L["eval_hermitenorm"], L[0]]
 
 # ff->f; (l|d)d->d
 _igam_fac: _UFunc21f[L["_igam_fac"], L[0]]
