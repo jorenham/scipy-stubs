@@ -1,0 +1,3 @@
+"""
+Generates the `scipy.special`
+"""

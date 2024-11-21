@@ -29,3 +29,9 @@ scipy\.(_lib|integrate|stats)\.((_|\w)+\.)+__replace__  # `NamedTuple` on `pytho
 # stubtest doesn't understand `if sys.version_info >= _: ...` blocks
 scipy\.fftpack\.helper\.fftfreq
 scipy\.sparse\.(\w+)\.warn
+
+# mypy fails recognize type-check-only ufunc subtypes as ufuncs
+scipy\.special\._basic\.digamma
+scipy\.special\._ufuncs\..*
+scipy\.special\._support_alternative_backends\..*
+scipy\.stats\._qmvnt\.(phi|phinv)
