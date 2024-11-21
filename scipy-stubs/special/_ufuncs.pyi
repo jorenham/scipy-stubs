@@ -252,7 +252,7 @@ __all__ = [
 
 _T = TypeVar("_T")
 _NameT_co = TypeVar("_NameT_co", bound=LiteralString, covariant=True)
-_IdentityT_co = TypeVar("_IdentityT_co", bound=L[0] | None, covariant=True)
+_IdentityT_co = TypeVar("_IdentityT_co", bound=L[0] | None, default=None, covariant=True)
 _OutT = TypeVar("_OutT", bound=onp.ArrayND[np.number[Any]])
 
 _Tuple2: TypeAlias = tuple[_T, _T]
@@ -486,9 +486,16 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         initial: onp.ToFloat = ...,
         where: onp.ToBool | onp.ToBoolND = True,
     ) -> _OutT: ...
-
-    # TODO: accumulate
-    # TODO: reduceat
+    #
+    def reduceat(
+        self,
+        /,
+        array: onp.ToFloatND,
+        indices: _Indices,
+        axis: op.CanIndex = 0,
+        dtype: _ToFloatDType | None = None,
+        out: tuple[onp.ArrayND[_Float] | None] | onp.ArrayND[_Float] | None = None,
+    ) -> onp.ArrayND[_Float]: ...
     # TODO: outer
 
 ###
@@ -513,11 +520,11 @@ _lanczos_sum_expg_scaled: _UFunc11f[L["_lanczos_sum_expg_scaled"], L[0]]
 _lgam1p: _UFunc11f[L["_lgam1p"], L[0]]
 _log1pmx: _UFunc11f[L["_log1pmx"], L[0]]
 _riemann_zeta: _UFunc11f[L["_riemann_zeta"], L[0]]
-_scaled_exp1: _UFunc11f[L["_scaled_exp1"], None]
-bei: _UFunc11f[L["bei"], None]
-beip: _UFunc11f[L["beip"], None]
-ber: _UFunc11f[L["ber"], None]
-berp: _UFunc11f[L["berp"], None]
+_scaled_exp1: _UFunc11f[L["_scaled_exp1"]]
+bei: _UFunc11f[L["bei"]]
+beip: _UFunc11f[L["beip"]]
+ber: _UFunc11f[L["ber"]]
+berp: _UFunc11f[L["berp"]]
 cbrt: _UFunc11f[L["cbrt"], L[0]]
 cosdg: _UFunc11f[L["cosdg"], L[0]]
 cosm1: _UFunc11f[L["cosm1"], L[0]]
@@ -530,26 +537,26 @@ erfcinv: _UFunc11f[L["erfcinv"], L[0]]
 erfinv: _UFunc11f[L["erfinv"], L[0]]
 exp10: _UFunc11f[L["exp10"], L[0]]
 exp2: _UFunc11f[L["exp2"], L[0]]
-exprel: _UFunc11f[L["exprel"], None]
-gammaln: _UFunc11f[L["gammaln"], None]
+exprel: _UFunc11f[L["exprel"]]
+gammaln: _UFunc11f[L["gammaln"]]
 gammasgn: _UFunc11f[L["gammasgn"], L[0]]
 i0: _UFunc11f[L["i0"], L[0]]
 i0e: _UFunc11f[L["i0e"], L[0]]
 i1: _UFunc11f[L["i1"], L[0]]
 i1e: _UFunc11f[L["i1e"], L[0]]
-it2struve0: _UFunc11f[L["it2struve0"], None]
-itmodstruve0: _UFunc11f[L["itmodstruve0"], None]
-itstruve0: _UFunc11f[L["itstruve0"], None]
+it2struve0: _UFunc11f[L["it2struve0"]]
+itmodstruve0: _UFunc11f[L["itmodstruve0"]]
+itstruve0: _UFunc11f[L["itstruve0"]]
 j0: _UFunc11f[L["j0"], L[0]]
 j1: _UFunc11f[L["j1"], L[0]]
 k0: _UFunc11f[L["k0"], L[0]]
 k0e: _UFunc11f[L["k0e"], L[0]]
 k1: _UFunc11f[L["k1"], L[0]]
 k1e: _UFunc11f[L["k1e"], L[0]]
-kei: _UFunc11f[L["kei"], None]
-keip: _UFunc11f[L["keip"], None]
-ker: _UFunc11f[L["ker"], None]
-kerp: _UFunc11f[L["kerp"], None]
+kei: _UFunc11f[L["kei"]]
+keip: _UFunc11f[L["keip"]]
+ker: _UFunc11f[L["ker"]]
+kerp: _UFunc11f[L["kerp"]]
 kolmogi: _UFunc11f[L["kolmogi"], L[0]]
 kolmogorov: _UFunc11f[L["kolmogorov"], L[0]]
 ndtri: _UFunc11f[L["ndtri"], L[0]]
@@ -572,23 +579,23 @@ logit: np.ufunc
 wofz: np.ufunc
 
 # f->f; d->d; F->F; D->D
-_cospi: _UFunc11fc[L["_cospi"], None]
-_sinpi: _UFunc11fc[L["_sinpi"], None]
+_cospi: _UFunc11fc[L["_cospi"]]
+_sinpi: _UFunc11fc[L["_sinpi"]]
 dawsn: _UFunc11fc[L["dawsn"], L[0]]
 erf: _UFunc11fc[L["erf"], L[0]]
 erfc: _UFunc11fc[L["erfc"], L[0]]
 erfcx: _UFunc11fc[L["erfcx"], L[0]]
 erfi: _UFunc11fc[L["erfi"], L[0]]
-exp1: _UFunc11fc[L["exp1"], None]
-expi: _UFunc11fc[L["expi"], None]
+exp1: _UFunc11fc[L["exp1"]]
+expi: _UFunc11fc[L["expi"]]
 expm1: _UFunc11fc[L["expm1"], L[0]]
-gamma: _UFunc11fc[L["gamma"], None]
+gamma: _UFunc11fc[L["gamma"]]
 log1p: _UFunc11fc[L["log1p"], L[0]]
 log_ndtr: _UFunc11fc[L["log_ndtr"], L[0]]
-loggamma: _UFunc11fc[L["loggamma"], None]
+loggamma: _UFunc11fc[L["loggamma"]]
 ndtr: _UFunc11fc[L["ndtr"], L[0]]
-psi: _UFunc11fc[L["psi"], None]
-rgamma: _UFunc11fc[L["rgamma"], None]
+psi: _UFunc11fc[L["psi"]]
+rgamma: _UFunc11fc[L["rgamma"]]
 spence: _UFunc11fc[L["spence"], L[0]]
 wrightomega: _UFunc11fc[L["wrightomega"], L[0]]
 
@@ -603,12 +610,12 @@ _nct_mean: _UFunc21f[L["_nct_mean"], L[0]]
 _nct_variance: _UFunc21f[L["_nct_variance"], L[0]]
 _nct_skewness: _UFunc21f[L["_nct_skewness"], L[0]]
 _nct_kurtosis_excess: _UFunc21f[L["_nct_kurtosis_excess"], L[0]]
-_stirling2_inexact: _UFunc21f[L["_stirling2_inexact"], None]
+_stirling2_inexact: _UFunc21f[L["_stirling2_inexact"]]
 _zeta: _UFunc21f[L["_zeta"], L[0]]
 agm: _UFunc21f[L["agm"], L[0]]
 beta: _UFunc21f[L["beta"], L[0]]
 betaln: _UFunc21f[L["betaln"], L[0]]
-binom: _UFunc21f[L["binom"], None]
+binom: _UFunc21f[L["binom"]]
 boxcox: _UFunc21f[L["boxcox"], L[0]]
 boxcox1p: _UFunc21f[L["boxcox1p"], L[0]]
 chdtr: _UFunc21f[L["chdtr"], L[0]]
@@ -625,8 +632,8 @@ huber: _UFunc21f[L["huber"], L[0]]
 inv_boxcox1p: _UFunc21f[L["inv_boxcox1p"], L[0]]
 inv_boxcox: _UFunc21f[L["inv_boxcox"], L[0]]
 kl_div: _UFunc21f[L["kl_div"], L[0]]
-mathieu_a: _UFunc21f[L["mathieu_a"], None]
-mathieu_b: _UFunc21f[L["mathieu_b"], None]
+mathieu_a: _UFunc21f[L["mathieu_a"]]
+mathieu_b: _UFunc21f[L["mathieu_b"]]
 modstruve: _UFunc21f[L["modstruve"], L[0]]
 owens_t: _UFunc21f[L["owens_t"], L[0]]
 pdtr: _UFunc21f[L["pdtr"], L[0]]
