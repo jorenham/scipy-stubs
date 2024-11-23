@@ -8,8 +8,6 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeInt
-from numpy.random import Generator as Generator
 from scipy._typing import RNG, EnterSelfMixin
 
 _AnyRNG = TypeVar("_AnyRNG", np.random.RandomState, np.random.Generator)
@@ -93,8 +91,8 @@ def check_random_state(seed: int | np.integer[Any] | types.ModuleType | None) ->
 @overload
 def rng_integers(
     gen: RNG | None,
-    low: _ArrayLikeInt,
-    high: _ArrayLikeInt | None = None,
+    low: onp.ToInt | onp.ToIntND,
+    high: onp.ToInt | onp.ToIntND | None = None,
     size: tuple[()] | None = None,
     dtype: onp.AnyIntegerDType = "int64",
     endpoint: op.CanBool = False,
@@ -102,8 +100,8 @@ def rng_integers(
 @overload
 def rng_integers(
     gen: RNG | None,
-    low: _ArrayLikeInt,
-    high: _ArrayLikeInt | None = None,
+    low: onp.ToInt | onp.ToIntND,
+    high: onp.ToInt | onp.ToIntND | None = None,
     size: op.CanIndex | Sequence[op.CanIndex] | None = None,
     dtype: onp.AnyIntegerDType = "int64",
     endpoint: op.CanBool = False,
