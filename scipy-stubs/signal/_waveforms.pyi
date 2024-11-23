@@ -6,7 +6,6 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _ShapeLike, _DTypeLike
-from scipy._typing import Untyped
 
 __all__ = ["chirp", "gausspulse", "sawtooth", "square", "sweep_poly", "unit_impulse"]
 
@@ -97,16 +96,16 @@ def gausspulse(
     npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]
 ]: ...
 
-#
+# float16 -> float16, float32 -> float32, ... -> float64
 def chirp(
-    t: Untyped,
-    f0: Untyped,
-    t1: Untyped,
-    f1: Untyped,
-    method: str = "linear",
-    phi: int = 0,
-    vertex_zero: bool = True,
-) -> Untyped: ...
+    t: onp.ToFloatND,
+    f0: onp.ToFloat,
+    t1: onp.ToFloat,
+    f1: onp.ToFloat,
+    method: Literal["linear", "quadratic", "logarithmic", "hyperbolic"] = "linear",
+    phi: onp.ToInt = 0,
+    vertex_zero: op.CanBool = True,
+) -> npt.NDArray[np.float16 | np.float32 | np.float64]: ...
 
 # float -> float and complex -> complex
 def sweep_poly(
