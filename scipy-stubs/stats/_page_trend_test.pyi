@@ -3,7 +3,7 @@ from typing import Literal
 
 import numpy as np
 import optype as op
-from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt
+import optype.numpy as onp
 
 @dataclass
 class PageTrendTestResult:
@@ -12,8 +12,8 @@ class PageTrendTestResult:
     method: Literal["asymptotic", "exact"]
 
 def page_trend_test(
-    data: _ArrayLikeFloat_co,
+    data: onp.ToFloatND,
     ranked: op.CanBool = False,
-    predicted_ranks: _ArrayLikeInt | None = None,
+    predicted_ranks: onp.ToIntND | None = None,
     method: Literal["auto", "asymptotic", "exact"] = "auto",
 ) -> PageTrendTestResult: ...

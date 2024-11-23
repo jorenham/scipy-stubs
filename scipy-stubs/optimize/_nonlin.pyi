@@ -7,7 +7,6 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeNumber_co
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
@@ -25,14 +24,14 @@ __all__ = [
     "newton_krylov",
 ]
 
-_Floating: TypeAlias = np.floating[Any]
-_ComplexFloating: TypeAlias = np.complexfloating[Any, Any]
-_Inexact: TypeAlias = _Floating | _ComplexFloating
+_Float: TypeAlias = np.floating[Any]
+_Complex: TypeAlias = np.complexfloating[Any, Any]
+_Inexact: TypeAlias = _Float | _Complex
 
-_Array_f: TypeAlias = npt.NDArray[_Floating]
-_Array_fc: TypeAlias = npt.NDArray[_Inexact]
-_Array_fc_1d: TypeAlias = onp.Array1D[_Inexact]
-_Array_fc_2d: TypeAlias = onp.Array2D[_Inexact]
+_FloatND: TypeAlias = onp.ArrayND[_Float]
+_Inexact1D: TypeAlias = onp.Array1D[_Inexact]
+_Inexact2D: TypeAlias = onp.Array2D[_Inexact]
+_InexactND: TypeAlias = onp.ArrayND[_Inexact]
 
 _SparseArray: TypeAlias = sparray | spmatrix
 
@@ -50,18 +49,18 @@ _ReductionMethod: TypeAlias = Literal["restart", "simple", "svd"]
 _LineSearch: TypeAlias = Literal["armijo", "wolfe"]
 
 _Callback: TypeAlias = (
-    Callable[[npt.NDArray[np.float64], np.float64], None] | Callable[[npt.NDArray[np.complex128], np.float64], None]
+    Callable[[onp.ArrayND[np.float64], np.float64], None] | Callable[[onp.ArrayND[np.complex128], np.float64], None]
 )
-_ResidFunc: TypeAlias = Callable[[npt.NDArray[np.float64]], onp.ToFloat] | Callable[[npt.NDArray[np.complex128]], onp.ToFloat]
+_ResidFunc: TypeAlias = Callable[[onp.ArrayND[np.float64]], onp.ToFloat] | Callable[[onp.ArrayND[np.complex128]], onp.ToFloat]
 
 _JacobianLike: TypeAlias = (
     Jacobian
     | type[Jacobian]
-    | npt.NDArray[np.generic]
+    | onp.ArrayND[np.generic]
     | _SparseArray
     | _SupportsJacobian
-    | Callable[[npt.NDArray[np.float64]], _Array_f | _SparseArray]
-    | Callable[[npt.NDArray[np.complex128]], _Array_fc | _SparseArray]
+    | Callable[[onp.ArrayND[np.float64]], _FloatND | _SparseArray]
+    | Callable[[onp.ArrayND[np.complex128]], _InexactND | _SparseArray]
     | str
 )
 
@@ -71,17 +70,17 @@ class _SupportsJacobian(Protocol):
     def shape(self, /) -> tuple[int, ...]: ...
     @property
     def dtype(self, /) -> np.dtype[np.generic]: ...
-    def solve(self, /, v: _ArrayLikeNumber_co, tol: onp.ToFloat = 0) -> _Array_fc_2d: ...
+    def solve(self, /, v: onp.ToComplexND, tol: onp.ToFloat = 0) -> _Inexact2D: ...
 
 @type_check_only
 class _JacobianKwargs(TypedDict, total=False):
-    solve: Callable[[_Array_fc], _Array_fc_2d] | Callable[[_Array_fc, onp.ToFloat], _Array_fc_2d]
-    rsolve: Callable[[_Array_fc], _Array_fc_2d] | Callable[[_Array_fc, onp.ToFloat], _Array_fc_2d]
-    matvec: Callable[[_Array_fc], _Array_fc_1d] | Callable[[_Array_fc, onp.ToFloat], _Array_fc_1d]
-    rmatvec: Callable[[_Array_fc], _Array_fc_1d] | Callable[[_Array_fc, onp.ToFloat], _Array_fc_1d]
-    matmat: Callable[[_Array_fc], _Array_fc_2d]
-    update: Callable[[_Array_fc, _Array_fc], None]
-    todense: Callable[[], _Array_fc_2d]
+    solve: Callable[[_InexactND], _Inexact2D] | Callable[[_InexactND, onp.ToFloat], _Inexact2D]
+    rsolve: Callable[[_InexactND], _Inexact2D] | Callable[[_InexactND, onp.ToFloat], _Inexact2D]
+    matvec: Callable[[_InexactND], _Inexact1D] | Callable[[_InexactND, onp.ToFloat], _Inexact1D]
+    rmatvec: Callable[[_InexactND], _Inexact1D] | Callable[[_InexactND, onp.ToFloat], _Inexact1D]
+    matmat: Callable[[_InexactND], _Inexact2D]
+    update: Callable[[_InexactND, _InexactND], None]
+    todense: Callable[[], _Inexact2D]
     shape: tuple[int, ...]
     dtype: np.dtype[np.generic]
 
@@ -95,7 +94,7 @@ class TerminationCondition:
     f_tol: Final[float]
     f_rtol: Final[float]
     iter: Final[int | None]
-    norm: Final[Callable[[_Array_fc], float | np.float64]]
+    norm: Final[Callable[[_InexactND], float | np.float64]]
 
     f0_norm: float | None
     iteration: int
@@ -108,9 +107,9 @@ class TerminationCondition:
         x_tol: float | None = None,
         x_rtol: float | None = None,
         iter: int | None = None,
-        norm: Callable[[_Array_fc], float | np.float64] = ...,
+        norm: Callable[[_InexactND], float | np.float64] = ...,
     ) -> None: ...
-    def check(self, /, f: _Array_fc, x: _Array_fc, dx: _Array_fc) -> int: ...
+    def check(self, /, f: _InexactND, x: _InexactND, dx: _InexactND) -> int: ...
 
 # TODO(jorenham): Make generic on (inexact) dtype
 class Jacobian:
@@ -121,17 +120,17 @@ class Jacobian:
     def __init__(self, /, **kw: Unpack[_JacobianKwargs]) -> None: ...
     #
     @abc.abstractmethod
-    def solve(self, /, v: _Array_fc, tol: float = 0) -> _Array_fc_2d: ...
+    def solve(self, /, v: _InexactND, tol: float = 0) -> _Inexact2D: ...
     # `x` and `F` are 1-d
-    def setup(self, /, x: _Array_fc, F: _Array_fc, func: _ResidFunc) -> None: ...
-    def update(self, /, x: _Array_fc, F: _Array_fc) -> None: ...  # does nothing
+    def setup(self, /, x: _InexactND, F: _InexactND, func: _ResidFunc) -> None: ...
+    def update(self, /, x: _InexactND, F: _InexactND) -> None: ...  # does nothing
     def aspreconditioner(self, /) -> InverseJacobian: ...
 
 # TODO(jorenham): Make generic on shape an dtype
 class InverseJacobian:  # undocumented
     jacobian: Final[Jacobian]
-    matvec: Final[Callable[[_Array_fc], _Array_fc_1d] | Callable[[_Array_fc, onp.ToFloat], _Array_fc_1d]]
-    rmatvec: Final[Callable[[_Array_fc], _Array_fc_1d] | Callable[[_Array_fc, onp.ToFloat], _Array_fc_1d]]
+    matvec: Final[Callable[[_InexactND], _Inexact1D] | Callable[[_InexactND, onp.ToFloat], _Inexact1D]]
+    rmatvec: Final[Callable[[_InexactND], _Inexact1D] | Callable[[_InexactND, onp.ToFloat], _Inexact1D]]
 
     @property
     def shape(self, /) -> tuple[int, ...]: ...
@@ -144,29 +143,29 @@ def asjacobian(J: _JacobianLike) -> Jacobian: ...  # undocumented
 
 class GenericBroyden(Jacobian, metaclass=abc.ABCMeta):
     alpha: Final[float | None]
-    last_x: _Array_fc_1d
+    last_x: _Inexact1D
     last_f: float
 
     @override
-    def setup(self, /, x0: _Array_fc, f0: _Array_fc, func: _ResidFunc) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def setup(self, /, x0: _InexactND, f0: _InexactND, func: _ResidFunc) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
-    def update(self, /, x0: _Array_fc, f0: _Array_fc) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def update(self, /, x0: _InexactND, f0: _InexactND) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
 
 class LowRankMatrix:
     alpha: Final[float]
     n: Final[int]
-    cs: Final[list[_Array_fc]]
-    ds: Final[list[_Array_fc]]
+    cs: Final[list[_InexactND]]
+    ds: Final[list[_InexactND]]
     dtype: Final[np.dtype[np.inexact[Any]]]
-    collapsed: _Array_fc | None
+    collapsed: _InexactND | None
 
     def __init__(self, /, alpha: float, n: int, dtype: np.dtype[np.inexact[Any]]) -> None: ...
-    def __array__(self, /, dtype: npt.DTypeLike | None = None, copy: bool | None = None) -> _Array_fc_2d: ...
-    def solve(self, /, v: _Array_fc, tol: float = 0) -> _Array_fc_2d: ...
-    def rsolve(self, /, v: _Array_fc, tol: float = 0) -> _Array_fc_2d: ...
-    def matvec(self, /, v: _Array_fc) -> _Array_fc_1d: ...
-    def rmatvec(self, /, v: _Array_fc) -> _Array_fc_1d: ...
-    def append(self, /, c: _Array_fc, d: _Array_fc) -> None: ...
+    def __array__(self, /, dtype: npt.DTypeLike | None = None, copy: bool | None = None) -> _Inexact2D: ...
+    def solve(self, /, v: _InexactND, tol: float = 0) -> _Inexact2D: ...
+    def rsolve(self, /, v: _InexactND, tol: float = 0) -> _Inexact2D: ...
+    def matvec(self, /, v: _InexactND) -> _Inexact1D: ...
+    def rmatvec(self, /, v: _InexactND) -> _Inexact1D: ...
+    def append(self, /, c: _InexactND, d: _InexactND) -> None: ...
     def collapse(self, /) -> None: ...
     def restart_reduce(self, /, rank: float) -> None: ...
     def simple_reduce(self, /, rank: float) -> None: ...
@@ -184,65 +183,65 @@ class BroydenFirst(GenericBroyden):
         max_rank: float | None = None,
     ) -> None: ...
     @override
-    def solve(self, /, f: _Array_fc, tol: float = 0) -> _Array_fc_2d: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
-    def rsolve(self, /, f: _Array_fc, tol: float = 0) -> _Array_fc_2d: ...
-    def matvec(self, /, f: _Array_fc) -> _Array_fc_1d: ...
-    def rmatvec(self, /, f: _Array_fc) -> _Array_fc_1d: ...
-    def todense(self, /) -> _Array_fc_2d: ...
+    def solve(self, /, f: _InexactND, tol: float = 0) -> _Inexact2D: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def rsolve(self, /, f: _InexactND, tol: float = 0) -> _Inexact2D: ...
+    def matvec(self, /, f: _InexactND) -> _Inexact1D: ...
+    def rmatvec(self, /, f: _InexactND) -> _Inexact1D: ...
+    def todense(self, /) -> _Inexact2D: ...
 
 class BroydenSecond(BroydenFirst): ...
 
 class Anderson(GenericBroyden):
     w0: Final[float]
     M: Final[float]
-    dx: list[_Array_fc]
-    df: list[_Array_fc]
-    gamma: _Array_fc | None
+    dx: list[_InexactND]
+    df: list[_InexactND]
+    gamma: _InexactND | None
 
     def __init__(self, /, alpha: float | None = None, w0: float = 0.01, M: float = 5) -> None: ...
     @override
-    def solve(self, /, f: _Array_fc, tol: float = 0) -> _Array_fc_2d: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
-    def matvec(self, /, f: _Array_fc) -> _Array_fc_1d: ...
+    def solve(self, /, f: _InexactND, tol: float = 0) -> _Inexact2D: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def matvec(self, /, f: _InexactND) -> _Inexact1D: ...
 
 class DiagBroyden(GenericBroyden):
-    d: _Array_fc_1d
+    d: _Inexact1D
 
     def __init__(self, /, alpha: float | None = None) -> None: ...
     @override
-    def solve(self, /, f: _Array_fc, tol: float = 0) -> _Array_fc_2d: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
-    def rsolve(self, /, f: _Array_fc, tol: float = 0) -> _Array_fc_2d: ...
-    def matvec(self, /, f: _Array_fc) -> _Array_fc_1d: ...
-    def rmatvec(self, /, f: _Array_fc) -> _Array_fc_1d: ...
-    def todense(self, /) -> _Array_fc_2d: ...
+    def solve(self, /, f: _InexactND, tol: float = 0) -> _Inexact2D: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def rsolve(self, /, f: _InexactND, tol: float = 0) -> _Inexact2D: ...
+    def matvec(self, /, f: _InexactND) -> _Inexact1D: ...
+    def rmatvec(self, /, f: _InexactND) -> _Inexact1D: ...
+    def todense(self, /) -> _Inexact2D: ...
 
 class LinearMixing(GenericBroyden):
     def __init__(self, /, alpha: float | None = None) -> None: ...
     @override
-    def solve(self, /, f: _Array_fc, tol: float = 0) -> _Array_fc_2d: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
-    def rsolve(self, /, f: _Array_fc, tol: float = 0) -> _Array_fc_2d: ...
-    def matvec(self, /, f: _Array_fc) -> _Array_fc_1d: ...
-    def rmatvec(self, /, f: _Array_fc) -> _Array_fc_1d: ...
-    def todense(self, /) -> _Array_fc_2d: ...
+    def solve(self, /, f: _InexactND, tol: float = 0) -> _Inexact2D: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def rsolve(self, /, f: _InexactND, tol: float = 0) -> _Inexact2D: ...
+    def matvec(self, /, f: _InexactND) -> _Inexact1D: ...
+    def rmatvec(self, /, f: _InexactND) -> _Inexact1D: ...
+    def todense(self, /) -> _Inexact2D: ...
 
 class ExcitingMixing(GenericBroyden):
     alphamax: Final[float]
-    beta: _Array_fc_1d | None
+    beta: _Inexact1D | None
 
     def __init__(self, /, alpha: float | None = None, alphamax: float = 1.0) -> None: ...
     @override
-    def solve(self, /, f: _Array_fc, tol: float = 0) -> _Array_fc_2d: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
-    def rsolve(self, /, f: _Array_fc, tol: float = 0) -> _Array_fc_2d: ...
-    def matvec(self, /, f: _Array_fc) -> _Array_fc_1d: ...
-    def rmatvec(self, /, f: _Array_fc) -> _Array_fc_1d: ...
-    def todense(self, /) -> _Array_fc_2d: ...
+    def solve(self, /, f: _InexactND, tol: float = 0) -> _Inexact2D: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def rsolve(self, /, f: _InexactND, tol: float = 0) -> _Inexact2D: ...
+    def matvec(self, /, f: _InexactND) -> _Inexact1D: ...
+    def rmatvec(self, /, f: _InexactND) -> _Inexact1D: ...
+    def todense(self, /) -> _Inexact2D: ...
 
 class KrylovJacobian(Jacobian):
     rdiff: Final[float]
     method: Final[_KrylovMethod]
     method_kw: Final[dict[str, object]]
     preconditioner: LinearOperator | InverseJacobian | None
-    x0: _Array_fc
-    f0: _Array_fc
+    x0: _InexactND
+    f0: _InexactND
     op: LinearOperator
 
     def __init__(
@@ -255,20 +254,20 @@ class KrylovJacobian(Jacobian):
         outer_k: int = 10,
         **kw: object,
     ) -> None: ...
-    def matvec(self, /, v: _Array_fc) -> _Array_fc_2d: ...
+    def matvec(self, /, v: _InexactND) -> _Inexact2D: ...
     @override
-    def solve(self, /, rhs: _Array_fc, tol: float = 0) -> _Array_fc_2d: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def solve(self, /, rhs: _InexactND, tol: float = 0) -> _Inexact2D: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
-    def update(self, /, x: _Array_fc, f: _Array_fc) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def update(self, /, x: _InexactND, f: _InexactND) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
-    def setup(self, /, x: _Array_fc, f: _Array_fc, func: _ResidFunc) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def setup(self, /, x: _InexactND, f: _InexactND, func: _ResidFunc) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
 
-def maxnorm(x: _ArrayLikeNumber_co) -> float | np.float64: ...  # undocumented
+def maxnorm(x: onp.ToComplexND) -> float | np.float64: ...  # undocumented
 
 # TOOD: overload on full_output
 def nonlin_solve(
     F: _ResidFunc,
-    x0: _ArrayLikeNumber_co,
+    x0: onp.ToComplexND,
     jacobian: _JacobianMethod | _JacobianLike = "krylov",
     iter: onp.ToInt | None = None,
     verbose: op.CanBool = False,
@@ -282,12 +281,12 @@ def nonlin_solve(
     callback: _Callback | None = None,
     full_output: op.CanBool = False,
     raise_exception: op.CanBool = True,
-) -> _Array_fc: ...
+) -> _InexactND: ...
 
 #
 def broyden1(
     F: _ResidFunc,
-    xin: _ArrayLikeNumber_co,
+    xin: onp.ToComplexND,
     iter: onp.ToInt | None = None,
     alpha: onp.ToFloat | None = None,
     reduction_method: _ReductionMethod = "restart",
@@ -301,10 +300,10 @@ def broyden1(
     tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
-) -> _Array_fc: ...
+) -> _InexactND: ...
 def broyden2(
     F: _ResidFunc,
-    xin: _ArrayLikeNumber_co,
+    xin: onp.ToComplexND,
     iter: onp.ToInt | None = None,
     alpha: onp.ToFloat | None = None,
     reduction_method: _ReductionMethod = "restart",
@@ -318,10 +317,10 @@ def broyden2(
     tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
-) -> _Array_fc: ...
+) -> _InexactND: ...
 def anderson(
     F: _ResidFunc,
-    xin: _ArrayLikeNumber_co,
+    xin: onp.ToComplexND,
     iter: onp.ToInt | None = None,
     alpha: onp.ToFloat | None = None,
     w0: onp.ToFloat = 0.01,
@@ -335,10 +334,10 @@ def anderson(
     tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
-) -> _Array_fc: ...
+) -> _InexactND: ...
 def linearmixing(
     F: _ResidFunc,
-    xin: _ArrayLikeNumber_co,
+    xin: onp.ToComplexND,
     iter: onp.ToInt | None = None,
     alpha: onp.ToFloat | None = None,
     verbose: op.CanBool = False,
@@ -350,10 +349,10 @@ def linearmixing(
     tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
-) -> _Array_fc: ...
+) -> _InexactND: ...
 def diagbroyden(
     F: _ResidFunc,
-    xin: _ArrayLikeNumber_co,
+    xin: onp.ToComplexND,
     iter: onp.ToInt | None = None,
     alpha: onp.ToFloat | None = None,
     verbose: op.CanBool = False,
@@ -365,10 +364,10 @@ def diagbroyden(
     tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
-) -> _Array_fc: ...
+) -> _InexactND: ...
 def excitingmixing(
     F: _ResidFunc,
-    xin: _ArrayLikeNumber_co,
+    xin: onp.ToComplexND,
     iter: onp.ToInt | None = None,
     alpha: onp.ToFloat | None = None,
     alphamax: onp.ToFloat = 1.0,
@@ -381,10 +380,10 @@ def excitingmixing(
     tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
-) -> _Array_fc: ...
+) -> _InexactND: ...
 def newton_krylov(
     F: _ResidFunc,
-    xin: _ArrayLikeNumber_co,
+    xin: onp.ToComplexND,
     iter: onp.ToInt | None = None,
     rdiff: onp.ToFloat | None = None,
     method: _KrylovMethod = "lgmres",
@@ -400,4 +399,4 @@ def newton_krylov(
     tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
-) -> _Array_fc: ...
+) -> _InexactND: ...

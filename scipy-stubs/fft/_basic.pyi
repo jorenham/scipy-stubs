@@ -4,7 +4,6 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt, _ArrayLikeNumber_co
 from scipy._typing import AnyShape
 
 _Norm: TypeAlias = Literal["backward", "ortho", "forward"]
@@ -16,7 +15,7 @@ _ArrayComplex: TypeAlias = npt.NDArray[np.complex64 | np.complex128 | np.clongdo
 ###
 
 def fft(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplexND,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
     norm: _Norm | None = None,
@@ -26,8 +25,8 @@ def fft(
     plan: _Plan | None = None,
 ) -> _ArrayComplex: ...
 def fft2(
-    x: _ArrayLikeNumber_co,
-    s: _ArrayLikeInt | None = None,
+    x: onp.ToComplexND,
+    s: onp.ToIntND | None = None,
     axes: AnyShape = (-2, -1),
     norm: _Norm | None = None,
     overwrite_x: op.CanBool = False,
@@ -36,8 +35,8 @@ def fft2(
     plan: _Plan | None = None,
 ) -> _ArrayComplex: ...
 def fftn(
-    x: _ArrayLikeNumber_co,
-    s: _ArrayLikeInt | None = None,
+    x: onp.ToComplexND,
+    s: onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: _Norm | None = None,
     overwrite_x: op.CanBool = False,
@@ -48,7 +47,7 @@ def fftn(
 
 #
 def ifft(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplexND,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
     norm: _Norm | None = None,
@@ -58,8 +57,8 @@ def ifft(
     plan: _Plan | None = None,
 ) -> _ArrayComplex: ...
 def ifft2(
-    x: _ArrayLikeNumber_co,
-    s: _ArrayLikeInt | None = None,
+    x: onp.ToComplexND,
+    s: onp.ToIntND | None = None,
     axes: AnyShape = (-2, -1),
     norm: _Norm | None = None,
     overwrite_x: op.CanBool = False,
@@ -68,8 +67,8 @@ def ifft2(
     plan: _Plan | None = None,
 ) -> _ArrayComplex: ...
 def ifftn(
-    x: _ArrayLikeNumber_co,
-    s: _ArrayLikeInt | None = None,
+    x: onp.ToComplexND,
+    s: onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: _Norm | None = None,
     overwrite_x: op.CanBool = False,
@@ -80,7 +79,7 @@ def ifftn(
 
 #
 def rfft(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
     norm: _Norm | None = None,
@@ -90,8 +89,8 @@ def rfft(
     plan: _Plan | None = None,
 ) -> _ArrayComplex: ...
 def rfft2(
-    x: _ArrayLikeFloat_co,
-    s: _ArrayLikeInt | None = None,
+    x: onp.ToFloatND,
+    s: onp.ToIntND | None = None,
     axes: AnyShape = (-2, -1),
     norm: _Norm | None = None,
     overwrite_x: op.CanBool = False,
@@ -100,8 +99,8 @@ def rfft2(
     plan: _Plan | None = None,
 ) -> _ArrayComplex: ...
 def rfftn(
-    x: _ArrayLikeFloat_co,
-    s: _ArrayLikeInt | None = None,
+    x: onp.ToFloatND,
+    s: onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: _Norm | None = None,
     overwrite_x: op.CanBool = False,
@@ -112,7 +111,7 @@ def rfftn(
 
 #
 def irfft(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplexND,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
     norm: _Norm | None = None,
@@ -122,8 +121,8 @@ def irfft(
     plan: _Plan | None = None,
 ) -> _ArrayReal: ...
 def irfft2(
-    x: _ArrayLikeNumber_co,
-    s: _ArrayLikeInt | None = None,
+    x: onp.ToComplexND,
+    s: onp.ToIntND | None = None,
     axes: AnyShape = (-2, -1),
     norm: _Norm | None = None,
     overwrite_x: op.CanBool = False,
@@ -132,8 +131,8 @@ def irfft2(
     plan: _Plan | None = None,
 ) -> _ArrayReal: ...
 def irfftn(
-    x: _ArrayLikeNumber_co,
-    s: _ArrayLikeInt | None = None,
+    x: onp.ToComplexND,
+    s: onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: _Norm | None = None,
     overwrite_x: op.CanBool = False,
@@ -144,7 +143,7 @@ def irfftn(
 
 #
 def hfft(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplexND,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
     norm: _Norm | None = None,
@@ -154,8 +153,8 @@ def hfft(
     plan: _Plan | None = None,
 ) -> _ArrayReal: ...
 def hfft2(
-    x: _ArrayLikeNumber_co,
-    s: _ArrayLikeInt | None = None,
+    x: onp.ToComplexND,
+    s: onp.ToIntND | None = None,
     axes: AnyShape = (-2, -1),
     norm: _Norm | None = None,
     overwrite_x: op.CanBool = False,
@@ -164,8 +163,8 @@ def hfft2(
     plan: _Plan | None = None,
 ) -> _ArrayReal: ...
 def hfftn(
-    x: _ArrayLikeNumber_co,
-    s: _ArrayLikeInt | None = None,
+    x: onp.ToComplexND,
+    s: onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: _Norm | None = None,
     overwrite_x: op.CanBool = False,
@@ -176,7 +175,7 @@ def hfftn(
 
 #
 def ihfft(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
     norm: _Norm | None = None,
@@ -186,8 +185,8 @@ def ihfft(
     plan: _Plan | None = None,
 ) -> _ArrayComplex: ...
 def ihfft2(
-    x: _ArrayLikeFloat_co,
-    s: _ArrayLikeInt | None = None,
+    x: onp.ToFloatND,
+    s: onp.ToIntND | None = None,
     axes: AnyShape = (-2, -1),
     norm: _Norm | None = None,
     overwrite_x: op.CanBool = False,
@@ -196,8 +195,8 @@ def ihfft2(
     plan: _Plan | None = None,
 ) -> _ArrayComplex: ...
 def ihfftn(
-    x: _ArrayLikeFloat_co,
-    s: _ArrayLikeInt | None = None,
+    x: onp.ToFloatND,
+    s: onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: _Norm | None = None,
     overwrite_x: op.CanBool = False,

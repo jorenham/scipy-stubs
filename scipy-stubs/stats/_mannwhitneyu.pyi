@@ -2,12 +2,11 @@ from typing import Generic, Literal, NamedTuple, TypeAlias
 from typing_extensions import TypeVar
 
 import numpy as np
-import numpy.typing as npt
-from numpy._typing import _ArrayLikeFloat_co
+import optype.numpy as onp
 from scipy._typing import Alternative
 from ._resampling import PermutationMethod
 
-_FloatOrArray: TypeAlias = float | np.float64 | npt.NDArray[np.float64]
+_FloatOrArray: TypeAlias = float | np.float64 | onp.ArrayND[np.float64]
 _FloatOrArrayT = TypeVar("_FloatOrArrayT", bound=_FloatOrArray, default=_FloatOrArray)
 
 class MannwhitneyuResult(NamedTuple, Generic[_FloatOrArrayT]):
@@ -15,8 +14,8 @@ class MannwhitneyuResult(NamedTuple, Generic[_FloatOrArrayT]):
     pvalue: _FloatOrArrayT
 
 def mannwhitneyu(
-    x: _ArrayLikeFloat_co,
-    y: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     axis: int = 0,

@@ -2,11 +2,9 @@ from collections.abc import Callable
 from typing import Any, ClassVar, Final, Generic, Literal, TypeVar, overload
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
 
-_VT = TypeVar("_VT", bound=npt.NDArray[np.inexact[Any]], default=npt.NDArray[np.inexact[Any]])
+_VT = TypeVar("_VT", bound=onp.ArrayND[np.inexact[Any]], default=onp.ArrayND[np.inexact[Any]])
 
 class OdeSolver:
     TOO_SMALL_STEP: ClassVar[str] = ...
@@ -15,9 +13,9 @@ class OdeSolver:
     t_old: float
     t_bound: float
     vectorized: bool
-    fun: Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]
-    fun_single: Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]
-    fun_vectorized: Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]
+    fun: Callable[[float, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
+    fun_single: Callable[[float, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
+    fun_vectorized: Callable[[float, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
     direction: float
     n: int
     status: Literal["running", "finished", "failed"]
@@ -28,9 +26,9 @@ class OdeSolver:
     @overload
     def __init__(
         self,
-        fun: Callable[[float, npt.NDArray[np.float64]], _ArrayLikeFloat_co],
-        t0: onp.ToFloat,
-        y0: _ArrayLikeFloat_co,
+        fun: Callable[[float, onp.ArrayND[np.float64]], onp.ToFloatND],
+        t0: onp.ToFloatND,
+        y0: onp.ToFloatND,
         t_bound: onp.ToFloat,
         vectorized: bool,
         support_complex: bool = False,
@@ -38,9 +36,9 @@ class OdeSolver:
     @overload
     def __init__(
         self,
-        fun: Callable[[float, npt.NDArray[np.float64 | np.complex128]], _ArrayLikeNumber_co],
+        fun: Callable[[float, onp.ArrayND[np.float64 | np.complex128]], onp.ToComplexND],
         t0: onp.ToFloat,
-        y0: _ArrayLikeNumber_co,
+        y0: onp.ToComplexND,
         t_bound: onp.ToFloat,
         vectorized: bool,
         support_complex: Literal[True],
@@ -60,17 +58,17 @@ class DenseOutput:
     @overload
     def __call__(self, /, t: onp.ToFloat) -> onp.Array1D[np.inexact[Any]]: ...
     @overload
-    def __call__(self, /, t: _ArrayLikeFloat_co) -> npt.NDArray[np.inexact[Any]]: ...
+    def __call__(self, /, t: onp.ToFloatND) -> onp.ArrayND[np.inexact[Any]]: ...
 
 class ConstantDenseOutput(DenseOutput, Generic[_VT]):
     value: _VT
     def __init__(self, /, t_old: onp.ToFloat, t: onp.ToFloat, value: _VT) -> None: ...
 
 def check_arguments(
-    fun: Callable[[float, npt.NDArray[np.float64]], _ArrayLikeNumber_co],
-    y0: _ArrayLikeNumber_co,
+    fun: Callable[[float, onp.ArrayND[np.float64]], onp.ToComplexND],
+    y0: onp.ToComplexND,
     support_complex: bool,
 ) -> (
-    Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]]
-    | Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.complex128]]
+    Callable[[float, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
+    | Callable[[float, onp.ArrayND[np.float64]], onp.ArrayND[np.complex128]]
 ): ...

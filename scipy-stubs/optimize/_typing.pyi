@@ -4,7 +4,6 @@ from typing_extensions import NotRequired, TypedDict
 
 import numpy as np
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co
 from ._constraints import Bounds as _Bounds, LinearConstraint, NonlinearConstraint
 
 __all__ = [
@@ -21,7 +20,7 @@ __all__ = [
     "TRSolver",
 ]
 
-_Array_1d_f8: TypeAlias = onp.Array1D[np.float64]
+_Float1D: TypeAlias = onp.Array1D[np.float64]
 
 # bounds
 Bound: TypeAlias = tuple[onp.ToFloat | None, onp.ToFloat | None]
@@ -31,8 +30,8 @@ Bounds: TypeAlias = Sequence[Bound] | _Bounds
 @type_check_only
 class _ConstraintDict(TypedDict):
     type: Literal["eq", "ineq"]
-    fun: Callable[Concatenate[_Array_1d_f8, ...], onp.ToFloat]
-    jac: NotRequired[Callable[Concatenate[_Array_1d_f8, ...], _ArrayLikeFloat_co]]
+    fun: Callable[Concatenate[_Float1D, ...], onp.ToFloat]
+    jac: NotRequired[Callable[Concatenate[_Float1D, ...], onp.ToFloat1D]]
     args: NotRequired[tuple[object, ...]]
 
 Constraint: TypeAlias = LinearConstraint | NonlinearConstraint | _ConstraintDict

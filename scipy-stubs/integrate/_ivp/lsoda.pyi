@@ -2,24 +2,23 @@ from collections.abc import Callable
 from typing_extensions import Never
 
 import numpy as np
-import numpy.typing as npt
-from numpy._typing import _ArrayLikeFloat_co
+import optype.numpy as onp
 from .base import DenseOutput, OdeSolver
 
 class LSODA(OdeSolver):
     def __init__(
         self,
         /,
-        fun: Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]],
+        fun: Callable[[float, onp.Array1D[np.float64]], onp.Array1D[np.float64]],
         t0: float,
-        y0: npt.NDArray[np.float64],
+        y0: onp.Array1D[np.float64],
         t_bound: float,
         first_step: float | None = None,
         min_step: float = 0.0,
         max_step: float = ...,
-        rtol: _ArrayLikeFloat_co = 0.001,
-        atol: _ArrayLikeFloat_co = 1e-06,
-        jac: Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]] | None = None,
+        rtol: onp.ToFloat | onp.ToFloat1D = 0.001,
+        atol: onp.ToFloat | onp.ToFloat1D = 1e-06,
+        jac: Callable[[float, onp.Array1D[np.float64]], onp.Array2D[np.float64]] | None = None,
         lband: int | None = None,
         uband: int | None = None,
         vectorized: bool = False,
@@ -28,7 +27,7 @@ class LSODA(OdeSolver):
 
 class LsodaDenseOutput(DenseOutput):
     h: float
-    yh: npt.NDArray[np.float64]
-    p: npt.NDArray[np.intp]
+    yh: onp.Array1D[np.float64]
+    p: onp.Array1D[np.intp]
 
-    def __init__(self, /, t_old: float, t: float, h: float, order: int, yh: npt.NDArray[np.float64]) -> None: ...
+    def __init__(self, /, t_old: float, t: float, h: float, order: int, yh: onp.Array1D[np.float64]) -> None: ...

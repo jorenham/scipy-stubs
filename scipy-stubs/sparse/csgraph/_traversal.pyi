@@ -2,10 +2,9 @@ from typing import Final, Literal, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co
 from scipy.sparse import csr_matrix, sparray, spmatrix
 
-_GraphLike: TypeAlias = sparray | spmatrix | _ArrayLikeFloat_co
+_GraphLike: TypeAlias = onp.ToFloat2D | sparray | spmatrix
 
 DTYPE: Final[type[np.float64]] = ...
 ITYPE: Final[type[np.int32]] = ...
@@ -25,14 +24,14 @@ def breadth_first_order(
     csgraph: _GraphLike,
     i_start: int,
     directed: bool = True,
-    return_predecessors: Literal[True] = True,
+    return_predecessors: Literal[True, 1] = True,
 ) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]]: ...
 @overload
 def breadth_first_order(
     csgraph: _GraphLike,
     i_start: int,
     directed: bool,
-    return_predecessors: Literal[False],
+    return_predecessors: Literal[False, 0],
 ) -> onp.Array1D[np.int32]: ...
 @overload
 def breadth_first_order(
@@ -40,7 +39,7 @@ def breadth_first_order(
     i_start: int,
     directed: bool = True,
     *,
-    return_predecessors: Literal[False],
+    return_predecessors: Literal[False, 0],
 ) -> onp.Array1D[np.int32]: ...
 @overload
 def depth_first_order(
@@ -54,7 +53,7 @@ def depth_first_order(
     csgraph: _GraphLike,
     i_start: int,
     directed: bool,
-    return_predecessors: Literal[False],
+    return_predecessors: Literal[False, 0],
 ) -> onp.Array1D[np.int32]: ...
 @overload
 def depth_first_order(
@@ -62,5 +61,5 @@ def depth_first_order(
     i_start: int,
     directed: bool = True,
     *,
-    return_predecessors: Literal[False],
+    return_predecessors: Literal[False, 0],
 ) -> onp.Array1D[np.int32]: ...

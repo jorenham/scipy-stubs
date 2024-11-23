@@ -6,7 +6,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.typing as opt
-from numpy._typing import _ArrayLike, _ArrayLikeNumber_co
+from numpy._typing import _ArrayLike
 
 __all__ = [
     "cdf2rdf",
@@ -75,8 +75,8 @@ _Array_fc: TypeAlias = onp.Array[_ShapeT, _SCT_fc]
 
 @overload  # left: False = ..., right: False = ...
 def eig(
-    a: _ArrayLikeNumber_co,
-    b: _ArrayLikeNumber_co | None = None,
+    a: onp.ToComplex2D,
+    b: onp.ToComplex2D | None = None,
     left: _Falsy = False,
     right: _Falsy = False,
     overwrite_a: op.CanBool = False,
@@ -86,8 +86,8 @@ def eig(
 ) -> _Array_fc[_N1 | _N2]: ...
 @overload  # left: True (positional), right: False = ...
 def eig(
-    a: _ArrayLikeNumber_co,
-    b: _ArrayLikeNumber_co | None,
+    a: onp.ToComplex2D,
+    b: onp.ToComplex2D | None,
     left: _Truthy,
     right: _Falsy = False,
     overwrite_a: op.CanBool = False,
@@ -97,8 +97,8 @@ def eig(
 ) -> tuple[_Array_fc[_N1 | _N2], _Array_fc[_N2]]: ...
 @overload  # left: True (keyword), right: False = ...
 def eig(
-    a: _ArrayLikeNumber_co,
-    b: _ArrayLikeNumber_co | None = None,
+    a: onp.ToComplex2D,
+    b: onp.ToComplex2D | None = None,
     *,
     left: _Truthy,
     right: _Falsy = False,
@@ -109,8 +109,8 @@ def eig(
 ) -> tuple[_Array_fc[_N1 | _N2], _Array_fc[_N2]]: ...
 @overload  # left: False = ..., right: True (positional)
 def eig(
-    a: _ArrayLikeNumber_co,
-    b: _ArrayLikeNumber_co | None,
+    a: onp.ToComplex2D,
+    b: onp.ToComplex2D | None,
     left: _Falsy,
     right: _Truthy,
     overwrite_a: op.CanBool = False,
@@ -120,8 +120,8 @@ def eig(
 ) -> tuple[_Array_fc[_N1 | _N2], _Array_fc[_N2]]: ...
 @overload  # left: False = ..., right: True (keyword)
 def eig(
-    a: _ArrayLikeNumber_co,
-    b: _ArrayLikeNumber_co | None = None,
+    a: onp.ToComplex2D,
+    b: onp.ToComplex2D | None = None,
     left: _Falsy = False,
     *,
     right: _Truthy,
@@ -132,8 +132,8 @@ def eig(
 ) -> tuple[_Array_fc[_N1 | _N2], _Array_fc[_N2]]: ...
 @overload  # left: True (positional), right: True
 def eig(
-    a: _ArrayLikeNumber_co,
-    b: _ArrayLikeNumber_co | None,
+    a: onp.ToComplex2D,
+    b: onp.ToComplex2D | None,
     left: _Truthy,
     right: _Truthy,
     overwrite_a: op.CanBool = False,
@@ -143,8 +143,8 @@ def eig(
 ) -> tuple[_Array_fc[_N1 | _N2], _Array_fc[_N2], _Array_fc[_N2]]: ...
 @overload  # left: True (keyword), right: True (keyword)
 def eig(
-    a: _ArrayLikeNumber_co,
-    b: _ArrayLikeNumber_co | None = None,
+    a: onp.ToComplex2D,
+    b: onp.ToComplex2D | None = None,
     *,
     left: _Truthy,
     right: _Truthy,
@@ -155,8 +155,8 @@ def eig(
 ) -> tuple[_Array_fc[_N1 | _N2], _Array_fc[_N2], _Array_fc[_N2]]: ...
 @overload  # left: CanBool = ..., right: CanBool = ... (catch-all)
 def eig(
-    a: _ArrayLikeNumber_co,
-    b: _ArrayLikeNumber_co | None = None,
+    a: onp.ToComplex2D,
+    b: onp.ToComplex2D | None = None,
     left: op.CanBool = False,
     right: op.CanBool = False,
     overwrite_a: op.CanBool = False,
@@ -172,8 +172,8 @@ def eig(
 #
 @overload  # eigvals_only: False = ...
 def eigh(
-    a: _ArrayLikeNumber_co,
-    b: _ArrayLikeNumber_co | None = None,
+    a: onp.ToComplex2D,
+    b: onp.ToComplex2D | None = None,
     *,
     lower: op.CanBool = True,
     eigvals_only: _Falsy = False,
@@ -187,8 +187,8 @@ def eigh(
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: True
 def eigh(
-    a: _ArrayLikeNumber_co,
-    b: _ArrayLikeNumber_co | None = None,
+    a: onp.ToComplex2D,
+    b: onp.ToComplex2D | None = None,
     *,
     lower: op.CanBool = True,
     eigvals_only: _Truthy,
@@ -202,8 +202,8 @@ def eigh(
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: CanBool (catch-all)
 def eigh(
-    a: _ArrayLikeNumber_co,
-    b: _ArrayLikeNumber_co | None = None,
+    a: onp.ToComplex2D,
+    b: onp.ToComplex2D | None = None,
     *,
     lower: op.CanBool,
     eigvals_only: op.CanBool,
@@ -219,7 +219,7 @@ def eigh(
 #
 @overload  # eigvals_only: False = ..., select: _SelectA = ...
 def eig_banded(
-    a_band: _ArrayLikeNumber_co,
+    a_band: onp.ToComplex2D,
     lower: op.CanBool = True,
     eigvals_only: _Falsy = False,
     overwrite_a_band: op.CanBool = False,
@@ -230,7 +230,7 @@ def eig_banded(
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: True  (positional), select: _SelectA = ...
 def eig_banded(
-    a_band: _ArrayLikeNumber_co,
+    a_band: onp.ToComplex2D,
     lower: op.CanBool,
     eigvals_only: _Truthy,
     overwrite_a_band: op.CanBool = False,
@@ -241,7 +241,7 @@ def eig_banded(
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: True  (keyword), select: _SelectA = ... (keyword)
 def eig_banded(
-    a_band: _ArrayLikeNumber_co,
+    a_band: onp.ToComplex2D,
     lower: op.CanBool = True,
     *,
     eigvals_only: _Truthy,
@@ -253,7 +253,7 @@ def eig_banded(
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: False = ..., select: _SelectV (keyword)
 def eig_banded(
-    a_band: _ArrayLikeNumber_co,
+    a_band: onp.ToComplex2D,
     lower: op.CanBool = True,
     eigvals_only: _Falsy = False,
     overwrite_a_band: op.CanBool = False,
@@ -265,7 +265,7 @@ def eig_banded(
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: True  (positional), select: _SelectV (keyword)
 def eig_banded(
-    a_band: _ArrayLikeNumber_co,
+    a_band: onp.ToComplex2D,
     lower: op.CanBool,
     eigvals_only: _Truthy,
     overwrite_a_band: op.CanBool = False,
@@ -277,7 +277,7 @@ def eig_banded(
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: True  (keyword), select: _SelectV (keyword)
 def eig_banded(
-    a_band: _ArrayLikeNumber_co,
+    a_band: onp.ToComplex2D,
     lower: op.CanBool = True,
     *,
     eigvals_only: _Truthy,
@@ -289,7 +289,7 @@ def eig_banded(
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: False = ..., select: _SelectI (keyword)
 def eig_banded(
-    a_band: _ArrayLikeNumber_co,
+    a_band: onp.ToComplex2D,
     lower: op.CanBool = True,
     eigvals_only: _Falsy = False,
     overwrite_a_band: op.CanBool = False,
@@ -301,7 +301,7 @@ def eig_banded(
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: True (positional), select: _SelectI (keyword)
 def eig_banded(
-    a_band: _ArrayLikeNumber_co,
+    a_band: onp.ToComplex2D,
     lower: op.CanBool,
     eigvals_only: _Truthy,
     overwrite_a_band: op.CanBool = False,
@@ -313,7 +313,7 @@ def eig_banded(
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: True (keyword), select: _SelectI (keyword)
 def eig_banded(
-    a_band: _ArrayLikeNumber_co,
+    a_band: onp.ToComplex2D,
     lower: op.CanBool = True,
     *,
     eigvals_only: _Truthy,
@@ -326,8 +326,8 @@ def eig_banded(
 
 #
 def eigvals(
-    a: _ArrayLikeNumber_co,
-    b: _ArrayLikeNumber_co | None = None,
+    a: onp.ToComplex2D,
+    b: onp.ToComplex2D | None = None,
     overwrite_a: op.CanBool = False,
     check_finite: op.CanBool = True,
     homogeneous_eigvals: op.CanBool = False,
@@ -335,8 +335,8 @@ def eigvals(
 
 #
 def eigvalsh(
-    a: _ArrayLikeNumber_co,
-    b: _ArrayLikeNumber_co | None = None,
+    a: onp.ToComplex2D,
+    b: onp.ToComplex2D | None = None,
     *,
     lower: op.CanBool = True,
     overwrite_a: op.CanBool = False,
@@ -351,7 +351,7 @@ def eigvalsh(
 #
 @overload  # select: _SelectA = ...
 def eigvals_banded(
-    a_band: _ArrayLikeNumber_co,
+    a_band: onp.ToComplex2D,
     lower: op.CanBool = False,
     overwrite_a_band: op.CanBool = False,
     select: _SelectA = "a",
@@ -360,7 +360,7 @@ def eigvals_banded(
 ) -> _Array_fc[_N1]: ...
 @overload  # select: _SelectV (positional)
 def eigvals_banded(
-    a_band: _ArrayLikeNumber_co,
+    a_band: onp.ToComplex2D,
     lower: op.CanBool,
     overwrite_a_band: op.CanBool,
     select: _SelectV,
@@ -369,7 +369,7 @@ def eigvals_banded(
 ) -> _Array_fc[_N1]: ...
 @overload  # select: _SelectV (keyword)
 def eigvals_banded(
-    a_band: _ArrayLikeNumber_co,
+    a_band: onp.ToComplex2D,
     lower: op.CanBool = False,
     overwrite_a_band: op.CanBool = False,
     *,
@@ -379,7 +379,7 @@ def eigvals_banded(
 ) -> _Array_fc[_N1]: ...
 @overload  # select: _SelectI (positional)
 def eigvals_banded(
-    a_band: _ArrayLikeNumber_co,
+    a_band: onp.ToComplex2D,
     lower: op.CanBool,
     overwrite_a_band: op.CanBool,
     select: _SelectI,
@@ -388,7 +388,7 @@ def eigvals_banded(
 ) -> _Array_fc[_N1]: ...
 @overload  # select: _SelectI (keyword)
 def eigvals_banded(
-    a_band: _ArrayLikeNumber_co,
+    a_band: onp.ToComplex2D,
     lower: op.CanBool = False,
     overwrite_a_band: op.CanBool = False,
     *,
@@ -400,8 +400,8 @@ def eigvals_banded(
 #
 @overload  # select: _SelectA = ...
 def eigvalsh_tridiagonal(
-    d: _ArrayLikeNumber_co,
-    e: _ArrayLikeNumber_co,
+    d: onp.ToComplex1D,
+    e: onp.ToComplex1D,
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
     check_finite: op.CanBool = True,
@@ -410,8 +410,8 @@ def eigvalsh_tridiagonal(
 ) -> _Array_fc[_N1]: ...
 @overload  # select: _SelectV
 def eigvalsh_tridiagonal(
-    d: _ArrayLikeNumber_co,
-    e: _ArrayLikeNumber_co,
+    d: onp.ToComplex1D,
+    e: onp.ToComplex1D,
     select: _SelectV,
     select_range: _SelectRange,
     check_finite: op.CanBool = True,
@@ -420,8 +420,8 @@ def eigvalsh_tridiagonal(
 ) -> _Array_fc[_N1]: ...
 @overload  # select: _SelectI
 def eigvalsh_tridiagonal(
-    d: _ArrayLikeNumber_co,
-    e: _ArrayLikeNumber_co,
+    d: onp.ToComplex1D,
+    e: onp.ToComplex1D,
     select: _SelectI,
     select_range: _SelectRangeI,
     check_finite: op.CanBool = True,
@@ -432,8 +432,8 @@ def eigvalsh_tridiagonal(
 #
 @overload  # eigvals_only: False = ..., select: _SelectA = ...
 def eigh_tridiagonal(
-    d: _ArrayLikeNumber_co,
-    e: _ArrayLikeNumber_co,
+    d: onp.ToComplex1D,
+    e: onp.ToComplex1D,
     eigvals_only: _Falsy = False,
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
@@ -443,8 +443,8 @@ def eigh_tridiagonal(
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: False, select: _SelectV (positional)
 def eigh_tridiagonal(
-    d: _ArrayLikeNumber_co,
-    e: _ArrayLikeNumber_co,
+    d: onp.ToComplex1D,
+    e: onp.ToComplex1D,
     eigvals_only: _Falsy,
     select: _SelectV,
     select_range: _SelectRange,
@@ -454,8 +454,8 @@ def eigh_tridiagonal(
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: False = ..., select: _SelectV (keyword)
 def eigh_tridiagonal(
-    d: _ArrayLikeNumber_co,
-    e: _ArrayLikeNumber_co,
+    d: onp.ToComplex1D,
+    e: onp.ToComplex1D,
     eigvals_only: _Falsy = False,
     *,
     select: _SelectV,
@@ -466,8 +466,8 @@ def eigh_tridiagonal(
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: False, select: _SelectI (positional)
 def eigh_tridiagonal(
-    d: _ArrayLikeNumber_co,
-    e: _ArrayLikeNumber_co,
+    d: onp.ToComplex1D,
+    e: onp.ToComplex1D,
     eigvals_only: _Falsy,
     select: _SelectI,
     select_range: _SelectRangeI,
@@ -477,8 +477,8 @@ def eigh_tridiagonal(
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: False = ..., select: _SelectI (keyword)
 def eigh_tridiagonal(
-    d: _ArrayLikeNumber_co,
-    e: _ArrayLikeNumber_co,
+    d: onp.ToComplex1D,
+    e: onp.ToComplex1D,
     eigvals_only: _Falsy = False,
     *,
     select: _SelectI,
@@ -489,8 +489,8 @@ def eigh_tridiagonal(
 ) -> tuple[_Array_fc[_N1], _Array_fc[_N2]]: ...
 @overload  # eigvals_only: True, select: _SelectA = ...
 def eigh_tridiagonal(
-    d: _ArrayLikeNumber_co,
-    e: _ArrayLikeNumber_co,
+    d: onp.ToComplex1D,
+    e: onp.ToComplex1D,
     eigvals_only: _Truthy,
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
@@ -500,8 +500,8 @@ def eigh_tridiagonal(
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: True, select: _SelectV
 def eigh_tridiagonal(
-    d: _ArrayLikeNumber_co,
-    e: _ArrayLikeNumber_co,
+    d: onp.ToComplex1D,
+    e: onp.ToComplex1D,
     eigvals_only: _Truthy,
     select: _SelectV,
     select_range: _SelectRange,
@@ -511,8 +511,8 @@ def eigh_tridiagonal(
 ) -> _Array_fc[_N1]: ...
 @overload  # eigvals_only: True, select: _SelectI
 def eigh_tridiagonal(
-    d: _ArrayLikeNumber_co,
-    e: _ArrayLikeNumber_co,
+    d: onp.ToComplex1D,
+    e: onp.ToComplex1D,
     eigvals_only: _Truthy,
     select: _SelectI,
     select_range: _SelectRangeI,
@@ -524,21 +524,21 @@ def eigh_tridiagonal(
 #
 @overload  # calc_q: False = ...
 def hessenberg(
-    a: _ArrayLikeNumber_co,
+    a: onp.ToComplex2D,
     calc_q: _Falsy = False,
     overwrite_a: op.CanBool = False,
     check_finite: op.CanBool = True,
 ) -> _Array_fc[_N2]: ...
 @overload  # calc_q: True
 def hessenberg(
-    a: _ArrayLikeNumber_co,
+    a: onp.ToComplex2D,
     calc_q: _Truthy,
     overwrite_a: op.CanBool = False,
     check_finite: op.CanBool = True,
 ) -> tuple[_Array_fc[_N2], _Array_fc[_N2]]: ...
 @overload  # calc_q: CanBool (catch-all)
 def hessenberg(
-    a: _ArrayLikeNumber_co,
+    a: onp.ToComplex2D,
     calc_q: op.CanBool,
     overwrite_a: op.CanBool = False,
     check_finite: op.CanBool = True,
@@ -548,8 +548,8 @@ def hessenberg(
 @overload
 def cdf2rdf(w: _ArrayLike[_SCT_f], v: _ArrayLike[_SCT2_f]) -> tuple[_Array_f[_N2_, _SCT_f], _Array_f[_N2_, _SCT2_f]]: ...
 @overload
-def cdf2rdf(w: _ArrayLike[_SCT_f], v: _ArrayLikeNumber_co) -> tuple[_Array_f[_N2_, _SCT_f], _Array_f[_N2_, _Scalar_f]]: ...
+def cdf2rdf(w: _ArrayLike[_SCT_f], v: onp.ToComplexND) -> tuple[_Array_f[_N2_, _SCT_f], _Array_f[_N2_, _Scalar_f]]: ...
 @overload
-def cdf2rdf(w: _ArrayLikeNumber_co, v: _ArrayLike[_SCT2_f]) -> tuple[_Array_f[_N2_, _Scalar_f], _Array_f[_N2_, _SCT2_f]]: ...
+def cdf2rdf(w: onp.ToComplexND, v: _ArrayLike[_SCT2_f]) -> tuple[_Array_f[_N2_, _Scalar_f], _Array_f[_N2_, _SCT2_f]]: ...
 @overload
-def cdf2rdf(w: _ArrayLikeNumber_co, v: _ArrayLikeNumber_co) -> tuple[_Array_f[_N2_, _Scalar_f], _Array_f[_N2_, _Scalar_f]]: ...
+def cdf2rdf(w: onp.ToComplexND, v: onp.ToComplexND) -> tuple[_Array_f[_N2_, _Scalar_f], _Array_f[_N2_, _Scalar_f]]: ...

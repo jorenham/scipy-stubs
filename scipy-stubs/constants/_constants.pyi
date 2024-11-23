@@ -1,8 +1,7 @@
-from typing import Final, Literal, TypeAlias
+from typing import Any, Final, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
-import numpy.typing as npt
-from numpy._typing import _ArrayLikeFloat_co
+import optype.numpy as onp
 
 __all__ = [
     "N_A",
@@ -164,6 +163,9 @@ __all__ = [
     "zero_Celsius",
     "zetta",
 ]
+
+_FloatScalarT = TypeVar("_FloatScalarT", bound=np.floating[Any])
+_FloatArrayT = TypeVar("_FloatArrayT", bound=onp.ArrayND[np.floating[Any]])
 
 _TempScaleC: TypeAlias = Literal["Celsius", "celsius", "C", "c"]
 _TempScaleK: TypeAlias = Literal["Kelvin", "kelvin", "K", "k"]
@@ -360,10 +362,31 @@ pound_force: Final = 4.4482216152605
 kgf: Final = 9.80665
 kilogram_force: Final = 9.80665
 
-def convert_temperature(
-    val: _ArrayLikeFloat_co,
-    old_scale: _TempScale,
-    new_scale: _TempScale,
-) -> np.float64 | npt.NDArray[np.float64]: ...
-def lambda2nu(lambda_: _ArrayLikeFloat_co) -> np.float64 | npt.NDArray[np.float64]: ...
-def nu2lambda(nu: _ArrayLikeFloat_co) -> np.float64 | npt.NDArray[np.float64]: ...
+@overload
+def convert_temperature(val: _FloatScalarT, old_scale: _TempScale, new_scale: _TempScale) -> _FloatScalarT: ...
+@overload
+def convert_temperature(val: _FloatArrayT, old_scale: _TempScale, new_scale: _TempScale) -> _FloatArrayT: ...
+@overload
+def convert_temperature(val: onp.ToFloat, old_scale: _TempScale, new_scale: _TempScale) -> np.floating[Any]: ...
+@overload
+def convert_temperature(val: onp.ToFloatND, old_scale: _TempScale, new_scale: _TempScale) -> onp.ArrayND[np.floating[Any]]: ...
+
+#
+@overload
+def lambda2nu(lambda_: _FloatScalarT) -> _FloatScalarT: ...
+@overload
+def lambda2nu(lambda_: _FloatArrayT) -> _FloatArrayT: ...
+@overload
+def lambda2nu(lambda_: onp.ToFloat) -> np.floating[Any]: ...
+@overload
+def lambda2nu(lambda_: onp.ToFloatND) -> onp.ArrayND[np.floating[Any]]: ...
+
+#
+@overload
+def nu2lambda(nu: _FloatScalarT) -> _FloatScalarT: ...
+@overload
+def nu2lambda(nu: _FloatArrayT) -> _FloatArrayT: ...
+@overload
+def nu2lambda(nu: onp.ToFloat) -> np.floating[Any]: ...
+@overload
+def nu2lambda(nu: onp.ToFloatND) -> onp.ArrayND[np.floating[Any]]: ...

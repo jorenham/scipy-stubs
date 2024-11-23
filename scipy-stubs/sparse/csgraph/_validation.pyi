@@ -3,10 +3,9 @@ from typing import Any, Final, TypeAlias
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co
 from scipy.sparse import sparray, spmatrix
 
-_GraphLike: TypeAlias = sparray | spmatrix | _ArrayLikeFloat_co
+_GraphLike: TypeAlias = onp.ToFloat2D | sparray | spmatrix
 
 DTYPE: Final[type[np.float64]] = ...
 

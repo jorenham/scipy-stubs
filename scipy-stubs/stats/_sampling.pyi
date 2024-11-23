@@ -3,10 +3,8 @@ from typing import Any, Concatenate, Final, Generic, Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
-import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co
 from scipy._typing import AnyShape, Seed
 from ._distn_infrastructure import rv_frozen
 from .qmc import QMCEngine
@@ -35,7 +33,7 @@ class RatioUniforms:
         c: onp.ToFloat = 0,
         random_state: Seed | None = None,
     ) -> None: ...
-    def rvs(self, /, size: AnyShape = 1) -> np.float64 | npt.NDArray[np.float64]: ...
+    def rvs(self, /, size: AnyShape = 1) -> np.float64 | onp.ArrayND[np.float64]: ...
 
 class FastGeneratorInversion:
     def __init__(
@@ -62,7 +60,7 @@ class FastGeneratorInversion:
     @overload
     def rvs(self, /, size: None = None) -> np.float64: ...
     @overload
-    def rvs(self, /, size: AnyShape) -> npt.NDArray[np.float64]: ...
+    def rvs(self, /, size: AnyShape) -> onp.ArrayND[np.float64]: ...
     @overload
     def qrvs(
         self,
@@ -78,8 +76,11 @@ class FastGeneratorInversion:
         size: AnyShape,
         d: int | None = None,
         qmc_engine: QMCEngine | None = None,
-    ) -> np.float64 | npt.NDArray[np.float64]: ...
-    def ppf(self, q: _ArrayLikeFloat_co) -> npt.NDArray[np.float64]: ...
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload
+    def ppf(self, /, q: onp.ToFloat) -> np.float64: ...
+    @overload
+    def ppf(self, /, q: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...
     def evaluate_error(
         self,
         /,

@@ -2,7 +2,6 @@ from typing import TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
 
 __all__ = ["cc_diff", "cs_diff", "diff", "hilbert", "ihilbert", "itilbert", "sc_diff", "shift", "ss_diff", "tilbert"]
 
@@ -16,38 +15,38 @@ _Cache: TypeAlias = dict[tuple[onp.ToFloat, ...], _Vec_d]  # {n: kernel}
 
 #
 @overload
-def diff(x: _ArrayLikeFloat_co, order: int = 1, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_d: ...
+def diff(x: onp.ToFloat1D, order: int = 1, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_d: ...
 @overload
-def diff(x: _ArrayLikeNumber_co, order: int = 1, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_dD: ...
+def diff(x: onp.ToComplex1D, order: int = 1, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_dD: ...
 
 #
 @overload
-def tilbert(x: _ArrayLikeFloat_co, h: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_d: ...
+def tilbert(x: onp.ToFloat1D, h: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_d: ...
 @overload
-def tilbert(x: _ArrayLikeNumber_co, h: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_dD: ...
+def tilbert(x: onp.ToComplex1D, h: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_dD: ...
 
 #
 @overload
-def itilbert(x: _ArrayLikeFloat_co, h: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_d: ...
+def itilbert(x: onp.ToFloat1D, h: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_d: ...
 @overload
-def itilbert(x: _ArrayLikeNumber_co, h: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_dD: ...
+def itilbert(x: onp.ToComplex1D, h: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_dD: ...
 
 #
 @overload
-def hilbert(x: _ArrayLikeFloat_co, _cache: _Cache = ...) -> _Vec_d: ...
+def hilbert(x: onp.ToFloat1D, _cache: _Cache = ...) -> _Vec_d: ...
 @overload
-def hilbert(x: _ArrayLikeNumber_co, _cache: _Cache = ...) -> _Vec_dD: ...
+def hilbert(x: onp.ToComplex1D, _cache: _Cache = ...) -> _Vec_dD: ...
 
 #
 @overload
-def ihilbert(x: _ArrayLikeFloat_co) -> _Vec_d: ...
+def ihilbert(x: onp.ToFloat1D) -> _Vec_d: ...
 @overload
-def ihilbert(x: _ArrayLikeNumber_co) -> _Vec_dD: ...
+def ihilbert(x: onp.ToComplex1D) -> _Vec_dD: ...
 
 #
 @overload
 def cs_diff(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloat1D,
     a: onp.ToFloat,
     b: onp.ToFloat,
     period: onp.ToFloat | None = None,
@@ -55,7 +54,7 @@ def cs_diff(
 ) -> _Vec_d: ...
 @overload
 def cs_diff(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplex1D,
     a: onp.ToFloat,
     b: onp.ToFloat,
     period: onp.ToFloat | None = None,
@@ -65,7 +64,7 @@ def cs_diff(
 #
 @overload
 def sc_diff(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloat1D,
     a: onp.ToFloat,
     b: onp.ToFloat,
     period: onp.ToFloat | None = None,
@@ -73,7 +72,7 @@ def sc_diff(
 ) -> _Vec_d: ...
 @overload
 def sc_diff(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplex1D,
     a: onp.ToFloat,
     b: onp.ToFloat,
     period: onp.ToFloat | None = None,
@@ -83,7 +82,7 @@ def sc_diff(
 #
 @overload
 def ss_diff(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloat1D,
     a: onp.ToFloat,
     b: onp.ToFloat,
     period: onp.ToFloat | None = None,
@@ -91,7 +90,7 @@ def ss_diff(
 ) -> _Vec_d: ...
 @overload
 def ss_diff(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplex1D,
     a: onp.ToFloat,
     b: onp.ToFloat,
     period: onp.ToFloat | None = None,
@@ -101,7 +100,7 @@ def ss_diff(
 #
 @overload
 def cc_diff(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloat1D,
     a: onp.ToFloat,
     b: onp.ToFloat,
     period: onp.ToFloat | None = None,
@@ -109,7 +108,7 @@ def cc_diff(
 ) -> _Vec_d: ...
 @overload
 def cc_diff(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplex1D,
     a: onp.ToFloat,
     b: onp.ToFloat,
     period: onp.ToFloat | None = None,
@@ -118,6 +117,6 @@ def cc_diff(
 
 #
 @overload
-def shift(x: _ArrayLikeFloat_co, a: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_d: ...
+def shift(x: onp.ToFloat1D, a: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_d: ...
 @overload
-def shift(x: _ArrayLikeNumber_co, a: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_dD: ...
+def shift(x: onp.ToComplex1D, a: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...) -> _Vec_dD: ...

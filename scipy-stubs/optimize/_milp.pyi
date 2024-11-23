@@ -2,8 +2,7 @@ from collections.abc import Mapping, Sequence
 from typing import Literal, type_check_only
 
 import numpy as np
-import numpy.typing as npt
-from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt
+import optype.numpy as onp
 from ._constraints import Bounds, LinearConstraint
 from ._optimize import OptimizeResult
 
@@ -12,7 +11,7 @@ class _OptimizeResult(OptimizeResult):
     status: Literal[0, 1, 2, 3, 4]
     success: bool
     message: str
-    x: npt.NDArray[np.float64] | None
+    x: onp.ArrayND[np.float64] | None
     fun: float | np.float64 | None
     mip_node_count: int | None
     mip_dual_bound: float | np.float64 | None
@@ -21,9 +20,9 @@ class _OptimizeResult(OptimizeResult):
 ###
 
 def milp(
-    c: _ArrayLikeFloat_co,
+    c: onp.ToFloat1D,
     *,
-    integrality: _ArrayLikeInt | None = None,
+    integrality: onp.ToInt1D | None = None,
     bounds: Bounds | None = None,
     constraints: Sequence[LinearConstraint] | None = None,
     options: Mapping[str, object] | None = None,  # TODO(jorenham): TypedDict

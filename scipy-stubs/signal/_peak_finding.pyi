@@ -2,67 +2,65 @@ from collections.abc import Callable, Sequence
 from typing import Any, Concatenate, Literal, TypeAlias, TypedDict, TypeVar, type_check_only
 
 import numpy as np
-import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeBool_co, _ArrayLikeFloat_co, _ArrayLikeInt_co, _ArrayLikeNumber_co
 
 __all__ = ["argrelextrema", "argrelmax", "argrelmin", "find_peaks", "find_peaks_cwt", "peak_prominences", "peak_widths"]
 
 _SCT = TypeVar("_SCT", bound=np.generic)
 
-_Array_n: TypeAlias = npt.NDArray[np.intp]
-_Array_n_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.intp]]
-_Array_f8: TypeAlias = npt.NDArray[np.float64]
-_Array_f8_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
+_Int1D: TypeAlias = onp.Array1D[np.intp]
+_IntND: TypeAlias = onp.ArrayND[np.intp]
+_Float1D: TypeAlias = onp.Array1D[np.float64]
+_FloatND: TypeAlias = onp.ArrayND[np.float64]
+
 _Mode: TypeAlias = Literal["clip", "wrap"]
 
-_ArgRel: TypeAlias = tuple[_Array_n, ...]
-_PeakProminences: TypeAlias = tuple[_Array_f8, _Array_n, _Array_n]
-_PeakWidths: TypeAlias = tuple[_Array_f8, _Array_f8, _Array_f8, _Array_f8]
-# TODO(jorenham): Narrow down the parameter types (because contravariant)
+_ArgRel: TypeAlias = tuple[_IntND, ...]
+_PeakProminences: TypeAlias = tuple[_FloatND, _IntND, _IntND]
+_PeakWidths: TypeAlias = tuple[_FloatND, _FloatND, _FloatND, _FloatND]
+
 _WaveletFunc: TypeAlias = (
-    Callable[Concatenate[int, float, ...], _ArrayLikeNumber_co]
-    | Callable[Concatenate[np.intp, np.float64, ...], _ArrayLikeNumber_co]
+    Callable[Concatenate[int, float, ...], onp.ToComplex1D] | Callable[Concatenate[np.intp, np.float64, ...], onp.ToComplex1D]
 )
 
 @type_check_only
 class _FindPeaksResultsDict(TypedDict, total=False):
-    plateau_sizes: _Array_n_1d
-    left_edges: _Array_n_1d
-    right_edges: _Array_n_1d
+    plateau_sizes: _Int1D
+    left_edges: _Int1D
+    right_edges: _Int1D
 
-    peak_heights: _Array_f8_1d
+    peak_heights: _Float1D
 
-    left_thresholds: _Array_f8_1d
-    right_thresholds: _Array_f8_1d
+    left_thresholds: _Float1D
+    right_thresholds: _Float1D
 
-    prominences: _Array_f8_1d
-    left_bases: _Array_n_1d
-    right_bases: _Array_n_1d
+    prominences: _Float1D
+    left_bases: _Int1D
+    right_bases: _Int1D
 
-    widths: _Array_f8_1d
-    width_heights: _Array_f8_1d
-    left_ips: _Array_f8_1d
-    right_ips: _Array_f8_1d
+    widths: _Float1D
+    width_heights: _Float1D
+    left_ips: _Float1D
+    right_ips: _Float1D
 
 ###
 
 def argrelmin(data: onp.Array, axis: op.CanIndex = 0, order: onp.ToInt = 1, mode: _Mode = "clip") -> _ArgRel: ...
 def argrelmax(data: onp.Array, axis: op.CanIndex = 0, order: onp.ToInt = 1, mode: _Mode = "clip") -> _ArgRel: ...
 def argrelextrema(
-    data: onp.Array,
-    comparator: Callable[[npt.NDArray[_SCT], npt.NDArray[_SCT]], _ArrayLikeBool_co],
+    data: onp.ArrayND[_SCT],
+    comparator: Callable[[onp.ArrayND[_SCT], onp.ArrayND[_SCT]], onp.ToBoolND],
     axis: op.CanIndex = 0,
     order: onp.ToInt = 1,
     mode: _Mode = "clip",
 ) -> _ArgRel: ...
 
 #
-def peak_prominences(x: npt.ArrayLike, peaks: _ArrayLikeInt_co, wlen: onp.ToFloat | None = None) -> _PeakProminences: ...
+def peak_prominences(x: onp.ToArray1D, peaks: onp.ToIntND, wlen: onp.ToFloat | None = None) -> _PeakProminences: ...
 def peak_widths(
-    x: npt.ArrayLike,
-    peaks: _ArrayLikeInt_co,
+    x: onp.ToArray1D,
+    peaks: onp.ToIntND,
     rel_height: onp.ToFloat = 0.5,
     prominence_data: _PeakProminences | None = None,
     wlen: onp.ToFloat | None = None,
@@ -70,24 +68,24 @@ def peak_widths(
 
 #
 def find_peaks(
-    x: npt.ArrayLike,
-    height: _ArrayLikeFloat_co | Sequence[onp.ToFloat | None] | None = None,
-    threshold: _ArrayLikeFloat_co | Sequence[onp.ToFloat | None] | None = None,
+    x: onp.ToArray1D,
+    height: onp.ToFloatND | Sequence[onp.ToFloat | None] | onp.ToFloat | None = None,
+    threshold: onp.ToFloatND | Sequence[onp.ToFloat | None] | None = None,
     distance: onp.ToFloat | None = None,
-    prominence: _ArrayLikeFloat_co | Sequence[onp.ToFloat | None] | None = None,
-    width: _ArrayLikeFloat_co | Sequence[onp.ToFloat | None] | None = None,
+    prominence: onp.ToFloatND | Sequence[onp.ToFloat | None] | None = None,
+    width: onp.ToFloatND | Sequence[onp.ToFloat | None] | None = None,
     wlen: onp.ToFloat | None = None,
     rel_height: onp.ToFloat = 0.5,
-    plateau_size: _ArrayLikeInt_co | Sequence[onp.ToInt | None] | None = None,
-) -> tuple[_Array_n_1d, _FindPeaksResultsDict]: ...
+    plateau_size: onp.ToIntND | Sequence[onp.ToInt | None] | None = None,
+) -> tuple[_Int1D, _FindPeaksResultsDict]: ...
 def find_peaks_cwt(
     vector: onp.Array,
-    widths: _ArrayLikeFloat_co,
+    widths: onp.ToFloat | onp.ToFloatND,
     wavelet: _WaveletFunc | None = None,
-    max_distances: npt.NDArray[np.floating[Any] | np.integer[Any]] | None = None,
+    max_distances: onp.ArrayND[np.floating[Any] | np.integer[Any]] | None = None,
     gap_thresh: onp.ToFloat | None = None,
     min_length: onp.ToInt | None = None,
     min_snr: onp.ToFloat = 1,
     noise_perc: onp.ToFloat = 10,
     window_size: onp.ToInt | None = None,
-) -> _Array_n_1d: ...
+) -> _Int1D: ...

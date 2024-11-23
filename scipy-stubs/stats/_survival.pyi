@@ -3,9 +3,7 @@ from typing import Any, Final, Literal, Protocol, TypeAlias, overload, type_chec
 from typing_extensions import TypeVar
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co
 from scipy._typing import Alternative
 from ._censored_data import CensoredData
 from ._common import ConfidenceInterval
@@ -22,7 +20,7 @@ _KwargsT = TypeVar("_KwargsT")
 _KwargsT_contra = TypeVar("_KwargsT_contra", contravariant=True)
 _LineT = TypeVar("_LineT")
 
-_SampleData: TypeAlias = _ArrayLikeFloat_co | CensoredData
+_SampleData: TypeAlias = onp.ToFloatND | CensoredData
 
 @type_check_only
 class _CanStep(Protocol[_KwargsT_contra, _LineT]):
@@ -41,7 +39,7 @@ class EmpiricalDistributionFunction:
     _kind: _EDFKind
 
     def __init__(self, /, q: _Float1D, p: _Float1D, n: _Int1D, d: _Int1D, kind: _EDFKind) -> None: ...
-    def evaluate(self, /, x: _ArrayLikeFloat_co) -> npt.NDArray[np.float64]: ...
+    def evaluate(self, /, x: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...
     @overload
     def plot(self, /, ax: None = None, **kwds: object) -> list[Any]: ...
     @overload
