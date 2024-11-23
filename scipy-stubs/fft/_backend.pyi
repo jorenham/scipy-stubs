@@ -1,6 +1,6 @@
 from collections.abc import Mapping, Sequence
 from typing import Any, ClassVar, Protocol, final, type_check_only
-from typing_extensions import TypeVar
+from typing_extensions import LiteralString, TypeVar
 
 import optype as op
 
@@ -8,7 +8,7 @@ _RT_co = TypeVar("_RT_co", covariant=True, default=Any)
 
 @type_check_only
 class _BaseBackend(Protocol[_RT_co]):
-    __ua_domain__: ClassVar = "numpy.scipy.fft"
+    __ua_domain__: ClassVar[LiteralString] = "numpy.scipy.fft"
     @staticmethod
     def __ua_function__(method: str, args: Sequence[object], kwargs: Mapping[str, object]) -> _RT_co: ...
 

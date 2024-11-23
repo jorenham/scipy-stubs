@@ -40,7 +40,7 @@ tox = "^4.23.2"
 
 [tool.poetry.group.lint.dependencies]
 basedmypy = {version = "^2.7.0", extras = ["faster-cache"]}
-basedpyright = "^1.21.1"
+basedpyright = "^1.22.0"
 codespell = "^2.3.0"
 mdformat = "^0.7.19"
 mdformat-gfm = "^0.3.7"
@@ -151,18 +151,36 @@ stubPath = "."
 pythonVersion = "3.10"
 pythonPlatform = "All"
 typeCheckingMode = "strict"
-
-deprecateTypingAliases = true
+# ignore comments
 enableTypeIgnoreComments = false
-reportIgnoreCommentWithoutRule = true
-reportImplicitRelativeImport = true
-reportInvalidCast = true
+reportIgnoreCommentWithoutRule = true  # based
 reportUnnecessaryTypeIgnoreComment = true
-
+# imports
+reportImplicitRelativeImport = true  # based
+reportPrivateLocalImportUsage = false  # based
+reportShadowedImports = true
+# classes and inheritance
+reportUnsafeMultipleInheritance = true  # based
+reportImplicitAbstractClass = true  # based
+reportImplicitOverride = true
+reportUnannotatedClassAttribute = true  # based
+# linting
+deprecateTypingAliases = true
+enableReachabilityAnalysis = false  # discouraged
+reportCallInDefaultInitializer = true
+reportImplicitStringConcatenation = true  # based
+reportPrivateUsage = false
+# narrowing
+strictGenericNarrowing = true  # based
+# TODO: enable once nothing is `Untyped`
+reportAny = false  # based
+reportExplicitAny = false  # based
+# environment
+failOnWarnings = true  # based
 executionEnvironments = [
-    {root = "codegen", reportUnusedParameter = false},
-    {root = "scipy-stubs", reportDeprecated = false, reportPrivateUsage = false},
-    {root = "tests", reportPrivateUsage = false, reportInvalidStubStatement = false},
+    {root = "scipy-stubs", reportDeprecated = false, reportUnsafeMultipleInheritance = false, reportUnreachable = false},
+    {root = "codegen", reportAny = true, reportExplicitAny = true, reportInvalidCast = true, reportPrivateUsage = true},
+    {root = "tests", reportAny = true, reportInvalidCast = true, reportInvalidStubStatement = false},
 ]
 
 [tool.repo-review]

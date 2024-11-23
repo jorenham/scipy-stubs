@@ -184,7 +184,7 @@ class zvode(vode[np.complex128]):
     initialized: bool
 
 class dopri5(IntegratorBase[np.float64]):
-    name: ClassVar = "dopri5"
+    name: ClassVar[str] = "dopri5"
     messages: ClassVar[dict[int, str]] = ...
 
     rtol: Final[float]
@@ -233,7 +233,7 @@ class dopri5(IntegratorBase[np.float64]):
     ) -> Literal[0, -1, 1]: ...
 
 class dop853(dopri5):
-    name: ClassVar = "dop853"
+    name: ClassVar[str] = "dop853"
     def __init__(
         self,
         /,

@@ -35,22 +35,22 @@ def mmwrite(
 ) -> None: ...
 
 class MMFile:
-    FORMAT_COORDINATE: ClassVar = "coordinate"
-    FORMAT_ARRAY: ClassVar = "array"
-    FORMAT_VALUES: ClassVar = "coordinate", "array"
+    FORMAT_COORDINATE: ClassVar[str] = "coordinate"
+    FORMAT_ARRAY: ClassVar[str] = "array"
+    FORMAT_VALUES: ClassVar[tuple[str, ...]] = "coordinate", "array"
 
-    FIELD_INTEGER: ClassVar = "integer"
-    FIELD_UNSIGNED: ClassVar = "unsigned-integer"
-    FIELD_REAL: ClassVar = "real"
-    FIELD_COMPLEX: ClassVar = "complex"
-    FIELD_PATTERN: ClassVar = "pattern"
-    FIELD_VALUES: ClassVar = "integer", "unsigned-integer", "real", "complex", "pattern"
+    FIELD_INTEGER: ClassVar[str] = "integer"
+    FIELD_UNSIGNED: ClassVar[str] = "unsigned-integer"
+    FIELD_REAL: ClassVar[str] = "real"
+    FIELD_COMPLEX: ClassVar[str] = "complex"
+    FIELD_PATTERN: ClassVar[str] = "pattern"
+    FIELD_VALUES: ClassVar[tuple[str, ...]] = "integer", "unsigned-integer", "real", "complex", "pattern"
 
-    SYMMETRY_GENERAL: ClassVar = "general"
-    SYMMETRY_SYMMETRIC: ClassVar = "symmetric"
-    SYMMETRY_SKEW_SYMMETRIC: ClassVar = "skew-symmetric"
-    SYMMETRY_HERMITIAN: ClassVar = "hermitian"
-    SYMMETRY_VALUES: ClassVar = "general", "symmetric", "skew-symmetric", "hermitian"
+    SYMMETRY_GENERAL: ClassVar[str] = "general"
+    SYMMETRY_SYMMETRIC: ClassVar[str] = "symmetric"
+    SYMMETRY_SKEW_SYMMETRIC: ClassVar[str] = "skew-symmetric"
+    SYMMETRY_HERMITIAN: ClassVar[str] = "hermitian"
+    SYMMETRY_VALUES: ClassVar[tuple[str, ...]] = "general", "symmetric", "skew-symmetric", "hermitian"
 
     DTYPES_BY_FIELD: ClassVar[dict[_Field, Literal["intp", "uint64", "d", "D"]]] = ...
 

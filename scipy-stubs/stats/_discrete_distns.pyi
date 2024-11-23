@@ -1,5 +1,6 @@
-from typing import ClassVar, Final
+from typing import ClassVar, Final, Literal, final
 
+from ._biasedurn import _PyFishersNCHypergeometric, _PyWalleniusNCHypergeometric
 from ._distn_infrastructure import rv_discrete
 
 __all__ = [
@@ -65,16 +66,18 @@ class skellam_gen(rv_discrete): ...
 class yulesimon_gen(rv_discrete): ...
 
 class _nchypergeom_gen(rv_discrete):
-    rvs_name: ClassVar = None
-    dist: ClassVar = None
+    rvs_name: ClassVar[Literal["rvs_fisher", "rvs_wallenius"] | None] = None
+    dist: ClassVar[type[_PyFishersNCHypergeometric | _PyWalleniusNCHypergeometric] | None] = None
 
+@final
 class nchypergeom_fisher_gen(_nchypergeom_gen):
-    rvs_name: ClassVar = "rvs_fisher"
-    dist: ClassVar[type] = ...  # scipy.stats._biasedurn._PyFishersNCHypergeometric
+    rvs_name: ClassVar[Literal["rvs_fisher"]] = "rvs_fisher"  # pyright: ignore[reportIncompatibleVariableOverride]
+    dist: ClassVar[type[_PyFishersNCHypergeometric]] = ...  # pyright: ignore[reportIncompatibleVariableOverride]
 
+@final
 class nchypergeom_wallenius_gen(_nchypergeom_gen):
-    rvs_name: ClassVar = "rvs_wallenius"
-    dist: ClassVar[type] = ...  # scipy.stats._biasedurn._PyWalleniusNCHypergeometric
+    rvs_name: ClassVar[Literal["rvs_wallenius"]] = "rvs_wallenius"  # pyright: ignore[reportIncompatibleVariableOverride]
+    dist: ClassVar[type[_PyWalleniusNCHypergeometric]] = ...  # pyright: ignore[reportIncompatibleVariableOverride]
 
 binom: Final[binom_gen]
 bernoulli: Final[bernoulli_gen]

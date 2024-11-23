@@ -5,7 +5,7 @@
 # ]
 # ///
 
-from typing import Final
+from typing import Final, final
 from typing_extensions import override
 
 import libcst as cst
@@ -53,6 +53,7 @@ class _BaseMod(VisitorBasedCodemodCommand):
         return updated_node
 
 
+@final
 class AnnotateMissing(_BaseMod):
     DESCRIPTION = "Sets the default return type to `None`, and other missing annotations to `scipy._typing.Untyped`"
 
@@ -94,6 +95,7 @@ class AnnotateMissing(_BaseMod):
         return updated_node
 
 
+@final
 class FixTrailingComma(_BaseMod):
     DESCRIPTION = "Adds a trailing comma to parameters that don't fit on one line, so that ruff formats them correctly."
 
