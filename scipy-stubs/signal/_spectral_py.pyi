@@ -6,7 +6,7 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
+from numpy._typing import _ArrayLikeNumber_co
 from .windows._windows import _Window, _WindowNeedsParams
 
 __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle", "periodogram", "spectrogram", "stft", "welch"]
@@ -17,7 +17,7 @@ _ArrayFloat: TypeAlias = npt.NDArray[np.float32 | np.float64 | np.longdouble]
 _ArrayComplex: TypeAlias = npt.NDArray[np.complex64 | np.complex128 | np.clongdouble]
 
 _GetWindowArgument: TypeAlias = _Window | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]]
-_WindowLike: TypeAlias = _GetWindowArgument | _ArrayLikeFloat_co
+_WindowLike: TypeAlias = _GetWindowArgument | onp.ToFloat1D
 _Detrend: TypeAlias = Literal["literal", "constant", False] | Callable[[npt.NDArray[np.generic]], npt.NDArray[np.generic]]
 _Scaling: TypeAlias = Literal["density", "spectrum"]
 _LegacyScaling: TypeAlias = Literal["psd", "spectrum"]
@@ -25,14 +25,14 @@ _Average: TypeAlias = Literal["mean", "median"]
 _Boundary: TypeAlias = Literal["even", "odd", "constant", "zeros"] | None
 
 def lombscargle(
-    x: _ArrayLikeFloat_co,
-    y: _ArrayLikeFloat_co,
-    freqs: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    freqs: onp.ToFloatND,
     precenter: op.CanBool = False,
     normalize: op.CanBool = False,
 ) -> _Array_f8_1d: ...
 def periodogram(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
     window: _WindowLike | None = "boxcar",
     nfft: onp.ToInt | None = None,
@@ -42,7 +42,7 @@ def periodogram(
     axis: op.CanIndex = -1,
 ) -> tuple[_Array_f8, _ArrayFloat]: ...
 def welch(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
     window: _WindowLike = "hann",
     nperseg: onp.ToInt | None = None,
@@ -55,8 +55,8 @@ def welch(
     average: _Average = "mean",
 ) -> tuple[_Array_f8, _ArrayFloat]: ...
 def csd(
-    x: _ArrayLikeNumber_co,
-    y: _ArrayLikeNumber_co,
+    x: onp.ToComplexND,
+    y: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
     window: _WindowLike = "hann",
     nperseg: onp.ToInt | None = None,
