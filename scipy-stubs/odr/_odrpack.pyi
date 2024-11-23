@@ -2,20 +2,18 @@ from collections.abc import Callable, Mapping
 from typing import Any, Concatenate, Final, Literal, TypeAlias, TypedDict, overload, type_check_only
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt
 from scipy._typing import AnyBool
 
 __all__ = ["ODR", "Data", "Model", "OdrError", "OdrStop", "OdrWarning", "Output", "RealData", "odr", "odr_error", "odr_stop"]
 
-_Int_co: TypeAlias = np.integer[Any] | np.bool_
-_Float_co: TypeAlias = np.floating[Any] | _Int_co
+_ToIntScalar: TypeAlias = np.integer[Any] | np.bool_
+_ToFloatScalar: TypeAlias = np.floating[Any] | _ToIntScalar
 
-_VectorF8: TypeAlias = onp.Array1D[np.float64]
-_MatrixF8: TypeAlias = onp.Array2D[np.float64]
-_ArrayF8: TypeAlias = npt.NDArray[np.float64]
-_FCN: TypeAlias = Callable[Concatenate[_VectorF8, _ArrayF8, ...], npt.NDArray[_Float_co]]
+_Float1D: TypeAlias = onp.Array1D[np.float64]
+_Float2D: TypeAlias = onp.Array2D[np.float64]
+_FloatND: TypeAlias = onp.ArrayND[np.float64]
+_FCN: TypeAlias = Callable[Concatenate[_Float1D, _FloatND, ...], onp.ArrayND[_ToFloatScalar]]
 
 _01: TypeAlias = Literal[0, 1]  # noqa: PYI042
 _012: TypeAlias = Literal[0, 1, 2]  # noqa: PYI042
@@ -23,17 +21,17 @@ _0123: TypeAlias = Literal[0, 1, 2, 3]  # noqa: PYI042
 
 @type_check_only
 class _FullOutput(TypedDict):
-    delta: _VectorF8
-    eps: _VectorF8
-    xplus: _VectorF8
-    y: _VectorF8
+    delta: _Float1D
+    eps: _Float1D
+    xplus: _Float1D
+    y: _Float1D
     res_var: float
     sum_square: float
     sum_square_delta: float
     sum_square_eps: float
     inc_condnum: float
     rel_error: float
-    work: _VectorF8
+    work: _Float1D
     work_ind: dict[str, int]
     iwork: onp.Array1D[np.int32]
     info: int
@@ -48,123 +46,123 @@ class OdrError(Exception): ...
 class OdrStop(Exception): ...
 
 class Data:
-    x: Final[npt.NDArray[_Float_co]]
-    y: Final[_Float_co | npt.NDArray[_Float_co] | None]
-    we: Final[_Float_co | npt.NDArray[_Float_co] | None]
-    wd: Final[_Float_co | npt.NDArray[_Float_co] | None]
-    fix: Final[npt.NDArray[_Int_co] | None]
+    x: Final[onp.ArrayND[_ToFloatScalar]]
+    y: Final[_ToFloatScalar | onp.ArrayND[_ToFloatScalar] | None]
+    we: Final[_ToFloatScalar | onp.ArrayND[_ToFloatScalar] | None]
+    wd: Final[_ToFloatScalar | onp.ArrayND[_ToFloatScalar] | None]
+    fix: Final[onp.ArrayND[_ToIntScalar] | None]
     meta: Final[Mapping[str, object]]
 
     def __init__(
         self,
         /,
-        x: _ArrayLikeFloat_co,
-        y: _ArrayLikeFloat_co | None = None,
-        we: _ArrayLikeFloat_co | None = None,
-        wd: _ArrayLikeFloat_co | None = None,
-        fix: _ArrayLikeInt | None = None,
+        x: onp.ToFloatND,
+        y: onp.ToFloat | onp.ToFloatND | None = None,
+        we: onp.ToFloat | onp.ToFloatND | None = None,
+        wd: onp.ToFloat | onp.ToFloatND | None = None,
+        fix: onp.ToIntND | None = None,
         meta: Mapping[str, object] | None = None,
     ) -> None: ...
-    def set_meta(self, **kwds: object) -> None: ...
+    def set_meta(self, /, **kwds: object) -> None: ...
 
 class RealData(Data):
-    sx: Final[npt.NDArray[_Float_co] | None]
-    sy: Final[npt.NDArray[_Float_co] | None]
-    covx: Final[npt.NDArray[_Float_co] | None]
-    covy: Final[npt.NDArray[_Float_co] | None]
+    sx: Final[onp.ArrayND[_ToFloatScalar] | None]
+    sy: Final[onp.ArrayND[_ToFloatScalar] | None]
+    covx: Final[onp.ArrayND[_ToFloatScalar] | None]
+    covy: Final[onp.ArrayND[_ToFloatScalar] | None]
 
     @overload
     def __init__(
         self,
         /,
-        x: _ArrayLikeFloat_co,
-        y: _ArrayLikeFloat_co | None = None,
-        sx: _ArrayLikeFloat_co | None = None,
-        sy: _ArrayLikeFloat_co | None = None,
+        x: onp.ToFloatND,
+        y: onp.ToFloat | onp.ToFloatND | None = None,
+        sx: onp.ToFloatND | None = None,
+        sy: onp.ToFloat | onp.ToFloatND | None = None,
         covx: None = None,
         covy: None = None,
-        fix: _ArrayLikeInt | None = None,
+        fix: onp.ToIntND | None = None,
         meta: Mapping[str, object] | None = None,
     ) -> None: ...
     @overload
     def __init__(
         self,
         /,
-        x: _ArrayLikeFloat_co,
-        y: _ArrayLikeFloat_co | None,
+        x: onp.ToFloatND,
+        y: onp.ToFloat | onp.ToFloatND | None,
         sx: None,
-        sy: _ArrayLikeFloat_co | None,
-        covx: _ArrayLikeFloat_co,
+        sy: onp.ToFloat | onp.ToFloatND | None,
+        covx: onp.ToFloatND,
         covy: None = None,
-        fix: _ArrayLikeInt | None = None,
+        fix: onp.ToIntND | None = None,
         meta: Mapping[str, object] | None = None,
     ) -> None: ...
     @overload
     def __init__(
         self,
         /,
-        x: _ArrayLikeFloat_co,
-        y: _ArrayLikeFloat_co | None,
-        sx: _ArrayLikeFloat_co | None,
+        x: onp.ToFloatND,
+        y: onp.ToFloat | onp.ToFloatND | None,
+        sx: onp.ToFloatND | None,
         sy: None,
         covx: None,
-        covy: _ArrayLikeFloat_co,
-        fix: _ArrayLikeInt | None = None,
+        covy: onp.ToFloatND,
+        fix: onp.ToIntND | None = None,
         meta: Mapping[str, object] | None = None,
     ) -> None: ...
     @overload
     def __init__(
         self,
         /,
-        x: _ArrayLikeFloat_co,
-        y: _ArrayLikeFloat_co | None,
+        x: onp.ToFloatND,
+        y: onp.ToFloat | onp.ToFloatND | None,
         sx: None,
         sy: None,
-        covx: _ArrayLikeFloat_co,
-        covy: _ArrayLikeFloat_co,
-        fix: _ArrayLikeInt | None = None,
+        covx: onp.ToFloatND,
+        covy: onp.ToFloatND,
+        fix: onp.ToIntND | None = None,
         meta: Mapping[str, object] | None = None,
     ) -> None: ...
     @overload
     def __init__(
         self,
         /,
-        x: _ArrayLikeFloat_co,
-        y: _ArrayLikeFloat_co | None = None,
+        x: onp.ToFloatND,
+        y: onp.ToFloat | onp.ToFloatND | None = None,
         sx: None = None,
-        sy: _ArrayLikeFloat_co | None = None,
+        sy: onp.ToFloat | onp.ToFloatND | None = None,
         *,
-        covx: _ArrayLikeFloat_co,
+        covx: onp.ToFloatND,
         covy: None = None,
-        fix: _ArrayLikeInt | None = None,
+        fix: onp.ToIntND | None = None,
         meta: Mapping[str, object] | None = None,
     ) -> None: ...
     @overload
     def __init__(
         self,
         /,
-        x: _ArrayLikeFloat_co,
-        y: _ArrayLikeFloat_co | None = None,
-        sx: _ArrayLikeFloat_co | None = None,
+        x: onp.ToFloatND,
+        y: onp.ToFloat | onp.ToFloatND | None = None,
+        sx: onp.ToFloatND | None = None,
         sy: None = None,
         *,
         covx: None = None,
-        covy: _ArrayLikeFloat_co,
-        fix: _ArrayLikeInt | None = None,
+        covy: onp.ToFloatND,
+        fix: onp.ToIntND | None = None,
         meta: Mapping[str, object] | None = None,
     ) -> None: ...
     @overload
     def __init__(
         self,
         /,
-        x: _ArrayLikeFloat_co,
-        y: _ArrayLikeFloat_co | None = None,
+        x: onp.ToFloatND,
+        y: onp.ToFloat | onp.ToFloatND | None = None,
         sx: None = None,
         sy: None = None,
         *,
-        covx: _ArrayLikeFloat_co,
-        covy: _ArrayLikeFloat_co,
-        fix: _ArrayLikeInt | None = None,
+        covx: onp.ToFloatND,
+        covy: onp.ToFloatND,
+        fix: onp.ToIntND | None = None,
         meta: Mapping[str, object] | None = None,
     ) -> None: ...
 
@@ -173,7 +171,7 @@ class Model:
     fjacb: Final[_FCN]
     fjacd: Final[_FCN]
     extra_args: Final[tuple[object, ...]]
-    covx: Final[npt.NDArray[_Float_co] | None]
+    covx: Final[onp.ArrayND[_ToFloatScalar] | None]
     implicit: Final[AnyBool]
     meta: Final[Mapping[str, object]]
 
@@ -184,26 +182,28 @@ class Model:
         fjacb: _FCN | None = None,
         fjacd: _FCN | None = None,
         extra_args: tuple[object, ...] | None = None,
-        estimate: _ArrayLikeFloat_co | None = None,
+        estimate: onp.ToFloat1D | None = None,
         implicit: AnyBool = 0,
         meta: Mapping[str, object] | None = None,
     ) -> None: ...
     def set_meta(self, **kwds: object) -> None: ...
 
 class Output:
-    beta: Final[onp.Array1D[_Float_co]]
-    sd_beta: Final[onp.Array1D[_Float_co]]
-    cov_beta: Final[onp.Array1D[_Float_co]]
+    beta: Final[onp.Array1D[_ToFloatScalar]]
+    sd_beta: Final[onp.Array1D[_ToFloatScalar]]
+    cov_beta: Final[onp.Array1D[_ToFloatScalar]]
     stopreason: Final[list[str]]
 
-    def __init__(self, /, output: npt.NDArray[_Float_co]) -> None: ...
+    def __init__(self, /, output: onp.ArrayND[_ToFloatScalar]) -> None: ...
     def pprint(self, /) -> None: ...
 
 class ODR:
     data: Final[Data]
     model: Final[Model]
-    beta0: Final[onp.Array1D[_Float_co]]
-    delta0: Final[onp.Array1D[_Float_co] | None]
+    output: Output | None
+
+    beta0: Final[onp.Array1D[_ToFloatScalar]]
+    delta0: Final[onp.Array1D[_ToFloatScalar] | None]
     ifixx: Final[onp.Array1D[np.int32] | None]
     ifixb: Final[onp.Array1D[np.int32] | None]
     errfile: Final[str | None]
@@ -212,42 +212,41 @@ class ODR:
     taufac: Final[float | None]
     sstol: Final[float | None]
     partol: Final[float | None]
-    stpb: Final[onp.Array1D[_Float_co] | None]
-    stpd: Final[onp.Array1D[_Float_co] | None]
-    sclb: Final[onp.Array1D[_Float_co] | None]
-    scld: Final[onp.Array1D[_Float_co] | None]
+    stpb: Final[onp.Array1D[_ToFloatScalar] | None]
+    stpd: Final[onp.Array1D[_ToFloatScalar] | None]
+    sclb: Final[onp.Array1D[_ToFloatScalar] | None]
+    scld: Final[onp.Array1D[_ToFloatScalar] | None]
 
     job: int | None
     iprint: int | None
     maxit: int | None
-    work: onp.Array1D[_Float_co] | None
-    iwork: onp.Array1D[_Int_co] | None
-    output: Output | None
+    work: onp.Array1D[np.float64] | None
+    iwork: onp.Array1D[np.int32 | np.int64] | None
 
     def __init__(
         self,
         /,
         data: Data,
         model: Model,
-        beta0: _ArrayLikeFloat_co | None = None,
-        delta0: _ArrayLikeFloat_co | None = None,
-        ifixb: _ArrayLikeInt | None = None,
-        ifixx: _ArrayLikeInt | None = None,
-        job: int | None = None,
-        iprint: int | None = None,
+        beta0: onp.ToFloat1D | None = None,
+        delta0: onp.ToFloat1D | None = None,
+        ifixb: onp.ToInt1D | None = None,
+        ifixx: onp.ToIntND | None = None,
+        job: int | None = None,  # TODO: Use literal, see ODRPACK User's Guide p. 31
+        iprint: int | None = None,  # TODO: Use literal, seeODRPACK User's Guide p. 33-34
         errfile: str | None = None,
         rptfile: str | None = None,
         ndigit: int | None = None,
-        taufac: float | None = None,
-        sstol: float | None = None,
-        partol: float | None = None,
-        maxit: int | None = None,
-        stpb: _ArrayLikeFloat_co | None = None,
-        stpd: _ArrayLikeFloat_co | None = None,
-        sclb: _ArrayLikeFloat_co | None = None,
-        scld: _ArrayLikeFloat_co | None = None,
-        work: _ArrayLikeFloat_co | None = None,
-        iwork: _ArrayLikeInt | None = None,
+        taufac: float | None = None,  # = 1
+        sstol: float | None = None,  # = eps**(1/2)
+        partol: float | None = None,  # = eps**(2/3) (explicit), = eps**(1/3) (implicit)
+        maxit: int | None = None,  # = 10
+        stpb: onp.ToFloat1D | None = None,
+        stpd: onp.ToFloatND | None = None,
+        sclb: onp.ToFloat1D | None = None,
+        scld: onp.ToFloatND | None = None,
+        work: onp.ArrayND[np.float64] | None = None,
+        iwork: onp.ArrayND[np.int32 | np.int64] | None = None,
         overwrite: bool = False,
     ) -> None: ...
     def set_job(
@@ -276,16 +275,16 @@ class ODR:
 @overload
 def odr(
     fcn: _FCN,
-    beta0: _ArrayLikeFloat_co,
-    y: _ArrayLikeFloat_co,
-    x: _ArrayLikeFloat_co,
-    we: _ArrayLikeFloat_co | None = None,
-    wd: _ArrayLikeFloat_co | None = None,
+    beta0: onp.ToFloat1D,
+    y: onp.ToFloat | onp.ToFloatND,
+    x: onp.ToFloatND,
+    we: onp.ToFloat | onp.ToFloatND | None = None,
+    wd: onp.ToFloat | onp.ToFloatND | None = None,
     fjacb: _FCN | None = None,
     fjacd: _FCN | None = None,
     extra_args: tuple[object, ...] | None = None,
-    ifixx: _ArrayLikeInt | None = None,
-    ifixb: _ArrayLikeInt | None = None,
+    ifixx: onp.ToIntND | None = None,
+    ifixb: onp.ToInt1D | None = None,
     job: int = 0,
     iprint: int = 0,
     errfile: str | None = None,
@@ -295,27 +294,27 @@ def odr(
     sstol: float = -1.0,
     partol: float = -1.0,
     maxit: int = -1,
-    stpb: _ArrayLikeFloat_co | None = None,
-    stpd: _ArrayLikeFloat_co | None = None,
-    sclb: _ArrayLikeFloat_co | None = None,
-    scld: _ArrayLikeFloat_co | None = None,
-    work: _ArrayLikeFloat_co | None = None,
-    iwork: _ArrayLikeInt | None = None,
+    stpb: onp.ToFloat1D | None = None,
+    stpd: onp.ToFloatND | None = None,
+    sclb: onp.ToFloat1D | None = None,
+    scld: onp.ToFloatND | None = None,
+    work: onp.ArrayND[np.float64] | None = None,
+    iwork: onp.ArrayND[np.int32 | np.int64] | None = None,
     full_output: Literal[False, 0] = 0,
-) -> tuple[_VectorF8, _VectorF8, _MatrixF8]: ...
+) -> tuple[_Float1D, _Float1D, _Float2D]: ...
 @overload
 def odr(
     fcn: _FCN,
-    beta0: _ArrayLikeFloat_co,
-    y: _ArrayLikeFloat_co,
-    x: _ArrayLikeFloat_co,
-    we: _ArrayLikeFloat_co | None = None,
-    wd: _ArrayLikeFloat_co | None = None,
+    beta0: onp.ToFloat1D,
+    y: onp.ToFloat | onp.ToFloatND,
+    x: onp.ToFloatND,
+    we: onp.ToFloat | onp.ToFloatND | None = None,
+    wd: onp.ToFloat | onp.ToFloatND | None = None,
     fjacb: _FCN | None = None,
     fjacd: _FCN | None = None,
     extra_args: tuple[object, ...] | None = None,
-    ifixx: _ArrayLikeInt | None = None,
-    ifixb: _ArrayLikeInt | None = None,
+    ifixx: onp.ToIntND | None = None,
+    ifixb: onp.ToInt1D | None = None,
     job: int = 0,
     iprint: int = 0,
     errfile: str | None = None,
@@ -325,12 +324,12 @@ def odr(
     sstol: float = -1.0,
     partol: float = -1.0,
     maxit: int = -1,
-    stpb: _ArrayLikeFloat_co | None = None,
-    stpd: _ArrayLikeFloat_co | None = None,
-    sclb: _ArrayLikeFloat_co | None = None,
-    scld: _ArrayLikeFloat_co | None = None,
-    work: _ArrayLikeFloat_co | None = None,
-    iwork: _ArrayLikeInt | None = None,
+    stpb: onp.ToFloat1D | None = None,
+    stpd: onp.ToFloatND | None = None,
+    sclb: onp.ToFloat1D | None = None,
+    scld: onp.ToFloatND | None = None,
+    work: onp.ArrayND[np.float64] | None = None,
+    iwork: onp.ArrayND[np.int32 | np.int64] | None = None,
     *,
     full_output: Literal[True, 1],
-) -> tuple[_VectorF8, _VectorF8, _MatrixF8, _FullOutput]: ...
+) -> tuple[_Float1D, _Float1D, _Float2D, _FullOutput]: ...
