@@ -3,7 +3,7 @@ from typing import Protocol, TypeAlias, type_check_only
 import numpy as np
 import numpy.typing as npt
 import optype as op
-from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
+import optype.numpy as onp
 from scipy._typing import AnyBool, AnyShape
 
 __all__ = ["fft", "fft2", "fftn", "ifft", "ifft2", "ifftn", "irfft", "rfft"]
@@ -19,49 +19,49 @@ class _OrderedIndex(op.CanIndex, Protocol):
 ###
 
 def fft(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplexND,
     n: _OrderedIndex | None = None,
     axis: op.CanIndex = -1,
     overwrite_x: AnyBool = False,
 ) -> _ArrayComplex: ...
 def ifft(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplexND,
     n: _OrderedIndex | None = None,
     axis: op.CanIndex = -1,
     overwrite_x: AnyBool = False,
 ) -> _ArrayComplex: ...
 def rfft(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     n: _OrderedIndex | None = None,
     axis: op.CanIndex = -1,
     overwrite_x: AnyBool = False,
 ) -> _ArrayReal: ...
 def irfft(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     n: _OrderedIndex | None = None,
     axis: op.CanIndex = -1,
     overwrite_x: AnyBool = False,
 ) -> _ArrayReal: ...
 def fftn(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplexND,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     overwrite_x: AnyBool = False,
 ) -> _ArrayComplex: ...
 def ifftn(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplexND,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     overwrite_x: AnyBool = False,
 ) -> _ArrayComplex: ...
 def fft2(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplexND,
     shape: AnyShape | None = None,
     axes: tuple[op.CanIndex, op.CanIndex] = (-2, -1),
     overwrite_x: AnyBool = False,
 ) -> _ArrayComplex: ...
 def ifft2(
-    x: _ArrayLikeNumber_co,
+    x: onp.ToComplexND,
     shape: AnyShape | None = None,
     axes: tuple[op.CanIndex, op.CanIndex] = (-2, -1),
     overwrite_x: AnyBool = False,
