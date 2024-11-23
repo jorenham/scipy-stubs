@@ -3,12 +3,11 @@ from typing import Literal as L, TypeAlias, overload, type_check_only
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeInt
 from scipy.sparse import coo_matrix, dok_matrix
 
 __all__ = ["cKDTree"]
 
-_Weights: TypeAlias = npt.ArrayLike | tuple[npt.ArrayLike, npt.ArrayLike]
+_Weights: TypeAlias = onp.ToFloatND | tuple[onp.ToFloatND, onp.ToFloatND]
 
 @type_check_only
 class _CythonMixin:
@@ -17,9 +16,9 @@ class _CythonMixin:
 
 class cKDTreeNode(_CythonMixin):
     @property
-    def data_points(self) -> npt.NDArray[np.float64]: ...
+    def data_points(self) -> onp.ArrayND[np.float64]: ...
     @property
-    def indices(self) -> npt.NDArray[np.intp]: ...
+    def indices(self) -> onp.ArrayND[np.intp]: ...
 
     # These are read-only attributes in cython, which behave like properties
     @property
@@ -53,15 +52,15 @@ class cKDTree(_CythonMixin):
 
     # These are read-only attributes in cython, which behave like properties
     @property
-    def data(self) -> npt.NDArray[np.float64]: ...
+    def data(self) -> onp.ArrayND[np.float64]: ...
     @property
-    def maxes(self) -> npt.NDArray[np.float64]: ...
+    def maxes(self) -> onp.ArrayND[np.float64]: ...
     @property
-    def mins(self) -> npt.NDArray[np.float64]: ...
+    def mins(self) -> onp.ArrayND[np.float64]: ...
     @property
-    def indices(self) -> npt.NDArray[np.float64]: ...
+    def indices(self) -> onp.ArrayND[np.float64]: ...
     @property
-    def boxsize(self) -> npt.NDArray[np.float64] | None: ...
+    def boxsize(self) -> onp.ArrayND[np.float64] | None: ...
 
     #
     def __init__(
@@ -79,26 +78,26 @@ class cKDTree(_CythonMixin):
     def query(
         self,
         /,
-        x: _ArrayLikeFloat_co,
-        k: _ArrayLikeInt = 1,
+        x: onp.ToFloat1D,
+        k: onp.ToInt | onp.ToInt1D = 1,
         eps: onp.ToFloat = 0.0,
         p: onp.ToFloat = 2.0,
         distance_upper_bound: float = ...,  # inf
         workers: int | None = None,
-    ) -> tuple[float, np.intp] | tuple[npt.NDArray[np.float64], npt.NDArray[np.intp]]: ...
+    ) -> tuple[float, np.intp] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]: ...
 
     #
     def query_ball_point(
         self,
         /,
-        x: _ArrayLikeFloat_co,
-        r: npt.ArrayLike,
+        x: onp.ToFloatND,
+        r: onp.ToFloat | onp.ToFloatND,
         p: onp.ToFloat = 2.0,
         eps: onp.ToFloat = 0.0,
         workers: int | None = None,
         return_sorted: bool | None = None,
         return_length: bool = False,
-    ) -> list[int] | npt.NDArray[np.object_]: ...
+    ) -> list[int] | onp.ArrayND[np.object_]: ...
 
     #
     def query_ball_tree(
@@ -128,7 +127,7 @@ class cKDTree(_CythonMixin):
         p: onp.ToFloat,
         eps: onp.ToFloat,
         output_type: L["ndarray"],
-    ) -> npt.NDArray[np.intp]: ...
+    ) -> onp.ArrayND[np.intp]: ...
     @overload
     def query_pairs(
         self,
@@ -138,7 +137,7 @@ class cKDTree(_CythonMixin):
         eps: onp.ToFloat = 0,
         *,
         output_type: L["ndarray"],
-    ) -> npt.NDArray[np.intp]: ...
+    ) -> onp.ArrayND[np.intp]: ...
 
     #
     @overload
@@ -181,7 +180,7 @@ class cKDTree(_CythonMixin):
         p: onp.ToFloat = 2.0,
         weights: tuple[None, None] | None = ...,
         cumulative: bool = True,
-    ) -> np.float64 | np.intp | npt.NDArray[np.intp]: ...
+    ) -> np.float64 | np.intp | onp.ArrayND[np.intp]: ...
     @overload
     def count_neighbors(
         self,
@@ -191,7 +190,7 @@ class cKDTree(_CythonMixin):
         p: onp.ToFloat,
         weights: _Weights,
         cumulative: bool = True,
-    ) -> np.float64 | np.intp | npt.NDArray[np.float64]: ...
+    ) -> np.float64 | np.intp | onp.ArrayND[np.float64]: ...
     @overload
     def count_neighbors(
         self,
@@ -202,7 +201,7 @@ class cKDTree(_CythonMixin):
         *,
         weights: _Weights,
         cumulative: bool = True,
-    ) -> np.float64 | np.intp | npt.NDArray[np.float64]: ...
+    ) -> np.float64 | np.intp | onp.ArrayND[np.float64]: ...
 
     #
     @overload
@@ -243,4 +242,4 @@ class cKDTree(_CythonMixin):
         p: onp.ToFloat = 2.0,
         *,
         output_type: L["ndarray"],
-    ) -> npt.NDArray[np.void]: ...
+    ) -> onp.ArrayND[np.void]: ...
