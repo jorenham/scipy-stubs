@@ -106,13 +106,11 @@ def chirp(
     phi: onp.ToInt = 0,
     vertex_zero: op.CanBool = True,
 ) -> npt.NDArray[np.float16 | np.float32 | np.float64]: ...
-
-# float -> float and complex -> complex
 def sweep_poly(
-    t: onp.ToFloatND | onp.ToComplexND,
-    poly: onp.ToFloatND | onp.ToComplexND,
+    t: onp.ToFloatND,
+    poly: onp.ToFloatND,
     phi: onp.ToInt = 0,
-) -> npt.NDArray[np.float64 | np.complex128]: ...
+) -> npt.NDArray[np.float64]: ...
 
 #
 @overload  # dtype is not given
