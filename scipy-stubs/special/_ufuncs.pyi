@@ -1484,6 +1484,10 @@ sici: np.ufunc
 # TODO
 itairy: np.ufunc
 
+# f->FFFF; d->DDDD
+# TODO
+kelvin: np.ufunc
+
 # f->ffff; d->dddd; F->FFFF; D->DDDD
 # TODO
 airy: np.ufunc
@@ -1580,6 +1584,16 @@ kve: _UFunc21fc1[L["kve"]]
 yv: _UFunc21fc1[L["yv"]]
 yve: _UFunc21fc1[L["yve"]]
 
+# lf->f; ld->d; lF->F; lD->D
+_spherical_in: np.ufunc
+_spherical_in_d: np.ufunc
+_spherical_jn: np.ufunc
+_spherical_jn_d: np.ufunc
+_spherical_kn: np.ufunc
+_spherical_kn_d: np.ufunc
+_spherical_yn: np.ufunc
+_spherical_yn_d: np.ufunc
+
 # ff->f; dd->d; FF->F; DD->D
 elliprc: _UFunc21fc2[L["elliprc"], L[0]]
 xlog1py: _UFunc21fc2[L["xlog1py"], L[0]]
@@ -1590,6 +1604,10 @@ xlogy: _UFunc21fc2[L["xlogy"], L[0]]
 pbdv: np.ufunc
 pbvv: np.ufunc
 pbwa: np.ufunc
+
+# ff->ffff; dd->dddd
+# TODO
+ellipj: np.ufunc
 
 # fff->f; (ll|dl|dd)d->d
 _beta_pdf: _UFunc31f[L["_beta_pdf"], L[0]]
@@ -1722,6 +1740,14 @@ eval_jacobi: np.ufunc
 eval_sh_jacobi: np.ufunc
 hyp2f1: np.ufunc
 
+# ffff->f; dddd->d; FFFF->F; DDDD->D
+# TODO
+elliprj: np.ufunc
+
+# (ll|ff)ff->F; (ll|dd)dd->D
+# TODO
+sph_harm: np.ufunc
+
 # ffff->ff; dddd->dd
 # TODO
 obl_ang1: np.ufunc
@@ -1740,18 +1766,5 @@ pro_ang1_cv: np.ufunc
 pro_rad1_cv: np.ufunc
 pro_rad2_cv: np.ufunc
 
-# *?->*?
-# TODO
+# fffffff->f; dd(ll|dd)ddd->d
 _ellip_harm: np.ufunc
-_spherical_n: np.ufunc
-_spherical_in_d: np.ufunc
-_spherical_jn: np.ufunc
-_spherical_jn_d: np.ufunc
-_spherical_kn: np.ufunc
-_spherical_kn_d: np.ufunc
-_spherical_yn: np.ufunc
-_spherical_yn_d: np.ufunc
-ellipj: np.ufunc
-elliprj: np.ufunc
-kelvin: np.ufunc
-sph_harm: np.ufunc
