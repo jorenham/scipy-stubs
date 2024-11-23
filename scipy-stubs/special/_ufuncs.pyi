@@ -3,7 +3,7 @@
 
 from types import EllipsisType
 from typing import Any, Generic, Literal as L, TypeAlias, TypedDict, final, overload, type_check_only
-from typing_extensions import LiteralString, Never, TypeVar, Unpack
+from typing_extensions import LiteralString, Never, TypeVar, Unpack, override
 
 import numpy as np
 import optype as op
@@ -257,6 +257,7 @@ _OutT = TypeVar("_OutT", bound=onp.ArrayND[np.number[Any]])
 
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
+_Tuple4: TypeAlias = tuple[_T, _T, _T, _T]
 
 _Float: TypeAlias = np.float32 | np.float64
 _LFloat: TypeAlias = _Float | np.longdouble
@@ -271,10 +272,15 @@ _InexactNDT = TypeVar("_InexactNDT", bound=_Inexact | onp.ArrayND[_Inexact])
 _SubFloat: TypeAlias = np.float16 | np.integer[Any] | np.bool_
 _ToSubFloat: TypeAlias = float | _SubFloat
 
-_ToFloatDType: TypeAlias = onp.AnyFloat32DType | onp.AnyFloat64DType
-_ToLFloatDType: TypeAlias = _ToFloatDType | onp.AnyLongDoubleDType
-_ToComplexDType: TypeAlias = onp.AnyComplex64DType | onp.AnyComplex128DType
-_ToInexactDType: TypeAlias = _ToFloatDType | _ToComplexDType
+_ToDType_l: TypeAlias = onp.AnyLongDType
+_ToDType_f: TypeAlias = onp.AnyFloat32DType
+_ToDType_d: TypeAlias = onp.AnyFloat64DType
+_ToDType_g: TypeAlias = onp.AnyLongDoubleDType
+_ToDType_F: TypeAlias = onp.AnyComplex64DType
+_ToDType_D: TypeAlias = onp.AnyComplex128DType
+_ToDType_FD: TypeAlias = onp.AnyComplex64DType | onp.AnyComplex128DType
+_ToDType_fd: TypeAlias = _ToDType_f | _ToDType_d
+_ToDType_fdg: TypeAlias = _ToDType_fd | _ToDType_g
 
 _Indices: TypeAlias = op.CanIndex | slice | EllipsisType | tuple[op.CanIndex | slice | EllipsisType, ...] | onp.ToIntND
 
@@ -286,43 +292,130 @@ class _KwBase(TypedDict, total=False):
     where: onp.ToBool | onp.ToBoolND
 
 @type_check_only
-class _UFuncBase(np.ufunc, Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]  # pyright: ignore[reportGeneralTypeIssues]
+class _UFunc(np.ufunc, Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]  # pyright: ignore[reportGeneralTypeIssues]
     @property
+    @override
     def __class__(self) -> type[np.ufunc]: ...
     @__class__.setter
     def __class__(self, t: type[np.ufunc], /) -> None: ...
     @property
+    @override
     def __name__(self) -> _NameT_co: ...
     @property
+    @override
     def identity(self) -> _IdentityT_co: ...
     @property
+    @override
     def signature(self) -> None: ...
 
 @type_check_only
-class _NotABinOp:
+class _WithoutAt:
+    def at(self, /, *args: object, **kwargs: object) -> Never: ...
+
+@type_check_only
+class _WithoutBinOps:
     # The following methods will always raise a `ValueError`
-    def accumulate(self, /, *args: Never, **kwargs: Never) -> Never: ...
-    def reduce(self, /, *args: Never, **kwargs: Never) -> Never: ...
-    def reduceat(self, /, *args: Never, **kwargs: Never) -> Never: ...
-    def outer(self, /, *args: Never, **kwargs: Never) -> Never: ...
+    def accumulate(self, /, *args: object, **kwargs: object) -> Never: ...
+    def reduce(self, /, *args: object, **kwargs: object) -> Never: ...
+    def reduceat(self, /, *args: object, **kwargs: object) -> Never: ...
+    def outer(self, /, *args: object, **kwargs: object) -> Never: ...
+
+@type_check_only
+class _UFunc11(_WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+    @property
+    @override
+    def nin(self) -> L[1]: ...
+    @property
+    @override
+    def nout(self) -> L[1]: ...
+    @property
+    @override
+    def nargs(self) -> L[2]: ...
+
+@type_check_only
+class _UFunc21(_UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+    @property
+    @override
+    def nin(self) -> L[2]: ...
+    @property
+    @override
+    def nout(self) -> L[1]: ...
+    @property
+    @override
+    def nargs(self) -> L[3]: ...
+
+@type_check_only
+class _UFunc31(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+    @property
+    @override
+    def nin(self) -> L[3]: ...
+    @property
+    @override
+    def nout(self) -> L[1]: ...
+    @property
+    @override
+    def nargs(self) -> L[4]: ...
+
+_ToSignature1_fd: TypeAlias = _Tuple2[_ToDType_f] | _Tuple2[_ToDType_d]
+_ToSignature1_fdg: TypeAlias = _ToSignature1_fd | _Tuple2[_ToDType_g]
+_ToSignature1_FD: TypeAlias = _Tuple2[_ToDType_F] | _Tuple2[_ToDType_D]
 
 @type_check_only
 class _Kw11f(_KwBase, TypedDict, total=False):
-    dtype: _ToFloatDType | None
-    signature: L["f->f", "d->d"] | _Tuple2[_ToFloatDType]
+    dtype: _ToDType_fd | None
+    signature: L["f->f", "d->d"] | _ToSignature1_fd
 
 @type_check_only
+class _Kw11g(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fdg | None
+    signature: L["f->f", "d->d", "g->g"] | _ToSignature1_fdg
+
+@type_check_only
+class _Kw11c(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_FD | None
+    signature: L["F->F", "D->D"] | _ToSignature1_FD
+
+@type_check_only
+class _Kw11fc(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd | _ToDType_FD | None
+    signature: L["f->f", "d->d", "F->F", "D->D"] | _ToSignature1_fd | _ToSignature1_FD
+
+_ToSignature2_ld: TypeAlias = tuple[_ToDType_l, _ToDType_d, _ToDType_d]
+_ToSignature2_fd2: TypeAlias = _Tuple3[_ToDType_f] | _Tuple3[_ToDType_d]
+_ToSignature2_FD2: TypeAlias = _Tuple3[_ToDType_F] | _Tuple3[_ToDType_D]
+
+@type_check_only
+class _Kw21ld(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_d | None
+    signature: L["ld->d"] | _ToSignature2_ld
+
+@type_check_only
+class _Kw21f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd | None
+    signature: L["ff->f", "dd->d"] | _ToSignature2_fd2
+
+@type_check_only
+class _Kw21fc(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd | _ToDType_FD | None
+    signature: L["ff->f", "ld->d", "dd->d", "fF->F", "dD->D"] | _ToSignature2_ld | _ToSignature2_fd2 | _ToSignature2_FD2
+
+_ToSignature3_lld: TypeAlias = tuple[_ToDType_l, _ToDType_l, _ToDType_d, _ToDType_d]
+_ToSignature3_dld: TypeAlias = tuple[_ToDType_d, _ToDType_l, _ToDType_d, _ToDType_d]
+_ToSignature3_fd3: TypeAlias = _Tuple4[_ToDType_f] | _Tuple4[_ToDType_d]
+
+@type_check_only
+class _Kw31f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd | None
+    signature: L["fff->f", "ddd->d", "lld->d", "dld->d"] | _ToSignature3_fd3 | _ToSignature3_lld | _ToSignature3_dld
+
 @final
-class _UFunc11f(_UFuncBase[_NameT_co, _IdentityT_co], _NotABinOp, Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+@type_check_only
+class _UFunc11f(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
     @property
-    def nin(self) -> L[1]: ...
-    @property
-    def nout(self) -> L[1]: ...
-    @property
-    def nargs(self) -> L[2]: ...
-    @property
+    @override
     def ntypes(self) -> L[2]: ...
     @property
+    @override
     def types(self) -> list[L["f->f", "d->d"]]: ...
     #
     @overload
@@ -334,25 +427,17 @@ class _UFunc11f(_UFuncBase[_NameT_co, _IdentityT_co], _NotABinOp, Generic[_NameT
     @overload
     def __call__(self, x: onp.ToFloat | onp.ToFloatND, /, out: tuple[_OutT] | _OutT, **kw: Unpack[_Kw11f]) -> _OutT: ...
     #
+    @override
     def at(self, a: onp.ArrayND[_Float | _SubFloat], indices: _Indices, /) -> None: ...
 
-@type_check_only
-class _Kw11g(_KwBase, TypedDict, total=False):
-    dtype: _ToLFloatDType | None
-    signature: L["f->f", "d->d", "g->g"] | _Tuple2[_ToLFloatDType]
-
-@type_check_only
 @final
-class _UFunc11g(_UFuncBase[_NameT_co, _IdentityT_co], _NotABinOp, Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+@type_check_only
+class _UFunc11g(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
     @property
-    def nin(self) -> L[1]: ...
-    @property
-    def nout(self) -> L[1]: ...
-    @property
-    def nargs(self) -> L[2]: ...
-    @property
+    @override
     def ntypes(self) -> L[3]: ...
     @property
+    @override
     def types(self) -> list[L["f->f", "d->d", "g->g"]]: ...
     #
     @overload
@@ -364,25 +449,17 @@ class _UFunc11g(_UFuncBase[_NameT_co, _IdentityT_co], _NotABinOp, Generic[_NameT
     @overload
     def __call__(self, x: onp.ToFloat | onp.ToFloatND, /, out: tuple[_OutT] | _OutT, **kw: Unpack[_Kw11g]) -> _OutT: ...
     #
+    @override
     def at(self, a: onp.ArrayND[_LFloat | _SubFloat], indices: _Indices, /) -> None: ...
 
-@type_check_only
-class _Kw11c(_KwBase, TypedDict, total=False):
-    dtype: _ToComplexDType | None
-    signature: L["F->F", "D->D"] | _Tuple2[_ToComplexDType]
-
-@type_check_only
 @final
-class _UFunc11c(_UFuncBase[_NameT_co, _IdentityT_co], _NotABinOp, Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+@type_check_only
+class _UFunc11c(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
     @property
-    def nin(self) -> L[1]: ...
-    @property
-    def nout(self) -> L[1]: ...
-    @property
-    def nargs(self) -> L[2]: ...
-    @property
+    @override
     def ntypes(self) -> L[2]: ...
     @property
+    @override
     def types(self) -> list[L["F->F", "D->D"]]: ...
     #
     @overload
@@ -394,25 +471,17 @@ class _UFunc11c(_UFuncBase[_NameT_co, _IdentityT_co], _NotABinOp, Generic[_NameT
     @overload
     def __call__(self, x: onp.ToComplex | onp.ToComplexND, /, out: tuple[_OutT] | _OutT, **kw: Unpack[_Kw11c]) -> _OutT: ...
     #
+    @override
     def at(self, a: onp.ArrayND[_Inexact | _SubFloat], indices: _Indices, /) -> None: ...
 
-@type_check_only
-class _Kw11fc(_KwBase, TypedDict, total=False):
-    dtype: _ToInexactDType | None
-    signature: L["f->f", "d->d", "F->F", "D->D"] | _Tuple2[_ToInexactDType]
-
-@type_check_only
 @final
-class _UFunc11fc(_UFuncBase[_NameT_co, _IdentityT_co], _NotABinOp, Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+@type_check_only
+class _UFunc11fc(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
     @property
-    def nin(self) -> L[1]: ...
-    @property
-    def nout(self) -> L[1]: ...
-    @property
-    def nargs(self) -> L[2]: ...
-    @property
+    @override
     def ntypes(self) -> L[4]: ...
     @property
+    @override
     def types(self) -> list[L["f->f", "d->d", "F->F", "D->D"]]: ...
     #
     @overload
@@ -428,25 +497,17 @@ class _UFunc11fc(_UFuncBase[_NameT_co, _IdentityT_co], _NotABinOp, Generic[_Name
     @overload
     def __call__(self, x: onp.ToComplex | onp.ToComplexND, /, out: tuple[_OutT] | _OutT, **kw: Unpack[_Kw11fc]) -> _OutT: ...
     #
+    @override
     def at(self, a: onp.ArrayND[_Inexact | _SubFloat], indices: _Indices, /) -> None: ...
 
-@type_check_only
-class _Kw21ld(_KwBase, TypedDict, total=False):
-    dtype: _ToFloatDType | None
-    signature: L["ld->d"] | tuple[onp.AnyLongDType, onp.AnyFloat64DType, onp.AnyFloat64DType]
-
-@type_check_only
 @final
-class _UFunc21ld(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+@type_check_only
+class _UFunc21ld(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
     @property
-    def nin(self) -> L[2]: ...
-    @property
-    def nout(self) -> L[1]: ...
-    @property
-    def nargs(self) -> L[3]: ...
-    @property
+    @override
     def ntypes(self) -> L[1]: ...
     @property
+    @override
     def types(self) -> list[L["ld->d"]]: ...
     #
     @overload
@@ -486,6 +547,7 @@ class _UFunc21ld(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Ident
         **kwargs: Unpack[_Kw21ld],
     ) -> _OutT: ...
     #
+    @override
     def at(self, a: onp.ArrayND[np.integer[Any] | np.bool_], indices: _Indices, b: onp.ToFloatND, /) -> None: ...
     #
     @overload
@@ -505,27 +567,21 @@ class _UFunc21ld(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Ident
         **kwargs: Unpack[_Kw21ld],
     ) -> _OutT: ...
     #
+    @override
     def accumulate(self, /, *args: Never, **kwargs: Never) -> Never: ...
+    @override
     def reduce(self, /, *args: Never, **kwargs: Never) -> Never: ...
+    @override
     def reduceat(self, /, *args: Never, **kwargs: Never) -> Never: ...
 
-@type_check_only
-class _Kw21f(_KwBase, TypedDict, total=False):
-    dtype: _ToFloatDType | None
-    signature: L["ff->f", "dd->d"] | _Tuple3[_ToFloatDType]
-
-@type_check_only
 @final
-class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+@type_check_only
+class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
     @property
-    def nin(self) -> L[2]: ...
-    @property
-    def nout(self) -> L[1]: ...
-    @property
-    def nargs(self) -> L[3]: ...
-    @property
+    @override
     def ntypes(self) -> L[2, 3]: ...
     @property
+    @override
     def types(self) -> list[L["ff->f", "dd->d", "ld->d"]]: ...
     #
     @overload
@@ -574,14 +630,16 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         **kwargs: Unpack[_Kw21f],
     ) -> _OutT: ...
     #
+    @override
     def at(self, a: onp.ArrayND[_Float | _SubFloat], indices: _Indices, b: onp.ToFloatND, /) -> None: ...
     #
+    @override
     def accumulate(
         self,
         /,
         array: onp.ToFloatND,
         axis: op.CanIndex = 0,
-        dtype: _ToFloatDType | None = None,
+        dtype: _ToDType_fd | None = None,
         out: tuple[onp.ArrayND[_Float] | None] | onp.ArrayND[_Float] | None = None,
     ) -> onp.ArrayND[_Float]: ...
     #
@@ -648,13 +706,14 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         where: onp.ToBool | onp.ToBoolND = True,
     ) -> _OutT: ...
     #
+    @override
     def reduceat(
         self,
         /,
         array: onp.ToFloatND,
         indices: _Indices,
         axis: op.CanIndex = 0,
-        dtype: _ToFloatDType | None = None,
+        dtype: _ToDType_fd | None = None,
         out: tuple[onp.ArrayND[_Float] | None] | onp.ArrayND[_Float] | None = None,
     ) -> onp.ArrayND[_Float]: ...
     #
@@ -675,26 +734,14 @@ class _UFunc21f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         **kwargs: Unpack[_Kw21f],
     ) -> _OutT: ...
 
-@type_check_only
-class _Kw21fc(_KwBase, TypedDict, total=False):
-    dtype: _ToInexactDType | None
-    signature: (
-        L["ff->f", "dd->d", "fF->F", "dD->D", "ld->d"]
-        | tuple[onp.AnyLongDType | _ToFloatDType, _ToFloatDType, _ToInexactDType]
-    )  # fmt: skip
-
-@type_check_only
 @final
-class _UFunc21fc(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+@type_check_only
+class _UFunc21fc(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
     @property
-    def nin(self) -> L[2]: ...
-    @property
-    def nout(self) -> L[1]: ...
-    @property
-    def nargs(self) -> L[3]: ...
-    @property
+    @override
     def ntypes(self) -> L[4, 5]: ...
     @property
+    @override
     def types(self) -> list[L["ff->f", "dd->d", "fF->F", "dD->D", "ld->d"]]: ...
     #
     @overload
@@ -760,15 +807,17 @@ class _UFunc21fc(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Ident
         out: tuple[_OutT] | _OutT,
         **kwargs: Unpack[_Kw21fc],
     ) -> _OutT: ...
-    # only works if real
+    #
+    @override  # only works if real
     def at(self, a: onp.ArrayND[_Float | _SubFloat], indices: _Indices, b: onp.ToFloatND, /) -> None: ...
     #
+    @override
     def accumulate(
         self,
         /,
         array: onp.ToFloatND,
         axis: op.CanIndex = 0,
-        dtype: _ToFloatDType | None = None,
+        dtype: _ToDType_fd | None = None,
         out: tuple[onp.ArrayND[_Float] | None] | onp.ArrayND[_Float] | None = None,
     ) -> onp.ArrayND[_Float]: ...
     #
@@ -835,13 +884,14 @@ class _UFunc21fc(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Ident
         where: onp.ToBool | onp.ToBoolND = True,
     ) -> _OutT: ...
     #
+    @override
     def reduceat(
         self,
         /,
         array: onp.ToFloatND,
         indices: _Indices,
         axis: op.CanIndex = 0,
-        dtype: _ToFloatDType | None = None,
+        dtype: _ToDType_fd | None = None,
         out: tuple[onp.ArrayND[_Float] | None] | onp.ArrayND[_Float] | None = None,
     ) -> onp.ArrayND[_Float]: ...
     #
@@ -868,23 +918,14 @@ class _UFunc21fc(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Ident
         **kwargs: Unpack[_Kw21fc],
     ) -> _OutT: ...
 
-@type_check_only
-class _Kw31f(_KwBase, TypedDict, total=False):
-    dtype: _ToFloatDType | None
-    signature: L["fff->f", "ddd->d"] | _Tuple3[_ToFloatDType]
-
-@type_check_only
 @final
-class _UFunc31f(_UFuncBase[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+@type_check_only
+class _UFunc31f(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
     @property
-    def nin(self) -> L[3]: ...
-    @property
-    def nout(self) -> L[1]: ...
-    @property
-    def nargs(self) -> L[4]: ...
-    @property
+    @override
     def ntypes(self) -> L[2, 3]: ...
     @property
+    @override
     def types(self) -> list[L["fff->f", "ddd->d", "lld->d"]] | list[L["fff->f", "ddd->d", "dld->d"]]: ...
     #
     @overload
