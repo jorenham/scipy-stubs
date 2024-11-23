@@ -3,9 +3,7 @@ from typing import Any, ClassVar, Final, Generic, Literal, Protocol, TypeAlias, 
 from typing_extensions import Self, TypeVar, TypeVarTuple, Unpack, override
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeNumber_co
 
 __all__ = ["complex_ode", "ode"]
 
@@ -40,20 +38,20 @@ class _ODEFuncF(Protocol[Unpack[_Ts]]):
     def __call__(
         self,
         t: float,
-        y: float | npt.NDArray[np.float64],
+        y: float | onp.ArrayND[np.float64],
         /,
         *args: Unpack[_Ts],
-    ) -> float | npt.NDArray[np.floating[Any]]: ...
+    ) -> float | onp.ArrayND[np.floating[Any]]: ...
 
 @type_check_only
 class _ODEFuncC(Protocol[Unpack[_Ts]]):
     def __call__(
         self,
         t: float,
-        y: complex | npt.NDArray[np.complex128],
+        y: complex | onp.ArrayND[np.complex128],
         /,
         *args: Unpack[_Ts],
-    ) -> complex | npt.NDArray[np.complexfloating[Any, Any]]: ...
+    ) -> complex | onp.ArrayND[np.complexfloating[Any, Any]]: ...
 
 _SolOutFunc: TypeAlias = Callable[[float, onp.Array1D[np.inexact[Any]]], Literal[0, -1]]
 
@@ -70,7 +68,7 @@ class ode(Generic[Unpack[_Ts]]):
     @property
     def y(self, /) -> float: ...
     def integrate(self, /, t: float, step: bool = False, relax: bool = False) -> float: ...
-    def set_initial_value(self, /, y: _ArrayLikeNumber_co, t: float = 0.0) -> Self: ...
+    def set_initial_value(self, /, y: onp.ToComplex | onp.ToComplexND, t: float = 0.0) -> Self: ...
     def set_integrator(self, /, name: str, **integrator_params: Unpack[_IntegratorParams]) -> Self: ...
     def set_f_params(self, /, *args: Unpack[_Ts]) -> Self: ...
     def set_jac_params(self, /, *args: Unpack[_Ts]) -> Self: ...
@@ -113,7 +111,7 @@ class IntegratorBase(Generic[_SCT_co]):
         self,
         /,
         f: Callable[..., _SCT_co],
-        jac: Callable[..., npt.NDArray[_SCT_co]] | None,
+        jac: Callable[..., onp.ArrayND[_SCT_co]] | None,
         y0: complex,
         t0: float,
         t1: float,
@@ -124,7 +122,7 @@ class IntegratorBase(Generic[_SCT_co]):
         self,
         /,
         f: Callable[..., _SCT_co],
-        jac: Callable[..., npt.NDArray[_SCT_co]],
+        jac: Callable[..., onp.ArrayND[_SCT_co]],
         y0: complex,
         t0: float,
         t1: float,
@@ -135,7 +133,7 @@ class IntegratorBase(Generic[_SCT_co]):
         self,
         /,
         f: Callable[..., _SCT_co],
-        jac: Callable[..., npt.NDArray[_SCT_co]],
+        jac: Callable[..., onp.ArrayND[_SCT_co]],
         y0: complex,
         t0: float,
         t1: float,
@@ -161,7 +159,7 @@ class vode(IntegratorBase[_SCT_co], Generic[_SCT_co]):
     initialized: bool
     rwork: onp.Array1D[np.float64]
     iwork: onp.Array1D[np.int32]
-    call_args: list[float | npt.NDArray[np.float64] | npt.NDArray[np.int32]]
+    call_args: list[float | onp.ArrayND[np.float64] | onp.ArrayND[np.int32]]
 
     def __init__(
         self,
@@ -182,7 +180,7 @@ class vode(IntegratorBase[_SCT_co], Generic[_SCT_co]):
 class zvode(vode[np.complex128]):
     active_global_handle: int
     zwork: onp.Array1D[np.complex128]
-    call_args: list[float | npt.NDArray[np.complex128] | npt.NDArray[np.float64] | npt.NDArray[np.int32]]  # type: ignore[assignment] # pyright: ignore[reportIncompatibleVariableOverride]
+    call_args: list[float | onp.ArrayND[np.complex128] | onp.ArrayND[np.float64] | onp.ArrayND[np.int32]]  # type: ignore[assignment] # pyright: ignore[reportIncompatibleVariableOverride]
     initialized: bool
 
 class dopri5(IntegratorBase[np.float64]):
@@ -204,7 +202,7 @@ class dopri5(IntegratorBase[np.float64]):
     iout: int
     work: onp.Array1D[np.float64]
     iwork: onp.Array1D[np.int32]
-    call_args: list[float | Callable[..., Literal[0, -1, 1]] | npt.NDArray[np.float64] | npt.NDArray[np.int32]]
+    call_args: list[float | Callable[..., Literal[0, -1, 1]] | onp.ArrayND[np.float64] | onp.ArrayND[np.int32]]
 
     def __init__(
         self,

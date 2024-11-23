@@ -2,10 +2,8 @@ from collections.abc import Callable
 from typing import Any, Concatenate, Final, Generic, Literal, TypeAlias, TypeVar
 
 import numpy as np
-import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeNumber_co
 from scipy._typing import Untyped, UntypedCallable
 from ._optimize import OptimizeResult
 
@@ -16,7 +14,7 @@ _Flag: TypeAlias = Literal["converged", "sign error", "convergence error", "valu
 _Float: TypeAlias = float | np.float64
 _Floating: TypeAlias = float | np.floating[Any]
 
-_AnyRoot: TypeAlias = complex | np.inexact[Any] | npt.NDArray[np.inexact[Any]]
+_AnyRoot: TypeAlias = complex | np.inexact[Any] | onp.ArrayND[np.inexact[Any]]
 _RootT_co = TypeVar("_RootT_co", covariant=True, bound=_AnyRoot, default=_Float)
 
 _Fn_f_0d: TypeAlias = Callable[Concatenate[float, ...], _Float] | Callable[Concatenate[np.float64, ...], _Floating]
@@ -98,17 +96,17 @@ def results_c(
 # TODO: overload `full_output`: `falsy -> root`, `truthy -> (root, r, converged, zero_der)`
 def newton(
     func: UntypedCallable,
-    x0: _ArrayLikeNumber_co,
+    x0: onp.ToFloat | onp.ToFloatND,
     fprime: UntypedCallable | None = None,
     args: tuple[object, ...] = (),
     tol: _Floating = 1.48e-08,
     maxiter: op.CanIndex = 50,
     fprime2: UntypedCallable | None = None,
-    x1: _ArrayLikeNumber_co | None = None,
+    x1: onp.ToComplexND | None = None,
     rtol: _Floating = 0.0,
     full_output: op.CanBool = False,
     disp: op.CanBool = True,
-) -> _Float | tuple[_Float, RootResults, npt.NDArray[np.bool_], npt.NDArray[np.bool_]]: ...
+) -> _Float | tuple[_Float, RootResults, onp.ArrayND[np.bool_], onp.ArrayND[np.bool_]]: ...
 
 # TODO: overload `full_output`: falsy | truthy => root | (root, r)
 def bisect(
