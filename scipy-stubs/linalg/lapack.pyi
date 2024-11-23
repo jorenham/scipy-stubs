@@ -13,5 +13,5 @@ def get_lapack_funcs(
     names: Iterable[str] | str,
     arrays: Sequence[npt.NDArray[np.generic]] = (),
     dtype: npt.DTypeLike | None = None,
-    ilp64: Literal[True, False, "preferred"] = False,
+    ilp64: Literal["preferred"] | bool = False,
 ) -> list[spt._FortranFunction] | spt._FortranFunction: ...

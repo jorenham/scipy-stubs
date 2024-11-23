@@ -21,5 +21,5 @@ def get_blas_funcs(
     names: Iterable[str] | str,
     arrays: Sequence[npt.NDArray[np.generic]] = (),
     dtype: npt.DTypeLike | None = None,
-    ilp64: Literal[False, True, "preferred"] = False,
+    ilp64: Literal["preferred"] | bool = False,
 ) -> list[spt._FortranFunction] | spt._FortranFunction: ...

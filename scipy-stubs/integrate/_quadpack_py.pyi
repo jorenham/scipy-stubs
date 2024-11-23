@@ -17,8 +17,8 @@ _T_co = TypeVar("_T_co", covariant=True)
 _T_f_contra = TypeVar("_T_f_contra", contravariant=True, default=float)
 _BT_co = TypeVar("_BT_co", bound=bool, covariant=True, default=bool)
 
-_Falsy: TypeAlias = Literal[0, False, None]
-_Truthy: TypeAlias = Literal[1, True]
+_Falsy: TypeAlias = Literal[False, 0] | None
+_Truthy: TypeAlias = Literal[True, 1]
 
 # NOTE: Technically `integer[Any]` and `bool_` are also allowed, but there's no valid usecase for that.
 _IntLike: TypeAlias = int | np.integer[Any]

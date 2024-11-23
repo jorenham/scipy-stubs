@@ -4,7 +4,7 @@ from typing_extensions import CapsuleType, LiteralString, Never
 
 import numpy as np
 
-_X_b: TypeAlias = Literal[False, 0, True, 1] | np.bool_
+_X_b: TypeAlias = bool | np.bool_ | Literal[0, 1]
 _X_i: TypeAlias = int | np.intp
 _X_f: TypeAlias = float | np.float64
 _X_c: TypeAlias = complex | np.complex128

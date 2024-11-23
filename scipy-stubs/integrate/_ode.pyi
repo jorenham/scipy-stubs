@@ -96,9 +96,9 @@ class IntegratorConcurrencyError(RuntimeError):
 
 class IntegratorBase(Generic[_SCT_co]):
     runner: ClassVar[Callable[..., tuple[Any, ...]] | None]  # fortran function or unavailable
-    supports_run_relax: ClassVar[Literal[0, 1, None]] = None
-    supports_step: ClassVar[Literal[0, 1, None]] = None
-    supports_solout: ClassVar[bool]
+    supports_run_relax: ClassVar[Literal[0, 1] | None] = None
+    supports_step: ClassVar[Literal[0, 1] | None] = None
+    supports_solout: ClassVar[bool] = ...
     scalar: ClassVar[type] = ...
 
     handle: int
