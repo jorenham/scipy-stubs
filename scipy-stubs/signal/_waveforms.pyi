@@ -13,9 +13,10 @@ _SCT = TypeVar("_SCT", bound=np.generic)
 
 _Truthy: TypeAlias = Literal[1, True]
 _Falsy: TypeAlias = Literal[0, False]
+_Array_f8: TypeAlias = npt.NDArray[np.float64]
 
-def sawtooth(t: onp.ToFloatND, width: onp.ToInt = 1) -> npt.NDArray[np.float64]: ...
-def square(t: onp.ToFloatND, duty: onp.ToFloat = 0.5) -> npt.NDArray[np.float64]: ...
+def sawtooth(t: onp.ToFloatND, width: onp.ToInt = 1) -> _Array_f8: ...
+def square(t: onp.ToFloatND, duty: onp.ToFloat = 0.5) -> _Array_f8: ...
 
 #
 @overload  # retquad: False = ..., retenv: False = ...
@@ -27,7 +28,7 @@ def gausspulse(
     tpr: onp.ToInt = -60,
     retquad: _Falsy = False,
     retenv: _Falsy = False,
-) -> npt.NDArray[np.float64]: ...
+) -> _Array_f8: ...
 @overload  # retquad: False = ..., retenv: True (keyword)
 def gausspulse(
     t: onp.ToFloatND,
@@ -38,7 +39,7 @@ def gausspulse(
     retquad: _Falsy = False,
     *,
     retenv: _Truthy,
-) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]: ...
+) -> tuple[_Array_f8, _Array_f8]: ...
 @overload  # retquad: False (positional), retenv: False (positional)
 def gausspulse(
     t: onp.ToFloatND,
@@ -48,7 +49,7 @@ def gausspulse(
     tpr: onp.ToInt,
     retquad: _Falsy,
     retenv: _Truthy,
-) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]: ...
+) -> tuple[_Array_f8, _Array_f8]: ...
 @overload  # retquad: True (positional), retenv: False = ...
 def gausspulse(
     t: onp.ToFloatND,
@@ -58,7 +59,7 @@ def gausspulse(
     tpr: onp.ToInt,
     retquad: _Truthy,
     retenv: _Falsy = False,
-) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]: ...
+) -> tuple[_Array_f8, _Array_f8]: ...
 @overload  # retquad: True (keyword), retenv: False = ...
 def gausspulse(
     t: onp.ToFloatND,
@@ -69,7 +70,7 @@ def gausspulse(
     *,
     retquad: _Truthy,
     retenv: _Falsy = False,
-) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]: ...
+) -> tuple[_Array_f8, _Array_f8]: ...
 @overload  # retquad: True (positional), retenv: True (positional/keyword)
 def gausspulse(
     t: onp.ToFloatND,
@@ -79,9 +80,7 @@ def gausspulse(
     tpr: onp.ToInt,
     retquad: _Truthy,
     retenv: _Truthy,
-) -> tuple[
-    npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]
-]: ...
+) -> tuple[_Array_f8, _Array_f8, _Array_f8]: ...
 @overload  # retquad: True (keyword), retenv: True
 def gausspulse(
     t: onp.ToFloatND,
@@ -92,9 +91,7 @@ def gausspulse(
     *,
     retquad: _Truthy,
     retenv: _Truthy,
-) -> tuple[
-    npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]
-]: ...
+) -> tuple[_Array_f8, _Array_f8, _Array_f8]: ...
 
 # float16 -> float16, float32 -> float32, ... -> float64
 def chirp(
@@ -110,7 +107,7 @@ def sweep_poly(
     t: onp.ToFloatND,
     poly: onp.ToFloatND,
     phi: onp.ToInt = 0,
-) -> npt.NDArray[np.float64]: ...
+) -> _Array_f8: ...
 
 #
 @overload  # dtype is not given
@@ -118,7 +115,7 @@ def unit_impulse(
     shape: _ShapeLike,
     idx: op.CanIndex | Iterable[op.CanIndex] | Literal["mid"] | None = None,
     dtype: type[float] = float,
-) -> npt.NDArray[np.float64]: ...
+) -> _Array_f8: ...
 @overload  # dtype is given
 def unit_impulse(
     shape: _ShapeLike,
