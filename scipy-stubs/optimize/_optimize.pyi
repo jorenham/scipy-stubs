@@ -4,7 +4,6 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
 from scipy._lib._util import _RichResult
 from scipy._typing import AnyBool, Seed
 from ._linesearch import line_search_wolfe2 as line_search
@@ -41,43 +40,43 @@ _RT = TypeVar("_RT")
 
 _Fn1: TypeAlias = Callable[Concatenate[_XT, ...], _YT]
 _Fn1_0d: TypeAlias = _Fn1[float, _YT] | _Fn1[np.float64, _YT]
-_Fn1_1d: TypeAlias = _Fn1[_Array_1d_f8, _YT]
+_Fn1_1d: TypeAlias = _Fn1[_Float1D, _YT]
 _Fn2: TypeAlias = Callable[Concatenate[_XT, _PT, ...], _YT]
-_Callback_1d: TypeAlias = Callable[[_Array_1d_f8], None]
+_Callback_1d: TypeAlias = Callable[[_Float1D], None]
 
 _Falsy: TypeAlias = Literal[0, False]
 _Truthy: TypeAlias = Literal[1, True]
 
 _Scalar: TypeAlias = complex | np.number[Any] | np.bool_
-_Scalar_f: TypeAlias = float | np.floating[Any]
-_Scalar_f8: TypeAlias = float | np.float64  # equivalent to `np.float64` in `numpy>=2.2`
 
 _Array: TypeAlias = onp.ArrayND[np.number[Any] | np.bool_ | np.object_]
 _Array_f: TypeAlias = onp.ArrayND[np.floating[Any]]
 _Array_f_co: TypeAlias = onp.ArrayND[np.floating[Any] | np.integer[Any] | np.bool_]
 _Array_1d: TypeAlias = onp.Array1D[np.number[Any] | np.bool_]
-_Array_1d_i0: TypeAlias = onp.Array1D[np.intp]
-_Array_1d_f8: TypeAlias = onp.Array1D[np.float64]
-_Array_2d_f8: TypeAlias = onp.Array2D[np.float64]
+
+_Int1D: TypeAlias = onp.Array1D[np.intp]
+_Float: TypeAlias = float | np.float64  # equivalent to `np.float64` in `numpy>=2.2`
+_Float1D: TypeAlias = onp.Array1D[np.float64]
+_Float2D: TypeAlias = onp.Array2D[np.float64]
 
 _Args: TypeAlias = tuple[object, ...]
 _Brack: TypeAlias = tuple[float, float] | tuple[float, float, float]
 _Disp: TypeAlias = Literal[0, 1, 2, 3] | bool | np.bool_
 _BracketInfo: TypeAlias = tuple[
-    _Scalar_f8, _Scalar_f8, _Scalar_f8,  # xa, xb, xc
-    _Scalar_f8, _Scalar_f8, _Scalar_f8,  # fa, fb, fx
+    _Float, _Float, _Float,  # xa, xb, xc
+    _Float, _Float, _Float,  # fa, fb, fx
     int,  # funcalls
 ]  # fmt: skip
 _WarnFlag: TypeAlias = Literal[0, 1, 2, 3, 4]
-_AllVecs: TypeAlias = list[_Array_1d_i0 | _Array_1d_f8]
+_AllVecs: TypeAlias = list[_Int1D | _Float1D]
 
-_XT_contra = TypeVar("_XT_contra", contravariant=True, bound=_Array_1d, default=_Array_1d_f8)
-_ValueT_co = TypeVar("_ValueT_co", covariant=True, bound=_Scalar_f, default=_Scalar_f8)
-_JacT_co = TypeVar("_JacT_co", covariant=True, bound=_Array_f, default=_Array_1d_f8)
+_XT_contra = TypeVar("_XT_contra", contravariant=True, bound=_Array_1d, default=_Float1D)
+_ValueT_co = TypeVar("_ValueT_co", covariant=True, bound=float | np.floating[Any], default=_Float)
+_JacT_co = TypeVar("_JacT_co", covariant=True, bound=_Array_f, default=_Float1D)
 
 @type_check_only
 class _DoesFMin(Protocol):
-    def __call__(self, func: _Fn1_1d, x0: _Array_1d_f8, /, *, args: _Args) -> _Array_f: ...
+    def __call__(self, func: _Fn1_1d, x0: _Float1D, /, *, args: _Args) -> _Array_f: ...
 
 ###
 
@@ -109,8 +108,8 @@ class Brent(Generic[_ValueT_co]):
     tol: Final[float]
     maxiter: Final[int]
 
-    xmin: _Scalar_f8 | None
-    fval: _Scalar_f8 | None
+    xmin: _Float | None
+    fval: _Float | None
     iter: int
     funcalls: int
     disp: _Disp
@@ -130,13 +129,13 @@ class Brent(Generic[_ValueT_co]):
     def get_bracket_info(self, /) -> _BracketInfo: ...
     def optimize(self, /) -> None: ...
     @overload
-    def get_result(self, /, full_output: _Falsy = False) -> _Scalar_f8: ...
+    def get_result(self, /, full_output: _Falsy = False) -> _Float: ...
     @overload
-    def get_result(self, /, full_output: _Truthy) -> tuple[_Scalar_f8, _Scalar_f8, int, int]: ...  # xmin, fval, itere, funcalls
+    def get_result(self, /, full_output: _Truthy) -> tuple[_Float, _Float, int, int]: ...  # xmin, fval, itere, funcalls
 
 # undocumented
 @overload
-def is_finite_scalar(x: _Scalar) -> np.bool_: ...
+def is_finite_scalar(x: onp.ToScalar) -> np.bool_: ...
 @overload  # returns a `np.ndarray` of `size = 1`, but could have any `ndim`
 def is_finite_scalar(x: _Array) -> Literal[False] | onp.Array[tuple[Literal[1], ...], np.bool_]: ...
 
@@ -146,24 +145,24 @@ def vecnorm(x: _Scalar, ord: onp.ToFloat = 2) -> onp.ToFloat: ...
 @overload
 def vecnorm(x: _Array, ord: onp.ToInt = 2) -> _Array_f_co: ...
 @overload
-def vecnorm(x: _ArrayLikeNumber_co, ord: onp.ToInt = 2) -> onp.ToFloat: ...
+def vecnorm(x: onp.ToFloatND, ord: onp.ToInt = 2) -> onp.ToFloat: ...
 @overload
-def vecnorm(x: _ArrayLikeNumber_co, ord: onp.ToFloat = 2) -> onp.ToFloat | _Array_f_co: ...
+def vecnorm(x: onp.ToComplexND, ord: onp.ToFloat = 2) -> onp.ToFloat | _Array_f_co: ...
 
 # undocumented
 def approx_fhess_p(
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     p: onp.ToFloat,
-    fprime: _Fn1[_Array_1d_f8, _Array_f_co],
+    fprime: _Fn1[_Float1D, _Array_f_co],
     epsilon: onp.ToFloat | _Array_f_co,  # scalar or 1d ndarray
     *args: object,
-) -> _Array_1d_f8: ...
+) -> _Float1D: ...
 
 #
 @overload  # full_output: False = ..., retall: False = ...
 def fmin(
     func: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -173,12 +172,12 @@ def fmin(
     disp: _Disp = 1,
     retall: _Falsy = 0,
     callback: _Callback_1d | None = None,
-    initial_simplex: _ArrayLikeFloat_co | None = None,
-) -> _Array_1d_f8: ...
+    initial_simplex: onp.ToFloat2D | None = None,
+) -> _Float1D: ...
 @overload  # full_output: False = ..., retall: True (keyword)
 def fmin(
     func: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -189,12 +188,12 @@ def fmin(
     *,
     retall: _Truthy,
     callback: _Callback_1d | None = None,
-    initial_simplex: _ArrayLikeFloat_co | None = None,
-) -> tuple[_Array_1d_f8, _AllVecs]: ...
+    initial_simplex: onp.ToFloat2D | None = None,
+) -> tuple[_Float1D, _AllVecs]: ...
 @overload  # full_output: True  (keyword), retall: False = ...
 def fmin(
     func: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -205,12 +204,12 @@ def fmin(
     disp: _Disp = 1,
     retall: _Falsy = 0,
     callback: _Callback_1d | None = None,
-    initial_simplex: _ArrayLikeFloat_co | None = None,
-) -> tuple[_Array_1d_f8, onp.ToFloat, int, int, _WarnFlag]: ...  # x, fun, nit, nfev, status
+    initial_simplex: onp.ToFloat2D | None = None,
+) -> tuple[_Float1D, onp.ToFloat, int, int, _WarnFlag]: ...  # x, fun, nit, nfev, status
 @overload  # full_output: True  (keyword), retall: True
 def fmin(
     func: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -221,19 +220,19 @@ def fmin(
     disp: _Disp = 1,
     retall: _Truthy,
     callback: _Callback_1d | None = None,
-    initial_simplex: _ArrayLikeFloat_co | None = None,
-) -> tuple[_Array_1d_f8, onp.ToFloat, int, int, _WarnFlag, _AllVecs]: ...  # x, fun, nit, nfev, status, allvecs
+    initial_simplex: onp.ToFloat2D | None = None,
+) -> tuple[_Float1D, onp.ToFloat, int, int, _WarnFlag, _AllVecs]: ...  # x, fun, nit, nfev, status, allvecs
 
 #
 @overload  # full_output: False = ..., retall: False = ...
 def fmin_bfgs(
     f: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     fprime: _Fn1_1d[_Array_f_co] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _Array_f_co = ...,
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
     maxiter: int | None = None,
     full_output: _Falsy = 0,
     disp: _Disp = 1,
@@ -242,17 +241,17 @@ def fmin_bfgs(
     xrtol: onp.ToFloat = 0,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-    hess_inv0: _ArrayLikeFloat_co | None = None,
-) -> _Array_1d_f8: ...
+    hess_inv0: onp.ToFloat2D | None = None,
+) -> _Float1D: ...
 @overload  # full_output: False = ..., retall: True  (keyword)
 def fmin_bfgs(
     f: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     fprime: _Fn1_1d[_Array_f_co] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _Array_f_co = ...,
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
     maxiter: int | None = None,
     full_output: _Falsy = 0,
     disp: _Disp = 1,
@@ -262,17 +261,17 @@ def fmin_bfgs(
     xrtol: onp.ToFloat = 0,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-    hess_inv0: _ArrayLikeFloat_co | None = None,
-) -> tuple[_Array_1d_f8, _AllVecs]: ...
+    hess_inv0: onp.ToFloat2D | None = None,
+) -> tuple[_Float1D, _AllVecs]: ...
 @overload  # full_output: True (keyword), retall: False = ...
 def fmin_bfgs(
     f: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     fprime: _Fn1_1d[_Array_f_co] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _Array_f_co = ...,
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
     maxiter: int | None = None,
     *,
     full_output: _Truthy,
@@ -282,17 +281,17 @@ def fmin_bfgs(
     xrtol: onp.ToFloat = 0,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-    hess_inv0: _ArrayLikeFloat_co | None = None,
-) -> tuple[_Array_1d_f8, _Scalar_f8, _Array_1d_f8, _Array_2d_f8, int, int, _WarnFlag]: ...
+    hess_inv0: onp.ToFloat2D | None = None,
+) -> tuple[_Float1D, _Float, _Float1D, _Float2D, int, int, _WarnFlag]: ...
 @overload  # full_output: True (keyword), retall: True (keyword)
 def fmin_bfgs(
     f: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     fprime: _Fn1_1d[_Array_f_co] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _Array_f_co = ...,
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
     maxiter: int | None = None,
     *,
     full_output: _Truthy,
@@ -302,14 +301,14 @@ def fmin_bfgs(
     xrtol: onp.ToFloat = 0,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-    hess_inv0: _ArrayLikeFloat_co | None = None,
-) -> tuple[_Array_1d_f8, _Scalar_f8, _Array_1d_f8, _Array_2d_f8, int, int, _WarnFlag, _AllVecs]: ...
+    hess_inv0: onp.ToFloat2D | None = None,
+) -> tuple[_Float1D, _Float, _Float1D, _Float2D, int, int, _WarnFlag, _AllVecs]: ...
 
 #
 @overload  # full_output: False = ..., retall: False = ...
 def fmin_cg(
     f: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     fprime: _Fn1_1d[_Array_f_co] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
@@ -322,11 +321,11 @@ def fmin_cg(
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-) -> _Array_1d_f8: ...
+) -> _Float1D: ...
 @overload  # full_output: False = ..., retall: True  (keyword)
 def fmin_cg(
     f: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     fprime: _Fn1_1d[_Array_f_co] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
@@ -340,11 +339,11 @@ def fmin_cg(
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-) -> tuple[_Array_1d_f8, _AllVecs]: ...
+) -> tuple[_Float1D, _AllVecs]: ...
 @overload  # full_output: True (keyword), retall: False = ...
 def fmin_cg(
     f: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     fprime: _Fn1_1d[_Array_f_co] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
@@ -358,11 +357,11 @@ def fmin_cg(
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-) -> tuple[_Array_1d_f8, _Scalar_f8, int, int, _WarnFlag]: ...
+) -> tuple[_Float1D, _Float, int, int, _WarnFlag]: ...
 @overload  # full_output: True (keyword), retall: True (keyword)
 def fmin_cg(
     f: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     fprime: _Fn1_1d[_Array_f_co] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
@@ -376,15 +375,13 @@ def fmin_cg(
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-) -> tuple[_Array_1d_f8, _Scalar_f8, int, int, _WarnFlag, _AllVecs]: ...
-
-# TODO(jorenham): overload `full_output` / `retall`
+) -> tuple[_Float1D, _Float, int, int, _WarnFlag, _AllVecs]: ...
 @overload  # full_output: False = ..., retall: False = ...
 def fmin_ncg(
     f: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     fprime: _Fn1_1d[_Array_f_co],
-    fhess_p: _Fn2[_Array_1d_f8, _Array_1d_f8, _ArrayLikeFloat_co] | None = None,
+    fhess_p: _Fn2[_Float1D, _Float1D] | None = None,
     fhess: _Fn1_1d[_Array_f_co] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
@@ -396,13 +393,13 @@ def fmin_ncg(
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-) -> _Array_1d_f8: ...
+) -> _Float1D: ...
 @overload  # full_output: False = ..., retall: True  (keyword)
 def fmin_ncg(
     f: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     fprime: _Fn1_1d[_Array_f_co],
-    fhess_p: _Fn2[_Array_1d_f8, _Array_1d_f8, _ArrayLikeFloat_co] | None = None,
+    fhess_p: _Fn2[_Float1D, _Float1D] | None = None,
     fhess: _Fn1_1d[_Array_f_co] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
@@ -415,13 +412,13 @@ def fmin_ncg(
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-) -> tuple[_Array_1d_f8, _AllVecs]: ...
+) -> tuple[_Float1D, _AllVecs]: ...
 @overload  # full_output: True (keyword), retall: False = ...
 def fmin_ncg(
     f: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     fprime: _Fn1_1d[_Array_f_co],
-    fhess_p: _Fn2[_Array_1d_f8, _Array_1d_f8, _ArrayLikeFloat_co] | None = None,
+    fhess_p: _Fn2[_Float1D, _Float1D] | None = None,
     fhess: _Fn1_1d[_Array_f_co] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
@@ -434,13 +431,13 @@ def fmin_ncg(
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-) -> tuple[_Array_1d_f8, _Scalar_f8, int, int, int, _WarnFlag]: ...
+) -> tuple[_Float1D, _Float, int, int, int, _WarnFlag]: ...
 @overload  # full_output: True (keyword), retall: True (keyword)
 def fmin_ncg(
     f: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     fprime: _Fn1_1d[_Array_f_co],
-    fhess_p: _Fn2[_Array_1d_f8, _Array_1d_f8, _ArrayLikeFloat_co] | None = None,
+    fhess_p: _Fn2[_Float1D, _Float1D] | None = None,
     fhess: _Fn1_1d[_Array_f_co] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
@@ -453,13 +450,13 @@ def fmin_ncg(
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-) -> tuple[_Array_1d_f8, _Scalar_f8, int, int, int, _WarnFlag, _AllVecs]: ...
+) -> tuple[_Float1D, _Float, int, int, int, _WarnFlag, _AllVecs]: ...
 
 #
 @overload  # full_output: False = ..., retall: False = ...
 def fmin_powell(
     func: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -469,12 +466,12 @@ def fmin_powell(
     disp: _Disp = 1,
     retall: _Falsy = 0,
     callback: _Callback_1d | None = None,
-    direc: _ArrayLikeFloat_co | None = None,
-) -> _Array_1d_f8: ...
+    direc: onp.ToFloat2D | None = None,
+) -> _Float1D: ...
 @overload  # full_output: False = ..., retall: True  (keyword)
 def fmin_powell(
     func: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -485,12 +482,12 @@ def fmin_powell(
     *,
     retall: _Truthy,
     callback: _Callback_1d | None = None,
-    direc: _ArrayLikeFloat_co | None = None,
-) -> tuple[_Array_1d_f8, _AllVecs]: ...
+    direc: onp.ToFloat2D | None = None,
+) -> tuple[_Float1D, _AllVecs]: ...
 @overload  # full_output: True (keyword), retall: False = ...
 def fmin_powell(
     func: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -501,12 +498,12 @@ def fmin_powell(
     disp: _Disp = 1,
     retall: _Falsy = 0,
     callback: _Callback_1d | None = None,
-    direc: _ArrayLikeFloat_co | None = None,
-) -> tuple[_Array_1d_f8, _Scalar_f8, _Array_2d_f8, int, int, _WarnFlag]: ...
+    direc: onp.ToFloat2D | None = None,
+) -> tuple[_Float1D, _Float, _Float2D, int, int, _WarnFlag]: ...
 @overload  # full_output: True (keyword), retall: True (keyword)
 def fmin_powell(
     func: _Fn1_1d,
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -517,8 +514,8 @@ def fmin_powell(
     disp: _Disp = 1,
     retall: _Truthy,
     callback: _Callback_1d | None = None,
-    direc: _ArrayLikeFloat_co | None = None,
-) -> tuple[_Array_1d_f8, _Scalar_f8, _Array_2d_f8, int, int, _WarnFlag, _AllVecs]: ...
+    direc: onp.ToFloat2D | None = None,
+) -> tuple[_Float1D, _Float, _Float2D, int, int, _WarnFlag, _AllVecs]: ...
 
 #
 @overload  # full_output: False = ...
@@ -531,7 +528,7 @@ def fminbound(
     maxfun: int = 500,
     full_output: _Falsy = 0,
     disp: _Disp = 1,
-) -> _Scalar_f8: ...
+) -> _Float: ...
 @overload  # full_output: True (keyword)
 def fminbound(
     func: _Fn1_0d,
@@ -543,7 +540,7 @@ def fminbound(
     *,
     full_output: _Truthy,
     disp: _Disp = 1,
-) -> tuple[_Scalar_f8, _Scalar_f8, _WarnFlag, int]: ...  # x, fun, status, nfev
+) -> tuple[_Float, _Float, _WarnFlag, int]: ...  # x, fun, status, nfev
 
 #
 @overload  # full_output: False = ...
@@ -556,7 +553,7 @@ def brute(
     finish: _DoesFMin | None = ...,  # default: `fmin`
     disp: AnyBool = False,
     workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
-) -> _Array_1d_f8: ...
+) -> _Float1D: ...
 @overload  # full_output: True (keyword)
 def brute(
     func: _Fn1_1d,
@@ -569,7 +566,7 @@ def brute(
     disp: AnyBool = False,
     workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
 ) -> tuple[
-    _Array_1d_f8,
+    _Float1D,
     np.float64,
     onp.Array[tuple[Literal[2], int, int], np.float64],
     onp.Array2D[np.floating[Any]],
@@ -584,7 +581,7 @@ def brent(
     tol: onp.ToFloat = 1.48e-08,
     full_output: _Falsy = 0,
     maxiter: int = 500,
-) -> _Scalar_f8: ...
+) -> _Float: ...
 @overload  # full_output: True (positional)
 def brent(
     func: _Fn1_0d,
@@ -593,7 +590,7 @@ def brent(
     tol: onp.ToFloat,
     full_output: _Truthy,
     maxiter: int = 500,
-) -> tuple[_Scalar_f8, _Scalar_f8, int, int]: ...
+) -> tuple[_Float, _Float, int, int]: ...
 @overload  # full_output: True (keyword)
 def brent(
     func: _Fn1_0d,
@@ -603,7 +600,7 @@ def brent(
     *,
     full_output: _Truthy,
     maxiter: int = 500,
-) -> tuple[_Scalar_f8, _Scalar_f8, int, int]: ...
+) -> tuple[_Float, _Float, int, int]: ...
 
 # TODO(jorenham): overload `full_output`
 @overload  # full_output: False = ...
@@ -614,7 +611,7 @@ def golden(
     tol: onp.ToFloat = ...,
     full_output: _Falsy = 0,
     maxiter: int = 5_000,
-) -> _Scalar_f8: ...
+) -> _Float: ...
 @overload  # full_output: True (positional)
 def golden(
     func: _Fn1_0d,
@@ -623,7 +620,7 @@ def golden(
     tol: onp.ToFloat,
     full_output: _Truthy,
     maxiter: int = 5_000,
-) -> tuple[_Scalar_f8, _Scalar_f8, int]: ...
+) -> tuple[_Float, _Float, int]: ...
 @overload  # full_output: True (keyword)
 def golden(
     func: _Fn1_0d,
@@ -633,7 +630,7 @@ def golden(
     *,
     full_output: _Truthy,
     maxiter: int = 5_000,
-) -> tuple[_Scalar_f8, _Scalar_f8, int]: ...
+) -> tuple[_Float, _Float, int]: ...
 
 #
 def bracket(
@@ -646,10 +643,10 @@ def bracket(
 ) -> _BracketInfo: ...
 
 # rosenbrock
-def rosen(x: _ArrayLikeFloat_co) -> onp.ToFloat: ...
-def rosen_der(x: _ArrayLikeFloat_co) -> _Array_1d_f8: ...
-def rosen_hess(x: _ArrayLikeFloat_co) -> _Array_2d_f8: ...
-def rosen_hess_prod(x: _ArrayLikeFloat_co, p: _ArrayLikeFloat_co) -> _Array_1d_f8: ...
+def rosen(x: onp.ToFloat1D) -> _Float: ...
+def rosen_der(x: onp.ToFloat1D) -> _Float1D: ...
+def rosen_hess(x: onp.ToFloat1D) -> _Float2D: ...
+def rosen_hess_prod(x: onp.ToFloat1D, p: onp.ToFloat1D) -> _Float1D: ...
 
 #
 @overload  # disp: True = ...
@@ -660,20 +657,15 @@ def show_options(solver: Solver | None, method: MethodAll | None, disp: _Falsy) 
 def show_options(solver: Solver | None = None, method: MethodAll | None = None, *, disp: _Falsy) -> str: ...
 
 #
-def approx_fprime(
-    xk: _ArrayLikeFloat_co,
-    f: _Fn1_1d,
-    epsilon: onp.ToFloat | _Array_f_co = ...,
-    *args: object,
-) -> _Array_1d_f8: ...
+def approx_fprime(xk: onp.ToFloat1D, f: _Fn1_1d, epsilon: onp.ToFloat | _Array_f_co = ..., *args: object) -> _Float1D: ...
 
 #
 def check_grad(
     func: _Fn1_1d,
     grad: _Fn1_1d[_Array_f_co],
-    x0: _ArrayLikeFloat_co,
+    x0: onp.ToFloat1D,
     *args: object,
     epsilon: onp.ToFloat = ...,
     direction: Literal["all", "random"] = "all",
     seed: Seed | None = None,
-) -> _Scalar_f8: ...
+) -> _Float: ...

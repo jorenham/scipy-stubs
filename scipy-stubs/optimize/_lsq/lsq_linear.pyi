@@ -1,30 +1,29 @@
-from typing import Final, Literal, TypeAlias, type_check_only
+from typing import Any, Final, Literal, TypeAlias, type_check_only
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co
-from scipy._typing import Untyped
 from scipy.optimize import OptimizeResult
 from scipy.optimize._typing import Bound
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
-_Scalar_f8: TypeAlias = float | np.float64
-_Vector_i0: TypeAlias = onp.Array1D[np.intp]
-_Vector_f8: TypeAlias = onp.Array1D[np.float64]
+_Int1D: TypeAlias = onp.Array1D[np.intp]
 
-_BoundsLike: TypeAlias = tuple[_ArrayLikeFloat_co, _ArrayLikeFloat_co] | Bound
+_Float: TypeAlias = float | np.float64
+_Float1D: TypeAlias = onp.Array1D[np.float64]
+
+_ToBounds: TypeAlias = tuple[onp.ToFloat | onp.ToFloat1D, onp.ToFloat | onp.ToFloat1D] | Bound
 _TerminationStatus: TypeAlias = Literal[-1, 0, 1, 2, 3]
 
 @type_check_only
 class _OptimizeResult(OptimizeResult):
-    x: _Vector_f8
-    fun: _Vector_f8
-    const: _Scalar_f8
-    optimality: _Scalar_f8
-    active_mask: _Vector_i0
-    unbounded_sol: tuple[Untyped, ...]
+    x: _Float1D
+    fun: _Float1D
+    const: _Float
+    optimality: _Float
+    active_mask: _Int1D
+    unbounded_sol: tuple[onp.ToFloat | onp.ArrayND[np.number[Any]], ...]
     nit: int
     status: _TerminationStatus
     message: str
@@ -35,9 +34,9 @@ class _OptimizeResult(OptimizeResult):
 TERMINATION_MESSAGES: Final[dict[_TerminationStatus, str]] = ...
 
 def lsq_linear(
-    A: _ArrayLikeFloat_co | _spbase | LinearOperator,
-    b: _ArrayLikeFloat_co,
-    bounds: _BoundsLike = ...,
+    A: onp.ToFloat2D | _spbase | LinearOperator,
+    b: onp.ToFloat1D,
+    bounds: _ToBounds = ...,  # (inf, inf)
     method: Literal["trf", "bvls"] = "trf",
     tol: onp.ToFloat = 1e-10,
     lsq_solver: Literal["exact", "lsmr"] | None = None,
@@ -49,4 +48,4 @@ def lsq_linear(
 ) -> _OptimizeResult: ...
 
 # undocumented
-def prepare_bounds(bounds: _BoundsLike, n: op.CanIndex) -> tuple[_Scalar_f8, _Scalar_f8] | tuple[_Vector_f8, _Vector_f8]: ...
+def prepare_bounds(bounds: _ToBounds, n: op.CanIndex) -> tuple[_Float, _Float] | tuple[_Float1D, _Float1D]: ...
