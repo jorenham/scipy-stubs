@@ -1,6 +1,7 @@
 from typing import Any, Final, TypeAlias
 
 import numpy as np
+import numpy.typing as npt
 import optype.numpy as onp
 from scipy.sparse import sparray, spmatrix
 
@@ -11,7 +12,7 @@ DTYPE: Final[type[np.float64]] = ...
 def validate_graph(
     csgraph: _GraphLike,
     directed: bool,
-    dtype: onp.AnyFloatingDType = ...,
+    dtype: npt.DTypeLike = ...,
     csr_output: bool = True,
     dense_output: bool = True,
     copy_if_dense: bool = False,
