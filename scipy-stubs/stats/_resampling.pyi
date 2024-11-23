@@ -3,9 +3,7 @@ from collections.abc import Callable, Mapping, Sequence
 from typing import Any, Literal, Protocol, TypeAlias, type_check_only
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co
 from scipy._typing import Alternative, Seed
 from ._common import ConfidenceInterval
 
@@ -15,30 +13,32 @@ _BootstrapMethod: TypeAlias = Literal["percentile", "basic", "BCa"]
 
 @type_check_only
 class _RVSCallable(Protocol):
-    def __call__(self, /, *, size: tuple[int, ...]) -> npt.NDArray[np.floating[Any]]: ...
+    def __call__(self, /, *, size: tuple[int, ...]) -> onp.ArrayND[np.floating[Any]]: ...
+
+###
 
 @dataclass
 class BootstrapResult:
     confidence_interval: ConfidenceInterval
-    bootstrap_distribution: npt.NDArray[np.float64]
-    standard_error: float | npt.NDArray[np.float64]
+    bootstrap_distribution: onp.ArrayND[np.float64]
+    standard_error: float | onp.ArrayND[np.float64]
 
 @dataclass
 class MonteCarloTestResult:
-    statistic: float | npt.NDArray[np.float64]
-    pvalue: float | npt.NDArray[np.float64]
-    null_distribution: npt.NDArray[np.float64]
+    statistic: float | onp.ArrayND[np.float64]
+    pvalue: float | onp.ArrayND[np.float64]
+    null_distribution: onp.ArrayND[np.float64]
 
 @dataclass
 class PowerResult:
-    power: float | npt.NDArray[np.float64]
-    pvalues: float | npt.NDArray[np.float64]
+    power: float | onp.ArrayND[np.float64]
+    pvalues: float | onp.ArrayND[np.float64]
 
 @dataclass
 class PermutationTestResult:
-    statistic: float | npt.NDArray[np.float64]
-    pvalue: float | npt.NDArray[np.float64]
-    null_distribution: npt.NDArray[np.float64]
+    statistic: float | onp.ArrayND[np.float64]
+    pvalue: float | onp.ArrayND[np.float64]
+    null_distribution: onp.ArrayND[np.float64]
 
 @dataclass
 class ResamplingMethod:
@@ -59,7 +59,7 @@ class BootstrapMethod(ResamplingMethod):
     method: str = "BCa"
 
 def bootstrap(
-    data: _ArrayLikeFloat_co,
+    data: onp.ToFloatND,
     statistic: Callable[[Any], onp.ToFloat],
     *,
     n_resamples: int = 9999,
@@ -74,7 +74,7 @@ def bootstrap(
     random_state: Seed | None = None,
 ) -> BootstrapResult: ...
 def monte_carlo_test(
-    data: _ArrayLikeFloat_co,
+    data: onp.ToFloatND,
     rvs: _RVSCallable,
     statistic: Callable[[Any], onp.ToFloat],
     *,
@@ -87,16 +87,16 @@ def monte_carlo_test(
 def power(
     test: Callable[..., float | np.floating[Any]],
     rvs: _RVSCallable,
-    n_observations: Sequence[int] | Sequence[npt.NDArray[np.integer[Any]]],
+    n_observations: Sequence[int] | Sequence[onp.ArrayND[np.integer[Any]]],
     *,
-    significance: _ArrayLikeFloat_co = 0.01,
+    significance: onp.ToFloat | onp.ToFloatND = 0.01,
     kwargs: Mapping[str, object] | None = None,
     vectorized: bool | None = None,
     n_resamples: int = 10000,
     batch: int | None = None,
 ) -> PowerResult: ...
 def permutation_test(
-    data: _ArrayLikeFloat_co,
+    data: onp.ToFloatND,
     statistic: Callable[..., onp.ToFloat],
     *,
     permutation_type: str = "independent",

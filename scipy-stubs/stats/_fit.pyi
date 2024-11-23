@@ -3,9 +3,7 @@ from typing import Any, Concatenate, Generic, Literal, NamedTuple, Protocol, Typ
 from typing_extensions import TypeVarTuple, Unpack
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co
 from scipy._typing import Seed
 from scipy.optimize import OptimizeResult
 from ._distn_infrastructure import rv_continuous, rv_continuous_frozen, rv_discrete
@@ -21,7 +19,7 @@ _Bounds: TypeAlias = Mapping[str, tuple[onp.ToFloat, onp.ToFloat]] | Sequence[tu
 _Optimizer: TypeAlias = Callable[Concatenate[Callable[..., onp.ToFloat], ...], OptimizeResult]
 
 _GOFStatName: TypeAlias = Literal["ad", "ks", "cvm", "filliben"]
-_GOFStatFunc: TypeAlias = Callable[[rv_continuous_frozen, npt.NDArray[np.float64]], float | np.float32 | np.float64]
+_GOFStatFunc: TypeAlias = Callable[[rv_continuous_frozen, onp.ArrayND[np.float64]], float | np.float32 | np.float64]
 
 @type_check_only
 class _PXF(Protocol[Unpack[_Ts]]):
@@ -39,11 +37,11 @@ class FitResult(Generic[Unpack[_Ts]]):
         self,
         /,
         dist: rv_continuous | rv_discrete,
-        data: _ArrayLikeFloat_co,
+        data: onp.ToFloatND,
         discrete: bool,
         res: OptimizeResult,
     ) -> None: ...
-    def nllf(self, params: tuple[onp.ToFloat, ...] | None = None, data: _ArrayLikeFloat_co | None = None) -> np.float64: ...
+    def nllf(self, params: tuple[onp.ToFloat, ...] | None = None, data: onp.ToFloatND | None = None) -> np.float64: ...
     def plot(self, ax: _MPL_Axes | None = None, *, plot_type: Literal["hist", "qq", "pp", "cdf"] = "hist") -> _MPL_Axes: ...
 
 class GoodnessOfFitResult(NamedTuple):

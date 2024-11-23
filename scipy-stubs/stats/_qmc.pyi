@@ -5,11 +5,9 @@ from typing import Any, ClassVar, Final, Literal, Protocol, TypeAlias, overload,
 from typing_extensions import Self, TypeVar, override
 
 import numpy as np
-import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 import optype.typing as opt
-from numpy._typing import _ArrayLikeInt
 from scipy._typing import RNG, Seed
 from scipy.spatial.distance import _MetricCallback, _MetricKind
 
@@ -31,14 +29,14 @@ _RNGT = TypeVar("_RNGT", bound=np.random.Generator | np.random.RandomState)
 _SCT0 = TypeVar("_SCT0", bound=np.generic, default=np.float64)
 _SCT_co = TypeVar("_SCT_co", covariant=True, bound=np.generic)
 _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
-_ArrayT_f = TypeVar("_ArrayT_f", bound=npt.NDArray[np.floating[Any]])
+_ArrayT_f = TypeVar("_ArrayT_f", bound=onp.ArrayND[np.floating[Any]])
 _N = TypeVar("_N", bound=int)
 
 # the `__len__` ensures that scalar types like `np.generic` are excluded
 @type_check_only
 class _CanLenArray(Protocol[_SCT_co]):
     def __len__(self, /) -> int: ...
-    def __array__(self, /) -> npt.NDArray[_SCT_co]: ...
+    def __array__(self, /) -> onp.ArrayND[_SCT_co]: ...
 
 _Scalar_f_co: TypeAlias = np.floating[Any] | np.integer[Any] | np.bool_
 _ScalarLike_f: TypeAlias = float | np.floating[Any]
@@ -74,9 +72,9 @@ class QMCEngine(abc.ABC):
     def integers(
         self,
         /,
-        l_bounds: _ArrayLikeInt,
+        l_bounds: onp.ToInt | onp.ToIntND,
         *,
-        u_bounds: _ArrayLikeInt | None = None,
+        u_bounds: onp.ToInt | onp.ToIntND | None = None,
         n: opt.AnyInt = 1,
         endpoint: op.CanBool = False,
         workers: opt.AnyInt = 1,
@@ -137,7 +135,7 @@ class _HypersphereMethod(Protocol):
     def __call__(
         self,
         /,
-        center: npt.NDArray[_Scalar_f_co],
+        center: onp.ArrayND[_Scalar_f_co],
         radius: onp.ToFloat,
         candidates: onp.ToInt = 1,
     ) -> _Array2D: ...
@@ -152,7 +150,7 @@ class PoissonDisk(QMCEngine):
     grid_size: Final[_Array1D[np.int_]]
 
     sample_pool: list[_Array1D]
-    sample_grid: npt.NDArray[np.float32]
+    sample_grid: onp.ArrayND[np.float32]
 
     def __init__(
         self,
@@ -281,7 +279,7 @@ def van_der_corput(
     *,
     start_index: onp.ToInt = 0,
     scramble: op.CanBool = False,
-    permutations: _ArrayLikeInt | None = None,
+    permutations: onp.ToInt | onp.ToIntND | None = None,
     seed: Seed | None = None,
     workers: opt.AnyInt = 1,
 ) -> _Array1D: ...

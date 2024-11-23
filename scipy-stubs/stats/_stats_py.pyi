@@ -7,7 +7,6 @@ from typing_extensions import NamedTuple, Self, TypeVar
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeBool_co, _ArrayLikeFloat_co, _ArrayLikeInt_co
 from scipy._typing import Alternative, NanPolicy, Seed
 from ._resampling import BootstrapMethod, ResamplingMethod
 from ._stats_mstats_common import siegelslopes, theilslopes
@@ -85,16 +84,16 @@ __all__ = [
 
 _SCT = TypeVar("_SCT", bound=np.generic, default=np.generic)
 
-_Int1D: TypeAlias = np.integer[Any]
-_Float1D: TypeAlias = np.floating[Any]
-_Real1D: TypeAlias = _Int1D | _Float1D
+_Int0D: TypeAlias = np.integer[Any]
+_Float0D: TypeAlias = np.floating[Any]
+_Real0D: TypeAlias = _Int0D | _Float0D
 
-_SCT_int = TypeVar("_SCT_int", bound=_Int1D, default=_Int1D)
-_SCT_float = TypeVar("_SCT_float", bound=_Float1D, default=_Float1D)
-_SCT_real = TypeVar("_SCT_real", bound=_Real1D, default=_Real1D)
-_SCT_real_co = TypeVar("_SCT_real_co", covariant=True, bound=_Real1D, default=_Real1D)
+_SCT_int = TypeVar("_SCT_int", bound=_Int0D, default=_Int0D)
+_SCT_float = TypeVar("_SCT_float", bound=_Float0D, default=_Float0D)
+_SCT_real = TypeVar("_SCT_real", bound=_Real0D, default=_Real0D)
+_SCT_real_co = TypeVar("_SCT_real_co", covariant=True, bound=_Real0D, default=_Real0D)
 
-_GenericND: TypeAlias = _SCT | npt.NDArray[_SCT]
+_GenericND: TypeAlias = _SCT | onp.ArrayND[_SCT]
 _IntND: TypeAlias = _GenericND[_SCT_int]
 _FloatND: TypeAlias = _GenericND[_SCT_float]
 _RealND: TypeAlias = _GenericND[_SCT_real]
@@ -108,7 +107,7 @@ _NDT_real_co = TypeVar("_NDT_real_co", covariant=True, bound=float | _RealND, de
 
 @type_check_only
 class _RVSCallable(Protocol):
-    def __call__(self, /, *, size: int | tuple[int, ...]) -> npt.NDArray[np.floating[Any]]: ...
+    def __call__(self, /, *, size: int | tuple[int, ...]) -> onp.ArrayND[np.floating[Any]]: ...
 
 class _SimpleNormal:
     @overload
@@ -205,7 +204,7 @@ class QuantileTestResult:
     statistic_type: int
     pvalue: float
     _alternative: list[str]
-    _x: npt.NDArray[_Real1D]
+    _x: onp.ArrayND[_Real0D]
     _p: float
     def confidence_interval(self, confidence_level: float = 0.95) -> float: ...
 
@@ -224,8 +223,8 @@ class PearsonRResultBase(_TestResultBunch[_NDT_float_co], Generic[_NDT_float_co]
 class PearsonRResult(PearsonRResultBase[_NDT_float_co], Generic[_NDT_float_co]):
     _alternative: Alternative
     _n: int
-    _x: npt.NDArray[_Real1D]
-    _y: npt.NDArray[_Real1D]
+    _x: onp.ArrayND[_Real0D]
+    _y: onp.ArrayND[_Real0D]
     _axis: int
     correlation: _NDT_float_co  # alias for `statistic`
     def __init__(  # pyright: ignore[reportInconsistentConstructor]
@@ -235,8 +234,8 @@ class PearsonRResult(PearsonRResultBase[_NDT_float_co], Generic[_NDT_float_co]):
         pvalue: _NDT_float_co,
         alternative: Alternative,
         n: int,
-        x: npt.NDArray[_Real1D],
-        y: npt.NDArray[_Real1D],
+        x: onp.ArrayND[_Real0D],
+        y: onp.ArrayND[_Real0D],
         axis: int,
     ) -> None: ...
     def confidence_interval(
@@ -335,46 +334,41 @@ class LinregressResult(BaseBunch[np.float64, np.float64, np.float64, float | np.
     ) -> None: ...
 
 def gmean(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     axis: int | None = 0,
     dtype: npt.DTypeLike | None = None,
-    weights: _ArrayLikeFloat_co | None = None,
+    weights: onp.ToFloatND | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> _RealND: ...
 def hmean(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     axis: int | None = 0,
     dtype: npt.DTypeLike | None = None,
     *,
-    weights: _ArrayLikeFloat_co | None = None,
+    weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> _RealND: ...
 def pmean(
-    a: _ArrayLikeFloat_co,
-    p: float | _Real1D,
+    a: onp.ToFloatND,
+    p: float | _Real0D,
     *,
     axis: int | None = 0,
     dtype: npt.DTypeLike | None = None,
-    weights: _ArrayLikeFloat_co | None = None,
+    weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> _RealND: ...
 
 #
-def mode(
-    a: _ArrayLikeFloat_co,
-    axis: int | None = 0,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
-) -> _RealND: ...
+def mode(a: onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False) -> _RealND: ...
 
 #
 def tmean(
-    a: _ArrayLikeFloat_co,
-    limits: tuple[float | _Real1D, float | _Real1D] | None = None,
+    a: onp.ToFloatND,
+    limits: tuple[float | _Real0D, float | _Real0D] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int | None = None,
     *,
@@ -382,7 +376,7 @@ def tmean(
     keepdims: bool = False,
 ) -> _FloatND: ...
 def tvar(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int | None = 0,
@@ -392,8 +386,8 @@ def tvar(
     keepdims: bool = False,
 ) -> _FloatND: ...
 def tmin(
-    a: _ArrayLikeFloat_co,
-    lowerlimit: float | _Real1D | None = None,
+    a: onp.ToFloatND,
+    lowerlimit: float | _Real0D | None = None,
     axis: int | None = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -401,8 +395,8 @@ def tmin(
     keepdims: bool = False,
 ) -> _RealND: ...
 def tmax(
-    a: _ArrayLikeFloat_co,
-    upperlimit: float | _Real1D | None = None,
+    a: onp.ToFloatND,
+    upperlimit: float | _Real0D | None = None,
     axis: int | None = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -410,8 +404,8 @@ def tmax(
     keepdims: bool = False,
 ) -> _RealND: ...
 def tstd(
-    a: _ArrayLikeFloat_co,
-    limits: tuple[float | _Real1D, float | _Real1D] | None = None,
+    a: onp.ToFloatND,
+    limits: tuple[float | _Real0D, float | _Real0D] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int | None = 0,
     ddof: int = 1,
@@ -420,8 +414,8 @@ def tstd(
     keepdims: bool = False,
 ) -> _FloatND: ...
 def tsem(
-    a: _ArrayLikeFloat_co,
-    limits: tuple[float | _Real1D, float | _Real1D] | None = None,
+    a: onp.ToFloatND,
+    limits: tuple[float | _Real0D, float | _Real0D] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int | None = 0,
     ddof: int = 1,
@@ -432,16 +426,16 @@ def tsem(
 
 #
 def moment(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     order: int = 1,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
-    center: float | _Float1D | None = None,
+    center: float | _Float0D | None = None,
     keepdims: bool = False,
 ) -> _FloatND: ...
 def skew(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     axis: int | None = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -449,7 +443,7 @@ def skew(
     keepdims: bool = False,
 ) -> _FloatND: ...
 def kurtosis(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     axis: int | None = 0,
     fisher: bool = True,
     bias: bool = True,
@@ -458,7 +452,7 @@ def kurtosis(
     keepdims: bool = False,
 ) -> _FloatND: ...
 def describe(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     axis: int | None = 0,
     ddof: int = 1,
     bias: bool = True,
@@ -467,7 +461,7 @@ def describe(
 
 #
 def skewtest(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
@@ -475,7 +469,7 @@ def skewtest(
     keepdims: bool = False,
 ) -> SkewtestResult: ...
 def kurtosistest(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
@@ -483,14 +477,14 @@ def kurtosistest(
     keepdims: bool = False,
 ) -> KurtosistestResult: ...
 def normaltest(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: bool = False,
 ) -> NormaltestResult: ...
 def jarque_bera(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     *,
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -499,41 +493,39 @@ def jarque_bera(
 
 #
 def scoreatpercentile(
-    a: _ArrayLikeFloat_co,
-    per: _ArrayLikeFloat_co,
-    limit: tuple[float | _Real1D, float | _Real1D] | tuple[()] = (),
+    a: onp.ToFloat1D,
+    per: onp.ToFloat | onp.ToFloatND,
+    limit: tuple[float | _Real0D, float | _Real0D] | tuple[()] = (),
     interpolation_method: Literal["fraction", "lower", "higher"] = "fraction",
     axis: int | None = None,
 ) -> _FloatND: ...
 def percentileofscore(
-    a: _ArrayLikeFloat_co,
-    score: _ArrayLikeFloat_co,
+    a: onp.ToFloat1D,
+    score: onp.ToFloat | onp.ToFloatND,
     kind: Literal["rank", "weak", "strict", "mean"] = "rank",
     nan_policy: NanPolicy = "propagate",
 ) -> float | np.float64: ...
 
 #
 def cumfreq(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     numbins: int = 10,
-    defaultreallimits: tuple[float | _Real1D, float | _Real1D] | None = None,
-    weights: _ArrayLikeFloat_co | None = None,
+    defaultreallimits: tuple[float | _Real0D, float | _Real0D] | None = None,
+    weights: onp.ToFloatND | None = None,
 ) -> CumfreqResult: ...
 def relfreq(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     numbins: int = 10,
-    defaultreallimits: tuple[float | _Real1D, float | _Real1D] | None = None,
-    weights: _ArrayLikeFloat_co | None = None,
+    defaultreallimits: tuple[float | _Real0D, float | _Real0D] | None = None,
+    weights: onp.ToFloatND | None = None,
 ) -> RelfreqResult: ...
 
 #
-def obrientransform(
-    *samples: _ArrayLikeFloat_co,
-) -> onp.Array2D[_Float1D] | onp.Array1D[np.object_]: ...
+def obrientransform(*samples: onp.ToFloatND) -> onp.Array2D[_Float0D] | onp.Array1D[np.object_]: ...
 
 #
 def sem(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     axis: int | None = 0,
     ddof: int = 1,
     nan_policy: NanPolicy = "propagate",
@@ -541,39 +533,39 @@ def sem(
     keepdims: bool = False,
 ) -> _FloatND: ...
 def zscore(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
-) -> npt.NDArray[_Float1D]: ...
+) -> onp.ArrayND[_Float0D]: ...
 def gzscore(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     *,
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
-) -> npt.NDArray[_Float1D]: ...
+) -> onp.ArrayND[_Float0D]: ...
 def zmap(
-    scores: _ArrayLikeFloat_co,
-    compare: _ArrayLikeFloat_co,
+    scores: onp.ToFloatND,
+    compare: onp.ToFloatND,
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
-) -> npt.NDArray[_Float1D]: ...
+) -> onp.ArrayND[_Float0D]: ...
 
 #
-def gstd(a: _ArrayLikeFloat_co, axis: int | None = 0, ddof: int = 1) -> _FloatND: ...
+def gstd(a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1) -> _FloatND: ...
 def iqr(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     axis: int | Sequence[int] | None = None,
     rng: tuple[float, float] = (25, 75),
-    scale: Literal["normal"] | _ArrayLikeFloat_co = 1.0,
+    scale: Literal["normal"] | onp.ToFloat | onp.ToFloatND = 1.0,
     nan_policy: NanPolicy = "propagate",
     interpolation: _Interpolation = "linear",
     keepdims: bool = False,
 ) -> _FloatND: ...
 def median_abs_deviation(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     axis: int | None = 0,
     center: np.ufunc | Callable[[_NDT_float, int | None], _NDT_float] = ...,
     scale: Literal["normal"] | float = 1.0,
@@ -581,49 +573,49 @@ def median_abs_deviation(
 ) -> _FloatND: ...
 
 #
-def sigmaclip(a: _ArrayLikeFloat_co, low: float = 4.0, high: float = 4.0) -> SigmaclipResult: ...
-def trimboth(a: _ArrayLikeFloat_co, proportiontocut: float, axis: int | None = 0) -> npt.NDArray[_Real1D]: ...
-def trim1(a: _ArrayLikeFloat_co, proportiontocut: float, tail: str = "right", axis: int | None = 0) -> npt.NDArray[_Real1D]: ...
-def trim_mean(a: _ArrayLikeFloat_co, proportiontocut: float, axis: int | None = 0) -> _FloatND: ...
+def sigmaclip(a: onp.ToFloatND, low: float = 4.0, high: float = 4.0) -> SigmaclipResult: ...
+def trimboth(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
+def trim1(a: onp.ToFloatND, proportiontocut: float, tail: str = "right", axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
+def trim_mean(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> _FloatND: ...
 
 #
 def f_oneway(
-    *samples: _ArrayLikeFloat_co,
+    *samples: onp.ToFloatND,
     nan_policy: NanPolicy = "propagate",
     axis: int | None = 0,
     keepdims: bool = False,
 ) -> F_onewayResult: ...
 def alexandergovern(
-    *samples: _ArrayLikeFloat_co,
+    *samples: onp.ToFloatND,
     nan_policy: NanPolicy = "propagate",
     axis: int | None = 0,
     keepdims: bool = False,
 ) -> AlexanderGovernResult: ...
 def pearsonr(
-    x: _ArrayLikeFloat_co,
-    y: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
     *,
     alternative: Alternative = "two-sided",
     method: ResamplingMethod | None = None,
     axis: int | None = 0,
 ) -> PearsonRResult: ...
 def fisher_exact(
-    table: npt.NDArray[_Real1D],
+    table: onp.ArrayND[_Real0D],
     alternative: Alternative = "two-sided",
 ) -> SignificanceResult[float]: ...
 
 #
 def spearmanr(
-    a: _ArrayLikeFloat_co,
-    b: _ArrayLikeFloat_co | None = None,
+    a: onp.ToFloatND,
+    b: onp.ToFloatND | None = None,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
 ) -> SignificanceResult: ...
-def pointbiserialr(x: _ArrayLikeBool_co, y: _ArrayLikeFloat_co) -> SignificanceResult[float]: ...
+def pointbiserialr(x: onp.ToBoolND, y: onp.ToFloatND) -> SignificanceResult[float]: ...
 def kendalltau(
-    x: _ArrayLikeFloat_co,
-    y: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
     *,
     nan_policy: NanPolicy = "propagate",
     method: Literal["auto", "asymptotic", "exact"] = "auto",
@@ -631,10 +623,10 @@ def kendalltau(
     alternative: Alternative = "two-sided",
 ) -> SignificanceResult[float]: ...
 def weightedtau(
-    x: _ArrayLikeFloat_co,
-    y: _ArrayLikeFloat_co,
-    rank: bool | _ArrayLikeInt_co = True,
-    weigher: Callable[[int], float | _Real1D] | None = None,
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    rank: onp.ToInt | onp.ToIntND = True,
+    weigher: Callable[[int], float | _Real0D] | None = None,
     additive: bool = True,
 ) -> SignificanceResult[float]: ...
 
@@ -660,8 +652,8 @@ def unpack_TtestResult(
 
 #
 def ttest_1samp(
-    a: _ArrayLikeFloat_co,
-    popmean: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
+    popmean: onp.ToFloat | onp.ToFloatND,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
@@ -669,18 +661,18 @@ def ttest_1samp(
     keepdims: bool = False,
 ) -> TtestResult: ...
 def ttest_ind_from_stats(
-    mean1: _ArrayLikeFloat_co,
-    std1: _ArrayLikeFloat_co,
-    nobs1: _ArrayLikeInt_co,
-    mean2: _ArrayLikeFloat_co,
-    std2: _ArrayLikeFloat_co,
-    nobs2: _ArrayLikeInt_co,
+    mean1: onp.ToFloat | onp.ToFloatND,
+    std1: onp.ToFloat | onp.ToFloatND,
+    nobs1: onp.ToInt | onp.ToIntND,
+    mean2: onp.ToFloat | onp.ToFloatND,
+    std2: onp.ToFloat | onp.ToFloatND,
+    nobs2: onp.ToInt | onp.ToIntND,
     equal_var: bool = True,
     alternative: Alternative = "two-sided",
 ) -> Ttest_indResult: ...
 def ttest_ind(
-    a: _ArrayLikeFloat_co,
-    b: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
+    b: onp.ToFloatND,
     axis: int | None = 0,
     equal_var: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -692,8 +684,8 @@ def ttest_ind(
     keepdims: bool = False,
 ) -> TtestResult: ...
 def ttest_rel(
-    a: _ArrayLikeFloat_co,
-    b: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
+    b: onp.ToFloatND,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
@@ -703,23 +695,23 @@ def ttest_rel(
 
 #
 def power_divergence(
-    f_obs: _ArrayLikeFloat_co,
-    f_exp: _ArrayLikeFloat_co | None = None,
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None = None,
     ddof: int = 0,
     axis: int | None = 0,
     lambda_: PowerDivergenceStatistic | float | None = None,
 ) -> Power_divergenceResult: ...
 def chisquare(
-    f_obs: _ArrayLikeFloat_co,
-    f_exp: _ArrayLikeFloat_co | None = None,
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None = None,
     ddof: int = 0,
     axis: int | None = 0,
 ) -> Power_divergenceResult: ...
 
 #
 def ks_1samp(
-    x: _ArrayLikeFloat_co,
-    cdf: Callable[[float], float | _Real1D],
+    x: onp.ToFloatND,
+    cdf: Callable[[float], float | _Real0D],
     args: tuple[object, ...] = (),
     alternative: Alternative = "two-sided",
     method: Literal["auto", "exact", "approx", "asymp"] = "auto",
@@ -729,8 +721,8 @@ def ks_1samp(
     keepdims: bool = False,
 ) -> KstestResult: ...
 def ks_2samp(
-    data1: _ArrayLikeFloat_co,
-    data2: _ArrayLikeFloat_co,
+    data1: onp.ToFloatND,
+    data2: onp.ToFloatND,
     alternative: Alternative = "two-sided",
     method: Literal["auto", "exact", "asymp"] = "auto",
     *,
@@ -739,8 +731,8 @@ def ks_2samp(
     keepdims: bool = False,
 ) -> KstestResult: ...
 def kstest(
-    rvs: str | _ArrayLikeFloat_co | _RVSCallable,
-    cdf: str | _ArrayLikeFloat_co | Callable[[float], float | _Float1D],
+    rvs: str | onp.ToFloatND | _RVSCallable,
+    cdf: str | onp.ToFloatND | Callable[[float], float | _Float0D],
     args: tuple[object, ...] = (),
     N: int = 20,
     alternative: Alternative = "two-sided",
@@ -752,12 +744,12 @@ def kstest(
 ) -> KstestResult: ...
 
 #
-def tiecorrect(rankvals: _ArrayLikeInt_co) -> float | np.float64: ...
+def tiecorrect(rankvals: onp.ToInt | onp.ToIntND) -> float | np.float64: ...
 
 #
 def ranksums(
-    x: _ArrayLikeFloat_co,
-    y: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
     alternative: Alternative = "two-sided",
     *,
     axis: int | None = 0,
@@ -767,20 +759,20 @@ def ranksums(
 
 #
 def kruskal(
-    *samples: _ArrayLikeFloat_co,
+    *samples: onp.ToFloatND,
     nan_policy: NanPolicy = "propagate",
     axis: int | None = 0,
     keepdims: bool = False,
 ) -> KruskalResult: ...
 def friedmanchisquare(
-    *samples: _ArrayLikeFloat_co,
+    *samples: onp.ToFloatND,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> FriedmanchisquareResult: ...
 def brunnermunzel(
-    x: _ArrayLikeFloat_co,
-    y: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
     alternative: Alternative = "two-sided",
     distribution: Literal["t", "normal"] = "t",
     nan_policy: NanPolicy = "propagate",
@@ -791,9 +783,9 @@ def brunnermunzel(
 
 #
 def combine_pvalues(
-    pvalues: _ArrayLikeFloat_co,
+    pvalues: onp.ToFloatND,
     method: Literal["fisher", "pearson", "tippett", "stouffer", "mudholkar_george"] = "fisher",
-    weights: _ArrayLikeFloat_co | None = None,
+    weights: onp.ToFloatND | None = None,
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
@@ -802,56 +794,47 @@ def combine_pvalues(
 
 #
 def quantile_test_iv(  # undocumented
-    x: _ArrayLikeFloat_co,
-    q: float | _Real1D,
-    p: float | _Float1D,
+    x: onp.ToFloatND,
+    q: float | _Real0D,
+    p: float | _Float0D,
     alternative: Alternative,
-) -> tuple[npt.NDArray[_Real1D], _Real1D, np.floating[Any], Alternative]: ...
+) -> tuple[onp.ArrayND[_Real0D], _Real0D, np.floating[Any], Alternative]: ...
 def quantile_test(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     *,
-    q: float | _Real1D = 0,
-    p: float | _Float1D = 0.5,
+    q: float | _Real0D = 0,
+    p: float | _Float0D = 0.5,
     alternative: Alternative = "two-sided",
 ) -> QuantileTestResult: ...
 
 #
 def wasserstein_distance_nd(
-    u_values: _ArrayLikeFloat_co,
-    v_values: _ArrayLikeFloat_co,
-    u_weights: _ArrayLikeFloat_co | None = None,
-    v_weights: _ArrayLikeFloat_co | None = None,
+    u_values: onp.ToFloatND,
+    v_values: onp.ToFloatND,
+    u_weights: onp.ToFloatND | None = None,
+    v_weights: onp.ToFloatND | None = None,
 ) -> float | np.float64: ...
 def wasserstein_distance(
-    u_values: _ArrayLikeFloat_co,
-    v_values: _ArrayLikeFloat_co,
-    u_weights: _ArrayLikeFloat_co | None = None,
-    v_weights: _ArrayLikeFloat_co | None = None,
+    u_values: onp.ToFloatND,
+    v_values: onp.ToFloatND,
+    u_weights: onp.ToFloatND | None = None,
+    v_weights: onp.ToFloatND | None = None,
 ) -> np.float64: ...
 def energy_distance(
-    u_values: _ArrayLikeFloat_co,
-    v_values: _ArrayLikeFloat_co,
-    u_weights: _ArrayLikeFloat_co | None = None,
-    v_weights: _ArrayLikeFloat_co | None = None,
+    u_values: onp.ToFloatND,
+    v_values: onp.ToFloatND,
+    u_weights: onp.ToFloatND | None = None,
+    v_weights: onp.ToFloatND | None = None,
 ) -> np.float64: ...
 
 #
-def find_repeats(arr: _ArrayLikeFloat_co) -> RepeatedResults: ...
+def find_repeats(arr: onp.ToFloatND) -> RepeatedResults: ...
 def rankdata(
-    a: _ArrayLikeFloat_co,
+    a: onp.ToFloatND,
     method: Literal["average", "min", "max", "dense", "ordinal"] = "average",
     *,
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
-) -> npt.NDArray[_Real1D]: ...
-def expectile(
-    a: _ArrayLikeFloat_co,
-    alpha: float = 0.5,
-    *,
-    weights: _ArrayLikeFloat_co | None = None,
-) -> np.float64: ...
-def linregress(
-    x: _ArrayLikeFloat_co,
-    y: _ArrayLikeFloat_co | None = None,
-    alternative: Alternative = "two-sided",
-) -> LinregressResult: ...
+) -> onp.ArrayND[_Real0D]: ...
+def expectile(a: onp.ToFloatND, alpha: float = 0.5, *, weights: onp.ToFloatND | None = None) -> np.float64: ...
+def linregress(x: onp.ToFloatND, y: onp.ToFloatND | None = None, alternative: Alternative = "two-sided") -> LinregressResult: ...
