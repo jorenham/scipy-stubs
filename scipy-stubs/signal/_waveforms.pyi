@@ -1,9 +1,12 @@
 from scipy._typing import Untyped
+import optype.numpy as onp
+import numpy as np
+import numpy.typing as npt
 
 __all__ = ["chirp", "gausspulse", "sawtooth", "square", "sweep_poly", "unit_impulse"]
 
-def sawtooth(t: Untyped, width: int = 1) -> Untyped: ...
-def square(t: Untyped, duty: float = 0.5) -> Untyped: ...
+def sawtooth(t: onp.ToFloatND, width: onp.ToInt = 1) -> npt.NDArray[np.float64]: ...
+def square(t: onp.ToFloatND, duty: onp.ToFloat = 0.5) -> npt.NDArray[np.float64]: ...
 def gausspulse(
     t: Untyped,
     fc: int = 1000,
