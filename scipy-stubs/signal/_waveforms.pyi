@@ -1,11 +1,11 @@
 from collections.abc import Iterable
-from typing import Literal, TypeVar, overload, TypeAlias
+from typing import Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from numpy._typing import _ShapeLike, _DTypeLike
+from numpy._typing import _DTypeLike, _ShapeLike
 
 __all__ = ["chirp", "gausspulse", "sawtooth", "square", "sweep_poly", "unit_impulse"]
 
