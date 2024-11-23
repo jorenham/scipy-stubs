@@ -1,9 +1,11 @@
-import numpy as np
-import numpy.typing as npt
-from numpy._typing import _ArrayLikeComplex_co, _ArrayLikeInt_co
+from typing import overload
 
-def lambertw(
-    z: _ArrayLikeComplex_co,
-    k: _ArrayLikeInt_co = 0,
-    tol: float | np.float64 = 1e-8,
-) -> np.complex128 | npt.NDArray[np.complex128]: ...
+import numpy as np
+import optype.numpy as onp
+
+@overload
+def lambertw(z: onp.ToComplex, k: onp.ToInt = 0, tol: float | np.float64 = 1e-8) -> np.complex128: ...
+@overload
+def lambertw(z: onp.ToComplex, k: onp.ToIntND, tol: float | np.float64 = 1e-8) -> onp.ArrayND[np.complex128]: ...
+@overload
+def lambertw(z: onp.ToComplexND, k: onp.ToInt | onp.ToIntND, tol: float | np.float64 = 1e-8) -> onp.ArrayND[np.complex128]: ...
