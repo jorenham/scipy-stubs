@@ -1,9 +1,16 @@
-from scipy._typing import Untyped
-import optype.numpy as onp
+from collections.abc import Iterable
+from typing import Literal, TypeVar, overload
+
 import numpy as np
 import numpy.typing as npt
+import optype as op
+import optype.numpy as onp
+from numpy._typing import _ShapeLike, _DTypeLike
+from scipy._typing import Untyped
 
 __all__ = ["chirp", "gausspulse", "sawtooth", "square", "sweep_poly", "unit_impulse"]
+
+_SCT = TypeVar("_SCT", bound=np.generic)
 
 def sawtooth(t: onp.ToFloatND, width: onp.ToInt = 1) -> npt.NDArray[np.float64]: ...
 def square(t: onp.ToFloatND, duty: onp.ToFloat = 0.5) -> npt.NDArray[np.float64]: ...
@@ -32,6 +39,17 @@ def sweep_poly(
     poly: onp.ToFloatND | onp.ToComplexND,
     phi: onp.ToInt = 0,
 ) -> npt.NDArray[np.float64 | np.complex128]: ...
+
+#
+@overload  # dtype is not given
 def unit_impulse(
-    shape: Untyped, idx: Untyped | None = None, dtype: Untyped = ...
-) -> Untyped: ...
+    shape: _ShapeLike,
+    idx: op.CanIndex | Iterable[op.CanIndex] | Literal["mid"] | None = None,
+    dtype: type[float] = float,
+) -> npt.NDArray[np.float64]: ...
+@overload  # dtype is given
+def unit_impulse(
+    shape: _ShapeLike,
+    idx: op.CanIndex | Iterable[op.CanIndex] | Literal["mid"] | None,
+    dtype: _DTypeLike[_SCT],
+) -> npt.NDArray[_SCT]: ...
