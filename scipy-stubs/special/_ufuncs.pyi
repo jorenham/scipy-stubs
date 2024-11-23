@@ -382,6 +382,7 @@ class _Kw11fc(_KwBase, TypedDict, total=False):
 
 _ToSignature2_ld: TypeAlias = tuple[_ToDType_l, _ToDType_d, _ToDType_d]
 _ToSignature2_fd2: TypeAlias = _Tuple3[_ToDType_f] | _Tuple3[_ToDType_d]
+_ToSignature2_fFdD: TypeAlias = tuple[_ToDType_f, _ToDType_F, _ToDType_F] | tuple[_ToDType_d, _ToDType_D, _ToDType_D]
 _ToSignature2_FD2: TypeAlias = _Tuple3[_ToDType_F] | _Tuple3[_ToDType_D]
 
 @type_check_only
@@ -395,9 +396,14 @@ class _Kw21f(_KwBase, TypedDict, total=False):
     signature: L["ff->f", "dd->d"] | _ToSignature2_fd2
 
 @type_check_only
-class _Kw21fc(_KwBase, TypedDict, total=False):
+class _Kw21fc1(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fd | _ToDType_FD | None
-    signature: L["ff->f", "ld->d", "dd->d", "fF->F", "dD->D"] | _ToSignature2_ld | _ToSignature2_fd2 | _ToSignature2_FD2
+    signature: L["ff->f", "ld->d", "dd->d", "fF->F", "dD->D"] | _ToSignature2_ld | _ToSignature2_fd2 | _ToSignature2_fFdD
+
+@type_check_only
+class _Kw21fc2(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd | _ToDType_FD | None
+    signature: L["ff->f", "dd->d", "FF->F", "DD->D"] | _ToSignature2_fd2 | _ToSignature2_FD2
 
 _ToSignature3_lld: TypeAlias = tuple[_ToDType_l, _ToDType_l, _ToDType_d, _ToDType_d]
 _ToSignature3_dld: TypeAlias = tuple[_ToDType_d, _ToDType_l, _ToDType_d, _ToDType_d]
@@ -736,7 +742,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
 
 @final
 @type_check_only
-class _UFunc21fc(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
     @property
     @override
     def ntypes(self) -> L[4, 5]: ...
@@ -751,7 +757,7 @@ class _UFunc21fc(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
         b: _ToSubFloat,
         /,
         out: tuple[None] | None = None,
-        **kwargs: Unpack[_Kw21fc],
+        **kwargs: Unpack[_Kw21fc1],
     ) -> _Float: ...
     @overload
     def __call__(
@@ -760,7 +766,7 @@ class _UFunc21fc(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
         b: _InexactNDT,
         /,
         out: tuple[None] | None = None,
-        **kwargs: Unpack[_Kw21fc],
+        **kwargs: Unpack[_Kw21fc1],
     ) -> _InexactNDT: ...
     @overload
     def __call__(
@@ -769,7 +775,7 @@ class _UFunc21fc(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
         b: onp.ToFloatND,
         /,
         out: tuple[None] | None = None,
-        **kwargs: Unpack[_Kw21fc],
+        **kwargs: Unpack[_Kw21fc1],
     ) -> onp.ArrayND[_Float]: ...
     @overload
     def __call__(
@@ -778,7 +784,7 @@ class _UFunc21fc(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
         b: onp.ToFloat | onp.ToFloatND,
         /,
         out: tuple[None] | None = None,
-        **kwargs: Unpack[_Kw21fc],
+        **kwargs: Unpack[_Kw21fc1],
     ) -> onp.ArrayND[_Float]: ...
     @overload
     def __call__(
@@ -787,7 +793,7 @@ class _UFunc21fc(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
         b: onp.ToComplexND,
         /,
         out: tuple[None] | None = None,
-        **kwargs: Unpack[_Kw21fc],
+        **kwargs: Unpack[_Kw21fc1],
     ) -> onp.ArrayND[_Inexact]: ...
     @overload
     def __call__(
@@ -796,7 +802,7 @@ class _UFunc21fc(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
         b: onp.ToComplex | onp.ToComplexND,
         /,
         out: tuple[None] | None = None,
-        **kwargs: Unpack[_Kw21fc],
+        **kwargs: Unpack[_Kw21fc1],
     ) -> onp.ArrayND[_Inexact]: ...
     @overload
     def __call__(
@@ -805,7 +811,7 @@ class _UFunc21fc(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
         b: onp.ToComplex | onp.ToComplexND,
         /,
         out: tuple[_OutT] | _OutT,
-        **kwargs: Unpack[_Kw21fc],
+        **kwargs: Unpack[_Kw21fc1],
     ) -> _OutT: ...
     #
     @override  # only works if real
@@ -832,7 +838,7 @@ class _UFunc21fc(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
         keepdims: L[False] = False,
         initial: onp.ToFloat = ...,
         where: onp.ToBool | onp.ToBoolND = True,
-    ) -> np.float32 | np.float64: ...
+    ) -> _Float: ...
     @overload
     def reduce(
         self,
@@ -844,7 +850,7 @@ class _UFunc21fc(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
         keepdims: L[False] = False,
         initial: onp.ToFloat = ...,
         where: onp.ToBool | onp.ToBoolND = True,
-    ) -> np.float32 | np.float64 | onp.ArrayND[np.float32 | np.float64]: ...
+    ) -> _Float | onp.ArrayND[_Float]: ...
     @overload
     def reduce(
         self,
@@ -857,7 +863,7 @@ class _UFunc21fc(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
         keepdims: L[True],
         initial: onp.ToFloat = ...,
         where: onp.ToBool | onp.ToBoolND = True,
-    ) -> onp.ArrayND[np.float32 | np.float64]: ...
+    ) -> onp.ArrayND[_Float]: ...
     @overload
     def reduce(
         self,
@@ -896,17 +902,17 @@ class _UFunc21fc(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
     ) -> onp.ArrayND[_Float]: ...
     #
     @overload
-    def outer(self, a: onp.ToFloat, b: onp.ToFloat, /, **kw: Unpack[_Kw21fc]) -> _Float: ...
+    def outer(self, a: onp.ToFloat, b: onp.ToFloat, /, **kw: Unpack[_Kw21fc1]) -> _Float: ...
     @overload
-    def outer(self, a: onp.ToFloat, b: onp.ToComplex, /, **kw: Unpack[_Kw21fc]) -> _Inexact: ...
+    def outer(self, a: onp.ToFloat, b: onp.ToComplex, /, **kw: Unpack[_Kw21fc1]) -> _Inexact: ...
     @overload
-    def outer(self, a: onp.ToFloat | onp.ToFloatND, b: onp.ToFloatND, /, **kw: Unpack[_Kw21fc]) -> onp.ArrayND[_Float]: ...
+    def outer(self, a: onp.ToFloat | onp.ToFloatND, b: onp.ToFloatND, /, **kw: Unpack[_Kw21fc1]) -> onp.ArrayND[_Float]: ...
     @overload
-    def outer(self, a: onp.ToFloatND, b: onp.ToFloat | onp.ToFloatND, /, **kw: Unpack[_Kw21fc]) -> onp.ArrayND[_Float]: ...
+    def outer(self, a: onp.ToFloatND, b: onp.ToFloat | onp.ToFloatND, /, **kw: Unpack[_Kw21fc1]) -> onp.ArrayND[_Float]: ...
     @overload
-    def outer(self, a: onp.ToFloat | onp.ToFloatND, b: onp.ToComplexND, /, **kw: Unpack[_Kw21fc]) -> onp.ArrayND[_Inexact]: ...
+    def outer(self, a: onp.ToFloat | onp.ToFloatND, b: onp.ToComplexND, /, **kw: Unpack[_Kw21fc1]) -> onp.ArrayND[_Inexact]: ...
     @overload
-    def outer(self, a: onp.ToFloatND, b: onp.ToComplex | onp.ToComplexND, /, **kw: Unpack[_Kw21fc]) -> onp.ArrayND[_Inexact]: ...
+    def outer(self, a: onp.ToFloatND, b: onp.ToComplex | onp.ToComplexND, /, **kw: Unpack[_Kw21fc1]) -> onp.ArrayND[_Inexact]: ...
     @overload
     def outer(
         self,
@@ -915,7 +921,267 @@ class _UFunc21fc(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
         /,
         *,
         out: tuple[_OutT] | _OutT,
-        **kwargs: Unpack[_Kw21fc],
+        **kwargs: Unpack[_Kw21fc1],
+    ) -> _OutT: ...
+
+@final
+@type_check_only
+class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+    @property
+    @override
+    def ntypes(self) -> L[4]: ...
+    @property
+    @override
+    def types(self) -> list[L["ff->f", "dd->d", "FF->F", "DD->D"]]: ...
+    #
+    @overload
+    def __call__(
+        self,
+        x: _ToSubFloat,
+        y: _ToSubFloat,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw21fc2],
+    ) -> _Float: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToSubFloat,
+        y: complex,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw21fc2],
+    ) -> _Complex: ...
+    @overload
+    def __call__(
+        self,
+        x: complex,
+        y: complex | _ToSubFloat,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw21fc2],
+    ) -> _Complex: ...
+    @overload
+    def __call__(
+        self,
+        x: _InexactNDT | _ToSubFloat,
+        y: _InexactNDT | _ToSubFloat,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw21fc2],
+    ) -> _InexactNDT: ...
+    @overload
+    def __call__(
+        self,
+        a: onp.ToFloat | onp.ToFloatND,
+        b: onp.ToFloatND,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw21fc2],
+    ) -> onp.ArrayND[_Float]: ...
+    @overload
+    def __call__(
+        self,
+        a: onp.ToFloatND,
+        b: onp.ToFloat | onp.ToFloatND,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw21fc2],
+    ) -> onp.ArrayND[_Float]: ...
+    @overload
+    def __call__(
+        self,
+        a: onp.ToComplex | onp.ToComplexND,
+        b: onp.ToComplexND,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw21fc2],
+    ) -> onp.ArrayND[_Inexact]: ...
+    @overload
+    def __call__(
+        self,
+        a: onp.ToComplexND,
+        b: onp.ToComplex | onp.ToComplexND,
+        /,
+        out: tuple[None] | None = None,
+        **kwargs: Unpack[_Kw21fc2],
+    ) -> onp.ArrayND[_Inexact]: ...
+    @overload
+    def __call__(
+        self,
+        a: onp.ToComplex | onp.ToComplexND,
+        b: onp.ToComplex | onp.ToComplexND,
+        /,
+        out: tuple[_OutT] | _OutT,
+        **kwargs: Unpack[_Kw21fc2],
+    ) -> _OutT: ...
+    #
+    @overload
+    def at(self, a: onp.ArrayND[_Float | _SubFloat], indices: _Indices, b: onp.ToFloatND, /) -> None: ...
+    @overload
+    def at(self, a: onp.ArrayND[np.complexfloating[Any, Any]], indices: _Indices, b: onp.ToComplexND, /) -> None: ...
+    #
+    @overload
+    def accumulate(
+        self,
+        /,
+        array: onp.ToFloatND,
+        axis: op.CanIndex = 0,
+        dtype: _ToDType_fd | None = None,
+        out: tuple[onp.ArrayND[_Float] | None] | onp.ArrayND[_Float] | None = None,
+    ) -> onp.ArrayND[_Float]: ...
+    @overload
+    def accumulate(
+        self,
+        /,
+        array: onp.ToComplexND,
+        axis: op.CanIndex = 0,
+        dtype: _ToDType_fd | _ToDType_FD | None = None,
+        out: tuple[onp.ArrayND[_Inexact] | None] | onp.ArrayND[_Inexact] | None = None,
+    ) -> onp.ArrayND[_Inexact]: ...
+    #
+    @overload
+    def reduce(
+        self,
+        /,
+        array: onp.ToFloatND,
+        axis: None,
+        dtype: _ToDType_fd | None = None,
+        out: tuple[None] | None = None,
+        keepdims: L[False] = False,
+        initial: onp.ToFloat = ...,
+        where: onp.ToBool | onp.ToBoolND = True,
+    ) -> _Float: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: onp.ToFloatND,
+        axis: AnyShape | None = 0,
+        dtype: _ToDType_fd | None = None,
+        out: tuple[None] | None = None,
+        *,
+        keepdims: L[True],
+        initial: onp.ToFloat = ...,
+        where: onp.ToBool | onp.ToBoolND = True,
+    ) -> onp.ArrayND[_Float]: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: onp.ToComplexND,
+        axis: None,
+        dtype: _ToDType_fd | _ToDType_FD | None = None,
+        out: tuple[None] | None = None,
+        keepdims: L[False] = False,
+        initial: onp.ToComplex = ...,
+        where: onp.ToBool | onp.ToBoolND = True,
+    ) -> _Inexact: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: onp.ToComplexND,
+        axis: AnyShape | None = 0,
+        dtype: _ToDType_fd | _ToDType_FD | None = None,
+        out: tuple[None] | None = None,
+        *,
+        keepdims: L[True],
+        initial: onp.ToComplex = ...,
+        where: onp.ToBool | onp.ToBoolND = True,
+    ) -> onp.ArrayND[_Inexact]: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: onp.ToComplexND,
+        axis: AnyShape | None = 0,
+        dtype: _ToDType_fd | _ToDType_FD | None = None,
+        out: tuple[None] | None = None,
+        keepdims: L[False] = False,
+        initial: onp.ToComplex = ...,
+        where: onp.ToBool | onp.ToBoolND = True,
+    ) -> _Inexact | onp.ArrayND[_Inexact]: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: onp.ToComplexND,
+        axis: AnyShape | None,
+        dtype: _ToDType_fd | _ToDType_FD | None,
+        out: tuple[_OutT] | _OutT,
+        keepdims: bool = False,
+        initial: onp.ToComplex = ...,
+        where: onp.ToBool | onp.ToBoolND = True,
+    ) -> _OutT: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: onp.ToComplexND,
+        axis: AnyShape | None = 0,
+        dtype: _ToDType_fd | _ToDType_FD | None = None,
+        *,
+        out: tuple[_OutT] | _OutT,
+        keepdims: bool = False,
+        initial: onp.ToComplex = ...,
+        where: onp.ToBool | onp.ToBoolND = True,
+    ) -> _OutT: ...
+    #
+    @overload
+    def reduceat(
+        self,
+        /,
+        array: onp.ToFloatND,
+        indices: _Indices,
+        axis: op.CanIndex = 0,
+        dtype: _ToDType_fd | None = None,
+        out: tuple[onp.ArrayND[_Float] | None] | onp.ArrayND[_Float] | None = None,
+    ) -> onp.ArrayND[_Float]: ...
+    @overload
+    def reduceat(
+        self,
+        /,
+        array: onp.ToComplexND,
+        indices: _Indices,
+        axis: op.CanIndex = 0,
+        dtype: _ToDType_fd | _ToDType_FD | None = None,
+        out: tuple[onp.ArrayND[_Inexact] | None] | onp.ArrayND[_Inexact] | None = None,
+    ) -> onp.ArrayND[_Inexact]: ...
+    #
+    @overload
+    def outer(self, a: onp.ToFloat, b: onp.ToFloat, /, **kw: Unpack[_Kw21fc2]) -> _Float: ...
+    @overload
+    def outer(self, a: onp.ToComplex, b: onp.ToComplex, /, **kw: Unpack[_Kw21fc2]) -> _Inexact: ...
+    @overload
+    def outer(self, a: onp.ToFloat | onp.ToFloatND, b: onp.ToFloatND, /, **kw: Unpack[_Kw21fc2]) -> onp.ArrayND[_Float]: ...
+    @overload
+    def outer(self, a: onp.ToFloatND, b: onp.ToFloat | onp.ToFloatND, /, **kw: Unpack[_Kw21fc2]) -> onp.ArrayND[_Float]: ...
+    @overload
+    def outer(
+        self,
+        a: onp.ToComplex | onp.ToComplexND,
+        b: onp.ToComplexND,
+        /,
+        **kw: Unpack[_Kw21fc2],
+    ) -> onp.ArrayND[_Inexact]: ...
+    @overload
+    def outer(
+        self,
+        a: onp.ToComplexND,
+        b: onp.ToComplex | onp.ToComplexND,
+        /,
+        **kw: Unpack[_Kw21fc2],
+    ) -> onp.ArrayND[_Inexact]: ...
+    @overload
+    def outer(
+        self,
+        a: onp.ToComplex | onp.ToComplexND,
+        b: onp.ToComplex | onp.ToComplexND,
+        /,
+        *,
+        out: tuple[_OutT] | _OutT,
+        **kwargs: Unpack[_Kw21fc2],
     ) -> _OutT: ...
 
 @final
@@ -1088,6 +1354,33 @@ rgamma: _UFunc11fc[L["rgamma"]]
 spence: _UFunc11fc[L["spence"], L[0]]
 wrightomega: _UFunc11fc[L["wrightomega"], L[0]]
 
+# f->ff; d->dd
+# TODO
+it2i0k0: np.ufunc
+it2j0y0: np.ufunc
+iti0k0: np.ufunc
+itj0y0: np.ufunc
+
+# f->FF; d->DD
+# TODO
+modfresnelm: np.ufunc
+modfresnelp: np.ufunc
+
+# f->ff; d->dd; f->FF; D->DD
+# TODO
+fresnel: np.ufunc
+shichi: np.ufunc
+sici: np.ufunc
+
+# f->ffff; d->dddd
+# TODO
+itairy: np.ufunc
+
+# f->ffff; d->dddd; F->FFFF; D->DDDD
+# TODO
+airy: np.ufunc
+airye: np.ufunc
+
 # ld->d
 eval_hermite: _UFunc21ld[L["eval_hermite"], L[0]]
 eval_hermitenorm: _UFunc21ld[L["eval_hermitenorm"], L[0]]
@@ -1152,25 +1445,37 @@ tklmbda: _UFunc21f[L["tklmbda"], L[0]]
 yn: _UFunc21f[L["yn"], L[0]]
 
 # ff->f; (l|d)d->d; fF->F; dD->D
-eval_chebyc: _UFunc21fc[L["eval_chebyc"], L[0]]
-eval_chebys: _UFunc21fc[L["eval_chebys"], L[0]]
-eval_chebyt: _UFunc21fc[L["eval_chebyt"], L[0]]
-eval_chebyu: _UFunc21fc[L["eval_chebyu"], L[0]]
-eval_laguerre: _UFunc21fc[L["eval_laguerre"], L[0]]
-eval_legendre: _UFunc21fc[L["eval_legendre"], L[0]]
-eval_sh_chebyt: _UFunc21fc[L["eval_sh_chebyt"], L[0]]
-eval_sh_chebyu: _UFunc21fc[L["eval_sh_chebyu"], L[0]]
-eval_sh_legendre: _UFunc21fc[L["eval_sh_legendre"], L[0]]
-hyp0f1: _UFunc21fc[L["hyp0f1"], L[0]]
-iv: _UFunc21fc[L["iv"]]
-ive: _UFunc21fc[L["ive"]]
-jn: _UFunc21fc[L["jn"]]
-jv: _UFunc21fc[L["jv"]]
-jve: _UFunc21fc[L["jve"]]
-kv: _UFunc21fc[L["kv"]]
-kve: _UFunc21fc[L["kve"]]
-yv: _UFunc21fc[L["yv"]]
-yve: _UFunc21fc[L["yve"]]
+eval_chebyc: _UFunc21fc1[L["eval_chebyc"], L[0]]
+eval_chebys: _UFunc21fc1[L["eval_chebys"], L[0]]
+eval_chebyt: _UFunc21fc1[L["eval_chebyt"], L[0]]
+eval_chebyu: _UFunc21fc1[L["eval_chebyu"], L[0]]
+eval_laguerre: _UFunc21fc1[L["eval_laguerre"], L[0]]
+eval_legendre: _UFunc21fc1[L["eval_legendre"], L[0]]
+eval_sh_chebyt: _UFunc21fc1[L["eval_sh_chebyt"], L[0]]
+eval_sh_chebyu: _UFunc21fc1[L["eval_sh_chebyu"], L[0]]
+eval_sh_legendre: _UFunc21fc1[L["eval_sh_legendre"], L[0]]
+hyp0f1: _UFunc21fc1[L["hyp0f1"], L[0]]
+iv: _UFunc21fc1[L["iv"]]
+ive: _UFunc21fc1[L["ive"]]
+jn: _UFunc21fc1[L["jn"]]
+jv: _UFunc21fc1[L["jv"]]
+jve: _UFunc21fc1[L["jve"]]
+kv: _UFunc21fc1[L["kv"]]
+kve: _UFunc21fc1[L["kve"]]
+yv: _UFunc21fc1[L["yv"]]
+yve: _UFunc21fc1[L["yve"]]
+
+# ff->f; dd->d; FF->F; DD->D
+# TODO
+elliprc: _UFunc21fc2[L["elliprc"], L[0]]
+xlog1py: _UFunc21fc2[L["xlog1py"], L[0]]
+xlogy: _UFunc21fc2[L["xlogy"], L[0]]
+
+# ff->ff; dd->dd
+# TODO
+pbdv: np.ufunc
+pbvv: np.ufunc
+pbwa: np.ufunc
 
 # fff->f; (ll|dl|dd)d->d
 _beta_pdf: _UFunc31f[L["_beta_pdf"], L[0]]
@@ -1250,6 +1555,35 @@ radian: _UFunc31f[L["radian"], L[0]]
 voigt_profile: _UFunc31f[L["voigt_profile"], L[0]]
 wright_bessel: _UFunc31f[L["wright_bessel"]]
 
+# Flf->F; Dld->D
+_lambertw: np.ufunc
+
+# fff->f; ddd->d; FFF->F; DDD->D
+# TODO
+elliprd: np.ufunc
+elliprf: np.ufunc
+elliprg: np.ufunc
+
+# fff->f; ddd->d; ffF->F; (l|d)dD->D
+# TODO
+eval_gegenbauer: np.ufunc
+eval_genlaguerre: np.ufunc
+hyp1f1: np.ufunc
+
+# fff->ff; ddd->dd
+# TODO
+mathieu_cem: np.ufunc
+mathieu_modcem1: np.ufunc
+mathieu_modcem2: np.ufunc
+mathieu_modsem1: np.ufunc
+mathieu_modsem2: np.ufunc
+mathieu_sem: np.ufunc
+
+# ddl->dd
+_struve_asymp_large_z: np.ufunc
+_struve_bessel_series: np.ufunc
+_struve_power_series: np.ufunc
+
 # ffff->f; dddd->d
 # TODO
 _hypergeom_cdf: np.ufunc
@@ -1269,9 +1603,33 @@ ncfdtridfd: np.ufunc
 ncfdtridfn: np.ufunc
 ncfdtrinc: np.ufunc
 
+# ffff->f; (l|d)ddd->d; fffF->F; dddD->D
+# TODO
+eval_jacobi: np.ufunc
+eval_sh_jacobi: np.ufunc
+hyp2f1: np.ufunc
+
+# ffff->ff; dddd->dd
+# TODO
+obl_ang1: np.ufunc
+obl_rad1: np.ufunc
+obl_rad2: np.ufunc
+pro_ang1: np.ufunc
+pro_rad1: np.ufunc
+pro_rad2: np.ufunc
+
+# fffff->ff; ddddd->dd
+# TODO
+obl_ang1_cv: np.ufunc
+obl_rad1_cv: np.ufunc
+obl_rad2_cv: np.ufunc
+pro_ang1_cv: np.ufunc
+pro_rad1_cv: np.ufunc
+pro_rad2_cv: np.ufunc
+
+# *?->*?
 # TODO
 _ellip_harm: np.ufunc
-_lambertw: np.ufunc
 _spherical_n: np.ufunc
 _spherical_in_d: np.ufunc
 _spherical_jn: np.ufunc
@@ -1280,59 +1638,11 @@ _spherical_kn: np.ufunc
 _spherical_kn_d: np.ufunc
 _spherical_yn: np.ufunc
 _spherical_yn_d: np.ufunc
-_struve_asymp_large_z: np.ufunc
-_struve_bessel_series: np.ufunc
-_struve_power_series: np.ufunc
-airy: np.ufunc
-airye: np.ufunc
 ellipj: np.ufunc
-elliprc: np.ufunc
-elliprd: np.ufunc
-elliprf: np.ufunc
-elliprg: np.ufunc
 elliprj: np.ufunc
-eval_gegenbauer: np.ufunc
-eval_genlaguerre: np.ufunc
-eval_jacobi: np.ufunc
-eval_sh_jacobi: np.ufunc
-fresnel: np.ufunc
 hankel1: np.ufunc
 hankel1e: np.ufunc
 hankel2: np.ufunc
 hankel2e: np.ufunc
-hyp1f1: np.ufunc
-hyp2f1: np.ufunc
-it2i0k0: np.ufunc
-it2j0y0: np.ufunc
-itairy: np.ufunc
-iti0k0: np.ufunc
-itj0y0: np.ufunc
 kelvin: np.ufunc
-mathieu_cem: np.ufunc
-mathieu_modcem1: np.ufunc
-mathieu_modcem2: np.ufunc
-mathieu_modsem1: np.ufunc
-mathieu_modsem2: np.ufunc
-mathieu_sem: np.ufunc
-modfresnelm: np.ufunc
-modfresnelp: np.ufunc
-obl_ang1: np.ufunc
-obl_ang1_cv: np.ufunc
-obl_rad1: np.ufunc
-obl_rad1_cv: np.ufunc
-obl_rad2: np.ufunc
-obl_rad2_cv: np.ufunc
-pbdv: np.ufunc
-pbvv: np.ufunc
-pbwa: np.ufunc
-pro_ang1: np.ufunc
-pro_ang1_cv: np.ufunc
-pro_rad1: np.ufunc
-pro_rad1_cv: np.ufunc
-pro_rad2: np.ufunc
-pro_rad2_cv: np.ufunc
-shichi: np.ufunc
-sici: np.ufunc
 sph_harm: np.ufunc
-xlog1py: np.ufunc
-xlogy: np.ufunc
