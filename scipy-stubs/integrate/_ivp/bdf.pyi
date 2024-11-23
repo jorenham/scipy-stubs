@@ -3,18 +3,18 @@ from typing import Any, Final, Generic, TypeAlias
 from typing_extensions import Never, TypeVar
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co, _ArrayLikeNumber_co
 from scipy.sparse import sparray, spmatrix
 from .base import DenseOutput, OdeSolver
 
 _SCT_co = TypeVar("_SCT_co", covariant=True, bound=np.inexact[Any], default=np.float64 | np.complex128)
 
 # TODO(jorenham): sparse
-_LU: TypeAlias = tuple[npt.NDArray[np.inexact[Any]], npt.NDArray[np.integer[Any]]]
-_FuncLU: TypeAlias = Callable[[_ArrayLikeNumber_co], _LU]
-_FuncSolveLU: TypeAlias = Callable[[_LU, npt.ArrayLike], npt.NDArray[np.inexact[Any]]]
+_LU: TypeAlias = tuple[onp.ArrayND[np.inexact[Any]], onp.ArrayND[np.integer[Any]]]
+_FuncLU: TypeAlias = Callable[[onp.ArrayND[np.float64]], _LU] | Callable[[onp.ArrayND[np.complex128]], _LU]
+_FuncSolveLU: TypeAlias = Callable[[_LU, onp.ArrayND], onp.ArrayND[np.inexact[Any]]]
+
+_ToJac: TypeAlias = onp.ToComplex2D | spmatrix | sparray
 
 ###
 
@@ -29,38 +29,32 @@ class BDF(OdeSolver, Generic[_SCT_co]):
     h_abs_old: float | None
     error_norm_old: None
     newton_tol: float
-    jac_factor: npt.NDArray[np.float64] | None  # 1d
+    jac_factor: onp.ArrayND[np.float64] | None  # 1d
 
     LU: _LU
     lu: _FuncLU
     solve_lu: _FuncSolveLU
 
-    I: npt.NDArray[_SCT_co]
-    error_const: npt.NDArray[np.float64]
-    gamma: npt.NDArray[np.float64]
-    alpha: npt.NDArray[np.float64]
-    D: npt.NDArray[np.float64]
+    I: onp.ArrayND[_SCT_co]
+    error_const: onp.ArrayND[np.float64]
+    gamma: onp.ArrayND[np.float64]
+    alpha: onp.ArrayND[np.float64]
+    D: onp.ArrayND[np.float64]
     order: int
     n_equal_steps: int
 
     def __init__(
         self,
         /,
-        fun: Callable[[float, npt.NDArray[_SCT_co]], _ArrayLikeNumber_co],
+        fun: Callable[[float, onp.ArrayND[_SCT_co]], onp.ToComplex1D],
         t0: onp.ToFloat,
-        y0: npt.NDArray[_SCT_co] | _ArrayLikeNumber_co,
+        y0: onp.ArrayND[_SCT_co] | onp.ToComplexND,
         t_bound: onp.ToFloat,
         max_step: onp.ToFloat = ...,
         rtol: onp.ToFloat = 0.001,
         atol: onp.ToFloat = 1e-06,
-        jac: (
-            _ArrayLikeNumber_co
-            | spmatrix
-            | sparray
-            | Callable[[float, npt.NDArray[_SCT_co]], _ArrayLikeNumber_co | spmatrix | sparray]
-            | None
-        ) = None,
-        jac_sparsity: _ArrayLikeFloat_co | spmatrix | sparray | None = None,
+        jac: _ToJac | Callable[[float, onp.ArrayND[_SCT_co]], _ToJac] | None = None,
+        jac_sparsity: _ToJac | None = None,
         vectorized: bool = False,
         first_step: onp.ToFloat | None = None,
         **extraneous: Never,
@@ -68,21 +62,21 @@ class BDF(OdeSolver, Generic[_SCT_co]):
 
 class BdfDenseOutput(DenseOutput):
     order: int
-    t_shift: npt.NDArray[np.float64]
-    denom: npt.NDArray[np.float64]
-    D: npt.NDArray[np.float64]
-    def __init__(self, /, t_old: float, t: float, h: float, order: int, D: npt.NDArray[np.float64]) -> None: ...
+    t_shift: onp.ArrayND[np.float64]
+    denom: onp.ArrayND[np.float64]
+    D: onp.ArrayND[np.float64]
+    def __init__(self, /, t_old: float, t: float, h: float, order: int, D: onp.ArrayND[np.float64]) -> None: ...
 
-def compute_R(order: int, factor: float) -> npt.NDArray[np.float64]: ...
-def change_D(D: npt.NDArray[np.float64], order: int, factor: float) -> None: ...
+def compute_R(order: int, factor: float) -> onp.ArrayND[np.float64]: ...
+def change_D(D: onp.ArrayND[np.float64], order: int, factor: float) -> None: ...
 def solve_bdf_system(
-    fun: Callable[[float, npt.NDArray[_SCT_co]], _ArrayLikeNumber_co],
+    fun: Callable[[float, onp.ArrayND[_SCT_co]], onp.ToComplex1D],
     t_new: onp.ToFloat,
-    y_predict: npt.NDArray[_SCT_co],
+    y_predict: onp.ArrayND[_SCT_co],
     c: float,
-    psi: npt.NDArray[np.float64],
+    psi: onp.ArrayND[np.float64],
     LU: _FuncLU,
     solve_lu: _FuncSolveLU,
-    scale: npt.NDArray[np.float64],
+    scale: onp.ArrayND[np.float64],
     tol: float,
-) -> tuple[bool, int, npt.NDArray[_SCT_co], npt.NDArray[_SCT_co]]: ...
+) -> tuple[bool, int, onp.ArrayND[_SCT_co], onp.ArrayND[_SCT_co]]: ...

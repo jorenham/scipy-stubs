@@ -1,11 +1,10 @@
-# type-check-only typing utilities for internal usage
+# type-check-only typing utilities used internally by scipy-stubs, with no guarantee of API stability
+
 from typing import Any, Literal, TypeAlias, TypedDict, type_check_only
 from typing_extensions import NotRequired
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeFloat_co
 
 __all__ = "ODEInfoDict", "QuadInfoDict", "QuadOpts", "QuadWeights"
 
@@ -19,10 +18,10 @@ class QuadOpts(TypedDict, total=False):
     epsabs: _FloatLike
     epsrel: _FloatLike
     limit: _IntLike
-    points: _ArrayLikeFloat_co
+    points: onp.ToFloat1D
     weight: QuadWeights
     wvar: _FloatLike | tuple[_FloatLike, _FloatLike]
-    wopts: tuple[_IntLike, npt.NDArray[np.float32 | np.float64]]
+    wopts: tuple[_IntLike, onp.ArrayND[np.float32 | np.float64]]
 
 @type_check_only
 class QuadInfoDict(TypedDict):
