@@ -40,7 +40,7 @@ tox = "^4.23.2"
 
 [tool.poetry.group.lint.dependencies]
 basedmypy = {version = "^2.7.0", extras = ["faster-cache"]}
-basedpyright = "^1.21.1"
+basedpyright = "^1.22.0"
 codespell = "^2.3.0"
 mdformat = "^0.7.19"
 mdformat-gfm = "^0.3.7"
