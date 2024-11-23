@@ -114,7 +114,7 @@ def sweep_poly(
 def unit_impulse(
     shape: _ShapeLike,
     idx: op.CanIndex | Iterable[op.CanIndex] | Literal["mid"] | None = None,
-    dtype: type[float] = float,
+    dtype: type[float] = ...,
 ) -> _Array_f8: ...
 @overload  # dtype is given
 def unit_impulse(
