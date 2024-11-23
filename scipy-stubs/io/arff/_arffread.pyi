@@ -29,7 +29,7 @@ class ArffError(OSError): ...
 class ParseArffError(ArffError): ...
 
 class Attribute(Generic[_T_co], metaclass=abc.ABCMeta):
-    type_name: ClassVar[Any]
+    type_name: ClassVar[str]
     dtype: Any
     range: Any
 
@@ -41,7 +41,7 @@ class Attribute(Generic[_T_co], metaclass=abc.ABCMeta):
     def parse_data(self, /, data_str: str) -> _T_co: ...
 
 class NominalAttribute(Attribute[str]):
-    type_name: ClassVar = "nominal"
+    type_name: ClassVar[str] = "nominal"
     dtype: tuple[type[np.bytes_], ...]
     range: Sequence[str]
 
@@ -50,17 +50,17 @@ class NominalAttribute(Attribute[str]):
     def __init__(self, /, name: str, values: Sequence[str]) -> None: ...
 
 class NumericAttribute(Attribute[float]):
-    type_name: ClassVar = "numeric"
+    type_name: ClassVar[str] = "numeric"
     dtype: type[np.float64]
     range: None
 
 class StringAttribute(Attribute[None]):
-    type_name: ClassVar = "string"
+    type_name: ClassVar[str] = "string"
     dtype: type[np.object_]
     range: None
 
 class DateAttribute(Attribute[np.datetime64]):
-    type_name: ClassVar = "date"
+    type_name: ClassVar[str] = "date"
     dtype: np.datetime64
     range: str
 
@@ -70,7 +70,7 @@ class DateAttribute(Attribute[np.datetime64]):
     def __init__(self, /, name: str, date_format: str, datetime_unit: str) -> None: ...
 
 class RelationalAttribute(Attribute[np.ndarray[tuple[int], np.dtype[np.void]]]):
-    type_name: ClassVar = "relational"
+    type_name: ClassVar[str] = "relational"
     dtype: type[np.object_]
     range: None
 

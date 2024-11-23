@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from collections.abc import Callable, Sequence
 from types import ModuleType
-from typing import Any, Generic, Literal, Protocol, TypeAlias, overload, type_check_only
+from typing import Any, Generic, Literal, Protocol, TypeAlias, final, overload, type_check_only
 from typing_extensions import NamedTuple, Self, TypeVar
 
 import numpy as np
@@ -109,6 +109,7 @@ _NDT_real_co = TypeVar("_NDT_real_co", covariant=True, bound=float | _RealND, de
 class _RVSCallable(Protocol):
     def __call__(self, /, *, size: int | tuple[int, ...]) -> onp.ArrayND[np.floating[Any]]: ...
 
+@final
 class _SimpleNormal:
     @overload
     def cdf(self, /, x: np.bool_ | np.uint8 | np.int8 | np.uint16 | np.int16 | np.float16 | np.float32) -> np.float32: ...
@@ -126,6 +127,7 @@ class _SimpleNormal:
     def cdf(self, /, x: complex) -> np.complex128 | np.float64 | np.float32: ...
     sf = cdf
 
+@final
 class _SimpleChi2:
     df: int
     def __init__(self, /, df: int) -> None: ...

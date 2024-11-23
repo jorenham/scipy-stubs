@@ -58,7 +58,7 @@ class _CFFIVoid(_CFFIType, Protocol):
 
 @type_check_only
 class _CFFIFunc(_CFFIType, Protocol[_CT_co, Unpack[_CTs]]):
-    is_array_type: ClassVar = False
+    is_array_type: ClassVar[bool] = False
 
     @property
     def args(self, /) -> tuple[Unpack[_CTs]]: ...
@@ -78,6 +78,7 @@ class _CFFIFuncPtr(_CFFIFunc[_CT_co, Unpack[_CTs]], Protocol[_CT_co, Unpack[_CTs
     def as_raw_function(self, /) -> _CFFIFunc[_CT_co, Unpack[_CTs]]: ...
 
 @type_check_only
+@final
 class _CFFIPointerType(_CFFIType, Protocol[_CT_co]):
     is_array_type: ClassVar = False
     is_raw_function: ClassVar = False
