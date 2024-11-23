@@ -290,7 +290,7 @@ class rv_generic:
         /,
         *args: _Scalar_f8_co,
         random_state: spt.Seed,
-        discrete: Literal[False, 0, None] = ...,
+        discrete: Literal[False, 0] | None = ...,
         **kwds: _ArrLike_f8_co,
     ) -> _ArrLike_f8: ...
     @overload

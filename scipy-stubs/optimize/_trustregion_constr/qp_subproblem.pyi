@@ -71,7 +71,7 @@ def box_sphere_intersections(
     ub: _VectorLikeFloat_co,
     trust_radius: _ScalarLikeFloat_co,
     entire_line: _ScalarB1 = False,
-    extra_info: Literal[False, 0, None] = False,
+    extra_info: Literal[False, 0] | None = False,
 ) -> tuple[_ScalarF8, _ScalarF8, _ScalarB1]: ...
 @overload
 def box_sphere_intersections(

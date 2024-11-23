@@ -7,6 +7,20 @@ import optype.numpy as onp
 from numpy._typing import _ArrayLikeFloat_co
 from ._constraints import Bounds as _Bounds, LinearConstraint, NonlinearConstraint
 
+__all__ = [
+    "Bound",
+    "Bounds",
+    "Brack",
+    "Constraint",
+    "Constraints",
+    "MethodAll",
+    "MethodLinprog",
+    "MethodMimimize",
+    "MethodMinimizeScalar",
+    "Solver",
+    "TRSolver",
+]
+
 _Array_1d_f8: TypeAlias = onp.Array1D[np.float64]
 
 # bounds
@@ -27,7 +41,7 @@ Constraints: TypeAlias = Constraint | Sequence[Constraint]
 Brack: TypeAlias = tuple[onp.ToFloat, onp.ToFloat] | tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat]
 
 Solver: TypeAlias = Literal["minimize", "minimize_scalar", "root", "root_salar", "linprog", "quadratic_assignment"]
-TRSolver: TypeAlias = Literal["exact", "lsmr", None]
+TRSolver: TypeAlias = Literal["exact", "lsmr"]
 
 MethodMimimize: TypeAlias = Literal[
     "Nelder-Mead", "nelder-mead",

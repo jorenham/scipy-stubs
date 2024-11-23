@@ -13,7 +13,7 @@ def firwin(
     *,
     width: Untyped | None = None,
     window: str = "hamming",
-    pass_zero: Literal[True, False, "bandpass", "lowpass", "highpass", "bandstop"] = True,
+    pass_zero: Literal["bandpass", "lowpass", "highpass", "bandstop"] | bool = True,
     scale: bool = True,
     fs: float | None = None,
 ) -> Untyped: ...

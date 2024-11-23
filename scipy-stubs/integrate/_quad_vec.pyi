@@ -88,7 +88,7 @@ def quad_vec(
     workers: int | _DoesMap = 1,
     points: op.CanIter[op.CanNext[float]] | None = None,
     quadrature: Literal["gk21", "gk15", "trapezoid"] | None = None,
-    full_output: Literal[False, 0, None] = False,
+    full_output: Literal[False, 0] | None = False,
     *,
     args: tuple[()] = ...,
 ) -> tuple[_NDT_f, float]: ...
@@ -105,7 +105,7 @@ def quad_vec(
     workers: int | _DoesMap = 1,
     points: op.CanIter[op.CanNext[float]] | None = None,
     quadrature: Literal["gk21", "gk15", "trapezoid"] | None = None,
-    full_output: Literal[False, 0, None] = False,
+    full_output: Literal[False, 0] | None = False,
     *,
     args: tuple[Unpack[_Ts]],
 ) -> tuple[_NDT_f, float]: ...

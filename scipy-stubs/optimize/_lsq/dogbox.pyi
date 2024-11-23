@@ -72,7 +72,7 @@ def dogbox(
     max_nfev: int,
     x_scale: Literal["jac"] | _Scalar_f8 | _Vector_f8,
     loss_function: _FunLoss,
-    tr_solver: TRSolver,
+    tr_solver: TRSolver | None,
     tr_options: Mapping[str, object],
     verbose: bool,
 ) -> OptimizeResult: ...

@@ -4,12 +4,11 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from numpy._typing import _ArrayLikeComplex_co, _ArrayLikeFloat_co
 from scipy._typing import AnyBool, AnyShape, DCTType
 
 __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 
-_NormKind: TypeAlias = Literal[None, "ortho"]
+_NormKind: TypeAlias = Literal["ortho"] | None
 
 _ArrayReal: TypeAlias = npt.NDArray[np.float32 | np.float64 | np.longdouble]  # no float16
 _ArrayComplex: TypeAlias = npt.NDArray[np.complex64 | np.complex128 | np.clongdouble]
@@ -19,7 +18,7 @@ _ArrayComplex: TypeAlias = npt.NDArray[np.complex64 | np.complex128 | np.clongdo
 #
 @overload
 def dctn(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
@@ -28,7 +27,7 @@ def dctn(
 ) -> _ArrayReal: ...
 @overload
 def dctn(
-    x: _ArrayLikeComplex_co,
+    x: onp.ToComplexND,
     type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
@@ -39,7 +38,7 @@ def dctn(
 #
 @overload
 def idctn(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
@@ -48,7 +47,7 @@ def idctn(
 ) -> _ArrayReal: ...
 @overload
 def idctn(
-    x: _ArrayLikeComplex_co,
+    x: onp.ToComplexND,
     type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
@@ -59,7 +58,7 @@ def idctn(
 #
 @overload
 def dstn(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
@@ -68,7 +67,7 @@ def dstn(
 ) -> _ArrayReal: ...
 @overload
 def dstn(
-    x: _ArrayLikeComplex_co,
+    x: onp.ToComplexND,
     type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
@@ -79,7 +78,7 @@ def dstn(
 #
 @overload
 def idstn(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
@@ -88,7 +87,7 @@ def idstn(
 ) -> _ArrayReal: ...
 @overload
 def idstn(
-    x: _ArrayLikeComplex_co,
+    x: onp.ToComplexND,
     type: DCTType = 2,
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
@@ -99,7 +98,7 @@ def idstn(
 #
 @overload
 def dct(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
@@ -108,7 +107,7 @@ def dct(
 ) -> _ArrayReal: ...
 @overload
 def dct(
-    x: _ArrayLikeComplex_co,
+    x: onp.ToComplexND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
@@ -119,7 +118,7 @@ def dct(
 #
 @overload
 def idct(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
@@ -128,7 +127,7 @@ def idct(
 ) -> _ArrayReal: ...
 @overload
 def idct(
-    x: _ArrayLikeComplex_co,
+    x: onp.ToComplexND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
@@ -139,7 +138,7 @@ def idct(
 #
 @overload
 def dst(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
@@ -148,7 +147,7 @@ def dst(
 ) -> _ArrayReal: ...
 @overload
 def dst(
-    x: _ArrayLikeComplex_co,
+    x: onp.ToComplexND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
@@ -159,7 +158,7 @@ def dst(
 #
 @overload
 def idst(
-    x: _ArrayLikeFloat_co,
+    x: onp.ToFloatND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
@@ -168,7 +167,7 @@ def idst(
 ) -> _ArrayReal: ...
 @overload
 def idst(
-    x: _ArrayLikeComplex_co,
+    x: onp.ToComplexND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
