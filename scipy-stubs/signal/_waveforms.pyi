@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from numpy._typing import _DTypeLike
+from numpy._typing import _ArrayLike, _DTypeLike, _NestedSequence
 from scipy._typing import AnyShape
 
 __all__ = ["chirp", "gausspulse", "sawtooth", "square", "sweep_poly", "unit_impulse"]
@@ -17,6 +17,16 @@ _Falsy: TypeAlias = Literal[0, False]
 _ArrayLikeFloat: TypeAlias = onp.ToFloat | onp.ToFloatND
 _Array_f8: TypeAlias = onp.ArrayND[np.float64]
 _GaussPulseTime: TypeAlias = _ArrayLikeFloat | Literal["cutoff"]
+
+# Type vars to annotate `chirp`
+_NBT1 = TypeVar("_NBT1", bound=npt.NBitBase)
+_NBT2 = TypeVar("_NBT2", bound=npt.NBitBase)
+_NBT3 = TypeVar("_NBT3", bound=npt.NBitBase)
+_NBT4 = TypeVar("_NBT4", bound=npt.NBitBase)
+_NBT5 = TypeVar("_NBT5", bound=npt.NBitBase)
+_ChirpTime: TypeAlias = _ArrayLike[np.floating[_NBT1] | np.integer[_NBT1]]
+_ChirpScalar: TypeAlias = float | np.floating[_NBT1] | np.integer[_NBT1]
+_ChirpMethod: TypeAlias = Literal["linear", "quadratic", "logarithmic", "hyperbolic"]
 
 def sawtooth(t: _ArrayLikeFloat, width: _ArrayLikeFloat = 1) -> _Array_f8: ...
 def square(t: _ArrayLikeFloat, duty: _ArrayLikeFloat = 0.5) -> _Array_f8: ...
@@ -96,16 +106,29 @@ def gausspulse(
     retenv: _Truthy,
 ) -> tuple[_Array_f8, _Array_f8, _Array_f8]: ...
 
-# float16 -> float16, float32 -> float32, ... -> float64
+#
+@overload  # Static type checking for float values
 def chirp(
-    t: onp.ToFloatND,
+    t: _ChirpTime[_NBT1],
+    f0: _ChirpScalar[_NBT2],
+    t1: _ChirpScalar[_NBT3],
+    f1: _ChirpScalar[_NBT4],
+    method: _ChirpMethod = "linear",
+    phi: _ChirpScalar[_NBT5] = 0,
+    vertex_zero: op.CanBool = True,
+) -> onp.ArrayND[np.floating[_NBT1 | _NBT2 | _NBT3 | _NBT4 | _NBT5]]: ...
+@overload  # Other dtypes default to np.float64
+def chirp(
+    t: onp.ToFloatND | _NestedSequence[float],
     f0: onp.ToFloat,
     t1: onp.ToFloat,
     f1: onp.ToFloat,
-    method: Literal["linear", "quadratic", "logarithmic", "hyperbolic"] = "linear",
+    method: _ChirpMethod = "linear",
     phi: onp.ToFloat = 0,
     vertex_zero: op.CanBool = True,
-) -> npt.NDArray[np.float16 | np.float32 | np.float64]: ...
+) -> _Array_f8: ...
+
+#
 def sweep_poly(
     t: _ArrayLikeFloat,
     poly: onp.ToFloatND | np.poly1d,
