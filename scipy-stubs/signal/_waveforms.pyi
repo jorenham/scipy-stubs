@@ -73,6 +73,18 @@ def unit_impulse(
     dtype: _DTypeLike[_SCT],
 ) -> npt.NDArray[_SCT]: ...
 
+# Overloads for gausspulse when `t` is `"cutoff"`
+@overload  # retquad: False = ..., retenv: False = ...
+def gausspulse(
+    t: Literal["cutoff"],
+    fc: onp.ToFloat = 1000,
+    bw: onp.ToFloat = 0.5,
+    bwr: onp.ToFloat = -6,
+    tpr: onp.ToFloat = -60,
+    retquad: op.CanBool = False,
+    retenv: op.CanBool = False,
+) -> np.float64: ...
+
 # Overloads for gausspulse when `t` is scalar
 @overload  # retquad: False = ..., retenv: False = ...
 def gausspulse(
@@ -222,15 +234,3 @@ def gausspulse(
     retquad: _Truthy,
     retenv: _Truthy,
 ) -> tuple[_Array_f8, _Array_f8, _Array_f8]: ...
-
-# Overloads for gausspulse when `t` is `"cutoff"`
-@overload  # retquad: False = ..., retenv: False = ...
-def gausspulse(
-    t: Literal["cutoff"],
-    fc: onp.ToFloat = 1000,
-    bw: onp.ToFloat = 0.5,
-    bwr: onp.ToFloat = -6,
-    tpr: onp.ToFloat = -60,
-    retquad: op.CanBool = False,
-    retenv: op.CanBool = False,
-) -> np.float64: ...
