@@ -16,6 +16,7 @@ _Truthy: TypeAlias = Literal[1, True]
 _Falsy: TypeAlias = Literal[0, False]
 _ArrayLikeFloat: TypeAlias = onp.ToFloat | onp.ToFloatND
 _Array_f8: TypeAlias = onp.ArrayND[np.float64]
+_GaussPulseTime: TypeAlias = _ArrayLikeFloat | Literal["cutoff"]
 
 def sawtooth(t: _ArrayLikeFloat, width: _ArrayLikeFloat = 1) -> _Array_f8: ...
 def square(t: _ArrayLikeFloat, duty: _ArrayLikeFloat = 0.5) -> _Array_f8: ...
@@ -23,73 +24,73 @@ def square(t: _ArrayLikeFloat, duty: _ArrayLikeFloat = 0.5) -> _Array_f8: ...
 #
 @overload  # retquad: False = ..., retenv: False = ...
 def gausspulse(
-    t: _ArrayLikeFloat,
+    t: _GaussPulseTime,
     fc: onp.ToFloat = 1000,
     bw: onp.ToFloat = 0.5,
     bwr: onp.ToFloat = -6,
-    tpr: onp.ToFloat | Literal["cutoff"] = -60,
+    tpr: onp.ToFloat = -60,
     retquad: _Falsy = False,
     retenv: _Falsy = False,
 ) -> _Array_f8: ...
 @overload  # retquad: False = ..., retenv: True (keyword)
 def gausspulse(
-    t: _ArrayLikeFloat,
+    t: _GaussPulseTime,
     fc: onp.ToFloat = 1000,
     bw: onp.ToFloat = 0.5,
     bwr: onp.ToFloat = -6,
-    tpr: onp.ToFloat | Literal["cutoff"] = -60,
+    tpr: onp.ToFloat = -60,
     retquad: _Falsy = False,
     *,
     retenv: _Truthy,
 ) -> tuple[_Array_f8, _Array_f8]: ...
 @overload  # retquad: False (positional), retenv: False (positional)
 def gausspulse(
-    t: _ArrayLikeFloat,
+    t: _GaussPulseTime,
     fc: onp.ToFloat,
     bw: onp.ToFloat,
     bwr: onp.ToFloat,
-    tpr: onp.ToFloat | Literal["cutoff"],
+    tpr: onp.ToFloat,
     retquad: _Falsy,
     retenv: _Truthy,
 ) -> tuple[_Array_f8, _Array_f8]: ...
 @overload  # retquad: True (positional), retenv: False = ...
 def gausspulse(
-    t: _ArrayLikeFloat,
+    t: _GaussPulseTime,
     fc: onp.ToFloat,
     bw: onp.ToFloat,
     bwr: onp.ToFloat,
-    tpr: onp.ToFloat | Literal["cutoff"],
+    tpr: onp.ToFloat,
     retquad: _Truthy,
     retenv: _Falsy = False,
 ) -> tuple[_Array_f8, _Array_f8]: ...
 @overload  # retquad: True (keyword), retenv: False = ...
 def gausspulse(
-    t: _ArrayLikeFloat,
+    t: _GaussPulseTime,
     fc: onp.ToFloat = 1000,
     bw: onp.ToFloat = 0.5,
     bwr: onp.ToFloat = -6,
-    tpr: onp.ToFloat | Literal["cutoff"] = -60,
+    tpr: onp.ToFloat = -60,
     *,
     retquad: _Truthy,
     retenv: _Falsy = False,
 ) -> tuple[_Array_f8, _Array_f8]: ...
 @overload  # retquad: True (positional), retenv: True (positional/keyword)
 def gausspulse(
-    t: _ArrayLikeFloat,
+    t: _GaussPulseTime,
     fc: onp.ToFloat,
     bw: onp.ToFloat,
     bwr: onp.ToFloat,
-    tpr: onp.ToFloat | Literal["cutoff"],
+    tpr: onp.ToFloat,
     retquad: _Truthy,
     retenv: _Truthy,
 ) -> tuple[_Array_f8, _Array_f8, _Array_f8]: ...
 @overload  # retquad: True (keyword), retenv: True
 def gausspulse(
-    t: _ArrayLikeFloat,
+    t: _GaussPulseTime,
     fc: onp.ToFloat = 1000,
     bw: onp.ToFloat = 0.5,
     bwr: onp.ToFloat = -6,
-    tpr: onp.ToFloat | Literal["cutoff"] = -60,
+    tpr: onp.ToFloat = -60,
     *,
     retquad: _Truthy,
     retenv: _Truthy,
