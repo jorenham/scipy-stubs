@@ -14,15 +14,16 @@ _SCT = TypeVar("_SCT", bound=np.generic)
 
 _Truthy: TypeAlias = Literal[1, True]
 _Falsy: TypeAlias = Literal[0, False]
+_ArrayLikeFloat: TypeAlias = onp.ToFloat | onp.ToFloatND
 _Array_f8: TypeAlias = onp.ArrayND[np.float64]
 
-def sawtooth(t: onp.ToFloat | onp.ToFloatND, width: onp.ToFloat | onp.ToFloatND = 1) -> _Array_f8: ...
-def square(t: onp.ToFloat | onp.ToFloatND, duty: onp.ToFloat | onp.ToFloatND = 0.5) -> _Array_f8: ...
+def sawtooth(t: _ArrayLikeFloat, width: _ArrayLikeFloat = 1) -> _Array_f8: ...
+def square(t: _ArrayLikeFloat, duty: _ArrayLikeFloat = 0.5) -> _Array_f8: ...
 
 #
 @overload  # retquad: False = ..., retenv: False = ...
 def gausspulse(
-    t: onp.ToFloatND,
+    t: _ArrayLikeFloat,
     fc: onp.ToFloat = 1000,
     bw: onp.ToFloat = 0.5,
     bwr: onp.ToFloat = -6,
@@ -32,7 +33,7 @@ def gausspulse(
 ) -> _Array_f8: ...
 @overload  # retquad: False = ..., retenv: True (keyword)
 def gausspulse(
-    t: onp.ToFloatND,
+    t: _ArrayLikeFloat,
     fc: onp.ToFloat = 1000,
     bw: onp.ToFloat = 0.5,
     bwr: onp.ToFloat = -6,
@@ -43,7 +44,7 @@ def gausspulse(
 ) -> tuple[_Array_f8, _Array_f8]: ...
 @overload  # retquad: False (positional), retenv: False (positional)
 def gausspulse(
-    t: onp.ToFloatND,
+    t: _ArrayLikeFloat,
     fc: onp.ToFloat,
     bw: onp.ToFloat,
     bwr: onp.ToFloat,
@@ -53,7 +54,7 @@ def gausspulse(
 ) -> tuple[_Array_f8, _Array_f8]: ...
 @overload  # retquad: True (positional), retenv: False = ...
 def gausspulse(
-    t: onp.ToFloatND,
+    t: _ArrayLikeFloat,
     fc: onp.ToFloat,
     bw: onp.ToFloat,
     bwr: onp.ToFloat,
@@ -63,7 +64,7 @@ def gausspulse(
 ) -> tuple[_Array_f8, _Array_f8]: ...
 @overload  # retquad: True (keyword), retenv: False = ...
 def gausspulse(
-    t: onp.ToFloatND,
+    t: _ArrayLikeFloat,
     fc: onp.ToFloat = 1000,
     bw: onp.ToFloat = 0.5,
     bwr: onp.ToFloat = -6,
@@ -74,7 +75,7 @@ def gausspulse(
 ) -> tuple[_Array_f8, _Array_f8]: ...
 @overload  # retquad: True (positional), retenv: True (positional/keyword)
 def gausspulse(
-    t: onp.ToFloatND,
+    t: _ArrayLikeFloat,
     fc: onp.ToFloat,
     bw: onp.ToFloat,
     bwr: onp.ToFloat,
@@ -84,7 +85,7 @@ def gausspulse(
 ) -> tuple[_Array_f8, _Array_f8, _Array_f8]: ...
 @overload  # retquad: True (keyword), retenv: True
 def gausspulse(
-    t: onp.ToFloatND,
+    t: _ArrayLikeFloat,
     fc: onp.ToFloat = 1000,
     bw: onp.ToFloat = 0.5,
     bwr: onp.ToFloat = -6,
@@ -105,7 +106,7 @@ def chirp(
     vertex_zero: op.CanBool = True,
 ) -> npt.NDArray[np.float16 | np.float32 | np.float64]: ...
 def sweep_poly(
-    t: onp.ToFloat | onp.ToFloatND,
+    t: _ArrayLikeFloat,
     poly: onp.ToFloatND | np.poly1d,
     phi: onp.ToFloat = 0,
 ) -> _Array_f8: ...
