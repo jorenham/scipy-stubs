@@ -55,7 +55,7 @@ class _BaseMod(VisitorBasedCodemodCommand):
 
 @final
 class AnnotateMissing(_BaseMod):
-    DESCRIPTION = "Sets the default return type to `None`, and other missing annotations to `scipy._typing.Untyped`"
+    DESCRIPTION = "Sets the default return type to `None`, and sets the other missing annotations to `scipy._typing.Untyped`."
 
     untyped: Final[str]
 
