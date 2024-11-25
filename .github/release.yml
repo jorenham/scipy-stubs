@@ -1,0 +1,20 @@
+changelog:
+  categories:
+    - title: Improvements
+      labels:
+        - "stubs: improvement"
+        - "stubs: incomplete"
+        - "stubs: obsolete"
+    - title: Fixes
+      labels:
+        - "stubs: fix"
+        - "stubs: incorrect"
+    - title: Documentation
+      labels:
+        - "meta: docs"
+    - title: Dependencies
+      labels:
+        - "meta: deps"
+    - title: Other Changes
+      labels:
+        - "*"
