@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from numpy._typing import _ArrayLike, _DTypeLike, _NestedSequence
+from numpy._typing import _ArrayLike, _DTypeLike
 from scipy._typing import AnyShape
 
 __all__ = ["chirp", "gausspulse", "sawtooth", "square", "sweep_poly", "unit_impulse"]
@@ -23,7 +23,6 @@ _NBT2 = TypeVar("_NBT2", bound=npt.NBitBase)
 _NBT3 = TypeVar("_NBT3", bound=npt.NBitBase)
 _NBT4 = TypeVar("_NBT4", bound=npt.NBitBase)
 _NBT5 = TypeVar("_NBT5", bound=npt.NBitBase)
-_ChirpTime: TypeAlias = _ArrayLike[np.floating[_NBT1] | np.integer[_NBT1]]
 _ChirpScalar: TypeAlias = float | np.floating[_NBT1] | np.integer[_NBT1]
 _ChirpMethod: TypeAlias = Literal["linear", "quadratic", "logarithmic", "hyperbolic"]
 
@@ -31,19 +30,9 @@ def sawtooth(t: _ArrayLikeFloat, width: _ArrayLikeFloat = 1) -> _Array_f8: ...
 def square(t: _ArrayLikeFloat, duty: _ArrayLikeFloat = 0.5) -> _Array_f8: ...
 
 #
-@overload  # Static type checking for float values
-def chirp(
-    t: _ChirpTime[_NBT1],
-    f0: _ChirpScalar[_NBT2],
-    t1: _ChirpScalar[_NBT3],
-    f1: _ChirpScalar[_NBT4],
-    method: _ChirpMethod = "linear",
-    phi: _ChirpScalar[_NBT5] = 0,
-    vertex_zero: op.CanBool = True,
-) -> onp.ArrayND[np.floating[_NBT1 | _NBT2 | _NBT3 | _NBT4 | _NBT5]]: ...
 @overload  # Other dtypes default to np.float64
 def chirp(
-    t: onp.ToFloatND | _NestedSequence[float],
+    t: onp.SequenceND[float],
     f0: onp.ToFloat,
     t1: onp.ToFloat,
     f1: onp.ToFloat,
@@ -51,6 +40,16 @@ def chirp(
     phi: onp.ToFloat = 0,
     vertex_zero: op.CanBool = True,
 ) -> _Array_f8: ...
+@overload  # Static type checking for float values
+def chirp(
+    t: _ArrayLike[np.floating[_NBT1] | np.integer[_NBT1]],
+    f0: _ChirpScalar[_NBT2],
+    t1: _ChirpScalar[_NBT3],
+    f1: _ChirpScalar[_NBT4],
+    method: _ChirpMethod = "linear",
+    phi: _ChirpScalar[_NBT5] = 0,
+    vertex_zero: op.CanBool = True,
+) -> onp.ArrayND[np.floating[_NBT1 | _NBT2 | _NBT3 | _NBT4 | _NBT5]]: ...
 
 #
 def sweep_poly(
