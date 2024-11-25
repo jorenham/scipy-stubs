@@ -78,7 +78,7 @@ def linkage(
     optimal_ordering: bool = False,
 ) -> _LinkageArray[np.int_ | np.float64 | np.complex128]: ...
 
-class ClusterNode:
+class ClusterNode:  # noqa: PLW1641
     id: int
     left: ClusterNode | None
     right: ClusterNode | None

@@ -51,8 +51,7 @@ sp-repo-review = {version = "^2024.8.19", extras = ["cli"]}
 
 [tool.poetry.group.codegen]
 optional = true
-[tool.poetry.group.codegen.dependencies]
-libcst = "^1.5.1"
+dependencies = {libcst = "^1.5.1"}
 
 [tool.poe.executor]
 type = "poetry"
@@ -186,7 +185,7 @@ executionEnvironments = [
 
 [tool.repo-review]
 ignore = [
-    "PY004", # no docs folder
+    "PY004", # no /docs
     "PP301", # pytest is irrelevant
     "PC111", # no blacken-docs because markdown has no code
     "PC140", # manual typecheck pre-commit hooks
@@ -204,66 +203,28 @@ line-length = 130
 src = ["scipy-stubs", "codegen"]
 
 [tool.ruff.format]
+docstring-code-format = true
 line-ending = "lf"
-skip-magic-trailing-comma = false
 
 [tool.ruff.lint]
-ignore = [
-    "E741",
-    "COM812",  # ruff format compat
-    "PYI054",  # numeric-literal-too-long
-]
 preview = true
-select = [
-    "E",
-    "W",
-    "I",
-    "UP",
-    "ANN",
-    "B",
-    "COM",
-    "EXE",
-    "ICN",
-    "INP",
-    "PYI",
-    "Q",
-    "TID",
-    "TC",
-    "ERA",
-    "PGH",
-    "RUF",
-    "PLC0105",
-    "PLC0131",
-    "PLC0132",
-    "PLC0414",
-    "PLE0303",
-    "PLE0304",
-    "PLE0305",
-    "PLE0307",
-    "PLE0308",
-    "PLE0309",
-    "PLE0604",
-    "PLE0605",
-    "PLE1132",
-]
+select = ["ALL"]
+ignore = ["D", "FBT", "COM812", "CPY", "EM", "TD", "FIX", "DOC"]
+
+[tool.ruff.lint.per-file-ignores]
+# TODO: enable F (pyflakes)
+"*.pyi" = ["F", "E741", "N", "A", "PYI054", "PLC2701", "PLW3201", "PLR", "FURB"]
 
 [tool.ruff.lint.flake8-import-conventions]
-banned-from = [
-    "numpy",
-    "numpy.ma",
-    "numpy.typing",
-    "optype",
-    "optype.numpy",
-    "optype.typing",
-]
+banned-from = ["numpy", "numpy.typing", "optype", "optype.numpy", "optype.typing"]
 [tool.ruff.lint.flake8-import-conventions.extend-aliases]
 "ctypes" = "ct"
 "datetime" = "dt"
 "numpy" = "np"
 "numpy.typing" = "npt"
 "optype" = "op"
-"optype.typing" = "opt"
 "optype.numpy" = "onp"
+"optype.typing" = "opt"
 
 [tool.ruff.lint.isort]
 combine-as-imports = true

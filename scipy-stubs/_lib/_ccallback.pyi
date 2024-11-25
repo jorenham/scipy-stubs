@@ -108,6 +108,8 @@ ffi: Literal[False] | None
 class CData: ...
 
 class LowLevelCallable(tuple[PyCapsule, _FuncT_co, _DataT_co], Generic[_FuncT_co, _DataT_co]):
+    __slots__: ClassVar[tuple[()]] = ()
+
     @property
     def function(self, /) -> _FuncT_co: ...
     @property

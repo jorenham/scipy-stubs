@@ -104,12 +104,10 @@ class FixTrailingComma(_BaseMod):
         params = updated_node.params.params
 
         if (
-            # there's whitespace before the parameters
-            not (newline := original_node.whitespace_before_params).empty
             # the parameters start on a new line
-            and isinstance(newline, cst.ParenthesizedWhitespace)
+            isinstance(original_node.whitespace_before_params, cst.ParenthesizedWhitespace)
             # at least 2 parameters
-            and len(params) >= 2
+            and len(params) > 1
             # the first parameter has a comma
             and (comma0 := params[0].comma) is not cst.MaybeSentinel.DEFAULT
             # the first comma doesn't end in a newline
