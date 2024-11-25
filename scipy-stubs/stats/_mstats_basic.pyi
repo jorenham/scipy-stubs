@@ -5,6 +5,7 @@ from typing_extensions import Self, TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.typing as opt
 from numpy._typing import _ArrayLike
 from scipy._typing import Alternative, AnyBool, NanPolicy
 from ._stats_mstats_common import SiegelslopesResult, TheilslopesResult
@@ -249,24 +250,57 @@ def kstest(
 #
 @overload
 def trima(
-    a: _ArrayLike[_SCT_bifc],
-    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    a: onp.SequenceND[bool],
+    limits: tuple[onp.ToInt, onp.ToInt] | None = None,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
-) -> _MArrayND[_SCT_bifc]: ...
+) -> _MArrayND[np.bool_]: ...
 @overload
 def trima(
-    a: onp.ToFloatND,
+    a: onp.SequenceND[opt.JustInt],
+    limits: tuple[onp.ToInt, onp.ToInt] | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+) -> _MArrayND[np.int_]: ...
+@overload
+def trima(
+    a: onp.SequenceND[float],
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
 ) -> _MArrayND[np.float64 | np.int_ | np.bool_]: ...
 @overload
 def trima(
-    a: onp.ToComplexND,
+    a: onp.SequenceND[complex],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
 ) -> _MArrayND[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
+@overload
+def trima(
+    a: _ArrayLike[_SCT_bifc],
+    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+) -> _MArrayND[_SCT_bifc]: ...
 
 #
+@overload
+def trimr(
+    a: onp.SequenceND[opt.JustInt | np.int_],
+    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
+) -> _MArrayND[np.int_]: ...
+@overload
+def trimr(
+    a: onp.SequenceND[float],
+    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
+) -> _MArrayND[np.float64 | np.int_]: ...
+@overload
+def trimr(
+    a: onp.SequenceND[complex],
+    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
+) -> _MArrayND[np.complex128 | np.float64 | np.int_]: ...
 @overload
 def trimr(
     a: _ArrayLike[_SCT_bifc],
@@ -274,22 +308,32 @@ def trimr(
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
 ) -> _MArrayND[_SCT_bifc]: ...
-@overload
-def trimr(
-    a: onp.ToFloatND,
-    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
-    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
-    axis: op.CanIndex | None = None,
-) -> _MArrayND[np.float64 | np.int_ | np.bool_]: ...
-@overload
-def trimr(
-    a: onp.ToComplexND,
-    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
-    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
-    axis: op.CanIndex | None = None,
-) -> _MArrayND[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
 
 #
+@overload
+def trim(
+    a: onp.SequenceND[opt.JustInt | np.int_],
+    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    relative: op.CanBool = False,
+    axis: op.CanIndex | None = None,
+) -> _MArrayND[np.int_]: ...
+@overload
+def trim(
+    a: onp.SequenceND[float],
+    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    relative: op.CanBool = False,
+    axis: op.CanIndex | None = None,
+) -> _MArrayND[np.float64 | np.int_]: ...
+@overload
+def trim(
+    a: onp.SequenceND[complex],
+    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    relative: op.CanBool = False,
+    axis: op.CanIndex | None = None,
+) -> _MArrayND[np.complex128 | np.float64 | np.int_]: ...
 @overload
 def trim(
     a: _ArrayLike[_SCT_bifc],
@@ -298,24 +342,29 @@ def trim(
     relative: op.CanBool = False,
     axis: op.CanIndex | None = None,
 ) -> _MArrayND[_SCT_bifc]: ...
-@overload
-def trim(
-    a: onp.ToFloatND,
-    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
-    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
-    relative: op.CanBool = False,
-    axis: op.CanIndex | None = None,
-) -> _MArrayND[np.float64 | np.int_ | np.bool_]: ...
-@overload
-def trim(
-    a: onp.ToComplexND,
-    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
-    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
-    relative: op.CanBool = False,
-    axis: op.CanIndex | None = None,
-) -> _MArrayND[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
 
 #
+@overload
+def trimboth(
+    data: onp.SequenceND[opt.JustInt | np.int_],
+    proportiontocut: float | np.floating[Any] = 0.2,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
+) -> _MArrayND[np.int_]: ...
+@overload
+def trimboth(
+    data: onp.SequenceND[float],
+    proportiontocut: float | np.floating[Any] = 0.2,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
+) -> _MArrayND[np.float64 | np.int_]: ...
+@overload
+def trimboth(
+    data: onp.SequenceND[complex],
+    proportiontocut: float | np.floating[Any] = 0.2,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
+) -> _MArrayND[np.complex128 | np.float64 | np.int_]: ...
 @overload
 def trimboth(
     data: _ArrayLike[_SCT_bifc],
@@ -323,22 +372,32 @@ def trimboth(
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
 ) -> _MArrayND[_SCT_bifc]: ...
-@overload
-def trimboth(
-    data: onp.ToFloatND,
-    proportiontocut: float | np.floating[Any] = 0.2,
-    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
-    axis: op.CanIndex | None = None,
-) -> _MArrayND[np.float64 | np.int_ | np.bool_]: ...
-@overload
-def trimboth(
-    data: onp.ToComplexND,
-    proportiontocut: float | np.floating[Any] = 0.2,
-    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
-    axis: op.CanIndex | None = None,
-) -> _MArrayND[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
 
 #
+@overload
+def trimtail(
+    data: onp.SequenceND[opt.JustInt | np.int_],
+    proportiontocut: float | np.floating[Any] = 0.2,
+    tail: Literal["left", "right"] = "left",
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
+) -> _MArrayND[np.int_]: ...
+@overload
+def trimtail(
+    data: onp.SequenceND[float],
+    proportiontocut: float | np.floating[Any] = 0.2,
+    tail: Literal["left", "right"] = "left",
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
+) -> _MArrayND[np.float64 | np.int_]: ...
+@overload
+def trimtail(
+    data: onp.SequenceND[complex],
+    proportiontocut: float | np.floating[Any] = 0.2,
+    tail: Literal["left", "right"] = "left",
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    axis: op.CanIndex | None = None,
+) -> _MArrayND[np.complex128 | np.float64 | np.int_]: ...
 @overload
 def trimtail(
     data: _ArrayLike[_SCT_bifc],
@@ -347,22 +406,6 @@ def trimtail(
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
 ) -> _MArrayND[_SCT_bifc]: ...
-@overload
-def trimtail(
-    data: onp.ToFloatND,
-    proportiontocut: float | np.floating[Any] = 0.2,
-    tail: Literal["left", "right"] = "left",
-    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
-    axis: op.CanIndex | None = None,
-) -> _MArrayND[np.float64 | np.int_ | np.bool_]: ...
-@overload
-def trimtail(
-    data: onp.ToComplexND,
-    proportiontocut: float | np.floating[Any] = 0.2,
-    tail: Literal["left", "right"] = "left",
-    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
-    axis: op.CanIndex | None = None,
-) -> _MArrayND[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
 
 #
 @overload
@@ -381,6 +424,8 @@ def trimmed_mean(
     relative: op.CanBool = True,
     axis: op.CanIndex | None = None,
 ) -> _MArrayND0[np.floating[Any] | np.complex128]: ...
+
+#
 def trimmed_var(
     a: onp.ToComplexND,
     limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
@@ -389,6 +434,8 @@ def trimmed_var(
     axis: op.CanIndex | None = None,
     ddof: onp.ToInt = 0,
 ) -> _MArrayND0[np.float64]: ...
+
+#
 def trimmed_std(
     a: onp.ToComplexND,
     limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
@@ -397,12 +444,16 @@ def trimmed_std(
     axis: op.CanIndex | None = None,
     ddof: onp.ToInt = 0,
 ) -> _MArrayND0[np.float64]: ...
+
+#
 def trimmed_stde(
     a: onp.ToComplexND,
     limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
     inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
     axis: op.CanIndex | None = None,
 ) -> _MArrayND0[np.float64]: ...
+
+#
 @overload
 def tmean(
     a: onp.ToFloatND,
@@ -417,6 +468,8 @@ def tmean(
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
 ) -> _MArrayND0[np.inexact[Any]]: ...
+
+#
 def tvar(
     a: _MArrayND,
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
@@ -424,27 +477,59 @@ def tvar(
     axis: op.CanIndex | None = 0,
     ddof: onp.ToInt = 1,
 ) -> _MArrayND0[np.floating[Any]]: ...
+
+#
 @overload
 def tmin(
-    a: _ArrayLike[_SCT_bifc],
-    lowerlimit: onp.ToComplex | None = None,
-    axis: op.CanIndex | None = 0,
-    inclusive: AnyBool = True,
-) -> _MArrayND0[_SCT_bifc]: ...
-@overload
-def tmin(
-    a: onp.ToFloatND,
+    a: onp.SequenceND[opt.JustInt | np.int_],
     lowerlimit: onp.ToFloat | None = None,
     axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,
-) -> _MArrayND0[np.float64 | np.int_ | np.bool_]: ...
+) -> _MArrayND0[np.int_]: ...
 @overload
 def tmin(
-    a: onp.ToComplexND,
+    a: onp.SequenceND[float],
+    lowerlimit: onp.ToFloat | None = None,
+    axis: op.CanIndex | None = 0,
+    inclusive: AnyBool = True,
+) -> _MArrayND0[np.float64 | np.int_]: ...
+@overload
+def tmin(
+    a: onp.SequenceND[complex],
     lowerlimit: onp.ToComplex | None = None,
     axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,
-) -> _MArrayND0[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
+) -> _MArrayND0[np.complex128 | np.float64 | np.int_]: ...
+@overload
+def tmin(
+    a: _ArrayLike[_SCT_bifc],
+    lowerlimit: onp.ToComplex | None = None,
+    axis: op.CanIndex | None = 0,
+    inclusive: AnyBool = True,
+) -> _MArrayND0[_SCT_bifc]: ...
+
+#
+@overload
+def tmax(
+    a: onp.SequenceND[opt.JustInt | np.int_],
+    upperlimit: onp.ToFloat | None = None,
+    axis: op.CanIndex | None = 0,
+    inclusive: AnyBool = True,
+) -> _MArrayND0[np.int_]: ...
+@overload
+def tmax(
+    a: onp.SequenceND[float],
+    upperlimit: onp.ToFloat | None = None,
+    axis: op.CanIndex | None = 0,
+    inclusive: AnyBool = True,
+) -> _MArrayND0[np.float64 | np.int_]: ...
+@overload
+def tmax(
+    a: onp.SequenceND[complex],
+    upperlimit: onp.ToComplex | None = None,
+    axis: op.CanIndex | None = 0,
+    inclusive: AnyBool = True,
+) -> _MArrayND0[np.complex128 | np.float64 | np.int_]: ...
 @overload
 def tmax(
     a: _ArrayLike[_SCT_bifc],
@@ -452,20 +537,8 @@ def tmax(
     axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,
 ) -> _MArrayND0[_SCT_bifc]: ...
-@overload
-def tmax(
-    a: onp.ToFloatND,
-    upperlimit: onp.ToFloat | None = None,
-    axis: op.CanIndex | None = 0,
-    inclusive: AnyBool = True,
-) -> _MArrayND0[np.float64 | np.int_ | np.bool_]: ...
-@overload
-def tmax(
-    a: onp.ToComplexND,
-    upperlimit: onp.ToComplex | None = None,
-    axis: op.CanIndex | None = 0,
-    inclusive: AnyBool = True,
-) -> _MArrayND0[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
+
+#
 def tsem(
     a: onp.ToComplexND,
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
@@ -477,6 +550,15 @@ def tsem(
 #
 @overload
 def winsorize(
+    a: onp.ToIntND,
+    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
+    inplace: AnyBool = False,
+    axis: op.CanIndex | None = None,
+    nan_policy: NanPolicy = "propagate",
+) -> _MArrayND[np.int_]: ...
+@overload
+def winsorize(
     a: _ArrayLike[_SCT_f],
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
@@ -486,31 +568,13 @@ def winsorize(
 ) -> _MArrayND[_SCT_f]: ...
 @overload
 def winsorize(
-    a: onp.ToBoolND,
-    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
-    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
-    inplace: AnyBool = False,
-    axis: op.CanIndex | None = None,
-    nan_policy: NanPolicy = "propagate",
-) -> _MArrayND[np.bool_]: ...
-@overload
-def winsorize(
-    a: onp.ToIntND,
-    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
-    inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
-    inplace: AnyBool = False,
-    axis: op.CanIndex | None = None,
-    nan_policy: NanPolicy = "propagate",
-) -> _MArrayND[np.bool_ | np.int_]: ...
-@overload
-def winsorize(
     a: onp.ToFloatND,
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     inplace: AnyBool = False,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
-) -> _MArrayND[np.bool_ | np.int_ | np.floating[Any]]: ...
+) -> _MArrayND[np.floating[Any] | np.int_]: ...
 @overload
 def winsorize(
     a: onp.ToComplexND,
@@ -519,7 +583,7 @@ def winsorize(
     inplace: AnyBool = False,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
-) -> _MArrayND[np.bool_ | np.int_ | np.floating[Any] | np.complex128]: ...
+) -> _MArrayND[np.complex128 | np.floating[Any] | np.int_]: ...
 
 # TODO(jorenham): Overloads for complex array-likes
 def moment(

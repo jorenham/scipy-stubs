@@ -29,12 +29,12 @@ scipy = ["scipy"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-optype = ">=0.7.1"
+optype = ">=0.7.2"
 scipy = {version = ">=1.10", optional = true}
 
 [tool.poetry.group.dev.dependencies]
 scipy = "1.14.1"
-poethepoet = ">=0.30"
+poethepoet = "^0.31.0"
 pre-commit = "^4.0.1"
 tox = "^4.23.2"
 
