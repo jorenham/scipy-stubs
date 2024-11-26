@@ -137,7 +137,7 @@ class Brent(Generic[_ValueT_co]):
 @overload
 def is_finite_scalar(x: onp.ToScalar) -> np.bool_: ...
 @overload  # returns a `np.ndarray` of `size = 1`, but could have any `ndim`
-def is_finite_scalar(x: _Array) -> Literal[False] | onp.Array[tuple[Literal[1], ...], np.bool_]: ...
+def is_finite_scalar(x: _Array) -> Literal[False] | onp.Array[onp.AtLeast1D, np.bool_]: ...
 
 # undocumented
 @overload
@@ -565,12 +565,7 @@ def brute(
     finish: _DoesFMin | None = ...,  # default: `fmin`
     disp: AnyBool = False,
     workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
-) -> tuple[
-    _Float1D,
-    np.float64,
-    onp.Array[tuple[Literal[2], int, int], np.float64],
-    onp.Array2D[np.floating[Any]],
-]: ...
+) -> tuple[_Float1D, np.float64, onp.Array3D[np.float64], onp.Array2D[np.floating[Any]]]: ...
 
 #
 @overload  # full_output: False = ...

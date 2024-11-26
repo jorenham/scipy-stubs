@@ -1,7 +1,6 @@
 from typing import Any, Literal, TypeAlias
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 
 __all__ = ["_output_len", "upfirdn"]
@@ -10,14 +9,14 @@ _FIRMode: TypeAlias = Literal["constant", "symmetric", "reflect", "wrap"]
 _int64_t: TypeAlias = int | np.int64  # noqa: PYI042
 
 class _UpFIRDn:
-    def __init__(self, /, h: npt.NDArray[np.floating[Any]], x_dtype: np.dtype[np.floating[Any]], up: int, down: int) -> None: ...
+    def __init__(self, /, h: onp.ArrayND[np.floating[Any]], x_dtype: np.dtype[np.floating[Any]], up: int, down: int) -> None: ...
     def apply_filter(
         self,
-        x: npt.NDArray[np.number[Any]],
+        x: onp.ArrayND[np.number[Any]],
         axis: int = -1,
         mode: _FIRMode = "constant",
         cval: int = 0,
-    ) -> npt.NDArray[np.floating[Any]]: ...
+    ) -> onp.ArrayND[np.floating[Any]]: ...
 
 def upfirdn(
     h: onp.AnyFloatingArray,
@@ -27,7 +26,7 @@ def upfirdn(
     axis: int = -1,
     mode: _FIRMode = "constant",
     cval: float = 0,
-) -> npt.NDArray[np.floating[Any]]: ...
+) -> onp.ArrayND[np.floating[Any]]: ...
 
 # originally defined in `scipy/signal/_upfirdn_apply.pyx` (as `(((in_len - 1) * up + len_h) - 1) // down + 1`)
 def _output_len(len_h: _int64_t, in_len: _int64_t, up: _int64_t, down: _int64_t) -> _int64_t: ...

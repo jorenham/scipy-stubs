@@ -3,6 +3,7 @@ from typing import Any, type_check_only
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 from scipy._typing import Untyped
 from ._constraints import Bounds
 from ._optimize import OptimizeResult
@@ -18,7 +19,7 @@ class _OptimizeResult(OptimizeResult):
     success: bool
     status: int
     fun: float
-    x: npt.NDArray[np.float64]  # 1d
+    x: onp.ArrayND[np.float64]  # 1d
     nit: int
     nfev: int
 

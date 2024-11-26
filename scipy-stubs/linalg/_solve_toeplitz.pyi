@@ -1,8 +1,7 @@
-from typing import TypeAlias
-
 import numpy as np
-import numpy.typing as npt
+import optype.numpy as onp
 
-_Array_fc_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64 | np.complex128]]
-
-def levinson(a: npt.NDArray[np.float64 | np.complex128], b: npt.NDArray[np.float64 | np.complex128]) -> tuple[_Array_fc_1d]: ...
+def levinson(
+    a: onp.ArrayND[np.float64 | np.complex128],
+    b: onp.ArrayND[np.float64 | np.complex128],
+) -> tuple[onp.Array1D[np.float64 | np.complex128]]: ...

@@ -11,10 +11,10 @@ __all__ = "AscentDataset", "CanFetch", "Dataset", "ECGDataset", "Face2Dataset", 
 class CanFetch(Protocol):
     def fetch(self, dataset_name: LiteralString, /) -> LiteralString: ...
 
-AscentDataset: TypeAlias = onp.Array[tuple[L[512], L[512]], np.uint8]
-ECGDataset: TypeAlias = onp.Array[tuple[L[108_000]], np.float64]
-Face2Dataset: TypeAlias = onp.Array[tuple[L[768], L[1_024]], np.uint8]
-Face3Dataset: TypeAlias = onp.Array[tuple[L[768], L[1_024], L[3]], np.uint8]
+AscentDataset: TypeAlias = onp.Array2D[np.uint8]
+ECGDataset: TypeAlias = onp.Array1D[np.float64]
+Face2Dataset: TypeAlias = onp.Array2D[np.uint8]
+Face3Dataset: TypeAlias = onp.Array3D[np.uint8]
 _FaceDataset: TypeAlias = Face2Dataset | Face3Dataset
 Dataset: TypeAlias = AscentDataset | ECGDataset | _FaceDataset
 

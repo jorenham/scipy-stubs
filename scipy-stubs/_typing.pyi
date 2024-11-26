@@ -68,9 +68,9 @@ AnyBool: TypeAlias = bool | np.bool_ | Literal[0, 1]
 # equivalent to `numpy._typing._shape._ShapeLike`
 AnyShape: TypeAlias = op.CanIndex | Sequence[op.CanIndex]
 
-# numpy literals
-RNG: TypeAlias = np.random.Generator | np.random.RandomState
-Seed: TypeAlias = int | RNG
+# numpy types
+RNG: TypeAlias = np.random.BitGenerator | np.random.Generator | np.random.RandomState
+Seed: TypeAlias = RNG | np.random.SeedSequence | onp.ToJustInt | onp.ToJustIntND
 ByteOrder: TypeAlias = Literal["S", "<", "little", ">", "big", "=", "native", "|", "I"]
 OrderKACF: TypeAlias = Literal["K", "A", "C", "F"]
 Casting: TypeAlias = Literal["no", "equiv", "safe", "same_kind", "unsafe"]

@@ -2,10 +2,9 @@ from collections.abc import Iterable
 from typing import Any, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
-import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from scipy.ndimage._typing import _ScalarValueIn, _ScalarValueOut
+from scipy.ndimage._typing import _ScalarValueOut
 
 _Mode: TypeAlias = Literal["nearest", "wrap", "reflect", "grid-mirror", "mirror", "constant", "grid-wrap", "grid-constant"]
 _ModeCode: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6]
@@ -31,7 +30,7 @@ def _get_output(
     input: onp.Array[_ShapeT | tuple[int, ...], _ScalarT],
     shape: _ShapeT | None = None,
     complex_output: Literal[False] = False,
-) -> npt.NDArray[_ScalarT]: ...
+) -> onp.ArrayND[_ScalarT]: ...
 @overload
 def _get_output(
     output: onp.Array[_ShapeT, _ComplexT] | type[_ComplexT] | np.dtype[_ComplexT] | None,
@@ -39,15 +38,15 @@ def _get_output(
     shape: _ShapeT | None = None,
     *,
     complex_output: Literal[True],
-) -> npt.NDArray[_ComplexT]: ...
+) -> onp.ArrayND[_ComplexT]: ...
 @overload
 def _get_output(
-    output: onp.Array[_ShapeT, _ScalarValueOut] | type[_ScalarValueIn] | np.dtype[_ScalarValueOut] | None,
+    output: onp.Array[_ShapeT, _ScalarValueOut] | type[onp.ToComplex] | np.dtype[_ScalarValueOut] | None,
     input: onp.Array[_ShapeT | tuple[int, ...], _ScalarValueOut],
     shape: _ShapeT | None = None,
     *,
     complex_output: Literal[True],
-) -> npt.NDArray[np.complex64 | np.complex128 | np.clongdouble]: ...
+) -> onp.ArrayND[np.complex64 | np.complex128 | np.clongdouble]: ...
 
 #
 @overload

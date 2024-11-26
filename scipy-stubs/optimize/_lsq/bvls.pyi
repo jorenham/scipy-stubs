@@ -1,34 +1,33 @@
 from typing import Any, Literal, type_check_only
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from scipy.optimize import OptimizeResult
 
 @type_check_only
 class _OptimizeResult(OptimizeResult):
-    x: npt.NDArray[np.float64]
+    x: onp.ArrayND[np.float64]
     fun: float | np.float64
     cost: float | np.float64
     initial_cost: float | np.float64
     optimality: float | np.float64
-    active_mask: npt.NDArray[np.float64]
+    active_mask: onp.ArrayND[np.float64]
     nit: int
     status: int
 
 # undocumented
 def compute_kkt_optimality(
-    g: npt.NDArray[np.float64],
-    on_bound: npt.NDArray[np.float64],
+    g: onp.ArrayND[np.float64],
+    on_bound: onp.ArrayND[np.float64],
 ) -> np.float64: ...
 
 # undocumented
 def bvls(
-    A: npt.NDArray[np.floating[Any]],
-    b: npt.NDArray[np.floating[Any]],
-    x_lsq: npt.NDArray[np.floating[Any]],
-    lb: npt.NDArray[np.floating[Any]],
-    ub: npt.NDArray[np.floating[Any]],
+    A: onp.ArrayND[np.floating[Any]],
+    b: onp.ArrayND[np.floating[Any]],
+    x_lsq: onp.ArrayND[np.floating[Any]],
+    lb: onp.ArrayND[np.floating[Any]],
+    ub: onp.ArrayND[np.floating[Any]],
     tol: onp.ToFloat,
     max_iter: onp.ToInt | None,
     verbose: Literal[0, 1, 2],

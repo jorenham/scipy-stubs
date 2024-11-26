@@ -3,12 +3,13 @@ from typing_extensions import final
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 
 __all__ = ["ConvexHull", "Delaunay", "HalfspaceIntersection", "QhullError", "Voronoi", "tsearch"]
 
-_Array_i: TypeAlias = npt.NDArray[np.intc]
-_Array_n: TypeAlias = npt.NDArray[np.intp]
-_Array_f8: TypeAlias = npt.NDArray[np.float64]
+_Array_i: TypeAlias = onp.ArrayND[np.intc]
+_Array_n: TypeAlias = onp.ArrayND[np.intp]
+_Array_f8: TypeAlias = onp.ArrayND[np.float64]
 
 class QhullError(RuntimeError): ...
 
@@ -106,7 +107,7 @@ class ConvexHull(_QhullUser):
     neighbors: _Array_i
     equations: _Array_f8
     coplanar: _Array_i
-    good: npt.NDArray[np.bool_] | None
+    good: onp.ArrayND[np.bool_] | None
     volume: float
     area: float
     nsimplex: int
@@ -163,4 +164,4 @@ class HalfspaceIntersection(_QhullUser):
     @property
     def halfspaces(self, /) -> _Array_f8: ...
     @property
-    def dual_vertices(self, /) -> npt.NDArray[np.integer[Any]]: ...
+    def dual_vertices(self, /) -> onp.ArrayND[np.integer[Any]]: ...

@@ -27,7 +27,7 @@ class OptimizeResult(_OptimizeResult):
     method: Literal["equality_constrained_sqp", "tr_interior_point"]
     constr: list[float | np.float64]
     jac: list[onp.Array2D[np.float64] | spmatrix]
-    v: list[npt.NDArray[np.float64]]
+    v: list[onp.ArrayND[np.float64]]
     constr_nfev: list[int]
     constr_njev: list[int]
     constr_nhev: list[int]

@@ -3,6 +3,7 @@ from typing_extensions import Self
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 from . import distributions as distributions
 from ._typing import BaseBunch
 
@@ -30,7 +31,7 @@ class TheilslopesResult(BaseBunch[np.float64, np.float64, np.float64, np.float64
     @property
     def high_slope(self, /) -> np.float64: ...
 
-def _find_repeats(arr: npt.NDArray[np.number[Any]]) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.intp]]: ...
+def _find_repeats(arr: onp.ArrayND[np.number[Any]]) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]: ...
 def siegelslopes(
     y: npt.ArrayLike,
     x: npt.ArrayLike | None = None,

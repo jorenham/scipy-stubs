@@ -1,13 +1,14 @@
 from collections.abc import Callable
-from typing import Literal, TypeAlias, overload
+from typing import Any, Literal, TypeAlias, overload
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 
 __all__ = ["rsf2csf", "schur"]
 
-_Array_fc_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.inexact[npt.NBitBase]]]
-_Array_c_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.complexfloating[npt.NBitBase, npt.NBitBase]]]
+_Array_fc_2d: TypeAlias = onp.Array2D[np.inexact[Any]]
+_Array_c_2d: TypeAlias = onp.Array2D[np.complexfloating[Any, Any]]
 
 @overload
 def schur(

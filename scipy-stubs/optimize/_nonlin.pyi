@@ -56,7 +56,7 @@ _ResidFunc: TypeAlias = Callable[[onp.ArrayND[np.float64]], onp.ToFloat] | Calla
 _JacobianLike: TypeAlias = (
     Jacobian
     | type[Jacobian]
-    | onp.ArrayND[np.generic]
+    | onp.ArrayND
     | _SparseArray
     | _SupportsJacobian
     | Callable[[onp.ArrayND[np.float64]], _FloatND | _SparseArray]

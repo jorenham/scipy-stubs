@@ -3,7 +3,6 @@ from typing import Any, Final, Generic, Protocol, TypeAlias, overload, type_chec
 from typing_extensions import TypeVar
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 
 __all__ = ["Covariance"]
@@ -30,8 +29,8 @@ class Covariance(Generic[_SCT_co]):
     def from_cholesky(cholesky: onp.ToFloat2D) -> CovViaCholesky: ...
     @staticmethod
     def from_eigendecomposition(eigendecomposition: tuple[onp.ToFloat1D, onp.ToFloat2D]) -> CovViaEigendecomposition: ...
-    def whiten(self, /, x: onp.AnyIntegerArray | onp.AnyFloatingArray) -> npt.NDArray[np.floating[Any]]: ...
-    def colorize(self, /, x: onp.AnyIntegerArray | onp.AnyFloatingArray) -> npt.NDArray[np.floating[Any]]: ...
+    def whiten(self, /, x: onp.AnyIntegerArray | onp.AnyFloatingArray) -> onp.ArrayND[np.floating[Any]]: ...
+    def colorize(self, /, x: onp.AnyIntegerArray | onp.AnyFloatingArray) -> onp.ArrayND[np.floating[Any]]: ...
     @property
     def log_pdet(self, /) -> np.float64: ...
     @property
@@ -60,22 +59,22 @@ class CovViaEigendecomposition(Covariance[np.float64]):
 
 @type_check_only
 class _PSD(Protocol):
-    _M: npt.NDArray[np.float64]
-    V: npt.NDArray[np.float64]
-    U: npt.NDArray[np.float64]
+    _M: onp.ArrayND[np.float64]
+    V: onp.ArrayND[np.float64]
+    U: onp.ArrayND[np.float64]
     eps: np.float64 | float
     log_pdet: np.float64 | float
     cond: np.float64 | float
     rank: int
 
     @property
-    def pinv(self, /) -> npt.NDArray[np.floating[Any]]: ...
+    def pinv(self, /) -> onp.ArrayND[np.floating[Any]]: ...
 
 class CovViaPSD(Covariance[np.float64]):
-    _LP: Final[npt.NDArray[np.float64]]
+    _LP: Final[onp.ArrayND[np.float64]]
     _log_pdet: Final[np.float64 | float]
     _rank: Final[int]
-    _covariance: Final[npt.NDArray[np.float64]]
+    _covariance: Final[onp.ArrayND[np.float64]]
     _shape: tuple[int, int]
     _psd: Final[_PSD]
     _allow_singular: Final = False

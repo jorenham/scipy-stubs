@@ -3,6 +3,7 @@ from typing import Final, Literal, type_check_only
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 from ._optimize import OptimizeResult
 from ._typing import Bound, MethodLinprog
 
@@ -10,10 +11,10 @@ __all__ = ["linprog", "linprog_terse_callback", "linprog_verbose_callback"]
 
 @type_check_only
 class _OptimizeResult(OptimizeResult):
-    x: npt.NDArray[np.float64]
+    x: onp.ArrayND[np.float64]
     fun: float
-    slack: npt.NDArray[np.float64]
-    con: npt.NDArray[np.float64]
+    slack: onp.ArrayND[np.float64]
+    con: onp.ArrayND[np.float64]
     success: bool
     status: Literal[0, 1, 2, 3, 4]
     nit: int

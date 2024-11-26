@@ -2,7 +2,6 @@ from typing import Any, Literal, Protocol, overload, type_check_only
 from typing_extensions import TypeVar, TypeVarTuple, Unpack
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from ._typing import ODEInfoDict
 
@@ -37,7 +36,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: npt.NDArray[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -62,7 +61,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: npt.NDArray[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -89,7 +88,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: npt.NDArray[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -115,7 +114,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: npt.NDArray[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -142,7 +141,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: npt.NDArray[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -167,7 +166,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: npt.NDArray[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -194,7 +193,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: npt.NDArray[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -220,7 +219,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: npt.NDArray[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,

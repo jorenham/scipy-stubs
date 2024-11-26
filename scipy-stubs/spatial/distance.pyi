@@ -5,6 +5,7 @@ from typing_extensions import Buffer
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 import optype.typing as opt
 
 __all__ = [
@@ -40,7 +41,7 @@ __all__ = [
 ]
 
 # Anything that can be parsed by `np.float64.__init__` and is thus
-# compatible with `npt.NDArray.__setitem__` (for a float64 array)
+# compatible with `onp.ArrayND.__setitem__` (for a float64 array)
 if sys.version_info >= (3, 12):
     _FloatValue: TypeAlias = str | Buffer | opt.AnyFloat
 else:
@@ -48,11 +49,11 @@ else:
 
 @type_check_only
 class _MetricCallback1(Protocol):
-    def __call__(self, xa: npt.NDArray[np.generic], xb: npt.NDArray[np.generic], /) -> _FloatValue | None: ...
+    def __call__(self, xa: onp.ArrayND, xb: onp.ArrayND, /) -> _FloatValue | None: ...
 
 @type_check_only
 class _MetricCallback2(Protocol):
-    def __call__(self, xa: npt.NDArray[np.generic], xb: npt.NDArray[np.generic], /, **kwargs: object) -> _FloatValue | None: ...
+    def __call__(self, xa: onp.ArrayND, xb: onp.ArrayND, /, **kwargs: object) -> _FloatValue | None: ...
 
 # NOTE(jorenham): PEP 612 won't work here, becayse it requires both `*args` and `**kwargs` to be used.
 _MetricCallback: TypeAlias = _MetricCallback1 | _MetricCallback2
@@ -122,21 +123,21 @@ def cdist(
     XB: npt.ArrayLike,
     metric: _MetricKind = "euclidean",
     *,
-    out: npt.NDArray[np.floating[Any]] | None = None,
+    out: onp.ArrayND[np.floating[Any]] | None = None,
     p: float = 2,
     w: npt.ArrayLike | None = None,
     V: npt.ArrayLike | None = None,
     VI: npt.ArrayLike | None = None,
-) -> npt.NDArray[np.floating[Any]]: ...
+) -> onp.ArrayND[np.floating[Any]]: ...
 @overload
 def cdist(
     XA: npt.ArrayLike,
     XB: npt.ArrayLike,
     metric: _MetricCallback,
     *,
-    out: npt.NDArray[np.floating[Any]] | None = None,
+    out: onp.ArrayND[np.floating[Any]] | None = None,
     **kwargs: object,
-) -> npt.NDArray[np.floating[Any]]: ...
+) -> onp.ArrayND[np.floating[Any]]: ...
 def chebyshev(u: npt.ArrayLike, v: npt.ArrayLike, w: npt.ArrayLike | None = None) -> np.number[Any]: ...
 def cityblock(u: npt.ArrayLike, v: npt.ArrayLike, w: npt.ArrayLike | None = None) -> np.number[Any]: ...
 def correlation(u: npt.ArrayLike, v: npt.ArrayLike, w: npt.ArrayLike | None = None, centered: bool = True) -> np.float64: ...
@@ -174,20 +175,20 @@ def pdist(
     X: npt.ArrayLike,
     metric: _MetricKind = "euclidean",
     *,
-    out: npt.NDArray[np.floating[Any]] | None = None,
+    out: onp.ArrayND[np.floating[Any]] | None = None,
     p: float = 2,
     w: npt.ArrayLike | None = None,
     V: npt.ArrayLike | None = None,
     VI: npt.ArrayLike | None = None,
-) -> npt.NDArray[np.floating[Any]]: ...
+) -> onp.ArrayND[np.floating[Any]]: ...
 @overload
 def pdist(
     X: npt.ArrayLike,
     metric: _MetricCallback,
     *,
-    out: npt.NDArray[np.floating[Any]] | None = None,
+    out: onp.ArrayND[np.floating[Any]] | None = None,
     **kwargs: object,
-) -> npt.NDArray[np.floating[Any]]: ...
+) -> onp.ArrayND[np.floating[Any]]: ...
 def seuclidean(u: npt.ArrayLike, v: npt.ArrayLike, V: npt.ArrayLike) -> float: ...
 def sokalmichener(u: npt.ArrayLike, v: npt.ArrayLike, w: npt.ArrayLike | None = None) -> float: ...
 def sokalsneath(u: npt.ArrayLike, v: npt.ArrayLike, w: npt.ArrayLike | None = None) -> np.float64: ...
@@ -196,7 +197,7 @@ def squareform(
     X: npt.ArrayLike,
     force: Literal["no", "tomatrix", "tovector"] = "no",
     checks: bool = True,
-) -> npt.NDArray[np.generic]: ...
+) -> onp.ArrayND: ...
 def rogerstanimoto(u: npt.ArrayLike, v: npt.ArrayLike, w: npt.ArrayLike | None = None) -> float: ...
 def russellrao(u: npt.ArrayLike, v: npt.ArrayLike, w: npt.ArrayLike | None = None) -> float: ...
 def yule(u: npt.ArrayLike, v: npt.ArrayLike, w: npt.ArrayLike | None = None) -> float: ...

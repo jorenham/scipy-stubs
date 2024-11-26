@@ -11,15 +11,15 @@ __all__ = ["dunnett"]
 
 @dataclass
 class DunnettResult:
-    statistic: npt.NDArray[np.float64]
-    pvalue: npt.NDArray[np.float64]
+    statistic: onp.ArrayND[np.float64]
+    pvalue: onp.ArrayND[np.float64]
     _alternative: Literal["two-sided", "less", "greater"]
-    _rho: npt.NDArray[np.float64]
+    _rho: onp.ArrayND[np.float64]
     _df: int
     _std: float
-    _mean_samples: npt.NDArray[np.float64]
-    _mean_control: npt.NDArray[np.float64]
-    _n_samples: npt.NDArray[np.int_]
+    _mean_samples: onp.ArrayND[np.float64]
+    _mean_control: onp.ArrayND[np.float64]
+    _n_samples: onp.ArrayND[np.int_]
     _n_control: int
     _rng: Seed
     _ci: ConfidenceInterval | None = None

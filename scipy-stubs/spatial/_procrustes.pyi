@@ -1,9 +1,10 @@
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 
 __all__ = ["procrustes"]
 
 def procrustes(
     data1: npt.ArrayLike,
     data2: npt.ArrayLike,
-) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], np.float64]: ...
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], np.float64]: ...

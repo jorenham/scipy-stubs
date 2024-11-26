@@ -14,15 +14,15 @@ _MinimizerKwargs: TypeAlias = Mapping[str, object]  # TODO(jorenham): TypedDict
 _Options: TypeAlias = Mapping[str, object]  # TODO(jorenham): TypedDict
 
 _SamplingMethodName: TypeAlias = Literal["simplicial", "halton", "sobol"]
-_SamplingMethodFunc: TypeAlias = Callable[[int, int], npt.NDArray[np.float64]]
+_SamplingMethodFunc: TypeAlias = Callable[[int, int], onp.ArrayND[np.float64]]
 _SamplingMethod: TypeAlias = _SamplingMethodName | _SamplingMethodFunc
 
 _VT = TypeVar("_VT")
 _RT = TypeVar("_RT")
 
 class OptimizeResult(_OptimizeResult):
-    x: npt.NDArray[np.float64]
-    xl: list[npt.NDArray[np.float64]]
+    x: onp.ArrayND[np.float64]
+    xl: list[onp.ArrayND[np.float64]]
     fun: float | np.float64
     funl: list[float | np.float64]
     success: bool

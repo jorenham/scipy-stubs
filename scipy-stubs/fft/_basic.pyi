@@ -1,7 +1,6 @@
 from typing import Literal, TypeAlias
 
 import numpy as np
-import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from scipy._typing import AnyShape
@@ -9,8 +8,8 @@ from scipy._typing import AnyShape
 _Norm: TypeAlias = Literal["backward", "ortho", "forward"]
 _Plan: TypeAlias = object  # not used by scipy
 
-_ArrayReal: TypeAlias = npt.NDArray[np.float32 | np.float64 | np.longdouble]
-_ArrayComplex: TypeAlias = npt.NDArray[np.complex64 | np.complex128 | np.clongdouble]
+_ArrayReal: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]
+_ArrayComplex: TypeAlias = onp.ArrayND[np.complex64 | np.complex128 | np.clongdouble]
 
 ###
 

@@ -103,7 +103,7 @@ _KendallTauSeasonalResult = TypedDict(
         "seasonal tau": _MArrayND0[np.float64],
         "global tau": np.float64,
         "global tau (alt)": np.float64,
-        "seasonal p-value": np.ndarray[Any, np.dtype[np.float64]],
+        "seasonal p-value": onp.ArrayND[np.float64],
         "global p-value (indep)": np.float64,
         "global p-value (dep)": np.float64,
         "chi2 total": _MArrayND[np.float64],
@@ -162,7 +162,7 @@ def mode(a: onp.ToFloatND, axis: op.CanIndex | None = 0) -> ModeResult: ...
 
 #
 @overload
-def msign(x: np.ndarray[_ShapeT, np.dtype[_SCT_bifcmO]]) -> np.ndarray[_ShapeT, np.dtype[_SCT_bifcmO]]: ...
+def msign(x: onp.Array[_ShapeT, _SCT_bifcmO]) -> onp.Array[_ShapeT, _SCT_bifcmO]: ...
 @overload
 def msign(x: _ArrayLike[_SCT_bifcmO]) -> onp.ArrayND[_SCT_bifcmO]: ...
 @overload

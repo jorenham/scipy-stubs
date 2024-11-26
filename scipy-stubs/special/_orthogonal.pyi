@@ -6,8 +6,8 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 
-_PointsWeights: TypeAlias = tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]
-_PointsWeightsMu: TypeAlias = tuple[npt.NDArray[np.float64], npt.NDArray[np.float64], np.float64]
+_PointsWeights: TypeAlias = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
+_PointsWeightsMu: TypeAlias = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], np.float64]
 
 __all__ = [
     "c_roots",
@@ -62,7 +62,7 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 # mypy: disable-error-code="explicit-override"
 class orthopoly1d(np.poly1d):
     limits: tuple[float, float]
-    weights: npt.NDArray[np.float64]
+    weights: onp.ArrayND[np.float64]
     weight_func: Callable[[float], float]
     normcoef: float
     def __init__(

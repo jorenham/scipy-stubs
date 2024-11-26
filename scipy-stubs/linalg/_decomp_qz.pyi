@@ -1,13 +1,14 @@
 from collections.abc import Callable
-from typing import Literal, TypeAlias
+from typing import Any, Literal, TypeAlias
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 
 __all__ = ["ordqz", "qz"]
 
-_Array_fc_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.inexact[npt.NBitBase]]]
-_Array_fc_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.inexact[npt.NBitBase]]]
+_Array_fc_1d: TypeAlias = onp.Array2D[np.inexact[Any]]
+_Array_fc_2d: TypeAlias = onp.Array2D[np.inexact[Any]]
 
 def qz(
     A: npt.ArrayLike,

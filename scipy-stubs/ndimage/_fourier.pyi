@@ -1,77 +1,81 @@
-from typing import overload
+from typing import TypeVar, overload
 
-from ._typing import _ComplexArrayOutT, _FloatArrayIn, _FloatArrayOutT, _IntValueIn, _ScalarArrayIn
+import optype.numpy as onp
+from ._typing import _ComplexArrayOut, _FloatArrayOut
 
 __all__ = ["fourier_ellipsoid", "fourier_gaussian", "fourier_shift", "fourier_uniform"]
 
+_FloatArrayOutT = TypeVar("_FloatArrayOutT", bound=_FloatArrayOut)
+_ComplexArrayOutT = TypeVar("_ComplexArrayOutT", bound=_ComplexArrayOut)
+
 #
 @overload
 def fourier_gaussian(
-    input: _FloatArrayOutT | _FloatArrayIn,
-    sigma: _FloatArrayIn,
-    n: _IntValueIn = -1,
-    axis: _IntValueIn = -1,
+    input: _FloatArrayOutT | onp.ToFloat | onp.ToFloatND,
+    sigma: onp.ToFloat | onp.ToFloatND,
+    n: onp.ToInt = -1,
+    axis: onp.ToInt = -1,
     output: _FloatArrayOutT | None = None,
 ) -> _FloatArrayOutT: ...
 @overload
 def fourier_gaussian(
-    input: _ComplexArrayOutT | _ScalarArrayIn,
-    sigma: _FloatArrayIn,
-    n: _IntValueIn = -1,
-    axis: _IntValueIn = -1,
+    input: _ComplexArrayOutT | onp.ToComplex | onp.ToComplexND,
+    sigma: onp.ToFloat | onp.ToFloatND,
+    n: onp.ToInt = -1,
+    axis: onp.ToInt = -1,
     output: _ComplexArrayOutT | None = None,
 ) -> _ComplexArrayOutT: ...
 
 #
 @overload
 def fourier_uniform(
-    input: _FloatArrayOutT | _FloatArrayIn,
-    size: _FloatArrayIn,
-    n: _IntValueIn = -1,
-    axis: _IntValueIn = -1,
+    input: _FloatArrayOutT | onp.ToFloat | onp.ToFloatND,
+    size: onp.ToFloat | onp.ToFloatND,
+    n: onp.ToInt = -1,
+    axis: onp.ToInt = -1,
     output: _FloatArrayOutT | None = None,
 ) -> _FloatArrayOutT: ...
 @overload
 def fourier_uniform(
-    input: _ComplexArrayOutT | _ScalarArrayIn,
-    size: _FloatArrayIn,
-    n: _IntValueIn = -1,
-    axis: _IntValueIn = -1,
+    input: _ComplexArrayOutT | onp.ToComplex | onp.ToComplexND,
+    size: onp.ToFloat | onp.ToFloatND,
+    n: onp.ToInt = -1,
+    axis: onp.ToInt = -1,
     output: _ComplexArrayOutT | None = None,
 ) -> _ComplexArrayOutT: ...
 
 #
 @overload
 def fourier_ellipsoid(
-    input: _FloatArrayOutT | _FloatArrayIn,
-    size: _FloatArrayIn,
-    n: _IntValueIn = -1,
-    axis: _IntValueIn = -1,
+    input: _FloatArrayOutT | onp.ToFloat | onp.ToFloatND,
+    size: onp.ToFloat | onp.ToFloatND,
+    n: onp.ToInt = -1,
+    axis: onp.ToInt = -1,
     output: _FloatArrayOutT | None = None,
 ) -> _FloatArrayOutT: ...
 @overload
 def fourier_ellipsoid(
-    input: _ComplexArrayOutT | _ScalarArrayIn,
-    size: _FloatArrayIn,
-    n: _IntValueIn = -1,
-    axis: _IntValueIn = -1,
+    input: _ComplexArrayOutT | onp.ToComplex | onp.ToComplexND,
+    size: onp.ToFloat | onp.ToFloatND,
+    n: onp.ToInt = -1,
+    axis: onp.ToInt = -1,
     output: _ComplexArrayOutT | None = None,
 ) -> _ComplexArrayOutT: ...
 
 #
 @overload
 def fourier_shift(
-    input: _FloatArrayOutT | _FloatArrayIn,
-    shift: _FloatArrayIn,
-    n: _IntValueIn = -1,
-    axis: _IntValueIn = -1,
+    input: _FloatArrayOutT | onp.ToFloat | onp.ToFloatND,
+    shift: onp.ToFloat | onp.ToFloatND,
+    n: onp.ToInt = -1,
+    axis: onp.ToInt = -1,
     output: _FloatArrayOutT | None = None,
 ) -> _FloatArrayOutT: ...
 @overload
 def fourier_shift(
-    input: _ComplexArrayOutT | _ScalarArrayIn,
-    shift: _FloatArrayIn,
-    n: _IntValueIn = -1,
-    axis: _IntValueIn = -1,
+    input: _ComplexArrayOutT | onp.ToComplex | onp.ToComplexND,
+    shift: onp.ToFloat | onp.ToFloatND,
+    n: onp.ToInt = -1,
+    axis: onp.ToInt = -1,
     output: _ComplexArrayOutT | None = None,
 ) -> _ComplexArrayOutT: ...

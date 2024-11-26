@@ -1,11 +1,12 @@
-from typing import Literal, TypeAlias, overload
+from typing import Any, Literal, TypeAlias, overload
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 
 __all__ = ["sqrtm"]
 
-_Array_fc_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.inexact[npt.NBitBase]]]
+_Array_fc_2d: TypeAlias = onp.Array2D[np.inexact[Any]]
 
 class SqrtmError(np.linalg.LinAlgError): ...
 

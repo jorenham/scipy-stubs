@@ -1,6 +1,6 @@
 from collections.abc import Iterable
 from typing import Any, Final, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
-from typing_extensions import Never, TypeIs
+from typing_extensions import TypeIs
 
 import numpy as np
 import optype as op
@@ -10,9 +10,9 @@ from scipy.sparse import spmatrix
 
 _SupportedScalar: TypeAlias = np.bool_ | np.integer[Any] | np.float32 | np.float64 | np.longdouble | np.complexfloating[Any, Any]
 _ShapeLike: TypeAlias = Iterable[op.CanIndex]
-_ScalarLike: TypeAlias = complex | str | bytes | memoryview | np.generic | onp.Array[tuple[()]]
-_SequenceLike: TypeAlias = tuple[()] | tuple[_ScalarLike, ...] | list[Never] | list[_ScalarLike] | onp.Array[tuple[int]]
-_MatrixLike: TypeAlias = tuple[_SequenceLike, ...] | list[_SequenceLike] | onp.Array[tuple[int, int]]
+_ScalarLike: TypeAlias = complex | str | bytes | np.generic | onp.Array[tuple[()]]
+_SequenceLike: TypeAlias = tuple[_ScalarLike, ...] | list[_ScalarLike] | onp.Array1D
+_MatrixLike: TypeAlias = tuple[_SequenceLike, ...] | list[_SequenceLike] | onp.Array2D
 
 @type_check_only
 class _ReshapeKwargs(TypedDict, total=False):
@@ -55,7 +55,7 @@ def isdense(x: object) -> TypeIs[onp.Array]: ...
 
 # NOTE: this checks for a `sparse.SparseArray`, which has no stubs at the moment
 @overload
-def is_pydata_spmatrix(m: _ScalarLike | _SequenceLike | _MatrixLike) -> Literal[False]: ...
+def is_pydata_spmatrix(m: onp.ToScalar | onp.ToArray1D | onp.ToArray2D) -> Literal[False]: ...
 @overload
 def is_pydata_spmatrix(m: object) -> bool: ...
 

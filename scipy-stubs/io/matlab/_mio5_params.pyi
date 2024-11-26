@@ -2,7 +2,6 @@ from typing import Final, Generic, Literal, TypeAlias, TypedDict, final, type_ch
 from typing_extensions import Self, TypeVar, override
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 
 __all__ = [
@@ -193,7 +192,7 @@ class MatlabObject(np.ndarray[_ShapeT, np.dtype[np.void]], Generic[_ShapeT]):
 
     def __new__(cls, input_array: onp.AnyVoidArray, classname: str | None = None) -> Self: ...
     @override
-    def __array_finalize__(self, /, obj: npt.NDArray[np.void] | None) -> None: ...
+    def __array_finalize__(self, /, obj: onp.ArrayND[np.void] | None) -> None: ...
 
 class MatlabFunction(np.ndarray[_ShapeT, np.dtype[np.void]], Generic[_ShapeT]):
     @override

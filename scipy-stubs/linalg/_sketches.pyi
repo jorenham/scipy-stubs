@@ -1,5 +1,6 @@
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 import scipy._typing as spt
 from scipy.sparse import csc_matrix
 
@@ -10,4 +11,4 @@ def clarkson_woodruff_transform(
     input_matrix: npt.ArrayLike,
     sketch_size: int,
     seed: spt.Seed | None = None,
-) -> npt.NDArray[np.float64]: ...
+) -> onp.ArrayND[np.float64]: ...

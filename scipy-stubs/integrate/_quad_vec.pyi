@@ -13,7 +13,7 @@ _S = TypeVar("_S")
 _T = TypeVar("_T")
 _VT = TypeVar("_VT", default=object)
 
-_FloatND: TypeAlias = np.ndarray[Any, np.dtype[np.floating[Any]]] | float | np.floating[Any]
+_FloatND: TypeAlias = onp.ArrayND[np.floating[Any]] | float | np.floating[Any]
 _NDT_f = TypeVar("_NDT_f", bound=_FloatND)
 _NDT_f_co = TypeVar("_NDT_f_co", bound=_FloatND, covariant=True, default=_FloatND)
 _SCT_f_co = TypeVar("_SCT_f_co", bound=np.floating[Any], covariant=True, default=np.float64)
@@ -63,17 +63,17 @@ class _Bunch(Generic[_SCT_f_co]):
         status: Literal[0, 1, 2],
         neval: int,
         message: str,
-        intervals: onp.Array[tuple[int, Literal[2]], np.float64],
+        intervals: onp.Array2D[np.float64],
         errors: onp.Array1D[np.float64],
-        integrals: onp.Array[tuple[int, Literal[2]], _SCT_f_co],
+        integrals: onp.Array2D[_SCT_f_co],
     ) -> None: ...
     success: Final[bool]
     status: Final[Literal[0, 1, 2]]
     neval: Final[int]
     message: Final[str]
-    intervals: Final[onp.Array[tuple[int, Literal[2]], np.float64]]
+    intervals: Final[onp.Array2D[np.float64]]
     errors: Final[onp.Array1D[np.float64]]
-    integrals: onp.Array[tuple[int, Literal[2]], _SCT_f_co]
+    integrals: onp.Array2D[_SCT_f_co]
 
 @overload
 def quad_vec(
@@ -147,7 +147,7 @@ def quad_vec(
 ) -> tuple[np.floating[_NBT], float, _Bunch[np.floating[_NBT]]]: ...
 @overload
 def quad_vec(
-    f: _QuadVecFunc[np.ndarray[_ShapeT, np.dtype[np.floating[_NBT]]], Unpack[_Ts]],
+    f: _QuadVecFunc[onp.Array[_ShapeT, np.floating[_NBT]], Unpack[_Ts]],
     a: float,
     b: float,
     epsabs: float = 1e-200,

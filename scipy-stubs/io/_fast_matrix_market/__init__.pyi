@@ -2,8 +2,6 @@ import io
 from typing import Final, Literal, TypeAlias, type_check_only
 from typing_extensions import TypedDict, Unpack, override
 
-import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from scipy._typing import FileName
 from scipy.sparse import coo_matrix, sparray, spmatrix
@@ -41,7 +39,7 @@ class _TextToBytesWrapper(io.BufferedReader):
     @override
     def seek(self, /, offset: int, whence: int = 0) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
 
-def mmread(source: FileName) -> npt.NDArray[np.generic] | coo_matrix: ...
+def mmread(source: FileName) -> onp.ArrayND | coo_matrix: ...
 def mmwrite(
     target: FileName,
     a: onp.CanArray | list[object] | tuple[object, ...] | sparray | spmatrix,
