@@ -2,7 +2,6 @@ from collections.abc import Mapping
 from typing import Any, Literal, TypeAlias, type_check_only
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from scipy._typing import UntypedCallable
 from ._optimize import OptimizeResult
@@ -24,7 +23,7 @@ _RootMethod: TypeAlias = Literal[
 
 @type_check_only
 class _OptimizeResult(OptimizeResult):
-    x: npt.NDArray[np.number[Any]]
+    x: onp.ArrayND[np.number[Any]]
     success: bool
     message: str
     nfev: int
@@ -33,7 +32,7 @@ class _OptimizeResult(OptimizeResult):
 
 def root(
     fun: UntypedCallable,
-    x0: npt.NDArray[np.number[Any]],
+    x0: onp.ArrayND[np.number[Any]],
     args: tuple[object, ...] = (),
     method: _RootMethod = "hybr",
     jac: bool | np.bool_ | UntypedCallable | None = None,

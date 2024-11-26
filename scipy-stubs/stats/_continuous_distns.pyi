@@ -3,7 +3,6 @@ from typing import Any, ClassVar, Final, TypeAlias
 from typing_extensions import LiteralString, deprecated, override
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from scipy._typing import Seed
 from ._distn_infrastructure import _rv_continuous_0, rv_continuous
@@ -357,7 +356,7 @@ class argus_gen(rv_continuous): ...
 class rv_histogram(rv_continuous):
     def __init__(
         self,
-        histogram: tuple[npt.NDArray[np.floating[Any]], npt.NDArray[np.inexact[Any]]],
+        histogram: tuple[onp.ArrayND[np.floating[Any]], onp.ArrayND[np.inexact[Any]]],
         *args: float | LiteralString | Seed,
         density: bool | None = None,
         **kwargs: float | LiteralString | Seed,

@@ -16,7 +16,7 @@ _CFloatingND: TypeAlias = onp.ArrayND[np.complex64 | np.complex128 | np.clongdou
 
 _GetWindowArgument: TypeAlias = _Window | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]]
 _WindowLike: TypeAlias = _GetWindowArgument | onp.ToFloat1D
-_Detrend: TypeAlias = Literal["literal", "constant", False] | Callable[[onp.ArrayND[np.generic]], onp.ArrayND[np.generic]]
+_Detrend: TypeAlias = Literal["literal", "constant", False] | Callable[[onp.ArrayND], onp.ArrayND]
 _Scaling: TypeAlias = Literal["density", "spectrum"]
 _LegacyScaling: TypeAlias = Literal["psd", "spectrum"]
 _Average: TypeAlias = Literal["mean", "median"]

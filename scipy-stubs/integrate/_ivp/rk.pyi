@@ -3,7 +3,7 @@ from typing import ClassVar, Final, Generic, overload
 from typing_extensions import Never, TypeVar
 
 import numpy as np
-import numpy.typing as npt
+import optype.numpy as onp
 from .base import DenseOutput, OdeSolver
 
 _SCT_fc = TypeVar("_SCT_fc", bound=np.float64 | np.complex128, default=np.float64 | np.complex128)
@@ -15,18 +15,18 @@ MIN_FACTOR: Final = 0.2
 MAX_FACTOR: Final = 10
 
 class RungeKutta(OdeSolver, Generic[_SCT_fc]):
-    C: ClassVar[npt.NDArray[np.float64]]
-    A: ClassVar[npt.NDArray[np.float64]]
-    B: ClassVar[npt.NDArray[np.float64]]
-    E: ClassVar[npt.NDArray[np.float64]]
-    P: ClassVar[npt.NDArray[np.float64]]
+    C: ClassVar[onp.ArrayND[np.float64]]
+    A: ClassVar[onp.ArrayND[np.float64]]
+    B: ClassVar[onp.ArrayND[np.float64]]
+    E: ClassVar[onp.ArrayND[np.float64]]
+    P: ClassVar[onp.ArrayND[np.float64]]
     order: ClassVar[int]
     error_estimator_order: ClassVar[int]
     n_stages: ClassVar[int]
 
-    y_old: npt.NDArray[_SCT_fc] | None
-    f: npt.NDArray[_SCT_fc]
-    K: npt.NDArray[_SCT_fc]
+    y_old: onp.ArrayND[_SCT_fc] | None
+    f: onp.ArrayND[_SCT_fc]
+    K: onp.ArrayND[_SCT_fc]
     max_step: float
     h_abs: float
     error_exponent: float
@@ -35,9 +35,9 @@ class RungeKutta(OdeSolver, Generic[_SCT_fc]):
     def __init__(
         self,
         /,
-        fun: Callable[[float, npt.NDArray[_SCT_fc]], npt.NDArray[_SCT_fc]],
+        fun: Callable[[float, onp.ArrayND[_SCT_fc]], onp.ArrayND[_SCT_fc]],
         t0: float,
-        y0: npt.NDArray[_SCT_fc],
+        y0: onp.ArrayND[_SCT_fc],
         t_bound: float,
         max_step: float = ...,
         rtol: float = 0.001,
@@ -51,50 +51,50 @@ class RK23(RungeKutta[_SCT_fc], Generic[_SCT_fc]): ...
 class RK45(RungeKutta[_SCT_fc], Generic[_SCT_fc]): ...
 
 class DOP853(RungeKutta[_SCT_fc], Generic[_SCT_fc]):
-    E3: ClassVar[npt.NDArray[np.float64]]
-    E5: ClassVar[npt.NDArray[np.float64]]
-    D: ClassVar[npt.NDArray[np.float64]]
-    A_EXTRA: ClassVar[npt.NDArray[np.float64]]
-    C_EXTRA: ClassVar[npt.NDArray[np.float64]]
+    E3: ClassVar[onp.ArrayND[np.float64]]
+    E5: ClassVar[onp.ArrayND[np.float64]]
+    D: ClassVar[onp.ArrayND[np.float64]]
+    A_EXTRA: ClassVar[onp.ArrayND[np.float64]]
+    C_EXTRA: ClassVar[onp.ArrayND[np.float64]]
 
-    K_extended: npt.NDArray[_SCT_fc]
+    K_extended: onp.ArrayND[_SCT_fc]
 
 class RkDenseOutput(DenseOutput, Generic[_SCT_fc]):
     h: float
     order: int
-    Q: npt.NDArray[_SCT_fc]
-    y_old: npt.NDArray[_SCT_fc]
+    Q: onp.ArrayND[_SCT_fc]
+    y_old: onp.ArrayND[_SCT_fc]
 
-    def __init__(self, /, t_old: float, t: float, y_old: npt.NDArray[_SCT_fc], Q: npt.NDArray[_SCT_fc]) -> None: ...
+    def __init__(self, /, t_old: float, t: float, y_old: onp.ArrayND[_SCT_fc], Q: onp.ArrayND[_SCT_fc]) -> None: ...
 
 class Dop853DenseOutput(DenseOutput, Generic[_SCT_fc]):
     h: float
-    F: npt.NDArray[_SCT_fc]
-    y_old: npt.NDArray[_SCT_fc]
+    F: onp.ArrayND[_SCT_fc]
+    y_old: onp.ArrayND[_SCT_fc]
 
-    def __init__(self, /, t_old: float, t: float, y_old: npt.NDArray[_SCT_fc], F: npt.NDArray[_SCT_fc]) -> None: ...
+    def __init__(self, /, t_old: float, t: float, y_old: onp.ArrayND[_SCT_fc], F: onp.ArrayND[_SCT_fc]) -> None: ...
 
 @overload
 def rk_step(
-    fun: Callable[[float, npt.NDArray[np.float64]], npt.NDArray[np.float64]],
+    fun: Callable[[float, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]],
     t: float,
-    y: npt.NDArray[np.float64],
-    f: npt.NDArray[np.float64],
+    y: onp.ArrayND[np.float64],
+    f: onp.ArrayND[np.float64],
     h: float,
-    A: npt.NDArray[np.float64],
-    B: npt.NDArray[np.float64],
-    C: npt.NDArray[np.float64],
-    K: npt.NDArray[np.float64],
-) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]: ...
+    A: onp.ArrayND[np.float64],
+    B: onp.ArrayND[np.float64],
+    C: onp.ArrayND[np.float64],
+    K: onp.ArrayND[np.float64],
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 @overload
 def rk_step(
-    fun: Callable[[float, npt.NDArray[np.complex128]], npt.NDArray[np.complex128]],
+    fun: Callable[[float, onp.ArrayND[np.complex128]], onp.ArrayND[np.complex128]],
     t: float,
-    y: npt.NDArray[np.complex128],
-    f: npt.NDArray[np.complex128],
+    y: onp.ArrayND[np.complex128],
+    f: onp.ArrayND[np.complex128],
     h: float,
-    A: npt.NDArray[np.float64],
-    B: npt.NDArray[np.float64],
-    C: npt.NDArray[np.float64],
-    K: npt.NDArray[np.float64],
-) -> tuple[npt.NDArray[np.complex128], npt.NDArray[np.complex128]]: ...
+    A: onp.ArrayND[np.float64],
+    B: onp.ArrayND[np.float64],
+    C: onp.ArrayND[np.float64],
+    K: onp.ArrayND[np.float64],
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]: ...

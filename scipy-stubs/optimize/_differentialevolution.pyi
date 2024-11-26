@@ -15,12 +15,12 @@ class _OptimizeResult(OptimizeResult):
     message: str
     success: bool
     fun: float
-    x: npt.NDArray[np.float64]  # 1d
+    x: onp.ArrayND[np.float64]  # 1d
     nit: int
     nfev: int
-    population: npt.NDArray[np.float64]  # 2d
-    population_energies: npt.NDArray[np.float64]  # 1d
-    jac: npt.NDArray[np.float64]  # 1d
+    population: onp.ArrayND[np.float64]  # 2d
+    population_energies: onp.ArrayND[np.float64]  # 1d
+    jac: onp.ArrayND[np.float64]  # 1d
 
 ###
 
@@ -45,7 +45,7 @@ def differential_evolution(
     constraints: Untyped = (),
     x0: npt.ArrayLike | None = None,
     *,
-    integrality: Sequence[bool] | npt.NDArray[np.bool_] | None = None,
+    integrality: Sequence[bool] | onp.ArrayND[np.bool_] | None = None,
     vectorized: bool = False,
 ) -> _OptimizeResult: ...
 

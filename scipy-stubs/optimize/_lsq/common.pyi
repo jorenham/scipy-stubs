@@ -8,7 +8,7 @@ from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
 _SparseArray: TypeAlias = sparray | spmatrix
-_FloatingND: TypeAlias = npt.NDArray[np.floating[Any]]
+_FloatingND: TypeAlias = onp.ArrayND[np.floating[Any]]
 
 EPS: Final[float]
 
@@ -62,13 +62,13 @@ def step_size_to_bound(
     s: npt.ArrayLike,
     lb: npt.ArrayLike,
     ub: npt.ArrayLike,
-) -> tuple[float, npt.NDArray[np.int_]]: ...
+) -> tuple[float, onp.ArrayND[np.int_]]: ...
 def find_active_constraints(
     x: npt.ArrayLike,
     lb: npt.ArrayLike,
     ub: npt.ArrayLike,
     rtol: onp.ToFloat = 1e-10,
-) -> npt.NDArray[np.int_]: ...
+) -> onp.ArrayND[np.int_]: ...
 def make_strictly_feasible(x: _FloatingND, lb: npt.ArrayLike, ub: npt.ArrayLike, rstep: onp.ToFloat = 1e-10) -> _FloatingND: ...
 def CL_scaling_vector(
     x: _FloatingND,

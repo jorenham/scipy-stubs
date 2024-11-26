@@ -3,6 +3,7 @@ from typing import Literal, NamedTuple, TypeAlias
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 
 __all__ = ["binned_statistic", "binned_statistic_2d", "binned_statistic_dd"]
 
@@ -23,7 +24,7 @@ class BinnedStatisticResult(NamedTuple):
 def binned_statistic(
     x: npt.ArrayLike,
     values: npt.ArrayLike,
-    statistic: _Statistic | Callable[[npt.NDArray[np.float64]], np.float64 | float] = "mean",
+    statistic: _Statistic | Callable[[onp.ArrayND[np.float64]], np.float64 | float] = "mean",
     bins: int = 10,
     range: tuple[float, float] | Sequence[tuple[float, float]] | None = None,
 ) -> BinnedStatisticResult: ...
@@ -38,7 +39,7 @@ def binned_statistic_2d(
     x: npt.ArrayLike,
     y: npt.ArrayLike,
     values: npt.ArrayLike,
-    statistic: _Statistic | Callable[[npt.NDArray[np.float64]], np.float64 | float] = "mean",
+    statistic: _Statistic | Callable[[onp.ArrayND[np.float64]], np.float64 | float] = "mean",
     bins: npt.ArrayLike = 10,
     range: tuple[int, int] | None = None,
     expand_binnumbers: bool = False,
@@ -52,7 +53,7 @@ class BinnedStatisticddResult(NamedTuple):
 def binned_statistic_dd(
     sample: npt.ArrayLike,
     values: npt.ArrayLike,
-    statistic: _Statistic | Callable[[npt.NDArray[np.float64]], np.float64 | float] = "mean",
+    statistic: _Statistic | Callable[[onp.ArrayND[np.float64]], np.float64 | float] = "mean",
     bins: npt.ArrayLike = 10,
     range: tuple[int, int] | None = None,
     expand_binnumbers: bool = False,

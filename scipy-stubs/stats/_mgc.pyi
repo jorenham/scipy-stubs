@@ -3,7 +3,6 @@ from typing import Any, TypedDict, type_check_only
 from typing_extensions import Self, TypeVar
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from scipy._typing import Seed
 from ._typing import BaseBunch
@@ -28,9 +27,9 @@ class MGCResult(BaseBunch[np.float64, np.float64, _MGCDict]):
     def __init__(self, /, statistic: np.float64, pvalue: np.float64, mgc_dict: _MGCDict) -> None: ...
 
 def multiscale_graphcorr(
-    x: npt.NDArray[np.floating[Any] | np.integer[Any] | np.bool_],
-    y: npt.NDArray[np.floating[Any] | np.integer[Any] | np.bool_],
-    compute_distance: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.floating[Any]]] = ...,
+    x: onp.ArrayND[np.floating[Any] | np.integer[Any] | np.bool_],
+    y: onp.ArrayND[np.floating[Any] | np.integer[Any] | np.bool_],
+    compute_distance: Callable[[onp.ArrayND[np.float64]], onp.ArrayND[np.floating[Any]]] = ...,
     reps: int = 1000,
     workers: int | Callable[[Callable[[_T], _R], Iterable[_T]], Sequence[_R]] = 1,
     is_twosamp: bool = False,

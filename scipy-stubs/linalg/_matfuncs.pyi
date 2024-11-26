@@ -1,8 +1,9 @@
 from collections.abc import Callable
-from typing import Literal, TypeAlias, overload
+from typing import Any, Literal, TypeAlias, overload
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 from ._expm_frechet import expm_cond, expm_frechet
 from ._matfuncs_sqrtm import sqrtm
 
@@ -24,8 +25,8 @@ __all__ = [
     "tanm",
 ]
 
-_Array_fc_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.inexact[npt.NBitBase]]]
-_Array_fc_nd: TypeAlias = np.ndarray[tuple[int, ...], np.dtype[np.inexact[npt.NBitBase]]]
+_Array_fc_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.inexact[Any]]]
+_Array_fc_nd: TypeAlias = np.ndarray[tuple[int, ...], np.dtype[np.inexact[Any]]]
 
 def fractional_matrix_power(A: npt.ArrayLike, t: float) -> _Array_fc_2d: ...
 @overload
@@ -42,13 +43,13 @@ def tanhm(A: npt.ArrayLike) -> _Array_fc_2d: ...
 @overload
 def funm(
     A: npt.ArrayLike,
-    func: Callable[[npt.NDArray[np.inexact[npt.NBitBase]]], npt.NDArray[np.inexact[npt.NBitBase]]],
+    func: Callable[[onp.ArrayND[np.inexact[Any]]], onp.ArrayND[np.inexact[Any]]],
     disp: Literal[True] = True,
 ) -> _Array_fc_2d: ...
 @overload
 def funm(
     A: npt.ArrayLike,
-    func: Callable[[npt.NDArray[np.inexact[npt.NBitBase]]], npt.NDArray[np.inexact[npt.NBitBase]]],
+    func: Callable[[onp.ArrayND[np.inexact[Any]]], onp.ArrayND[np.inexact[Any]]],
     disp: Literal[False],
 ) -> tuple[_Array_fc_2d, float | np.float64]: ...
 @overload

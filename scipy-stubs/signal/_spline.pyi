@@ -1,10 +1,10 @@
 from typing import TypeAlias
 
 import numpy as np
-import numpy.typing as npt
+import optype.numpy as onp
 from scipy._typing import Untyped
 
-_Array_fc: TypeAlias = npt.NDArray[np.float32 | np.float64 | np.complex64 | np.complex128]
+_Array_fc: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.complex64 | np.complex128]
 
 def qspline2d(signal: Untyped, lamb: float = 0.0, precision: float = -1.0) -> Untyped: ...
 def cspline2d(signal: Untyped, lamb: float = 0.0, precision: float = -1.0) -> Untyped: ...

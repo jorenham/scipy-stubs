@@ -12,23 +12,23 @@ class NDInterpolatorBase:
     def __init__(
         self,
         /,
-        points: onp.AnyIntegerArray | onp.AnyFloatingArray,
-        values: onp.AnyFloatingArray,
+        points: onp.ToFloatND,
+        values: onp.ToFloatND,
         fill_value: float = ...,
         ndim: int | None = None,
         rescale: bool = False,
         need_contiguous: bool = True,
         need_values: bool = True,
     ) -> None: ...
-    def __call__(self, /, *args: onp.AnyFloatingArray) -> npt.NDArray[np.floating[Any]]: ...
+    def __call__(self, /, *args: onp.ToFloatND) -> onp.ArrayND[np.floating[Any]]: ...
 
 class LinearNDInterpolator(NDInterpolatorBase):
     @override
     def __init__(
         self,
         /,
-        points: onp.AnyIntegerArray | onp.AnyFloatingArray,
-        values: onp.AnyFloatingArray,
+        points: onp.ToFloatND,
+        values: onp.ToFloatND,
         fill_value: float = ...,
         rescale: bool = False,
     ) -> None: ...
@@ -38,8 +38,8 @@ class CloughTocher2DInterpolator(NDInterpolatorBase):
     def __init__(
         self,
         /,
-        points: onp.AnyIntegerArray | onp.AnyFloatingArray,
-        values: onp.AnyFloatingArray,
+        points: onp.ToFloatND,
+        values: onp.ToFloatND,
         fill_value: float = ...,
         tol: float = 1e-06,
         maxiter: int = 400,

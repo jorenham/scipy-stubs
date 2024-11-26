@@ -3,7 +3,6 @@ from typing import Any, Literal, TypeAlias, overload
 from typing_extensions import Unpack
 
 import numpy as np
-import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 
@@ -38,7 +37,7 @@ __all__ = [
 
 _Array_f8_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
 _Array_f8_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.float64]]
-_Weights: TypeAlias = Sequence[onp.ToFloat] | npt.NDArray[np.floating[Any]] | npt.NDArray[np.integer[Any]] | npt.NDArray[np.bool_]
+_Weights: TypeAlias = Sequence[onp.ToFloat] | onp.ArrayND[np.floating[Any]] | onp.ArrayND[np.integer[Any]] | onp.ArrayND[np.bool_]
 
 _Norm: TypeAlias = Literal[2, "approximate", "subsample"]
 _WindowLength: TypeAlias = int | np.int16 | np.int32 | np.int64

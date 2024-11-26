@@ -1,7 +1,6 @@
 from typing import Any, final
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from scipy._typing import Untyped
 from scipy.sparse import csc_matrix
@@ -15,7 +14,7 @@ class SuperLU:
     perm_c: onp.Array1D[np.intp]
     shape: tuple[int, ...]
 
-    def solve(self, /, rhs: npt.NDArray[np.number[Any]]) -> npt.NDArray[np.number[Any]]: ...
+    def solve(self, /, rhs: onp.ArrayND[np.number[Any]]) -> onp.ArrayND[np.number[Any]]: ...
 
 def gssv(*args: Untyped, **kwargs: Untyped) -> Untyped: ...
 def gstrf(*args: Untyped, **kwargs: Untyped) -> Untyped: ...

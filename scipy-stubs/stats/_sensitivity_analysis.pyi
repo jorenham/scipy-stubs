@@ -12,7 +12,7 @@ __all__ = ["sobol_indices"]
 
 _SobolKey: TypeAlias = Literal["f_A", "f_B", "f_AB"]
 _SobolMethod: TypeAlias = Callable[
-    [npt.NDArray[np.float64], npt.NDArray[np.float64], npt.NDArray[np.float64]],
+    [onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]],
     tuple[npt.ArrayLike, npt.ArrayLike],
 ]
 
@@ -30,37 +30,37 @@ class BootstrapSobolResult:
 
 @dataclass
 class SobolResult:
-    first_order: npt.NDArray[np.float64]
-    total_order: npt.NDArray[np.float64]
-    _indices_method: Callable[[npt.NDArray[np.float64]], npt.NDArray[np.float64]]
-    _f_A: npt.NDArray[np.float64]
-    _f_B: npt.NDArray[np.float64]
-    _f_AB: npt.NDArray[np.float64]
-    _A: npt.NDArray[np.float64] | None = None
-    _B: npt.NDArray[np.float64] | None = None
-    _AB: npt.NDArray[np.float64] | None = None
+    first_order: onp.ArrayND[np.float64]
+    total_order: onp.ArrayND[np.float64]
+    _indices_method: Callable[[onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
+    _f_A: onp.ArrayND[np.float64]
+    _f_B: onp.ArrayND[np.float64]
+    _f_AB: onp.ArrayND[np.float64]
+    _A: onp.ArrayND[np.float64] | None = None
+    _B: onp.ArrayND[np.float64] | None = None
+    _AB: onp.ArrayND[np.float64] | None = None
     _bootstrap_result: BootstrapResult | None = None
 
     def bootstrap(self, confidence_level: onp.ToFloat = 0.95, n_resamples: onp.ToInt = 999) -> BootstrapSobolResult: ...
 
 #
-def f_ishigami(x: npt.ArrayLike) -> npt.NDArray[np.floating[Any]]: ...
+def f_ishigami(x: npt.ArrayLike) -> onp.ArrayND[np.floating[Any]]: ...
 
 #
-def sample_A_B(n: onp.ToInt, dists: Sequence[PPFDist], random_state: Seed | None = None) -> npt.NDArray[np.float64]: ...
-def sample_AB(A: npt.NDArray[np.float64], B: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]: ...
+def sample_A_B(n: onp.ToInt, dists: Sequence[PPFDist], random_state: Seed | None = None) -> onp.ArrayND[np.float64]: ...
+def sample_AB(A: onp.ArrayND[np.float64], B: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
 
 #
 def saltelli_2010(
-    f_A: npt.NDArray[np.float64],
-    f_B: npt.NDArray[np.float64],
-    f_AB: npt.NDArray[np.float64],
-) -> tuple[npt.NDArray[np.float64], npt.NDArray[np.float64]]: ...
+    f_A: onp.ArrayND[np.float64],
+    f_B: onp.ArrayND[np.float64],
+    f_AB: onp.ArrayND[np.float64],
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 
 #
 def sobol_indices(
     *,
-    func: Callable[[npt.NDArray[np.float64]], npt.ArrayLike] | Mapping[_SobolKey, npt.NDArray[np.number[Any]]],
+    func: Callable[[onp.ArrayND[np.float64]], npt.ArrayLike] | Mapping[_SobolKey, onp.ArrayND[np.number[Any]]],
     n: onp.ToInt,
     dists: Sequence[PPFDist] | None = None,
     method: _SobolMethod | Literal["saltelli_2010"] = "saltelli_2010",

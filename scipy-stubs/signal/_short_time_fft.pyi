@@ -3,7 +3,7 @@ from typing import Any, Literal, TypeAlias
 from typing_extensions import Self
 
 import numpy as np
-import numpy.typing as npt
+import optype.numpy as onp
 from scipy._typing import Untyped
 
 __all__ = ["ShortTimeFFT"]
@@ -15,20 +15,20 @@ FFT_MODE_TYPE: TypeAlias = Literal["twosided", "centered", "onesided", "onesided
 class ShortTimeFFT:
     def __init__(
         self,
-        win: npt.NDArray[np.inexact[Any]],
+        win: onp.ArrayND[np.inexact[Any]],
         hop: int,
         fs: float,
         *,
         fft_mode: FFT_MODE_TYPE = "onesided",
         mfft: int | None = None,
-        dual_win: npt.NDArray[np.inexact[Any]] | None = None,
+        dual_win: onp.ArrayND[np.inexact[Any]] | None = None,
         scale_to: Literal["magnitude", "psd"] | None = None,
         phase_shift: int | None = 0,
     ) -> None: ...
     @classmethod
     def from_dual(
         cls,
-        dual_win: npt.NDArray[np.inexact[Any]],
+        dual_win: onp.ArrayND[np.inexact[Any]],
         hop: int,
         fs: float,
         *,
@@ -52,7 +52,7 @@ class ShortTimeFFT:
         phase_shift: int | None = 0,
     ) -> Self: ...
     @property
-    def win(self) -> npt.NDArray[np.inexact[Any]]: ...
+    def win(self) -> onp.ArrayND[np.inexact[Any]]: ...
     @property
     def hop(self) -> int: ...
     @property
@@ -80,30 +80,30 @@ class ShortTimeFFT:
     def phase_shift(self, v: int | None) -> None: ...
     def stft(
         self,
-        x: npt.NDArray[np.inexact[Any]],
+        x: onp.ArrayND[np.inexact[Any]],
         p0: int | None = None,
         p1: int | None = None,
         *,
         k_offset: int = 0,
         padding: PAD_TYPE = "zeros",
         axis: int = -1,
-    ) -> npt.NDArray[np.inexact[Any]]: ...
+    ) -> onp.ArrayND[np.inexact[Any]]: ...
     def stft_detrend(
         self,
-        x: npt.NDArray[np.inexact[Any]],
-        detr: Callable[[npt.NDArray[np.inexact[Any]]], npt.NDArray[np.inexact[Any]]] | Literal["linear", "constant"] | None,
+        x: onp.ArrayND[np.inexact[Any]],
+        detr: Callable[[onp.ArrayND[np.inexact[Any]]], onp.ArrayND[np.inexact[Any]]] | Literal["linear", "constant"] | None,
         p0: int | None = None,
         p1: int | None = None,
         *,
         k_offset: int = 0,
         padding: PAD_TYPE = "zeros",
         axis: int = -1,
-    ) -> npt.NDArray[np.inexact[Any]]: ...
+    ) -> onp.ArrayND[np.inexact[Any]]: ...
     def spectrogram(
         self,
-        x: npt.NDArray[np.inexact[Any]],
-        y: npt.NDArray[np.inexact[Any]] | None = None,
-        detr: Callable[[npt.NDArray[np.inexact[Any]]], npt.NDArray[np.inexact[Any]]]
+        x: onp.ArrayND[np.inexact[Any]],
+        y: onp.ArrayND[np.inexact[Any]] | None = None,
+        detr: Callable[[onp.ArrayND[np.inexact[Any]]], onp.ArrayND[np.inexact[Any]]]
         | Literal["linear", "constant"]
         | None = None,
         *,
@@ -112,20 +112,20 @@ class ShortTimeFFT:
         k_offset: int = 0,
         padding: PAD_TYPE = "zeros",
         axis: int = -1,
-    ) -> npt.NDArray[np.inexact[Any]]: ...
+    ) -> onp.ArrayND[np.inexact[Any]]: ...
     @property
-    def dual_win(self) -> npt.NDArray[np.inexact[Any]]: ...
+    def dual_win(self) -> onp.ArrayND[np.inexact[Any]]: ...
     @property
     def invertible(self) -> bool: ...
     def istft(
         self,
-        S: npt.NDArray[np.inexact[Any]],
+        S: onp.ArrayND[np.inexact[Any]],
         k0: int = 0,
         k1: int | None = None,
         *,
         f_axis: int = -2,
         t_axis: int = -1,
-    ) -> npt.NDArray[np.inexact[Any]]: ...
+    ) -> onp.ArrayND[np.inexact[Any]]: ...
     @property
     def fac_magnitude(self) -> float: ...
     @property
@@ -147,7 +147,7 @@ class ShortTimeFFT:
     @property
     def delta_t(self) -> float: ...
     def p_range(self, n: int, p0: int | None = None, p1: int | None = None) -> tuple[int, int]: ...
-    def t(self, n: int, p0: int | None = None, p1: int | None = None, k_offset: int = 0) -> npt.NDArray[np.inexact[Any]]: ...
+    def t(self, n: int, p0: int | None = None, p1: int | None = None, k_offset: int = 0) -> onp.ArrayND[np.inexact[Any]]: ...
     def nearest_k_p(self, k: int, left: bool = True) -> int: ...
     @property
     def delta_f(self) -> float: ...
@@ -156,7 +156,7 @@ class ShortTimeFFT:
     @property
     def onesided_fft(self) -> bool: ...
     @property
-    def f(self) -> npt.NDArray[np.inexact[Any]]: ...
+    def f(self) -> onp.ArrayND[np.inexact[Any]]: ...
     def extent(
         self,
         n: int,

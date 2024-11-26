@@ -3,7 +3,7 @@ from typing import Final
 from typing_extensions import Never, override
 
 import numpy as np
-import numpy.typing as npt
+import optype.numpy as onp
 from scipy._typing import Untyped, UntypedCallable
 from scipy.optimize._trustregion import BaseQuadraticSubproblem
 
@@ -23,4 +23,4 @@ class TRLIBQuadraticSubproblem(BaseQuadraticSubproblem):
         disp: bool = False,
     ) -> None: ...
     @override
-    def solve(self, trust_radius: float | np.float64) -> tuple[npt.NDArray[np.float64], bool]: ...
+    def solve(self, trust_radius: float | np.float64) -> tuple[onp.ArrayND[np.float64], bool]: ...

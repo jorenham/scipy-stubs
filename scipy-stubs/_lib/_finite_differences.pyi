@@ -3,10 +3,9 @@ from typing import Any, Concatenate, overload
 from typing_extensions import TypeVar
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 
-_T = TypeVar("_T", bound=np.floating[Any] | npt.NDArray[np.floating[Any]])
+_T = TypeVar("_T", bound=np.floating[Any] | onp.ArrayND[np.floating[Any]])
 
 @overload
 def _derivative(

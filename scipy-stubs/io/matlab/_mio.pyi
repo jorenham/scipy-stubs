@@ -1,14 +1,13 @@
 from typing import Literal, TypeAlias, TypedDict, type_check_only
 from typing_extensions import Unpack
 
-import numpy as np
-import numpy.typing as npt
+import optype.numpy as onp
 from scipy._typing import ByteOrder, FileName
 from ._miobase import MatFileReader
 
 __all__ = ["loadmat", "savemat", "whosmat"]
 
-_MDict: TypeAlias = dict[str, npt.NDArray[np.generic]]
+_MDict: TypeAlias = dict[str, onp.ArrayND]
 _DataClass: TypeAlias = Literal[
     "int8",
     "int16",

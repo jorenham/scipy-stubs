@@ -1,6 +1,5 @@
-import numpy as np
-import numpy.typing as npt
+import optype.numpy as onp
 
 __all__ = ["sort_vertices_of_regions"]
 
-def sort_vertices_of_regions(simplices: npt.NDArray[np.generic], regions: list[list[int]]) -> None: ...
+def sort_vertices_of_regions(simplices: onp.ArrayND, regions: list[list[int]]) -> None: ...

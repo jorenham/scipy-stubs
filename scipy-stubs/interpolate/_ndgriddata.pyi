@@ -2,7 +2,6 @@ from typing import Any
 from typing_extensions import override
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from scipy._typing import Untyped
 from .interpnd import CloughTocher2DInterpolator, LinearNDInterpolator, NDInterpolatorBase
@@ -16,17 +15,17 @@ class NearestNDInterpolator(NDInterpolatorBase):
     def __init__(
         self,
         /,
-        x: onp.AnyIntegerArray | onp.AnyFloatingArray,
-        y: onp.AnyFloatingArray,
+        x: onp.ToFloatND,
+        y: onp.ToFloatND,
         rescale: bool = False,
         tree_options: Untyped | None = None,
     ) -> None: ...
     @override
-    def __call__(self, /, *args: onp.AnyFloatingArray, **query_options: Untyped) -> npt.NDArray[np.floating[Any]]: ...
+    def __call__(self, /, *args: onp.ToFloatND, **query_options: Untyped) -> onp.ArrayND[np.floating[Any]]: ...
 
 def griddata(
-    points: onp.AnyIntegerArray | onp.AnyFloatingArray,
-    values: onp.AnyFloatingArray,
+    points: onp.ToFloatND,
+    values: onp.ToFloatND,
     xi: Untyped,
     method: str = "linear",
     fill_value: float = ...,

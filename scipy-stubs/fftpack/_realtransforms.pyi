@@ -1,7 +1,6 @@
 from typing import Literal, TypeAlias, overload
 
 import numpy as np
-import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from scipy._typing import AnyBool, AnyShape, DCTType
@@ -10,8 +9,8 @@ __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 
 _NormKind: TypeAlias = Literal["ortho"] | None
 
-_ArrayReal: TypeAlias = npt.NDArray[np.float32 | np.float64 | np.longdouble]  # no float16
-_ArrayComplex: TypeAlias = npt.NDArray[np.complex64 | np.complex128 | np.clongdouble]
+_ArrayReal: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]  # no float16
+_ArrayComplex: TypeAlias = onp.ArrayND[np.complex64 | np.complex128 | np.clongdouble]
 
 ###
 

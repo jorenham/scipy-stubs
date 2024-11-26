@@ -2,7 +2,6 @@ from collections.abc import Callable, Mapping, Sequence
 from typing import Any, Concatenate, Final, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from scipy.sparse.linalg import LinearOperator
 from ._hessian_update_strategy import HessianUpdateStrategy
@@ -65,7 +64,7 @@ class _MinimizeOptions(TypedDict, total=False):
     ftol: float
     # BFGS
     xrtol: float
-    hess_inv0: npt.NDArray[np.floating[Any]]
+    hess_inv0: onp.ArrayND[np.floating[Any]]
     # COBYLA
     tol: float
     catool: float
@@ -75,9 +74,9 @@ class _MinimizeOptions(TypedDict, total=False):
     feasibility_tol: float
     final_tr_radius: float
     # Powell
-    direc: npt.NDArray[np.floating[Any]]
+    direc: onp.ArrayND[np.floating[Any]]
     # CG, BFGS, Newton-CG, L-BFGS-B, TNC, SLSQP
-    eps: float | npt.NDArray[np.floating[Any]]
+    eps: float | onp.ArrayND[np.floating[Any]]
     # CG, BFGS, Newton-CG
     c1: float
     c2: float

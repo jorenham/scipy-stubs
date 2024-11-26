@@ -2,7 +2,6 @@ from collections.abc import Iterable
 from typing import Any, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
-import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _DTypeLike
@@ -64,7 +63,7 @@ def unit_impulse(
     shape: AnyShape,
     idx: op.CanIndex | Iterable[op.CanIndex] | Literal["mid"] | None,
     dtype: _DTypeLike[_SCT],
-) -> npt.NDArray[_SCT]: ...
+) -> onp.ArrayND[_SCT]: ...
 
 # Overloads for gausspulse when `t` is `"cutoff"`
 @overload  # retquad: False = ..., retenv: False = ...

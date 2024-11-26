@@ -3,6 +3,7 @@ from typing import Any, Final, Literal, TypeAlias
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 
 __all__ = ["fmin_tnc"]
 
@@ -49,5 +50,5 @@ def fmin_tnc(
     pgtol: float = -1,
     rescale: float = -1,
     disp: bool | None = None,
-    callback: Callable[[npt.NDArray[np.floating[Any]]], None] | None = None,
-) -> tuple[npt.NDArray[np.floating[Any]], int, _ReturnCode]: ...
+    callback: Callable[[onp.ArrayND[np.floating[Any]]], None] | None = None,
+) -> tuple[onp.ArrayND[np.floating[Any]], int, _ReturnCode]: ...

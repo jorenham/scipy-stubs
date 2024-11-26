@@ -5,7 +5,6 @@ from typing import Any, Concatenate, Final, Generic, NamedTuple, TypeAlias, over
 from typing_extensions import TypeVar, override
 
 import numpy as np
-import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from scipy._typing import RNG, EnterSelfMixin
@@ -105,7 +104,7 @@ def rng_integers(
     size: op.CanIndex | Sequence[op.CanIndex] | None = None,
     dtype: onp.AnyIntegerDType = "int64",
     endpoint: op.CanBool = False,
-) -> np.integer[Any] | npt.NDArray[np.integer[Any]]: ...
+) -> np.integer[Any] | onp.ArrayND[np.integer[Any]]: ...
 
 #
 @overload

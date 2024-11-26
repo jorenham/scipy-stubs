@@ -1,7 +1,6 @@
 from typing import Any, Literal, TypeAlias, type_check_only
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from scipy._typing import Untyped
 from scipy.optimize import OptimizeResult
@@ -26,23 +25,23 @@ class _OptimizeResult(OptimizeResult):
 def regularized_lsq_with_qr(
     m: int,
     n: int,
-    R: npt.NDArray[np.number[Any]],
-    QTb: npt.NDArray[np.number[Any]],
-    perm: npt.NDArray[np.number[Any]],
-    diag: npt.NDArray[np.number[Any]],
+    R: onp.ArrayND[np.number[Any]],
+    QTb: onp.ArrayND[np.number[Any]],
+    perm: onp.ArrayND[np.number[Any]],
+    diag: onp.ArrayND[np.number[Any]],
     copy_R: bool = True,
 ) -> _Vector_f8: ...
 
 # undocumented
 def backtracking(
-    A: npt.NDArray[np.number[Any]],
+    A: onp.ArrayND[np.number[Any]],
     g: Untyped,
     x: Untyped,
     p: Untyped,
     theta: Untyped,
     p_dot_g: Untyped,
-    lb: npt.NDArray[np.number[Any]],
-    ub: npt.NDArray[np.number[Any]],
+    lb: onp.ArrayND[np.number[Any]],
+    ub: onp.ArrayND[np.number[Any]],
 ) -> Untyped: ...
 
 # undocumented
@@ -54,18 +53,18 @@ def select_step(
     p: Untyped,
     p_h: Untyped,
     d: Untyped,
-    lb: npt.NDArray[np.number[Any]],
-    ub: npt.NDArray[np.number[Any]],
+    lb: onp.ArrayND[np.number[Any]],
+    ub: onp.ArrayND[np.number[Any]],
     theta: Untyped,
 ) -> Untyped: ...
 
 # undocumented
 def trf_linear(
-    A: npt.NDArray[np.number[Any]],
-    b: npt.NDArray[np.number[Any]],
-    x_lsq: npt.NDArray[np.number[Any]],
-    lb: npt.NDArray[np.number[Any]],
-    ub: npt.NDArray[np.number[Any]],
+    A: onp.ArrayND[np.number[Any]],
+    b: onp.ArrayND[np.number[Any]],
+    x_lsq: onp.ArrayND[np.number[Any]],
+    lb: onp.ArrayND[np.number[Any]],
+    ub: onp.ArrayND[np.number[Any]],
     tol: _Scalar_f8,
     lsq_solver: Literal["exact", "lsmr"],
     lsmr_tol: _Scalar_f8 | None,
