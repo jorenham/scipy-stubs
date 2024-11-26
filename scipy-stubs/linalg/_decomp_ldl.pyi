@@ -1,12 +1,10 @@
-from typing import TypeAlias
+from typing import Any
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 
 __all__ = ["ldl"]
-
-_Array_i_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.intp]]
-_Array_fc_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.inexact[npt.NBitBase]]]
 
 def ldl(
     A: npt.ArrayLike,
@@ -14,4 +12,4 @@ def ldl(
     hermitian: bool = True,
     overwrite_a: bool = False,
     check_finite: bool = True,
-) -> tuple[_Array_fc_2d, _Array_fc_2d, _Array_i_1d]: ...
+) -> tuple[onp.Array2D[np.inexact[Any]], onp.Array2D[np.inexact[Any]], onp.Array1D[np.intp]]: ...

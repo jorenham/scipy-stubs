@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Literal, NamedTuple, TypeAlias
+from typing import Any, Literal, NamedTuple, TypeAlias
 
 import numpy as np
 import numpy.typing as npt
@@ -7,19 +7,12 @@ import optype.numpy as onp
 
 __all__ = ["binned_statistic", "binned_statistic_2d", "binned_statistic_dd"]
 
-_Array_n_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.intp]]
-_Array_n_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.intp]]
-_Array_f8_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
-_Array_uifc_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.number[npt.NBitBase]]]
-_Array_uifc_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.number[npt.NBitBase]]]
-_Array_uifc_nd: TypeAlias = np.ndarray[tuple[int, ...], np.dtype[np.number[npt.NBitBase]]]
-
 _Statistic: TypeAlias = Literal["mean", "std", "median", "count", "sum", "min", "max"]
 
 class BinnedStatisticResult(NamedTuple):
-    statistic: _Array_uifc_1d
-    bin_edges: _Array_f8_1d
-    binnumber: _Array_n_1d
+    statistic: onp.Array1D[np.inexact[Any]]
+    bin_edges: onp.Array1D[np.float64]
+    binnumber: onp.Array1D[np.intp]
 
 def binned_statistic(
     x: npt.ArrayLike,
@@ -30,10 +23,10 @@ def binned_statistic(
 ) -> BinnedStatisticResult: ...
 
 class BinnedStatistic2dResult(NamedTuple):
-    statistic: _Array_uifc_2d
-    x_edge: _Array_f8_1d
-    y_edge: _Array_f8_1d
-    binnumber: _Array_n_1d
+    statistic: onp.Array2D[np.inexact[Any]]
+    x_edge: onp.Array1D[np.float64]
+    y_edge: onp.Array1D[np.float64]
+    binnumber: onp.Array1D[np.intp]
 
 def binned_statistic_2d(
     x: npt.ArrayLike,
@@ -46,9 +39,9 @@ def binned_statistic_2d(
 ) -> BinnedStatistic2dResult: ...
 
 class BinnedStatisticddResult(NamedTuple):
-    statistic: _Array_uifc_nd
-    bin_edges: list[_Array_f8_1d]
-    binnumber: _Array_n_1d | _Array_n_2d
+    statistic: onp.ArrayND[np.inexact[Any]]
+    bin_edges: list[onp.Array1D[np.float64]]
+    binnumber: onp.Array1D[np.intp] | onp.Array2D[np.intp]
 
 def binned_statistic_dd(
     sample: npt.ArrayLike,

@@ -1,15 +1,16 @@
-from typing import Literal, TypeAlias, overload
+from typing import Any, Literal, TypeAlias, overload
 
 import numpy as np
 import numpy.typing as npt
 import optype as op
+import optype.numpy as onp
 import optype.typing as opt
 
 __all__ = ["cossin"]
 
-_Array_f_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.floating[npt.NBitBase]]]
-_Array_f_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.floating[npt.NBitBase]]]
-_Array_c_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.complexfloating[npt.NBitBase, npt.NBitBase]]]
+_Array_f_1d: TypeAlias = onp.Array1D[np.floating[Any]]
+_Array_f_2d: TypeAlias = onp.Array2D[np.floating[Any]]
+_Array_c_2d: TypeAlias = onp.Array2D[np.complexfloating[Any, Any]]
 
 @overload
 def cossin(
