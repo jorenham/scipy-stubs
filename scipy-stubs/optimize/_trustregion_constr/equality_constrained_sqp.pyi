@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from typing import Any, TypeVar
 
 import numpy as np
@@ -9,7 +10,7 @@ __all__ = ["equality_constrained_sqp"]
 
 _StateT = TypeVar("_StateT")
 
-def default_scaling(x: onp.Array[tuple[int]]) -> dia_matrix: ...
+def default_scaling(x: onp.CanArray1D | Sequence[onp.ToScalar]) -> dia_matrix: ...
 def equality_constrained_sqp(
     fun_and_constr: Untyped,
     grad_and_jac: Untyped,

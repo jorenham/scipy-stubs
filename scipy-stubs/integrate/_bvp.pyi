@@ -7,10 +7,7 @@ import optype.numpy as onp
 from scipy.interpolate import PPoly
 from scipy.sparse import csc_matrix
 
-_SCT = TypeVar("_SCT", bound=np.generic, default=np.float64)
 _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any], default=np.float64 | np.complex128)
-
-_Array3D: TypeAlias = onp.Array[tuple[int, int, int], _SCT]
 
 _FunRHS: TypeAlias = Callable[[onp.Array1D, onp.Array2D[_SCT_fc]], onp.ArrayND[_SCT_fc]]
 _FunRHS_p: TypeAlias = Callable[[onp.Array1D, onp.Array2D[_SCT_fc], onp.Array1D], onp.ArrayND[_SCT_fc]]
@@ -42,8 +39,8 @@ _FunRHS_jac_x: TypeAlias = Callable[
         onp.Array1D[np.float64],
     ],
     tuple[
-        _Array3D[_SCT_fc],
-        _Array3D[_SCT_fc] | None,
+        onp.Array3D[_SCT_fc],
+        onp.Array3D[_SCT_fc] | None,
     ],
 ]
 
@@ -133,7 +130,7 @@ def estimate_fun_jac(
     y: onp.Array2D[_SCT_fc],
     p: onp.Array1D[np.float64],
     f0: onp.Array2D[_SCT_fc] | None = None,
-) -> tuple[_Array3D[_SCT_fc], _Array3D[_SCT_fc] | None]: ...  # undocumented
+) -> tuple[onp.Array3D[_SCT_fc], onp.Array3D[_SCT_fc] | None]: ...  # undocumented
 def estimate_bc_jac(
     bc: _FunBCR_x[_SCT_fc],
     ya: onp.Array1D[_SCT_fc],
@@ -150,10 +147,10 @@ def construct_global_jac(
     i_jac: onp.Array1D[np.intp],
     j_jac: onp.Array1D[np.intp],
     h: float,
-    df_dy: _Array3D[_SCT_fc],
-    df_dy_middle: _Array3D[_SCT_fc],
-    df_dp: _Array3D[_SCT_fc] | None,
-    df_dp_middle: _Array3D[_SCT_fc] | None,
+    df_dy: onp.Array3D[_SCT_fc],
+    df_dy_middle: onp.Array3D[_SCT_fc],
+    df_dp: onp.Array3D[_SCT_fc] | None,
+    df_dp_middle: onp.Array3D[_SCT_fc] | None,
     dbc_dya: onp.Array2D[_SCT_fc],
     dbc_dyb: onp.Array2D[_SCT_fc],
     dbc_dp: onp.Array2D[_SCT_fc] | None,

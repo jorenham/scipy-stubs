@@ -228,7 +228,7 @@ class WilcoxonResult(BaseBunch[_NDT_co, _NDT_co], Generic[_NDT_co]):  # pyright:
     def __new__(_cls, statistic: _NDT_co, pvalue: _NDT_co) -> Self: ...
     def __init__(self, /, statistic: _NDT_co, pvalue: _NDT_co) -> None: ...
 
-class MedianTestResult(BaseBunch[np.float64, np.float64, np.float64, onp.Array[tuple[Literal[2], int], np.float64]]):
+class MedianTestResult(BaseBunch[np.float64, np.float64, np.float64, onp.Array2D[np.float64]]):
     @property
     def statistic(self) -> np.float64: ...
     @property
@@ -236,21 +236,15 @@ class MedianTestResult(BaseBunch[np.float64, np.float64, np.float64, onp.Array[t
     @property
     def median(self) -> np.float64: ...
     @property
-    def table(self) -> onp.Array[tuple[Literal[2], int], np.float64]: ...
-    def __new__(
-        _cls,
-        statistic: np.float64,
-        pvalue: np.float64,
-        median: np.float64,
-        table: onp.Array[tuple[Literal[2], int], np.float64],
-    ) -> Self: ...
+    def table(self) -> onp.Array2D[np.float64]: ...
+    def __new__(_cls, statistic: np.float64, pvalue: np.float64, median: np.float64, table: onp.Array2D[np.float64]) -> Self: ...
     def __init__(
         self,
         /,
         statistic: np.float64,
         pvalue: np.float64,
         median: np.float64,
-        table: onp.Array[tuple[Literal[2], int], np.float64],
+        table: onp.Array2D[np.float64],
     ) -> None: ...
 
 def bayes_mvs(data: onp.ToFloatND, alpha: onp.ToFloat = 0.9) -> tuple[Mean, Variance, Std_dev]: ...
@@ -417,7 +411,7 @@ def boxcox_normmax(
     method: Literal["all"],
     optimizer: _FuncMinimize1D | None = None,
     ymax: onp.ToFloat | _BigFloat = ...,
-) -> onp.Array[tuple[Literal[2]], np.float64]: ...
+) -> onp.Array1D[np.float64]: ...
 @overload
 def boxcox_normmax(
     x: onp.ToFloat | onp.ToFloatND,
@@ -426,7 +420,7 @@ def boxcox_normmax(
     optimizer: _FuncMinimize1D | None = None,
     *,
     ymax: onp.ToFloat | _BigFloat = ...,
-) -> onp.Array[tuple[Literal[2]], np.float64]: ...
+) -> onp.Array1D[np.float64]: ...
 def boxcox_normplot(
     x: onp.ToFloat | onp.ToFloatND,
     la: onp.ToFloat,

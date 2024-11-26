@@ -63,17 +63,17 @@ class _Bunch(Generic[_SCT_f_co]):
         status: Literal[0, 1, 2],
         neval: int,
         message: str,
-        intervals: onp.Array[tuple[int, Literal[2]], np.float64],
+        intervals: onp.Array2D[np.float64],
         errors: onp.Array1D[np.float64],
-        integrals: onp.Array[tuple[int, Literal[2]], _SCT_f_co],
+        integrals: onp.Array2D[_SCT_f_co],
     ) -> None: ...
     success: Final[bool]
     status: Final[Literal[0, 1, 2]]
     neval: Final[int]
     message: Final[str]
-    intervals: Final[onp.Array[tuple[int, Literal[2]], np.float64]]
+    intervals: Final[onp.Array2D[np.float64]]
     errors: Final[onp.Array1D[np.float64]]
-    integrals: onp.Array[tuple[int, Literal[2]], _SCT_f_co]
+    integrals: onp.Array2D[_SCT_f_co]
 
 @overload
 def quad_vec(

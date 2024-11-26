@@ -41,7 +41,7 @@ class QuadInfoDict(TypedDict):
     # finite integration limits
     momcom: NotRequired[float | np.float64]
     nnlog: NotRequired[onp.Array1D[np.int_]]
-    chebmo: NotRequired[onp.Array[tuple[Literal[25], int], np.int_]]
+    chebmo: NotRequired[onp.Array2D[np.int_]]
 
     # single infitite integration limit and numerical error
     lst: NotRequired[int]
