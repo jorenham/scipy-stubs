@@ -1,16 +1,21 @@
-from typing import Final, Literal, TypeAlias, overload
+from typing import Final, Literal as L, overload
 from typing_extensions import LiteralString
 
-import numpy as np
+from ._typing import AscentDataset, CanFetch, ECGDataset, Face2Dataset, Face3Dataset
 
-# TODO: stub `pooch` (this should be a `pooch.code.Pooch`)
-_DataFetcher: TypeAlias = object
-data_fetcher: Final[_DataFetcher]
+###
 
-def fetch_data(dataset_name: LiteralString, data_fetcher: _DataFetcher = ...) -> LiteralString: ...
-def ascent() -> np.ndarray[tuple[Literal[512], Literal[512]], np.dtype[np.uint8]]: ...
-def electrocardiogram() -> np.ndarray[tuple[Literal[108_000]], np.dtype[np.float64]]: ...
+data_fetcher: Final[CanFetch | None] = ...  # undocumented
+
+def fetch_data(
+    dataset_name: L["ascent.dat", "ecg.dat", "face.dat"],
+    data_fetcher: CanFetch | None = None,
+) -> LiteralString: ...  # undocumented
+
+#
+def ascent() -> AscentDataset: ...
+def electrocardiogram() -> ECGDataset: ...
 @overload
-def face(gray: Literal[False] = False) -> np.ndarray[tuple[Literal[768], Literal[1_024], Literal[3]], np.dtype[np.uint8]]: ...
+def face(gray: L[True, 1]) -> Face2Dataset: ...
 @overload
-def face(gray: Literal[True]) -> np.ndarray[tuple[Literal[768], Literal[1_024]], np.dtype[np.uint8]]: ...
+def face(gray: L[False, 0] = False) -> Face3Dataset: ...
