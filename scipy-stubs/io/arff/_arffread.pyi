@@ -69,7 +69,7 @@ class DateAttribute(Attribute[np.datetime64]):
 
     def __init__(self, /, name: str, date_format: str, datetime_unit: str) -> None: ...
 
-class RelationalAttribute(Attribute[np.ndarray[tuple[int], np.dtype[np.void]]]):
+class RelationalAttribute(Attribute[onp.Array1D[np.void]]):
     type_name: ClassVar[str | None] = "relational"
     dtype: type[np.object_]
     range: None

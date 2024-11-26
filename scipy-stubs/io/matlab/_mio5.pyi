@@ -9,7 +9,7 @@ from scipy._typing import AnyShape, ByteOrder
 from scipy.sparse import sparray, spmatrix
 from ._miobase import MatFileReader
 
-_GenericArray: TypeAlias = np.ndarray[tuple[int, ...], np.dtype[np.generic]]
+_GenericArray: TypeAlias = onp.Array
 _OnedAs: TypeAlias = Literal["row", "column"]
 
 @type_check_only

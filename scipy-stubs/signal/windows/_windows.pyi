@@ -35,8 +35,8 @@ __all__ = [
     "tukey",
 ]
 
-_Array_f8_1d: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
-_Array_f8_2d: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.float64]]
+_Array_f8_1d: TypeAlias = onp.Array1D[np.float64]
+_Array_f8_2d: TypeAlias = onp.Array2D[np.float64]
 _Weights: TypeAlias = Sequence[onp.ToFloat] | onp.ArrayND[np.floating[Any]] | onp.ArrayND[np.integer[Any]] | onp.ArrayND[np.bool_]
 
 _Norm: TypeAlias = Literal[2, "approximate", "subsample"]

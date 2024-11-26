@@ -2,6 +2,7 @@ from collections.abc import Callable, Iterable, Sequence
 from typing import ClassVar, Final, Literal
 
 import numpy as np
+import optype.numpy as onp
 
 __all__ = ["IS_MUSL", "PytestTester", "_TestPythranFunc", "check_free_memory"]
 
@@ -29,7 +30,7 @@ class _TestPythranFunc:
     ALL_INTEGER: ClassVar[list[np.int8 | np.int16 | np.int32 | np.int64 | np.intc | np.intp]]
     ALL_FLOAT: ClassVar[list[np.float32 | np.float64]]
     ALL_COMPLEX: ClassVar[list[np.complex64 | np.complex128]]
-    arguments: dict[int, tuple[np.ndarray[tuple[int, ...], np.dtype[np.generic]], list[np.generic]]]
+    arguments: dict[int, tuple[onp.Array, list[np.generic]]]
     partialfunc: Callable[..., object] | None
     expected: object | None
     def setup_method(self) -> None: ...

@@ -6,8 +6,8 @@ __all__ = ["SphericalVoronoi"]
 def calculate_solid_angles(R: onp.ToComplexND) -> onp.ArrayND[np.float64]: ...
 
 class SphericalVoronoi:
-    points: np.ndarray[tuple[int, int], np.dtype[np.float64]]
-    center: np.ndarray[tuple[int], np.dtype[np.float64]]
+    points: onp.Array2D[np.float64]
+    center: onp.Array1D[np.float64]
     radius: float
 
     def __init__(
