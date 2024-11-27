@@ -16,6 +16,7 @@ __all__ = [
     "MethodLinprog",
     "MethodMimimize",
     "MethodMinimizeScalar",
+    "MethodRootScalar",
     "Solver",
     "TRSolver",
 ]
@@ -73,13 +74,13 @@ _MethodRoot: TypeAlias = Literal[
     "krylov",
     "df-sane",
 ]
-_MethodRootScalar: TypeAlias = Literal["bisect", "brentq", "brenth", "ridder", "toms748", "newton", "secant", "halley"]
+MethodRootScalar: TypeAlias = Literal["bisect", "brentq", "brenth", "ridder", "toms748", "newton", "secant", "halley"]
 _MethodQuadraticAssignment: TypeAlias = Literal["faq", "2opt"]
 MethodAll: TypeAlias = Literal[
     MethodMimimize,
     _MethodRoot,
     MethodMinimizeScalar,
-    _MethodRootScalar,
+    MethodRootScalar,
     MethodLinprog,
     _MethodQuadraticAssignment,
 ]
