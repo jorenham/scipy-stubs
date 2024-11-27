@@ -1,14 +1,13 @@
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 from typing import TypeAlias, TypeVar
 from typing_extensions import Self
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
-from scipy._typing import Untyped
 from scipy.optimize._constraints import PreparedConstraint
 from scipy.sparse import csr_matrix
-from scipy.sparse.linalg._interface import LinearOperator
+from scipy.sparse.linalg import LinearOperator
 
 _T = TypeVar("_T")
 _Tuple2: TypeAlias = tuple[_T, _T]
@@ -20,16 +19,17 @@ _FunHess: TypeAlias = Callable[
     _Tuple2[onp.Array2D[np.float64] | csr_matrix | LinearOperator],
 ]
 
-# tighter than `Iterable[PreparedConstraint]` ;)
-_PreparedConstraints: TypeAlias = op.CanIter[op.CanNext[CanonicalConstraint]]
+_PreparedConstraints: TypeAlias = Iterable[CanonicalConstraint]
 
 class CanonicalConstraint:
     n_eq: int
     n_ineq: int
-    fun: Untyped
-    jac: Untyped
-    hess: Untyped
-    keep_feasible: Untyped
+    fun: _FunConstr
+    jac: _FunJac
+    hess: _FunHess
+
+    keep_feasible: onp.Array1D[np.bool_]
+
     def __init__(
         self,
         /,

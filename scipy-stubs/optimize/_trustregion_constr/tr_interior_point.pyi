@@ -1,96 +1,50 @@
-from scipy._typing import Untyped
+from collections.abc import Callable
+from typing import Any, Literal, TypeVar
+
+import numpy as np
+import optype.numpy as onp
 
 __all__ = ["tr_interior_point"]
 
-class BarrierSubproblem:
-    n_vars: Untyped
-    x0: Untyped
-    s0: Untyped
-    fun: Untyped
-    grad: Untyped
-    lagr_hess: Untyped
-    constr: Untyped
-    jac: Untyped
-    barrier_parameter: Untyped
-    tolerance: Untyped
-    n_eq: Untyped
-    n_ineq: Untyped
-    enforce_feasibility: Untyped
-    global_stop_criteria: Untyped
-    xtol: Untyped
-    fun0: Untyped
-    grad0: Untyped
-    constr0: Untyped
-    jac0: Untyped
-    terminate: bool
-    def __init__(
-        self,
-        x0: Untyped,
-        s0: Untyped,
-        fun: Untyped,
-        grad: Untyped,
-        lagr_hess: Untyped,
-        n_vars: Untyped,
-        n_ineq: Untyped,
-        n_eq: Untyped,
-        constr: Untyped,
-        jac: Untyped,
-        barrier_parameter: Untyped,
-        tolerance: Untyped,
-        enforce_feasibility: Untyped,
-        global_stop_criteria: Untyped,
-        xtol: Untyped,
-        fun0: Untyped,
-        grad0: Untyped,
-        constr_ineq0: Untyped,
-        jac_ineq0: Untyped,
-        constr_eq0: Untyped,
-        jac_eq0: Untyped,
-    ) -> None: ...
-    def update(self, barrier_parameter: Untyped, tolerance: Untyped) -> None: ...
-    def get_slack(self, z: Untyped) -> Untyped: ...
-    def get_variables(self, z: Untyped) -> Untyped: ...
-    def function_and_constraints(self, z: Untyped) -> Untyped: ...
-    def scaling(self, z: Untyped) -> Untyped: ...
-    def gradient_and_jacobian(self, z: Untyped) -> Untyped: ...
-    def lagrangian_hessian_x(self, z: Untyped, v: Untyped) -> Untyped: ...
-    def lagrangian_hessian_s(self, z: Untyped, v: Untyped) -> Untyped: ...
-    def lagrangian_hessian(self, z: Untyped, v: Untyped) -> Untyped: ...
-    def stop_criteria(
-        self,
-        state: Untyped,
-        z: Untyped,
-        last_iteration_failed: Untyped,
-        optimality: Untyped,
-        constr_violation: Untyped,
-        trust_radius: Untyped,
-        penalty: Untyped,
-        cg_info: Untyped,
-    ) -> Untyped: ...
+_StateT = TypeVar("_StateT")
+
+###
 
 def tr_interior_point(
-    fun: Untyped,
-    grad: Untyped,
-    lagr_hess: Untyped,
-    n_vars: Untyped,
-    n_ineq: Untyped,
-    n_eq: Untyped,
-    constr: Untyped,
-    jac: Untyped,
-    x0: Untyped,
-    fun0: Untyped,
-    grad0: Untyped,
-    constr_ineq0: Untyped,
-    jac_ineq0: Untyped,
-    constr_eq0: Untyped,
-    jac_eq0: Untyped,
-    stop_criteria: Untyped,
-    enforce_feasibility: Untyped,
-    xtol: Untyped,
-    state: Untyped,
-    initial_barrier_parameter: Untyped,
-    initial_tolerance: Untyped,
-    initial_penalty: Untyped,
-    initial_trust_radius: Untyped,
-    factorization_method: Untyped,
-) -> Untyped: ...
+    fun: Callable[[onp.Array1D[np.float64]], onp.ToFloat],
+    grad: Callable[[onp.Array1D[np.float64]], onp.ToFloat1D],
+    lagr_hess: Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat2D],
+    n_vars: int,
+    n_ineq: int,
+    n_eq: int,
+    constr: Callable[[onp.Array1D[np.float64]], tuple[onp.ToFloat1D, onp.ToFloat1D]],
+    jac: Callable[[onp.Array1D[np.float64]], tuple[onp.ToFloat2D, onp.ToFloat2D]],
+    x0: onp.ToFloat1D,
+    fun0: onp.ToFloat,
+    grad0: onp.ToFloat1D,
+    constr_ineq0: onp.ArrayND[np.floating[Any]],
+    jac_ineq0: onp.ToArray2D,
+    constr_eq0: onp.ArrayND[np.floating[Any]],
+    jac_eq0: onp.ToArray2D,
+    stop_criteria: Callable[
+        [
+            _StateT,  # state
+            onp.Array1D[np.float64],  # x
+            bool,  # last_iteration_failed
+            np.float64,  # optimality
+            np.float64,  # const_violation
+            np.float64,  # trust_radius
+            np.float64,  # penalty
+            dict[str, int],  # cg_info
+        ],
+        onp.ToBool,
+    ],
+    enforce_feasibility: onp.ToArray1D,
+    xtol: float,
+    state: _StateT,
+    initial_barrier_parameter: float,
+    initial_tolerance: float,
+    initial_penalty: onp.ToFloat,
+    initial_trust_radius: onp.ToFloat,
+    factorization_method: Literal["NormalEquation", "AugmentedSystem", "QRFactorization", "SVDFactorization"],
+) -> tuple[onp.Array1D[np.floating[Any]], _StateT]: ...
