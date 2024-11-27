@@ -1,31 +1,42 @@
-from collections.abc import Sequence
-from typing import Any, TypeVar
+from collections.abc import Callable
+from typing import Any, Literal, TypeVar
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Untyped, UntypedCallable
 from scipy.sparse import dia_matrix
 
 __all__ = ["equality_constrained_sqp"]
 
 _StateT = TypeVar("_StateT")
 
-def default_scaling(x: onp.CanArray1D | Sequence[onp.ToScalar]) -> dia_matrix: ...
+def default_scaling(x: onp.ToArray1D) -> dia_matrix: ...
 def equality_constrained_sqp(
-    fun_and_constr: Untyped,
-    grad_and_jac: Untyped,
-    lagr_hess: Untyped,
-    x0: onp.Array1D[np.floating[Any]],
-    fun0: Untyped,
-    grad0: Untyped,
-    constr0: Untyped,
-    jac0: Untyped,
-    stop_criteria: Untyped,
+    fun_and_constr: Callable[[onp.Array1D[np.float64]], tuple[float | np.floating[Any], onp.ToFloat1D]],
+    grad_and_jac: Callable[[onp.Array1D[np.float64]], tuple[onp.ToFloat1D, onp.ToFloat2D]],
+    lagr_hess: Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat2D],
+    x0: onp.ToFloat1D,
+    fun0: onp.ToFloat,
+    grad0: onp.ToFloat1D,
+    constr0: onp.ToFloat1D,
+    jac0: onp.ToFloat2D,
+    stop_criteria: Callable[
+        [
+            _StateT,  # state
+            onp.Array1D[np.float64],  # x
+            bool,  # last_iteration_failed
+            np.float64,  # optimality
+            np.float64,  # const_violation
+            np.float64,  # trust_radius
+            np.float64,  # penalty
+            dict[str, int],  # cg_info
+        ],
+        onp.ToBool,
+    ],
     state: _StateT,
-    initial_penalty: Untyped,
-    initial_trust_radius: Untyped,
-    factorization_method: Untyped,
-    trust_lb: Untyped | None = None,
-    trust_ub: Untyped | None = None,
-    scaling: UntypedCallable = ...,
+    initial_penalty: onp.ToFloat,
+    initial_trust_radius: onp.ToFloat,
+    factorization_method: Literal["NormalEquation", "AugmentedSystem", "QRFactorization", "SVDFactorization"],
+    trust_lb: onp.Array1D[np.floating[Any]] | None = None,
+    trust_ub: onp.Array1D[np.floating[Any]] | None = None,
+    scaling: Callable[[onp.Array1D[np.float64]], dia_matrix] = ...,
 ) -> tuple[onp.Array1D[np.floating[Any]], _StateT]: ...
