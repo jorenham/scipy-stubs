@@ -7,6 +7,7 @@ from scipy._typing import NanPolicy, Untyped, UntypedCallable
 
 __all__ = ["curve_fit", "fixed_point", "fsolve", "leastsq"]
 
+#
 def fsolve(
     func: UntypedCallable,
     x0: Untyped,
@@ -21,6 +22,8 @@ def fsolve(
     factor: int = 100,
     diag: Untyped | None = None,
 ) -> Untyped: ...
+
+#
 def leastsq(
     func: UntypedCallable,
     x0: Untyped,
@@ -36,6 +39,8 @@ def leastsq(
     factor: int = 100,
     diag: Untyped | None = None,
 ) -> Untyped: ...
+
+#
 def curve_fit(
     f: UntypedCallable,
     xdata: Untyped,
@@ -51,13 +56,6 @@ def curve_fit(
     full_output: bool = False,
     nan_policy: NanPolicy | None = None,
     **kwargs: tuple[object, ...],
-) -> Untyped: ...
-def check_gradient(
-    fcn: UntypedCallable,
-    Dfcn: UntypedCallable,
-    x0: Untyped,
-    args: tuple[object, ...] = (),
-    col_deriv: int = 0,
 ) -> Untyped: ...
 
 #
