@@ -1,40 +1,39 @@
-from collections.abc import Callable, Iterable
-from typing import Any, type_check_only
+from collections.abc import Callable
+from typing import Concatenate
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
-from scipy._typing import Untyped
 from ._constraints import Bounds
-from ._optimize import OptimizeResult
+from ._optimize import OptimizeResult as _OptimizeResult
 
 __all__ = ["direct"]
 
-ERROR_MESSAGES: tuple[str, ...] = ...
-SUCCESS_MESSAGES: tuple[str, ...] = ...
-
-@type_check_only
-class _OptimizeResult(OptimizeResult):
-    message: str
-    success: bool
+class OptimizeResult(_OptimizeResult):
+    x: onp.Array1D[np.float64]
+    fun: float | np.float64
     status: int
-    fun: float
-    x: onp.ArrayND[np.float64]  # 1d
-    nit: int
+    success: bool
+    message: str
     nfev: int
+    nit: int
+
+###
+
+ERROR_MESSAGES: tuple[str, str, str, str, str, str, str, str, str, str, str] = ...
+SUCCESS_MESSAGES: tuple[str, str, str] = ...
 
 def direct(
-    func: Callable[[npt.ArrayLike, tuple[Any]], float],
-    bounds: Iterable[float] | Bounds,
+    func: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat],
+    bounds: tuple[onp.ToFloat1D, onp.ToFloat1D] | Bounds,
     *,
-    args: tuple[Untyped, ...] = (),
-    eps: float = 0.0001,
-    maxfun: int | None = None,
-    maxiter: int = 1000,
-    locally_biased: bool = True,
-    f_min: float = ...,
-    f_min_rtol: float = 0.0001,
-    vol_tol: float = 1e-16,
-    len_tol: float = 1e-06,
-    callback: Callable[[npt.ArrayLike], None] | None = None,
-) -> _OptimizeResult: ...
+    args: tuple[object, ...] = (),
+    eps: onp.ToFloat = 1e-4,
+    maxfun: onp.ToJustInt | None = None,
+    maxiter: onp.ToJustInt = 1000,
+    locally_biased: onp.ToBool = True,
+    f_min: onp.ToFloat = ...,
+    f_min_rtol: onp.ToFloat = 0.0001,
+    vol_tol: onp.ToFloat = 1e-16,
+    len_tol: onp.ToFloat = 1e-06,
+    callback: Callable[[onp.ToArray1D], None] | None = None,
+) -> OptimizeResult: ...
