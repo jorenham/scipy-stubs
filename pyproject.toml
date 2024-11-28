@@ -145,6 +145,7 @@ enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 
 [tool.pyright]
 include = ["codegen", "scipy-stubs", "tests"]
+ignore = [".venv"]
 venv = ".venv"
 venvPath = "."
 stubPath = "."
