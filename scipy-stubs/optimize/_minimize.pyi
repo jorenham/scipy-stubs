@@ -1,5 +1,6 @@
 from collections.abc import Callable, Mapping, Sequence
-from typing import Any, Concatenate, Final, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
+from typing import Any, Concatenate, Final, Generic, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -114,9 +115,16 @@ class _OptimizeResult_scalar(_OptimizeResult):
     nit: int
     nfev: int
 
-class OptimizeResult(_OptimizeResult):
+_FunT_co = TypeVar(
+    "_FunT_co",
+    bound=float | np.floating[Any] | onp.ArrayND[np.floating[Any]],
+    default=float | np.float64,
+    covariant=True,
+)
+
+class OptimizeResult(_OptimizeResult, Generic[_FunT_co]):
     x: _Float1D
-    fun: float | np.float64
+    fun: _FunT_co
     jac: _Float1D  # requires `jac`
     hess: _Float2D  # requires `hess` or `hessp`
     hess_inv: _Float2D | LinearOperator  # requires `hess` or `hessp`, depends on solver
