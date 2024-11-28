@@ -9,6 +9,7 @@ class RegularGridInterpolator:
     fill_value: Untyped
     def __init__(
         self,
+        /,
         points: Untyped,
         values: Untyped,
         method: str = "linear",
@@ -18,7 +19,7 @@ class RegularGridInterpolator:
         solver: Untyped | None = None,
         solver_args: Untyped | None = None,
     ) -> None: ...
-    def __call__(self, xi: Untyped, method: Untyped | None = None, *, nu: Untyped | None = None) -> Untyped: ...
+    def __call__(self, /, xi: Untyped, method: Untyped | None = None, *, nu: Untyped | None = None) -> Untyped: ...
 
 def interpn(
     points: Untyped,

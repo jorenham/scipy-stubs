@@ -34,6 +34,7 @@ class IterativeSubproblem(BaseQuadraticSubproblem):
     lambda_current: Untyped
     def __init__(
         self,
+        /,
         x: Untyped,
         fun: UntypedCallable,
         jac: Untyped,
@@ -43,4 +44,4 @@ class IterativeSubproblem(BaseQuadraticSubproblem):
         k_hard: float = 0.2,
     ) -> None: ...
     @override
-    def solve(self, trust_radius: float | np.float64) -> tuple[onp.ArrayND[np.float64], bool]: ...
+    def solve(self, /, trust_radius: float | np.float64) -> tuple[onp.ArrayND[np.float64], bool]: ...

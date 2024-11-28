@@ -16,6 +16,7 @@ class _bsr_base(_cs_matrix, _minmax_mixin):
     indptr: Untyped
     def __init__(
         self,
+        /,
         arg1: Untyped,
         shape: onp.ToInt | Sequence[onp.ToInt] | None = None,
         dtype: npt.DTypeLike | None = None,
@@ -23,7 +24,7 @@ class _bsr_base(_cs_matrix, _minmax_mixin):
         blocksize: tuple[int, int] | None = None,
     ) -> None: ...
     @property
-    def blocksize(self) -> tuple[int, int]: ...
+    def blocksize(self, /) -> tuple[int, int]: ...
 
 class bsr_array(_bsr_base, sparray): ...
 class bsr_matrix(spmatrix, _bsr_base): ...

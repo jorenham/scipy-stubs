@@ -22,6 +22,7 @@ class UnivariateSpline:
     # at runtime the `__init__` might change the `__class__` attribute...
     def __init__(
         self,
+        /,
         x: npt.ArrayLike,
         y: npt.ArrayLike,
         w: npt.ArrayLike | None = None,
@@ -31,16 +32,16 @@ class UnivariateSpline:
         ext: int | str = 0,
         check_finite: bool = False,
     ) -> None: ...
-    def __call__(self, x: Untyped, nu: int = 0, ext: Untyped | None = None) -> Untyped: ...
-    def set_smoothing_factor(self, s: Untyped) -> None: ...
-    def get_knots(self) -> Untyped: ...
-    def get_coeffs(self) -> Untyped: ...
-    def get_residual(self) -> Untyped: ...
-    def integral(self, a: Untyped, b: Untyped) -> Untyped: ...
-    def derivatives(self, x: Untyped) -> Untyped: ...
-    def roots(self) -> Untyped: ...
-    def derivative(self, n: int = 1) -> Untyped: ...
-    def antiderivative(self, n: int = 1) -> Untyped: ...
+    def __call__(self, /, x: Untyped, nu: int = 0, ext: Untyped | None = None) -> Untyped: ...
+    def set_smoothing_factor(self, /, s: Untyped) -> None: ...
+    def get_knots(self, /) -> Untyped: ...
+    def get_coeffs(self, /) -> Untyped: ...
+    def get_residual(self, /) -> Untyped: ...
+    def integral(self, /, a: Untyped, b: Untyped) -> Untyped: ...
+    def derivatives(self, /, x: Untyped) -> Untyped: ...
+    def roots(self, /) -> Untyped: ...
+    def derivative(self, /, n: int = 1) -> Untyped: ...
+    def antiderivative(self, /, n: int = 1) -> Untyped: ...
     @staticmethod
     def validate_input(
         x: npt.ArrayLike,
@@ -56,6 +57,7 @@ class UnivariateSpline:
 class InterpolatedUnivariateSpline(UnivariateSpline):
     def __init__(
         self,
+        /,
         x: npt.ArrayLike,
         y: npt.ArrayLike,
         w: npt.ArrayLike | None = None,
@@ -68,6 +70,7 @@ class InterpolatedUnivariateSpline(UnivariateSpline):
 class LSQUnivariateSpline(UnivariateSpline):
     def __init__(
         self,
+        /,
         x: npt.ArrayLike,
         y: npt.ArrayLike,
         t: npt.ArrayLike,
@@ -79,19 +82,19 @@ class LSQUnivariateSpline(UnivariateSpline):
     ) -> None: ...
 
 class _BivariateSplineBase:  # undocumented
-    def __call__(self, x: Untyped, y: Untyped, dx: int = 0, dy: int = 0, grid: bool = True) -> Untyped: ...
-    def get_residual(self) -> Untyped: ...
-    def get_knots(self) -> Untyped: ...
-    def get_coeffs(self) -> Untyped: ...
-    def partial_derivative(self, dx: Untyped, dy: Untyped) -> Untyped: ...
+    def __call__(self, /, x: Untyped, y: Untyped, dx: int = 0, dy: int = 0, grid: bool = True) -> Untyped: ...
+    def get_residual(self, /) -> Untyped: ...
+    def get_knots(self, /) -> Untyped: ...
+    def get_coeffs(self, /) -> Untyped: ...
+    def partial_derivative(self, /, dx: Untyped, dy: Untyped) -> Untyped: ...
 
 class BivariateSpline(_BivariateSplineBase):
-    def ev(self, xi: Untyped, yi: Untyped, dx: int = 0, dy: int = 0) -> Untyped: ...
-    def integral(self, xa: Untyped, xb: Untyped, ya: Untyped, yb: Untyped) -> Untyped: ...
+    def ev(self, /, xi: Untyped, yi: Untyped, dx: int = 0, dy: int = 0) -> Untyped: ...
+    def integral(self, /, xa: Untyped, xb: Untyped, ya: Untyped, yb: Untyped) -> Untyped: ...
 
 class _DerivedBivariateSpline(_BivariateSplineBase):  # undocumented
     @property
-    def fp(self) -> Untyped: ...
+    def fp(self, /) -> Untyped: ...
 
 class SmoothBivariateSpline(BivariateSpline):
     fp: Untyped
@@ -100,6 +103,7 @@ class SmoothBivariateSpline(BivariateSpline):
 
     def __init__(
         self,
+        /,
         x: Untyped,
         y: Untyped,
         z: Untyped,
@@ -117,6 +121,7 @@ class LSQBivariateSpline(BivariateSpline):
     degrees: Untyped
     def __init__(
         self,
+        /,
         x: Untyped,
         y: Untyped,
         z: Untyped,
@@ -136,6 +141,7 @@ class RectBivariateSpline(BivariateSpline):
 
     def __init__(
         self,
+        /,
         x: Untyped,
         y: Untyped,
         z: Untyped,
@@ -149,13 +155,14 @@ class SphereBivariateSpline(_BivariateSplineBase):
     @override
     def __call__(  # type: ignore[override]
         self,
+        /,
         theta: Untyped,
         phi: Untyped,
         dtheta: int = 0,
         dphi: int = 0,
         grid: bool = True,
     ) -> Untyped: ...
-    def ev(self, theta: Untyped, phi: Untyped, dtheta: int = 0, dphi: int = 0) -> Untyped: ...
+    def ev(self, /, theta: Untyped, phi: Untyped, dtheta: int = 0, dphi: int = 0) -> Untyped: ...
 
 class SmoothSphereBivariateSpline(SphereBivariateSpline):
     fp: Untyped
@@ -164,6 +171,7 @@ class SmoothSphereBivariateSpline(SphereBivariateSpline):
 
     def __init__(
         self,
+        /,
         theta: Untyped,
         phi: Untyped,
         r: Untyped,
@@ -174,6 +182,7 @@ class SmoothSphereBivariateSpline(SphereBivariateSpline):
     @override
     def __call__(  # type: ignore[override]
         self,
+        /,
         theta: Untyped,
         phi: Untyped,
         dtheta: int = 0,
@@ -187,6 +196,7 @@ class LSQSphereBivariateSpline(SphereBivariateSpline):
     degrees: Untyped
     def __init__(
         self,
+        /,
         theta: Untyped,
         phi: Untyped,
         r: Untyped,
@@ -198,6 +208,7 @@ class LSQSphereBivariateSpline(SphereBivariateSpline):
     @override
     def __call__(  # type: ignore[override]
         self,
+        /,
         theta: Untyped,
         phi: Untyped,
         dtheta: int = 0,
@@ -212,6 +223,7 @@ class RectSphereBivariateSpline(SphereBivariateSpline):
     v0: Untyped
     def __init__(
         self,
+        /,
         u: Untyped,
         v: Untyped,
         r: Untyped,
@@ -224,6 +236,7 @@ class RectSphereBivariateSpline(SphereBivariateSpline):
     @override
     def __call__(  # type: ignore[override]
         self,
+        /,
         theta: Untyped,
         phi: Untyped,
         dtheta: int = 0,

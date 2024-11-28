@@ -24,6 +24,7 @@ class DCSRCH:
     derphi: Untyped
     def __init__(
         self,
+        /,
         phi: Untyped,
         derphi: Untyped,
         ftol: Untyped,
@@ -34,6 +35,7 @@ class DCSRCH:
     ) -> None: ...
     def __call__(
         self,
+        /,
         alpha1: Untyped,
         phi0: Untyped | None = None,
         derphi0: Untyped | None = None,

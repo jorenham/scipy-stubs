@@ -27,6 +27,7 @@ class CubicHermiteSpline(PPoly[_CT_co]):
     @overload
     def __init__(
         self: CubicHermiteSpline[np.float64],
+        /,
         x: onp.ToFloat1D,
         y: onp.ToFloatND,
         dydx: onp.ToFloatND,
@@ -36,6 +37,7 @@ class CubicHermiteSpline(PPoly[_CT_co]):
     @overload
     def __init__(
         self: CubicHermiteSpline[np.float64 | np.complex128],
+        /,
         x: onp.ToFloat1D,
         y: onp.ToComplexND,
         dydx: onp.ToComplexND,
@@ -44,11 +46,12 @@ class CubicHermiteSpline(PPoly[_CT_co]):
     ) -> None: ...
 
 class PchipInterpolator(CubicHermiteSpline[np.float64]):
-    def __init__(self, x: onp.ToFloat1D, y: onp.ToFloatND, axis: _ToAxis = 0, extrapolate: bool | None = None) -> None: ...
+    def __init__(self, /, x: onp.ToFloat1D, y: onp.ToFloatND, axis: _ToAxis = 0, extrapolate: bool | None = None) -> None: ...
 
 class Akima1DInterpolator(CubicHermiteSpline[np.float64]):
     def __init__(
         self,
+        /,
         x: onp.ToFloat1D,
         y: onp.ToFloatND,
         axis: _ToAxis = 0,
@@ -59,7 +62,7 @@ class Akima1DInterpolator(CubicHermiteSpline[np.float64]):
 
     # the following (class)methods will raise `NotImplementedError` when called
     @override
-    def extend(self, c: object, x: object, right: object = True) -> Never: ...
+    def extend(self, /, c: object, x: object, right: object = True) -> Never: ...
     @classmethod
     @override
     def from_spline(cls, tck: object, extrapolate: object = ...) -> Never: ...
@@ -71,6 +74,7 @@ class CubicSpline(CubicHermiteSpline[_CT_co], Generic[_CT_co]):
     @overload
     def __init__(
         self: CubicSpline[np.float64],
+        /,
         x: onp.ToFloat1D,
         y: onp.ToFloatND,
         axis: _ToAxis = 0,
@@ -80,6 +84,7 @@ class CubicSpline(CubicHermiteSpline[_CT_co], Generic[_CT_co]):
     @overload
     def __init__(
         self: CubicSpline[np.float64 | np.complex128],
+        /,
         x: onp.ToFloat1D,
         y: onp.ToComplexND,
         axis: _ToAxis = 0,

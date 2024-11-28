@@ -26,6 +26,7 @@ class OdeSolver:
     @overload
     def __init__(
         self,
+        /,
         fun: Callable[[float, onp.ArrayND[np.float64]], onp.ToFloatND],
         t0: onp.ToFloatND,
         y0: onp.ToFloatND,
@@ -36,6 +37,7 @@ class OdeSolver:
     @overload
     def __init__(
         self,
+        /,
         fun: Callable[[float, onp.ArrayND[np.float64 | np.complex128]], onp.ToComplexND],
         t0: onp.ToFloat,
         y0: onp.ToComplexND,
@@ -44,9 +46,9 @@ class OdeSolver:
         support_complex: Literal[True],
     ) -> None: ...
     @property
-    def step_size(self) -> float | None: ...
-    def step(self) -> str | None: ...
-    def dense_output(self) -> ConstantDenseOutput: ...
+    def step_size(self, /) -> float | None: ...
+    def step(self, /) -> str | None: ...
+    def dense_output(self, /) -> ConstantDenseOutput: ...
 
 class DenseOutput:
     t_old: Final[float]

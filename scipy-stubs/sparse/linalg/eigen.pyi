@@ -8,11 +8,11 @@ test: ModuleType
 
 @deprecated("will be removed in SciPy v2.0.0")
 class ArpackError:
-    def __init__(self, info: object, infodict: object = ...) -> None: ...
+    def __init__(self, /, info: object, infodict: object = ...) -> None: ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 class ArpackNoConvergence:
-    def __init__(self, msg: object, eigenvalues: object, eigenvectors: object) -> None: ...
+    def __init__(self, /, msg: object, eigenvalues: object, eigenvectors: object) -> None: ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 def eigs(

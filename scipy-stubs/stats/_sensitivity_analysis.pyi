@@ -21,7 +21,7 @@ _SobolMethod: TypeAlias = Callable[
 # this protocol exists at runtime (but it has an incorrect reutrn type, which is corrected here)
 class PPFDist(Protocol):
     @property
-    def ppf(self) -> Callable[..., np.float64]: ...
+    def ppf(self, /) -> Callable[..., np.float64]: ...
 
 @dataclass
 class BootstrapSobolResult:
@@ -41,7 +41,7 @@ class SobolResult:
     _AB: onp.ArrayND[np.float64] | None = None
     _bootstrap_result: BootstrapResult | None = None
 
-    def bootstrap(self, confidence_level: onp.ToFloat = 0.95, n_resamples: onp.ToInt = 999) -> BootstrapSobolResult: ...
+    def bootstrap(self, /, confidence_level: onp.ToFloat = 0.95, n_resamples: onp.ToInt = 999) -> BootstrapSobolResult: ...
 
 #
 def f_ishigami(x: npt.ArrayLike) -> onp.ArrayND[np.floating[Any]]: ...
