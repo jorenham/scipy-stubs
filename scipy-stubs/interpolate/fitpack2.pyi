@@ -18,6 +18,7 @@ __all__ = [
 class UnivariateSpline:
     def __init__(
         self,
+        /,
         x: object,
         y: object,
         w: object = ...,
@@ -38,21 +39,22 @@ class UnivariateSpline:
         ext: object,
         check_finite: object,
     ) -> object: ...
-    def set_smoothing_factor(self, s: object) -> None: ...
-    def __call__(self, x: object, nu: object = ..., ext: object = ...) -> object: ...
-    def get_knots(self) -> object: ...
-    def get_coeffs(self) -> object: ...
-    def get_residual(self) -> object: ...
-    def integral(self, a: object, b: object) -> object: ...
-    def derivatives(self, x: object) -> object: ...
-    def roots(self) -> object: ...
-    def derivative(self, n: object = ...) -> object: ...
-    def antiderivative(self, n: object = ...) -> object: ...
+    def set_smoothing_factor(self, /, s: object) -> None: ...
+    def __call__(self, /, x: object, nu: object = ..., ext: object = ...) -> object: ...
+    def get_knots(self, /) -> object: ...
+    def get_coeffs(self, /) -> object: ...
+    def get_residual(self, /) -> object: ...
+    def integral(self, /, a: object, b: object) -> object: ...
+    def derivatives(self, /, x: object) -> object: ...
+    def roots(self, /) -> object: ...
+    def derivative(self, /, n: object = ...) -> object: ...
+    def antiderivative(self, /, n: object = ...) -> object: ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 class InterpolatedUnivariateSpline:
     def __init__(
         self,
+        /,
         x: object,
         y: object,
         w: object = ...,
@@ -66,6 +68,7 @@ class InterpolatedUnivariateSpline:
 class LSQUnivariateSpline:
     def __init__(
         self,
+        /,
         x: object,
         y: object,
         t: object,
@@ -78,13 +81,14 @@ class LSQUnivariateSpline:
 
 @deprecated("will be removed in SciPy v2.0.0")
 class BivariateSpline:
-    def ev(self, xi: object, yi: object, dx: object = ..., dy: object = ...) -> object: ...
-    def integral(self, xa: object, xb: object, ya: object, yb: object) -> object: ...
+    def ev(self, /, xi: object, yi: object, dx: object = ..., dy: object = ...) -> object: ...
+    def integral(self, /, xa: object, xb: object, ya: object, yb: object) -> object: ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 class SmoothBivariateSpline:
     def __init__(
         self,
+        /,
         x: object,
         y: object,
         z: object,
@@ -100,6 +104,7 @@ class SmoothBivariateSpline:
 class LSQBivariateSpline:
     def __init__(
         self,
+        /,
         x: object,
         y: object,
         z: object,
@@ -116,6 +121,7 @@ class LSQBivariateSpline:
 class RectBivariateSpline:
     def __init__(
         self,
+        /,
         x: object,
         y: object,
         z: object,
@@ -127,13 +133,14 @@ class RectBivariateSpline:
 
 @deprecated("will be removed in SciPy v2.0.0")
 class SmoothSphereBivariateSpline:
-    def __init__(self, theta: object, phi: object, r: object, w: object = ..., s: object = ..., eps: object = ...) -> None: ...
-    def __call__(self, theta: object, phi: object, dtheta: object = ..., dphi: object = ..., grid: object = ...) -> object: ...
+    def __init__(self, /, theta: object, phi: object, r: object, w: object = ..., s: object = ..., eps: object = ...) -> None: ...
+    def __call__(self, /, theta: object, phi: object, dtheta: object = ..., dphi: object = ..., grid: object = ...) -> object: ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 class LSQSphereBivariateSpline:
     def __init__(
         self,
+        /,
         theta: object,
         phi: object,
         r: object,
@@ -142,12 +149,13 @@ class LSQSphereBivariateSpline:
         w: object = ...,
         eps: object = ...,
     ) -> None: ...
-    def __call__(self, theta: object, phi: object, dtheta: object = ..., dphi: object = ..., grid: object = ...) -> object: ...
+    def __call__(self, /, theta: object, phi: object, dtheta: object = ..., dphi: object = ..., grid: object = ...) -> object: ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 class RectSphereBivariateSpline:
     def __init__(
         self,
+        /,
         u: object,
         v: object,
         r: object,
@@ -157,4 +165,4 @@ class RectSphereBivariateSpline:
         pole_exact: object = ...,
         pole_flat: object = ...,
     ) -> None: ...
-    def __call__(self, theta: object, phi: object, dtheta: object = ..., dphi: object = ..., grid: object = ...) -> object: ...
+    def __call__(self, /, theta: object, phi: object, dtheta: object = ..., dphi: object = ..., grid: object = ...) -> object: ...

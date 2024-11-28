@@ -12,6 +12,7 @@ class _UpFIRDn:
     def __init__(self, /, h: onp.ArrayND[np.floating[Any]], x_dtype: np.dtype[np.floating[Any]], up: int, down: int) -> None: ...
     def apply_filter(
         self,
+        /,
         x: onp.ArrayND[np.number[Any]],
         axis: int = -1,
         mode: _FIRMode = "constant",

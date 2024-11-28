@@ -46,7 +46,7 @@ class _BaseMod(VisitorBasedCodemodCommand):
         super().__init__(context)
 
     @override
-    def leave_Module(self, original_node: cst.Module, updated_node: cst.Module) -> cst.Module:
+    def leave_Module(self, /, original_node: cst.Module, updated_node: cst.Module) -> cst.Module:
         if not self.updated:
             raise SkipFile("unchanged")
 
@@ -100,7 +100,7 @@ class FixTrailingComma(_BaseMod):
     DESCRIPTION = "Adds a trailing comma to parameters that don't fit on one line, so that ruff formats them correctly."
 
     @override
-    def leave_FunctionDef(self, original_node: cst.FunctionDef, updated_node: cst.FunctionDef) -> cst.FunctionDef:
+    def leave_FunctionDef(self, /, original_node: cst.FunctionDef, updated_node: cst.FunctionDef) -> cst.FunctionDef:
         params = updated_node.params.params
 
         if (
@@ -119,3 +119,49 @@ class FixTrailingComma(_BaseMod):
             return updated_node.with_deep_changes(params[-1], comma=cst.Comma())
 
         return updated_node
+
+
+@final
+class PosOnlySelf(_BaseMod):
+    DESCRIPTION = "Ensures `self` is a positional-only parameter."
+
+    class_depth: int
+
+    @override
+    def __init__(self, /, context: CodemodContext) -> None:
+        self.class_depth = 0
+        super().__init__(context)
+
+    @override
+    def visit_ClassDef(self, node: cst.ClassDef) -> bool | None:
+        self.class_depth += 1
+        return super().visit_ClassDef(node)
+
+    @override
+    def leave_ClassDef(self, original_node: cst.ClassDef, updated_node: cst.ClassDef) -> cst.ClassDef:
+        self.class_depth -= 1
+        return updated_node
+
+    @override
+    def leave_FunctionDef(self, /, original_node: cst.FunctionDef, updated_node: cst.FunctionDef) -> cst.FunctionDef:
+        params = updated_node.params
+        if not self.class_depth or params.posonly_params or not params.params:
+            return updated_node
+
+        decorators = {get_full_name_for_node(d.decorator) for d in updated_node.decorators}
+        if "staticmethod" in decorators or "classmethod" in decorators:
+            return updated_node
+
+        # TODO(jorenham): pos-only `@property` setter value parameters
+
+        self_param = params.params[0]
+        if self_param.name.value != "self":
+            return updated_node
+
+        self.updated += 1
+        return updated_node.with_changes(
+            params=params.with_changes(
+                params=params.params[1:],
+                posonly_params=(self_param,),
+            )
+        )

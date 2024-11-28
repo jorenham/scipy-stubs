@@ -356,6 +356,7 @@ class argus_gen(rv_continuous): ...
 class rv_histogram(rv_continuous):
     def __init__(
         self,
+        /,
         histogram: tuple[onp.ArrayND[np.floating[Any]], onp.ArrayND[np.inexact[Any]]],
         *args: float | LiteralString | Seed,
         density: bool | None = None,

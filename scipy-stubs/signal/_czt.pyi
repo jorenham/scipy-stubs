@@ -9,9 +9,9 @@ _Float: TypeAlias = np.float64 | np.float32
 _Complex: TypeAlias = np.complex128 | np.complex64
 
 class CZT:
-    def __init__(self, n: int, m: int | None = None, w: onp.ToComplex | None = None, a: onp.ToComplex = 1 + 0j) -> None: ...
-    def __call__(self, x: onp.ToComplexND, *, axis: int = -1) -> onp.ArrayND[_Complex]: ...
-    def points(self) -> onp.ArrayND[_Complex]: ...
+    def __init__(self, /, n: int, m: int | None = None, w: onp.ToComplex | None = None, a: onp.ToComplex = 1 + 0j) -> None: ...
+    def __call__(self, /, x: onp.ToComplexND, *, axis: int = -1) -> onp.ArrayND[_Complex]: ...
+    def points(self, /) -> onp.ArrayND[_Complex]: ...
 
 class ZoomFFT(CZT):
     w: complex
@@ -26,6 +26,7 @@ class ZoomFFT(CZT):
 
     def __init__(
         self,
+        /,
         n: int,
         fn: onp.ToFloat | onp.ToFloatND,
         m: int | None = None,

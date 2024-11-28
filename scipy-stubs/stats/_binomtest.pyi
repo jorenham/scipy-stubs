@@ -11,9 +11,10 @@ class BinomTestResult:
     statistic: float
     pvalue: float
 
-    def __init__(self, k: int, n: int, alternative: _Alternative, statistic: float, pvalue: float) -> None: ...
+    def __init__(self, /, k: int, n: int, alternative: _Alternative, statistic: float, pvalue: float) -> None: ...
     def proportion_ci(
         self,
+        /,
         confidence_level: float = 0.95,
         method: Literal["exact", "wilson", "wilsoncc"] = "exact",
     ) -> ConfidenceInterval: ...

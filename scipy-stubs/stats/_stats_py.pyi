@@ -208,7 +208,7 @@ class QuantileTestResult:
     _alternative: list[str]
     _x: onp.ArrayND[_Real0D]
     _p: float
-    def confidence_interval(self, confidence_level: float = 0.95) -> float: ...
+    def confidence_interval(self, /, confidence_level: float = 0.95) -> float: ...
 
 @type_check_only
 class _TestResultBunch(BaseBunch[_NDT_float_co, _NDT_float_co], Generic[_NDT_float_co]):  # pyright: ignore[reportInvalidTypeArguments]

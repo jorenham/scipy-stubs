@@ -14,6 +14,7 @@ class RBFInterpolator:
     powers: Untyped
     def __init__(
         self,
+        /,
         y: Untyped,
         d: Untyped,
         neighbors: Untyped | None = None,
@@ -22,4 +23,4 @@ class RBFInterpolator:
         epsilon: Untyped | None = None,
         degree: Untyped | None = None,
     ) -> None: ...
-    def __call__(self, x: Untyped) -> Untyped: ...
+    def __call__(self, /, x: Untyped) -> Untyped: ...
