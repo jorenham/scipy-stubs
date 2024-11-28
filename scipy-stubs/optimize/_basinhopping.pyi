@@ -1,94 +1,78 @@
-from scipy._lib._util import check_random_state as check_random_state
-from scipy._typing import Untyped
+from collections.abc import Callable, Mapping
+from typing import Any, Concatenate, Generic, Literal, Protocol, TypeAlias, overload, type_check_only
+from typing_extensions import TypeVar
+
+import numpy as np
+import optype.numpy as onp
+from scipy._typing import Seed
+from ._minimize import OptimizeResult as _OptimizeResult
 
 __all__ = ["basinhopping"]
 
-class Storage:
-    def __init__(self, minres: Untyped) -> None: ...
-    def update(self, minres: Untyped) -> Untyped: ...
-    def get_lowest(self) -> Untyped: ...
+_FT = TypeVar("_FT", bound=onp.ToFloat | onp.ToFloatND)
+_FT_contra = TypeVar("_FT_contra", bound=onp.ToFloat | onp.ToFloatND, contravariant=True)
+_FT_co = TypeVar(
+    "_FT_co",
+    bound=float | np.floating[Any] | onp.ArrayND[np.floating[Any]],
+    default=float | np.float64 | onp.Array1D[np.float64],
+    covariant=True,
+)
 
-class BasinHoppingRunner:
-    x: Untyped
-    minimizer: Untyped
-    step_taking: Untyped
-    accept_tests: Untyped
-    disp: Untyped
-    nstep: int
-    res: Untyped
-    energy: Untyped
-    incumbent_minres: Untyped
-    storage: Untyped
-    def __init__(
+_CallbackFun: TypeAlias = Callable[[onp.Array1D[np.float64], _FT, bool], bool | None]
+
+@type_check_only
+class _AcceptTestFun(Protocol[_FT_contra]):
+    def __call__(
         self,
-        x0: Untyped,
-        minimizer: Untyped,
-        step_taking: Untyped,
-        accept_tests: Untyped,
-        disp: bool = False,
-    ) -> None: ...
-    xtrial: Untyped
-    energy_trial: Untyped
-    accept: Untyped
-    def one_cycle(self) -> Untyped: ...
-    def print_report(self, energy_trial: Untyped, accept: Untyped) -> None: ...
+        /,
+        *,
+        f_new: _FT_contra,
+        x_new: onp.ToFloat1D,
+        f_old: _FT_contra,
+        x_old: onp.ToFloat1D,
+    ) -> onp.ToBool | Literal["force accept"]: ...
 
-class AdaptiveStepsize:
-    takestep: Untyped
-    target_accept_rate: Untyped
-    interval: Untyped
-    factor: Untyped
-    verbose: Untyped
-    nstep: int
-    nstep_tot: int
-    naccept: int
-    def __init__(
-        self,
-        takestep: Untyped,
-        accept_rate: float = 0.5,
-        interval: int = 50,
-        factor: float = 0.9,
-        verbose: bool = True,
-    ) -> None: ...
-    def __call__(self, x: Untyped) -> Untyped: ...
-    def take_step(self, x: Untyped) -> Untyped: ...
-    def report(self, accept: Untyped, **kwargs: Untyped) -> None: ...
+@type_check_only
+class OptimizeResult(_OptimizeResult[_FT_co], Generic[_FT_co]):
+    lowest_optimization_result: _OptimizeResult[_FT_co]
 
-class RandomDisplacement:
-    stepsize: Untyped
-    random_gen: Untyped
-    def __init__(self, stepsize: float = 0.5, random_gen: Untyped | None = None) -> None: ...
-    def __call__(self, x: Untyped) -> Untyped: ...
+###
 
-class MinimizerWrapper:
-    minimizer: Untyped
-    func: Untyped
-    kwargs: Untyped
-    def __init__(self, minimizer: Untyped, func: Untyped | None = None, **kwargs: Untyped) -> None: ...
-    def __call__(self, x0: Untyped) -> Untyped: ...
-
-class Metropolis:
-    beta: Untyped
-    random_gen: Untyped
-    def __init__(self, T: Untyped, random_gen: Untyped | None = None) -> None: ...
-    def accept_reject(self, res_new: Untyped, res_old: Untyped) -> Untyped: ...
-    def __call__(self, *, res_new: Untyped, res_old: Untyped) -> Untyped: ...
-
+@overload
 def basinhopping(
-    func: Untyped,
-    x0: Untyped,
-    niter: int = 100,
-    T: float = 1.0,
-    stepsize: float = 0.5,
-    minimizer_kwargs: Untyped | None = None,
-    take_step: Untyped | None = None,
-    accept_test: Untyped | None = None,
-    callback: Untyped | None = None,
-    interval: int = 50,
-    disp: bool = False,
-    niter_success: Untyped | None = None,
-    seed: Untyped | None = None,
+    func: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat],
+    x0: onp.ToFloat1D,
+    niter: onp.ToJustInt = 100,
+    T: onp.ToFloat = 1.0,
+    stepsize: onp.ToFloat = 0.5,
+    minimizer_kwargs: Mapping[str, object] | None = None,
+    take_step: Callable[[onp.Array1D[np.float64]], onp.ToFloat] | None = None,
+    accept_test: _AcceptTestFun[onp.ToFloat] | None = None,
+    callback: _CallbackFun[float] | _CallbackFun[np.float64] | None = None,
+    interval: onp.ToJustInt = 50,
+    disp: onp.ToBool = False,
+    niter_success: onp.ToJustInt | None = None,
+    seed: Seed | None = None,
     *,
-    target_accept_rate: float = 0.5,
-    stepwise_factor: float = 0.9,
-) -> Untyped: ...
+    target_accept_rate: onp.ToFloat = 0.5,
+    stepwise_factor: onp.ToFloat = 0.9,
+) -> OptimizeResult[float | np.float64]: ...
+@overload
+def basinhopping(
+    func: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat1D],
+    x0: onp.ToFloat1D,
+    niter: onp.ToJustInt = 100,
+    T: onp.ToFloat = 1.0,
+    stepsize: onp.ToFloat = 0.5,
+    minimizer_kwargs: Mapping[str, object] | None = None,
+    take_step: Callable[[onp.Array1D[np.float64]], onp.ToFloat] | None = None,
+    accept_test: _AcceptTestFun[onp.ToFloat1D] | None = None,
+    callback: _CallbackFun[onp.Array1D[np.float64]] | None = None,
+    interval: onp.ToJustInt = 50,
+    disp: onp.ToBool = False,
+    niter_success: onp.ToJustInt | None = None,
+    seed: Seed | None = None,
+    *,
+    target_accept_rate: onp.ToFloat = 0.5,
+    stepwise_factor: onp.ToFloat = 0.9,
+) -> OptimizeResult[onp.Array1D[np.float64]]: ...
