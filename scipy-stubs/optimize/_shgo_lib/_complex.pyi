@@ -1,97 +1,104 @@
-from collections.abc import Generator, Sequence
-from typing import Any, TypeAlias
+from collections.abc import Callable, Generator, Sequence
+from typing import Any, Concatenate, Final, Generic, TypeAlias
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
-from scipy._typing import Untyped, UntypedCallable, UntypedTuple
+from scipy.optimize._typing import Constraints
 from ._vertex import VertexBase, VertexCacheBase
 
-_Location: TypeAlias = Sequence[float]
-_Bounds: TypeAlias = Sequence[tuple[float, float]]
-_Constraints: TypeAlias = dict[str, object] | Sequence[dict[str, object]]  # TODO: TypedDict
-_Symmetry: TypeAlias = op.CanGetitem[int, op.CanIndex]
-_CyclicProduct: TypeAlias = Generator[tuple[float, ...], None, tuple[float, ...]]
+_Floats: TypeAlias = onp.ToFloat
+_Float1D: TypeAlias = onp.Array1D[np.float64]
+_FloatingND: TypeAlias = onp.ArrayND[np.floating[Any] | np.integer[Any]]
 
-class Complex:
-    dim: int
-    domain: _Bounds
-    bounds: _Bounds
-    symmetry: _Symmetry
-    sfield: UntypedCallable
-    sfield_args: UntypedTuple
-    min_cons: _Constraints  # only set if `constraints` is not None
-    g_cons: UntypedTuple | None
-    g_args: UntypedTuple | None
+_Fun0D: TypeAlias = Callable[Concatenate[_Float1D, ...], onp.ToFloat]
+_Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D]
+
+_Location: TypeAlias = _FloatingND | Sequence[float]
+_Bounds: TypeAlias = _FloatingND | Sequence[tuple[onp.ToFloat, onp.ToFloat]]
+_Symmetry: TypeAlias = onp.ArrayND[np.integer[Any]] | op.CanGetitem[int, op.CanIndex]
+
+_HT = TypeVar("_HT", bound=VertexCacheBase, default=VertexCacheBase)
+
+###
+
+class Complex(Generic[_HT]):  # undocumented
+    dim: Final[int]
+    domain: Final[_Bounds]
+    bounds: Final[_Bounds]
+    symmetry: Final[_Symmetry]
+    sfield: _Fun0D
+    sfield_args: tuple[object, ...]
+    min_cons: Constraints  # only set if `constraints` is not None
+    g_cons: Final[Sequence[_Fun1D]]
+    g_args: Final[tuple[object, ...]]
+
     gen: int
     perm_cycle: int
 
-    H: list[Untyped]
-    V: VertexCacheBase
-    V_non_symm: list[VertexBase]
+    H: list[_HT]  # readonly
+    V: Final[VertexCacheBase]
+    V_non_symm: Final[list[VertexBase]]
     origin: list[float]
     supremum: list[float]
-    cp: _CyclicProduct
-    triangulated_vectors: list[tuple[tuple[float, ...], tuple[float, ...]]]
-    rls: Untyped
+    triangulated_vectors: list[tuple[_Floats, _Floats]]
+
+    cp: Generator[_Floats, None, _Floats]
+    rls: Generator[VertexBase | _Floats]
+
     def __init__(
         self,
         /,
         dim: int,
         domain: _Bounds | None = None,
-        sfield: UntypedCallable | None = None,
-        sfield_args: UntypedTuple = (),
+        sfield: _Fun0D | None = None,
+        sfield_args: tuple[object, ...] = (),
         symmetry: _Symmetry | None = None,
-        constraints: _Constraints | None = None,
+        constraints: Constraints | None = None,
         workers: int = 1,
     ) -> None: ...
-    def __call__(self, /) -> Untyped: ...
+    def __call__(self, /) -> list[_HT]: ...
     def cyclic_product(
         self,
         /,
         bounds: _Bounds,
         origin: _Location,
         supremum: _Location,
-        centroid: bool = True,
-    ) -> _CyclicProduct: ...
+        centroid: onp.ToFloat = True,
+    ) -> Generator[_Floats, None, _Floats]: ...
     def triangulate(
         self,
         /,
         n: int | None = None,
         symmetry: _Symmetry | None = None,
-        centroid: bool = True,
-        printout: bool = False,
+        centroid: onp.ToFloat = True,
+        printout: onp.ToFloat = False,
     ) -> None: ...
     def refine(self, /, n: int = 1) -> None: ...
-    def refine_all(self, /, centroids: bool = True) -> None: ...
+    def refine_all(self, /, centroids: onp.ToBool = True) -> None: ...
     def refine_local_space(
         self,
         /,
         origin: _Location,
         supremum: _Location,
         bounds: _Bounds,
-        centroid: int = 1,
-    ) -> Generator[VertexBase | tuple[float, ...], None, None]: ...
+        centroid: onp.ToBool = 1,
+    ) -> Generator[VertexBase | _Floats]: ...
     def refine_star(self, /, v: VertexBase) -> None: ...
     def split_edge(self, /, v1: VertexBase, v2: VertexBase) -> VertexBase: ...
     def vpool(self, /, origin: _Location, supremum: _Location) -> set[VertexBase]: ...
-    def vf_to_vv(self, /, vertices: Sequence[VertexBase], simplices: Sequence[Untyped]) -> None: ...
+    def vf_to_vv(
+        self,
+        /,
+        vertices: Sequence[VertexBase],
+        simplices: Sequence[tuple[onp.ToFloat1D, onp.ToFloat1D]],
+    ) -> None: ...
     def connect_vertex_non_symm(
         self,
         /,
-        v_x: tuple[float | np.floating[Any]] | onp.Array1D[np.floating[Any]],
+        v_x: onp.ToFloat1D,
         near: set[VertexBase] | list[VertexBase] | None = None,
     ) -> bool | None: ...
-    def in_simplex(
-        self,
-        /,
-        S: onp.ToFloat1D,
-        v_x: onp.Array1D[np.floating[Any]],
-        A_j0: onp.ArrayND[np.floating[Any]] | None = None,
-    ) -> Untyped: ...
-    def deg_simplex(
-        self,
-        /,
-        S: onp.ArrayND[np.floating[Any]],
-        proj: onp.ArrayND[np.floating[Any]] | None = None,
-    ) -> Untyped: ...
+    def in_simplex(self, /, S: onp.ToFloat1D, v_x: onp.ToFloat1D, A_j0: _FloatingND | None = None) -> bool: ...
+    def deg_simplex(self, /, S: _FloatingND, proj: _FloatingND | None = None) -> bool: ...
