@@ -67,9 +67,31 @@ ______________________________________________________________________
 
 ## Installation
 
+<table>
+
+<tr>
+    <th width="500px">PyPI</th>
+    <th width="500px">Conda</th>
+</tr>
+
+<tr>
+<td>
+
 ```shell
 pip install scipy-stubs
 ```
+
+</td>
+<td>
+
+```shell
+conda install conda-forge::scipy-stubs
+```
+
+</td>
+</tr>
+
+</table>
 
 ## `scipy` coverage
 
