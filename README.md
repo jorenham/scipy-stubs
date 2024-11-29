@@ -11,16 +11,16 @@
             src="https://img.shields.io/pypi/v/scipy-stubs?style=flat&color=olive"
         />
     </a>
-    <a href="https://github.com/jorenham/scipy-stubs">
+    <a href="https://anaconda.org/conda-forge/scipy-stubs">
         <img
-            alt="scipy-stubs - Python Versions"
-            src="https://img.shields.io/pypi/pyversions/scipy-stubs?style=flat"
+            alt="scipy-stubs - conda-forge"
+            src="https://anaconda.org/conda-forge/scipy-stubs/badges/version.svg"
         />
     </a>
     <a href="https://github.com/jorenham/scipy-stubs">
         <img
-            alt="scipy-stubs - dependencies"
-            src="https://img.shields.io/librariesio/github/jorenham/scipy-stubs?style=flat&color=violet"
+            alt="scipy-stubs - Python Versions"
+            src="https://img.shields.io/pypi/pyversions/scipy-stubs?style=flat"
         />
     </a>
     <a href="https://github.com/jorenham/scipy-stubs">
@@ -37,7 +37,6 @@
             src="https://github.com/jorenham/scipy-stubs/workflows/CI/badge.svg"
         />
     </a>
-    <!-- TODO -->
     <a href="https://github.com/pre-commit/pre-commit">
         <img
             alt="scipy-stubs - pre-commit"
@@ -68,9 +67,31 @@ ______________________________________________________________________
 
 ## Installation
 
+<table>
+
+<tr>
+    <th width="500px">PyPI</th>
+    <th width="500px">Conda</th>
+</tr>
+
+<tr>
+<td>
+
 ```shell
 pip install scipy-stubs
 ```
+
+</td>
+<td>
+
+```shell
+conda install conda-forge::scipy-stubs
+```
+
+</td>
+</tr>
+
+</table>
 
 ## `scipy` coverage
 
