@@ -46,7 +46,7 @@ mdformat = "^0.7.19"
 mdformat-gfm = "^0.3.7"
 mdformat-gfm-alerts = "^1.0.1"
 mdformat-pyproject = "^0.0.2"
-ruff = "^0.8.0"
+ruff = "^0.8.1"
 sp-repo-review = {version = "^2024.8.19", extras = ["cli"]}
 
 [tool.poetry.group.codegen]
