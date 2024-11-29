@@ -1,10 +1,10 @@
 from collections.abc import Callable
 from typing import Any, Literal, TypeAlias
-from typing_extensions import Self
+from typing_extensions import Self, Unpack
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Untyped
+from .windows._windows import _Window, _WindowNeedsParams
 
 __all__ = ["ShortTimeFFT"]
 
@@ -41,7 +41,7 @@ class ShortTimeFFT:
     @classmethod
     def from_window(
         cls,
-        win_param: str | tuple[Untyped, ...] | float,
+        win_param: _Window | onp.ToFloat | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]],
         fs: float,
         nperseg: int,
         noverlap: int,
