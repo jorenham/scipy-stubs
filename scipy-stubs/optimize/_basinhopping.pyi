@@ -1,4 +1,4 @@
-from collections.abc import Callable, Mapping
+from collections.abc import Callable
 from typing import Concatenate, Literal, Protocol, TypeAlias, TypeVar, type_check_only
 
 import numpy as np
@@ -6,6 +6,7 @@ import optype.numpy as onp
 from scipy._typing import Seed
 from ._minimize import OptimizeResult as _MinimizeResult
 from ._optimize import OptimizeResult as _OptimizeResult
+from ._typing import MinimizerKwargs
 
 __all__ = ["basinhopping"]
 
@@ -53,7 +54,7 @@ def basinhopping(
     niter: onp.ToJustInt = 100,
     T: onp.ToFloat = 1.0,
     stepsize: onp.ToFloat = 0.5,
-    minimizer_kwargs: Mapping[str, object] | None = None,
+    minimizer_kwargs: MinimizerKwargs | None = None,
     take_step: Callable[[_Float1D], onp.ToFloat] | None = None,
     accept_test: _AcceptTestFun[onp.ToFloat] | None = None,
     callback: _CallbackFun[float] | _CallbackFun[np.float64] | None = None,
