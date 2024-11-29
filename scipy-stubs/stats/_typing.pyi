@@ -9,7 +9,7 @@ __all__ = ("BaseBunch", "PowerDivergenceStatistic")
 _Ts = TypeVarTuple("_Ts")
 
 @type_check_only
-class BaseBunch(tuple[Unpack[_Ts]], Generic[Unpack[_Ts]]):  # noqa: SLOT001
+class BaseBunch(tuple[Unpack[_Ts]], Generic[Unpack[_Ts]]):
     # A helper baseclass for annotating the return type of a *specific*
     # `scipy._lib.bunch._make_tuple_bunch` call.
     #
