@@ -5,6 +5,8 @@ from typing_extensions import NotRequired, TypedDict
 import numpy as np
 import optype.numpy as onp
 from ._constraints import Bounds as _Bounds, LinearConstraint, NonlinearConstraint
+from ._hessian_update_strategy import HessianUpdateStrategy
+from ._minimize import _MinimizeOptions
 
 __all__ = [
     "Bound",
@@ -17,6 +19,7 @@ __all__ = [
     "MethodMimimize",
     "MethodMinimizeScalar",
     "MethodRootScalar",
+    "MinimizerKwargs",
     "Solver",
     "TRSolver",
 ]
@@ -84,3 +87,15 @@ MethodAll: TypeAlias = Literal[
     MethodLinprog,
     _MethodQuadraticAssignment,
 ]
+
+_FDMethod: TypeAlias = Literal["2-point", "3-point", "cs"]
+
+@type_check_only
+class MinimizerKwargs(TypedDict, total=False):
+    method: MethodMimimize
+    jac: Callable[Concatenate[_Float1D, ...], onp.ToFloat1D] | _FDMethod | bool
+    hess: Callable[Concatenate[_Float1D, ...], onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy
+    hessp: Callable[Concatenate[_Float1D, _Float1D, ...], onp.ToFloat1D]
+    constraints: Constraints
+    tol: onp.ToFloat
+    options: _MinimizeOptions

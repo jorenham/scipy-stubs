@@ -1,29 +1,16 @@
 from collections.abc import Callable
-from typing import Concatenate, Literal, TypeAlias, TypedDict, type_check_only
+from typing import Concatenate, Literal, TypeAlias
 
 import numpy as np
 import optype.numpy as onp
 from scipy._typing import Seed
 from scipy.optimize import OptimizeResult as _OptimizeResult
 from ._constraints import Bounds
-from ._hessian_update_strategy import HessianUpdateStrategy
-from ._minimize import _MinimizeOptions
-from ._typing import Constraints, MethodMimimize
+from ._typing import MinimizerKwargs
 
 __all__ = ["dual_annealing"]
 
 _Float1D: TypeAlias = onp.Array1D[np.float64]
-_FDMethod: TypeAlias = Literal["2-point", "3-point", "cs"]
-
-@type_check_only
-class _MinimizeKwargs(TypedDict, total=False):
-    method: MethodMimimize
-    jac: Callable[Concatenate[_Float1D, ...], onp.ToFloat1D] | _FDMethod | bool
-    hess: Callable[Concatenate[_Float1D, ...], onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy
-    hessp: Callable[Concatenate[_Float1D, _Float1D, ...], onp.ToFloat1D]
-    constraints: Constraints
-    tol: onp.ToFloat
-    options: _MinimizeOptions
 
 ###
 
@@ -43,7 +30,7 @@ def dual_annealing(
     bounds: Bounds | tuple[onp.ToFloat1D, onp.ToFloat1D] | onp.ToFloat2D,
     args: tuple[object, ...] = (),
     maxiter: onp.ToJustInt = 1_000,
-    minimizer_kwargs: _MinimizeKwargs | None = None,
+    minimizer_kwargs: MinimizerKwargs | None = None,
     initial_temp: onp.ToFloat = 5_230.0,
     restart_temp_ratio: onp.ToFloat = 2e-05,
     visit: onp.ToFloat = 2.62,
