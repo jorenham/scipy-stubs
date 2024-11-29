@@ -3,6 +3,7 @@ ci:
   autoupdate_commit_msg: "update pre-commit hooks"
   skip:
     - markdownlint
+    - mdformat
     - codespell
     - ruff
     - ruff-format
@@ -69,6 +70,7 @@ repos:
       - id: ruff
         args: [--fix, --show-fixes]
         types_or: [python, pyi]
+
       - id: ruff-format
         types_or: [python, pyi]
 
