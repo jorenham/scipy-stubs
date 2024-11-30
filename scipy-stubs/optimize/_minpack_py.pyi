@@ -1,5 +1,5 @@
-from collections.abc import Callable, Mapping, Sequence
-from typing import Any, Concatenate, Literal, TypeAlias, TypedDict, final, overload, type_check_only
+from collections.abc import Callable, Mapping
+from typing import Concatenate, Literal, TypeAlias, TypedDict, TypeVar, final, overload, type_check_only
 from typing_extensions import Unpack
 
 import numpy as np
@@ -10,15 +10,17 @@ from ._constraints import Bounds
 
 __all__ = ["curve_fit", "fixed_point", "fsolve", "leastsq"]
 
-_Fun1D: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat1D]
-_Fun2D: TypeAlias = Callable[Concatenate[onp.Array2D[np.float64], ...], onp.ToFloat1D]
-_Jac1D: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat2D]
-_Jac2D: TypeAlias = Callable[Concatenate[onp.Array2D[np.float64], ...], onp.ToFloat2D]
+_XT = TypeVar("_XT")
+_FT = TypeVar("_FT")
+_Fun: TypeAlias = Callable[Concatenate[_XT, ...], _FT]
 
-# TODO(jorenham): add these "strict" shape-typed array-likes to `optype` (or make the current ones generic)
-_ToFloatScalar: TypeAlias = np.floating[Any] | np.integer[Any] | np.bool_
-_ToStrictFloat1D: TypeAlias = onp.CanArray1D[_ToFloatScalar] | Sequence[onp.ToFloat]
-_ToStrictFloat2D: TypeAlias = onp.CanArray2D[_ToFloatScalar] | Sequence[_ToStrictFloat1D]
+_Float1D: TypeAlias = onp.Array1D[np.float64]
+_Float2D: TypeAlias = onp.Array2D[np.float64]
+
+_Fun1D: TypeAlias = _Fun[_Float1D, onp.ToFloat1D]
+_Fun2D: TypeAlias = _Fun[_Float2D, onp.ToFloat1D]
+_Jac1D: TypeAlias = _Fun[_Float1D, onp.ToFloat2D]
+_Jac2D: TypeAlias = _Fun[_Float2D, onp.ToFloat2D]
 
 _Falsy: TypeAlias = Literal[False, 0]
 _Truthy: TypeAlias = Literal[True, 1]
@@ -45,10 +47,7 @@ class _KwargsCurveFit(TypedDict, total=False):
     # least_squares
     x_scale: onp.ToFloat | onp.ToFloatND | Literal["jac"]
     f_scale: onp.ToFloat
-    loss: (
-        Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat1D]
-        | Literal["linear", "soft_l1", "huber", "cauchy", "arctan"]
-    )
+    loss: _Fun[_Float1D, onp.ToFloat1D] | Literal["linear", "soft_l1", "huber", "cauchy", "arctan"]
     diff_step: onp.ToFloat1D | None
     tr_solver: Literal["exact", "lsmr"]
     tr_options: Mapping[str, object]
@@ -60,20 +59,20 @@ class _KwargsCurveFit(TypedDict, total=False):
 @type_check_only
 class _InfoDictBase(TypedDict):
     nfev: int
-    fvec: onp.Array1D[np.float64]
+    fvec: _Float1D
 
 @type_check_only
 class _InfoDictSolve(_InfoDictBase, TypedDict):
     njev: int
-    fjac: onp.Array2D[np.float64]
-    r: onp.Array1D[np.float64]
-    qtf: onp.Array1D[np.float64]
+    fjac: _Float2D
+    r: _Float1D
+    qtf: _Float1D
 
 @type_check_only
 class _InfoDictLSQ(_InfoDictBase, TypedDict):
-    fjac: onp.Array2D[np.float64]
+    fjac: _Float2D
     ipvt: onp.Array1D[np.int32]
-    qtf: onp.Array1D[np.float64]
+    qtf: _Float1D
 
 _InfoDictCurveFit: TypeAlias = _InfoDictBase | _InfoDictLSQ
 
@@ -94,7 +93,7 @@ def fsolve(
     epsfcn: onp.ToFloat | None = None,
     factor: onp.ToJustInt = 100,
     diag: onp.ToFloat1D | None = None,
-) -> onp.Array1D[np.float64]: ...
+) -> _Float1D: ...
 @overload  # full_output=True (positional)
 def fsolve(
     func: _Fun1D,
@@ -109,7 +108,7 @@ def fsolve(
     epsfcn: onp.ToFloat | None = None,
     factor: onp.ToJustInt = 100,
     diag: onp.ToFloat1D | None = None,
-) -> tuple[onp.Array1D[np.float64], _InfoDictSolve, _IERFlag, str]: ...
+) -> tuple[_Float1D, _InfoDictSolve, _IERFlag, str]: ...
 @overload  # full_output=True (keyword)
 def fsolve(
     func: _Fun1D,
@@ -125,7 +124,7 @@ def fsolve(
     epsfcn: onp.ToFloat | None = None,
     factor: onp.ToJustInt = 100,
     diag: onp.ToFloat1D | None = None,
-) -> tuple[onp.Array1D[np.float64], _InfoDictSolve, _IERFlag, str]: ...
+) -> tuple[_Float1D, _InfoDictSolve, _IERFlag, str]: ...
 
 #
 @overload  # full_output=False (default)
@@ -143,7 +142,7 @@ def leastsq(
     epsfcn: onp.ToFloat | None = None,
     factor: onp.ToJustInt = 100,
     diag: onp.ToFloat1D | None = None,
-) -> tuple[onp.Array1D[np.float64], _IERFlag]: ...
+) -> tuple[_Float1D, _IERFlag]: ...
 @overload  # full_output=True (positional)
 def leastsq(
     func: _Fun1D,
@@ -159,7 +158,7 @@ def leastsq(
     epsfcn: onp.ToFloat | None = None,
     factor: onp.ToJustInt = 100,
     diag: onp.ToFloat1D | None = None,
-) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64], _InfoDictLSQ, str, _IERFlag]: ...
+) -> tuple[_Float1D, _Float2D, _InfoDictLSQ, str, _IERFlag]: ...
 @overload  # full_output=True (keyword)
 def leastsq(
     func: _Fun1D,
@@ -176,13 +175,13 @@ def leastsq(
     epsfcn: onp.ToFloat | None = None,
     factor: onp.ToJustInt = 100,
     diag: onp.ToFloat1D | None = None,
-) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64], _InfoDictLSQ, str, _IERFlag]: ...
+) -> tuple[_Float1D, _Float2D, _InfoDictLSQ, str, _IERFlag]: ...
 
 #
 @overload  # 1-d `x`, full-output=False
 def curve_fit(
     f: _Fun1D,
-    xdata: _ToStrictFloat1D,
+    xdata: onp.ToFloatStrict1D,
     ydata: onp.ToFloat1D,
     p0: onp.ToFloat1D | None = None,
     sigma: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D | None = None,
@@ -195,11 +194,11 @@ def curve_fit(
     full_output: _Falsy = False,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
-) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
+) -> tuple[_Float1D, _Float2D]: ...
 @overload  # 1-d `x`, full-output=True
 def curve_fit(
     f: _Fun1D,
-    xdata: _ToStrictFloat1D,
+    xdata: onp.ToFloatStrict1D,
     ydata: onp.ToFloat1D,
     p0: onp.ToFloat1D | None = None,
     sigma: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D | None = None,
@@ -212,11 +211,11 @@ def curve_fit(
     full_output: _Truthy,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
-) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64], _InfoDictCurveFit, str, _IERFlag]: ...
+) -> tuple[_Float1D, _Float2D, _InfoDictCurveFit, str, _IERFlag]: ...
 @overload  # 2-d `x`, full-output=False
 def curve_fit(
     f: _Fun2D,
-    xdata: _ToStrictFloat2D,
+    xdata: onp.ToFloatStrict2D,
     ydata: onp.ToFloat1D,
     p0: onp.ToFloat1D | None = None,
     sigma: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D | None = None,
@@ -229,11 +228,11 @@ def curve_fit(
     full_output: _Falsy = False,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
-) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]]: ...
+) -> tuple[_Float2D, _Float2D]: ...
 @overload  # 2-d `x`, full-output=True
 def curve_fit(
     f: _Fun2D,
-    xdata: _ToStrictFloat2D,
+    xdata: onp.ToFloatStrict2D,
     ydata: onp.ToFloat1D,
     p0: onp.ToFloat1D | None = None,
     sigma: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D | None = None,
@@ -246,7 +245,7 @@ def curve_fit(
     full_output: _Truthy,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
-) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.float64], _InfoDictCurveFit, str, _IERFlag]: ...
+) -> tuple[_Float2D, _Float2D, _InfoDictCurveFit, str, _IERFlag]: ...
 @overload  # ?-d `x`, full-output=False
 def curve_fit(
     f: _Fun1D | _Fun2D,
@@ -263,7 +262,7 @@ def curve_fit(
     full_output: _Falsy = False,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
-) -> tuple[onp.Array1D[np.float64] | onp.Array2D[np.float64], onp.Array2D[np.float64]]: ...
+) -> tuple[_Float1D | _Float2D, _Float2D]: ...
 @overload  # ?-d `x`, full-output=True
 def curve_fit(
     f: _Fun1D | _Fun2D,
@@ -280,12 +279,12 @@ def curve_fit(
     full_output: _Truthy,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
-) -> tuple[onp.Array1D[np.float64] | onp.Array2D[np.float64], onp.Array2D[np.float64], _InfoDictCurveFit, str, _IERFlag]: ...
+) -> tuple[_Float1D | _Float2D, _Float2D, _InfoDictCurveFit, str, _IERFlag]: ...
 
 #
 @overload  # 0-d real
 def fixed_point(
-    func: Callable[Concatenate[np.float64, ...], onp.ToFloat] | Callable[Concatenate[float, ...], onp.ToFloat],
+    func: _Fun[np.float64, onp.ToFloat] | _Fun[float, onp.ToFloat],
     x0: onp.ToFloat,
     args: tuple[object, ...] = (),
     xtol: onp.ToFloat = 1e-08,
@@ -294,7 +293,7 @@ def fixed_point(
 ) -> np.float64: ...
 @overload  # 0-d complex
 def fixed_point(
-    func: Callable[Concatenate[np.complex128, ...], onp.ToFloat] | Callable[Concatenate[float, ...], onp.ToComplex],
+    func: _Fun[np.complex128, onp.ToComplex] | _Fun[complex, onp.ToComplex],
     x0: onp.ToComplex,
     args: tuple[object, ...] = (),
     xtol: onp.ToFloat = 1e-08,
@@ -303,16 +302,16 @@ def fixed_point(
 ) -> np.float64 | np.complex128: ...
 @overload  # 1-d real
 def fixed_point(
-    func: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat1D],
+    func: _Fun[_Float1D, onp.ToFloat1D],
     x0: onp.ToFloat1D,
     args: tuple[object, ...] = (),
     xtol: onp.ToFloat = 1e-08,
     maxiter: onp.ToJustInt = 500,
     method: Literal["del2", "iteration"] = "del2",
-) -> onp.Array1D[np.float64]: ...
+) -> _Float1D: ...
 @overload  # 1-d complex
 def fixed_point(
-    func: Callable[Concatenate[onp.Array1D[np.complex128], ...], onp.ToComplex1D],
+    func: _Fun[onp.Array1D[np.complex128], onp.ToComplex1D],
     x0: onp.ToComplex1D,
     args: tuple[object, ...] = (),
     xtol: onp.ToFloat = 1e-08,
@@ -321,16 +320,16 @@ def fixed_point(
 ) -> onp.Array1D[np.float64 | np.complex128]: ...
 @overload  # 2-d real
 def fixed_point(
-    func: Callable[Concatenate[onp.Array2D[np.float64], ...], onp.ToFloat2D],
+    func: _Fun[_Float2D, onp.ToFloat2D],
     x0: onp.ToFloat2D,
     args: tuple[object, ...] = (),
     xtol: onp.ToFloat = 1e-08,
     maxiter: onp.ToJustInt = 500,
     method: Literal["del2", "iteration"] = "del2",
-) -> onp.Array2D[np.float64]: ...
+) -> _Float2D: ...
 @overload  # 2-d complex
 def fixed_point(
-    func: Callable[Concatenate[onp.Array2D[np.complex128], ...], onp.ToComplex2D],
+    func: _Fun[onp.Array2D[np.complex128], onp.ToComplex2D],
     x0: onp.ToComplex2D,
     args: tuple[object, ...] = (),
     xtol: onp.ToFloat = 1e-08,
@@ -339,7 +338,7 @@ def fixed_point(
 ) -> onp.Array2D[np.float64 | np.complex128]: ...
 @overload  # 3-d real
 def fixed_point(
-    func: Callable[Concatenate[onp.Array3D[np.float64], ...], onp.ToFloat3D],
+    func: _Fun[onp.Array3D[np.float64], onp.ToFloat3D],
     x0: onp.ToFloat3D,
     args: tuple[object, ...] = (),
     xtol: onp.ToFloat = 1e-08,
@@ -348,7 +347,7 @@ def fixed_point(
 ) -> onp.Array3D[np.float64]: ...
 @overload  # 3-d complex
 def fixed_point(
-    func: Callable[Concatenate[onp.Array3D[np.complex128], ...], onp.ToComplex3D],
+    func: _Fun[onp.Array3D[np.complex128], onp.ToComplex3D],
     x0: onp.ToComplex3D,
     args: tuple[object, ...] = (),
     xtol: onp.ToFloat = 1e-08,
@@ -357,7 +356,7 @@ def fixed_point(
 ) -> onp.Array3D[np.float64 | np.complex128]: ...
 @overload  # N-d real
 def fixed_point(
-    func: Callable[Concatenate[onp.ArrayND[np.float64], ...], onp.ToFloatND],
+    func: _Fun[onp.ArrayND[np.float64], onp.ToFloatND],
     x0: onp.ToFloatND,
     args: tuple[object, ...] = (),
     xtol: onp.ToFloat = 1e-08,
@@ -366,7 +365,7 @@ def fixed_point(
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # N-d complex
 def fixed_point(
-    func: Callable[Concatenate[onp.ArrayND[np.complex128], ...], onp.ToComplexND],
+    func: _Fun[onp.ArrayND[np.complex128], onp.ToComplexND],
     x0: onp.ToComplexND,
     args: tuple[object, ...] = (),
     xtol: onp.ToFloat = 1e-08,
