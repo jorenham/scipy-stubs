@@ -72,7 +72,7 @@ _AllVecs: TypeAlias = list[_Int1D | _Float1D]
 
 _XT_contra = TypeVar("_XT_contra", contravariant=True, bound=_Array_1d, default=_Float1D)
 _ValueT_co = TypeVar("_ValueT_co", covariant=True, bound=float | np.floating[Any], default=_Float)
-_JacT_co = TypeVar("_JacT_co", covariant=True, bound=_Array_f, default=_Float1D)
+_JacT_co = TypeVar("_JacT_co", covariant=True, bound=_Float1D | _Float2D, default=_Float1D)
 
 @type_check_only
 class _DoesFMin(Protocol):

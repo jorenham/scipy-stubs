@@ -7,12 +7,16 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  OLDEST_SUPPORTED_PYTHON: "3.10"
+  OLDEST_SUPPORTED_NUMPY: "1.24.3"
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
 jobs:
-  lint-and-typecheck:
+  lint:
     timeout-minutes: 5
     runs-on: ubuntu-latest
 
@@ -27,7 +31,6 @@ jobs:
 
       - run: |
           pipx install poetry poethepoet
-          poetry config virtualenvs.create true --local
           poetry config virtualenvs.in-project true --local
 
       - uses: actions/setup-python@v5
@@ -41,22 +44,21 @@ jobs:
       - name: lint
         run: poe lint
 
-      - name: typetest
-        run: poe typetest
-
       - name: basedmypy
         run: poe mypy
 
       - name: basedpyright
         run: poe pyright
 
-  stubtest:
+  typetest:
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - run: pipx install poetry poethepoet
+      - run: |
+          pipx install poetry poethepoet
+          poetry config virtualenvs.in-project true --local
 
       - uses: actions/setup-python@v5
         with:
@@ -66,5 +68,34 @@ jobs:
       - name: install
         run: poetry install
 
-      - name: Run stubtest
+      - name: typetest
+        run: poe typetest
+
+      - name: stubtest
+        run: poe stubtest
+
+  typetest-oldest-supported-numpy:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: |
+          pipx install poetry poethepoet
+          poetry config virtualenvs.in-project true --local
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.OLDEST_SUPPORTED_PYTHON }}
+          cache: poetry
+
+      - name: install
+        run: |
+          poetry install
+          poetry run pip install --upgrade numpy==$OLDEST_SUPPORTED_NUMPY
+
+      - name: typetest
+        run: poe typetest
+
+      - name: stubtest
         run: poe stubtest
