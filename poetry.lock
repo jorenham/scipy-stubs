@@ -522,13 +522,13 @@ files = [
 
 [[package]]
 name = "optype"
-version = "0.7.2"
+version = "0.7.3"
 description = "Building blocks for precise & flexible type hints"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "optype-0.7.2-py3-none-any.whl", hash = "sha256:08f20668ac30618506e0d1a56601a581e3ab632e2ede810eaf79242e29ecb1d4"},
-    {file = "optype-0.7.2.tar.gz", hash = "sha256:bb24ad58fdbf0d59ae55cfa42d8e1e750f04d3a36d274921455ac90857d178b6"},
+    {file = "optype-0.7.3-py3-none-any.whl", hash = "sha256:856416484131038799e0e9cefc19d0ef37e7b4fde2144f25e8bb0e8981ebbe95"},
+    {file = "optype-0.7.3.tar.gz", hash = "sha256:51c8dd104ac197457059bcee5e256160a641ca72c6c852012d952790a5e0cac0"},
 ]
 
 [package.dependencies]
@@ -1103,4 +1103,4 @@ scipy = ["scipy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "38278a0a7e892b93e5d03397b86996f0a61877f5c14fcaf384b0b3464012648c"
+content-hash = "992cb4a3a1fc4b197d5a4ee5091688c3c1f2f35144a8899c84714ec9c0047f39"
