@@ -20,10 +20,11 @@ __all__ = [
     "solveh_banded",
 ]
 
-_InexactND: TypeAlias = onp.ArrayND[np.inexact[Any]]
-_Inexact0D: TypeAlias = onp.ArrayND[np.inexact[Any], tuple[()]]
-_Inexact1D: TypeAlias = onp.Array1D[np.inexact[Any]]
-_Inexact2D: TypeAlias = onp.Array2D[np.inexact[Any]]
+_Inexact: TypeAlias = np.inexact[Any]
+_InexactND: TypeAlias = onp.ArrayND[_Inexact]
+_Inexact0D: TypeAlias = onp.Array0D[_Inexact]
+_Inexact1D: TypeAlias = onp.Array1D[_Inexact]
+_Inexact2D: TypeAlias = onp.Array2D[_Inexact]
 
 lapack_cast_dict: dict[str, str]
 
@@ -80,7 +81,7 @@ def solve_circulant(
     outaxis: onp.ToInt = 0,
 ) -> _InexactND: ...
 def inv(a: npt.ArrayLike, overwrite_a: bool = False, check_finite: bool = True) -> _Inexact2D: ...
-def det(a: npt.ArrayLike, overwrite_a: bool = False, check_finite: bool = True) -> np.inexact[Any] | _InexactND: ...
+def det(a: npt.ArrayLike, overwrite_a: bool = False, check_finite: bool = True) -> _Inexact | _InexactND: ...
 
 # TODO: lstsq.default_lapack_driver
 def lstsq(
