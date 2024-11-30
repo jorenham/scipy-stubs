@@ -82,7 +82,6 @@ _ArrayT = TypeVar("_ArrayT", bound=onp.Array)
 _SCT = TypeVar("_SCT", bound=np.generic)
 _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
 _ArrayOrScalar: TypeAlias = _SCT | onp.ArrayND[_SCT]
-_Array0D: TypeAlias = onp.Array[tuple[()], _SCT]
 
 _i1: TypeAlias = np.int8
 _i2: TypeAlias = np.int16
@@ -176,8 +175,8 @@ def obl_cv_seq(m: onp.ToInt, n: onp.ToInt, c: onp.ToFloat) -> onp.Array1D[_f8]: 
 #
 @overload
 def comb(
-    N: onp.ToInt | _Array0D[_i],
-    k: onp.ToInt | _Array0D[_i],
+    N: onp.ToInt | onp.Array0D[_i],
+    k: onp.ToInt | onp.Array0D[_i],
     *,
     exact: Literal[True, 1],
     repetition: op.CanBool = False,
@@ -193,7 +192,7 @@ def comb(
 
 #
 @overload
-def perm(N: onp.ToInt | _Array0D[_i], k: onp.ToInt | _Array0D[_i], exact: Literal[True, 1]) -> int: ...
+def perm(N: onp.ToInt | onp.Array0D[_i], k: onp.ToInt | onp.Array0D[_i], exact: Literal[True, 1]) -> int: ...
 @overload
 def perm(
     N: onp.ToFloat | onp.ToFloatND,

@@ -10,7 +10,7 @@ from scipy.sparse import spmatrix
 
 _SupportedScalar: TypeAlias = np.bool_ | np.integer[Any] | np.float32 | np.float64 | np.longdouble | np.complexfloating[Any, Any]
 _ShapeLike: TypeAlias = Iterable[op.CanIndex]
-_ScalarLike: TypeAlias = complex | str | bytes | np.generic | onp.Array[tuple[()]]
+_ScalarLike: TypeAlias = complex | str | bytes | np.generic | onp.Array0D
 _SequenceLike: TypeAlias = tuple[_ScalarLike, ...] | list[_ScalarLike] | onp.Array1D
 _MatrixLike: TypeAlias = tuple[_SequenceLike, ...] | list[_SequenceLike] | onp.Array2D
 

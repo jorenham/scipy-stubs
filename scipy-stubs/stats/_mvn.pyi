@@ -8,7 +8,7 @@ import optype.numpy as onp
 
 @type_check_only
 class _FortranObject_dkblck:
-    ivls: onp.Array[tuple[()], np.int32]
+    ivls: onp.Array0D[np.int32]
 
 @type_check_only
 class _FortranFunction_mvnun:
