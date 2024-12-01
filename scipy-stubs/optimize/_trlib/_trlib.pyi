@@ -1,26 +1,27 @@
-from collections.abc import Mapping
+# https://github.com/scipy/scipy/blob/v1.14.1/scipy/optimize/_trlib/_trlib.pyx
+
+from collections.abc import Callable, Mapping
 from typing import Final
-from typing_extensions import Never, override
+from typing_extensions import Never
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Untyped, UntypedCallable
 from scipy.optimize._trustregion import BaseQuadraticSubproblem
 
-__test__: Final[Mapping[Never, Never]]
+###
 
-class TRLIBQuadraticSubproblem(BaseQuadraticSubproblem):
+__test__: Final[Mapping[Never, Never]]  # undocumented
+
+class TRLIBQuadraticSubproblem(BaseQuadraticSubproblem):  # undocumented
     def __init__(
         self,
         /,
-        x: Untyped,
-        fun: UntypedCallable,
-        jac: UntypedCallable,
-        hess: UntypedCallable | None,
-        hessp: UntypedCallable | None,
-        tol_rel_i: float = -2.0,
-        tol_rel_b: float = -3.0,
-        disp: bool = False,
+        x: onp.ToFloat1D,
+        fun: Callable[[onp.Array1D[np.float64]], onp.ToFloat],
+        jac: Callable[[onp.Array1D[np.float64]], onp.ToFloat1D],
+        hess: Callable[[onp.Array1D[np.float64]], onp.ToFloat2D] | None,
+        hessp: Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat1D] | None,
+        tol_rel_i: onp.ToFloat = -2.0,
+        tol_rel_b: onp.ToFloat = -3.0,
+        disp: onp.ToBool = False,
     ) -> None: ...
-    @override
-    def solve(self, /, trust_radius: float | np.float64) -> tuple[onp.ArrayND[np.float64], bool]: ...
