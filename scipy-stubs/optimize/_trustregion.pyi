@@ -1,4 +1,3 @@
-import abc
 from collections.abc import Callable
 
 import numpy as np
@@ -39,5 +38,4 @@ class BaseQuadraticSubproblem:
     ) -> list[float | np.float64]: ...  # list of size 2
 
     #
-    @abc.abstractmethod
     def solve(self, /, trust_radius: onp.ToFloat) -> tuple[onp.Array1D[np.float64], bool]: ...

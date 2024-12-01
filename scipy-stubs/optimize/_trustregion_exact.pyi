@@ -1,47 +1,63 @@
-from typing_extensions import override
+from collections.abc import Callable
+from typing import ClassVar, Concatenate, Final, TypedDict
+from typing_extensions import Unpack, override
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Untyped, UntypedCallable, UntypedTuple
+from ._minimize import OptimizeResult
 from ._trustregion import BaseQuadraticSubproblem
 
 __all__ = ["IterativeSubproblem", "_minimize_trustregion_exact", "estimate_smallest_singular_value", "singular_leading_submatrix"]
 
+class _TrustRegionOptions(TypedDict, total=False):
+    initial_trust_radius: onp.ToFloat
+    max_trust_radius: onp.ToFloat
+    eta: onp.ToFloat
+    gtol: onp.ToFloat
+
+###
+
 def _minimize_trustregion_exact(
-    fun: UntypedCallable,
-    x0: Untyped,
-    args: UntypedTuple = (),
-    jac: Untyped | None = None,
-    hess: Untyped | None = None,
-    **trust_region_options: Untyped,
-) -> Untyped: ...
-def estimate_smallest_singular_value(U: Untyped) -> Untyped: ...
-def gershgorin_bounds(H: Untyped) -> Untyped: ...
-def singular_leading_submatrix(A: Untyped, U: Untyped, k: Untyped) -> Untyped: ...
+    fun: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat],
+    x0: onp.ToFloat1D,
+    args: tuple[object, ...] = (),
+    jac: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat1D] | None = None,
+    hess: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat2D] | None = None,
+    **trust_region_options: Unpack[_TrustRegionOptions],
+) -> OptimizeResult: ...
+def estimate_smallest_singular_value(U: onp.ToFloat2D) -> tuple[float | np.float64, onp.Array1D[np.float64]]: ...
+def gershgorin_bounds(H: onp.ToFloat2D) -> tuple[float | np.float64, float | np.float64]: ...
+def singular_leading_submatrix(
+    A: onp.ToFloat2D,
+    U: onp.ToFloat2D,
+    k: onp.ToJustInt,
+) -> tuple[float | np.float64, onp.Array1D[np.float64]]: ...
 
 class IterativeSubproblem(BaseQuadraticSubproblem):
-    UPDATE_COEFF: float
-    EPS: Untyped
+    UPDATE_COEFF: ClassVar[float] = 0.01
+    EPS: ClassVar[float | np.float64] = ...
+
+    CLOSE_TO_ZERO: Final[float | np.float64]
+    dimension: Final[int]
     previous_tr_radius: int
-    lambda_lb: Untyped
     niter: int
-    k_easy: Untyped
-    k_hard: Untyped
-    dimension: Untyped
-    hess_inf: Untyped
-    hess_fro: Untyped
-    CLOSE_TO_ZERO: Untyped
-    lambda_current: Untyped
+    k_easy: float | np.float64
+    k_hard: float | np.float64
+    hess_inf: float | np.float64
+    hess_fro: float | np.float64
+    lambda_lb: float | np.float64 | None  # intially `None`
+    lambda_current: float | np.float64  # set in `solve()`
+
     def __init__(
         self,
         /,
-        x: Untyped,
-        fun: UntypedCallable,
-        jac: Untyped,
-        hess: Untyped,
-        hessp: Untyped | None = None,
-        k_easy: float = 0.1,
-        k_hard: float = 0.2,
+        x: onp.ToFloat1D,
+        fun: Callable[[onp.Array1D[np.float64]], onp.ToFloat],
+        jac: Callable[[onp.Array1D[np.float64]], onp.ToFloat1D],
+        hess: Callable[[onp.Array1D[np.float64]], onp.ToFloat2D],
+        hessp: Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat1D] | None = None,
+        k_easy: onp.ToFloat = 0.1,
+        k_hard: onp.ToFloat = 0.2,
     ) -> None: ...
     @override
-    def solve(self, /, trust_radius: float | np.float64) -> tuple[onp.ArrayND[np.float64], bool]: ...
+    def solve(self, /, tr_radius: onp.ToFloat) -> tuple[onp.ArrayND[np.float64], bool]: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
