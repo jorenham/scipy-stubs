@@ -1,3 +1,0 @@
-from scipy._typing import Untyped
-
-def bg_update_dense(plu: Untyped, perm_r: Untyped, v: Untyped, j: Untyped) -> Untyped: ...
