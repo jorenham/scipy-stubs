@@ -152,7 +152,7 @@ The exact version requirements are specified in the [`pyproject.toml`](pyproject
 The entire public API of `scipy` is **fully annotated** and **verifiably valid**.
 For the most part, this can also be said about `scipy`'s private API and other internal machinery.
 
-However, a small portion uses `Untyped` (and alias of `Any`) as "placeholder annotations".
+However, a small portion uses `Untyped` (an alias of `Any`) as "placeholder annotations".
 In those cases static type-checkers won't do any type-checking, and won't bother you with errors or warnings.
 
 The following table shows the (subjective) proportion of `scipy-stubs` that is(n't) annotated with `Untyped`, ranging
