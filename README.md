@@ -70,7 +70,7 @@ ______________________________________________________________________
 - Works out-of-the-box
   - all that's needed is to [install `scipy-stubs`](#installation)
   - does not require a `mypy` plugin or other configuration
-  - available on [PyPI](https://pypi.org/project/scipy-stubs/) and [Anaconda](https://anaconda.org/conda-forge/scipy-stubs)
+  - available on [PyPI](https://pypi.org/project/scipy-stubs/) and [conda-forge](https://anaconda.org/conda-forge/scipy-stubs)
 - Improves IDE suggestions and autocompletion
   - ... even if you don't use static typing in your code
   - no additional plugins required
