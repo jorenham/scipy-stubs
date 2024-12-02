@@ -1,38 +1,62 @@
-from typing import Any, Literal, TypeAlias, overload
+from collections.abc import Iterable
+from typing import Any, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
-import numpy.typing as npt
-import optype as op
 import optype.numpy as onp
 import optype.typing as opt
 
 __all__ = ["cossin"]
 
-_Array_f_1d: TypeAlias = onp.Array1D[np.floating[Any]]
-_Array_f_2d: TypeAlias = onp.Array2D[np.floating[Any]]
-_Array_c_2d: TypeAlias = onp.Array2D[np.complexfloating[Any, Any]]
+_T = TypeVar("_T")
+_Tuple2: TypeAlias = tuple[_T, _T]
+_Tuple3: TypeAlias = tuple[_T, _T, _T]
 
-@overload
+_Falsy: TypeAlias = Literal[False, 0]
+_Truthy: TypeAlias = Literal[True, 1]
+
+_Float1D: TypeAlias = onp.Array1D[np.floating[Any]]
+_Float2D: TypeAlias = onp.Array2D[np.floating[Any]]
+_Complex2D: TypeAlias = onp.Array2D[np.inexact[Any]]
+
+@overload  # (float[:, :], separate=False) -> float[:, :]**3
 def cossin(
-    X: npt.ArrayLike | op.CanIter[op.CanNext[npt.ArrayLike]],
+    X: onp.ToFloat2D | Iterable[onp.ToFloat2D],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
-    separate: Literal[False] = False,
-    swap_sign: bool = False,
-    compute_u: bool = True,
-    compute_vh: bool = True,
-) -> tuple[_Array_f_2d, _Array_f_2d, _Array_f_2d] | tuple[_Array_c_2d, _Array_f_2d, _Array_c_2d]: ...
-@overload
+    separate: _Falsy = False,
+    swap_sign: onp.ToBool = False,
+    compute_u: onp.ToBool = True,
+    compute_vh: onp.ToBool = True,
+) -> _Tuple3[_Float2D]: ...
+@overload  # (float[:, :], *, separate=True) -> (float[:, :]**2, float[:], float[:, :]**2)
 def cossin(
-    X: npt.ArrayLike | op.CanIter[op.CanNext[npt.ArrayLike]],
+    X: onp.ToFloat2D | Iterable[onp.ToFloat2D],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     *,
-    separate: Literal[True],
-    swap_sign: bool = False,
-    compute_u: bool = True,
-    compute_vh: bool = True,
-) -> (
-    tuple[tuple[_Array_f_2d, _Array_f_2d], _Array_f_1d, tuple[_Array_f_2d, _Array_f_2d]]
-    | tuple[tuple[_Array_c_2d, _Array_c_2d], _Array_f_1d, tuple[_Array_c_2d, _Array_c_2d]]
-): ...
+    separate: _Truthy,
+    swap_sign: onp.ToBool = False,
+    compute_u: onp.ToBool = True,
+    compute_vh: onp.ToBool = True,
+) -> tuple[_Tuple2[_Float2D], _Float1D, _Tuple2[_Float2D]]: ...
+@overload  # (complex[:, :], separate=False) -> complex[:, :]**3
+def cossin(
+    X: onp.ToComplex2D | Iterable[onp.ToComplex2D],
+    p: opt.AnyInt | None = None,
+    q: opt.AnyInt | None = None,
+    separate: _Falsy = False,
+    swap_sign: onp.ToBool = False,
+    compute_u: onp.ToBool = True,
+    compute_vh: onp.ToBool = True,
+) -> _Tuple3[_Complex2D]: ...
+@overload  # (complex[:, :], separate=True) -> (complex[:, :]**2, float[:], complex[:, :]**2)
+def cossin(
+    X: onp.ToComplex2D | Iterable[onp.ToComplex2D],
+    p: opt.AnyInt | None = None,
+    q: opt.AnyInt | None = None,
+    *,
+    separate: _Truthy,
+    swap_sign: onp.ToBool = False,
+    compute_u: onp.ToBool = True,
+    compute_vh: onp.ToBool = True,
+) -> tuple[_Tuple2[_Complex2D], _Float1D, _Tuple2[_Complex2D]]: ...

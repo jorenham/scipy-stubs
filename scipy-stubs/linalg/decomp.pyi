@@ -2,6 +2,8 @@
 
 from typing_extensions import deprecated
 
+import numpy as np
+
 __all__ = [
     "LinAlgError",
     "cdf2rdf",
@@ -19,23 +21,12 @@ __all__ = [
 ]
 
 @deprecated("will be removed in SciPy v2.0.0")
-class LinAlgError(Exception): ...
+class LinAlgError(np.linalg.LinAlgError): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
-def get_lapack_funcs(
-    names: object,
-    arrays: object = ...,
-    dtype: object = ...,
-    ilp64: object = ...,
-) -> object: ...
+def get_lapack_funcs(names: object, arrays: object = ..., dtype: object = ..., ilp64: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def norm(
-    a: object,
-    ord: object = ...,
-    axis: object = ...,
-    keepdims: object = ...,
-    check_finite: object = ...,
-) -> object: ...
+def norm(a: object, ord: object = ..., axis: object = ..., keepdims: object = ..., check_finite: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def cdf2rdf(w: object, v: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
@@ -128,9 +119,4 @@ def eigvalsh(
     driver: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def hessenberg(
-    a: object,
-    calc_q: object = ...,
-    overwrite_a: object = ...,
-    check_finite: object = ...,
-) -> object: ...
+def hessenberg(a: object, calc_q: object = ..., overwrite_a: object = ..., check_finite: object = ...) -> object: ...

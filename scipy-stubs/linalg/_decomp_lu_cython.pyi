@@ -1,14 +1,11 @@
-from typing import TypeVar
+from typing import TypeAlias, TypeVar
 
 import numpy as np
 import optype.numpy as onp
 
-# this name was chosen to match `ctypedef fused lapack_t`
-_LapackT = TypeVar("_LapackT", bound=np.float32 | np.float64 | np.complex64 | np.complex128)
+_ST = TypeVar("_ST", bound=np.float32 | np.float64 | np.complex64 | np.complex128)
+_Int1D: TypeAlias = onp.Array1D[np.int32 | np.int64]
 
-def lu_dispatcher(
-    a: onp.ArrayND[_LapackT],
-    u: onp.ArrayND[_LapackT],
-    piv: onp.ArrayND[np.int32 | np.int64],
-    permute_l: bool,
-) -> None: ...
+###
+
+def lu_dispatcher(a: onp.Array2D[_ST], u: onp.Array2D[_ST], piv: _Int1D, permute_l: onp.ToBool) -> None: ...
