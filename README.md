@@ -1,7 +1,7 @@
 <h1 align="center">scipy-stubs</h1>
 
 <p align="center">
-    Typing stubs for <a href="https://github.com/scipy/scipy">SciPy</a>.
+    Precise type hints for <i>all</i> of <a href="https://github.com/scipy/scipy">SciPy</a>.
 </p>
 
 <p align="center">
@@ -65,6 +65,32 @@
 
 ______________________________________________________________________
 
+## Highlights
+
+- Works out-of-the-box
+  - all that's needed is to [install `scipy-stubs`](#installation)
+  - does not require a `mypy` plugin or other configuration
+  - available on [PyPI](https://pypi.org/project/scipy-stubs/) and [conda-forge](https://anaconda.org/conda-forge/scipy-stubs)
+- Improves IDE suggestions and autocompletion
+  - ... even if you don't use static typing in your code
+  - no additional plugins required
+- 0% runtime overhead
+  - not even a single import is required
+- 100% coverage of the [public SciPy API](https://docs.scipy.org/doc/scipy-1.14.1/reference/index.html)
+  - also covers most of the private API
+- Precise type-hinting of dtypes and [shape-types](https://github.com/numpy/numpy/issues/16544)
+  - works with all "array-likes" and "dtype-likes"
+  - many of the functions that return an array are *shape-typed*
+  - shape-typing is optional: all functions still accept arrays with unknown shape-type
+- Type-checker agnostic
+  - works with at least [`mypy`](https://github.com/KotlinIsland/basedmypy),
+    [`pyright`](https://github.com/DetachHead/basedpyright)/pylance and [`ruff`](https://github.com/astral-sh/ruff)
+  - ... even in the strict mode
+  - compatible with the [Python Typing Spec](https://typing.readthedocs.io/en/latest/spec/index.html)
+- [SPEC 0](https://scientific-python.org/specs/spec-0000/) compliant
+  - Supports Python ≥ 3.10
+  - Supports NumPy ≥ 1.24
+
 ## Installation
 
 <table>
@@ -93,39 +119,6 @@ conda install conda-forge::scipy-stubs
 
 </table>
 
-## `scipy` coverage
-
-The entire public API of `scipy` is **fully annotated** and **verifiably valid**.
-For the most part, this can also be said about `scipy`'s private API and other internal machinery.
-
-However, a small portion uses `Untyped` (and alias of `Any`) as "placeholder annotations".
-In those cases static type-checkers won't do any type-checking, and won't bother you with errors or warnings.
-
-The following table shows the (subjective) proportion of `scipy-stubs` that is(n't) annotated with `Untyped`, ranging
-from 🌑 (100% `Untyped`) to 🌕 (0% `Untyped`).
-
-| `scipy._`     | `ruff` & `flake8-pyi` | `stubtest` | `basedmypy` | `basedpyright` | phase |
-| :------------ | :-------------------: | :--------: | :---------: | :------------: | :---: |
-| `cluster`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `constants`   |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌝   |
-| `datasets`    |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌝   |
-| `fft`         |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
-| `fftpack`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
-| `integrate`   |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
-| `interpolate` |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌓   |
-| `io`          |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `linalg`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
-| ~`misc`~      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `ndimage`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `odr`         |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `optimize`    |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `signal`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
-| `sparse`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌒   |
-| `spatial`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `special`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
-| `stats`       |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| *`_lib`*      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-
 ## Supported static type-checkers
 
 1. [`basedpyright`](https://github.com/DetachHead/basedpyright) (recommended)
@@ -153,6 +146,39 @@ scalar-likes, shape-typing in general, and much more.
 At the moment, `scipy-stubs` requires the latest version `optype`.
 
 The exact version requirements are specified in the [`pyproject.toml`](pyproject.toml).
+
+## `scipy` coverage
+
+The entire public API of `scipy` is **fully annotated** and **verifiably valid**.
+For the most part, this can also be said about `scipy`'s private API and other internal machinery.
+
+However, a small portion uses `Untyped` (an alias of `Any`) as "placeholder annotations".
+In those cases static type-checkers won't do any type-checking, and won't bother you with errors or warnings.
+
+The following table shows the (subjective) proportion of `scipy-stubs` that is(n't) annotated with `Untyped`, ranging
+from 🌑 (100% `Untyped`) to 🌕 (0% `Untyped`).
+
+| `scipy._`     | `ruff` & `flake8-pyi` | `stubtest` | `basedmypy` | `basedpyright` | phase |
+| :------------ | :-------------------: | :--------: | :---------: | :------------: | :---: |
+| `cluster`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| `constants`   |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌝   |
+| `datasets`    |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌝   |
+| `fft`         |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
+| `fftpack`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
+| `integrate`   |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
+| `interpolate` |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌓   |
+| `io`          |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| `linalg`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
+| ~`misc`~      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| `ndimage`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| `odr`         |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| `optimize`    |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| `signal`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
+| `sparse`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌒   |
+| `spatial`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| `special`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
+| `stats`       |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+| *`_lib`*      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 
 ## See also
 
