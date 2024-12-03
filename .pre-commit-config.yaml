@@ -4,7 +4,7 @@ ci:
   skip:
     - markdownlint
     - mdformat
-    - codespell
+    - typos
     - ruff
     - ruff-format
     - typetest
@@ -57,12 +57,10 @@ repos:
           - mdformat-gfm-alerts
           - mdformat-pyproject
 
-  - repo: https://github.com/codespell-project/codespell
-    rev: v2.3.0
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.28.2
     hooks:
-      - id: codespell
-        additional_dependencies:
-          - tomli
+      - id: typos
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.1
@@ -77,20 +75,20 @@ repos:
   - repo: local
     hooks:
       - id: typetest
-        name: poe typetest
-        entry: poe typetest
+        name: typetest
+        entry: uv run poe typetest
         language: system
         always_run: true
         pass_filenames: false
 
       - id: basedmypy
         name: basedmypy
-        entry: poe mypy
+        entry: uv run poe mypy
         language: system
         types_or: [python, pyi]
 
       - id: basedpyright
         name: basedpyright
-        entry: poe pyright
+        entry: uv run poe pyright
         language: system
         types_or: [python, pyi]

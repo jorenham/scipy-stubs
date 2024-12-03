@@ -205,13 +205,30 @@ poe pre-commit
 
 ### Tox
 
-The pre-commit hooks and `stubtest` can easily be run with [tox](https://github.com/tox-dev/tox):
+The pre-commit hooks and `stubtest` can easily be run with [tox](https://github.com/tox-dev/tox).
+It can be installed with:
 
 ```bash
-poe tox
+uv tool install tox --with tox-uv
 ```
 
-This will run `stubtest` in parallel on all supported Python versions, as well as `pre-commit`.
+To run all environments in parallel, run:
+
+```shell
+$ tox -p all
+repo-review: OK ✔ in 0.4 seconds
+3.12: OK ✔ in 10.38 seconds
+3.10: OK ✔ in 10.62 seconds
+3.11: OK ✔ in 11.04 seconds
+3.13: OK ✔ in 19.42 seconds
+  repo-review: OK (0.40=setup[0.04]+cmd[0.36] seconds)
+  pre-commit: OK (24.91=setup[0.04]+cmd[24.87] seconds)
+  3.10: OK (10.62=setup[0.11]+cmd[10.51] seconds)
+  3.11: OK (11.04=setup[0.04]+cmd[11.00] seconds)
+  3.12: OK (10.38=setup[0.04]+cmd[10.34] seconds)
+  3.13: OK (19.42=setup[0.04]+cmd[19.38] seconds)
+  congratulations :) (24.96 seconds)
+```
 
 ### Improving The Documentation
 

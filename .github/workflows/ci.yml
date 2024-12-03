@@ -29,26 +29,23 @@ jobs:
           config: ".markdownlint.yaml"
           globs: "**/*.md"
 
-      - run: |
-          pipx install poetry poethepoet
-          poetry config virtualenvs.in-project true --local
+      - name: typos
+        uses: crate-ci/typos@master
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-          cache: poetry
+      - name: setup uv
+        uses: astral-sh/setup-uv@v4
 
       - name: install
-        run: poetry install --with=codegen
+        run: uv sync --frozen --python 3.13
 
       - name: lint
-        run: poe lint
+        run: uv run poe lint
 
       - name: basedmypy
-        run: poe mypy
+        run: uv run poe mypy
 
       - name: basedpyright
-        run: poe pyright
+        run: uv run poe pyright
 
   typetest:
     timeout-minutes: 5
@@ -56,23 +53,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: |
-          pipx install poetry poethepoet
-          poetry config virtualenvs.in-project true --local
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-          cache: poetry
+      - name: setup uv
+        uses: astral-sh/setup-uv@v4
 
       - name: install
-        run: poetry install
+        run: uv sync --frozen --python 3.13
 
       - name: typetest
-        run: poe typetest
+        run: uv run poe typetest
 
       - name: stubtest
-        run: poe stubtest
+        run: uv run poe stubtest
 
   typetest-oldest-supported-numpy:
     timeout-minutes: 5
@@ -80,22 +71,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: |
-          pipx install poetry poethepoet
-          poetry config virtualenvs.in-project true --local
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.OLDEST_SUPPORTED_PYTHON }}
-          cache: poetry
+      - name: setup uv
+        uses: astral-sh/setup-uv@v4
 
       - name: install
         run: |
-          poetry install
-          poetry run pip install --upgrade numpy==$OLDEST_SUPPORTED_NUMPY
+          uv sync --frozen --python=$OLDEST_SUPPORTED_PYTHON
+          uv pip install --upgrade numpy==$OLDEST_SUPPORTED_NUMPY
 
       - name: typetest
-        run: poe typetest
+        run: uv run poe typetest
 
       - name: stubtest
-        run: poe stubtest
+        run: uv run poe stubtest
