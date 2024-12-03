@@ -58,7 +58,6 @@ dev = [
     {include-group = "codegen"},
     "poethepoet>=0.31.1,<1",
     "pre-commit>=4.0.1,<5",
-    "tox>=4.23.2,<5",
 ]
 
 [project.optional-dependencies]
@@ -123,7 +122,6 @@ ruff = ["_ruff_format", "_ruff_check"]
 check = ["mdformat --check", "repo-review", "ruff"]
 lint = ["check", "format"]
 pre-commit = "pre-commit run --all-files"
-tox = "tox -p all"
 
 _test_bpr = "basedpyright tests"
 _test_mypy = "uv run --no-editable --isolated mypy --config-file=pyproject.toml tests"
@@ -134,12 +132,13 @@ cmd = "basedpyright $path"
 args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs codegen"}]
 
 [tool.poe.tasks.mypy]
-cmd = "mypy --config-file=pyproject.toml $path"
+cmd = "uv run --no-editable --isolated mypy --config-file=pyproject.toml $path"
 args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs codegen"}]
 
 [tool.poe.tasks.stubtest]
 cmd = """
-uv run --no-editable --isolated stubtest
+uv run --no-editable --isolated
+    stubtest
     --mypy-config-file=pyproject.toml
     --allowlist=.mypyignore
     --ignore-unused-allowlist
@@ -273,22 +272,19 @@ isolated_build = true
 env_list = ["repo-review", "pre-commit", "3.10", "3.11", "3.12", "3.13"]
 
 [tool.tox.env_run_base]
+runner = "uv-venv-lock-runner"
 description = "stubtest with {base_python}"
-skip_install = true
-allowlist_externals = ["uv", "poe"]
-commands_pre = [["uv", "sync", "--frozen"]]
-commands = [["uv", "run", "poe", "stubtest"]]
+allowlist_externals = ["poe"]
+commands = [["poe", "stubtest"]]
 
 [tool.tox.env.pre-commit]
+runner = "uv-venv-lock-runner"
 description = "pre-commit"
-skip_install = true
-allowlist_externals = ["uv"]
-commands_pre = [["uv", "sync", "--frozen"]]
-commands = [["uv", "run", "poe", "pre-commit"]]
+allowlist_externals = ["poe"]
+commands = [["poe", "pre-commit"]]
 
 [tool.tox.env.repo-review]
+runner = "uv-venv-lock-runner"
 description = "repo-review"
-skip_install = true
-allowlist_externals = ["uv"]
-commands_pre = [["uv", "sync", "--frozen"]]
-commands = [["uv", "run", "poe", "repo-review"]]
+allowlist_externals = ["poe"]
+commands = [["poe", "repo-review"]]
