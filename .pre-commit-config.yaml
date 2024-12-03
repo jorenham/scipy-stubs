@@ -4,7 +4,6 @@ ci:
   skip:
     - markdownlint
     - mdformat
-    - codespell
     - ruff
     - ruff-format
     - typetest

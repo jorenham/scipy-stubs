@@ -9,6 +9,7 @@ description = "Typing stubs for SciPy"
 readme = "README.md"
 authors = [{name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com"}]
 license = "BSD-3-Clause"
+keywords = ["scipy", "typing", "pep484"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -36,8 +37,10 @@ Issues = "https://github.com/jorenham/scipy-stubs/issues"
 Changelog = "https://github.com/jorenham/scipy-stubs/releases"
 Funding = "https://github.com/sponsors/jorenham"
 
-[tool.hatch.build.targets.sdist]
+[tool.hatch.build]
 packages = ["scipy-stubs"]
+
+[tool.hatch.build.targets.sdist]
 exclude = [
     "/.cache",
     "/.github",
@@ -147,7 +150,7 @@ skip = "*.lock,*.pyi"
 
 [tool.mdformat]
 end_of_line = "lf"
-exclude = [".tox/**", ".venv/**", "**/*.m[!d]", "**/*.[!m]d"] # python >= 3.13
+exclude = [".tox/**", ".venv/**", "**/*.m[!d]", "**/*.[!m]d"]
 
 [tool.mypy]
 python_version = "3.10"
@@ -156,7 +159,7 @@ disable_bytearray_promotion = true
 disable_memoryview_promotion = true
 warn_unused_ignores = true
 warn_unreachable = true
-disallow_any_explicit = false                                                # no other way to type e.g. `float64 <: number[Any]`
+disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[Any]`
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 # plugins = ["numpy.typing.mypy_plugin"]
 
@@ -229,7 +232,6 @@ select = ["ALL"]
 ignore = ["D", "FBT", "COM812", "CPY", "EM", "TD", "FIX", "DOC"]
 
 [tool.ruff.lint.per-file-ignores]
-# TODO: enable F (pyflakes)
 "*.pyi" = ["F", "E741", "N", "A", "PYI054", "PLC2701", "PLW3201", "PLR", "FURB"]
 
 [tool.ruff.lint.flake8-import-conventions]
@@ -266,18 +268,18 @@ description = "stubtest with {base_python}"
 skip_install = true
 allowlist_externals = ["uv", "poe"]
 commands_pre = [["uv", "sync", "--frozen"]]
-commands = [["poe", "stubtest"]]
+commands = [["uv", "run", "poe", "stubtest"]]
 
 [tool.tox.env.pre-commit]
 description = "pre-commit"
 skip_install = true
-allowlist_externals = ["uv", "poe"]
+allowlist_externals = ["uv"]
 commands_pre = [["uv", "sync", "--frozen"]]
-commands = [["poe", "pre-commit"]]
+commands = [["uv", "run", "poe", "pre-commit"]]
 
 [tool.tox.env.repo-review]
 description = "repo-review"
 skip_install = true
-allowlist_externals = ["uv", "poe"]
+allowlist_externals = ["uv"]
 commands_pre = [["uv", "sync", "--frozen"]]
-commands = [["poe", "repo-review"]]
+commands = [["uv", "run", "poe", "repo-review"]]
