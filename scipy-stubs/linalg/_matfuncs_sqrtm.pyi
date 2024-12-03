@@ -1,16 +1,21 @@
 from typing import Any, Literal, TypeAlias, overload
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 
 __all__ = ["sqrtm"]
 
-_Array_fc_2d: TypeAlias = onp.Array2D[np.inexact[Any]]
+_Inexact2D: TypeAlias = onp.Array2D[np.floating[Any]] | onp.Array2D[np.complexfloating[Any, Any]]
 
-class SqrtmError(np.linalg.LinAlgError): ...
+_Falsy: TypeAlias = Literal[False, 0]
+_Truthy: TypeAlias = Literal[True, 1]
 
+###
+
+class SqrtmError(np.linalg.LinAlgError): ...  # undocumented
+
+# NOTE: The output dtype (floating or complex) depends on the sign of the values, so this is the best we can do.
 @overload
-def sqrtm(A: npt.ArrayLike, disp: Literal[True] = True, blocksize: int = 64) -> _Array_fc_2d: ...
+def sqrtm(A: onp.ToComplex2D, disp: _Truthy = True, blocksize: onp.ToJustInt = 64) -> _Inexact2D: ...
 @overload
-def sqrtm(A: npt.ArrayLike, disp: Literal[False], blocksize: int = 64) -> tuple[_Array_fc_2d, float | np.float64]: ...
+def sqrtm(A: onp.ToComplex2D, disp: _Falsy, blocksize: onp.ToJustInt = 64) -> tuple[_Inexact2D, np.floating[Any]]: ...
