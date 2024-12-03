@@ -182,13 +182,14 @@ Enhancement suggestions are tracked as [GitHub issues][bug].
 
 ### Your First Code Contribution
 
-Ensure you have [`poetry`](https://python-poetry.org/docs/#installation) and
-[`poe`](https://poethepoet.natn.io/installation.html) installed.
-Now you can install the dev dependencies:
+Ensure you have [`uv`](https://docs.astral.sh/uv/getting-started/installation/)installed.
+Now you can install the project with the dev dependencies:
 
 ```bash
-poetry install
+uv sync --all-extras --frozen --python=3.13
 ```
+
+Note that some project development tools require Python 3.13.
 
 ### pre-commit
 
