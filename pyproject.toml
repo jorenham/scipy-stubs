@@ -76,9 +76,7 @@ dev-dependencies = [
     # task runners
     "poethepoet>=0.31.1",
     "pre-commit>=4.0.1",
-    "pre-commit-uv>=4.1.4",
     "tox>=4.23.2",
-    "tox-uv>=1.16.0",
 
     # codemodding
     "libcst>=1.5.1",
@@ -265,21 +263,21 @@ env_list = ["repo-review", "pre-commit", "3.10", "3.11", "3.12", "3.13"]
 
 [tool.tox.env_run_base]
 description = "stubtest with {base_python}"
-runner = "uv-venv-lock-runner"
-# use_develop = true
-commands_pre = [["uv", "sync", "--frozen"]] # TODO: remove the sync when the above works
-commands = [["just", "stubtest"]]
+skip_install = true
+allowlist_externals = ["uv", "poe"]
+commands_pre = [["uv", "sync", "--frozen"]]
+commands = [["poe", "stubtest"]]
 
 [tool.tox.env.pre-commit]
 description = "pre-commit"
-runner = "uv-venv-lock-runner"
-# use_develop = true
-commands_pre = [["uv", "sync", "--frozen"]] # TODO: remove the sync when the above works
-commands = [["just", "pre-commit"]]
+skip_install = true
+allowlist_externals = ["uv", "poe"]
+commands_pre = [["uv", "sync", "--frozen"]]
+commands = [["poe", "pre-commit"]]
 
 [tool.tox.env.repo-review]
 description = "repo-review"
-runner = "uv-venv-lock-runner"
-# use_develop = true
-commands_pre = [["uv", "sync", "--frozen"]] # TODO: remove the sync when the above works
-commands = [["just", "repo-review"]]
+skip_install = true
+allowlist_externals = ["uv", "poe"]
+commands_pre = [["uv", "sync", "--frozen"]]
+commands = [["poe", "repo-review"]]
