@@ -58,6 +58,7 @@ dev = [
     {include-group = "codegen"},
     "poethepoet>=0.31.1,<1",
     "pre-commit>=4.0.1,<5",
+    "pre-commit-uv>=4.1.4,<5",
 ]
 
 [project.optional-dependencies]
