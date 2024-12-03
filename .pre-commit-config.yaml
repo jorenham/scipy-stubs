@@ -4,6 +4,7 @@ ci:
   skip:
     - markdownlint
     - mdformat
+    - typos
     - ruff
     - ruff-format
     - typetest
@@ -55,6 +56,11 @@ repos:
           - mdformat-gfm
           - mdformat-gfm-alerts
           - mdformat-pyproject
+
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.28.2
+    hooks:
+      - id: typos
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.1

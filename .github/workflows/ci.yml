@@ -29,6 +29,9 @@ jobs:
           config: ".markdownlint.yaml"
           globs: "**/*.md"
 
+      - name: typos
+        uses: crate-ci/typos@master
+
       - name: setup uv
         uses: astral-sh/setup-uv@v4
 

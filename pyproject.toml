@@ -106,11 +106,10 @@ mdformat
 """
 _ruff_format = "ruff format"
 _ruff_check = "ruff check --show-fixes"
-codespell = "codespell"
 repo-review = "repo-review ."
 format = ["mdformat", "_ruff_format"]
 ruff = ["_ruff_format", "_ruff_check"]
-check = ["mdformat --check", "repo-review", "codespell", "ruff"]
+check = ["mdformat --check", "repo-review", "ruff"]
 lint = ["check", "format"]
 pre-commit = "pre-commit run --all-files"
 tox = "tox -p all"
@@ -144,9 +143,8 @@ args = [
     {name = "path", positional = true, multiple = false, default = "scipy-stubs"},
 ]
 
-[tool.codespell]
-context = 2
-skip = "*.lock,*.pyi"
+[tool.typos.files]
+extend-exclude = ["*.pyi"]
 
 [tool.mdformat]
 end_of_line = "lf"
