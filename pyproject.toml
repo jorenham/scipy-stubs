@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "scipy-stubs"
-version = "1.14.1.5dev0"
+version = "1.14.1.5"
 description = "Precise type-hints for all of SciPy"
 readme = "README.md"
 authors = [
@@ -13,7 +13,7 @@ authors = [
 license = "BSD-3-Clause"
 keywords = ["scipy", "typing", "pep484"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: BSD License",
@@ -114,6 +114,7 @@ mdformat
     README.md
     SECURITY.md
     tests/README.md
+    codegen/README.md
 """
 _ruff_format = "ruff format"
 _ruff_check = "ruff check --show-fixes"
