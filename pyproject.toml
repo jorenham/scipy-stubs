@@ -5,9 +5,11 @@ build-backend = "hatchling.build"
 [project]
 name = "scipy-stubs"
 version = "1.14.1.5dev0"
-description = "Typing stubs for SciPy"
+description = "Precise type-hints for all of SciPy"
 readme = "README.md"
-authors = [{name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com"}]
+authors = [
+    {name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com"},
+]
 license = "BSD-3-Clause"
 keywords = ["scipy", "typing", "pep484"]
 classifiers = [
@@ -26,7 +28,38 @@ classifiers = [
     "Typing :: Typed",
 ]
 requires-python = ">=3.10"
-dependencies = ["optype>=0.7.3"]
+dependencies = [
+    "optype>=0.7.3",
+]
+
+[dependency-groups]
+scipy = [
+    "scipy==1.14.1",
+]
+lint = [
+    {include-group = "scipy"},
+    "mdformat-gfm>=0.3.7,<1",
+    "mdformat-gfm-alerts>=1.0.1,<2",
+    "mdformat-pyproject>=0.0.2,<1",
+    "ruff>=0.8.1,<1",
+    "sp-repo-review[cli]>=2024.8.19",
+]
+typecheck = [
+    {include-group = "scipy"},
+    "basedmypy[faster-cache]>=2.7.0,<3",
+    "basedpyright>=1.22.0,<2",
+]
+codegen = [
+    "libcst>=1.5.1,<2",
+]
+dev = [
+    {include-group = "lint"},
+    {include-group = "typecheck"},
+    {include-group = "codegen"},
+    "poethepoet>=0.31.1,<1",
+    "pre-commit>=4.0.1,<5",
+    "tox>=4.23.2,<5",
+]
 
 [project.optional-dependencies]
 scipy = ["scipy>=1.10"]
@@ -61,28 +94,6 @@ exclude = [
     "README.md",
     "SECURITY.md",
     "uv.lock",
-]
-
-[tool.uv]
-dev-dependencies = [
-    "scipy==1.14.1",
-
-    # linting
-    "basedmypy[faster-cache]>=2.7.0",
-    "basedpyright>=1.22.0",
-    "mdformat-gfm>=0.3.7,<1.0",
-    "mdformat-gfm-alerts>=1.0.1,<2.0",
-    "mdformat-pyproject>=0.0.2,<1.0",
-    "ruff>=0.8.1",
-    "sp-repo-review[cli]>=2024.8.19",
-
-    # task runners
-    "poethepoet>=0.31.1",
-    "pre-commit>=4.0.1",
-    "tox>=4.23.2",
-
-    # codemodding
-    "libcst>=1.5.1",
 ]
 
 [tool.poe.tasks]
@@ -155,8 +166,8 @@ python_version = "3.10"
 strict = true
 disable_bytearray_promotion = true
 disable_memoryview_promotion = true
-warn_unused_ignores = true
 warn_unreachable = true
+warn_unused_ignores = true
 disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[Any]`
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 # plugins = ["numpy.typing.mypy_plugin"]
@@ -172,30 +183,30 @@ pythonPlatform = "All"
 typeCheckingMode = "strict"
 # ignore comments
 enableTypeIgnoreComments = false
-reportIgnoreCommentWithoutRule = true     # based
+reportIgnoreCommentWithoutRule = true       # based
 reportUnnecessaryTypeIgnoreComment = true
 # imports
-reportImplicitRelativeImport = true   # based
-reportPrivateLocalImportUsage = false # based
+reportImplicitRelativeImport = true         # based
+reportPrivateLocalImportUsage = false       # based
 reportShadowedImports = true
 # classes and inheritance
-reportUnsafeMultipleInheritance = true # based
-reportImplicitAbstractClass = true     # based
+reportUnsafeMultipleInheritance = true      # based
+reportImplicitAbstractClass = true          # based
 reportImplicitOverride = true
-reportUnannotatedClassAttribute = true # based
+reportUnannotatedClassAttribute = true      # based
 # linting
 deprecateTypingAliases = true
-enableReachabilityAnalysis = false       # discouraged
+enableReachabilityAnalysis = false          # discouraged
 reportCallInDefaultInitializer = true
-reportImplicitStringConcatenation = true # based
+reportImplicitStringConcatenation = true    # based
 reportPrivateUsage = false
 # narrowing
-strictGenericNarrowing = true # based
+strictGenericNarrowing = true               # based
 # TODO: enable once nothing is `Untyped`
-reportAny = false         # based
-reportExplicitAny = false # based
+reportAny = false                           # based
+reportExplicitAny = false                   # based
 # environment
-failOnWarnings = true # based
+failOnWarnings = true                       # based
 executionEnvironments = [
     {root = "scipy-stubs", reportDeprecated = false, reportUnsafeMultipleInheritance = false, reportUnreachable = false},
     {root = "codegen", reportAny = true, reportExplicitAny = true, reportInvalidCast = true, reportPrivateUsage = true},

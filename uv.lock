@@ -726,6 +726,9 @@ scipy = [
 ]
 
 [package.dev-dependencies]
+codegen = [
+    { name = "libcst" },
+]
 dev = [
     { name = "basedmypy", extra = ["faster-cache"] },
     { name = "basedpyright" },
@@ -740,6 +743,22 @@ dev = [
     { name = "sp-repo-review", extra = ["cli"] },
     { name = "tox" },
 ]
+lint = [
+    { name = "mdformat-gfm" },
+    { name = "mdformat-gfm-alerts" },
+    { name = "mdformat-pyproject" },
+    { name = "ruff" },
+    { name = "scipy" },
+    { name = "sp-repo-review", extra = ["cli"] },
+]
+scipy = [
+    { name = "scipy" },
+]
+typecheck = [
+    { name = "basedmypy", extra = ["faster-cache"] },
+    { name = "basedpyright" },
+    { name = "scipy" },
+]
 
 [package.metadata]
 requires-dist = [
@@ -748,19 +767,34 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
+codegen = [{ name = "libcst", specifier = ">=1.5.1,<2" }]
 dev = [
-    { name = "basedmypy", extras = ["faster-cache"], specifier = ">=2.7.0" },
-    { name = "basedpyright", specifier = ">=1.22.0" },
-    { name = "libcst", specifier = ">=1.5.1" },
-    { name = "mdformat-gfm", specifier = ">=0.3.7,<1.0" },
-    { name = "mdformat-gfm-alerts", specifier = ">=1.0.1,<2.0" },
-    { name = "mdformat-pyproject", specifier = ">=0.0.2,<1.0" },
-    { name = "poethepoet", specifier = ">=0.31.1" },
-    { name = "pre-commit", specifier = ">=4.0.1" },
-    { name = "ruff", specifier = ">=0.8.1" },
+    { name = "basedmypy", extras = ["faster-cache"], specifier = ">=2.7.0,<3" },
+    { name = "basedpyright", specifier = ">=1.22.0,<2" },
+    { name = "libcst", specifier = ">=1.5.1,<2" },
+    { name = "mdformat-gfm", specifier = ">=0.3.7,<1" },
+    { name = "mdformat-gfm-alerts", specifier = ">=1.0.1,<2" },
+    { name = "mdformat-pyproject", specifier = ">=0.0.2,<1" },
+    { name = "poethepoet", specifier = ">=0.31.1,<1" },
+    { name = "pre-commit", specifier = ">=4.0.1,<5" },
+    { name = "ruff", specifier = ">=0.8.1,<1" },
     { name = "scipy", specifier = "==1.14.1" },
     { name = "sp-repo-review", extras = ["cli"], specifier = ">=2024.8.19" },
-    { name = "tox", specifier = ">=4.23.2" },
+    { name = "tox", specifier = ">=4.23.2,<5" },
+]
+lint = [
+    { name = "mdformat-gfm", specifier = ">=0.3.7,<1" },
+    { name = "mdformat-gfm-alerts", specifier = ">=1.0.1,<2" },
+    { name = "mdformat-pyproject", specifier = ">=0.0.2,<1" },
+    { name = "ruff", specifier = ">=0.8.1,<1" },
+    { name = "scipy", specifier = "==1.14.1" },
+    { name = "sp-repo-review", extras = ["cli"], specifier = ">=2024.8.19" },
+]
+scipy = [{ name = "scipy", specifier = "==1.14.1" }]
+typecheck = [
+    { name = "basedmypy", extras = ["faster-cache"], specifier = ">=2.7.0,<3" },
+    { name = "basedpyright", specifier = ">=1.22.0,<2" },
+    { name = "scipy", specifier = "==1.14.1" },
 ]
 
 [[package]]
