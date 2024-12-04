@@ -46,7 +46,7 @@ _ComplexFunc: TypeAlias = Callable[[onp.Array1D[np.complex128]], onp.ToComplex1D
 ###
 
 @overload  # int, positive int
-def fractional_matrix_power(A: onp.ToInt2D, t: _ToPosInt) -> _Int2D: ...  # pyright: ignore[reportOverlappingOverload]  # pyright<1.390 bug
+def fractional_matrix_power(A: onp.ToInt2D, t: _ToPosInt) -> _Int2D: ...
 @overload  # real, int
 def fractional_matrix_power(A: onp.ToFloat2D, t: onp.ToInt) -> _Real2D: ...
 @overload  # complex, int
