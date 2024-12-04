@@ -56,11 +56,15 @@ tools = [
     "requests~=2.0",
     "tomli>=2.2.1 ; python_full_version < '3.12'",
 ]
+testing = [
+    "pytest~=8.3",
+]
 dev = [
     {include-group = "lint"},
     {include-group = "typecheck"},
     {include-group = "codegen"},
     {include-group = "tools"},
+    {include-group = "testing"},
     "poethepoet>=0.31.1,<1",
     "pre-commit>=4.0.1,<5",
     "pre-commit-uv>=4.1.4,<5",
