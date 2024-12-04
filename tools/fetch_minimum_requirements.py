@@ -3,7 +3,6 @@ import sys
 from pathlib import Path
 from typing import Any
 
-import requests
 
 if sys.version_info >= (3, 11):
     import tomllib
@@ -28,6 +27,7 @@ def get_minimum_numpy() -> str:
     scipy_group = get_pyproject()["dependency-groups"]["scipy"]
     scipy_version = next(dep for dep in scipy_group if dep.startswith("scipy==")).replace("scipy==", "")
 
+    import requests  # Import only when needed, leaving only standard libs at the top
     response = requests.get(
         f"https://raw.githubusercontent.com/scipy/scipy/refs/tags/v{scipy_version}/pyproject.toml",
         timeout=10,
