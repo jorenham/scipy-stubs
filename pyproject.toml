@@ -239,7 +239,7 @@ exclude = [".venv"]
 force-exclude = true
 # https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#maximum-line-length
 line-length = 130
-src = ["scipy-stubs", "codegen"]
+src = ["scipy-stubs", "codegen", "tools"]
 
 [tool.ruff.format]
 docstring-code-format = true
