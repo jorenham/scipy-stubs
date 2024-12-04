@@ -1,8 +1,9 @@
 import re
-import subprocess
 import sys
 from pathlib import Path
 from typing import Any
+
+import requests
 
 if sys.version_info >= (3, 11):
     import tomllib
@@ -24,15 +25,18 @@ def get_minimum_python() -> str:
 
 
 def get_minimum_numpy() -> str:
-    """Fetch the numpy dep requirement from an output in the format:
+    scipy_group = get_pyproject()["dependency-groups"]["scipy"]
+    scipy_version = next(dep for dep in scipy_group if dep.startswith("scipy==")).replace("scipy==", "")
 
-    scipy v1.14.1
-    └── numpy v2.1.3 [required: >=1.23.5, <2.3]
-    """
-    result = subprocess.run("uv pip tree --show-version-specifiers".split(" "), capture_output=True, check=True)
-    uv_tree = result.stdout.decode()
-    # TODO: why does this not work? r"^scipy.*\n└── numpy(.*)$
-    numpy_dep = re.search(r"└── numpy(.*)", uv_tree).groups()
-    if len(numpy_dep) > 1:
-        raise NotImplementedError("Update script to include further deps!")
-    return numpy_dep[0].split("required: >=")[1].split(",")[0]
+    response = requests.get(
+        f"https://raw.githubusercontent.com/scipy/scipy/refs/tags/v{scipy_version}/pyproject.toml",
+        timeout=10,
+    )
+    scipy_pyproject = tomllib.loads(response.text)
+
+    numpy_minimum_dep = next(dep for dep in scipy_pyproject["project"]["dependencies"] if dep.startswith("numpy>="))
+    numpy_minimum_dep = numpy_minimum_dep.replace("numpy>=", "")
+    if ",<" in numpy_minimum_dep:  # Remove any upper dep if specified
+        numpy_minimum_dep = numpy_minimum_dep.split(",")[0]
+
+    return numpy_minimum_dep
