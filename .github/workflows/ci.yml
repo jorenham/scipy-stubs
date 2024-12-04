@@ -43,6 +43,24 @@ jobs:
       - name: basedpyright
         run: uv run poe pyright
 
+  types:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setup uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: install
+        run: |
+          uv sync --frozen --python=$(python -c 'from tools.fetch_minimum_requirements import get_minimum_python; print(get_minimum_python())')
+          uv pip install --upgrade numpy==$(python -c 'from tools.fetch_minimum_requirements import get_minimum_numpy; print(get_minimum_numpy())')
+
+      - name: types
+        run: uv un poe pyright
+
   typetest:
     timeout-minutes: 5
     runs-on: ubuntu-latest

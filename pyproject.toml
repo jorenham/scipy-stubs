@@ -132,6 +132,7 @@ format = ["mdformat", "_ruff_format"]
 ruff = ["_ruff_format", "_ruff_check"]
 check = ["mdformat --check", "repo-review", "ruff"]
 lint = ["check", "format"]
+types = "basedpyright codegen tools pytests"
 pre-commit = "pre-commit run --all-files"
 
 _test_bpr = "basedpyright tests"
