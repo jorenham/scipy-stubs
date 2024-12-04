@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "scipy-stubs"
-version = "1.14.1.5dev0"
+version = "1.14.1.6dev0"
 description = "Precise type-hints for all of SciPy"
 readme = "README.md"
 authors = [
@@ -13,7 +13,7 @@ authors = [
 license = "BSD-3-Clause"
 keywords = ["scipy", "typing", "pep484"]
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: BSD License",
@@ -46,8 +46,8 @@ lint = [
 ]
 typecheck = [
     {include-group = "scipy"},
-    "basedmypy[faster-cache]>=2.7.0,<3",
-    "basedpyright>=1.22.0,<2",
+    "basedmypy[faster-cache]>=2.8.0",
+    "basedpyright>=1.22.1",
 ]
 codegen = [
     "libcst>=1.5.1,<2",
@@ -123,6 +123,7 @@ mdformat
     README.md
     SECURITY.md
     tests/README.md
+    codegen/README.md
 """
 _ruff_format = "ruff format"
 _ruff_check = "ruff check --show-fixes"
@@ -134,7 +135,7 @@ lint = ["check", "format"]
 pre-commit = "pre-commit run --all-files"
 
 _test_bpr = "basedpyright tests"
-_test_mypy = "uv run --no-editable --isolated mypy --config-file=pyproject.toml tests"
+_test_mypy = "uv run --frozen --no-editable --isolated mypy --config-file=pyproject.toml tests"
 typetest = ["_test_bpr", "_test_mypy"]
 
 [tool.poe.tasks.pyright]
@@ -142,12 +143,12 @@ cmd = "basedpyright $path"
 args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs codegen"}]
 
 [tool.poe.tasks.mypy]
-cmd = "uv run --no-editable --isolated mypy --config-file=pyproject.toml $path"
+cmd = "uv run --frozen --no-editable --isolated mypy --config-file=pyproject.toml $path"
 args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs codegen"}]
 
 [tool.poe.tasks.stubtest]
 cmd = """
-uv run --no-editable --isolated
+uv run --frozen --no-editable --isolated
     stubtest
     --mypy-config-file=pyproject.toml
     --allowlist=.mypyignore
