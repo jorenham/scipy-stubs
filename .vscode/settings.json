@@ -18,5 +18,10 @@
   "editor.rulers": [88],
   "editor.tabSize": 4,
   "git.branchProtection": ["master"],
-  "mypy-type-checker.args": ["--config-file=pyproject.toml", "--ide"]
+  "mypy-type-checker.args": [
+    "--ide",
+    "--config-file=${workspaceFolder}/pyproject.toml"
+  ],
+  "mypy-type-checker.cwd": "${fileDirname}",
+  "mypy-type-checker.path": ["uv", "run", "--no-editable", "mypy"]
 }
