@@ -43,7 +43,7 @@ jobs:
       - name: basedpyright
         run: uv run poe pyright
 
-  types:
+  toolstest:
     timeout-minutes: 5
     runs-on: ubuntu-latest
 
@@ -60,6 +60,9 @@ jobs:
 
       - name: types
         run: uv run poe pyright
+
+      - name: pytest
+        run: uv run pytest
 
   typetest:
     timeout-minutes: 5
