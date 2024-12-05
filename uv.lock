@@ -876,12 +876,12 @@ lint = [
 scipy = [
     { name = "scipy" },
 ]
-testing = [
-    { name = "pytest" },
-]
-tools = [
+scripts = [
     { name = "requests" },
     { name = "tomli", marker = "python_full_version < '3.12'" },
+]
+testing = [
+    { name = "pytest" },
 ]
 typecheck = [
     { name = "basedmypy", extra = ["faster-cache"] },
@@ -923,11 +923,11 @@ lint = [
     { name = "sp-repo-review", extras = ["cli"], specifier = ">=2024.8.19" },
 ]
 scipy = [{ name = "scipy", specifier = "==1.14.1" }]
-testing = [{ name = "pytest", specifier = "~=8.3" }]
-tools = [
+scripts = [
     { name = "requests", specifier = "~=2.0" },
     { name = "tomli", marker = "python_full_version < '3.12'", specifier = ">=2.2.1" },
 ]
+testing = [{ name = "pytest", specifier = "~=8.3" }]
 typecheck = [
     { name = "basedmypy", extras = ["faster-cache"], specifier = ">=2.8.0" },
     { name = "basedpyright", specifier = ">=1.22.1" },

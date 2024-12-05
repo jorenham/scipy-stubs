@@ -1,3 +1,5 @@
+"""Script for the fucntions fetching the minimum versions."""
+
 import re
 import sys
 from pathlib import Path
@@ -10,11 +12,13 @@ else:  # TODO: remove this once 3.10 is dropped!
 
 
 def get_pyproject() -> dict[str, Any]:
+    """Load the pyproject.toml as a dictionary."""
     with Path("pyproject.toml").open("rb") as f:
         return tomllib.load(f)
 
 
 def get_minimum_python() -> str:
+    """Fetch the minimum Python version specified in pyproject.toml."""
     raw_version = get_pyproject()["project"]["requires-python"]
     if "<" in raw_version:
         raise NotImplementedError("Version specifier with upper bound not yet supported!")
@@ -22,6 +26,7 @@ def get_minimum_python() -> str:
 
 
 def get_minimum_numpy() -> str:
+    """Fetch the minimum numpy version required by the current scipy package."""
     scipy_group = get_pyproject()["dependency-groups"]["scipy"]
     scipy_version = next(dep for dep in scipy_group if dep.startswith("scipy==")).replace("scipy==", "")
 
