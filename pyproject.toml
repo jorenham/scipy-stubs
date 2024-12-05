@@ -253,7 +253,6 @@ ignore = ["D", "FBT", "COM812", "CPY", "EM", "TD", "FIX", "DOC"]
 
 [tool.ruff.lint.per-file-ignores]
 "*.pyi" = ["F", "E741", "N", "A", "PYI054", "PLC2701", "PLW3201", "PLR", "FURB"]
-"pytests/**/*.py" = ["S101"]
 
 [tool.ruff.lint.flake8-import-conventions]
 banned-from = ["numpy", "numpy.typing", "optype", "optype.numpy", "optype.typing"]
