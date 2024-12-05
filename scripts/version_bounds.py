@@ -1,4 +1,4 @@
-"""Script for the fucntions fetching the minimum versions."""
+"""Script for functions fetching the minimum versions required by scipy."""
 
 import importlib.metadata
 
