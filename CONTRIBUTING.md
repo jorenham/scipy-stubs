@@ -186,8 +186,11 @@ Ensure you have [`uv`](https://docs.astral.sh/uv/getting-started/installation/) 
 Now you can install the project with the dev dependencies:
 
 ```bash
-uv sync --frozen
+uv sync --frozen  --python=3.13
 ```
+
+> [!NOTE]
+> Python 3.13 is required to properly run `mdformat` (see the [`mdformat` documentation][mdformat-3.13]).
 
 ### pre-commit
 
@@ -255,3 +258,4 @@ This guide is based on the **contributing-gen**.
 [bug]: https://github.com/jorenham/scipy-stubs/issues
 [coc]: https://github.com/jorenham/scipy-stubs/blob/master/CODE_OF_CONDUCT.md
 [doc]: https://github.com/jorenham/scipy-stubs?tab=readme-ov-file#scipy-stubs
+[mdformat-3.13]: https://mdformat.readthedocs.io/en/stable/users/configuration_file.html#exclude-patterns
