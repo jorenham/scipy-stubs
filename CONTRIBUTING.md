@@ -190,7 +190,7 @@ uv sync --frozen  --python=3.13
 ```
 
 > [!NOTE]
-> Python 3.13 is required to properly run `mdformat` (see the [`mdformat` documentation][mdformat-3.13]).
+> Python 3.13 is required to properly run `mdformat` (see the documentation [note here]][mdformat-3.13]).
 
 ### pre-commit
 
