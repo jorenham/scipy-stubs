@@ -1,6 +1,7 @@
 """Script for functions fetching the minimum versions required by scipy."""
 
 import importlib.metadata
+import sys
 
 
 def scipy_minimum_python() -> str:
@@ -16,3 +17,18 @@ def scipy_minimum_numpy() -> str:
     np_minimum_dep = next(req for req in importlib.metadata.requires("scipy") if req.startswith("numpy") and " extra " not in req)
     np_minimum_dep = next(ver for ver in np_minimum_dep.split(",") if ">" in ver)
     return np_minimum_dep.replace("numpy", "").replace(">=", "").replace(">", "")
+
+
+def main() -> None:
+    match sys.argv:
+        case [_, "python"]:
+            print(scipy_minimum_python())  # noqa: T201
+        case [_, "numpy"]:
+            print(scipy_minimum_numpy())  # noqa: T201
+        case _ as badargs:
+            print(f"Usage: {badargs[0]} [python|numpy]", file=sys.stderr)  # noqa: T201
+            sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()

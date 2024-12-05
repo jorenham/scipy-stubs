@@ -72,8 +72,8 @@ jobs:
 
       - name: install
         run: |
-          uv sync --frozen --python=$(uv run python -c 'from scripts.version_bounds import scipy_minimum_python; print(scipy_minimum_python())')
-          uv pip install --upgrade numpy==$(uv run python -c 'from scripts.version_bounds import scipy_minimum_numpy; print(scipy_minimum_numpy())')
+          uv sync --frozen --python=$(uv run --frozen scripts/version_bounds.py python)
+          uv pip install --upgrade numpy==$(uv run --frozen scripts/version_bounds.py numpy)
 
       - name: typetest
         run: uv run poe typetest
