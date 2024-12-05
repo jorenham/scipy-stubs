@@ -123,6 +123,7 @@ format = ["mdformat", "_ruff_format"]
 ruff = ["_ruff_format", "_ruff_check"]
 check = ["mdformat --check", "repo-review", "ruff"]
 lint = ["check", "format"]
+types = "basedpyright codegen scripts"
 pre-commit = "pre-commit run --all-files"
 
 _test_bpr = "basedpyright tests"
@@ -230,7 +231,7 @@ exclude = [".venv"]
 force-exclude = true
 # https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#maximum-line-length
 line-length = 130
-src = ["scipy-stubs", "codegen"]
+src = ["scipy-stubs", "codegen", "scripts"]
 
 [tool.ruff.format]
 docstring-code-format = true
