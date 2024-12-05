@@ -158,10 +158,6 @@ args = [
 [tool.typos.files]
 extend-exclude = ["*.pyi"]
 
-[tool.mdformat]
-end_of_line = "lf"
-exclude = [".tox/**", ".venv/**", "**/*.m[!d]", "**/*.[!m]d"]
-
 [tool.mypy]
 python_version = "3.10"
 strict = true
