@@ -91,6 +91,8 @@ ______________________________________________________________________
   - Supports Python ≥ 3.10
   - Supports NumPy ≥ 1.24
 
+<!-- NOTE: SciPy permalinks to the following `#installation` anchor; don't modify it! -->
+
 ## Installation
 
 <table>
