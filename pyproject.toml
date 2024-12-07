@@ -127,7 +127,12 @@ types = "basedpyright codegen scripts"
 pre-commit = "pre-commit run --all-files"
 
 _test_bpr = "basedpyright tests"
-_test_mypy = "uv run --frozen --no-editable --isolated mypy --config-file=pyproject.toml tests"
+_test_mypy = """
+uv run --frozen --no-editable --isolated --refresh-package=scipy-stubs
+    mypy
+    --config-file=pyproject.toml
+    tests
+"""
 typetest = ["_test_bpr", "_test_mypy"]
 
 [tool.poe.tasks.pyright]
@@ -135,12 +140,17 @@ cmd = "basedpyright $path"
 args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs codegen"}]
 
 [tool.poe.tasks.mypy]
-cmd = "uv run --frozen --no-editable --isolated mypy --config-file=pyproject.toml $path"
+cmd = """
+uv run --frozen --no-editable --isolated --refresh-package=scipy-stubs
+    mypy
+    --config-file=pyproject.toml
+    $path
+"""
 args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs codegen"}]
 
 [tool.poe.tasks.stubtest]
 cmd = """
-uv run --frozen --no-editable --isolated
+uv run --frozen --no-editable --isolated --refresh-package=scipy-stubs
     stubtest
     --mypy-config-file=pyproject.toml
     --allowlist=.mypyignore
