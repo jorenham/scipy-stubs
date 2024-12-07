@@ -7,10 +7,6 @@ on:
   pull_request:
   workflow_dispatch:
 
-env:
-  OLDEST_SUPPORTED_PYTHON: "3.10"
-  OLDEST_SUPPORTED_NUMPY: "1.24.3"
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
@@ -76,8 +72,8 @@ jobs:
 
       - name: install
         run: |
-          uv sync --frozen --python=$OLDEST_SUPPORTED_PYTHON
-          uv pip install --upgrade numpy==$OLDEST_SUPPORTED_NUMPY
+          uv sync --frozen --python=$(uv run --frozen scripts/version_bounds.py python)
+          uv pip install --upgrade numpy==$(uv run --frozen scripts/version_bounds.py numpy)
 
       - name: typetest
         run: uv run poe typetest
