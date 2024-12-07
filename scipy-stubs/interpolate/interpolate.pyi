@@ -1,10 +1,7 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
 from typing_extensions import deprecated
 
-from ._bsplines import BSpline as _BSpline
-from ._fitpack2 import RectBivariateSpline as _RectBivariateSpline
-from ._interpolate import BPoly as _BPoly, NdPPoly as _NdPPoly, PPoly as _PPoly, interp1d as _interp1d, interp2d as _interp2d
-from ._rgi import RegularGridInterpolator as _RegularGridInterpolator
+from . import _bsplines, _fitpack2, _interpolate, _rgi
 
 __all__ = [
     "BPoly",
@@ -20,41 +17,11 @@ __all__ = [
     "make_interp_spline",
 ]
 
-@deprecated("will be removed in SciPy v2.0.0")
-class RectBivariateSpline(_RectBivariateSpline): ...
+# _bsplines
 
 @deprecated("will be removed in SciPy v2.0.0")
-class RegularGridInterpolator(_RegularGridInterpolator): ...
+class BSpline(_bsplines.BSpline): ...
 
-@deprecated("will be removed in SciPy v2.0.0")
-class BPoly(_BPoly): ...
-
-@deprecated("will be removed in SciPy v2.0.0")
-class NdPPoly(_NdPPoly): ...
-
-@deprecated("will be removed in SciPy v2.0.0")
-class PPoly(_PPoly): ...
-
-@deprecated("will be removed in SciPy v2.0.0")
-class BSpline(_BSpline): ...
-
-@deprecated("will be removed in SciPy v2.0.0")
-class interp1d(_interp1d): ...
-
-@deprecated("will be removed in SciPy v2.0.0")
-class interp2d(_interp2d): ...
-
-@deprecated("will be removed in SciPy v2.0.0")
-def interpn(
-    points: object,
-    values: object,
-    xi: object,
-    method: object = ...,
-    bounds_error: object = ...,
-    fill_value: object = ...,
-) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def lagrange(x: object, w: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def make_interp_spline(
     x: object,
@@ -64,4 +31,44 @@ def make_interp_spline(
     bc_type: object = ...,
     axis: object = ...,
     check_finite: object = ...,
+) -> object: ...
+
+# _fitpack2
+
+@deprecated("will be removed in SciPy v2.0.0")
+class RectBivariateSpline(_fitpack2.RectBivariateSpline): ...
+
+# _interpolate
+
+@deprecated("will be removed in SciPy v2.0.0")
+class BPoly(_interpolate.BPoly): ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class NdPPoly(_interpolate.NdPPoly): ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class PPoly(_interpolate.PPoly): ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class interp1d(_interpolate.interp1d): ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+class interp2d(_interpolate.interp2d): ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+def lagrange(x: object, w: object) -> object: ...
+
+# _rgi
+
+@deprecated("will be removed in SciPy v2.0.0")
+class RegularGridInterpolator(_rgi.RegularGridInterpolator): ...
+
+@deprecated("will be removed in SciPy v2.0.0")
+def interpn(
+    points: object,
+    values: object,
+    xi: object,
+    method: object = ...,
+    bounds_error: object = ...,
+    fill_value: object = ...,
 ) -> object: ...
