@@ -1,20 +1,6 @@
 from scipy._typing import Untyped
 
-__all__ = [
-    "bisplev",
-    "bisplrep",
-    "insert",
-    "spalde",
-    "splantider",
-    "splder",
-    "splev",
-    "splint",
-    "splprep",
-    "splrep",
-    "sproot",
-]
-
-dfitpack_int: Untyped
+__all__ = ["bisplev", "bisplrep", "insert", "spalde", "splantider", "splder", "splev", "splint", "splprep", "splrep", "sproot"]
 
 def splprep(
     x: Untyped,
@@ -49,6 +35,8 @@ def splev(x: Untyped, tck: Untyped, der: int = 0, ext: int = 0) -> Untyped: ...
 def splint(a: Untyped, b: Untyped, tck: Untyped, full_output: int = 0) -> Untyped: ...
 def sproot(tck: Untyped, mest: int = 10) -> Untyped: ...
 def spalde(x: Untyped, tck: Untyped) -> Untyped: ...
+
+#
 def bisplrep(
     x: Untyped,
     y: Untyped,

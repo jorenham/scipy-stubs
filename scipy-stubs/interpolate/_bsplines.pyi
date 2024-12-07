@@ -43,10 +43,5 @@ def make_lsq_spline(
     axis: int = 0,
     check_finite: bool = True,
 ) -> Untyped: ...
-def make_smoothing_spline(
-    x: Untyped,
-    y: Untyped,
-    w: Untyped | None = None,
-    lam: Untyped | None = None,
-) -> Untyped: ...
+def make_smoothing_spline(x: Untyped, y: Untyped, w: Untyped | None = None, lam: Untyped | None = None) -> Untyped: ...
 def fpcheck(x: Untyped, t: Untyped, k: Untyped) -> None: ...  # undocumented

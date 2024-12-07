@@ -29,6 +29,9 @@ __all__ = [
     "types",
 ]
 
+# TODO(jorenham): stub `interpolate._dfitpack` module, as implemented in
+# https://github.com/scipy/scipy/blob/v1.14.1/scipy/interpolate/src/dfitpack.pyf
+
 bispeu: Final[object]
 bispev: Final[object]
 curfit: Final[object]
