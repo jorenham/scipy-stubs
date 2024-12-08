@@ -4,7 +4,6 @@ from typing_extensions import Self
 import numpy as np
 import optype as op
 import optype.numpy as onp
-from scipy._typing import Untyped
 from scipy.interpolate import CubicSpline
 from scipy.sparse import csr_array
 
@@ -25,7 +24,7 @@ class BSpline(Generic[_SCT_co]):
     axis: int
 
     @property
-    def tck(self, /) -> Untyped: ...
+    def tck(self, /) -> tuple[onp.Array1D[np.float64], onp.Array[onp.AtLeast1D, _SCT_co], int]: ...
 
     #
     def __init__(
@@ -43,7 +42,7 @@ class BSpline(Generic[_SCT_co]):
     def derivative(self, /, nu: int = 1) -> Self: ...
     def antiderivative(self, /, nu: int = 1) -> Self: ...
     def integrate(self, /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None) -> onp.ArrayND[_SCT_co]: ...
-    def insert_knot(self, /, x: onp.ToFloat, m: op.CanIndex = 1) -> Untyped: ...
+    def insert_knot(self, /, x: onp.ToFloat, m: op.CanIndex = 1) -> Self: ...
 
     #
     @classmethod
