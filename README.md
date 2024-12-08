@@ -89,7 +89,7 @@ ______________________________________________________________________
   - compatible with the [Python Typing Spec](https://typing.readthedocs.io/en/latest/spec/index.html)
 - [SPEC 0](https://scientific-python.org/specs/spec-0000/) compliant
   - Supports Python ≥ 3.10
-  - Supports NumPy ≥ 1.24
+  - Supports NumPy ≥ 1.23.5
 
 <!-- NOTE: SciPy permalinks to the following `#installation` anchor; don't modify it! -->
 
