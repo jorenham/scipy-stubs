@@ -186,11 +186,8 @@ Ensure you have [`uv`](https://docs.astral.sh/uv/getting-started/installation/) 
 Now you can install the project with the dev dependencies:
 
 ```bash
-uv sync --frozen  --python=3.13
+uv sync --frozen
 ```
-
-> [!NOTE]
-> Python 3.13 is required to properly run `mdformat` (see the [documentation][mdformat-3.13]).
 
 ### pre-commit
 
