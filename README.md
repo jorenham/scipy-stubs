@@ -95,31 +95,32 @@ ______________________________________________________________________
 
 ## Installation
 
-<table>
+The source code is currently hosted on GitHub at [github.com/jorenham/scipy-stubs](https://github.com/jorenham/scipy-stubs/).
 
-<tr>
-    <th width="500px">PyPI</th>
-    <th width="500px">Conda</th>
-</tr>
+Binary distributions are available at the [Python Package Index (PyPI)](https://pypi.org/project/scipy-stubs/) and on
+[conda-forge](https://anaconda.org/conda-forge/scipy-stubs).
 
-<tr>
-<td>
+### Using pip (PyPI)
 
-```shell
+To install from the [PyPI](https://pypi.org/project/scipy-stubs/), run:
+
+```bash
 pip install scipy-stubs
 ```
 
-</td>
-<td>
+In case you haven't installed `scipy` yet, both can be installed with:
 
-```shell
-conda install conda-forge::scipy-stubs
+```bash
+pip install scipy-stubs[scipy]
 ```
 
-</td>
-</tr>
+### Using conda (conda-forge)
 
-</table>
+To install using Conda from the [conda-forge channel](https://anaconda.org/conda-forge/scipy-stubs), run:
+
+```bash
+conda install conda-forge::scipy-stubs
+```
 
 ## Supported static type-checkers
 
