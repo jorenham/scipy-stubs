@@ -4,7 +4,7 @@ from typing import Literal, TypeAlias, overload
 import numpy as np
 import optype.numpy as onp
 from ._bsplines import BSpline
-from ._fitpack_impl import bisplev, bisplrep, insert, splantider, splder, splprep, splrep
+from ._fitpack_impl import bisplev, bisplrep, splprep, splrep
 
 __all__ = ["bisplev", "bisplrep", "insert", "spalde", "splantider", "splder", "splev", "splint", "splprep", "splrep", "sproot"]
 
@@ -18,6 +18,7 @@ _FloatND: TypeAlias = onp.ArrayND[np.float64]
 
 _Ext: TypeAlias = Literal[0, 1, 2, 3]
 _ToTCK: TypeAlias = Sequence[onp.ToFloat1D | onp.ToFloat2D | int]
+_TCK: TypeAlias = tuple[_Float1D, _Float1D, int]
 
 ###
 
@@ -56,3 +57,19 @@ def spalde(x: onp.ToFloatStrict2D, tck: _ToTCK) -> list[_Float1D]: ...
 def spalde(x: onp.ToFloat1D | onp.ToFloat2D, tck: BSpline) -> _Float1D | _Float2D: ...
 @overload  # tck: (t, c, k)
 def spalde(x: onp.ToFloat1D | onp.ToFloat2D, tck: _ToTCK) -> _Float1D | list[_Float1D]: ...
+@overload  # tck: BSpline
+def insert(x: onp.ToFloat, tck: BSpline, m: int = 1, per: onp.ToBool = 0) -> BSpline[np.float64]: ...
+@overload  # tck: (t, c, k)
+def insert(x: onp.ToFloat, tck: _ToTCK, m: int = 1, per: onp.ToBool = 0) -> _TCK: ...
+
+#
+@overload  # tck: BSpline
+def splder(tck: BSpline, n: int = 1) -> BSpline[np.float64]: ...
+@overload  # tck: (t, c, k)
+def splder(tck: _ToTCK, n: int = 1) -> _TCK: ...
+
+#
+@overload  # tck: BSpline
+def splantider(tck: BSpline, n: int = 1) -> BSpline[np.float64]: ...
+@overload  # tck: (t, c, k)
+def splantider(tck: _ToTCK, n: int = 1) -> _TCK: ...
