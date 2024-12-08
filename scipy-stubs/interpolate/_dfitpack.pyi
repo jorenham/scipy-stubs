@@ -1,9 +1,11 @@
 from collections.abc import Callable
-from typing import Any, Final, Literal as L, Protocol, final, type_check_only
+from typing import Any, Final, Literal as L, Protocol, TypeAlias, final, type_check_only
 from typing_extensions import LiteralString, TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
+_Float1D: TypeAlias = onp.Array1D[np.float64]
 
 _NameT = TypeVar("_NameT", bound=str)
 _FuncT_co = TypeVar("_FuncT_co", bound=Callable[..., object], default=Callable[..., Any], covariant=True)
@@ -34,7 +36,7 @@ class _Func_splev(Protocol):
         k: onp.ToJustInt,  # 0 <= k < len(c)
         x: onp.ToFloat1D,
         e: L[0, 1, 2, 3] = 0,
-    ) -> tuple[onp.Array1D[np.float64], int]: ...
+    ) -> tuple[_Float1D, int]: ...
 
 @type_check_only
 class _Func_splder(Protocol):
@@ -47,7 +49,7 @@ class _Func_splder(Protocol):
         x: onp.ToFloat1D,
         nu: onp.ToJustInt = 1,  # 0 <= nu <= k < len(c)
         e: L[0, 1, 2, 3] = 0,
-    ) -> tuple[onp.Array1D[np.float64], int]: ...
+    ) -> tuple[_Float1D, int]: ...
 
 @type_check_only
 class _Func_splint(Protocol):
@@ -59,7 +61,7 @@ class _Func_splint(Protocol):
         k: onp.ToJustInt,  # 0 <= k < len(c)
         a: onp.ToFloat | onp.ToFloatND,
         b: onp.ToFloat | onp.ToFloatND,
-    ) -> tuple[float, onp.Array1D[np.float64]]: ...
+    ) -> tuple[float, _Float1D]: ...
 
 @type_check_only
 class _Func_sproot(Protocol):
@@ -69,7 +71,7 @@ class _Func_sproot(Protocol):
         t: onp.ToFloat1D,  # len(t) >= 8
         c: onp.ToFloat1D,  # len(c) >= len(t) - 4
         mest: onp.ToJustInt = ...,  # mest = 3 * (len(t) - 7)
-    ) -> tuple[onp.Array1D[np.float64], int, int]: ...
+    ) -> tuple[_Float1D, int, int]: ...
 
 @type_check_only
 class _Func_spalde(Protocol):
@@ -80,7 +82,7 @@ class _Func_spalde(Protocol):
         c: onp.ToFloat1D,  # len(c) >= len(t) - 4
         k1: onp.ToJustInt,
         x: onp.ToFloat | onp.ToFloatND,
-    ) -> tuple[onp.Array1D[np.float64], int]: ...
+    ) -> tuple[_Float1D, int]: ...
 
 @type_check_only
 class _Func_bispe_(Protocol):
@@ -94,7 +96,7 @@ class _Func_bispe_(Protocol):
         ky: onp.ToJustInt,  # 0 <= ky < len(y)
         x: onp.ToFloat1D,
         y: onp.ToFloat1D,
-    ) -> tuple[onp.Array1D[np.float64], int]: ...
+    ) -> tuple[_Float1D, int]: ...
 
 ###
 
@@ -116,13 +118,17 @@ splint: _FortranFunction[L["splint"], _Func_splint] = ...
 sproot: _FortranFunction[L["function sproot"], _Func_sproot] = ...
 # (t, c, k1, x) -> (d, ier)
 spalde: _FortranFunction[L["function spalde"], _Func_spalde] = ...
-# TODO(jorenham)
-# (iopt, x, y, w, t, wrk, iwrk, *, xb=x[0], xe=x[-1], k=3, s=0.0) -> (t, c, fp, wrk, iwrk, ier)
-curfit: _FortranFunction[L["function curfit"]] = ...
-# (iopt, x, y, w, t, wrk, iwrk, *, k=3, s=0.0) -> (t, c, fp, wrk, iwrk, ier)
-percur: _FortranFunction[L["function percur"]] = ...
-# (iopt, ipar, idim, u, x, w, ub, ue, t, wrk, iwrk, *, k=3, s=0.0) -> (t, c, fp, wrk, iwrk, ier)
-parcur: _FortranFunction[L["function parcur"]] = ...
+
+_Func_cur: TypeAlias = Callable[..., tuple[int, _Float1D, float, int]]
+
+# (iopt, x, y, w, t, wrk, iwrk, xb?, xe?, k?, s?) -> (n, c, fp, ier)
+curfit: _FortranFunction[L["function curfit"], _Func_cur] = ...
+# (iopt, x, y, w, t, wrk, iwrk, k?, s?) -> (n, c, fp, ier)
+percur: _FortranFunction[L["function percur"], _Func_cur] = ...
+# (iopt, ipar, idim, u, x, w, ub, ue, t, wrk, iwrk, k?, s?) -> (n, c, fp, ier)
+parcur: _FortranFunction[L["function parcur"], _Func_cur] = ...
+
+# these have ridculously large signatures...
 fpcurf0: _FortranFunction[L["function fpcurf0"]] = ...
 fpcurf1: _FortranFunction[L["function fpcurf1"]] = ...
 fpcurfm1: _FortranFunction[L["function fpcurfm1"]] = ...
