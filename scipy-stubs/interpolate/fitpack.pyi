@@ -1,6 +1,8 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
 from typing_extensions import deprecated
 
+from ._bsplines import BSpline as _BSpline
+
 __all__ = [
     "BSpline",
     "bisplev",
@@ -16,6 +18,11 @@ __all__ = [
     "sproot",
 ]
 
+# _bsplines
+@deprecated("will be removed in SciPy v2.0.0")
+class BSpline(_BSpline): ...
+
+# _fitpack_impl
 @deprecated("will be removed in SciPy v2.0.0")
 def splprep(
     x: object,
@@ -61,28 +68,6 @@ def insert(x: object, tck: object, m: object = ..., per: object = ...) -> object
 def splder(tck: object, n: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def splantider(tck: object, n: object = ...) -> object: ...
-
-# bsplines
-@deprecated("will be removed in SciPy v2.0.0")
-class BSpline:
-    def __init__(self, /, t: object, c: object, k: object, extrapolate: object = ..., axis: object = ...) -> None: ...
-    @classmethod
-    def construct_fast(cls, t: object, c: object, k: object, extrapolate: object = ..., axis: object = ...) -> object: ...
-    @property
-    def tck(self, /) -> object: ...
-    @classmethod
-    def basis_element(cls, t: object, extrapolate: object = ...) -> object: ...
-    @classmethod
-    def design_matrix(cls, x: object, t: object, k: object, extrapolate: object = ...) -> object: ...
-    def __call__(self, /, x: object, nu: object = ..., extrapolate: object = ...) -> object: ...
-    def derivative(self, /, nu: object = ...) -> object: ...
-    def antiderivative(self, /, nu: object = ...) -> object: ...
-    def integrate(self, /, a: object, b: object, extrapolate: object = ...) -> object: ...
-    @classmethod
-    def from_power_basis(cls, pp: object, bc_type: object = ...) -> object: ...
-    def insert_knot(self, /, x: object, m: object = ...) -> object: ...
-
-# fitpack_impl
 @deprecated("will be removed in SciPy v2.0.0")
 def bisplrep(
     x: object,
