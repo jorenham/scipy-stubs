@@ -168,7 +168,7 @@ from 🌑 (100% `Untyped`) to 🌕 (0% `Untyped`).
 | `fft`         |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | `fftpack`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | `integrate`   |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `interpolate` |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌓   |
+| `interpolate` |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | `io`          |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | `linalg`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | ~`misc`~      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
@@ -182,7 +182,7 @@ from 🌑 (100% `Untyped`) to 🌕 (0% `Untyped`).
 | `stats`       |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | *`_lib`*      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 
-Currently, only `interpolate`, `signal`, and `sparse` contain `Untyped` annotations.
+Currently, only `signal` and `sparse` contain `Untyped` annotations.
 
 ## See also
 
