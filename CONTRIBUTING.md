@@ -255,4 +255,3 @@ This guide is based on the **contributing-gen**.
 [bug]: https://github.com/jorenham/scipy-stubs/issues
 [coc]: https://github.com/jorenham/scipy-stubs/blob/master/CODE_OF_CONDUCT.md
 [doc]: https://github.com/jorenham/scipy-stubs?tab=readme-ov-file#scipy-stubs
-[mdformat-3.13]: https://mdformat.readthedocs.io/en/stable/users/configuration_file.html#exclude-patterns
