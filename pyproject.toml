@@ -106,7 +106,15 @@ rm -rf
     ./**/.ruff_cache
     ./**/.tox
 """
-mdformat = "mdformat ."
+mdformat = """
+mdformat
+    CODE_OF_CONDUCT.md
+    CONTRIBUTING.md
+    README.md
+    SECURITY.md
+    tests/README.md
+    codegen/README.md
+"""  # TODO: This is required because the exclude config only works on Python 3.13+
 _ruff_format = "ruff format"
 _ruff_check = "ruff check --show-fixes"
 repo-review = "repo-review ."
