@@ -116,6 +116,7 @@ def sh_chebyu(n: object, monic: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def sh_jacobi(n: object, p: object, q: object, monic: object = ...) -> object: ...
 
+# pyright: reportDeprecated=false
 p_roots = roots_legendre
 t_roots = roots_chebyt
 u_roots = roots_chebyu
