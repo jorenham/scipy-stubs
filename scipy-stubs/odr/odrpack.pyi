@@ -63,5 +63,5 @@ def odr(
     full_output: int = 0,
 ) -> Any: ...  # noqa: ANN401
 
-odr_error = OdrError
-odr_stop = OdrStop
+odr_error = OdrError  # pyright: ignore[reportDeprecated]
+odr_stop = OdrStop  # pyright: ignore[reportDeprecated]
