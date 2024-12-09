@@ -1,0 +1,68 @@
+isolated_build = true
+env_list = ["repo-review", "pre-commit", "3.10", "3.11", "3.12", "3.13"]
+
+[env_run_base]
+runner = "uv-venv-lock-runner"
+description = "stubtest with {base_python}"
+allowlist_externals = ["poe"]
+commands = [["poe", "stubtest"]]
+
+[env.pre-commit]
+runner = "uv-venv-lock-runner"
+description = "pre-commit"
+allowlist_externals = ["poe"]
+commands = [["poe", "pre-commit"]]
+
+[env.repo-review]
+runner = "uv-venv-lock-runner"
+description = "repo-review"
+allowlist_externals = ["poe"]
+commands = [["poe", "repo-review"]]
+
+[env.lint]
+description = "lint"
+dependency_groups = ["lint"]
+commands = [
+    ["ruff", "format", "--check"],
+    ["ruff", "check", "--show-fixes"],
+    ["mdformat", "--check", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md", "README.md", "SECURITY.md", "tests/README.md", "codegen/README.md"],
+    ["repo-review", "."]
+]
+
+[env.basedmypy]
+description = "basedmypy"
+dependency_groups = ["typecheck"]
+# uv_sync_flags = ["--no-editable", "--isolated", "--refresh-package=scipy-stubs"]
+commands = [["uv", "run", "--frozen", "--no-editable", "--isolated", "--refresh-package=scipy-stubs", "mypy", "--config-file=pyproject.toml", "scipy-stubs", "codegen"]]
+
+[env.basedpyright]
+description = "basedpyright"
+dependency_groups = ["typecheck"]
+commands = [["basedpyright", "scipy-stubs", "codegen"]]
+
+[env.min-versions-test]
+description = "min versions tests"
+# runner = "uv-venv-runner"
+dependency_groups = ["typecheck"]
+# uv_sync_flags = ["--no-editable", "--isolated", "--refresh-package=scipy-stubs"]
+commands = [
+    ["python", "--version"],
+    ["uv", "pip", "show", "numpy"]
+]
+
+[env.basedmypy-tests]
+description = "basedmypy tests"
+# runner = "uv-venv-runner"
+dependency_groups = ["typecheck"]
+# uv_sync_flags = ["--no-editable", "--isolated", "--refresh-package=scipy-stubs"]
+commands = [["uv", "run", "--frozen", "--no-editable", "--isolated", "--refresh-package=scipy-stubs", "mypy", "--config-file=pyproject.toml", "scipy-stubs", "codegen"]]
+
+[env.basedpyright-tests]
+description = "basedpyright tests"
+dependency_groups = ["typecheck"]
+commands = [["basedpyright", "tests"]]
+
+[env.stubtest]
+description = "stubtest"
+dependency_groups = ["typecheck"]
+commands = [["uv", "run", "--frozen", "--no-editable", "--isolated", "--refresh-package=scipy-stubs", "stubtest", "--mypy-config-file=pyproject.toml", "--allowlist=.mypyignore", "--ignore-unused-allowlist", "scipy"]]
