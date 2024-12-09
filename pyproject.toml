@@ -226,6 +226,7 @@ reportUnsafeMultipleInheritance = true  # based
 [tool.repo-review]
 ignore = [
     "PY004", # no /docs
+    "PY007", # tox configured in tox.toml
     "PP301", # pytest is irrelevant
     "PC111", # no blacken-docs because markdown has no code
     "PC140", # manual typecheck pre-commit hooks
