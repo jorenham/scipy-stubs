@@ -1,3 +1,9 @@
+from collections.abc import Callable
+from typing import Literal, TypeAlias, overload
+
+import numpy as np
+import optype as op
+import optype.numpy as onp
 from scipy._typing import Untyped
 
 __all__ = [
@@ -49,29 +55,128 @@ __all__ = [
     "zpk2tf",
 ]
 
-EPSILON: float
+_Float1D: TypeAlias = onp.Array1D[np.float64]
+_FloatND: TypeAlias = onp.ArrayND[np.float64]
+_Complex1D: TypeAlias = onp.Array1D[np.complex128]
+_ComplexND: TypeAlias = onp.ArrayND[np.complex128]
+_Inexact1D: TypeAlias = onp.Array1D[np.float64 | np.complex128]
+_InexactND: TypeAlias = onp.ArrayND[np.float64 | np.complex128]
 
-filter_dict: Untyped
-band_dict: Untyped
-bessel_norms: Untyped
+###
 
 class BadCoefficients(UserWarning): ...
 
-def findfreqs(num: Untyped, den: Untyped, N: Untyped, kind: str = "ba") -> Untyped: ...
-def freqs(b: Untyped, a: Untyped, worN: int = 200, plot: Untyped | None = None) -> Untyped: ...
-def freqs_zpk(z: Untyped, p: Untyped, k: Untyped, worN: int = 200) -> Untyped: ...
+#
+def findfreqs(num: onp.ToComplex1D, den: onp.ToComplex1D, N: op.CanIndex, kind: Literal["ba", "zp"] = "ba") -> _Float1D: ...
+
+#
+@overload  # worN: real
+def freqs(
+    b: onp.ToComplex1D,
+    a: onp.ToComplex1D,
+    worN: op.CanIndex | onp.ToFloat1D = 200,
+    plot: Callable[[_Float1D, _Complex1D], object] | None = None,
+) -> tuple[_Float1D, _Complex1D]: ...
+@overload  # worN: complex
+def freqs(
+    b: onp.ToComplex1D,
+    a: onp.ToComplex1D,
+    worN: onp.ToComplex1D,
+    plot: Callable[[_Float1D, _Complex1D], object] | Callable[[_Complex1D, _Complex1D], object] | None = None,
+) -> tuple[_Inexact1D, _Complex1D]: ...
+
+#
+@overload  # worN: real
+def freqs_zpk(
+    z: onp.ToComplex1D,
+    p: onp.ToComplex1D,
+    k: onp.ToComplex1D,
+    worN: op.CanIndex | onp.ToFloat1D = 200,
+) -> tuple[_Float1D, _Complex1D]: ...
+@overload  # worN: complex
+def freqs_zpk(
+    z: onp.ToComplex1D,
+    p: onp.ToComplex1D,
+    k: onp.ToComplex1D,
+    worN: onp.ToComplex1D,
+) -> tuple[_Inexact1D, _Complex1D]: ...
+
+#
+@overload  # worN: real
 def freqz(
-    b: Untyped,
-    a: int = 1,
-    worN: int = 512,
-    whole: bool = False,
-    plot: Untyped | None = None,
-    fs: Untyped = ...,
+    b: onp.ToComplex | onp.ToComplexND,
+    a: onp.ToComplex | onp.ToComplexND = 1,
+    worN: op.CanIndex | onp.ToFloat1D = 512,
+    whole: op.CanBool = False,
+    plot: Callable[[_FloatND, _ComplexND], object] | None = None,
+    fs: onp.ToFloat = ...,  # 2 * pi
     include_nyquist: bool = False,
-) -> Untyped: ...
-def freqz_zpk(z: Untyped, p: Untyped, k: Untyped, worN: int = 512, whole: bool = False, fs: Untyped = ...) -> Untyped: ...
-def group_delay(system: Untyped, w: int = 512, whole: bool = False, fs: Untyped = ...) -> Untyped: ...
-def sosfreqz(sos: Untyped, worN: int = 512, whole: bool = False, fs: Untyped = ...) -> Untyped: ...
+) -> tuple[_FloatND, _ComplexND]: ...
+@overload  # worN: complex
+def freqz(
+    b: onp.ToComplex | onp.ToComplexND,
+    a: onp.ToComplex | onp.ToComplexND = 1,
+    worN: op.CanIndex | onp.ToComplex1D = 512,
+    whole: op.CanBool = False,
+    plot: Callable[[_FloatND, _ComplexND], object] | None = None,
+    fs: onp.ToFloat = ...,  # 2 * pi
+    include_nyquist: bool = False,
+) -> tuple[_InexactND, _ComplexND]: ...
+
+#
+@overload  # worN: real
+def freqz_zpk(
+    z: onp.ToComplex1D,
+    p: onp.ToComplex1D,
+    k: onp.ToComplex1D,
+    worN: op.CanIndex | onp.ToFloat1D = 512,
+    whole: op.CanBool = False,
+    fs: onp.ToFloat = ...,  # 2 * pi
+) -> tuple[_FloatND, _ComplexND]: ...
+@overload  # worN: complex
+def freqz_zpk(
+    z: onp.ToComplex1D,
+    p: onp.ToComplex1D,
+    k: onp.ToComplex1D,
+    worN: onp.ToComplex1D,
+    whole: op.CanBool = False,
+    fs: onp.ToFloat = ...,  # 2 * pi
+) -> tuple[_InexactND, _ComplexND]: ...
+
+#
+@overload  # w: real
+def group_delay(
+    system: tuple[onp.ToComplex1D, onp.ToComplex1D],
+    w: op.CanIndex | onp.ToFloat1D | None = 512,
+    whole: op.CanBool = False,
+    fs: onp.ToFloat = ...,  # 2 * pi
+) -> tuple[_Float1D, _Float1D]: ...
+@overload  # w: complex
+def group_delay(
+    system: tuple[onp.ToComplex1D, onp.ToComplex1D],
+    w: onp.ToComplex1D,
+    whole: op.CanBool = False,
+    fs: onp.ToFloat = ...,  # 2 * pi
+) -> tuple[_Inexact1D, _Float1D]: ...
+
+#
+@overload  # worN: real
+def sosfreqz(
+    sos: onp.ToFloat2D,
+    worN: op.CanIndex | onp.ToFloat1D = 512,
+    whole: op.CanBool = False,
+    fs: onp.ToFloat = ...,  # 2 * pi
+) -> tuple[_Float1D, _Complex1D]: ...
+@overload  # worN: real
+def sosfreqz(
+    sos: onp.ToFloat2D,
+    worN: onp.ToComplex1D,
+    whole: op.CanBool = False,
+    fs: onp.ToFloat = ...,  # 2 * pi
+) -> tuple[_Inexact1D, _Complex1D]: ...
+
+# TODO(jorenham): https://github.com/jorenham/scipy-stubs/issues/99
+
 def tf2zpk(b: Untyped, a: Untyped) -> Untyped: ...
 def zpk2tf(z: Untyped, p: Untyped, k: Untyped) -> Untyped: ...
 def tf2sos(b: Untyped, a: Untyped, pairing: Untyped | None = None, *, analog: bool = False) -> Untyped: ...
