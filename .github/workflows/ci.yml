@@ -70,13 +70,31 @@ jobs:
       - name: setup uv
         uses: astral-sh/setup-uv@v4
 
-      - name: install
-        run: |
-          uv sync --frozen --python=$(uv run --frozen scripts/version_bounds.py python)
-          uv pip install --upgrade numpy==$(uv run --frozen scripts/version_bounds.py numpy)
+      - name: basedpyright
+        run: >
+          uv run
+          --python $(uv run scripts/version_bounds.py python)
+          --with numpy==$(uv run scripts/version_bounds.py numpy)
+          basedpyright
 
-      - name: typetest
-        run: uv run poe typetest
+      - name: basedmypy
+        run: >
+          uv run
+          --no-editable
+          --isolated
+          --python $(uv run scripts/version_bounds.py python)
+          --with numpy==$(uv run scripts/version_bounds.py numpy)
+          mypy --config-file=pyproject.toml .
 
       - name: stubtest
-        run: uv run poe stubtest
+        run: >
+          uv run
+          --no-editable
+          --isolated
+          --python $(uv run scripts/version_bounds.py python)
+          --with numpy==$(uv run scripts/version_bounds.py numpy)
+          stubtest
+          --mypy-config-file pyproject.toml
+          --allowlist .mypyignore
+          --ignore-unused-allowlist
+          scipy
