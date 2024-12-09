@@ -95,7 +95,9 @@ mdformat
     SECURITY.md
     tests/README.md
     codegen/README.md
-"""  # TODO: This is required because the exclude config only works on Python 3.13+
+"""
+# TODO: Replacewith mdformat . once `--exclude` can be used on `python<3.13`, see
+# https://github.com/hukkin/mdformat/issues/489
 _ruff_format = "ruff format"
 _ruff_check = "ruff check --show-fixes"
 repo-review = "repo-review ."
