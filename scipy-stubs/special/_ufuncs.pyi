@@ -8,6 +8,7 @@ from typing_extensions import LiteralString, Never, TypeVar, Unpack, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.typing as opt
 from scipy._typing import AnyShape, Casting, EnterNoneMixin, OrderKACF
 
 __all__ = [
@@ -964,7 +965,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     def __call__(
         self,
         x: _ToSubFloat,
-        y: complex,
+        y: opt.Just[complex],
         /,
         out: tuple[None] | None = None,
         **kwargs: Unpack[_Kw21fc2],
@@ -972,8 +973,8 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     @overload
     def __call__(
         self,
-        x: complex,
-        y: complex | _ToSubFloat,
+        x: opt.Just[complex],
+        y: opt.Just[complex] | _ToSubFloat,
         /,
         out: tuple[None] | None = None,
         **kwargs: Unpack[_Kw21fc2],
