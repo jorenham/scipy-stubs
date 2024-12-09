@@ -1,3 +1,6 @@
+# NOTE: Using `@override` on `__call__` or `freeze` in `rv_discrete` causes stubtest to crash (mypy 1.11.1 and 1.13.0)
+# mypy: disable-error-code="explicit-override, override"
+
 import abc
 from collections.abc import Callable, Iterable, Sequence
 from typing import Any, Final, Generic, Literal, TypeAlias, overload, type_check_only
@@ -397,9 +400,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         shapes: LiteralString | None = None,
         seed: spt.Seed | None = None,
     ) -> None: ...
-
-    # NOTE: Using `@override` on `__call__` or `freeze` causes stubtest to crash (mypy 1.11.1)
-    @overload  # type: ignore[explicit-override]
+    @overload
     def __call__(self, /) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
     @overload
     def __call__(
@@ -420,7 +421,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         **kwds: _ArrLike_f8_co,
     ) -> rv_continuous_frozen[Self]: ...
     #
-    @overload  # type: ignore[explicit-override]
+    @overload
     def freeze(self, /) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
     @overload
     def freeze(
@@ -745,7 +746,7 @@ class rv_continuous(_rv_mixin, rv_generic):
 
     #
     @override
-    def rvs(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def rvs(  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
         /,
         *args: _Scalar_f8_co,
@@ -790,7 +791,7 @@ class rv_discrete(_rv_mixin, rv_generic):
 
     #
     # NOTE: Using `@override` on `__call__` or `freeze` causes stubtest to crash (mypy 1.11.1)
-    @overload  # type: ignore[explicit-override]
+    @overload
     def __call__(self, /) -> rv_discrete_frozen[Self, _Scalar_f8]: ...
     @overload
     def __call__(
@@ -803,7 +804,7 @@ class rv_discrete(_rv_mixin, rv_generic):
     @overload
     def __call__(self, /, *args: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, **kwds: _ArrLike_f8_co) -> rv_discrete_frozen[Self]: ...
     #
-    @overload  # type: ignore[explicit-override]
+    @overload
     def freeze(self, /) -> rv_discrete_frozen[Self, _Scalar_f8]: ...
     @overload
     def freeze(
@@ -1005,7 +1006,7 @@ class rv_discrete(_rv_mixin, rv_generic):
 
     #
     @override
-    def rvs(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def rvs(  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
         /,
         *args: _ArrLike_f8_co,
@@ -1039,7 +1040,7 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
     def _entropy(self, /) -> _Scalar_f8: ...
     vecentropy: Final = _entropy
     @override
-    def generic_moment(self, /, n: onp.ToInt | onp.ToIntND | int | Sequence[int]) -> _Arr_f8: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def generic_moment(self, /, n: onp.ToInt | onp.ToIntND | int | Sequence[int]) -> _Arr_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
 def get_distribution_names(namespace_pairs: Iterable[tuple[str, type]], rv_base_class: type) -> _Tuple2[list[LiteralString]]: ...
 
@@ -1047,7 +1048,7 @@ def get_distribution_names(namespace_pairs: Iterable[tuple[str, type]], rv_base_
 @type_check_only
 class _rv_continuous_0(rv_continuous):
     # overrides of rv_generic
-    @override  # type: ignore[override]
+    @override
     @overload
     def stats(self, /, loc: _Scalar_f8_co, scale: _Scalar_f8_co, moment: _Moments1) -> _Scalar_f8: ...
     @overload
@@ -1078,44 +1079,44 @@ class _rv_continuous_0(rv_continuous):
     def stats(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1, *, moment: _Moments4) -> _Tuple4[_ArrLike_f8]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def entropy(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
     @overload
     def entropy(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def moment(self, /, order: int | _Scalar_i, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
     @overload
     def moment(self, /, order: int | _Scalar_i, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def median(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
     @overload
     def median(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def mean(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
     @overload
     def mean(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def var(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
     @overload
     def var(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def std(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
     @overload
     def std(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def interval(self, /, confidence: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Tuple2[_Scalar_f8]: ...
     @overload
@@ -1127,14 +1128,14 @@ class _rv_continuous_0(rv_continuous):
         scale: _ArrLike_f8_co = 1,
     ) -> _Tuple2[_Scalar_f8] | _Tuple2[_Arr_f8]: ...
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def support(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Tuple2[_Scalar_f8]: ...
     @overload
     def support(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _Tuple2[_Scalar_f8] | _Tuple2[_Arr_f8]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     # overrides of rv_continuous
-    @override  # type: ignore[override]
+    @override
     @overload
     def __call__(self, /) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
     @overload
@@ -1142,7 +1143,7 @@ class _rv_continuous_0(rv_continuous):
     @overload
     def __call__(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> rv_continuous_frozen[Self]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def freeze(self, /) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
     @overload
@@ -1151,7 +1152,7 @@ class _rv_continuous_0(rv_continuous):
     def freeze(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> rv_continuous_frozen[Self]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def pdf(self, /, x: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
     @overload
@@ -1159,7 +1160,7 @@ class _rv_continuous_0(rv_continuous):
     @overload
     def pdf(self, /, x: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def logpdf(self, /, x: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
     @overload
@@ -1168,7 +1169,7 @@ class _rv_continuous_0(rv_continuous):
     def logpdf(self, /, x: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def cdf(self, /, x: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
     @overload
@@ -1176,7 +1177,7 @@ class _rv_continuous_0(rv_continuous):
     @overload
     def cdf(self, /, x: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def logcdf(self, /, x: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
     @overload
@@ -1185,7 +1186,7 @@ class _rv_continuous_0(rv_continuous):
     def logcdf(self, /, x: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def sf(self, /, x: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
     @overload
@@ -1193,7 +1194,7 @@ class _rv_continuous_0(rv_continuous):
     @overload
     def sf(self, /, x: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def logsf(self, /, x: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
     @overload
@@ -1202,7 +1203,7 @@ class _rv_continuous_0(rv_continuous):
     def logsf(self, /, x: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def ppf(self, /, q: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
     @overload
@@ -1210,7 +1211,7 @@ class _rv_continuous_0(rv_continuous):
     @overload
     def ppf(self, /, q: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     #
-    @override  # type: ignore[override]
+    @override
     @overload
     def isf(self, /, q: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
     @overload
@@ -1220,7 +1221,7 @@ class _rv_continuous_0(rv_continuous):
 
     #
     @override
-    def rvs(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def rvs(  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
         /,
         loc: _Scalar_f8_co = 0,

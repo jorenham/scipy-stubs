@@ -73,27 +73,8 @@ Funding = "https://github.com/sponsors/jorenham"
 packages = ["scipy-stubs"]
 
 [tool.hatch.build.targets.sdist]
-exclude = [
-    "/.cache",
-    "/.github",
-    "/.mypy_cache",
-    "/.pytest_cache",
-    "/.ruff_cache",
-    "/.tox",
-    "/.venv",
-    "/.vscode",
-    "/dist",
-    "/tests",
-    ".editorconfig",
-    ".gitignore",
-    ".mardownlint.yaml",
-    ".pre-commit-config.yaml",
-    ".python-version",
-    "CODE_OF_CONDUCT.md",
-    "README.md",
-    "SECURITY.md",
-    "uv.lock",
-]
+exclude = ["CODE_OF_CONDUCT.md", "README.md", "SECURITY.md", "uv.lock"]
+force-include = {".mypyignore" = ".mypyignore"}  # for scipy-stubs-feedstock
 
 [tool.poe.tasks]
 clean = """
@@ -188,37 +169,54 @@ stubPath = "."
 pythonVersion = "3.10"
 pythonPlatform = "All"
 typeCheckingMode = "strict"
-# ignore comments
-enableTypeIgnoreComments = false
-reportIgnoreCommentWithoutRule = true       # based
-reportUnnecessaryTypeIgnoreComment = true
-# imports
-reportImplicitRelativeImport = true         # based
-reportPrivateLocalImportUsage = false       # based
-reportShadowedImports = true
-# classes and inheritance
-reportUnsafeMultipleInheritance = true      # based
-reportImplicitAbstractClass = true          # based
-reportImplicitOverride = true
-reportUnannotatedClassAttribute = true      # based
-# linting
+
 deprecateTypingAliases = true
-enableReachabilityAnalysis = false          # discouraged
+enableReachabilityAnalysis = false
+enableTypeIgnoreComments = false
+failOnWarnings = true  # based
 reportCallInDefaultInitializer = true
-reportImplicitStringConcatenation = true    # based
+reportIgnoreCommentWithoutRule = true  # based
+reportImplicitAbstractClass = true  # based
+reportImplicitOverride = true
+reportImplicitRelativeImport = true  # based
+reportImplicitStringConcatenation = true  # based
+reportImportCycles = true
+reportInvalidCast = true  # based
+reportInvalidStubStatement = false  # see execution environments
+reportMissingSuperCall = true
+reportPrivateLocalImportUsage = true  # based
 reportPrivateUsage = false
-# narrowing
-strictGenericNarrowing = true               # based
-# TODO: enable once nothing is `Untyped`
-reportAny = false                           # based
-reportExplicitAny = false                   # based
-# environment
-failOnWarnings = true                       # based
-executionEnvironments = [
-    {root = "scipy-stubs", reportDeprecated = false, reportUnsafeMultipleInheritance = false, reportUnreachable = false},
-    {root = "codegen", reportAny = true, reportExplicitAny = true, reportInvalidCast = true, reportPrivateUsage = true},
-    {root = "tests", reportAny = true, reportInvalidCast = true, reportInvalidStubStatement = false},
-]
+reportPropertyTypeMismatch = false
+reportShadowedImports = true
+reportUnannotatedClassAttribute = true  # based
+reportUninitializedInstanceVariable = true
+# reportUnnecessaryTypeIgnoreComment = false  # mypy compat
+reportUnnecessaryTypeIgnoreComment = true  # mypy compat
+strictGenericNarrowing = true  # based
+
+[[executionEnvironments]]
+root = "scipy-stubs"
+reportInvalidStubStatement = true
+reportUnusedCallResult = true
+
+[[executionEnvironments]]
+root = "codegen"
+reportAny = true  # based
+reportExplicitAny = true  # based
+reportInvalidStubStatement = true
+reportPrivateUsage = true
+reportUnreachable = true
+reportUnsafeMultipleInheritance = true  # based
+reportUnusedCallResult = true
+
+[[executionEnvironments]]
+root = "tests"
+reportAny = true  # based
+reportExplicitAny = true  # based
+reportPrivateUsage = true
+reportUnreachable = true
+reportUnsafeMultipleInheritance = true  # based
+
 
 [tool.repo-review]
 ignore = [

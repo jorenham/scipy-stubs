@@ -1,4 +1,4 @@
-# mypy: disable-error-code="explicit-override, override"
+# mypy: disable-error-code="explicit-override, override, misc"
 # pyright: reportIncompatibleMethodOverride=false, reportIncompatibleVariableOverride=false
 
 from types import EllipsisType
@@ -293,7 +293,7 @@ class _KwBase(TypedDict, total=False):
     where: onp.ToBool | onp.ToBoolND
 
 @type_check_only
-class _UFunc(np.ufunc, Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]  # pyright: ignore[reportGeneralTypeIssues]
+class _UFunc(np.ufunc, Generic[_NameT_co, _IdentityT_co]):  # pyright: ignore[reportGeneralTypeIssues]
     @property
     @override
     def __class__(self, /) -> type[np.ufunc]: ...
@@ -322,7 +322,7 @@ class _WithoutBinOps:
     def outer(self, /, *args: object, **kwargs: object) -> Never: ...
 
 @type_check_only
-class _UFunc11(_WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc11(_WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def nin(self, /) -> L[1]: ...
@@ -334,7 +334,7 @@ class _UFunc11(_WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_
     def nargs(self, /) -> L[2]: ...
 
 @type_check_only
-class _UFunc21(_UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc21(_UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def nin(self, /) -> L[2]: ...
@@ -346,7 +346,7 @@ class _UFunc21(_UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_c
     def nargs(self, /) -> L[3]: ...
 
 @type_check_only
-class _UFunc31(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc31(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def nin(self, /) -> L[3]: ...
@@ -358,7 +358,7 @@ class _UFunc31(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Gen
     def nargs(self, /) -> L[4]: ...
 
 @type_check_only
-class _UFunc41(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc41(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def nin(self, /) -> L[4]: ...
@@ -436,7 +436,7 @@ class _Kw41f(_KwBase, TypedDict, total=False):
 
 @final
 @type_check_only
-class _UFunc11f(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc11f(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def ntypes(self, /) -> L[2]: ...
@@ -458,7 +458,7 @@ class _UFunc11f(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
 
 @final
 @type_check_only
-class _UFunc11g(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc11g(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def ntypes(self, /) -> L[3]: ...
@@ -480,7 +480,7 @@ class _UFunc11g(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
 
 @final
 @type_check_only
-class _UFunc11c(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc11c(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def ntypes(self, /) -> L[2]: ...
@@ -502,7 +502,7 @@ class _UFunc11c(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
 
 @final
 @type_check_only
-class _UFunc11fc(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc11fc(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def ntypes(self, /) -> L[4]: ...
@@ -528,7 +528,7 @@ class _UFunc11fc(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
 
 @final
 @type_check_only
-class _UFunc21ld(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc21ld(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def ntypes(self, /) -> L[1]: ...
@@ -602,7 +602,7 @@ class _UFunc21ld(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
 
 @final
 @type_check_only
-class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def ntypes(self, /) -> L[2, 3]: ...
@@ -762,7 +762,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
 
 @final
 @type_check_only
-class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def ntypes(self, /) -> L[4, 5]: ...
@@ -946,7 +946,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
 
 @final
 @type_check_only
-class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def ntypes(self, /) -> L[4]: ...
@@ -1206,7 +1206,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
 
 @final
 @type_check_only
-class _UFunc31f(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc31f(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def ntypes(self, /) -> L[2, 3]: ...
@@ -1277,7 +1277,7 @@ class _UFunc31f(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
 
 @final
 @type_check_only
-class _UFunc41f(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
+class _UFunc41f(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def ntypes(self, /) -> L[2]: ...
