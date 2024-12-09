@@ -1,5 +1,5 @@
 # mypy: disable-error-code="explicit-override, override, misc"
-# pyright: reportIncompatibleMethodOverride=false, reportIncompatibleVariableOverride=false
+# pyright: reportIncompatibleMethodOverride=false, reportIncompatibleVariableOverride=false, reportImplicitOverride=false
 
 from types import EllipsisType
 from typing import Any, Generic, Literal as L, TypeAlias, TypedDict, final, overload, type_check_only
@@ -597,7 +597,6 @@ class _UFunc21ld(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
     def accumulate(self, /, *args: Never, **kwargs: Never) -> Never: ...
     @override
     def reduce(self, /, *args: Never, **kwargs: Never) -> Never: ...
-    @override
     def reduceat(self, /, *args: Never, **kwargs: Never) -> Never: ...
 
 @final
@@ -732,7 +731,6 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         where: onp.ToBool | onp.ToBoolND = True,
     ) -> _OutT: ...
     #
-    @override
     def reduceat(
         self,
         /,
@@ -910,7 +908,6 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         where: onp.ToBool | onp.ToBoolND = True,
     ) -> _OutT: ...
     #
-    @override
     def reduceat(
         self,
         /,

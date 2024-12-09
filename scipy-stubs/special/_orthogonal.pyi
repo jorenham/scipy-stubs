@@ -1,9 +1,7 @@
-from collections.abc import Callable, Sequence
+from collections.abc import Callable
 from typing import Any, Literal, TypeAlias, overload
-from typing_extensions import TypeVar
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 
 _PointsWeights: TypeAlias = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
@@ -57,8 +55,6 @@ __all__ = [
     "us_roots",
 ]
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-
 # mypy: disable-error-code="explicit-override"
 class orthopoly1d(np.poly1d):
     limits: tuple[float, float]
@@ -68,8 +64,8 @@ class orthopoly1d(np.poly1d):
     def __init__(
         self,
         /,
-        roots: npt.ArrayLike,
-        weights: npt.ArrayLike | None = None,
+        roots: onp.ToComplex1D,
+        weights: onp.ToFloat1D | None = None,
         hn: float = 1.0,
         kn: float = 1.0,
         wfunc: Callable[[float], float] | None = None,
@@ -84,11 +80,9 @@ class orthopoly1d(np.poly1d):
     @overload
     def __call__(self, /, v: onp.ToComplex) -> np.inexact[Any]: ...
     @overload
-    def __call__(  # pyright: ignore[reportIncompatibleMethodOverride]
-        self,
-        /,
-        v: onp.CanArray[_ShapeT, np.dtype[np.floating[Any] | np.integer[Any] | np.bool_]] | Sequence[npt.ArrayLike],
-    ) -> onp.Array[_ShapeT, np.floating[Any]]: ...
+    def __call__(self, /, v: onp.ToFloatND) -> onp.ArrayND[np.floating[Any]]: ...
+    @overload
+    def __call__(self, /, v: onp.ToComplexND) -> onp.ArrayND[np.inexact[Any]]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
 @overload
 def roots_jacobi(n: onp.ToInt, alpha: onp.ToFloat, beta: onp.ToFloat, mu: Literal[False] = ...) -> _PointsWeights: ...

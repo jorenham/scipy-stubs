@@ -2,7 +2,6 @@ from collections.abc import Callable, Mapping, Sequence
 from typing import Final, Literal, type_check_only
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from ._optimize import OptimizeResult
 from ._typing import Bound, MethodLinprog
@@ -28,16 +27,16 @@ def linprog_terse_callback(res: _OptimizeResult) -> None: ...
 
 # TODO: Tighen these array-like types
 def linprog(
-    c: npt.ArrayLike,
-    A_ub: npt.ArrayLike | None = None,
-    b_ub: npt.ArrayLike | None = None,
-    A_eq: npt.ArrayLike | None = None,
-    b_eq: npt.ArrayLike | None = None,
+    c: onp.ToScalar | onp.ToArrayND,
+    A_ub: onp.ToScalar | onp.ToArrayND | None = None,
+    b_ub: onp.ToScalar | onp.ToArrayND | None = None,
+    A_eq: onp.ToScalar | onp.ToArrayND | None = None,
+    b_eq: onp.ToScalar | onp.ToArrayND | None = None,
     bounds: Bound = (0, None),
     method: MethodLinprog = "highs",
     callback: Callable[[_OptimizeResult], None] | None = None,
     # TODO: `TypedDict`
     options: Mapping[str, object] | None = None,
-    x0: npt.ArrayLike | None = None,
-    integrality: npt.ArrayLike | None = None,
+    x0: onp.ToScalar | onp.ToArrayND | None = None,
+    integrality: onp.ToScalar | onp.ToArrayND | None = None,
 ) -> _OptimizeResult: ...
