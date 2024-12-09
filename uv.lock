@@ -236,19 +236,6 @@ wheels = [
 ]
 
 [[package]]
-name = "mdformat-pyproject"
-version = "0.0.2"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "mdformat" },
-    { name = "tomli", marker = "python_full_version < '3.11'" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/5f/b0/6c7342afcb5518891f3c908f9e9f73fc399b727fe5b8133b31c8d468eae6/mdformat_pyproject-0.0.2.tar.gz", hash = "sha256:1638c4be0d239f49eea72089aafd06dc4ec603068ccc4868f91f0958b15b82c8", size = 5550 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/bb/d7/0598e8de54d439ee7deda6bcba7816b36aaf28c26542ff9a0510cc29c079/mdformat_pyproject-0.0.2-py3-none-any.whl", hash = "sha256:e0791a335e53264d5589be353c519e230ac555b64fa076005bc64ca037717710", size = 4761 },
-]
-
-[[package]]
 name = "mdformat-tables"
 version = "1.0.0"
 source = { registry = "https://pypi.org/simple" }
@@ -699,7 +686,6 @@ dev = [
     { name = "libcst" },
     { name = "mdformat-gfm" },
     { name = "mdformat-gfm-alerts" },
-    { name = "mdformat-pyproject" },
     { name = "poethepoet" },
     { name = "pre-commit" },
     { name = "pre-commit-uv" },
@@ -710,7 +696,6 @@ dev = [
 lint = [
     { name = "mdformat-gfm" },
     { name = "mdformat-gfm-alerts" },
-    { name = "mdformat-pyproject" },
     { name = "ruff" },
     { name = "scipy" },
     { name = "sp-repo-review", extra = ["cli"] },
@@ -738,7 +723,6 @@ dev = [
     { name = "libcst", specifier = ">=1.5.1,<2" },
     { name = "mdformat-gfm", specifier = ">=0.3.7,<1" },
     { name = "mdformat-gfm-alerts", specifier = ">=1.0.1,<2" },
-    { name = "mdformat-pyproject", specifier = ">=0.0.2,<1" },
     { name = "poethepoet", specifier = ">=0.31.1,<1" },
     { name = "pre-commit", specifier = ">=4.0.1,<5" },
     { name = "pre-commit-uv", specifier = ">=4.1.4,<5" },
@@ -749,7 +733,6 @@ dev = [
 lint = [
     { name = "mdformat-gfm", specifier = ">=0.3.7,<1" },
     { name = "mdformat-gfm-alerts", specifier = ">=1.0.1,<2" },
-    { name = "mdformat-pyproject", specifier = ">=0.0.2,<1" },
     { name = "ruff", specifier = ">=0.8.2" },
     { name = "scipy", specifier = "==1.14.1" },
     { name = "sp-repo-review", extras = ["cli"], specifier = ">=2024.8.19" },

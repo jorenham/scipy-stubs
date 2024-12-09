@@ -40,7 +40,6 @@ lint = [
     {include-group = "scipy"},
     "mdformat-gfm>=0.3.7,<1",
     "mdformat-gfm-alerts>=1.0.1,<2",
-    "mdformat-pyproject>=0.0.2,<1",
     "ruff>=0.8.2",
     "sp-repo-review[cli]>=2024.8.19",
 ]
@@ -97,6 +96,8 @@ mdformat
     tests/README.md
     codegen/README.md
 """
+# TODO: Replace with `mdformat .` once `--exclude` can be used on `python<3.13`, see
+# https://github.com/hukkin/mdformat/issues/489
 _ruff_format = "ruff format"
 _ruff_check = "ruff check --show-fixes"
 repo-review = "repo-review ."
@@ -149,10 +150,6 @@ args = [
 
 [tool.typos.files]
 extend-exclude = ["*.pyi"]
-
-[tool.mdformat]
-end_of_line = "lf"
-exclude = [".tox/**", ".venv/**", "**/*.m[!d]", "**/*.[!m]d"]
 
 [tool.mypy]
 python_version = "3.10"
