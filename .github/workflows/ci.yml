@@ -94,13 +94,13 @@ jobs:
           uv add --python=$SCIPY_MIN_PY numpy==$SCIPY_MIN_NP
 
       - name: print versions
-        run: tox -e=min-versions-test
+        run: uv run --python=$SCIPY_MIN_PY tox -e=min-versions-test
 
       - name: basedmypy test
-        run: tox -e=basedmypy-tests
+        run: uv run --python=$SCIPY_MIN_PY tox -e=basedmypy-tests
 
       - name: basedpyright test
-        run: tox -e=basedpyright-tests
+        run: uv run --python=$SCIPY_MIN_PY tox -e=basedpyright-tests
 
       - name: stubtest
-        run: tox -e=stubtest
+        run: uv run --python=$SCIPY_MIN_PY tox -e=stubtest
