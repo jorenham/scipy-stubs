@@ -43,40 +43,53 @@ jobs:
       - name: basedpyright
         run: uv run poe pyright
 
-  typetest:
-    timeout-minutes: 5
+  generate-matrix:
+    name: Generate Test Matrix
     runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: setup uv
-        uses: astral-sh/setup-uv@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
 
-      - name: install
-        run: uv sync --frozen --python 3.13
-
-      - name: typetest
-        run: uv run poe typetest
-
-      - name: stubtest
-        run: uv run poe stubtest
-
-  typetest-oldest-supported-numpy:
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: setup uv
-        uses: astral-sh/setup-uv@v4
-
-      - name: install
+      - name: Install Python Dependencies
         run: |
-          uv sync --frozen --python=$(uv run --frozen scripts/version_bounds.py python)
-          uv pip install --upgrade numpy==$(uv run --frozen scripts/version_bounds.py numpy)
+          python -m pip install --upgrade pip
+          python -m pip install scipy
 
-      - name: typetest
+      - name: Generate Matrix
+        id: set-matrix
+        shell: bash
+        run: |
+          matrix=$(python scripts/generate_matrix.py | jq -c)
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+
+  typetest:
+    needs: generate-matrix
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install Dependencies
+        run: |
+          uv sync --frozen --python="${{ matrix.python }}"
+          uv pip install numpy=="${{ matrix.numpy }}"
+
+      - name: Run Type Tests
         run: uv run poe typetest
 
-      - name: stubtest
+      - name: Run Stub Tests
         run: uv run poe stubtest
