@@ -2,8 +2,7 @@ name: CI
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
   pull_request:
   workflow_dispatch:
 
@@ -11,11 +10,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
+env:
+  UV_LOCKED: true
+
 jobs:
   lint:
     timeout-minutes: 5
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -30,18 +31,23 @@ jobs:
 
       - name: setup uv
         uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          python-version: "3.13"
 
       - name: install
-        run: uv sync --frozen --python 3.13
+        run: uv sync
 
-      - name: lint
-        run: uv run poe lint
+      - name: repo-review
+        run: uv run repo-review .
 
-      - name: basedmypy
-        run: uv run poe mypy
+      - name: mdformat
+        run: uv run mdformat --check
 
-      - name: basedpyright
-        run: uv run poe pyright
+      - name: ruff
+        run: |
+          uv run ruff check --output-format=github
+          uv run ruff format --check
 
   typetest:
     timeout-minutes: 5
@@ -51,15 +57,31 @@ jobs:
 
       - name: setup uv
         uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          python-version: "3.13"
 
       - name: install
-        run: uv sync --frozen --python 3.13
+        run: uv sync --no-editable
 
-      - name: typetest
-        run: uv run poe typetest
+      - name: basedpyright
+        run: >
+          uv run --no-sync
+          basedpyright
+
+      - name: basedmypy
+        run: >
+          uv run --no-sync
+          mypy --config-file=pyproject.toml .
 
       - name: stubtest
-        run: uv run poe stubtest
+        run: >
+          uv run --no-sync
+          stubtest
+          --mypy-config-file=pyproject.toml
+          --allowlist=.mypyignore
+          --ignore-unused-allowlist
+          scipy
 
   typetest-oldest-supported-numpy:
     timeout-minutes: 5
@@ -69,32 +91,30 @@ jobs:
 
       - name: setup uv
         uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          python-version: "3.10"
+
+      - name: install
+        run: |
+          uv sync --no-editable --no-install-package numpy
+          uv pip install numpy==$(uv run --no-sync scripts/version_bounds.py numpy)
 
       - name: basedpyright
         run: >
-          uv run
-          --python $(uv run scripts/version_bounds.py python)
-          --with numpy==$(uv run scripts/version_bounds.py numpy)
+          uv run --no-sync
           basedpyright
 
       - name: basedmypy
         run: >
-          uv run
-          --no-editable
-          --isolated
-          --python $(uv run scripts/version_bounds.py python)
-          --with numpy==$(uv run scripts/version_bounds.py numpy)
+          uv run --no-sync
           mypy --config-file=pyproject.toml .
 
       - name: stubtest
         run: >
-          uv run
-          --no-editable
-          --isolated
-          --python $(uv run scripts/version_bounds.py python)
-          --with numpy==$(uv run scripts/version_bounds.py numpy)
+          uv run --no-sync
           stubtest
-          --mypy-config-file pyproject.toml
-          --allowlist .mypyignore
+          --mypy-config-file=pyproject.toml
+          --allowlist=.mypyignore
           --ignore-unused-allowlist
           scipy
