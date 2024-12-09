@@ -96,7 +96,7 @@ mdformat
     tests/README.md
     codegen/README.md
 """
-# TODO: Replacewith mdformat . once `--exclude` can be used on `python<3.13`, see
+# TODO: Replace with `mdformat .` once `--exclude` can be used on `python<3.13`, see
 # https://github.com/hukkin/mdformat/issues/489
 _ruff_format = "ruff format"
 _ruff_check = "ruff check --show-fixes"
