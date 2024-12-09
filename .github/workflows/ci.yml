@@ -31,17 +31,17 @@ jobs:
       - name: setup uv
         uses: astral-sh/setup-uv@v4
 
-      - name: install
-        run: uv sync --frozen --python 3.13
+      - name: setup tox
+        run: uv tool install tox --with tox-uv
 
       - name: lint
-        run: uv run poe lint
+        run: tox -e=lint
 
       - name: basedmypy
-        run: uv run poe mypy
+        run: tox -e=basedmypy
 
       - name: basedpyright
-        run: uv run poe pyright
+        run: tox -e=basedpyright
 
   typetest:
     timeout-minutes: 5
@@ -55,11 +55,20 @@ jobs:
       - name: install
         run: uv sync --frozen --python 3.13
 
-      - name: typetest
-        run: uv run poe typetest
+      - name: setup tox
+        run: uv tool install tox --with tox-uv
+
+      - name: print versions
+        run: tox -e=min-versions-test
+
+      - name: basedmypy test
+        run: tox -e=basedmypy-tests
+
+      - name: basedpyright test
+        run: tox -e=basedpyright-tests
 
       - name: stubtest
-        run: uv run poe stubtest
+        run: tox -e=stubtest
 
   typetest-oldest-supported-numpy:
     timeout-minutes: 5
@@ -70,13 +79,20 @@ jobs:
       - name: setup uv
         uses: astral-sh/setup-uv@v4
 
-      - name: install
-        run: |
-          uv sync --frozen --python=$(uv run --frozen scripts/version_bounds.py python)
-          uv pip install --upgrade numpy==$(uv run --frozen scripts/version_bounds.py numpy)
+      - name: setup tox
+        run: uv tool install tox --with tox-uv
 
-      - name: typetest
-        run: uv run poe typetest
+      - name: install
+        run: uv add --python=$(uv run --frozen scripts/version_bounds.py python) numpy==$(uv run --frozen scripts/version_bounds.py numpy)
+
+      - name: print versions
+        run: tox -e=min-versions-test
+
+      - name: basedmypy test
+        run: tox -e=basedmypy-tests
+
+      - name: basedpyright test
+        run: tox -e=basedpyright-tests
 
       - name: stubtest
-        run: uv run poe stubtest
+        run: tox -e=stubtest
