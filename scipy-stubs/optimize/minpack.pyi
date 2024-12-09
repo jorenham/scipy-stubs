@@ -40,7 +40,7 @@ def least_squares(
     verbose: object = ...,
     args: object = ...,
     kwargs: dict[str, object] = ...,
-) -> OptimizeResult: ...
+) -> OptimizeResult: ...  # pyright: ignore[reportDeprecated]
 @deprecated("will be removed in SciPy v2.0.0")
 def fsolve(
     func: object,
