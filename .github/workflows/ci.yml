@@ -28,42 +28,28 @@ jobs:
       - name: typos
         uses: crate-ci/typos@master
 
-      - name: setup uv
-        uses: astral-sh/setup-uv@v4
-
-      - name: install
-        run: uv sync --frozen --python 3.13
-
-      - name: lint
-        run: uv run poe lint
-
-      - name: basedmypy
-        run: uv run poe mypy
-
-      - name: basedpyright
-        run: uv run poe pyright
-
   generate-matrix:
     name: Generate Test Matrix
+    timeout-minutes: 5
     runs-on: ubuntu-latest
+
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
 
-      - name: Install Python Dependencies
+      - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install scipy
+          uv sync --frozen
 
       - name: Generate Matrix
         id: set-matrix
         shell: bash
         run: |
-          matrix=$(python scripts/generate_matrix.py | jq -c)
+          matrix=$(uv run scripts/generate_matrix.py | jq -c)
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
   typetest:
@@ -75,21 +61,25 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python }}
-
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
           uv sync --frozen --python="${{ matrix.python }}"
           uv pip install numpy=="${{ matrix.numpy }}"
 
-      - name: Run Type Tests
+      - name: Run typetest
         run: uv run poe typetest
 
-      - name: Run Stub Tests
+      - name: Run stubtest
         run: uv run poe stubtest
+
+      - name: lint
+        run: uv run poe lint
+
+      - name: basedmypy
+        run: uv run poe mypy
+
+      - name: basedpyright
+        run: uv run poe pyright

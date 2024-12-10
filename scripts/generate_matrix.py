@@ -1,4 +1,3 @@
-# !/usr/bin/env python3
 """
 Script to generate a test matrix of Python and package versions for CI testing.
 
@@ -20,37 +19,18 @@ Example:
     python generate_matrix.py numpy
 
 """
-
-import dataclasses
 import importlib.metadata
 import json
 import sys
+import typing
 import urllib.error
 import urllib.request
 from functools import lru_cache
 
+from packaging.version import parse, Version
+
 # Constants for caching
 CACHE_SIZE = 128  # Adjust as needed
-
-
-@dataclasses.dataclass(frozen=True, eq=True, order=True)
-class Version:
-    major: int
-    minor: int
-    micro: int
-
-    def __str__(self) -> str:
-        return f"{self.major}.{self.minor}.{self.micro}"
-
-    @property
-    def minor_version(self) -> tuple[int, int]:
-        return self.major, self.minor
-
-    @classmethod
-    def from_str(cls, version_str: str) -> "Version":
-        if version_str.count(".") == 1:
-            version_str += ".0"
-        return cls(*map(int, version_str.strip().split(".")))
 
 
 def get_minimum_python_version(package: str) -> Version:
@@ -66,9 +46,10 @@ def get_minimum_python_version(package: str) -> Version:
     """
     raw_version = importlib.metadata.metadata(package)["Requires-Python"]
     if "<" in raw_version:
-        raise NotImplementedError("Version specifier with upper bound not yet supported!")
+        raise NotImplementedError(
+            "Version specifier with upper bound not yet supported!")
 
-    return Version.from_str(raw_version.replace(">=", "").replace("~=", ""))
+    return parse(raw_version.replace(">=", "").replace("~=", ""))
 
 
 def get_minimum_version(package: str, dependency: str) -> Version:
@@ -87,10 +68,14 @@ def get_minimum_version(package: str, dependency: str) -> Version:
         Version(major=1, ...)
     """
     np_minimum_dep = next(
-        req for req in importlib.metadata.requires(package) if req.startswith(dependency) and " extra " not in req
+        req for req in importlib.metadata.requires(package) if
+        req.startswith(dependency) and " extra " not in req
     )
-    np_minimum_dep = next(ver for ver in np_minimum_dep.split(",") if ">" in ver)
-    return Version.from_str(np_minimum_dep.replace(dependency, "").replace(">=", "").replace(">", ""))
+    np_minimum_dep = next(
+        ver for ver in np_minimum_dep.split(",") if ">" in ver)
+    return parse(
+        np_minimum_dep.replace(dependency, "").replace(">=", "").replace(">",
+                                                                         ""))
 
 
 def get_python_versions(
@@ -116,13 +101,14 @@ def get_python_versions(
         >>> versions[0] >= Version(3, 6, 0)
         True
     """
-    data = fetch_json("https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json")
+    data = fetch_json(
+        "https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json")
 
     versions = {}
 
     for release in data[::-1]:
         try:
-            version = Version.from_str(release["version"])
+            version = parse(release["version"])
         except ValueError:
             # Skip pre-release versions
             continue
@@ -132,13 +118,13 @@ def get_python_versions(
         if max_version and version > max_version:
             continue
 
-        versions[version.minor_version] = version
+        versions[(version.major, version.minor)] = version
 
     return sorted(versions.values())
 
 
 @lru_cache(maxsize=CACHE_SIZE)
-def fetch_json(url: str) -> dict | list:
+def fetch_json(url: str) -> dict[typing.Any, typing.Any] | list[typing.Any]:
     """
     Fetch JSON data from a URL with caching.
 
@@ -158,8 +144,9 @@ def fetch_json(url: str) -> dict | list:
     """
     try:
         with urllib.request.urlopen(url) as response:  # noqa: S310
-            return json.loads(response.read().decode())
-    except urllib.error.URLError:
+            return json.loads(response.read())
+    except urllib.error.URLError as e:
+        print(f"Error fetching data from {url}: {e}", file=sys.stderr)
         sys.exit(1)
 
 
@@ -183,14 +170,9 @@ def get_package_versions(package_name: str, min_version: Version) -> list[str]:
     releases = data.get("releases", {})
     versions = {}
     for version_str in releases:
-        if any(c in version_str for c in ["a", "b", "rc", "dev"]):
-            continue  # Skip pre-releases
-        try:
-            version = Version.from_str(version_str)
-            if version >= min_version:
-                versions[version.minor_version] = version
-        except ValueError:
-            continue  # Skip invalid versions
+        version = parse(version_str)
+        if version >= min_version:
+            versions[(version.major, version.minor)] = version
 
     return sorted(versions.values())
 
@@ -208,13 +190,10 @@ def main() -> None:
     min_python_version = get_minimum_python_version(package_name)
     python_versions = get_python_versions(min_python_version)
 
-    min_package_version = max(
+    package_versions = get_package_versions(
+        dependency_name,
         get_minimum_version(package_name, dependency_name),
-        # Due to the distutils requirement we cannot use old numpy versions
-        Version(1, 26, 0),
     )
-
-    package_versions = get_package_versions(dependency_name, min_package_version)
 
     matrix = {
         "python": [str(v) for v in python_versions],
