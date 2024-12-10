@@ -2,21 +2,7 @@
 from types import ModuleType
 from typing_extensions import deprecated
 
-__all__ = [
-    "bicg",
-    "bicgstab",
-    "cg",
-    "cgs",
-    "gcrotmk",
-    "gmres",
-    "lgmres",
-    "lsmr",
-    "lsqr",
-    "minres",
-    "qmr",
-    "test",
-    "tfqmr",
-]
+__all__ = ["bicg", "bicgstab", "cg", "cgs", "gcrotmk", "gmres", "lgmres", "lsmr", "lsqr", "minres", "qmr", "test", "tfqmr"]
 
 test: ModuleType
 

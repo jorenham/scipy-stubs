@@ -1,3 +1,3 @@
-from .lobpcg import *
+from .lobpcg import lobpcg
 
 __all__ = ["lobpcg"]
