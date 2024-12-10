@@ -3,34 +3,18 @@ from types import ModuleType
 from typing import final
 from typing_extensions import deprecated
 
-__all__ = [
-    "MatrixRankWarning",
-    "SuperLU",
-    "factorized",
-    "spilu",
-    "splu",
-    "spsolve",
-    "spsolve_triangular",
-    "test",
-    "use_solver",
-]
+from . import _dsolve
+
+__all__ = ["MatrixRankWarning", "SuperLU", "factorized", "spilu", "splu", "spsolve", "spsolve_triangular", "test", "use_solver"]
 
 test: ModuleType
 
 @deprecated("will be removed in SciPy v2.0.0")
-class MatrixRankWarning(UserWarning): ...
+class MatrixRankWarning(_dsolve.MatrixRankWarning): ...
 
 @final
 @deprecated("will be removed in SciPy v2.0.0")
-class SuperLU:
-    L: object
-    U: object
-    nnz: object
-    perm_r: object
-    perm_c: object
-    shape: object
-
-    def solve(self, /, rhs: object) -> None: ...
+class SuperLU(_dsolve.SuperLU): ...  # type: ignore[misc]  # pyright: ignore[reportGeneralTypeIssues]
 
 @deprecated("will be removed in SciPy v2.0.0")
 def use_solver(**kwargs: object) -> None: ...

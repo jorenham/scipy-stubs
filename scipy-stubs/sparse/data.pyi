@@ -4,7 +4,7 @@ from typing_extensions import deprecated
 
 __all__ = ["isscalarlike", "name", "npfunc", "validateaxis"]
 
-name: Final[str]
+name: Final[str] = ...
 npfunc: object
 
 # sputils
