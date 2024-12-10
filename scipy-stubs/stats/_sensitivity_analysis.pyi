@@ -3,7 +3,6 @@ from collections.abc import Callable, Mapping, Sequence
 from typing import Any, Literal, Protocol, TypeAlias
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from scipy._typing import Seed
 from ._resampling import BootstrapResult
@@ -13,7 +12,7 @@ __all__ = ["sobol_indices"]
 _SobolKey: TypeAlias = Literal["f_A", "f_B", "f_AB"]
 _SobolMethod: TypeAlias = Callable[
     [onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]],
-    tuple[npt.ArrayLike, npt.ArrayLike],
+    tuple[onp.ToFloat | onp.ToFloatND, onp.ToFloat | onp.ToFloatND],
 ]
 
 ###
@@ -44,7 +43,7 @@ class SobolResult:
     def bootstrap(self, /, confidence_level: onp.ToFloat = 0.95, n_resamples: onp.ToInt = 999) -> BootstrapSobolResult: ...
 
 #
-def f_ishigami(x: npt.ArrayLike) -> onp.ArrayND[np.floating[Any]]: ...
+def f_ishigami(x: onp.ToFloat2D) -> onp.Array1D[np.floating[Any]]: ...
 
 #
 def sample_A_B(n: onp.ToInt, dists: Sequence[PPFDist], random_state: Seed | None = None) -> onp.ArrayND[np.float64]: ...
@@ -60,7 +59,7 @@ def saltelli_2010(
 #
 def sobol_indices(
     *,
-    func: Callable[[onp.ArrayND[np.float64]], npt.ArrayLike] | Mapping[_SobolKey, onp.ArrayND[np.number[Any]]],
+    func: Callable[[onp.Array2D[np.float64]], onp.ToComplex2D] | Mapping[_SobolKey, onp.Array2D[np.number[Any]]],
     n: onp.ToInt,
     dists: Sequence[PPFDist] | None = None,
     method: _SobolMethod | Literal["saltelli_2010"] = "saltelli_2010",

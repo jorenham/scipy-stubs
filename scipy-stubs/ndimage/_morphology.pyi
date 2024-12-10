@@ -1,7 +1,6 @@
 from typing import Literal, TypeAlias
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from ._typing import _ScalarArrayOut
 
@@ -107,7 +106,7 @@ def binary_fill_holes(
 def grey_erosion(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
-    footprint: npt.ArrayLike | None = None,
+    footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
@@ -117,7 +116,7 @@ def grey_erosion(
 def grey_dilation(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
-    footprint: npt.ArrayLike | None = None,
+    footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
@@ -127,7 +126,7 @@ def grey_dilation(
 def grey_opening(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
-    footprint: npt.ArrayLike | None = None,
+    footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
@@ -137,7 +136,7 @@ def grey_opening(
 def grey_closing(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
-    footprint: npt.ArrayLike | None = None,
+    footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
@@ -147,7 +146,7 @@ def grey_closing(
 def morphological_gradient(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
-    footprint: npt.ArrayLike | None = None,
+    footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
@@ -157,7 +156,7 @@ def morphological_gradient(
 def morphological_laplace(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
-    footprint: npt.ArrayLike | None = None,
+    footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
@@ -167,7 +166,7 @@ def morphological_laplace(
 def white_tophat(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
-    footprint: npt.ArrayLike | None = None,
+    footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
@@ -177,7 +176,7 @@ def white_tophat(
 def black_tophat(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
-    footprint: npt.ArrayLike | None = None,
+    footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
@@ -195,7 +194,7 @@ def distance_transform_bf(
 ) -> _ScalarArrayOut | onp.ArrayND[np.int32] | tuple[_ScalarArrayOut, onp.ArrayND[np.int32]]: ...
 def distance_transform_cdt(
     input: onp.ToComplex | onp.ToComplexND,
-    metric: _MetricCDT | npt.ArrayLike = "chessboard",
+    metric: _MetricCDT | onp.ToScalar | onp.ToArrayND = "chessboard",
     return_distances: onp.ToBool = True,
     return_indices: onp.ToBool = False,
     distances: onp.ArrayND[np.int32] | None = None,
@@ -203,7 +202,7 @@ def distance_transform_cdt(
 ) -> onp.ArrayND[np.int32] | tuple[onp.ArrayND[np.int32], onp.ArrayND[np.int32]]: ...
 def distance_transform_edt(
     input: onp.ToComplex | onp.ToComplexND,
-    sampling: npt.ArrayLike | None = None,
+    sampling: onp.ToScalar | onp.ToArrayND | None = None,
     return_distances: onp.ToBool = True,
     return_indices: onp.ToBool = False,
     distances: onp.ArrayND[np.float64] | None = None,

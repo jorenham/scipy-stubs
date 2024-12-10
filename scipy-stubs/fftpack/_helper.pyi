@@ -1,3 +1,6 @@
+# NOTE: this ignore is required for `numpy==1.23.5` compat
+# pyright: reportUnknownVariableType=false
+
 import numpy as np
 import optype.numpy as onp
 from numpy.fft import fftfreq, fftshift, ifftshift

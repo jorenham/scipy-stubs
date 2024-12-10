@@ -3,7 +3,6 @@ from typing import Any, Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
-import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLike, _NestedSequence
@@ -125,7 +124,7 @@ def variation(
 # catch-all in case of broad gradual types
 @overload
 def variation(
-    a: npt.ArrayLike,
+    a: onp.ToComplexND,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,

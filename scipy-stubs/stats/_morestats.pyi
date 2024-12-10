@@ -4,7 +4,6 @@ from typing import Any, Generic, Literal, NamedTuple, Protocol, TypeAlias, final
 from typing_extensions import Self, TypeVar
 
 import numpy as np
-import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from scipy._typing import Alternative, AnyBool, NanPolicy
@@ -70,7 +69,7 @@ class _ConfidenceInterval(NamedTuple):
 @type_check_only
 class _CanPlotText(Protocol):
     # NOTE: `Any` is required as return type because it's covariant, and not shouldn't be `Never`.
-    def plot(self, /, *args: float | npt.ArrayLike | str, **kwargs: object) -> Any: ...  # noqa: ANN401
+    def plot(self, /, *args: float | onp.ToFloatND | str, **kwargs: object) -> Any: ...  # noqa: ANN401
     def text(self, /, x: float, y: float, s: str, fontdict: dict[str, Any] | None = None, **kwargs: object) -> Any: ...  # noqa: ANN401
 
 @type_check_only
