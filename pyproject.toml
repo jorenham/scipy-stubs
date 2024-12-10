@@ -45,7 +45,7 @@ lint = [
 ]
 typecheck = [
     {include-group = "scipy"},
-    "basedmypy[faster-cache]>=2.8.0",
+    "basedmypy[faster-cache]>=2.8.1",
     "basedpyright>=1.22.1",
 ]
 codegen = [
