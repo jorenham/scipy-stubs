@@ -19,15 +19,16 @@ Example:
     python generate_matrix.py numpy
 
 """
+
 import importlib.metadata
 import json
 import sys
-import typing
 import urllib.error
 import urllib.request
 from functools import lru_cache
+import typing
 
-from packaging.version import parse, Version
+from packaging.version import Version, parse
 
 # Constants for caching
 CACHE_SIZE = 128  # Adjust as needed
@@ -46,8 +47,7 @@ def get_minimum_python_version(package: str) -> Version:
     """
     raw_version = importlib.metadata.metadata(package)["Requires-Python"]
     if "<" in raw_version:
-        raise NotImplementedError(
-            "Version specifier with upper bound not yet supported!")
+        raise NotImplementedError("Version specifier with upper bound not yet supported!")
 
     return parse(raw_version.replace(">=", "").replace("~=", ""))
 
@@ -68,14 +68,10 @@ def get_minimum_version(package: str, dependency: str) -> Version:
         Version(major=1, ...)
     """
     np_minimum_dep = next(
-        req for req in importlib.metadata.requires(package) if
-        req.startswith(dependency) and " extra " not in req
+        req for req in importlib.metadata.requires(package) if req.startswith(dependency) and " extra " not in req
     )
-    np_minimum_dep = next(
-        ver for ver in np_minimum_dep.split(",") if ">" in ver)
-    return parse(
-        np_minimum_dep.replace(dependency, "").replace(">=", "").replace(">",
-                                                                         ""))
+    np_minimum_dep = next(ver for ver in np_minimum_dep.split(",") if ">" in ver)
+    return parse(np_minimum_dep.replace(dependency, "").replace(">=", "").replace(">", ""))
 
 
 def get_python_versions(
@@ -101,8 +97,7 @@ def get_python_versions(
         >>> versions[0] >= Version(3, 6, 0)
         True
     """
-    data = fetch_json(
-        "https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json")
+    data = fetch_json("https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json")
 
     versions = {}
 
@@ -145,8 +140,7 @@ def fetch_json(url: str) -> dict[typing.Any, typing.Any] | list[typing.Any]:
     try:
         with urllib.request.urlopen(url) as response:  # noqa: S310
             return json.loads(response.read())
-    except urllib.error.URLError as e:
-        print(f"Error fetching data from {url}: {e}", file=sys.stderr)
+    except urllib.error.URLError:
         sys.exit(1)
 
 
