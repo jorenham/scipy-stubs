@@ -44,6 +44,7 @@ jobs:
       - name: Install dependencies
         run: |
           uv sync --frozen
+          uv pip install packaging
 
       - name: Generate Matrix
         id: set-matrix
