@@ -206,6 +206,9 @@ def main() -> None:
         for package_version, requires_python in package_versions.items():
             specifier_set = SpecifierSet(requires_python)
             if python_version in specifier_set:
+                if python_version >= Version("3.12") and package_version < Version("1.26.0"):
+                    continue
+
                 include.append(
                     {
                         "python": str(python_version),
