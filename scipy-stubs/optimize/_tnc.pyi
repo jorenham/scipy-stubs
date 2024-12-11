@@ -1,8 +1,7 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Final, Literal, TypeAlias
+from typing import Final, Literal, TypeAlias
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 
 __all__ = ["fmin_tnc"]
@@ -29,15 +28,15 @@ USERABORT: Final = 7
 RCSTRINGS: Final[dict[_ReturnCode, str]]
 
 def fmin_tnc(
-    func: Callable[..., float | np.floating[Any]] | Callable[..., tuple[float | np.floating[Any], float | np.floating[Any]]],
-    x0: npt.ArrayLike,
-    fprime: Callable[..., float | np.floating[Any]] | None = None,
+    func: Callable[..., onp.ToFloat] | Callable[..., tuple[onp.ToFloat, onp.ToFloat]],
+    x0: onp.ToFloat | onp.ToFloat1D,
+    fprime: Callable[..., onp.ToFloat] | None = None,
     args: tuple[object, ...] = (),
     approx_grad: int = 0,
     bounds: Sequence[tuple[float | None, float | None]] | None = None,
     epsilon: float = 1e-08,
-    scale: npt.ArrayLike | None = None,
-    offset: npt.ArrayLike | None = None,
+    scale: onp.ToFloat | onp.ToFloat1D | None = None,
+    offset: onp.ToFloat | onp.ToFloat1D | None = None,
     messages: int = ...,
     maxCGit: int = -1,
     maxfun: int | None = None,
@@ -50,5 +49,5 @@ def fmin_tnc(
     pgtol: float = -1,
     rescale: float = -1,
     disp: bool | None = None,
-    callback: Callable[[onp.ArrayND[np.floating[Any]]], None] | None = None,
-) -> tuple[onp.ArrayND[np.floating[Any]], int, _ReturnCode]: ...
+    callback: Callable[[onp.Array1D[np.float64]], None] | None = None,
+) -> tuple[onp.Array1D[np.float64], int, _ReturnCode]: ...

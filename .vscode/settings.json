@@ -23,5 +23,13 @@
     "--config-file=${workspaceFolder}/pyproject.toml"
   ],
   "mypy-type-checker.cwd": "${fileDirname}",
-  "mypy-type-checker.path": ["uv", "run", "--no-editable", "mypy"]
+  "mypy-type-checker.path": [
+    "uv",
+    "run",
+    "--frozen",
+    "--no-editable",
+    "--isolated",
+    "--refresh-package=scipy-stubs",
+    "mypy"
+  ]
 }

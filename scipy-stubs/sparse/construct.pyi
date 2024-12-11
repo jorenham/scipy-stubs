@@ -2,6 +2,8 @@
 import numbers
 from typing_extensions import deprecated
 
+from . import _bsr, _coo, _csc, _csr, _dia
+
 __all__ = [
     "block_diag",
     "bmat",
@@ -31,19 +33,19 @@ __all__ = [
 ]
 
 @deprecated("will be removed in SciPy v2.0.0")
-class coo_matrix: ...
+class coo_matrix(_coo.coo_matrix): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
-class csc_matrix: ...
+class csc_matrix(_csc.csc_matrix): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
-class csr_matrix: ...
+class csr_matrix(_csr.csr_matrix): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
-class dia_matrix: ...
+class dia_matrix(_dia.dia_matrix): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
-class bsr_matrix: ...
+class bsr_matrix(_bsr.bsr_matrix): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 def csr_hstack(*args: object, **kwargs: object) -> object: ...
@@ -63,13 +65,7 @@ def rng_integers(
 @deprecated("will be removed in SciPy v2.0.0")
 def vstack(blocks: object, format: object = ..., dtype: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def spdiags(
-    data: object,
-    diags: object,
-    m: object = ...,
-    n: object = ...,
-    format: object = ...,
-) -> object: ...
+def spdiags(data: object, diags: object, m: object = ..., n: object = ..., format: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def random(
     m: object,
@@ -102,13 +98,7 @@ def hstack(blocks: object, format: object = ..., dtype: object = ...) -> object:
 @deprecated("will be removed in SciPy v2.0.0")
 def eye(m: object, n: object = ..., k: object = ..., dtype: object = ..., format: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def diags(
-    diagonals: object,
-    offsets: object = ...,
-    shape: object = ...,
-    format: object = ...,
-    dtype: object = ...,
-) -> object: ...
+def diags(diagonals: object, offsets: object = ..., shape: object = ..., format: object = ..., dtype: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def bmat(blocks: object, format: object = ..., dtype: object = ...) -> object: ...
 

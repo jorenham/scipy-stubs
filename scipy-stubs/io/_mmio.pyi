@@ -2,7 +2,6 @@ from typing import Any, ClassVar, Literal, TypeAlias, TypedDict, type_check_only
 from typing_extensions import Unpack
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from scipy._typing import FileLike
 from scipy.sparse import coo_matrix, sparray, spmatrix
@@ -28,7 +27,7 @@ def mminfo(source: FileLike[bytes]) -> _Info: ...
 def mmread(source: FileLike[bytes]) -> onp.ArrayND[np.number[Any]] | coo_matrix: ...
 def mmwrite(
     target: FileLike[bytes],
-    a: spmatrix | sparray | npt.ArrayLike,
+    a: spmatrix | sparray | onp.ToArrayND,
     comment: str = "",
     field: _Field | None = None,
     precision: int | None = None,
@@ -75,7 +74,7 @@ class MMFile:
         self,
         /,
         target: FileLike[bytes],
-        a: spmatrix | sparray | npt.ArrayLike,
+        a: spmatrix | sparray | onp.ToArrayND,
         comment: str = "",
         field: _Field | None = None,
         precision: int | None = None,

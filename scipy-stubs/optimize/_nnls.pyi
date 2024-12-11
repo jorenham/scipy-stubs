@@ -1,12 +1,11 @@
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 
 __all__ = ["nnls"]
 
 def nnls(
-    A: npt.ArrayLike,
-    b: npt.ArrayLike,
+    A: onp.ToFloat2D,
+    b: onp.ToFloat2D,
     maxiter: onp.ToInt | None = None,
     *,
     atol: onp.ToFloat | None = None,

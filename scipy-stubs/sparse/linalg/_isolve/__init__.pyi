@@ -1,5 +1,5 @@
 from ._gcrotmk import gcrotmk
-from .iterative import *
+from .iterative import bicg, bicgstab, cg, cgs, gmres, qmr
 from .lgmres import lgmres
 from .lsmr import lsmr
 from .lsqr import lsqr

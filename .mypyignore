@@ -30,6 +30,10 @@ scipy\.(_lib|integrate|stats)\.((_|\w)+\.)+__replace__  # `NamedTuple` on `pytho
 scipy\.fftpack\.helper\.fftfreq
 scipy\.sparse\.(\w+)\.warn
 
+# numpy re-export with wrong annotations on numpy<1.24
+scipy.fftpack.fftfreq
+scipy.fftpack._helper.fftfreq
+
 # mypy fails recognize type-check-only ufunc subtypes as ufuncs
 # https://github.com/KotlinIsland/basedmypy/issues/816
 scipy\.special\._basic\.digamma

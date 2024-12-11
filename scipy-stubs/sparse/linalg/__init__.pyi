@@ -1,13 +1,13 @@
 from . import dsolve, eigen, interface, isolve, matfuncs
-from ._dsolve import *
-from ._eigen import *
-from ._expm_multiply import *
-from ._interface import *
-from ._isolve import *
-from ._matfuncs import *
-from ._norm import *
-from ._onenormest import *
-from ._special_sparse_arrays import *
+from ._dsolve import MatrixRankWarning, SuperLU, factorized, spilu, splu, spsolve, spsolve_triangular, use_solver
+from ._eigen import ArpackError, ArpackNoConvergence, eigs, eigsh, lobpcg, svds
+from ._expm_multiply import expm_multiply
+from ._interface import LinearOperator, aslinearoperator
+from ._isolve import bicg, bicgstab, cg, cgs, gcrotmk, gmres, lgmres, lsmr, lsqr, minres, qmr, tfqmr
+from ._matfuncs import expm, inv, matrix_power
+from ._norm import norm
+from ._onenormest import onenormest
+from ._special_sparse_arrays import LaplacianNd
 
 __all__ = [
     "ArpackError",

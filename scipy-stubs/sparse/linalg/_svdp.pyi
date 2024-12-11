@@ -1,6 +1,6 @@
 from typing import Literal
 
-import numpy.typing as npt
+import optype.numpy as onp
 from scipy._typing import Seed, UntypedArray
 from scipy.sparse import sparray, spmatrix
 from ._interface import LinearOperator
@@ -8,14 +8,14 @@ from ._interface import LinearOperator
 __all__ = ["_svdp"]
 
 def _svdp(
-    A: npt.ArrayLike | sparray | spmatrix | LinearOperator,
+    A: onp.ToComplex2D | sparray | spmatrix | LinearOperator,
     k: int,
     which: Literal["LM", "SM"] = "LM",
     irl_mode: bool = True,
     kmax: int | None = None,
     compute_u: bool = True,
     compute_v: bool = True,
-    v0: npt.ArrayLike | None = None,
+    v0: onp.ToComplexND | None = None,
     full_output: bool = False,
     tol: float = 0,
     delta: float | None = None,

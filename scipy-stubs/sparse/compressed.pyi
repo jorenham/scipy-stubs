@@ -3,6 +3,8 @@ import operator
 import sys
 from typing_extensions import deprecated
 
+from . import _base, _index
+
 __all__ = [
     "IndexMixin",
     "SparseEfficiencyWarning",
@@ -31,12 +33,10 @@ __all__ = [
 ]
 
 @deprecated("will be removed in SciPy v2.0.0")
-class SparseEfficiencyWarning(UserWarning): ...
+class SparseEfficiencyWarning(_base.SparseEfficiencyWarning): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
-class IndexMixin:
-    def __getitem__(self, key: object, /) -> object: ...
-    def __setitem__(self, key: object, x: object, /) -> None: ...
+class IndexMixin(_index.IndexMixin): ...
 
 if sys.version_info >= (3, 12):
     @deprecated("will be removed in SciPy v2.0.0")

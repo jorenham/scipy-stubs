@@ -17,16 +17,15 @@ class _InfoDict(TypedDict):
     nit: int
     warnflag: Literal[0, 1, 2]
 
-#
+###
 
-class LbfgsInvHessProduct(LinearOperator):
+class LbfgsInvHessProduct(LinearOperator[np.float64]):
     sk: Final[onp.Array2D[np.float64]]
     yk: Final[onp.Array2D[np.float64]]
     n_corrs: Final[int]
     rho: Final[float | np.float64]
 
     def __init__(self, /, sk: onp.ToFloat2D, yk: onp.ToFloat2D) -> None: ...
-    def _matvec(self, /, x: onp.ToFloat1D | onp.ToFloat2D) -> onp.Array1D[np.float64]: ...
     def todense(self, /) -> onp.Array2D[np.float64]: ...
 
 def fmin_l_bfgs_b(
