@@ -185,6 +185,10 @@ from 🌑 (100% `Untyped`) to 🌕 (0% `Untyped`).
 
 Currently, only `signal` and `sparse` contain `Untyped` annotations.
 
+## Podcast (AI generated)
+
+<https://github.com/user-attachments/assets/adbec640-2329-488b-bda2-d9687c6b1f7b>
+
 ## See also
 
 - [scipy/scipy#21614](https://github.com/scipy/scipy/issues/21614): On why `scipy-stubs` is a separate package, and not part of
