@@ -1,3 +1,4 @@
+from typing import Literal
 from typing_extensions import override
 
 from scipy._typing import Untyped
@@ -8,7 +9,13 @@ from ._matrix import spmatrix
 
 __all__ = ["csr_array", "csr_matrix", "isspmatrix_csr"]
 
+# TODO(jorenham): generic dtype
 class _csr_base(_cs_matrix):
+    @property
+    @override
+    def format(self, /) -> Literal["csr"]: ...
+
+    #
     @override
     def tobsr(self, /, blocksize: tuple[int, int] | None = None, copy: bool = True) -> _bsr_base: ...
 
