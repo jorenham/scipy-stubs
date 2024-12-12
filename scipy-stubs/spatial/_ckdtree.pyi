@@ -1,7 +1,6 @@
 from typing import Literal as L, TypeAlias, overload, type_check_only
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from scipy.sparse import coo_matrix, dok_matrix
 
@@ -66,12 +65,12 @@ class cKDTree(_CythonMixin):
     def __init__(
         self,
         /,
-        data: npt.ArrayLike,
+        data: onp.ToComplexND,
         leafsize: int = ...,
         compact_nodes: bool = ...,
         copy_data: bool = ...,
         balanced_tree: bool = ...,
-        boxsize: npt.ArrayLike | None = ...,
+        boxsize: onp.ToFloat2D | None = ...,
     ) -> None: ...
 
     #
@@ -176,7 +175,7 @@ class cKDTree(_CythonMixin):
         self,
         /,
         other: cKDTree,
-        r: npt.ArrayLike,
+        r: onp.ToFloat | onp.ToFloatND,
         p: onp.ToFloat = 2.0,
         weights: tuple[None, None] | None = ...,
         cumulative: bool = True,
@@ -186,7 +185,7 @@ class cKDTree(_CythonMixin):
         self,
         /,
         other: cKDTree,
-        r: npt.ArrayLike,
+        r: onp.ToFloat | onp.ToFloatND,
         p: onp.ToFloat,
         weights: _Weights,
         cumulative: bool = True,
@@ -196,7 +195,7 @@ class cKDTree(_CythonMixin):
         self,
         /,
         other: cKDTree,
-        r: npt.ArrayLike,
+        r: onp.ToFloat | onp.ToFloatND,
         p: onp.ToFloat = 2.0,
         *,
         weights: _Weights,

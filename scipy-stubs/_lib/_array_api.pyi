@@ -3,7 +3,6 @@ from typing import Any, Literal, Protocol, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from scipy._typing import AnyBool, OrderKACF
 
@@ -55,7 +54,7 @@ class _HasArrayAttrs(_HasShape[_ShapeT_co], _HasDevice[_DeviceT_co], Protocol[_S
 ###
 
 Array: TypeAlias = _HasArrayAttrs[_ShapeT_co, _DTypeT_co, _DeviceT_co]
-ArrayLike: TypeAlias = Array | npt.ArrayLike
+ArrayLike: TypeAlias = Array | onp.ToFloatND
 
 def _asarray(
     array: ArrayLike,

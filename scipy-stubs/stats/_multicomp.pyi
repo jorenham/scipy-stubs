@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import Any, Literal
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from scipy._typing import Alternative, Seed
 from ._common import ConfidenceInterval
@@ -28,8 +27,8 @@ class DunnettResult:
     def confidence_interval(self, /, confidence_level: onp.ToFloat = 0.95) -> ConfidenceInterval: ...
 
 def dunnett(
-    *samples: npt.ArrayLike,
-    control: npt.ArrayLike,
+    *samples: onp.ToFloat1D,
+    control: onp.ToFloat1D,
     alternative: Alternative = "two-sided",
     random_state: Seed | None = None,
 ) -> DunnettResult: ...

@@ -2,8 +2,7 @@ name: CI
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
   pull_request:
   workflow_dispatch:
 
@@ -11,11 +10,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
+env:
+  UV_LOCKED: true
+
 jobs:
   lint:
     timeout-minutes: 5
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -30,6 +31,9 @@ jobs:
 
       - name: setup uv
         uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          python-version: "3.13"
 
       - name: setup tox
         run: uv tool install tox --with tox-uv
@@ -51,9 +55,12 @@ jobs:
 
       - name: setup uv
         uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          python-version: "3.13"
 
       - name: install
-        run: uv sync --frozen --python 3.13
+        run: uv sync --no-editable
 
       - name: setup tox
         run: uv tool install tox --with tox-uv
@@ -78,15 +85,18 @@ jobs:
 
       - name: setup uv
         uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+          python-version: "3.10"
 
       - name: setup tox
         run: uv tool install tox --with tox-uv
 
       - name: set env scipy py
-        run: echo "SCIPY_MIN_PY=$(uv run --frozen scripts/version_bounds.py python)" >> $GITHUB_ENV
+        run: echo "SCIPY_MIN_PY=$(uv run scripts/version_bounds.py python)" >> $GITHUB_ENV
 
       - name: set env scipy numpy
-        run: echo "SCIPY_MIN_NP=$(uv run --frozen scripts/version_bounds.py numpy)" >> $GITHUB_ENV
+        run: echo "SCIPY_MIN_NP=$(uv run scripts/version_bounds.py numpy)" >> $GITHUB_ENV
 
       - name: install
         run: |

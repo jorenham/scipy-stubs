@@ -2,7 +2,6 @@ from typing import Any, Literal, TypeAlias
 from typing_extensions import Self
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 from . import distributions as distributions
 from ._typing import BaseBunch
@@ -33,13 +32,13 @@ class TheilslopesResult(BaseBunch[np.float64, np.float64, np.float64, np.float64
 
 def _find_repeats(arr: onp.ArrayND[np.number[Any]]) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]: ...
 def siegelslopes(
-    y: npt.ArrayLike,
-    x: npt.ArrayLike | None = None,
+    y: onp.ToFloatND,
+    x: onp.ToFloat1D | None = None,
     method: _Method = "hierarchical",
 ) -> SiegelslopesResult: ...
 def theilslopes(
-    y: npt.ArrayLike,
-    x: npt.ArrayLike | None = None,
+    y: onp.ToFloatND,
+    x: onp.ToFloat1D | None = None,
     alpha: float | np.floating[Any] = 0.95,
     method: _Method = "separate",
 ) -> TheilslopesResult: ...

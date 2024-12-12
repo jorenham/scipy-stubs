@@ -51,7 +51,7 @@ def norm(
 ) -> np.float64: ...
 @overload  # float64-coercible array, keepdims: True (positional)
 def norm(
-    a: onp.CanArrayND[_SubScalar, _ShapeT],
+    a: onp.ArrayND[_SubScalar, _ShapeT],
     ord: _Order | None,
     axis: _Axis | None,
     keepdims: _Truthy,
@@ -59,7 +59,7 @@ def norm(
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # float64-coercible array, keepdims: True (keyword)
 def norm(
-    a: onp.CanArrayND[_SubScalar, _ShapeT],
+    a: onp.ArrayND[_SubScalar, _ShapeT],
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
@@ -85,7 +85,7 @@ def norm(
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # shaped inexact array, keepdims: True (positional)
 def norm(
-    a: onp.CanArrayND[np.inexact[_NBitT], _ShapeT],
+    a: onp.ArrayND[np.inexact[_NBitT], _ShapeT],
     ord: _Order | None,
     axis: _Axis | None,
     keepdims: _Truthy,
@@ -93,7 +93,7 @@ def norm(
 ) -> onp.ArrayND[np.floating[_NBitT], _ShapeT]: ...
 @overload  # shaped inexact array, keepdims: True (keyword)
 def norm(
-    a: onp.CanArrayND[np.inexact[_NBitT], _ShapeT],
+    a: onp.ArrayND[np.inexact[_NBitT], _ShapeT],
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
@@ -144,7 +144,7 @@ def norm(
 ) -> onp.ArrayND[np.floating[Any]]: ...
 @overload  # catch-all
 def norm(
-    a: npt.ArrayLike,
+    a: onp.ToArrayND,
     ord: _Order | None = None,
     axis: _Axis | None = None,
     keepdims: AnyBool = False,

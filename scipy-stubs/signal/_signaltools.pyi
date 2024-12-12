@@ -1,7 +1,7 @@
 from typing import Literal
 from typing_extensions import deprecated
 
-import numpy.typing as npt
+import optype.numpy as onp
 from scipy._typing import Untyped, UntypedArray
 
 __all__ = [
@@ -84,7 +84,7 @@ def detrend(
     data: UntypedArray,
     axis: int = -1,
     type: Literal["linear", "constant"] = "linear",
-    bp: npt.ArrayLike | int = 0,
+    bp: onp.ToJustInt | onp.ToJustIntND = 0,
     overwrite_data: bool = False,
 ) -> UntypedArray: ...
 def lfilter_zi(b: Untyped, a: Untyped) -> Untyped: ...

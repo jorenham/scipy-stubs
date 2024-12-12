@@ -1,21 +1,43 @@
-from scipy._typing import Untyped
+from typing import Any, TypeVar, overload
+
+import numpy as np
+import optype as op
+import optype.numpy as onp
+from scipy.sparse.linalg._interface import LinearOperator
 
 __all__ = ["expm_multiply"]
 
-def traceest(A: Untyped, m3: Untyped, seed: Untyped | None = None) -> Untyped: ...
-def expm_multiply(
-    A: Untyped,
-    B: Untyped,
-    start: Untyped | None = None,
-    stop: Untyped | None = None,
-    num: Untyped | None = None,
-    endpoint: Untyped | None = None,
-    traceA: Untyped | None = None,
-) -> Untyped: ...
+_SCT = TypeVar("_SCT", bound=np.inexact[Any])
 
-class LazyOperatorNormInfo:
-    def __init__(self, /, A: Untyped, A_1_norm: Untyped | None = None, ell: int = 2, scale: int = 1) -> None: ...
-    def set_scale(self, /, scale: Untyped) -> None: ...
-    def onenorm(self, /) -> Untyped: ...
-    def d(self, /, p: Untyped) -> Untyped: ...
-    def alpha(self, /, p: Untyped) -> Untyped: ...
+###
+
+@overload  # 1-d
+def expm_multiply(
+    A: LinearOperator[_SCT],
+    B: onp.Array1D[_SCT | np.integer[Any] | np.float16 | np.bool_],
+    start: onp.ToFloat | None = None,
+    stop: onp.ToFloat | None = None,
+    num: op.CanIndex | None = None,
+    endpoint: bool | None = None,
+    traceA: onp.ToComplex | None = None,
+) -> onp.Array1D[_SCT]: ...
+@overload  # 2-d
+def expm_multiply(
+    A: LinearOperator[_SCT],
+    B: onp.Array2D[_SCT | np.integer[Any] | np.float16 | np.bool_],
+    start: onp.ToFloat | None = None,
+    stop: onp.ToFloat | None = None,
+    num: op.CanIndex | None = None,
+    endpoint: bool | None = None,
+    traceA: onp.ToComplex | None = None,
+) -> onp.Array2D[_SCT]: ...
+@overload  # 1-d or 2-d
+def expm_multiply(
+    A: LinearOperator[_SCT],
+    B: onp.ArrayND[_SCT | np.float16 | np.integer[Any] | np.bool_],
+    start: onp.ToFloat | None = None,
+    stop: onp.ToFloat | None = None,
+    num: op.CanIndex | None = None,
+    endpoint: bool | None = None,
+    traceA: onp.ToComplex | None = None,
+) -> onp.Array1D[_SCT] | onp.Array2D[_SCT]: ...

@@ -1,7 +1,6 @@
 from typing import Any, Literal, TypeAlias
 
 import numpy as np
-import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 
@@ -15,8 +14,10 @@ def savgol_coeffs(
     pos: int | None = None,
     use: Literal["conv", "dot"] = "conv",
 ) -> onp.Array1D[np.floating[Any]]: ...
+
+#
 def savgol_filter(
-    x: npt.ArrayLike,
+    x: onp.ToFloatND,
     window_length: int,
     polyorder: int,
     deriv: int = 0,

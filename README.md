@@ -177,13 +177,17 @@ from 🌑 (100% `Untyped`) to 🌕 (0% `Untyped`).
 | `odr`         |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | `optimize`    |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | `signal`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
-| `sparse`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌒   |
+| `sparse`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌓   |
 | `spatial`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | `special`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | `stats`       |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | *`_lib`*      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 
 Currently, only `signal` and `sparse` contain `Untyped` annotations.
+
+## Podcast (AI generated)
+
+<https://github.com/user-attachments/assets/adbec640-2329-488b-bda2-d9687c6b1f7b>
 
 ## See also
 

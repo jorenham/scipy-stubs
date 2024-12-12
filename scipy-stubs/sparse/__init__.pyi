@@ -1,16 +1,33 @@
 from . import base, bsr, compressed, construct, coo, csc, csgraph, csr, data, dia, dok, extract, lil, linalg, sparsetools, sputils
-from ._base import *
-from ._bsr import *
-from ._construct import *
-from ._coo import *
-from ._csc import *
-from ._csr import *
-from ._dia import *
-from ._dok import *
-from ._extract import *
-from ._lil import *
+from ._base import SparseEfficiencyWarning, SparseWarning, issparse, isspmatrix, sparray
+from ._bsr import bsr_array, bsr_matrix, isspmatrix_bsr
+from ._construct import (
+    block_array,
+    block_diag,
+    bmat,
+    diags,
+    diags_array,
+    eye,
+    eye_array,
+    hstack,
+    identity,
+    kron,
+    kronsum,
+    rand,
+    random,
+    random_array,
+    spdiags,
+    vstack,
+)
+from ._coo import coo_array, coo_matrix, isspmatrix_coo
+from ._csc import csc_array, csc_matrix, isspmatrix_csc
+from ._csr import csr_array, csr_matrix, isspmatrix_csr
+from ._dia import dia_array, dia_matrix, isspmatrix_dia
+from ._dok import dok_array, dok_matrix, isspmatrix_dok
+from ._extract import find, tril, triu
+from ._lil import isspmatrix_lil, lil_array, lil_matrix
 from ._matrix import spmatrix
-from ._matrix_io import *
+from ._matrix_io import load_npz, save_npz
 
 __all__ = [
     "SparseEfficiencyWarning",
