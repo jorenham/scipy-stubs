@@ -9,7 +9,7 @@ import optype.typing as opt
 from ._base import _spbase
 from ._data import _data_matrix, _minmax_mixin
 from ._index import IndexMixin
-from ._typing import Index1D, Int, Scalar, ToShape2D
+from ._typing import Index1D, Int, Scalar, ToShape
 
 __all__: list[str] = []
 
@@ -55,7 +55,7 @@ class _cs_matrix(_data_matrix[_SCT], _minmax_mixin[_SCT], IndexMixin[_SCT], Gene
         self,
         /,
         arg1: _ToMatrix[_SCT] | _ToData[_SCT],
-        shape: ToShape2D | None = None,
+        shape: ToShape | None = None,
         dtype: None = None,
         copy: bool = False,
     ) -> None: ...
@@ -63,7 +63,7 @@ class _cs_matrix(_data_matrix[_SCT], _minmax_mixin[_SCT], IndexMixin[_SCT], Gene
     def __init__(
         self: _cs_matrix[np.float64],
         /,
-        arg1: ToShape2D,
+        arg1: ToShape,
         shape: None = None,
         dtype: None = None,
         copy: bool = False,
@@ -73,7 +73,7 @@ class _cs_matrix(_data_matrix[_SCT], _minmax_mixin[_SCT], IndexMixin[_SCT], Gene
         self: _cs_matrix[np.bool_],
         /,
         arg1: _ToMatrixPy[bool],
-        shape: ToShape2D | None = None,
+        shape: ToShape | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
     ) -> None: ...
@@ -82,7 +82,7 @@ class _cs_matrix(_data_matrix[_SCT], _minmax_mixin[_SCT], IndexMixin[_SCT], Gene
         self: _cs_matrix[np.int_],
         /,
         arg1: _ToMatrixPy[opt.JustInt],
-        shape: ToShape2D | None = None,
+        shape: ToShape | None = None,
         dtype: type[opt.JustInt] | onp.AnyIntPDType | None = None,
         copy: bool = False,
     ) -> None: ...
@@ -91,7 +91,7 @@ class _cs_matrix(_data_matrix[_SCT], _minmax_mixin[_SCT], IndexMixin[_SCT], Gene
         self: _cs_matrix[np.float64],
         /,
         arg1: _ToMatrixPy[opt.Just[float]],
-        shape: ToShape2D | None = None,
+        shape: ToShape | None = None,
         dtype: type[opt.Just[float]] | onp.AnyFloat64DType | None = None,
         copy: bool = False,
     ) -> None: ...
@@ -100,7 +100,7 @@ class _cs_matrix(_data_matrix[_SCT], _minmax_mixin[_SCT], IndexMixin[_SCT], Gene
         self: _cs_matrix[np.complex128],
         /,
         arg1: _ToMatrixPy[opt.Just[complex]],
-        shape: ToShape2D | None = None,
+        shape: ToShape | None = None,
         dtype: type[opt.Just[complex]] | onp.AnyComplex128DType | None = None,
         copy: bool = False,
     ) -> None: ...
@@ -109,7 +109,7 @@ class _cs_matrix(_data_matrix[_SCT], _minmax_mixin[_SCT], IndexMixin[_SCT], Gene
         self,
         /,
         arg1: onp.ToComplexND,
-        shape: ToShape2D | None,
+        shape: ToShape | None,
         dtype: _ToDType[_SCT],
         copy: bool = False,
     ) -> None: ...
@@ -118,7 +118,7 @@ class _cs_matrix(_data_matrix[_SCT], _minmax_mixin[_SCT], IndexMixin[_SCT], Gene
         self,
         /,
         arg1: onp.ToComplexND,
-        shape: ToShape2D | None = None,
+        shape: ToShape | None = None,
         *,
         dtype: _ToDType[_SCT],
         copy: bool = False,

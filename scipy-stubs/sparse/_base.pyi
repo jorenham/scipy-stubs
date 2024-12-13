@@ -23,6 +23,7 @@ from ._typing import (
     Float,
     Index1D,
     Int,
+    Matrix,
     Scalar,
     SPFormat,
     ToDType,
@@ -39,8 +40,6 @@ _T = TypeVar("_T")
 _OutT = TypeVar("_OutT", bound=onp.ArrayND)
 _SCT = TypeVar("_SCT", bound=Scalar)
 _SCT_co = TypeVar("_SCT_co", bound=Scalar, default=Scalar, covariant=True)
-
-_Matrix: TypeAlias = np.matrix[tuple[int, int], np.dtype[_SCT]]
 
 _ToSparseFromPy: TypeAlias = Sequence[Sequence[_T]] | Sequence[_T]
 _ToSparseFromArrayLike: TypeAlias = onp.CanArrayND[_SCT_co] | _ToSparseFromPy[_SCT_co]
@@ -215,11 +214,11 @@ class _spbase(Generic[_SCT_co]):
 
     #
     @overload  # self: spmatrix, out: None
-    def todense(self: spmatrix, /, order: OrderCF | None = None, out: None = None) -> _Matrix[_SCT_co]: ...
+    def todense(self: spmatrix, /, order: OrderCF | None = None, out: None = None) -> Matrix[_SCT_co]: ...
     @overload  # self: spmatrix, out: array (positional)
-    def todense(self: spmatrix, /, order: OrderCF | None, out: onp.ArrayND[_SCT]) -> _Matrix[_SCT]: ...
+    def todense(self: spmatrix, /, order: OrderCF | None, out: onp.ArrayND[_SCT]) -> Matrix[_SCT]: ...
     @overload  # self: spmatrix, out: array (keyword)
-    def todense(self: spmatrix, /, order: OrderCF | None = None, *, out: onp.ArrayND[_SCT]) -> _Matrix[_SCT]: ...
+    def todense(self: spmatrix, /, order: OrderCF | None = None, *, out: onp.ArrayND[_SCT]) -> Matrix[_SCT]: ...
     @overload  # out: None
     def todense(self, /, order: OrderCF | None = None, out: None = None) -> onp.Array2D[_SCT_co]: ...
     @overload  # out: array (positional)

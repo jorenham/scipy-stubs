@@ -15,7 +15,7 @@ __all__ = ["coo_array", "coo_matrix", "isspmatrix_coo"]
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Scalar, default=Any)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], covariant=True, default=tuple[int] | tuple[int, int])
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int], covariant=True)
 
 _ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
@@ -24,7 +24,7 @@ _ToData: TypeAlias = tuple[onp.ArrayND[_SCT], tuple[onp.ArrayND[Int]] | tuple[on
 
 ###
 
-class _coo_base(_data_matrix[_SCT], _minmax_mixin[_SCT], Generic[_SCT, _ShapeT_co]):
+class _coo_base(_data_matrix[_SCT], _minmax_mixin[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]):
     data: onp.Array1D[_SCT]
     coords: tuple[Index1D] | tuple[Index1D, Index1D]
     has_canonical_format: bool
