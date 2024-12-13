@@ -167,6 +167,7 @@ def fetch_json(url: str) -> object:
 def get_available_package_versions(package_name: str, min_version: Version) -> dict[Version, str]:
     """
     Get available package versions from PyPI starting from the specified minimum version,
+    but only include the latest micro version within each minor version series,
     along with their 'requires_python' specifiers.
 
     Args:
@@ -174,7 +175,8 @@ def get_available_package_versions(package_name: str, min_version: Version) -> d
         min_version (Version): The minimum version to include.
 
     Returns:
-        dict[Version, str]: A mapping from package versions to their 'requires_python' specifier.
+        dict[Version, str]: A mapping from the latest package versions in each minor version
+                            series to their 'requires_python' specifier.
 
     Raises:
         RuntimeError: If no 'requires_python' is found for a package version.
@@ -186,11 +188,12 @@ def get_available_package_versions(package_name: str, min_version: Version) -> d
     )
 
     releases = data.get("releases", {})
-    versions: dict[Version, str] = {}
+    latest_versions: dict[tuple[int, int], tuple[Version, str]] = {}
     for version_str, release_files in releases.items():
         version = parse(version_str)
         if version < min_version:
             continue
+
             # Get 'requires_python' for this version
         requires_python = None
         for file_info in release_files:
@@ -200,11 +203,16 @@ def get_available_package_versions(package_name: str, min_version: Version) -> d
                     break
 
         if requires_python is None:
-            raise RuntimeError(f"No 'requires_python' found for {package_name} {version}")
+            # Skip versions without 'requires_python'
+            continue
 
-        versions[version] = requires_python
+        key = (version.major, version.minor)
+        # Update to latest version within the minor version series
+        if key not in latest_versions or version > latest_versions[key][0]:
+            latest_versions[key] = (version, requires_python)
 
-    return versions
+            # Extract the versions and requires_python from the latest_versions dict
+    return dict(latest_versions.values())
 
 
 def main() -> None:
