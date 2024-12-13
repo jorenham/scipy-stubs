@@ -14,8 +14,7 @@ from ._typing import Int, Scalar, ToShape2D
 __all__: list[str] = []
 
 _T = TypeVar("_T")
-_SCT = TypeVar("_SCT", bound=Scalar)
-_SCT_co = TypeVar("_SCT_co", bound=Scalar, default=Scalar, covariant=True)
+_SCT = TypeVar("_SCT", bound=Scalar, default=Any)
 
 _ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
@@ -29,8 +28,8 @@ _ToData: TypeAlias = _ToData2[_SCT] | _ToData3[_SCT]
 
 ###
 
-class _cs_matrix(_data_matrix[_SCT_co], _minmax_mixin[_SCT_co], IndexMixin[_SCT_co], Generic[_SCT_co]):
-    data: onp.Array[Any, _SCT_co]  # the `Any` shape is needed for `numpy<2.1`
+class _cs_matrix(_data_matrix[_SCT], _minmax_mixin[_SCT], IndexMixin[_SCT], Generic[_SCT]):
+    data: onp.Array[Any, _SCT]  # the `Any` shape is needed for `numpy<2.1`
     indices: onp.Array1D[np.int32]
     indptr: onp.Array1D[np.int32]
 
@@ -55,7 +54,7 @@ class _cs_matrix(_data_matrix[_SCT_co], _minmax_mixin[_SCT_co], IndexMixin[_SCT_
     def __init__(
         self,
         /,
-        arg1: _ToMatrix[_SCT_co] | _ToData[_SCT_co],
+        arg1: _ToMatrix[_SCT] | _ToData[_SCT],
         shape: ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -111,7 +110,7 @@ class _cs_matrix(_data_matrix[_SCT_co], _minmax_mixin[_SCT_co], IndexMixin[_SCT_
         /,
         arg1: onp.ToComplexND,
         shape: ToShape2D | None,
-        dtype: _ToDType[_SCT_co],
+        dtype: _ToDType[_SCT],
         copy: bool = False,
     ) -> None: ...
     @overload  # dtype: <known> (keyword)
@@ -121,7 +120,7 @@ class _cs_matrix(_data_matrix[_SCT_co], _minmax_mixin[_SCT_co], IndexMixin[_SCT_
         arg1: onp.ToComplexND,
         shape: ToShape2D | None = None,
         *,
-        dtype: _ToDType[_SCT_co],
+        dtype: _ToDType[_SCT],
         copy: bool = False,
     ) -> None: ...
 

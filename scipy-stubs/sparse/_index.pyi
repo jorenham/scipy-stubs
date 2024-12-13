@@ -8,7 +8,7 @@ import optype.numpy as onp
 from ._base import _spbase
 from ._typing import Complex, Float, Int, Scalar
 
-_SCT_co = TypeVar("_SCT_co", bound=Scalar, default=Scalar, covariant=True)
+_SCT = TypeVar("_SCT", bound=Scalar, default=Any)
 
 _ToInt: TypeAlias = str | op.CanInt | op.CanIndex | op.CanTrunc | Buffer
 _ToFloat: TypeAlias = str | op.CanFloat | op.CanIndex | Buffer
@@ -34,13 +34,15 @@ _ToSlice2D: TypeAlias = (
 
 INT_TYPES: tuple[type[int], type[np.integer[Any]]] = ...
 
-class IndexMixin(Generic[_SCT_co]):
+class IndexMixin(Generic[_SCT]):
     @overload
-    def __getitem__(self, ix: _ToIndex2D, /) -> _SCT_co: ...
+    def __getitem__(self, ix: _ToIndex2D, /) -> _SCT: ...
     @overload
     def __getitem__(self, ixs: _ToSlice2D, /) -> Self: ...
 
     #
+    @overload
+    def __setitem__(self, key: _ToIndex2D | _ToSlice2D, x: _SCT, /) -> None: ...
     @overload
     def __setitem__(self: IndexMixin[Int], key: _ToIndex2D, x: _ToInt, /) -> None: ...
     @overload
