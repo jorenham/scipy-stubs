@@ -3,13 +3,14 @@ from typing import Any, Generic, Literal, TypeAlias, overload
 from typing_extensions import Self, TypeIs, TypeVar, override
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
 import optype.typing as opt
 from ._base import _spbase, sparray
 from ._csr import csr_array, csr_matrix
 from ._index import IndexMixin
 from ._matrix import spmatrix
-from ._typing import Scalar, ToShape2D
+from ._typing import Index1D, Scalar, ToShape2D
 
 __all__ = ["isspmatrix_lil", "lil_array", "lil_matrix"]
 
@@ -127,5 +128,11 @@ class lil_array(_lil_base[_SCT], sparray, Generic[_SCT]):
 class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):  # type: ignore[misc]
     @override
     def getrow(self, /, i: onp.ToJustInt) -> csr_matrix[_SCT]: ...
+
+    # NOTE: using `@override` together with `@overload` causes stubtest to crash...
+    @overload  # type: ignore[explicit-override]
+    def getnnz(self, /, axis: None = None) -> int: ...
+    @overload
+    def getnnz(self, /, axis: op.CanIndex) -> Index1D: ...
 
 def isspmatrix_lil(x: object) -> TypeIs[lil_matrix]: ...
