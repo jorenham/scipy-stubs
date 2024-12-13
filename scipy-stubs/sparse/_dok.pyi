@@ -17,6 +17,7 @@ __all__ = ["dok_array", "dok_matrix", "isspmatrix_dok"]
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Scalar, default=Any)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], covariant=True, default=tuple[int] | tuple[int, int])
 
 _ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
@@ -26,13 +27,16 @@ _Key: TypeAlias = tuple[onp.ToJustInt] | tuple[onp.ToJustInt, onp.ToJustInt]
 
 ###
 
-# TODO(jorenham): Make generic on `shape`
-class _dok_base(_spbase[_SCT], IndexMixin[_SCT], dict[_Key, _SCT], Generic[_SCT]):
+class _dok_base(_spbase[_SCT], IndexMixin[_SCT], dict[_Key, _SCT], Generic[_SCT, _ShapeT_co]):
     dtype: np.dtype[_SCT]
 
     @property
     @override
     def format(self, /) -> Literal["dok"]: ...
+    #
+    @property
+    @override
+    def shape(self, /) -> _ShapeT_co: ...
 
     #
     @overload  # matrix-like (known dtype), dtype: None
@@ -135,9 +139,14 @@ class _dok_base(_spbase[_SCT], IndexMixin[_SCT], dict[_Key, _SCT], Generic[_SCT]
     #
     def conjtransp(self, /) -> Self: ...
 
-class dok_array(_dok_base[_SCT], sparray, Generic[_SCT]): ...
+class dok_array(_dok_base[_SCT, _ShapeT_co], sparray, Generic[_SCT, _ShapeT_co]): ...
 
-class dok_matrix(spmatrix[_SCT], _dok_base[_SCT], Generic[_SCT]):
+class dok_matrix(_dok_base[_SCT, tuple[int, int]], spmatrix[_SCT], Generic[_SCT]):
+    @property
+    @override
+    def ndim(self, /) -> Literal[2]: ...
+
+    #
     @override
     def get(self, key: tuple[onp.ToJustInt, onp.ToJustInt], /, default: onp.ToComplex = 0.0) -> _SCT: ...
     @override

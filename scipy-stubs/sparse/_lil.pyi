@@ -124,7 +124,7 @@ class lil_array(_lil_base[_SCT], sparray, Generic[_SCT]):
     @override
     def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT]: ...
 
-class lil_matrix(spmatrix[_SCT], _lil_base[_SCT], Generic[_SCT]):
+class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):  # type: ignore[misc]
     @override
     def getrow(self, /, i: onp.ToJustInt) -> csr_matrix[_SCT]: ...
 
