@@ -9,7 +9,7 @@ import optype.typing as opt
 from ._base import _spbase
 from ._data import _data_matrix, _minmax_mixin
 from ._index import IndexMixin
-from ._typing import Int, Scalar, ToShape2D
+from ._typing import Index1D, Int, Scalar, ToShape2D
 
 __all__: list[str] = []
 
@@ -30,8 +30,8 @@ _ToData: TypeAlias = _ToData2[_SCT] | _ToData3[_SCT]
 
 class _cs_matrix(_data_matrix[_SCT], _minmax_mixin[_SCT], IndexMixin[_SCT], Generic[_SCT]):
     data: onp.Array[Any, _SCT]  # the `Any` shape is needed for `numpy<2.1`
-    indices: onp.Array1D[np.int32]
-    indptr: onp.Array1D[np.int32]
+    indices: Index1D
+    indptr: Index1D
 
     @property
     @override

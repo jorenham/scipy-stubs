@@ -4,8 +4,9 @@ from typing_extensions import TypeAliasType
 
 import numpy as np
 import optype as op
+import optype.numpy as onp
 
-__all__ = "Complex", "Float", "Int", "SPFormat", "Scalar", "ToShape", "ToShape1D", "ToShape2D"
+__all__ = "Complex", "Float", "Index1D", "Int", "SPFormat", "Scalar", "ToShape", "ToShape1D", "ToShape2D"
 
 # NOTE: This is roughly speaking equivalent to `[u]int8 | [u]int16 | [u]int32 | [u]int64` (on most modern platforms)
 Int: TypeAlias = np.integer[Any]
@@ -27,3 +28,7 @@ SPFormat: TypeAlias = Literal["bsr", "coo", "csc", "csr", "dia", "dok", "lil"]
 ToShape1D: TypeAlias = tuple[op.CanIndex]
 ToShape2D: TypeAlias = tuple[op.CanIndex, op.CanIndex]
 ToShape: TypeAlias = ToShape1D | ToShape2D
+
+###
+
+Index1D: TypeAlias = onp.Array1D[np.int32 | np.int64]

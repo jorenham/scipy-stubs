@@ -5,11 +5,10 @@ from typing_extensions import TypeIs, TypeVar, override
 import numpy as np
 import optype.numpy as onp
 import optype.typing as opt
-from scipy._typing import Untyped
 from ._base import _spbase, sparray
 from ._data import _data_matrix
 from ._matrix import spmatrix
-from ._typing import Int, Scalar, ToShape2D
+from ._typing import Index1D, Int, Scalar, ToShape2D
 
 __all__ = ["dia_array", "dia_matrix", "isspmatrix_dia"]
 
@@ -25,7 +24,7 @@ _ToData: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Int]]
 
 class _dia_base(_data_matrix[_SCT], Generic[_SCT]):
     data: onp.Array2D[_SCT]
-    offsets: Untyped
+    offsets: Index1D
 
     @property
     @override

@@ -9,7 +9,7 @@ import optype.typing as opt
 from ._base import _spbase, sparray
 from ._data import _data_matrix, _minmax_mixin
 from ._matrix import spmatrix
-from ._typing import Int, Scalar, ToShape2D
+from ._typing import Index1D, Int, Scalar, ToShape2D
 
 __all__ = ["coo_array", "coo_matrix", "isspmatrix_coo"]
 
@@ -26,7 +26,7 @@ _ToData: TypeAlias = tuple[onp.ArrayND[_SCT], tuple[onp.ArrayND[Int]] | tuple[on
 # TODO(jorenham): Make generic on `shape`
 class _coo_base(_data_matrix[_SCT], _minmax_mixin[_SCT], Generic[_SCT]):
     data: onp.Array1D[_SCT]
-    coords: tuple[onp.Array1D[np.int32]] | tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]]
+    coords: tuple[Index1D] | tuple[Index1D, Index1D]
     has_canonical_format: bool
 
     @property
@@ -34,12 +34,12 @@ class _coo_base(_data_matrix[_SCT], _minmax_mixin[_SCT], Generic[_SCT]):
     def format(self, /) -> Literal["coo"]: ...
     #
     @property
-    def row(self, /) -> onp.Array1D[np.int32]: ...
+    def row(self, /) -> Index1D: ...
     @row.setter
     def row(self, new_row: onp.ToInt1D, /) -> None: ...
     #
     @property
-    def col(self, /) -> onp.Array1D[np.int32]: ...
+    def col(self, /) -> Index1D: ...
     @col.setter
     def col(self, new_col: onp.ToInt1D, /) -> None: ...
 
@@ -129,6 +129,6 @@ class coo_matrix(spmatrix[_SCT], _coo_base[_SCT], Generic[_SCT]):
     @overload  # type: ignore[explicit-override]
     def getnnz(self, /, axis: None = None) -> int: ...
     @overload
-    def getnnz(self, /, axis: op.CanIndex) -> onp.Array1D[np.intp]: ...
+    def getnnz(self, /, axis: op.CanIndex) -> Index1D: ...
 
 def isspmatrix_coo(x: object) -> TypeIs[coo_matrix]: ...
