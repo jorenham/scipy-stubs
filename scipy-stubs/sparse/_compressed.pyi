@@ -1,20 +1,38 @@
 import abc
-from typing import Literal
-from typing_extensions import override
+from collections.abc import Sequence
+from typing import Any, Generic, Literal, TypeAlias, overload
+from typing_extensions import Self, TypeVar, override
 
-import optype as op
-from scipy._typing import Untyped
-from ._coo import _coo_base
+import numpy as np
+import optype.numpy as onp
+import optype.typing as opt
+from ._base import _spbase
 from ._data import _data_matrix, _minmax_mixin
 from ._index import IndexMixin
+from ._typing import Int, Scalar, ToShape2D
 
 __all__: list[str] = []
 
-# TODO(jorenham): generic dtype
-class _cs_matrix(_data_matrix, _minmax_mixin, IndexMixin):
-    data: Untyped
-    indices: Untyped
-    indptr: Untyped
+_T = TypeVar("_T")
+_SCT = TypeVar("_SCT", bound=Scalar)
+_SCT_co = TypeVar("_SCT_co", bound=Scalar, default=Scalar, covariant=True)
+
+_ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
+_ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
+_ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
+
+_ToData2B: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Int]]  # bsr
+_ToData2C: TypeAlias = tuple[onp.ArrayND[_SCT], tuple[onp.ArrayND[Int], onp.ArrayND[Int]]]  # csc, csr
+_ToData2: TypeAlias = _ToData2B[_SCT] | _ToData2C[_SCT]
+_ToData3: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Int], onp.ArrayND[Int]]
+_ToData: TypeAlias = _ToData2[_SCT] | _ToData3[_SCT]
+
+###
+
+class _cs_matrix(_data_matrix[_SCT_co], _minmax_mixin[_SCT_co], IndexMixin[_SCT_co], Generic[_SCT_co]):
+    data: onp.Array[Any, _SCT_co]  # the `Any` shape is needed for `numpy<2.1`
+    indices: onp.Array1D[np.int32]
+    indptr: onp.Array1D[np.int32]
 
     @property
     @override
@@ -25,20 +43,85 @@ class _cs_matrix(_data_matrix, _minmax_mixin, IndexMixin):
     @property
     def has_canonical_format(self, /) -> bool: ...
     @has_canonical_format.setter
-    def has_canonical_format(self, /, val: bool) -> None: ...
+    def has_canonical_format(self, val: bool, /) -> None: ...
     #
     @property
     def has_sorted_indices(self, /) -> bool: ...
     @has_sorted_indices.setter
-    def has_sorted_indices(self, /, val: bool) -> None: ...
+    def has_sorted_indices(self, val: bool, /) -> None: ...
 
     #
+    @overload  # matrix-like (known dtype), dtype: None
     def __init__(
         self,
         /,
-        arg1: Untyped,
-        shape: tuple[op.CanIndex, op.CanIndex] | None = None,
-        dtype: Untyped | None = None,
+        arg1: _ToMatrix[_SCT_co] | _ToData[_SCT_co],
+        shape: ToShape2D | None = None,
+        dtype: None = None,
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: None
+    def __init__(
+        self: _cs_matrix[np.float64],
+        /,
+        arg1: ToShape2D,
+        shape: None = None,
+        dtype: None = None,
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # matrix-like builtins.bool, dtype: type[bool] | None
+    def __init__(
+        self: _cs_matrix[np.bool_],
+        /,
+        arg1: _ToMatrixPy[bool],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyBoolDType | None = None,
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # matrix-like builtins.int, dtype: type[int] | None
+    def __init__(
+        self: _cs_matrix[np.int_],
+        /,
+        arg1: _ToMatrixPy[opt.JustInt],
+        shape: ToShape2D | None = None,
+        dtype: type[opt.JustInt] | onp.AnyIntPDType | None = None,
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # matrix-like builtins.float, dtype: type[float] | None
+    def __init__(
+        self: _cs_matrix[np.float64],
+        /,
+        arg1: _ToMatrixPy[opt.Just[float]],
+        shape: ToShape2D | None = None,
+        dtype: type[opt.Just[float]] | onp.AnyFloat64DType | None = None,
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
+    def __init__(
+        self: _cs_matrix[np.complex128],
+        /,
+        arg1: _ToMatrixPy[opt.Just[complex]],
+        shape: ToShape2D | None = None,
+        dtype: type[opt.Just[complex]] | onp.AnyComplex128DType | None = None,
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # dtype: <known> (positional)
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplexND,
+        shape: ToShape2D | None,
+        dtype: _ToDType[_SCT_co],
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # dtype: <known> (keyword)
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplexND,
+        shape: ToShape2D | None = None,
+        *,
+        dtype: _ToDType[_SCT_co],
         copy: bool = False,
     ) -> None: ...
 
@@ -47,15 +130,11 @@ class _cs_matrix(_data_matrix, _minmax_mixin, IndexMixin):
     def count_nonzero(self, /, axis: None = None) -> int: ...
 
     #
-    def check_format(self, /, full_check: bool = True) -> Untyped: ...
-    def eliminate_zeros(self, /) -> Untyped: ...
-    def sum_duplicates(self, /) -> Untyped: ...
-    def sorted_indices(self, /) -> Untyped: ...
-
-    #
+    def sorted_indices(self, /) -> Self: ...
     def sort_indices(self, /) -> None: ...
-    def prune(self, /) -> None: ...
 
     #
-    @override
-    def tocoo(self, /, copy: bool = True) -> _coo_base: ...
+    def check_format(self, /, full_check: bool = True) -> None: ...
+    def eliminate_zeros(self, /) -> None: ...
+    def sum_duplicates(self, /) -> None: ...
+    def prune(self, /) -> None: ...
