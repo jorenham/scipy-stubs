@@ -13,7 +13,7 @@ _SCT = TypeVar("_SCT", bound=Scalar, default=Any)
 
 ###
 
-class _csc_base(_cs_matrix[_SCT], Generic[_SCT]):
+class _csc_base(_cs_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     @property
     @override
     def format(self, /) -> Literal["csc"]: ...

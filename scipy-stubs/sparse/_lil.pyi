@@ -10,7 +10,7 @@ from ._base import _spbase, sparray
 from ._csr import csr_array, csr_matrix
 from ._index import IndexMixin
 from ._matrix import spmatrix
-from ._typing import Index1D, Scalar, ToShape2D
+from ._typing import Index1D, Scalar, ToDTypeBool, ToDTypeComplex, ToDTypeFloat, ToDTypeInt, ToShape2D
 
 __all__ = ["isspmatrix_lil", "lil_array", "lil_matrix"]
 
@@ -54,7 +54,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         /,
         arg1: ToShape2D,
         shape: None = None,
-        dtype: None = None,
+        dtype: ToDTypeFloat | None = None,
         copy: bool = False,
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: type[bool] | None
@@ -63,7 +63,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         /,
         arg1: _ToMatrixPy[bool],
         shape: ToShape2D | None = None,
-        dtype: onp.AnyBoolDType | None = None,
+        dtype: ToDTypeBool | None = None,
         copy: bool = False,
     ) -> None: ...
     @overload  # matrix-like builtins.int, dtype: type[int] | None
@@ -72,7 +72,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         /,
         arg1: _ToMatrixPy[opt.JustInt],
         shape: ToShape2D | None = None,
-        dtype: type[opt.JustInt] | onp.AnyIntPDType | None = None,
+        dtype: ToDTypeInt | None = None,
         copy: bool = False,
     ) -> None: ...
     @overload  # matrix-like builtins.float, dtype: type[float] | None
@@ -81,7 +81,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         /,
         arg1: _ToMatrixPy[opt.Just[float]],
         shape: ToShape2D | None = None,
-        dtype: type[opt.Just[float]] | onp.AnyFloat64DType | None = None,
+        dtype: ToDTypeFloat | None = None,
         copy: bool = False,
     ) -> None: ...
     @overload  # matrix-like builtins.complex, dtype: type[complex] | None
@@ -90,7 +90,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         /,
         arg1: _ToMatrixPy[opt.Just[complex]],
         shape: ToShape2D | None = None,
-        dtype: type[opt.Just[complex]] | onp.AnyComplex128DType | None = None,
+        dtype: ToDTypeComplex | None = None,
         copy: bool = False,
     ) -> None: ...
     @overload  # dtype: <known> (positional)
@@ -119,11 +119,11 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
 
     #
     def getrowview(self, /, i: int) -> Self: ...
-    def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT] | csr_matrix[_SCT]: ...
+    def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT, tuple[int, int]] | csr_matrix[_SCT]: ...
 
 class lil_array(_lil_base[_SCT], sparray, Generic[_SCT]):
     @override
-    def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT]: ...
+    def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT, tuple[int, int]]: ...
 
 class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):  # type: ignore[misc]
     @override

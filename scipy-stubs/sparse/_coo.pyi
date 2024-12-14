@@ -5,23 +5,33 @@ from typing import Any, Generic, Literal, TypeAlias, overload
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
+import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 import optype.typing as opt
 from ._base import _spbase, sparray
 from ._data import _data_matrix, _minmax_mixin
 from ._matrix import spmatrix
-from ._typing import Index1D, Int, Scalar, ToShape, ToShape1D, ToShape2D
+from ._typing import (
+    Index1D,
+    Int,
+    Scalar,
+    ToDType,
+    ToDTypeBool,
+    ToDTypeComplex,
+    ToDTypeFloat,
+    ToDTypeInt,
+    ToShape,
+    ToShape1D,
+    ToShape2D,
+)
 
 __all__ = ["coo_array", "coo_matrix", "isspmatrix_coo"]
 
-_T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Scalar, default=Any)
+_SCT0 = TypeVar("_SCT0", bound=Scalar)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int], covariant=True)
 
-_ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
-_ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
-_ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 _ToData: TypeAlias = tuple[onp.ArrayND[_SCT], tuple[onp.ArrayND[Int]] | tuple[onp.ArrayND[Int], onp.ArrayND[Int]]]
 
 ###
@@ -54,9 +64,18 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
     def __init__(
         self,
         /,
-        arg1: _ToMatrix[_SCT] | _ToData[_SCT],
-        shape: ToShape | None = None,
-        dtype: None = None,
+        arg1: _spbase[_SCT, _ShapeT_co],
+        shape: _ShapeT_co | None = None,
+        dtype: ToDType[_SCT] | None = None,
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # matrix-like (known dtype), dtype: None
+    def __init__(
+        self,
+        /,
+        arg1: _ToData[_SCT],
+        shape: _ShapeT_co | None = None,
+        dtype: ToDType[_SCT] | None = None,
         copy: bool = False,
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: None
@@ -64,8 +83,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         self: coo_array[np.float64, tuple[int]],
         /,
         arg1: ToShape1D,
-        shape: None = None,
-        dtype: None = None,
+        shape: ToShape1D | None = None,
+        dtype: ToDTypeFloat | None = None,
         copy: bool = False,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: None
@@ -73,63 +92,127 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         self: _coo_base[np.float64, tuple[int, int]],
         /,
         arg1: ToShape2D,
-        shape: None = None,
-        dtype: None = None,
+        shape: ToShape2D | None = None,
+        dtype: ToDTypeFloat | None = None,
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # vector-like builtins.bool, dtype: type[bool] | None
+    def __init__(
+        self: _coo_base[np.bool_, tuple[int]],
+        /,
+        arg1: Sequence[bool],
+        shape: ToShape1D | None = None,
+        dtype: ToDTypeBool | None = None,
         copy: bool = False,
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: type[bool] | None
     def __init__(
-        self: _coo_base[np.bool_],
+        self: _coo_base[np.bool_, tuple[int, int]],
         /,
-        arg1: _ToMatrixPy[bool],
-        shape: ToShape | None = None,
-        dtype: onp.AnyBoolDType | None = None,
+        arg1: Sequence[Sequence[bool]],
+        shape: ToShape2D | None = None,
+        dtype: ToDTypeBool | None = None,
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # vector-like builtins.int, dtype: type[int] | None
+    def __init__(
+        self: _coo_base[np.int_, tuple[int]],
+        /,
+        arg1: Sequence[opt.JustInt],
+        shape: ToShape1D | None = None,
+        dtype: ToDTypeInt | None = None,
         copy: bool = False,
     ) -> None: ...
     @overload  # matrix-like builtins.int, dtype: type[int] | None
     def __init__(
-        self: _coo_base[np.int_],
+        self: _coo_base[np.int_, tuple[int, int]],
         /,
-        arg1: _ToMatrixPy[opt.JustInt],
-        shape: ToShape | None = None,
-        dtype: type[opt.JustInt] | onp.AnyIntPDType | None = None,
+        arg1: Sequence[Sequence[opt.JustInt]],
+        shape: ToShape2D | None = None,
+        dtype: ToDTypeInt | None = None,
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # vectir-like builtins.float, dtype: type[float] | None
+    def __init__(
+        self: _coo_base[np.float64, tuple[int]],
+        /,
+        arg1: Sequence[opt.Just[float]],
+        shape: ToShape1D | None = None,
+        dtype: ToDTypeFloat | None = None,
         copy: bool = False,
     ) -> None: ...
     @overload  # matrix-like builtins.float, dtype: type[float] | None
     def __init__(
-        self: _coo_base[np.float64],
+        self: _coo_base[np.float64, tuple[int, int]],
         /,
-        arg1: _ToMatrixPy[opt.Just[float]],
-        shape: ToShape | None = None,
-        dtype: type[opt.Just[float]] | onp.AnyFloat64DType | None = None,
+        arg1: Sequence[Sequence[opt.Just[float]]],
+        shape: ToShape2D | None = None,
+        dtype: ToDTypeFloat | None = None,
         copy: bool = False,
     ) -> None: ...
     @overload  # matrix-like builtins.complex, dtype: type[complex] | None
     def __init__(
-        self: _coo_base[np.complex128],
+        self: _coo_base[np.complex128, tuple[int]],
         /,
-        arg1: _ToMatrixPy[opt.Just[complex]],
-        shape: ToShape | None = None,
-        dtype: type[opt.Just[complex]] | onp.AnyComplex128DType | None = None,
+        arg1: Sequence[opt.Just[complex]],
+        shape: ToShape1D | None = None,
+        dtype: ToDTypeComplex | None = None,
         copy: bool = False,
     ) -> None: ...
-    @overload  # dtype: <known> (positional)
+    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
     def __init__(
-        self,
+        self: _coo_base[np.complex128, tuple[int, int]],
         /,
-        arg1: onp.ToComplexND,
-        shape: ToShape | None,
-        dtype: _ToDType[_SCT],
+        arg1: Sequence[Sequence[opt.Just[complex]]],
+        shape: ToShape2D | None = None,
+        dtype: ToDTypeComplex | None = None,
         copy: bool = False,
     ) -> None: ...
-    @overload  # dtype: <known> (keyword)
+    @overload  # 1-D, dtype: <known> (positional)
     def __init__(
-        self,
+        self: _coo_base[_SCT0, tuple[int]],
         /,
-        arg1: onp.ToComplexND,
-        shape: ToShape | None = None,
+        arg1: onp.ToComplexStrict1D,
+        shape: ToShape1D | None,
+        dtype: ToDType[_SCT0],
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # 1-D, dtype: <known> (keyword)
+    def __init__(
+        self: _coo_base[_SCT0, tuple[int]],
+        /,
+        arg1: onp.ToComplexStrict1D,
+        shape: ToShape1D | None = None,
         *,
-        dtype: _ToDType[_SCT],
+        dtype: ToDType[_SCT0],
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # 2-D, dtype: <known> (positional)
+    def __init__(
+        self: _coo_base[_SCT0, tuple[int, int]],
+        /,
+        arg1: onp.ToComplexStrict2D,
+        shape: ToShape2D | None,
+        dtype: ToDType[_SCT0],
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # 2-D, dtype: <known> (keyword)
+    def __init__(
+        self: _coo_base[_SCT0, tuple[int, int]],
+        /,
+        arg1: onp.ToComplexStrict2D,
+        shape: ToShape2D | None = None,
+        *,
+        dtype: ToDType[_SCT0],
+        copy: bool = False,
+    ) -> None: ...
+    @overload  # shape: known
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex1D | onp.ToComplex2D,
+        shape: ToShape | None = None,
+        dtype: npt.DTypeLike | None = ...,
         copy: bool = False,
     ) -> None: ...
 

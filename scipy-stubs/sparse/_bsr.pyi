@@ -26,7 +26,7 @@ _ToData: TypeAlias = _ToData2[_SCT] | _ToData3[_SCT]
 
 ###
 
-class _bsr_base(_cs_matrix[_SCT], _minmax_mixin[_SCT], Generic[_SCT]):
+class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int, int]], Generic[_SCT]):
     data: onp.Array3D[_SCT]
 
     @property

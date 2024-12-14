@@ -125,7 +125,6 @@ class _data_matrix(_spbase[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
     @overload
     def rad2deg(self, /) -> Self: ...
 
-# TODO(jorenham)
 class _minmax_mixin(Generic[_SCT_co, _ShapeT_co]):
     # NOTE: The following 4 methods have identical signatures
     @overload  # axis: None = ..., out: None = ...
