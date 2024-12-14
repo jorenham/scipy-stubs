@@ -27,7 +27,7 @@ _Key: TypeAlias = tuple[onp.ToJustInt] | tuple[onp.ToJustInt, onp.ToJustInt]
 
 ###
 
-class _dok_base(_spbase[_SCT], IndexMixin[_SCT], dict[_Key, _SCT], Generic[_SCT, _ShapeT_co]):
+class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_Key, _SCT], Generic[_SCT, _ShapeT_co]):
     dtype: np.dtype[_SCT]
 
     @property

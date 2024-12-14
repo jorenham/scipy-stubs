@@ -22,7 +22,7 @@ _ToData: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Int]]
 
 ###
 
-class _dia_base(_data_matrix[_SCT], Generic[_SCT]):
+class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     data: onp.Array2D[_SCT]
     offsets: Index1D
 

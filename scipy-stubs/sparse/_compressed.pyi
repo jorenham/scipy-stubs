@@ -28,7 +28,7 @@ _ToData: TypeAlias = _ToData2[_SCT] | _ToData3[_SCT]
 
 ###
 
-class _cs_matrix(_data_matrix[_SCT], _minmax_mixin[_SCT], IndexMixin[_SCT], Generic[_SCT]):
+class _cs_matrix(_data_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT], IndexMixin[_SCT, tuple[int, int]], Generic[_SCT]):
     data: onp.Array[Any, _SCT]  # the `Any` shape is needed for `numpy<2.1`
     indices: Index1D
     indptr: Index1D

@@ -1,3 +1,5 @@
+# mypy: disable-error-code="explicit-override"
+
 from collections.abc import Sequence
 from typing import Any, Generic, Literal, TypeAlias, overload
 from typing_extensions import TypeIs, TypeVar, override
@@ -24,7 +26,7 @@ _ToData: TypeAlias = tuple[onp.ArrayND[_SCT], tuple[onp.ArrayND[Int]] | tuple[on
 
 ###
 
-class _coo_base(_data_matrix[_SCT], _minmax_mixin[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]):
+class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]):
     data: onp.Array1D[_SCT]
     coords: tuple[Index1D] | tuple[Index1D, Index1D]
     has_canonical_format: bool
@@ -141,9 +143,8 @@ class coo_matrix(_coo_base[_SCT, tuple[int, int]], spmatrix[_SCT], Generic[_SCT]
     @property
     @override
     def ndim(self, /) -> Literal[2]: ...
-
-    # NOTE: using `@override` together with `@overload` causes stubtest to crash...
-    @overload  # type: ignore[explicit-override]
+    #
+    @overload
     def getnnz(self, /, axis: None = None) -> int: ...
     @overload
     def getnnz(self, /, axis: op.CanIndex) -> Index1D: ...

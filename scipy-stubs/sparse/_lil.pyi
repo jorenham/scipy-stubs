@@ -23,7 +23,7 @@ _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 
 ###
 
-class _lil_base(_spbase[_SCT], IndexMixin[_SCT], Generic[_SCT]):
+class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]], Generic[_SCT]):
     dtype: np.dtype[_SCT]
     data: onp.Array1D[np.object_]
     rows: onp.Array1D[np.object_]
