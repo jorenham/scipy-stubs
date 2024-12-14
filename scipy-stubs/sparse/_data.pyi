@@ -47,7 +47,7 @@ class _data_matrix(_spbase[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
 
     #
     def __imul__(self, rhs: _ScalarLike, /) -> Self: ...  # type: ignore[misc,override]
-    def __itruediv__(self, rhs: _ScalarLike, /) -> Self: ...  # type: ignore[misc]
+    def __itruediv__(self, rhs: _ScalarLike, /) -> Self: ...  # type: ignore[misc,override]
 
     # NOTE: The following methods do not convert the scalar type
     def sign(self, /) -> Self: ...
