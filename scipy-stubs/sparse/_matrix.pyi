@@ -4,7 +4,7 @@
 # mypy: disable-error-code="overload-overlap"
 
 from collections.abc import Sequence
-from typing import Generic, TypeAlias, overload
+from typing import Any, Generic, TypeAlias, overload
 from typing_extensions import Self, TypeVar
 
 import numpy as np
@@ -25,20 +25,27 @@ _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Scalar)
 _SCT_co = TypeVar("_SCT_co", bound=Scalar, default=Scalar, covariant=True)
 
-_IntInT = TypeVar("_IntInT", bound=Int | Float | Complex)
-_FloatInT = TypeVar("_FloatInT", bound=Float | Complex)
-_ComplexInT = TypeVar("_ComplexInT", bound=Complex)
+_SpMatrixT = TypeVar("_SpMatrixT", bound=spmatrix)
 
-_SPIntInT = TypeVar("_SPIntInT", bound=spmatrix[Int | Float | Complex])
-_SPFloatInT = TypeVar("_SPFloatInT", bound=spmatrix[Float | Complex])
-_SPComplexInT = TypeVar("_SPComplexInT", bound=spmatrix[Complex])
+_SpFromInT = TypeVar("_SpFromInT", bound=spmatrix[_FromInt])
+_SpFromFloatT = TypeVar("_SpFromFloatT", bound=spmatrix[_FromFloat])
+_SpFromComplexT = TypeVar("_SpFromComplexT", bound=spmatrix[_FromComplex])
+
+_FromInt: TypeAlias = Int | Float | Complex
+_FromFloat: TypeAlias = Float | Complex
+_FromComplex: TypeAlias = Complex
 
 _ToBool: TypeAlias = np.bool_
+_ToInt8: TypeAlias = np.bool_ | np.int8
 _ToInt: TypeAlias = Int | _ToBool
-_ToFloat: TypeAlias = Float | _ToInt
+_ToFloat32: TypeAlias = np.bool_ | Int | np.float32
+_ToFloat: TypeAlias = np.bool_ | Int | Float
+_ToComplex64: TypeAlias = np.bool_ | Int | Float | np.complex64
 
 _DualMatrixLike: TypeAlias = _T | _SCT | _spbase[_SCT]
 _DualArrayLike: TypeAlias = Sequence[Sequence[_T | _SCT] | onp.CanArrayND[_SCT]] | onp.CanArrayND[_SCT]
+
+_SpMatrixOut: TypeAlias = bsr_matrix[_SCT] | csc_matrix[_SCT] | csr_matrix[_SCT]
 
 ###
 
@@ -65,36 +72,46 @@ class spmatrix(Generic[_SCT_co]):
     def set_shape(self, /, shape: ToShape2D) -> None: ...
 
     #
-    @overload  # other: matrix-like _SCT_co
-    def __mul__(self, other: spmatrix[_SCT_co], /) -> Self: ...
-    @overload  # other: scalar- or matrix-like +Bool
-    def __mul__(self, other: bool | np.bool_ | _spbase[np.bool_], /) -> Self: ...
-    @overload  # other: array-like +Bool
-    def __mul__(self, other: onp.ToBool2D, /) -> onp.Array2D[np.bool_]: ...
-    @overload  # Self[+Bool], other: scalar- or matrix-like ~Int
+    @overload  # Self[-Bool], other: scalar-like +Bool
+    def __mul__(self, other: bool | _ToBool, /) -> Self: ...
+    @overload  # Self[-Int], other: scalar-like +Int
+    def __mul__(self: _SpFromInT, other: onp.ToInt, /) -> _SpFromInT: ...
+    @overload  # Self[-Float], other: scalar-like +Float
+    def __mul__(self: _SpFromFloatT, other: onp.ToFloat, /) -> _SpFromFloatT: ...
+    @overload  # Self[-Complex], other: scalar-like +Complex
+    def __mul__(self: _SpFromComplexT, other: onp.ToComplex, /) -> _SpFromComplexT: ...
+    @overload  # spmatrix, other: spmatrix
+    def __mul__(self: _SpMatrixT, other: _SpMatrixT, /) -> _SpMatrixT: ...
+    @overload  # spmatrix[-Bool], other: sparse +Bool
+    def __mul__(self: spmatrix, other: _spbase[_ToBool], /) -> _SpMatrixOut[_SCT_co]: ...
+    @overload  # spmatrix[-Bool], other: array-like +Bool
+    def __mul__(self: spmatrix, other: _DualArrayLike[bool, _ToBool], /) -> onp.Array2D[_SCT_co]: ...
+    @overload  # spmatrix[-Int], other: sparse +Int
+    def __mul__(self: spmatrix[_FromInt], other: _spbase[_ToInt8], /) -> _SpMatrixOut[_SCT_co]: ...
+    @overload  # spmatrix[-Int], other: array-like +Int
+    def __mul__(self: spmatrix[_FromInt], other: _DualArrayLike[bool, _ToInt8], /) -> onp.Array2D[_SCT_co]: ...
+    @overload  # spmatrix[-Float], other: sparse +Float
+    def __mul__(self: spmatrix[_FromFloat], other: _spbase[_ToFloat32 | _SCT_co], /) -> _SpMatrixOut[_SCT_co]: ...
+    @overload  # spmatrix[-Float], other: array-like +Float
+    def __mul__(self: spmatrix[_FromFloat], other: _DualArrayLike[int, _ToFloat32], /) -> onp.Array2D[_SCT_co]: ...
+    @overload  # spmatrix[-Complex], other: sparse +Complex
+    def __mul__(self: spmatrix[_FromComplex], other: _spbase[_ToComplex64 | _SCT_co], /) -> _SpMatrixOut[_SCT_co]: ...
+    @overload  # spmatrix[-Complex], other: array-like +Complex
+    def __mul__(self: spmatrix[_FromComplex], other: _DualArrayLike[float, _ToComplex64], /) -> onp.Array2D[_SCT_co]: ...
+    @overload  # spmatrix[+Bool], other: scalar- or matrix-like ~Int
     def __mul__(self: spmatrix[_ToBool], other: _DualMatrixLike[opt.JustInt, Int], /) -> spmatrix[Int]: ...
-    @overload  # Self[+bool], other: array-like ~Int
+    @overload  # spmatrix[+Bool], other: array-like ~Int
     def __mul__(self: spmatrix[_ToBool], other: _DualArrayLike[opt.JustInt, Int], /) -> onp.Array2D[Int]: ...
-    @overload  # Self[-Int], other: scalar- or matrix-like +Int
-    def __mul__(self: _SPIntInT, other: onp.ToInt | _spbase[Int], /) -> _SPIntInT: ...
-    @overload  # Self[-Int], other: array-like +Int
-    def __mul__(self: spmatrix[_IntInT], other: onp.ToInt2D, /) -> onp.Array2D[_IntInT]: ...
-    @overload  # Self[+Int], other: scalar- or matrix-like ~Float
+    @overload  # spmatrix[+Int], other: scalar- or matrix-like ~Float
     def __mul__(self: spmatrix[_ToInt], other: _DualMatrixLike[opt.Just[float], Float], /) -> spmatrix[Float]: ...
-    @overload  # Self[+Int], other: array-like ~Float
+    @overload  # spmatrix[+Int], other: array-like ~Float
     def __mul__(self: spmatrix[_ToInt], other: _DualArrayLike[opt.Just[float], Float], /) -> onp.Array2D[Float]: ...
-    @overload  # Self[-Float], other: scalar- or matrix-like +Float
-    def __mul__(self: _SPFloatInT, other: onp.ToFloat | _spbase[Float], /) -> _SPFloatInT: ...
-    @overload  # Self[-Float], other: array-like +Float
-    def __mul__(self: spmatrix[_FloatInT], other: onp.ToFloat2D, /) -> onp.Array2D[_FloatInT]: ...
-    @overload  # Self[+Float], other: scalar- or matrix-like ~Complex
+    @overload  # spmatrix[+Float], other: scalar- or matrix-like ~Complex
     def __mul__(self: spmatrix[_ToFloat], other: _DualMatrixLike[opt.Just[complex], Complex], /) -> spmatrix[Complex]: ...
-    @overload  # Self[+Float], other: array-like ~Complex
+    @overload  # spmatrix[+Float], other: array-like ~Complex
     def __mul__(self: spmatrix[_ToFloat], other: _DualArrayLike[opt.Just[complex], Complex], /) -> onp.Array2D[Complex]: ...
-    @overload  # Self[-Complex], other: scalar- or matrix-like +Complex
-    def __mul__(self: _SPComplexInT, other: onp.ToComplex | _spbase, /) -> _SPComplexInT: ...
-    @overload  # Self[-Complex], other: array-like +Complex
-    def __mul__(self: spmatrix[_ComplexInT], other: onp.ToComplex2D, /) -> onp.Array2D[_ComplexInT]: ...
+    @overload  # catch-all
+    def __mul__(self, other: _DualArrayLike[complex, Scalar] | _spbase, /) -> _spbase[Any, Any] | onp.Array[Any, Any]: ...
     __rmul__ = __mul__
 
     #
