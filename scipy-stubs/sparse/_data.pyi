@@ -46,8 +46,8 @@ class _data_matrix(_spbase[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
     def __init__(self, /, arg1: onp.CanArrayND[_SCT_co]) -> None: ...
 
     #
-    def __imul__(self, other: _ScalarLike, /) -> Self: ...  # type: ignore[misc]
-    def __itruediv__(self, other: _ScalarLike, /) -> Self: ...  # type: ignore[misc]
+    def __imul__(self, rhs: _ScalarLike, /) -> Self: ...  # type: ignore[misc,override]
+    def __itruediv__(self, rhs: _ScalarLike, /) -> Self: ...  # type: ignore[misc]
 
     # NOTE: The following methods do not convert the scalar type
     def sign(self, /) -> Self: ...
