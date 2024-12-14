@@ -77,16 +77,16 @@ jobs:
           uv add --python="${{ matrix.python }}" numpy=="${{ matrix.numpy }}"
 
       - name: Run typetest
-        run: uv run --python=${{ matrix.python }} -e=typetest
+        run: uv run --python=${{ matrix.python }} tox -e=typetest
 
       - name: Run stubtest
-        run: uv run --python=${{ matrix.python }} -e=stubtest
+        run: uv run --python=${{ matrix.python }} tox -e=stubtest
 
       - name: lint
-        run: uv run --python=${{ matrix.python }} -e=lint
+        run: uv run --python=${{ matrix.python }} tox -e=lint
 
       - name: basedmypy
-        run: uv run --python=${{ matrix.python }} -e=mypy
+        run: uv run --python=${{ matrix.python }} tox -e=mypy
 
       - name: basedpyright
-        run: uv run --python=${{ matrix.python }} -e=pyright
+        run: uv run --python=${{ matrix.python }} tox -e=pyright
