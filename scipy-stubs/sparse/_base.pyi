@@ -43,7 +43,6 @@ __all__ = ["SparseEfficiencyWarning", "SparseWarning", "issparse", "isspmatrix",
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Scalar, default=Any)
 _SCT_co = TypeVar("_SCT_co", bound=Scalar, default=Scalar, covariant=True)
-_SCT_fp = TypeVar("_SCT_fp", bound=Float | Complex)
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int], covariant=True)
@@ -534,26 +533,94 @@ class _spbase(Generic[_SCT_co, _ShapeT_co]):
     def trace(self, /, offset: int = 0) -> _SCT_co: ...
 
     #
-    def sum(self, /, axis: op.CanIndex | None = None, dtype: Untyped | None = None, out: Untyped | None = None) -> Untyped: ...
+    @overload  # out: array (keyword)
+    def sum(self, /, axis: op.CanIndex | None = None, dtype: npt.DTypeLike | None = None, *, out: _ArrayT) -> _ArrayT: ...
+    @overload  # axis: None = ..., dtype: <known>  (keyword)
+    def sum(self, /, axis: None = None, *, dtype: ToDType[_SCT], out: None = None) -> _SCT: ...
+    @overload  # Self[+Bool]
+    def sum(self: _spbase[np.bool_], /, axis: None = None, dtype: None = None, out: None = None) -> np.int_: ...
+    @overload  # sparray[-Bool, 2d], axis: index
+    def sum(self: _SpArray1D[np.bool_], /, axis: op.CanIndex | None = None, dtype: None = None, out: None = None) -> np.int_: ...
+    @overload  # sparray[-Bool, 2d], axis: index
+    def sum(self: _SpArray2D[np.bool_], /, axis: op.CanIndex, dtype: None = None, out: None = None) -> onp.Array1D[np.int_]: ...
+    @overload  # spmatrix[-Bool], axis: index
+    def sum(self: spmatrix[np.bool_], /, axis: op.CanIndex, dtype: None = None, out: None = None) -> Matrix[np.int_]: ...
+    @overload  # Self[-Int]
+    def sum(self: _spbase[_FromIntT], /, axis: None = None, dtype: None = None, out: None = None) -> _FromIntT: ...
+    @overload  # sparray[-Int, 1d], axis: index
+    def sum(
+        self: _SpArray1D[_FromIntT],
+        /,
+        axis: op.CanIndex | None = None,
+        dtype: None = None,
+        out: None = None,
+    ) -> _FromIntT: ...
+    @overload  # sparray[-Int, 2d], axis: index
+    def sum(
+        self: _SpArray2D[_FromIntT],
+        /,
+        axis: op.CanIndex,
+        dtype: None = None,
+        out: None = None,
+    ) -> onp.Array1D[_FromIntT]: ...
+    @overload  # spmatrix[-Int], axis: index
+    def sum(self: spmatrix[_FromIntT], /, axis: op.CanIndex, dtype: None = None, out: None = None) -> Matrix[_FromIntT]: ...
+    @overload  # spmatrix, axis: index, dtype: <unknown>
+    def sum(self: spmatrix, /, axis: op.CanIndex, dtype: npt.DTypeLike, out: None = None) -> Matrix[Any]: ...
+    @overload  # dtype: <unknown>  (keyword)
+    def sum(self, /, axis: op.CanIndex | None = None, *, dtype: npt.DTypeLike, out: None = None) -> Any: ...  # noqa: ANN401
+
     #
-    @overload  # out: array
+    @overload  # out: array (keyword)
     def mean(self, /, axis: op.CanIndex | None = None, dtype: npt.DTypeLike | None = None, *, out: _ArrayT) -> _ArrayT: ...
     @overload  # axis: None = ..., dtype: <known>  (keyword)
     def mean(self, /, axis: None = None, *, dtype: ToDType[_SCT], out: None = None) -> _SCT: ...
     @overload  # Self[+Int], axis: None = ...
-    def mean(self: _spbase[np.bool_ | Int], /, axis: None = None, dtype: None = None, out: None = None) -> np.float64: ...
+    def mean(self: _spbase[_ToBool], /, axis: None = None, dtype: None = None, out: None = None) -> np.float64: ...
+    @overload  # Self[-Float], axis: None = ...
+    def mean(self: _spbase[_FromFloatT], /, axis: None = None, dtype: None = None, out: None = None) -> _FromFloatT: ...
+    @overload  # sparray[+Int, 1d]
+    def mean(
+        self: _SpArray1D[_ToBool],
+        /,
+        axis: op.CanIndex | None = None,
+        dtype: None = None,
+        out: None = None,
+    ) -> np.float64: ...
+    @overload  # sparray[+Int, 2d], axis: index
+    def mean(
+        self: _SpArray2D[_ToBool],
+        /,
+        axis: op.CanIndex,
+        dtype: None = None,
+        out: None = None,
+    ) -> onp.Array1D[np.float64]: ...
     @overload  # spmatrix[+Int], axis: index
     def mean(
-        self: spmatrix[np.bool_ | Int],
+        self: spmatrix[_ToBool],
         /,
         axis: op.CanIndex,
         dtype: None = None,
         out: None = None,
     ) -> Matrix[np.float64]: ...
-    @overload  # Self[Float | Complex], axis: None = ...
-    def mean(self: _spbase[_SCT_fp], /, axis: None = None, dtype: None = None, out: None = None) -> _SCT_fp: ...
-    @overload  # spmatrix[Float | Complex], axis: index
-    def mean(self: spmatrix[_SCT_fp], /, axis: op.CanIndex, dtype: None = None, out: None = None) -> Matrix[_SCT_fp]: ...
+    @overload  # sparray[-Float, 1d]
+    def mean(
+        self: _SpArray1D[_FromFloatT],
+        /,
+        axis: op.CanIndex | None = None,
+        dtype: None = None,
+        out: None = None,
+    ) -> onp.Array1D[_FromFloatT]: ...
+    @overload  # sparray[-Float, 2d], axis: index
+    def mean(
+        self: _SpArray2D[_FromFloatT],
+        /,
+        axis: op.CanIndex,
+        dtype: None = None,
+        out: None = None,
+    ) -> onp.Array1D[_FromFloatT]: ...
+    @overload  # spmatrix[-Float], axis: index
+    def mean(self: spmatrix[_FromFloatT], /, axis: op.CanIndex, dtype: None = None, out: None = None) -> Matrix[_FromFloatT]: ...
     @overload  # spmatrix, axis: index, dtype: <unknown>
     def mean(self: spmatrix, /, axis: op.CanIndex, dtype: npt.DTypeLike, out: None = None) -> Matrix[Any]: ...
     @overload  # dtype: <unknown>  (keyword)
