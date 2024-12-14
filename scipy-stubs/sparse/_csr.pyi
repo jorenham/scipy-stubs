@@ -1,18 +1,31 @@
-from typing_extensions import override
+from typing import Any, Generic, Literal, overload
+from typing_extensions import TypeIs, TypeVar, override
 
-from scipy._typing import Untyped
+import optype as op
 from ._base import sparray
-from ._bsr import _bsr_base
 from ._compressed import _cs_matrix
 from ._matrix import spmatrix
+from ._typing import Index1D, Scalar
 
 __all__ = ["csr_array", "csr_matrix", "isspmatrix_csr"]
 
-class _csr_base(_cs_matrix):
+_SCT = TypeVar("_SCT", bound=Scalar, default=Any)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int], covariant=True)
+
+###
+
+class _csr_base(_cs_matrix[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]):
+    @property
     @override
-    def tobsr(self, /, blocksize: tuple[int, int] | None = None, copy: bool = True) -> _bsr_base: ...
+    def format(self, /) -> Literal["csr"]: ...
 
-class csr_array(_csr_base, sparray): ...
-class csr_matrix(spmatrix, _csr_base): ...
+class csr_array(_csr_base[_SCT, _ShapeT_co], sparray, Generic[_SCT, _ShapeT_co]): ...
 
-def isspmatrix_csr(x: Untyped) -> bool: ...
+class csr_matrix(_csr_base[_SCT, tuple[int, int]], spmatrix[_SCT], Generic[_SCT]):  # type: ignore[misc]
+    # NOTE: using `@override` together with `@overload` causes stubtest to crash...
+    @overload  # type: ignore[explicit-override]
+    def getnnz(self, /, axis: None = None) -> int: ...
+    @overload
+    def getnnz(self, /, axis: op.CanIndex) -> Index1D: ...
+
+def isspmatrix_csr(x: object) -> TypeIs[csr_matrix]: ...
