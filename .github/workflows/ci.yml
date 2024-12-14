@@ -53,10 +53,10 @@ jobs:
           matrix=$(uv run scripts/generate_matrix.py | jq -c)
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
-  env:
-    UV_LOCKED: true
-
   typetest:
+    env:
+      UV_LOCKED: true
+
     needs: generate-matrix
     timeout-minutes: 20
     runs-on: ubuntu-latest
