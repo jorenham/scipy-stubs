@@ -41,9 +41,10 @@ from ._typing import (
 __all__ = ["SparseEfficiencyWarning", "SparseWarning", "issparse", "isspmatrix", "sparray"]
 
 _T = TypeVar("_T")
-_SCT = TypeVar("_SCT", bound=Scalar)
+_SCT = TypeVar("_SCT", bound=Scalar, default=Any)
 _SCT_co = TypeVar("_SCT_co", bound=Scalar, default=Scalar, covariant=True)
 _SCT_fp = TypeVar("_SCT_fp", bound=Float | Complex)
+
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int], covariant=True)
 
 _ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND)
@@ -68,6 +69,26 @@ _ToComplex64: TypeAlias = np.bool_ | Int | Float | np.complex64
 
 _ToSparseFromPy: TypeAlias = Sequence[Sequence[_T]] | Sequence[_T]
 _ToSparseFromArrayLike: TypeAlias = onp.CanArrayND[_SCT_co] | _ToSparseFromPy[_SCT_co]
+
+_SpArray1D: TypeAlias = coo_array[_SCT, tuple[int]] | csr_array[_SCT, tuple[int]] | dok_array[_SCT, tuple[int]]
+_SpArray2D: TypeAlias = (
+    bsr_array[_SCT]
+    | coo_array[_SCT, tuple[int, int]]
+    | csc_array[_SCT]
+    | csr_array[_SCT, tuple[int, int]]
+    | dia_array[_SCT]
+    | dok_array[_SCT, tuple[int, int]]
+    | lil_array[_SCT]
+)
+_SpMatrix: TypeAlias = (
+    bsr_matrix[_SCT]
+    | coo_matrix[_SCT]
+    | csc_matrix[_SCT]
+    | csr_matrix[_SCT]
+    | dia_matrix[_SCT]
+    | dok_matrix[_SCT]
+    | lil_matrix[_SCT]
+)
 
 ###
 
@@ -294,8 +315,177 @@ class _spbase(Generic[_SCT_co, _ShapeT_co]):
     @overload
     def reshape(self: _SP2DT, shape: ToShape2D, /, *, order: OrderCF = "C", copy: bool = False) -> _SP2DT: ...
 
-    #
-    def astype(self, /, dtype: Untyped, casting: Casting = "unsafe", copy: bool = True) -> Untyped: ...
+    # NOTE: the following two ignored errors won't cause any problems (when using the public API)
+    @overload  # current type
+    def astype(  # pyright: ignore[reportOverlappingOverload]
+        self,
+        /,
+        dtype: ToDType[_SCT_co],
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> Self: ...
+    @overload  # known type -> sparray
+    def astype(  # pyright: ignore[reportOverlappingOverload]
+        self: bsr_array,
+        /,
+        dtype: ToDType[_SCT],
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> bsr_array[_SCT]: ...
+    @overload
+    def astype(
+        self: coo_array,
+        /,
+        dtype: ToDType[_SCT],
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> coo_array[_SCT, _ShapeT_co]: ...
+    @overload
+    def astype(
+        self: csc_array,
+        /,
+        dtype: ToDType[_SCT],
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> csc_array[_SCT]: ...
+    @overload
+    def astype(
+        self: csr_array,
+        /,
+        dtype: ToDType[_SCT],
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> csr_array[_SCT, _ShapeT_co]: ...
+    @overload
+    def astype(
+        self: dia_array,
+        /,
+        dtype: ToDType[_SCT],
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> dia_array[_SCT]: ...
+    @overload
+    def astype(
+        self: dok_array,
+        /,
+        dtype: ToDType[_SCT],
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> dok_array[_SCT, _ShapeT_co]: ...
+    @overload
+    def astype(self: lil_array, /, dtype: ToDType[_SCT], casting: Casting = "unsafe", copy: bool = True) -> lil_array[_SCT]: ...
+    @overload  # known type -> spmatrix
+    def astype(self: bsr_matrix, /, dtype: ToDType[_SCT], casting: Casting = "unsafe", copy: bool = True) -> bsr_matrix[_SCT]: ...
+    @overload
+    def astype(self: coo_matrix, /, dtype: ToDType[_SCT], casting: Casting = "unsafe", copy: bool = True) -> coo_matrix[_SCT]: ...
+    @overload
+    def astype(self: csc_matrix, /, dtype: ToDType[_SCT], casting: Casting = "unsafe", copy: bool = True) -> csc_matrix[_SCT]: ...
+    @overload
+    def astype(self: csr_matrix, /, dtype: ToDType[_SCT], casting: Casting = "unsafe", copy: bool = True) -> csr_matrix[_SCT]: ...
+    @overload
+    def astype(self: dia_matrix, /, dtype: ToDType[_SCT], casting: Casting = "unsafe", copy: bool = True) -> dia_matrix[_SCT]: ...
+    @overload
+    def astype(self: dok_matrix, /, dtype: ToDType[_SCT], casting: Casting = "unsafe", copy: bool = True) -> dok_matrix[_SCT]: ...
+    @overload
+    def astype(self: lil_matrix, /, dtype: ToDType[_SCT], casting: Casting = "unsafe", copy: bool = True) -> lil_matrix[_SCT]: ...
+    @overload  # dtype-like -> 1d sparray
+    def astype(
+        self: _spbase[Any, tuple[int]],
+        /,
+        dtype: ToDTypeBool,
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> _SpArray1D[np.bool_]: ...
+    @overload
+    def astype(
+        self: _spbase[Any, tuple[int]],
+        /,
+        dtype: ToDTypeInt,
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> _SpArray1D[np.int_]: ...
+    @overload
+    def astype(
+        self: _spbase[Any, tuple[int]],
+        /,
+        dtype: ToDTypeFloat | None,
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> _SpArray1D[np.float64]: ...
+    @overload
+    def astype(
+        self: _spbase[Any, tuple[int]],
+        /,
+        dtype: ToDTypeComplex,
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> _SpArray1D[np.complex128]: ...
+    @overload  # dtype-like -> 2d sparray
+    def astype(
+        self: sparray,
+        /,
+        dtype: ToDTypeBool,
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> _SpArray2D[np.bool_]: ...
+    @overload
+    def astype(
+        self: sparray,
+        /,
+        dtype: ToDTypeInt,
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> _SpArray2D[np.int_]: ...
+    @overload
+    def astype(
+        self: sparray,
+        /,
+        dtype: ToDTypeFloat | None,
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> _SpArray2D[np.float64]: ...
+    @overload
+    def astype(
+        self: sparray,
+        /,
+        dtype: ToDTypeComplex,
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> _SpArray2D[np.complex128]: ...
+    @overload  # dtype-like -> spmatrix
+    def astype(
+        self: spmatrix,
+        /,
+        dtype: ToDTypeBool,
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> _SpMatrix[np.bool_]: ...
+    @overload
+    def astype(
+        self: spmatrix,
+        /,
+        dtype: ToDTypeInt,
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> _SpMatrix[np.int_]: ...
+    @overload
+    def astype(
+        self: spmatrix,
+        /,
+        dtype: ToDTypeFloat | None,
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> _SpMatrix[np.float64]: ...
+    @overload
+    def astype(
+        self: spmatrix,
+        /,
+        dtype: ToDTypeComplex,
+        casting: Casting = "unsafe",
+        copy: bool = True,
+    ) -> _SpMatrix[np.complex128]: ...
+    @overload  # catch-all
+    def astype(self, /, dtype: npt.DTypeLike, casting: Casting = "unsafe", copy: bool = True) -> _spbase[Any]: ...
 
     #
     @overload
