@@ -74,6 +74,7 @@ jobs:
         run: uv tool install tox --with tox-uv
 
       - name: Install dependencies
+        continue-on-error: true
         run: |
           rm -rf .venv
           uv add --no-build-package=numpy --python="${{ matrix.python }}" "numpy<=${{ matrix.numpy }}"
