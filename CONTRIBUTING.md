@@ -229,6 +229,10 @@ repo-review: OK ✔ in 0.4 seconds
   congratulations :) (24.96 seconds)
 ```
 
+### Commit message style
+
+See <https://gitmoji.dev/>.
+
 ### Improving The Documentation
 
 All [documentation] lives in the `README.md`. Please read it carefully before
