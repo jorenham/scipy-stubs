@@ -20,17 +20,18 @@ _NumberT = TypeVar("_NumberT", bound=np.number[Any])
 _Matrix: TypeAlias = np.matrix[Any, np.dtype[_NumberT]]
 
 _ToShape: TypeAlias = Iterable[op.CanIndex]
-_ToDType: TypeAlias = type[_SCT] | onp.HasDType[np.dtype[_SCT]] | np.dtype[_SCT]
+_ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
 
+_JustFloat: TypeAlias = opt.Just[float]
 _JustComplex: TypeAlias = opt.Just[complex]
 
 _FunMatVec: TypeAlias = Callable[[onp.Array1D[np.number[Any]] | onp.Array2D[np.number[Any]]], onp.ToComplex1D | onp.ToComplex2D]
 _FunMatMat: TypeAlias = Callable[[onp.Array2D[np.number[Any]]], onp.ToComplex2D]
 
-_SCT = TypeVar("_SCT", bound=np.inexact[Any])
-_SCT_co = TypeVar("_SCT_co", bound=np.inexact[Any], default=np.inexact[Any], covariant=True)
-_SCT1_co = TypeVar("_SCT1_co", bound=np.inexact[Any], default=np.inexact[Any], covariant=True)
-_SCT2_co = TypeVar("_SCT2_co", bound=np.inexact[Any], default=_SCT1_co, covariant=True)
+_SCT = TypeVar("_SCT", bound=np.number[Any])
+_SCT_co = TypeVar("_SCT_co", bound=np.number[Any], default=np.inexact[Any], covariant=True)
+_SCT1_co = TypeVar("_SCT1_co", bound=np.number[Any], default=np.inexact[Any], covariant=True)
+_SCT2_co = TypeVar("_SCT2_co", bound=np.number[Any], default=_SCT1_co, covariant=True)
 _FunMatVecT_co = TypeVar("_FunMatVecT_co", bound=_FunMatVec, default=_FunMatVec, covariant=True)
 
 ###
@@ -57,7 +58,19 @@ class LinearOperator(Generic[_SCT_co]):
     @overload
     def __init__(self, /, dtype: _ToDType[_SCT_co], shape: _ToShape) -> None: ...
     @overload
-    def __init__(self: LinearOperator[np.float64], /, dtype: onp.AnyFloat64DType | type[float], shape: _ToShape) -> None: ...
+    def __init__(
+        self: LinearOperator[np.intp],
+        /,
+        dtype: onp.AnyIntPDType | type[opt.JustInt],
+        shape: _ToShape,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: LinearOperator[np.float64],
+        /,
+        dtype: onp.AnyFloat64DType | type[_JustFloat],
+        shape: _ToShape,
+    ) -> None: ...
     @overload
     def __init__(
         self: LinearOperator[np.complex128],
@@ -97,7 +110,7 @@ class LinearOperator(Generic[_SCT_co]):
     @overload
     def dot(self, /, x: onp.ToFloat) -> _ScaledLinearOperator[_SCT_co]: ...
     @overload
-    def dot(self, /, x: onp.ToComplex) -> _ScaledLinearOperator: ...
+    def dot(self, /, x: onp.ToComplex) -> _ScaledLinearOperator[_SCT_co | np.complex128]: ...
     @overload
     def dot(self, /, x: onp.ToFloatStrict1D) -> onp.Array1D[_SCT_co]: ...
     @overload
