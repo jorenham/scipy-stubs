@@ -32,7 +32,6 @@ commands = [
 [env.basedmypy]
 description = "basedmypy"
 dependency_groups = ["typecheck"]
-# uv_sync_flags = ["--no-editable", "--isolated", "--refresh-package=scipy-stubs"]
 commands = [["uv", "run", "--frozen", "--no-editable", "--isolated", "--refresh-package=scipy-stubs", "mypy", "--config-file=pyproject.toml", "scipy-stubs", "codegen"]]
 
 [env.basedpyright]
@@ -42,9 +41,7 @@ commands = [["basedpyright", "scipy-stubs", "codegen"]]
 
 [env.min-versions-test]
 description = "min versions tests"
-# runner = "uv-venv-runner"
 dependency_groups = ["typecheck"]
-# uv_sync_flags = ["--no-editable", "--isolated", "--refresh-package=scipy-stubs"]
 commands = [
     ["python", "--version"],
     ["uv", "pip", "show", "numpy"]
@@ -52,9 +49,7 @@ commands = [
 
 [env.basedmypy-tests]
 description = "basedmypy tests"
-# runner = "uv-venv-runner"
 dependency_groups = ["typecheck"]
-# uv_sync_flags = ["--no-editable", "--isolated", "--refresh-package=scipy-stubs"]
 commands = [["uv", "run", "--frozen", "--no-editable", "--isolated", "--refresh-package=scipy-stubs", "mypy", "--config-file=pyproject.toml", "scipy-stubs", "codegen"]]
 
 [env.basedpyright-tests]
@@ -66,3 +61,19 @@ commands = [["basedpyright", "tests"]]
 description = "stubtest"
 dependency_groups = ["typecheck"]
 commands = [["uv", "run", "--frozen", "--no-editable", "--isolated", "--refresh-package=scipy-stubs", "stubtest", "--mypy-config-file=pyproject.toml", "--allowlist=.mypyignore", "--ignore-unused-allowlist", "scipy"]]
+
+[env.mypy]
+description = "Run mypy"
+dependency_groups = ["typecheck"]
+commands = [["uv", "run", "--no-sync", "mypy", "--config-file=pyproject.toml", "."]]
+
+[env.pyright]
+description = "Run pyright"
+dependency_groups = ["typecheck"]
+commands = [["uv", "run", "--no-sync", "basedpyright"]]
+
+[env.typetest]
+description = "Run all type tests"
+depends = ["mypy", "pyright", "stubtest"]
+skip_install = true
+commands = []
