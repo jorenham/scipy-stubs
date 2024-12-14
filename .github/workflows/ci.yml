@@ -76,7 +76,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          rm -rf .venv
+          rm -rf .venv uv.lock
           uv add --no-build --python="${{ matrix.python }}" "numpy<=${{ matrix.numpy }}"
 
       - name: Run typetest
