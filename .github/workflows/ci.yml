@@ -9,7 +9,7 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
-  cancel-in-progress: true
+#  cancel-in-progress: true
 
 jobs:
   lint:
@@ -75,7 +75,7 @@ jobs:
       - name: Install dependencies
         run: |
           rm -rf .venv
-          uv add --no-build --python="${{ matrix.python }}" "numpy<=${{ matrix.numpy }}"
+          uv add --python="${{ matrix.python }}" "numpy<=${{ matrix.numpy }}"
 
       - name: Run typetest
         run: uv run --python=${{ matrix.python }} tox -e=typetest
