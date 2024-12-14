@@ -54,8 +54,6 @@ jobs:
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
   typetest:
-    env:
-      UV_LOCKED: true
 
     needs: generate-matrix
     timeout-minutes: 20
@@ -76,7 +74,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          rm -rf .venv uv.lock
+          rm -rf .venv
           uv add --no-build --python="${{ matrix.python }}" "numpy<=${{ matrix.numpy }}"
 
       - name: Run typetest
