@@ -4,14 +4,13 @@ import json
 import sys
 import urllib.error
 import urllib.request
-from functools import lru_cache
+from functools import cache
 import typing
 
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version, parse
 
 # Constants
-CACHE_SIZE = 128  # Adjust as needed
 PACKAGE_NAME = "scipy"
 DEPENDENCY_NAME = "numpy"
 MINIMUM_DEPENDENCY_VERSION_FOR_PYTHON_3_12 = Version("1.26.0")
@@ -37,7 +36,7 @@ class PackageVersions(typing.TypedDict, total=False):
     releases: dict[str, list[FileInfo]]
 
 
-@lru_cache(maxsize=CACHE_SIZE)  # type: ignore[no-any-expr]
+@cache  # type: ignore[no-any-expr]
 def get_package_minimum_python_version(package: str) -> Version:
     """
     Get the minimum Python version required by the specified package.
@@ -142,7 +141,7 @@ def get_available_python_versions(
     return sorted(versions.values())
 
 
-@lru_cache(maxsize=CACHE_SIZE)  # type: ignore[no-any-expr]
+@cache  # type: ignore[no-any-expr]
 def fetch_json(url: str) -> object:
     """
     Fetch JSON data from a URL with caching.
@@ -209,9 +208,12 @@ def get_available_package_versions(package_name: str, min_version: Version) -> d
         key = (version.major, version.minor)
         # Update to latest version within the minor version series
         if key not in latest_versions or version > latest_versions[key][0]:
-            latest_versions[key] = (version, requires_python)
+            latest_versions[key] = (
+                version,
+                requires_python,
+            )
 
-            # Extract the versions and requires_python from the latest_versions dict
+        # Extract the versions and requires_python from the latest_versions dict
     return dict(latest_versions.values())
 
 
@@ -264,9 +266,7 @@ def main() -> None:
                     }
                 )
 
-    matrix = {"include": include}
-
-    json.dump(matrix, indent=4, fp=sys.stdout)
+    json.dump({"include": include}, indent=4, fp=sys.stdout)  # type: ignore[no-any-expr]
 
 
 if __name__ == "__main__":
