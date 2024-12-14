@@ -59,6 +59,7 @@ jobs:
     timeout-minutes: 20
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
@@ -75,7 +76,8 @@ jobs:
       - name: Install dependencies
         run: |
           rm -rf .venv
-          uv add --python="${{ matrix.python }}" "numpy<=${{ matrix.numpy }}"
+          uv add --no-build-package=numpy --python="${{ matrix.python }}" "numpy<=${{ matrix.numpy }}"
+          uv add --python="${{ matrix.python }}" packaging
 
       - name: Run typetest
         run: uv run --python=${{ matrix.python }} tox -e=typetest
