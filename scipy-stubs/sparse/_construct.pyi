@@ -1,11 +1,11 @@
-from collections.abc import Sequence as Seq
-from typing import Any, Literal, TypeAlias, TypeVar, overload
+from collections.abc import Callable, Sequence as Seq
+from typing import Any, Literal, Protocol, TypeAlias, TypeVar, overload, type_check_only
 
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 import optype.typing as opt
-from scipy._typing import Seed, Untyped, UntypedCallable
+from scipy._typing import Seed, Untyped
 from ._base import _spbase
 from ._bsr import bsr_array, bsr_matrix
 from ._coo import coo_array, coo_matrix
@@ -15,7 +15,7 @@ from ._dia import dia_array, dia_matrix
 from ._dok import dok_array, dok_matrix
 from ._lil import lil_array, lil_matrix
 from ._matrix import spmatrix
-from ._typing import Float, Scalar, SPFormat, ToDType, ToDTypeBool, ToDTypeComplex, ToDTypeFloat, ToDTypeInt, ToShape, ToShape2D
+from ._typing import Float, Scalar, SPFormat, ToDType, ToDTypeBool, ToDTypeComplex, ToDTypeFloat, ToDTypeInt, ToShape2D
 
 __all__ = [
     "block_array",
@@ -115,6 +115,12 @@ _FmtNonBSR: TypeAlias = Literal["coo", "csc", "csr", "dia", "dok", "lil"]
 _FmtNonCSR: TypeAlias = Literal["bsr", "coo", "csc", "dia", "dok", "lil"]
 _FmtNonDIA: TypeAlias = Literal["bsr", "coo", "csc", "csr", "dok", "lil"]
 _FmtNonOut: TypeAlias = Literal["bsr", "dia", "dok", "lil"]
+
+_DataRVS: TypeAlias = Callable[[int], onp.ArrayND[Scalar]]
+
+@type_check_only
+class _DataSampler(Protocol):
+    def __call__(self, /, *, size: int) -> onp.ArrayND[Scalar]: ...
 
 ###
 
@@ -773,17 +779,141 @@ def block_array(blocks: Untyped, *, format: SPFormat | None = None, dtype: npt.D
 def block_diag(mats: Untyped, format: SPFormat | None = None, dtype: npt.DTypeLike | None = None) -> _SpArray | _SpMatrix: ...
 
 #
+@overload  # shape: 1d, dtype: <default>
 def random_array(
-    shape: ToShape,
+    shape: tuple[int],
     *,
     density: float | Float = 0.01,
     format: SPFormat = "coo",
-    dtype: npt.DTypeLike | None = None,
+    dtype: ToDTypeFloat | None = None,
     random_state: Seed | None = None,
-    data_sampler: UntypedCallable | None = None,
-) -> _SpArray1D | _SpArray2D: ...
+    data_sampler: _DataSampler | None = None,
+) -> _SpArray1D[np.float64]: ...
+@overload  # shape: 1d, dtype: <known>
+def random_array(
+    shape: tuple[int],
+    *,
+    density: float | Float = 0.01,
+    format: SPFormat = "coo",
+    dtype: ToDType[_SCT],
+    random_state: Seed | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> _SpArray1D[_SCT]: ...
+@overload  # shape: 1d, dtype: complex
+def random_array(
+    shape: tuple[int],
+    *,
+    density: float | Float = 0.01,
+    format: SPFormat = "coo",
+    dtype: ToDTypeComplex,
+    random_state: Seed | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> _SpArray1D[np.complex128]: ...
+@overload  # shape: 1d, dtype: <unknown>
+def random_array(
+    shape: tuple[int],
+    *,
+    density: float | Float = 0.01,
+    format: SPFormat = "coo",
+    dtype: npt.DTypeLike,
+    random_state: Seed | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> _SpArray1D: ...
+@overload  # shape: 2d, dtype: <default>
+def random_array(
+    shape: tuple[int, int],
+    *,
+    density: float | Float = 0.01,
+    format: SPFormat = "coo",
+    dtype: ToDTypeFloat | None = None,
+    random_state: Seed | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> _SpArray2D[np.float64]: ...
+@overload  # shape: 2d, dtype: <known>
+def random_array(
+    shape: tuple[int, int],
+    *,
+    density: float | Float = 0.01,
+    format: SPFormat = "coo",
+    dtype: ToDType[_SCT],
+    random_state: Seed | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> _SpArray2D[_SCT]: ...
+@overload  # shape: 2d, dtype: complex
+def random_array(
+    shape: tuple[int, int],
+    *,
+    density: float | Float = 0.01,
+    format: SPFormat = "coo",
+    dtype: ToDTypeComplex,
+    random_state: Seed | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> _SpArray2D[np.complex128]: ...
+@overload  # shape: 2d, dtype: <unknown>
+def random_array(
+    shape: tuple[int, int],
+    *,
+    density: float | Float = 0.01,
+    format: SPFormat = "coo",
+    dtype: npt.DTypeLike,
+    random_state: Seed | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> _SpArray2D: ...
 
 # NOTE: `random_array` should be prefered over `random`
+@overload  # dtype: <default>
+def random(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | Float = 0.01,
+    format: SPFormat = "coo",
+    dtype: ToDTypeFloat | None = None,
+    random_state: Seed | None = None,
+    data_rvs: _DataRVS | None = None,
+) -> _SpMatrix[np.float64]: ...
+@overload  # dtype: <known> (positional)
+def random(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | Float,
+    format: SPFormat,
+    dtype: ToDType[_SCT],
+    random_state: Seed | None = None,
+    data_rvs: _DataRVS | None = None,
+) -> _SpMatrix[_SCT]: ...
+@overload  # dtype: <known> (keyword)
+def random(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | Float = 0.01,
+    format: SPFormat = "coo",
+    *,
+    dtype: ToDType[_SCT],
+    random_state: Seed | None = None,
+    data_rvs: _DataRVS | None = None,
+) -> _SpMatrix[_SCT]: ...
+@overload  # dtype: complex (positional)
+def random(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | Float,
+    format: SPFormat,
+    dtype: ToDTypeComplex,
+    random_state: Seed | None = None,
+    data_rvs: _DataRVS | None = None,
+) -> _SpMatrix[np.complex128]: ...
+@overload  # dtype: complex (keyword)
+def random(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | Float = 0.01,
+    format: SPFormat = "coo",
+    *,
+    dtype: ToDTypeComplex,
+    random_state: Seed | None = None,
+    data_rvs: _DataRVS | None = None,
+) -> _SpMatrix[np.complex128]: ...
+@overload  # dtype: <unknown>
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
@@ -791,10 +921,58 @@ def random(
     format: SPFormat = "coo",
     dtype: npt.DTypeLike | None = None,
     random_state: Seed | None = None,
-    data_rvs: UntypedCallable | None = None,
+    data_rvs: _DataRVS | None = None,
 ) -> _SpMatrix: ...
 
 # NOTE: `random_array` should be prefered over `rand`
+@overload  # dtype: <default>
+def rand(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | Float = 0.01,
+    format: SPFormat = "coo",
+    dtype: ToDTypeFloat | None = None,
+    random_state: Seed | None = None,
+) -> _SpMatrix[np.float64]: ...
+@overload  # dtype: <known> (positional)
+def rand(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | Float,
+    format: SPFormat,
+    dtype: ToDType[_SCT],
+    random_state: Seed | None = None,
+) -> _SpMatrix[_SCT]: ...
+@overload  # dtype: <known> (keyword)
+def rand(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | Float = 0.01,
+    format: SPFormat = "coo",
+    *,
+    dtype: ToDType[_SCT],
+    random_state: Seed | None = None,
+) -> _SpMatrix[_SCT]: ...
+@overload  # dtype: complex (positional)
+def rand(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | Float,
+    format: SPFormat,
+    dtype: ToDTypeComplex,
+    random_state: Seed | None = None,
+) -> _SpMatrix[np.complex128]: ...
+@overload  # dtype: complex (keyword)
+def rand(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | Float = 0.01,
+    format: SPFormat = "coo",
+    *,
+    dtype: ToDTypeComplex,
+    random_state: Seed | None = None,
+) -> _SpMatrix[np.complex128]: ...
+@overload  # dtype: <unknown>
 def rand(
     m: opt.AnyInt,
     n: opt.AnyInt,
