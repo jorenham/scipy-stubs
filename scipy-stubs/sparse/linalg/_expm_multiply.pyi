@@ -3,11 +3,12 @@ from typing import Any, TypeVar, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
+from scipy.sparse._typing import Scalar
 from scipy.sparse.linalg._interface import LinearOperator
 
 __all__ = ["expm_multiply"]
 
-_SCT = TypeVar("_SCT", bound=np.inexact[Any])
+_SCT = TypeVar("_SCT", bound=Scalar)
 
 ###
 
