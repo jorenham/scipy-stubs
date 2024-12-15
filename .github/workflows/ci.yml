@@ -76,19 +76,19 @@ jobs:
         continue-on-error: true
         run: |
           rm -rf .venv
-          uv add --no-build-package=numpy --python="${{ matrix.python }}" "numpy<=${{ matrix.numpy }}"
+          uv add --no-build-package=numpy "numpy<=${{ matrix.numpy }}"
 
       - name: Run typetest
-        run: uv run --python=${{ matrix.python }} tox -e=typetest
+        run: uv run tox -e=typetest
 
       - name: Run stubtest
-        run: uv run --python=${{ matrix.python }} tox -e=stubtest
+        run: uv run tox -e=stubtest
 
       - name: lint
-        run: uv run --python=${{ matrix.python }} tox -e=lint
+        run: uv run tox -e=lint
 
       - name: basedmypy
-        run: uv run --python=${{ matrix.python }} tox -e=mypy
+        run: uv run tox -e=mypy
 
       - name: basedpyright
-        run: uv run --python=${{ matrix.python }} tox -e=pyright
+        run: uv run tox -e=pyright
