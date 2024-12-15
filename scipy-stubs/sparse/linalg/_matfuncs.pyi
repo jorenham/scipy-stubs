@@ -1,18 +1,18 @@
 # mypy: disable-error-code="override"
 # pyright: reportIncompatibleMethodOverride=false
 
-from typing import Any, Final, Generic, Literal, TypeAlias
+from typing import Final, Generic, Literal, TypeAlias
 from typing_extensions import Self, TypeVar, override
 
-import numpy as np
 import optype as op
 import optype.numpy as onp
 from scipy.sparse._base import _spbase
+from scipy.sparse._typing import Complex, Float, Scalar
 from ._interface import LinearOperator
 
 __all__ = ["expm", "inv", "matrix_power"]
 
-_SCT_co = TypeVar("_SCT_co", covariant=True, bound=np.inexact[Any], default=np.inexact[Any])
+_SCT_co = TypeVar("_SCT_co", covariant=True, bound=Scalar, default=Float | Complex)
 _SparseT = TypeVar("_SparseT", bound=_spbase)
 
 _Structure: TypeAlias = Literal["upper_triangular"]
