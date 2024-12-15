@@ -1,9 +1,28 @@
-from scipy._typing import Untyped
+from typing import Final, Literal, TypeAlias, TypeVar
+
+import numpy as np
+import optype.numpy as onp
+from scipy.sparse._base import _spbase
+from scipy.sparse._typing import Scalar
+from scipy.sparse.linalg import LinearOperator
 
 __all__: list[str] = []
 
-__docformat__: str = ...
+_T = TypeVar("_T")
+_Char: TypeAlias = Literal["f", "d", "F", "D"]
+_ToLinearOperator: TypeAlias = onp.CanArrayND[Scalar] | _spbase[Scalar] | LinearOperator[Scalar]
+_Inexact: TypeAlias = np.float32 | np.float64 | np.complex64 | np.complex128
 
-def coerce(x: Untyped, y: Untyped) -> Untyped: ...
-def id(x: Untyped) -> Untyped: ...
-def make_system(A: Untyped, M: Untyped, x0: Untyped, b: Untyped) -> Untyped: ...
+###
+
+__docformat__: Final = "restructuredtext en"
+_coerce_rules: Final[dict[tuple[_Char, _Char], _Char]]
+
+def id(x: _T) -> _T: ...
+def coerce(x: str, y: str) -> _Char: ...
+def make_system(
+    A: _ToLinearOperator,
+    M: _ToLinearOperator | None,
+    x0: onp.ToComplex1D | Literal["Mb"] | None,
+    b: onp.ToComplex1D,
+) -> tuple[LinearOperator, LinearOperator, onp.Array1D[_Inexact], onp.Array1D[_Inexact]]: ...
