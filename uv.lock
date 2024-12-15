@@ -433,6 +433,15 @@ wheels = [
 ]
 
 [[package]]
+name = "packaging"
+version = "24.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d0/63/68dbb6eb2de9cb10ee4c9c14a0148804425e13c4fb20d61cce69f53106da/packaging-24.2.tar.gz", hash = "sha256:c228a6dc5e932d346bc5739379109d49e8853dd8223571c7c5b55260edc0b97f", size = 163950 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/88/ef/eb23f262cca3c0c4eb7ab1933c3b1f03d021f2c48f54763065b6f0e321be/packaging-24.2-py3-none-any.whl", hash = "sha256:09abb1bccd265c01f4a3aa3f7a7db064b36514d2cba19a2f694fe6150451a759", size = 65451 },
+]
+
+[[package]]
 name = "pastel"
 version = "0.2.1"
 source = { registry = "https://pypi.org/simple" }
@@ -687,6 +696,7 @@ dev = [
     { name = "libcst" },
     { name = "mdformat-gfm" },
     { name = "mdformat-gfm-alerts" },
+    { name = "packaging" },
     { name = "poethepoet" },
     { name = "pre-commit" },
     { name = "pre-commit-uv" },
@@ -707,6 +717,8 @@ scipy = [
 typecheck = [
     { name = "basedmypy", extra = ["faster-cache"] },
     { name = "basedpyright" },
+    { name = "libcst" },
+    { name = "packaging" },
     { name = "scipy" },
 ]
 
@@ -724,6 +736,7 @@ dev = [
     { name = "libcst", specifier = ">=1.5.1,<2" },
     { name = "mdformat-gfm", specifier = ">=0.3.7,<1" },
     { name = "mdformat-gfm-alerts", specifier = ">=1.0.1,<2" },
+    { name = "packaging" },
     { name = "poethepoet", specifier = ">=0.31.1,<1" },
     { name = "pre-commit", specifier = ">=4.0.1,<5" },
     { name = "pre-commit-uv", specifier = ">=4.1.4,<5" },
@@ -742,6 +755,8 @@ scipy = [{ name = "scipy", specifier = "==1.14.1" }]
 typecheck = [
     { name = "basedmypy", extras = ["faster-cache"], specifier = ">=2.8.1" },
     { name = "basedpyright", specifier = ">=1.22.1" },
+    { name = "libcst", specifier = ">=1.5.1,<2" },
+    { name = "packaging" },
     { name = "scipy", specifier = "==1.14.1" },
 ]
 
