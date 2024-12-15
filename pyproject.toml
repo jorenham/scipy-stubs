@@ -38,16 +38,16 @@ scipy = [
 ]
 lint = [
     {include-group = "scipy"},
-    "mdformat-gfm>=0.3.7,<1",
+    "mdformat-gfm>=0.4.1",
     "mdformat-gfm-alerts>=1.0.1,<2",
-    "ruff>=0.8.2",
+    "ruff>=0.8.3",
     "sp-repo-review[cli]>=2024.8.19",
 ]
 typecheck = [
     {include-group = "scipy"},
     {include-group = "codegen"},
     "basedmypy[faster-cache]>=2.8.1",
-    "basedpyright>=1.22.1",
+    "basedpyright>=1.23.0",
     "packaging",
 ]
 codegen = [
