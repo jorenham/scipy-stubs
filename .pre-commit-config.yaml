@@ -2,11 +2,6 @@ ci:
   autoupdate_branch: "master"
   autoupdate_commit_msg: "update pre-commit hooks"
   skip:
-    - markdownlint
-    - mdformat
-    - typos
-    - ruff
-    - ruff-format
     - basedmypy
     - basedpyright
 
@@ -57,12 +52,12 @@ repos:
           - mdformat-pyproject
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.28.2
+    rev: v1.28.3
     hooks:
       - id: typos
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.2
+    rev: v0.8.3
     hooks:
       - id: ruff
         args: [--fix, --show-fixes]
