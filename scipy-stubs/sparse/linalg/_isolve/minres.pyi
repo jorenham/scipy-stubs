@@ -25,7 +25,7 @@ def minres(
     x0: onp.ToFloat1D | None = None,
     *,
     rtol: onp.ToFloat = 1e-5,
-    atol: onp.ToFloat = 0.0,
+    shift: onp.ToFloat = 0.0,
     maxiter: int | None = None,
     M: _ToLinearOperator[_FloatT | _ToInt] | None = None,
     callback: Callable[[onp.Array1D[_FloatT]], _Ignored] | None = None,
