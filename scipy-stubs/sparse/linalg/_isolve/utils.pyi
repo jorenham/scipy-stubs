@@ -2,6 +2,7 @@ from typing import Final, Literal, TypeAlias, TypeVar
 
 import numpy as np
 import optype.numpy as onp
+from _typeshed import IdentityFunction
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Scalar
 from scipy.sparse.linalg import LinearOperator
@@ -25,4 +26,10 @@ def make_system(
     M: _ToLinearOperator | None,
     x0: onp.ToComplex1D | Literal["Mb"] | None,
     b: onp.ToComplex1D,
-) -> tuple[LinearOperator, LinearOperator, onp.Array1D[_Inexact], onp.Array1D[_Inexact]]: ...
+) -> tuple[
+    LinearOperator,  # A
+    LinearOperator,  # M
+    onp.Array1D[_Inexact],  # x
+    onp.Array1D[_Inexact],  # b
+    IdentityFunction,  # postprocess
+]: ...
