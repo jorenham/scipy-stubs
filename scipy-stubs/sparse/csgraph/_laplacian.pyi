@@ -3,12 +3,15 @@ from typing import Any, Literal, TypeAlias, overload
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
-from scipy.sparse import sparray, spmatrix
+from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
-_LaplacianMatrix: TypeAlias = onp.Array2D[np.number[Any]] | sparray | spmatrix | LinearOperator
+_LaplacianMatrix: TypeAlias = onp.Array2D[np.number[Any]] | _spbase | LinearOperator
 _LaplacianDiag: TypeAlias = onp.Array1D[np.number[Any]]
-_ToCSGraph: TypeAlias = onp.ToComplex2D | sparray | spmatrix
+_ToCSGraph: TypeAlias = onp.ToComplex2D | _spbase
+_Form: TypeAlias = Literal["array", "function", "lo"]
+
+###
 
 @overload
 def laplacian(
@@ -18,7 +21,7 @@ def laplacian(
     use_out_degree: bool = False,
     *,
     copy: bool = True,
-    form: Literal["array", "function", "lo"] = "array",
+    form: _Form = "array",
     dtype: npt.DTypeLike | None = None,
     symmetrized: bool = False,
 ) -> _LaplacianMatrix: ...
@@ -30,7 +33,7 @@ def laplacian(
     use_out_degree: bool = False,
     *,
     copy: bool = True,
-    form: Literal["array", "function", "lo"] = "array",
+    form: _Form = "array",
     dtype: npt.DTypeLike | None = None,
     symmetrized: bool = False,
 ) -> tuple[_LaplacianMatrix, _LaplacianDiag]: ...
@@ -42,7 +45,7 @@ def laplacian(
     return_diag: Literal[True],
     use_out_degree: bool = False,
     copy: bool = True,
-    form: Literal["array", "function", "lo"] = "array",
+    form: _Form = "array",
     dtype: npt.DTypeLike | None = None,
     symmetrized: bool = False,
 ) -> tuple[_LaplacianMatrix, _LaplacianDiag]: ...

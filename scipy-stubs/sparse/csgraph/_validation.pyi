@@ -1,16 +1,20 @@
-from typing import Any, Final, TypeAlias
+from typing import Final, TypeAlias
 
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
-from scipy.sparse import sparray, spmatrix
+from scipy.sparse._base import _spbase
+from scipy.sparse._typing import Float, Int
 
-_GraphLike: TypeAlias = onp.ToFloat2D | sparray | spmatrix
+_Real: TypeAlias = Int | Float
+_ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
+
+###
 
 DTYPE: Final[type[np.float64]] = ...
 
 def validate_graph(
-    csgraph: _GraphLike,
+    csgraph: _ToGraph,
     directed: bool,
     dtype: npt.DTypeLike = ...,
     csr_output: bool = True,
@@ -21,4 +25,4 @@ def validate_graph(
     null_value_out: float = ...,
     infinity_null: bool = True,
     nan_null: bool = True,
-) -> onp.Array2D[np.floating[Any]]: ...
+) -> onp.Array2D[_Real]: ...
