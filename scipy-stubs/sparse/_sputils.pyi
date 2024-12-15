@@ -37,7 +37,7 @@ _SequenceLike: TypeAlias = tuple[_ScalarLike, ...] | list[_ScalarLike] | onp.Arr
 _MatrixLike: TypeAlias = tuple[_SequenceLike, ...] | list[_SequenceLike] | onp.Array2D
 
 _ToArray: TypeAlias = onp.CanArrayND[_SCT, _ShapeT] | onp.SequenceND[_SCT | complex | bytes | str]
-_ToArray2D: TypeAlias = onp.CanArrayND[_SCT, _ShapeT] | Seq[Seq[_SCT | complex | bytes | str] | onp.CanArrayND[_SCT, _ShapeT]]
+_ToArray2D: TypeAlias = onp.CanArrayND[_SCT, _ShapeT] | Seq[Seq[_SCT | complex | bytes | str] | onp.CanArrayND[_SCT]]
 
 @type_check_only
 class _ReshapeKwargs(TypedDict, total=False):
