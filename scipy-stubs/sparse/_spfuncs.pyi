@@ -1,6 +1,18 @@
-from scipy._typing import Untyped
+from typing import Literal as L, TypeAlias, TypeVar
+
+import optype.numpy as onp
+from ._base import _spbase
+from ._typing import Float
 
 __all__ = ["count_blocks", "estimate_blocksize"]
 
-def estimate_blocksize(A: Untyped, efficiency: float = 0.7) -> Untyped: ...
-def count_blocks(A: Untyped, blocksize: tuple[int, int]) -> Untyped: ...
+_SizeT = TypeVar("_SizeT", bound=int)
+_BlockSize: TypeAlias = tuple[_SizeT, _SizeT]
+
+def estimate_blocksize(
+    A: _spbase | onp.ToComplex2D,
+    efficiency: float | Float = 0.7,
+) -> _BlockSize[L[1]] | _BlockSize[L[2]] | _BlockSize[L[3]] | _BlockSize[L[4]] | _BlockSize[L[6]]: ...
+
+#
+def count_blocks(A: _spbase | onp.ToComplex2D, blocksize: tuple[onp.ToJustInt, onp.ToJustInt]) -> int: ...
