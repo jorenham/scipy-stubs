@@ -30,7 +30,7 @@ jobs:
 
   generate-matrix:
     name: Generate Test Matrix
-    timeout-minutes: 5
+    timeout-minutes: 1
     runs-on: ubuntu-latest
 
     outputs:
@@ -43,7 +43,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv sync --frozen
+          uv sync --frozen --locked
 
       - name: Generate Matrix
         id: set-matrix
@@ -55,7 +55,7 @@ jobs:
   typetest:
 
     needs: generate-matrix
-    timeout-minutes: 20
+    timeout-minutes: 2
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
