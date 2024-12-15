@@ -53,28 +53,43 @@ def bicgstab(
 ) -> Untyped: ...
 
 #
+@overload  # real
 def cg(
-    A: Untyped,
-    b: Untyped,
-    x0: Untyped | None = None,
+    A: _ToLinearOperator[_FloatT | _ToInt],
+    b: onp.ToFloat1D,
+    x0: onp.ToFloat1D | None = None,
     *,
-    rtol: float = 1e-05,
-    atol: float = 0.0,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
     maxiter: int | None = None,
-    M: Untyped | None = None,
-    callback: Untyped | None = None,
-) -> Untyped: ...
+    M: _ToLinearOperator[_FloatT | _ToInt] | None = None,
+    callback: _Callback[_FloatT] | None = None,
+) -> tuple[onp.Array1D[_FloatT], int]: ...
+@overload  # complex
+def cg(
+    A: _ToLinearOperator[_ComplexT],
+    b: onp.ToComplex1D,
+    x0: onp.ToComplex1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[_ComplexT] | None = None,
+    callback: _Callback[_ComplexT] | None = None,
+) -> tuple[onp.Array1D[_ComplexT], int]: ...
+
+#
 def cgs(
-    A: Untyped,
-    b: Untyped,
-    x0: Untyped | None = None,
+    A: _ToLinearOperator[_FloatT | _ToInt],
+    b: onp.ToFloat1D,
+    x0: onp.ToFloat1D | None = None,
     *,
-    rtol: float = 1e-05,
-    atol: float = 0.0,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
     maxiter: int | None = None,
-    M: Untyped | None = None,
-    callback: Untyped | None = None,
-) -> Untyped: ...
+    M: _ToLinearOperator[_FloatT | _ToInt] | None = None,
+    callback: _Callback[_FloatT] | None = None,
+) -> tuple[onp.Array1D[_FloatT], int]: ...
 
 #
 @overload  # real, callback_type: {"pr_norm", "legacy"} | None = ...
