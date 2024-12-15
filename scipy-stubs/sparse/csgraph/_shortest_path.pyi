@@ -2,14 +2,20 @@ from typing import Final, Literal, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
-from scipy.sparse import sparray, spmatrix
+from scipy.sparse._base import _spbase
+from scipy.sparse._typing import Float, Int
 
-_GraphArrayLike: TypeAlias = onp.ToFloat2D | sparray | spmatrix
+_Falsy: TypeAlias = Literal[False, 0]
+_Truthy: TypeAlias = Literal[True, 1]
 
 _Int1D: TypeAlias = onp.Array1D[np.int32]
 _Int2D: TypeAlias = onp.Array2D[np.int32]
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
+
+_ToGraphArray: TypeAlias = onp.ToFloat2D | _spbase[np.bool_ | Int | Float]
+
+_ShortestPathMethod: TypeAlias = Literal["auto", "FW", "D", "BF", "J"]
 
 ###
 
@@ -21,31 +27,31 @@ class NegativeCycleError(Exception):
 
 @overload
 def shortest_path(
-    csgraph: _GraphArrayLike,
-    method: Literal["auto", "FW", "D", "BF", "J"] = "auto",
+    csgraph: _ToGraphArray,
+    method: _ShortestPathMethod = "auto",
     directed: bool = True,
-    return_predecessors: Literal[False, 0] = False,
+    return_predecessors: _Falsy = False,
     unweighted: bool = False,
     overwrite: bool = False,
     indices: onp.ToInt | onp.ToIntND | None = None,
 ) -> _Float2D: ...
 @overload
 def shortest_path(
-    csgraph: _GraphArrayLike,
-    method: Literal["auto", "FW", "D", "BF", "J"],
+    csgraph: _ToGraphArray,
+    method: _ShortestPathMethod,
     directed: bool,
-    return_predecessors: Literal[True, 1],
+    return_predecessors: _Truthy,
     unweighted: bool = False,
     overwrite: bool = False,
     indices: onp.ToInt | onp.ToIntND | None = None,
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def shortest_path(
-    csgraph: _GraphArrayLike,
-    method: Literal["auto", "FW", "D", "BF", "J"] = "auto",
+    csgraph: _ToGraphArray,
+    method: _ShortestPathMethod = "auto",
     directed: bool = True,
     *,
-    return_predecessors: Literal[True, 1],
+    return_predecessors: _Truthy,
     unweighted: bool = False,
     overwrite: bool = False,
     indices: onp.ToInt | onp.ToIntND | None = None,
@@ -54,26 +60,26 @@ def shortest_path(
 #
 @overload
 def floyd_warshall(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool = True,
-    return_predecessors: Literal[False, 0] = False,
+    return_predecessors: _Falsy = False,
     unweighted: bool = False,
     overwrite: bool = False,
 ) -> _Float2D: ...
 @overload
 def floyd_warshall(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool,
-    return_predecessors: Literal[True, 1],
+    return_predecessors: _Truthy,
     unweighted: bool = False,
     overwrite: bool = False,
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def floyd_warshall(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool = True,
     *,
-    return_predecessors: Literal[True, 1],
+    return_predecessors: _Truthy,
     unweighted: bool = False,
     overwrite: bool = False,
 ) -> tuple[_Float2D, _Int2D]: ...
@@ -81,143 +87,143 @@ def floyd_warshall(
 #
 @overload
 def dijkstra(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool = True,
     indices: onp.ToIntND | None = None,
-    return_predecessors: Literal[False, 0] = False,
+    return_predecessors: _Falsy = False,
     unweighted: bool = False,
     limit: float = ...,
-    min_only: Literal[False, 0] = False,
+    min_only: _Falsy = False,
 ) -> _Float2D: ...
 @overload
 def dijkstra(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool = True,
     indices: onp.ToIntND | None = None,
-    return_predecessors: Literal[False, 0] = False,
+    return_predecessors: _Falsy = False,
     unweighted: bool = False,
     limit: float = ...,
     *,
-    min_only: Literal[True, 1],
+    min_only: _Truthy,
 ) -> _Float1D: ...
 @overload
 def dijkstra(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool,
     indices: onp.ToIntND | None,
-    return_predecessors: Literal[True, 1],
+    return_predecessors: _Truthy,
     unweighted: bool = False,
     limit: float = ...,
-    min_only: Literal[False, 0] = False,
+    min_only: _Falsy = False,
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def dijkstra(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool = True,
     indices: onp.ToIntND | None = None,
     *,
-    return_predecessors: Literal[True, 1],
+    return_predecessors: _Truthy,
     unweighted: bool = False,
     limit: float = ...,
-    min_only: Literal[False, 0] = False,
+    min_only: _Falsy = False,
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def dijkstra(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool,
     indices: onp.ToIntND | None,
-    return_predecessors: Literal[True, 1],
+    return_predecessors: _Truthy,
     unweighted: bool = False,
     limit: float = ...,
     *,
-    min_only: Literal[True, 1],
+    min_only: _Truthy,
 ) -> tuple[_Float1D, _Int1D, _Int1D]: ...
 @overload
 def dijkstra(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool = True,
     indices: onp.ToIntND | None = None,
     *,
-    return_predecessors: Literal[True, 1],
+    return_predecessors: _Truthy,
     unweighted: bool = False,
     limit: float = ...,
-    min_only: Literal[True, 1],
+    min_only: _Truthy,
 ) -> tuple[_Float1D, _Int1D, _Int1D]: ...
 
 #
 @overload
 def bellman_ford(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool = True,
     indices: onp.ToIntND | None = None,
-    return_predecessors: Literal[False, 0] = False,
+    return_predecessors: _Falsy = False,
     unweighted: bool = False,
 ) -> _Float2D: ...
 @overload
 def bellman_ford(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool,
     indices: onp.ToIntND | None,
-    return_predecessors: Literal[True, 1],
+    return_predecessors: _Truthy,
     unweighted: bool = False,
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def bellman_ford(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool = True,
     indices: onp.ToIntND | None = None,
     *,
-    return_predecessors: Literal[True, 1],
+    return_predecessors: _Truthy,
     unweighted: bool = False,
 ) -> tuple[_Float2D, _Int2D]: ...
 
 #
 @overload
 def johnson(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool = True,
     indices: onp.ToIntND | None = None,
-    return_predecessors: Literal[False, 0] = False,
+    return_predecessors: _Falsy = False,
     unweighted: bool = False,
 ) -> _Float2D: ...
 @overload
 def johnson(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool,
     indices: onp.ToIntND | None,
-    return_predecessors: Literal[True, 1],
+    return_predecessors: _Truthy,
     unweighted: bool = False,
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def johnson(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     directed: bool = True,
     indices: onp.ToIntND | None = None,
     *,
-    return_predecessors: Literal[True, 1],
+    return_predecessors: _Truthy,
     unweighted: bool = False,
 ) -> tuple[_Float2D, _Int2D]: ...
 
 #
 @overload
 def yen(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     source: int,
     sink: int,
     K: int,
     *,
     directed: bool = True,
-    return_predecessors: Literal[False, 0] = False,
+    return_predecessors: _Falsy = False,
     unweighted: bool = False,
 ) -> _Float1D: ...
 @overload
 def yen(
-    csgraph: _GraphArrayLike,
+    csgraph: _ToGraphArray,
     source: int,
     sink: int,
     K: int,
     *,
     directed: bool = True,
-    return_predecessors: Literal[True, 1],
+    return_predecessors: _Truthy,
     unweighted: bool = False,
 ) -> tuple[_Float1D, _Int2D]: ...
