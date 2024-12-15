@@ -19,7 +19,7 @@ _ExitDesc: TypeAlias = Literal[
     "Gradient evaluation required (g & a)",  # -1
     "Optimization terminated successfully",  # 0
     "Function evaluation required (f & c)",  # 1
-    "More equality constraints than independent variables",  # 2  # noqa: PYI053
+    "More equality constraints than independent variables",  # 2
     "More than 3*n iterations in LSQ subproblem",  # 3
     "Inequality constraints incompatible",  # 4
     "Singular matrix E in LSQ subproblem",  # 5
