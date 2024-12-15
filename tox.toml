@@ -32,7 +32,18 @@ commands = [
 [env.basedmypy]
 description = "basedmypy"
 dependency_groups = ["typecheck"]
-commands = [["uv", "run", "--frozen", "--no-editable", "--isolated", "--refresh-package=scipy-stubs", "mypy", "--config-file=pyproject.toml", "scipy-stubs", "codegen"]]
+commands = [[
+    "uv",
+    "run",
+    "--frozen",
+    "--no-editable",
+    "--isolated",
+    "--refresh-package=scipy-stubs",
+    "mypy",
+    "--config-file=pyproject.toml",
+    "scipy-stubs",
+    "codegen",
+]]
 
 [env.basedpyright]
 description = "basedpyright"
@@ -50,7 +61,18 @@ commands = [
 [env.basedmypy-tests]
 description = "basedmypy tests"
 dependency_groups = ["typecheck"]
-commands = [["uv", "run", "--frozen", "--no-editable", "--isolated", "--refresh-package=scipy-stubs", "mypy", "--config-file=pyproject.toml", "scipy-stubs", "codegen"]]
+commands = [[
+    "uv",
+    "run",
+    "--frozen",
+    "--no-editable",
+    "--isolated",
+    "--refresh-package=scipy-stubs",
+    "mypy",
+    "--config-file=pyproject.toml",
+    "scipy-stubs",
+    "codegen",
+]]
 
 [env.basedpyright-tests]
 description = "basedpyright tests"
@@ -60,7 +82,19 @@ commands = [["basedpyright", "tests"]]
 [env.stubtest]
 description = "stubtest"
 dependency_groups = ["typecheck"]
-commands = [["uv", "run", "--frozen", "--no-editable", "--isolated", "--refresh-package=scipy-stubs", "stubtest", "--mypy-config-file=pyproject.toml", "--allowlist=.mypyignore", "--ignore-unused-allowlist", "scipy"]]
+commands = [[
+    "uv",
+    "run",
+    "--frozen",
+    "--no-editable",
+    "--isolated",
+    "--refresh-package=scipy-stubs",
+    "stubtest",
+    "--mypy-config-file=pyproject.toml",
+    "--allowlist=.mypyignore",
+    "--ignore-unused-allowlist",
+    "scipy",
+]]
 
 [env.mypy]
 description = "Run mypy"
