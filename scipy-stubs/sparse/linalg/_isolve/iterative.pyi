@@ -4,7 +4,6 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Untyped
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Scalar
 from scipy.sparse.linalg import LinearOperator
@@ -29,28 +28,56 @@ _Callback: TypeAlias = Callable[[onp.Array1D[_ScalarT]], _Ignored]
 
 ###
 
+@overload  # real
 def bicg(
-    A: Untyped,
-    b: Untyped,
-    x0: Untyped | None = None,
+    A: _ToLinearOperator[_FloatT | _ToInt],
+    b: onp.ToFloat1D,
+    x0: onp.ToFloat1D | None = None,
     *,
-    rtol: float = 1e-05,
-    atol: float = 0.0,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
     maxiter: int | None = None,
-    M: Untyped | None = None,
-    callback: Untyped | None = None,
-) -> Untyped: ...
+    M: _ToLinearOperator[_FloatT | _ToInt] | None = None,
+    callback: _Callback[_FloatT] | None = None,
+) -> tuple[onp.Array1D[_FloatT], int]: ...
+@overload  # complex
+def bicg(
+    A: _ToLinearOperator[_ComplexT],
+    b: onp.ToComplex1D,
+    x0: onp.ToComplex1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[_ComplexT] | None = None,
+    callback: _Callback[_ComplexT] | None = None,
+) -> tuple[onp.Array1D[_ComplexT], int]: ...
+
+#
+@overload  # real
 def bicgstab(
-    A: Untyped,
-    b: Untyped,
-    x0: Untyped | None = None,
+    A: _ToLinearOperator[_FloatT | _ToInt],
+    b: onp.ToFloat1D,
+    x0: onp.ToFloat1D | None = None,
     *,
-    rtol: float = 1e-05,
-    atol: float = 0.0,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
     maxiter: int | None = None,
-    M: Untyped | None = None,
-    callback: Untyped | None = None,
-) -> Untyped: ...
+    M: _ToLinearOperator[_FloatT | _ToInt] | None = None,
+    callback: _Callback[_FloatT] | None = None,
+) -> tuple[onp.Array1D[_FloatT], int]: ...
+@overload  # complex
+def bicgstab(
+    A: _ToLinearOperator[_ComplexT],
+    b: onp.ToComplex1D,
+    x0: onp.ToComplex1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[_ComplexT] | None = None,
+    callback: _Callback[_ComplexT] | None = None,
+) -> tuple[onp.Array1D[_ComplexT], int]: ...
 
 #
 @overload  # real
