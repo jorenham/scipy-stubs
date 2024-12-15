@@ -177,13 +177,13 @@ from 🌑 (100% `Untyped`) to 🌕 (0% `Untyped`).
 | `odr`         |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | `optimize`    |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | `signal`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
-| `sparse`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌓   |
+| `sparse`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | `spatial`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | `special`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | `stats`       |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 | *`_lib`*      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
 
-Currently, only `signal` and `sparse` contain `Untyped` annotations.
+Currently, only `scipy.signal` contains `Untyped` annotations; all other submodules have complete typing coverage.
 
 ## Podcast (AI generated)
 
