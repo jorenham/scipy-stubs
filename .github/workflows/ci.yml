@@ -2,7 +2,8 @@ name: CI
 
 on:
   push:
-    branches: [master]
+    branches:
+      - master
   pull_request:
   workflow_dispatch:
 
@@ -10,13 +11,11 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
-env:
-  UV_LOCKED: true
-
 jobs:
   lint:
-    timeout-minutes: 5
+    timeout-minutes: 1
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -29,92 +28,67 @@ jobs:
       - name: typos
         uses: crate-ci/typos@master
 
-      - name: setup uv
+  generate-matrix:
+    name: Generate Test Matrix
+    timeout-minutes: 1
+    runs-on: ubuntu-latest
+
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
         uses: astral-sh/setup-uv@v4
-        with:
-          enable-cache: true
-          python-version: "3.13"
 
-      - name: install
-        run: uv sync
-
-      - name: repo-review
-        run: uv run repo-review .
-
-      - name: mdformat
-        run: uv run mdformat --check
-
-      - name: ruff
+      - name: Install dependencies
         run: |
-          uv run ruff check --output-format=github
-          uv run ruff format --check
+          uv sync --locked
+
+      - name: Generate Matrix
+        id: set-matrix
+        shell: bash
+        run: |
+          matrix=$(uv run scripts/generate_matrix.py | jq -c)
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
   typetest:
-    timeout-minutes: 5
+
+    needs: generate-matrix
+    timeout-minutes: 2
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: setup uv
+      - name: Install uv
         uses: astral-sh/setup-uv@v4
         with:
           enable-cache: true
-          python-version: "3.13"
+          python-version: ${{ matrix.python }}
 
-      - name: install
-        run: uv sync --no-editable
+      - name: setup tox
+        run: uv tool install tox --with tox-uv
 
-      - name: basedpyright
-        run: >
-          uv run --no-sync
-          basedpyright
-
-      - name: basedmypy
-        run: >
-          uv run --no-sync
-          mypy --config-file=pyproject.toml .
-
-      - name: stubtest
-        run: >
-          uv run --no-sync
-          stubtest
-          --mypy-config-file=pyproject.toml
-          --allowlist=.mypyignore
-          --ignore-unused-allowlist
-          scipy
-
-  typetest-oldest-supported-numpy:
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: setup uv
-        uses: astral-sh/setup-uv@v4
-        with:
-          enable-cache: true
-          python-version: "3.10"
-
-      - name: install
+      - name: Install dependencies
+        continue-on-error: true
         run: |
-          uv sync --no-editable --no-install-package numpy
-          uv pip install numpy==$(uv run --no-sync scripts/version_bounds.py numpy)
+          rm -rf .venv
+          uv add --no-build-package=numpy "numpy<=${{ matrix.numpy }}"
 
-      - name: basedpyright
-        run: >
-          uv run --no-sync
-          basedpyright
+      - name: Run typetest
+        run: uv run tox -e=typetest
+
+      - name: Run stubtest
+        run: uv run tox -e=stubtest
+
+      - name: lint
+        run: uv run tox -e=lint
 
       - name: basedmypy
-        run: >
-          uv run --no-sync
-          mypy --config-file=pyproject.toml .
+        run: uv run tox -e=mypy
 
-      - name: stubtest
-        run: >
-          uv run --no-sync
-          stubtest
-          --mypy-config-file=pyproject.toml
-          --allowlist=.mypyignore
-          --ignore-unused-allowlist
-          scipy
+      - name: basedpyright
+        run: uv run tox -e=pyright

@@ -45,8 +45,10 @@ lint = [
 ]
 typecheck = [
     {include-group = "scipy"},
+    {include-group = "codegen"},
     "basedmypy[faster-cache]>=2.8.1",
     "basedpyright>=1.22.1",
+    "packaging",
 ]
 codegen = [
     "libcst>=1.5.1,<2",
@@ -223,6 +225,7 @@ reportUnsafeMultipleInheritance = true  # based
 [tool.repo-review]
 ignore = [
     "PY004", # no /docs
+    "PY007", # tox configured in tox.toml
     "PP301", # pytest is irrelevant
     "PC111", # no blacken-docs because markdown has no code
     "PC140", # manual typecheck pre-commit hooks
@@ -274,25 +277,3 @@ typing = ["collections.abc", "types", "typing", "typing_extensions"]
 [tool.ruff.lint.flake8-annotations]
 allow-star-arg-any = true
 mypy-init-return = true
-
-[tool.tox]
-isolated_build = true
-env_list = ["repo-review", "pre-commit", "3.10", "3.11", "3.12", "3.13"]
-
-[tool.tox.env_run_base]
-runner = "uv-venv-lock-runner"
-description = "stubtest with {base_python}"
-allowlist_externals = ["poe"]
-commands = [["poe", "stubtest"]]
-
-[tool.tox.env.pre-commit]
-runner = "uv-venv-lock-runner"
-description = "pre-commit"
-allowlist_externals = ["poe"]
-commands = [["poe", "pre-commit"]]
-
-[tool.tox.env.repo-review]
-runner = "uv-venv-lock-runner"
-description = "repo-review"
-allowlist_externals = ["poe"]
-commands = [["poe", "repo-review"]]
