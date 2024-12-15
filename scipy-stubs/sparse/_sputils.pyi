@@ -1,18 +1,43 @@
-from collections.abc import Iterable
-from typing import Any, Final, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
+from collections.abc import Iterable, Sequence as Seq
+from typing import Any, Final, Literal, Protocol, TypeAlias, TypedDict, TypeVar, overload, type_check_only
 from typing_extensions import TypeIs
 
 import numpy as np
+import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from scipy._typing import Untyped, UntypedArray
-from scipy.sparse import spmatrix
+from scipy._typing import OrderKACF
+from scipy.sparse._typing import Matrix, ToDType
+
+__all__ = [
+    "get_sum_dtype",
+    "getdata",
+    "getdtype",
+    "isdense",
+    "isintlike",
+    "ismatrix",
+    "isscalarlike",
+    "issequence",
+    "isshape",
+    "upcast",
+]
+
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=Any)
+_DTypeT = TypeVar("_DTypeT", bound=np.dtype[Any])
+_SCT = TypeVar("_SCT", bound=np.generic, default=Any)
+_NonIntDTypeT = TypeVar(
+    "_NonIntDTypeT",
+    bound=np.dtype[np.inexact[Any] | np.flexible | np.datetime64 | np.timedelta64 | np.object_],
+)
 
 _SupportedScalar: TypeAlias = np.bool_ | np.integer[Any] | np.float32 | np.float64 | np.longdouble | np.complexfloating[Any, Any]
 _ShapeLike: TypeAlias = Iterable[op.CanIndex]
-_ScalarLike: TypeAlias = complex | str | bytes | np.generic | onp.Array0D
+_ScalarLike: TypeAlias = complex | bytes | str | np.generic | onp.Array0D
 _SequenceLike: TypeAlias = tuple[_ScalarLike, ...] | list[_ScalarLike] | onp.Array1D
 _MatrixLike: TypeAlias = tuple[_SequenceLike, ...] | list[_SequenceLike] | onp.Array2D
+
+_ToArray: TypeAlias = onp.CanArrayND[_SCT, _ShapeT] | onp.SequenceND[_SCT | complex | bytes | str]
+_ToArray2D: TypeAlias = onp.CanArrayND[_SCT, _ShapeT] | Seq[Seq[_SCT | complex | bytes | str] | onp.CanArrayND[_SCT, _ShapeT]]
 
 @type_check_only
 class _ReshapeKwargs(TypedDict, total=False):
@@ -24,40 +49,65 @@ class _SizedIndexIterable(Protocol):
     def __len__(self, /) -> int: ...
     def __iter__(self, /) -> op.CanNext[op.CanIndex]: ...
 
-#
-# public
-#
+###
 
 supported_dtypes: Final[list[type[_SupportedScalar]]] = ...
 
 #
-def upcast(*args: Untyped) -> Untyped: ...
-def upcast_char(*args: Untyped) -> Untyped: ...
-def upcast_scalar(dtype: Untyped, scalar: Untyped) -> Untyped: ...
-def downcast_intp_index(arr: Untyped) -> Untyped: ...
-def to_native(A: Untyped) -> Untyped: ...
+# NOTE: Technically any `numpy.generic` could be returned, but we only care about the supported scalar types in `scipy.sparse`.
+def upcast(*args: npt.DTypeLike) -> _SupportedScalar: ...
+def upcast_char(*args: npt.DTypeLike) -> _SupportedScalar: ...
+def upcast_scalar(dtype: npt.DTypeLike, scalar: _ScalarLike) -> np.dtype[_SupportedScalar]: ...
 
 #
-def getdtype(dtype: Untyped, a: Untyped | None = None, default: Untyped | None = None) -> Untyped: ...
-def getdata(obj: Untyped, dtype: Untyped | None = None, copy: bool = False) -> UntypedArray: ...
-def get_index_dtype(arrays: Untyped = (), maxval: Untyped | None = None, check_contents: bool = False) -> Untyped: ...
-def get_sum_dtype(dtype: np.dtype[np.generic]) -> np.dtype[np.generic]: ...
+def downcast_intp_index(
+    arr: onp.Array[_ShapeT, np.bool_ | np.integer[Any] | np.floating[Any] | np.timedelta64 | np.object_],
+) -> onp.Array[_ShapeT, np.intp]: ...
 
 #
-def isintlike(x: op.CanIndex) -> bool: ...
+@overload
+def to_native(A: _SCT) -> onp.Array0D[_SCT]: ...
+@overload
+def to_native(A: onp.Array[_ShapeT, _SCT]) -> onp.Array[_ShapeT, _SCT]: ...
+@overload
+def to_native(A: onp.HasDType[_DTypeT]) -> np.ndarray[Any, _DTypeT]: ...
 
+#
+def getdtype(
+    dtype: ToDType[_SCT] | None,
+    a: onp.HasDType[np.dtype[_SCT]] | None = None,
+    default: ToDType[_SCT] | None = None,
+) -> np.dtype[_SCT]: ...
+
+#
+@overload
+def getdata(obj: _SCT | complex | bytes | str, dtype: ToDType[_SCT] | None = None, copy: bool = False) -> onp.Array0D[_SCT]: ...
+@overload
+def getdata(obj: _ToArray[_SCT, _ShapeT], dtype: ToDType[_SCT] | None = None, copy: bool = False) -> onp.Array[_ShapeT, _SCT]: ...
+
+#
+def get_index_dtype(
+    arrays: tuple[onp.ToInt | onp.ToIntND, ...] = (),
+    maxval: onp.ToFloat | None = None,
+    check_contents: op.CanBool = False,
+) -> np.int32 | np.int64: ...
+
+# NOTE: The inline annotations (`(np.dtype) -> np.dtype`) are incorrect.
+@overload
+def get_sum_dtype(dtype: np.dtype[np.unsignedinteger[Any]]) -> type[np.uint]: ...
+@overload
+def get_sum_dtype(dtype: np.dtype[np.bool_ | np.signedinteger[Any]]) -> type[np.int_]: ...
+@overload
+def get_sum_dtype(dtype: _NonIntDTypeT) -> _NonIntDTypeT: ...
+
+#
 # NOTE: all arrays implement `__index__` but if it raises this returns `False`, so `TypeIs` can't be used here
+def isintlike(x: object) -> TypeIs[op.CanIndex]: ...
 def isscalarlike(x: object) -> TypeIs[_ScalarLike]: ...
 def isshape(x: _SizedIndexIterable, nonneg: bool = False, *, allow_1d: bool = False) -> bool: ...
 def issequence(t: object) -> TypeIs[_SequenceLike]: ...
 def ismatrix(t: object) -> TypeIs[_MatrixLike]: ...
 def isdense(x: object) -> TypeIs[onp.Array]: ...
-
-# NOTE: this checks for a `sparse.SparseArray`, which has no stubs at the moment
-@overload
-def is_pydata_spmatrix(m: onp.ToScalar | onp.ToArray1D | onp.ToArray2D) -> Literal[False]: ...
-@overload
-def is_pydata_spmatrix(m: object) -> bool: ...
 
 #
 def validateaxis(axis: Literal[-2, -1, 0, 1] | bool | np.bool_ | np.integer[Any] | None) -> None: ...
@@ -70,6 +120,16 @@ def check_shape(
 def check_reshape_kwargs(kwargs: _ReshapeKwargs) -> Literal["C", "F"] | bool: ...
 
 #
-def convert_pydata_sparse_to_scipy(arg: object, target_format: Literal["csc", "csr"] | None = None) -> object | spmatrix: ...
-def matrix(*args: Untyped, **kwargs: Untyped) -> Untyped: ...
-def asmatrix(data: Untyped, dtype: Untyped | None = None) -> Untyped: ...
+def matrix(
+    object: _ToArray2D[_SCT],
+    dtype: ToDType[_SCT] | type | str | None = None,
+    *,
+    copy: Literal[0, 1, 2] | bool | None = True,
+    order: OrderKACF = "K",
+    subok: bool = False,
+    ndmin: Literal[0, 1, 2] = 0,
+    like: onp.CanArrayFunction | None = None,
+) -> Matrix[_SCT]: ...
+
+#
+def asmatrix(data: _ToArray2D[_SCT], dtype: ToDType[_SCT] | type | str | None = None) -> Matrix[_SCT]: ...
