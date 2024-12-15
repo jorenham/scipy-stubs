@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, TypeAlias, TypeVar, overload
+from typing import Any, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -76,19 +76,62 @@ def cgs(
 ) -> Untyped: ...
 
 #
+@overload  # real, callback_type: {"pr_norm", "legacy"} | None = ...
 def gmres(
-    A: Untyped,
-    b: Untyped,
-    x0: Untyped | None = None,
+    A: _ToLinearOperator[_FloatT | _ToInt],
+    b: onp.ToFloat1D,
+    x0: onp.ToFloat1D | None = None,
     *,
-    rtol: float = 1e-05,
-    atol: float = 0.0,
-    restart: Untyped | None = None,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    restart: int | None = None,
     maxiter: int | None = None,
-    M: Untyped | None = None,
-    callback: Untyped | None = None,
-    callback_type: Untyped | None = None,
-) -> Untyped: ...
+    M: _ToLinearOperator[_ToFloat] | None = None,
+    callback: Callable[[float], _Ignored] | Callable[[np.float64], _Ignored] | None = None,
+    callback_type: Literal["pr_norm", "legacy"] | None = ...,
+) -> tuple[onp.Array1D[_FloatT], int]: ...
+@overload  # real, callback_type: {"x"}
+def gmres(
+    A: _ToLinearOperator[_FloatT | _ToInt],
+    b: onp.ToFloat1D,
+    x0: onp.ToFloat1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    restart: int | None = None,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[_ToFloat] | None = None,
+    callback: _Callback[_FloatT] | None = None,
+    callback_type: Literal["x"],
+) -> tuple[onp.Array1D[_FloatT], int]: ...
+@overload  # complex, callback_type: {"pr_norm", "legacy"} | None = ...
+def gmres(
+    A: _ToLinearOperator[_ComplexT],
+    b: onp.ToComplex1D,
+    x0: onp.ToComplex1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    restart: int | None = None,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[_ToFloat] | None = None,
+    callback: Callable[[float], _Ignored] | Callable[[np.float64], _Ignored] | None = None,
+    callback_type: Literal["pr_norm", "legacy"] | None = ...,
+) -> tuple[onp.Array1D[_ComplexT], int]: ...
+@overload  # complex, callback_type: {"x"}
+def gmres(
+    A: _ToLinearOperator[_ComplexT],
+    b: onp.ToComplex1D,
+    x0: onp.ToComplex1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    restart: int | None = None,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[_ToComplex] | None = None,
+    callback: _Callback[_ComplexT] | None = None,
+    callback_type: Literal["x"],
+) -> tuple[onp.Array1D[_ComplexT], int]: ...
 
 #
 @overload  # real
