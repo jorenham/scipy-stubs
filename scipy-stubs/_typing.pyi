@@ -74,7 +74,7 @@ UntypedArray: TypeAlias = onp.Array[Any, np.generic]
 # I/O
 _ByteSOrStr = TypeVar("_ByteSOrStr", bytes, str)
 FileName: TypeAlias = str | PathLike[str]
-FileLike: TypeAlias = IO[_ByteSOrStr] | FileName
+FileLike: TypeAlias = FileName | IO[_ByteSOrStr]
 FileModeRW: TypeAlias = Literal["r", "w"]
 FileModeRWA: TypeAlias = Literal[FileModeRW, "a"]
 

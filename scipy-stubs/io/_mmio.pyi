@@ -1,12 +1,16 @@
-from typing import Any, ClassVar, Literal, TypeAlias, TypedDict, type_check_only
+from typing import Any, ClassVar, Literal, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import Unpack
 
 import numpy as np
 import optype.numpy as onp
 from scipy._typing import FileLike
 from scipy.sparse import coo_matrix, sparray, spmatrix
+from scipy.sparse._coo import coo_array
 
 __all__ = ["MMFile", "mminfo", "mmread", "mmwrite"]
+
+_Falsy: TypeAlias = Literal[False, 0]
+_Truthy: TypeAlias = Literal[True, 1]
 
 _Format: TypeAlias = Literal["coordinate", "array"]
 _Field: TypeAlias = Literal["real", "complex", "pattern", "integer"]
@@ -22,17 +26,7 @@ class _MMFileKwargs(TypedDict, total=False):
     field: _Field
     symmetry: _Symmetry
 
-def asstr(s: object) -> str: ...
-def mminfo(source: FileLike[bytes]) -> _Info: ...
-def mmread(source: FileLike[bytes]) -> onp.ArrayND[np.number[Any]] | coo_matrix: ...
-def mmwrite(
-    target: FileLike[bytes],
-    a: spmatrix | sparray | onp.ToArrayND,
-    comment: str = "",
-    field: _Field | None = None,
-    precision: int | None = None,
-    symmetry: _Symmetry | None = None,
-) -> None: ...
+###
 
 class MMFile:
     FORMAT_COORDINATE: ClassVar[str] = "coordinate"
@@ -54,7 +48,6 @@ class MMFile:
 
     DTYPES_BY_FIELD: ClassVar[dict[_Field, Literal["intp", "uint64", "d", "D"]]] = ...
 
-    def __init__(self, /, **kwargs: Unpack[_MMFileKwargs]) -> None: ...
     @property
     def rows(self, /) -> int: ...
     @property
@@ -69,7 +62,17 @@ class MMFile:
     def symmetry(self, /) -> _Symmetry: ...
     @property
     def has_symmetry(self, /) -> bool: ...
-    def read(self, /, source: FileLike[bytes]) -> onp.ArrayND[np.number[Any]] | coo_matrix: ...
+
+    #
+    def __init__(self, /, **kwargs: Unpack[_MMFileKwargs]) -> None: ...
+
+    #
+    @overload
+    def read(self, /, source: FileLike[bytes], *, spmatrix: _Truthy = True) -> onp.ArrayND[np.number[Any]] | coo_array: ...
+    @overload
+    def read(self, /, source: FileLike[bytes], *, spmatrix: _Falsy) -> onp.ArrayND[np.number[Any]] | coo_matrix: ...
+
+    #
     def write(
         self,
         /,
@@ -80,9 +83,33 @@ class MMFile:
         precision: int | None = None,
         symmetry: _Symmetry | None = None,
     ) -> None: ...
+
+    #
     @classmethod
     def info(cls, /, source: FileLike[bytes]) -> _Info: ...
     @staticmethod
     def reader() -> None: ...
     @staticmethod
     def writer() -> None: ...
+
+#
+def asstr(s: object) -> str: ...
+
+#
+@overload
+def mmread(source: FileLike[bytes], *, spmatrix: _Truthy = True) -> onp.ArrayND[np.number[Any]] | coo_array: ...
+@overload
+def mmread(source: FileLike[bytes], *, spmatrix: _Falsy) -> onp.ArrayND[np.number[Any]] | coo_matrix: ...
+
+#
+def mmwrite(
+    target: FileLike[bytes],
+    a: spmatrix | sparray | onp.ToArrayND,
+    comment: str = "",
+    field: _Field | None = None,
+    precision: int | None = None,
+    symmetry: _Symmetry | None = None,
+) -> None: ...
+
+#
+def mminfo(source: FileLike[bytes]) -> _Info: ...
