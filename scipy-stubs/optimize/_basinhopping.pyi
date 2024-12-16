@@ -3,7 +3,7 @@ from typing import Concatenate, Literal, Protocol, TypeAlias, TypeVar, type_chec
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Seed
+from scipy._typing import ToRNG
 from ._minimize import OptimizeResult as _MinimizeResult
 from ._optimize import OptimizeResult as _OptimizeResult
 from ._typing import MinimizerKwargs
@@ -61,7 +61,7 @@ def basinhopping(
     interval: onp.ToJustInt = 50,
     disp: onp.ToBool = False,
     niter_success: onp.ToJustInt | None = None,
-    seed: Seed | None = None,
+    seed: ToRNG = None,
     *,
     target_accept_rate: onp.ToFloat = 0.5,
     stepwise_factor: onp.ToFloat = 0.9,

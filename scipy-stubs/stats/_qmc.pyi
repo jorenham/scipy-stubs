@@ -8,7 +8,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.typing as opt
-from scipy._typing import RNG, Seed
+from scipy._typing import RNG, ToRNG
 from scipy.spatial.distance import _MetricCallback, _MetricKind
 
 __all__ = [
@@ -67,7 +67,7 @@ class QMCEngine(abc.ABC):
     num_generated: int
 
     @abc.abstractmethod
-    def __init__(self, /, d: onp.ToInt, *, optimization: _MethodQMC | None = None, seed: Seed | None = None) -> None: ...
+    def __init__(self, /, d: onp.ToInt, *, optimization: _MethodQMC | None = None, seed: ToRNG = None) -> None: ...
     def random(self, /, n: opt.AnyInt = 1, *, workers: onp.ToInt = 1) -> _Array2D: ...
     def integers(
         self,
@@ -93,7 +93,7 @@ class Halton(QMCEngine):
         *,
         scramble: bool = True,
         optimization: _MethodQMC | None = None,
-        seed: Seed | None = None,
+        seed: ToRNG = None,
     ) -> None: ...
 
 class LatinHypercube(QMCEngine):
@@ -108,7 +108,7 @@ class LatinHypercube(QMCEngine):
         scramble: bool = True,
         strength: int = 1,
         optimization: _MethodQMC | None = None,
-        seed: Seed | None = None,
+        seed: ToRNG = None,
     ) -> None: ...
 
 class Sobol(QMCEngine):
@@ -126,7 +126,7 @@ class Sobol(QMCEngine):
         scramble: op.CanBool = True,
         bits: onp.ToInt | None = None,
         optimization: _MethodQMC | None = None,
-        seed: Seed | None = None,
+        seed: ToRNG = None,
     ) -> None: ...
     def random_base2(self, /, m: onp.ToInt) -> _Array2D: ...
 
@@ -161,14 +161,14 @@ class PoissonDisk(QMCEngine):
         hypersphere: Literal["volume", "surface"] = "volume",
         ncandidates: onp.ToInt = 30,
         optimization: _MethodQMC | None = None,
-        seed: Seed | None = None,
+        seed: ToRNG = None,
     ) -> None: ...
     def fill_space(self, /) -> _Array2D: ...
 
 @type_check_only
 class _QMCDistribution:
     engine: Final[QMCEngine]  # defaults to `Sobol`
-    def __init__(self, /, *, engine: QMCEngine | None = None, seed: Seed | None = None) -> None: ...
+    def __init__(self, /, *, engine: QMCEngine | None = None, seed: ToRNG = None) -> None: ...
     def random(self, /, n: onp.ToInt = 1) -> _Array2D: ...
 
 class MultivariateNormalQMC(_QMCDistribution):
@@ -182,7 +182,7 @@ class MultivariateNormalQMC(_QMCDistribution):
         cov_root: _Any2D_f_co | None = None,
         inv_transform: op.CanBool = True,
         engine: QMCEngine | None = None,
-        seed: Seed | None = None,
+        seed: ToRNG = None,
     ) -> None: ...
 
 class MultinomialQMC(_QMCDistribution):
@@ -197,7 +197,7 @@ class MultinomialQMC(_QMCDistribution):
         n_trials: onp.ToInt,
         *,
         engine: QMCEngine | None = None,
-        seed: Seed | None = None,
+        seed: ToRNG = None,
     ) -> None: ...
 
 #
@@ -268,9 +268,9 @@ def _perturb_discrepancy(
 
 #
 @overload
-def _van_der_corput_permutation(base: op.CanIndex, *, random_state: Seed | None = None) -> _Array2D[np.int_]: ...
+def _van_der_corput_permutation(base: op.CanIndex, *, random_state: ToRNG = None) -> _Array2D[np.int_]: ...
 @overload
-def _van_der_corput_permutation(base: op.CanFloat, *, random_state: Seed | None = None) -> _Array2D: ...
+def _van_der_corput_permutation(base: op.CanFloat, *, random_state: ToRNG = None) -> _Array2D: ...
 
 #
 def van_der_corput(
@@ -280,7 +280,7 @@ def van_der_corput(
     start_index: onp.ToInt = 0,
     scramble: op.CanBool = False,
     permutations: onp.ToInt | onp.ToIntND | None = None,
-    seed: Seed | None = None,
+    seed: ToRNG = None,
     workers: opt.AnyInt = 1,
 ) -> _Array1D: ...
 

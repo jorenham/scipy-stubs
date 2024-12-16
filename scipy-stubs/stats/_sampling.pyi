@@ -5,7 +5,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
-from scipy._typing import AnyShape, Seed
+from scipy._typing import AnyShape, ToRNG
 from ._distn_infrastructure import rv_frozen
 from .qmc import QMCEngine
 
@@ -31,7 +31,7 @@ class RatioUniforms:
         vmin: onp.ToFloat,
         vmax: onp.ToFloat,
         c: onp.ToFloat = 0,
-        random_state: Seed | None = None,
+        random_state: ToRNG = None,
     ) -> None: ...
     def rvs(self, /, size: AnyShape = 1) -> np.float64 | onp.ArrayND[np.float64]: ...
 
@@ -43,12 +43,12 @@ class FastGeneratorInversion:
         *,
         domain: tuple[onp.ToFloat, onp.ToFloat] | None = None,
         ignore_shape_range: bool = False,
-        random_state: Seed | None = None,
+        random_state: ToRNG = None,
     ) -> None: ...
     @property
     def random_state(self, /) -> np.random.Generator: ...
     @random_state.setter
-    def random_state(self, random_state: Seed, /) -> None: ...
+    def random_state(self, random_state: ToRNG, /) -> None: ...
     @property
     def loc(self, /) -> float | np.float64: ...
     @loc.setter
@@ -85,7 +85,7 @@ class FastGeneratorInversion:
         self,
         /,
         size: int = 100_000,
-        random_state: Seed | None = None,
+        random_state: ToRNG = None,
         x_error: bool = False,
     ) -> tuple[np.float64, np.float64]: ...
     def support(self, /) -> tuple[float, float] | tuple[np.float64, np.float64]: ...

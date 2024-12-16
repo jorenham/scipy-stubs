@@ -4,7 +4,7 @@ from typing_extensions import LiteralString, deprecated, override
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Seed
+from scipy._typing import ToRNG
 from ._distn_infrastructure import _rv_continuous_0, rv_continuous
 
 __all__ = [
@@ -358,9 +358,9 @@ class rv_histogram(rv_continuous):
         self,
         /,
         histogram: tuple[onp.ArrayND[np.floating[Any]], onp.ArrayND[np.inexact[Any]]],
-        *args: float | LiteralString | Seed,
+        *args: float | LiteralString | ToRNG,
         density: bool | None = None,
-        **kwargs: float | LiteralString | Seed,
+        **kwargs: float | LiteralString | ToRNG,
     ) -> None: ...
 
 class studentized_range_gen(rv_continuous): ...

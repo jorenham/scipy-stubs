@@ -4,7 +4,7 @@ from typing import Any, Literal, Protocol, TypeAlias
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Seed
+from scipy._typing import ToRNG
 from ._resampling import BootstrapResult
 
 __all__ = ["sobol_indices"]
@@ -46,7 +46,7 @@ class SobolResult:
 def f_ishigami(x: onp.ToFloat2D) -> onp.Array1D[np.floating[Any]]: ...
 
 #
-def sample_A_B(n: onp.ToInt, dists: Sequence[PPFDist], random_state: Seed | None = None) -> onp.ArrayND[np.float64]: ...
+def sample_A_B(n: onp.ToInt, dists: Sequence[PPFDist], random_state: ToRNG = None) -> onp.ArrayND[np.float64]: ...
 def sample_AB(A: onp.ArrayND[np.float64], B: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
 
 #
@@ -63,5 +63,5 @@ def sobol_indices(
     n: onp.ToInt,
     dists: Sequence[PPFDist] | None = None,
     method: _SobolMethod | Literal["saltelli_2010"] = "saltelli_2010",
-    random_state: Seed | None = None,
+    random_state: ToRNG = None,
 ) -> SobolResult: ...

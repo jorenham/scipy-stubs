@@ -3,7 +3,7 @@ from typing import Concatenate, Literal, TypeAlias, TypeVar
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Seed
+from scipy._typing import ToRNG
 from scipy.optimize import OptimizeResult as _OptimizeResult
 from ._constraints import Bounds, LinearConstraint, NonlinearConstraint
 
@@ -54,7 +54,7 @@ def differential_evolution(
     tol: onp.ToFloat = 0.01,
     mutation: onp.ToFloat | tuple[onp.ToFloat, onp.ToFloat] = (0.5, 1),
     recombination: onp.ToFloat = 0.7,
-    seed: Seed | None = None,
+    seed: ToRNG = None,
     callback: Callable[[OptimizeResult], None] | Callable[[_Float1D, onp.ToFloat], None] | None = None,
     disp: onp.ToBool = False,
     polish: onp.ToBool = True,

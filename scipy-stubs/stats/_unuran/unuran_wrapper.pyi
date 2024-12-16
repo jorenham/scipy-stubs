@@ -4,7 +4,7 @@ from typing import NamedTuple, Protocol, overload, type_check_only
 import numpy as np
 import optype.numpy as onp
 import scipy.stats as stats
-from scipy._typing import Seed
+from scipy._typing import ToRNG
 
 __all__ = ["DiscreteAliasUrn", "NumericalInversePolynomial", "TransformedDensityRejection", "UNURANError"]
 
@@ -53,10 +53,10 @@ class UError(NamedTuple):
 
 class Method:
     @overload
-    def rvs(self, /, size: None = None, random_state: Seed | None = None) -> float | int: ...
+    def rvs(self, /, size: None = None, random_state: ToRNG = None) -> float | int: ...
     @overload
     def rvs(self, /, size: int | tuple[int, ...]) -> onp.ArrayND[np.float64 | np.int_]: ...
-    def set_random_state(self, /, random_state: Seed | None = None) -> None: ...
+    def set_random_state(self, /, random_state: ToRNG = None) -> None: ...
 
 class TransformedDensityRejection(Method):
     def __init__(
@@ -71,7 +71,7 @@ class TransformedDensityRejection(Method):
         construction_points: onp.ToFloatND = ...,
         use_dars: bool = ...,
         max_squeeze_hat_ratio: float = ...,
-        random_state: Seed | None = ...,
+        random_state: ToRNG = ...,
     ) -> None: ...
     @property
     def hat_area(self, /) -> float: ...
@@ -94,7 +94,7 @@ class SimpleRatioUniforms(Method):
         pdf_area: float = ...,
         domain: tuple[float, float] | None = ...,
         cdf_at_mode: float = ...,
-        random_state: Seed | None = ...,
+        random_state: ToRNG = ...,
     ) -> None: ...
 
 class NumericalInversePolynomial(_PPFMethodMixin, Method):
@@ -108,7 +108,7 @@ class NumericalInversePolynomial(_PPFMethodMixin, Method):
         domain: tuple[float, float] | None = ...,
         order: int = ...,
         u_resolution: float = ...,
-        random_state: Seed | None = ...,
+        random_state: ToRNG = ...,
     ) -> None: ...
     @property
     def intervals(self, /) -> int: ...
@@ -136,7 +136,7 @@ class NumericalInverseHermite(_PPFMethodMixin, Method):
         u_resolution: float = ...,
         construction_points: onp.ToFloatND | None = ...,
         max_intervals: int = ...,
-        random_state: Seed | None = ...,
+        random_state: ToRNG = ...,
     ) -> None: ...
     @property
     def intervals(self, /) -> int: ...
@@ -159,7 +159,7 @@ class DiscreteAliasUrn(Method):
         *,
         domain: tuple[float, float] | None = ...,
         urn_factor: float = ...,
-        random_state: Seed | None = ...,
+        random_state: ToRNG = ...,
     ) -> None: ...
 
 class DiscreteGuideTable(_PPFMethodMixin, Method):
@@ -170,5 +170,5 @@ class DiscreteGuideTable(_PPFMethodMixin, Method):
         *,
         domain: tuple[float, float] | None = ...,
         guide_factor: float = ...,
-        random_state: Seed | None = ...,
+        random_state: ToRNG = ...,
     ) -> None: ...

@@ -4,7 +4,7 @@ from typing_extensions import Self, TypeVar
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Seed
+from scipy._typing import ToRNG
 from ._typing import BaseBunch
 
 _T = TypeVar("_T")
@@ -33,5 +33,5 @@ def multiscale_graphcorr(
     reps: int = 1000,
     workers: int | Callable[[Callable[[_T], _R], Iterable[_T]], Sequence[_R]] = 1,
     is_twosamp: bool = False,
-    random_state: Seed | None = None,
+    random_state: ToRNG = None,
 ) -> MGCResult: ...
