@@ -2,7 +2,7 @@
 scipy\.(\w+\.)?_typing
 
 # git submodules
-scipy\._lib\.(array_api_compat|cobyqa).*
+scipy\._lib\.(array_api_compat|array_api_extra|cobyqa).*
 
 # private bundled pypocketfft library
 scipy\.fft\._pocketfft\..*
