@@ -1,5 +1,3 @@
-scipy\.__all__
-
 scipy\._lib\.array_api_extra
 scipy\._lib\._array_api\.__all__
 scipy\._lib\._array_api\.SCIPY_(ARRAY_API|DEVICE)
@@ -32,8 +30,6 @@ scipy\.cluster\.vq\.kmeans2?
 scipy\.constants\._codata\.exact_values
 scipy\.constants\._codata\.(epsilon|mu)0
 scipy\.constants\._codata\.parse_constants_(2002to2014|2018toXXXX)
-
-scipy\.differentiate
 
 scipy\.fft\._basic_backend\.complex_funcs
 
