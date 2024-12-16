@@ -34,7 +34,7 @@ dependencies = [
 
 [dependency-groups]
 scipy = [
-    "scipy==1.14.1",
+    "scipy==1.15.0rc1",
 ]
 lint = [
     {include-group = "scipy"},
@@ -138,6 +138,7 @@ uv run --frozen --no-editable --isolated --refresh-package=scipy-stubs
     stubtest
     --mypy-config-file=pyproject.toml
     --allowlist=.mypyignore
+    --allowlist=.mypyignore-todo
     --ignore-unused-allowlist
     $modules
 """

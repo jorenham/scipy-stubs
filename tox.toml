@@ -140,6 +140,7 @@ commands = [
         "stubtest",
         "--mypy-config-file=pyproject.toml",
         "--allowlist=.mypyignore",
+        "--allowlist=.mypyignore-todo",
         "--ignore-unused-allowlist",
         "scipy",
     ],
