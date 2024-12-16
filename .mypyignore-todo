@@ -83,23 +83,6 @@ scipy\.linalg\.interpolative\.estimate_spectral_norm(_diff)?
 scipy\.linalg\.interpolative\.interp_decomp
 scipy\.linalg\.interpolative\.svd
 
-scipy\.misc\._common
-scipy\.misc\.(common\.)?__all__
-scipy\.misc\.(common\.)?ascent
-scipy\.misc\.(common\.)?central_diff_weights
-scipy\.misc\.(common\.)?derivative
-scipy\.misc\.(common\.)?electrocardiogram
-scipy\.misc\.(common\.)?face
-scipy\.misc\.dataset_methods
-scipy\.misc\.doccer\.__all__
-scipy\.misc\.doccer\.docformat
-scipy\.misc\.doccer\.extend_notes_in_docstring
-scipy\.misc\.doccer\.filldoc
-scipy\.misc\.doccer\.indentcount_lines
-scipy\.misc\.doccer\.inherit_docstring_from
-scipy\.misc\.doccer\.replace_notes_in_docstring
-scipy\.misc\.doccer\.unindent_(dict|string)
-
 scipy\.ndimage\.__all__
 scipy\.ndimage\.(_?filters\.)?convolve
 scipy\.ndimage\.(_?filters\.)?correlate
