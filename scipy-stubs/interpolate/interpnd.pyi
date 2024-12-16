@@ -1,106 +1,47 @@
-# scipy/interpolate/interpnd.pyx
+from typing import Any
+from typing_extensions import deprecated
 
-from typing import Generic, overload
-from typing_extensions import TypeVar
+from . import _interpnd
 
-import numpy as np
-import optype.numpy as onp
-from scipy.spatial._qhull import Delaunay, DelaunayInfo_t
+__all__ = [
+    "CloughTocher2DInterpolator",
+    "GradientEstimationWarning",
+    "LinearNDInterpolator",
+    "NDInterpolatorBase",
+    "estimate_gradients_2d_global",
+]
 
-_SCT_co = TypeVar("_SCT_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
+# NOTE: See https://github.com/scipy/scipy/issues/22097 for `GradientEstimationWarning` and `NDInterpolatorBase`
 
-###
+@deprecated(
+    "`scipy.interpolate.interpnd.GradientEstimationWarning` is deprecated along with the `scipy.interpolate.interpnd` namespace. "
+    "`scipy.interpolate.interpnd.GradientEstimationWarning` will be removed in SciPy 1.14.0, "
+    "and the `scipy.interpolate.interpnd` namespace will be removed in SciPy 2.0.0."
+)
+class GradientEstimationWarning(_interpnd.GradientEstimationWarning): ...
 
-class GradientEstimationWarning(Warning): ...
+@deprecated(
+    "`scipy.interpolate.interpnd.NDInterpolatorBase` is deprecated along with the `scipy.interpolate.interpnd` namespace. "
+    "`scipy.interpolate.interpnd.NDInterpolatorBase` will be removed in SciPy 1.14.0, and the `scipy.interpolate.interpnd` "
+    "namespace will be removed in SciPy 2.0.0."
+)
+class NDInterpolatorBase(_interpnd.NDInterpolatorBase): ...
 
-class NDInterpolatorBase(Generic[_SCT_co]):
-    points: onp.Array2D[np.float64]
-    values: onp.ArrayND[_SCT_co] | None
-    is_complex: bool
-    scale: onp.Array1D[np.float64] | None
-    offset: onp.Array1D[np.float64]  # only if rescale=True
+@deprecated(
+    "Please import `CloughTocher2DInterpolator` from the `scipy.interpolate` namespace; "
+    "the `scipy.interpolate.interpnd` namespace is deprecated and will be removed in SciPy 2.0.0."
+)
+class CloughTocher2DInterpolator(_interpnd.CloughTocher2DInterpolator): ...
 
-    @overload
-    def __init__(
-        self: NDInterpolatorBase[np.float64],
-        /,
-        points: onp.ToFloat2D | Delaunay,
-        values: onp.ToFloatND,
-        fill_value: onp.ToFloat = ...,  # np.nan
-        ndim: int | None = None,
-        rescale: bool = False,
-        need_contiguous: bool = True,
-        need_values: bool = True,
-    ) -> None: ...
-    @overload
-    def __init__(
-        self,
-        /,
-        points: onp.ToFloat2D | Delaunay,
-        values: onp.ToComplexND | None,
-        fill_value: onp.ToComplex = ...,  # np.nan
-        ndim: int | None = None,
-        rescale: bool = False,
-        need_contiguous: bool = True,
-        need_values: bool = True,
-    ) -> None: ...
-    def __call__(self, /, *args: onp.ToFloatND) -> onp.Array[onp.AtLeast1D, _SCT_co]: ...
+@deprecated(
+    "Please import `LinearNDInterpolator` from the `scipy.interpolate` namespace; "
+    "the `scipy.interpolate.interpnd` namespace is deprecated and will be removed in SciPy 2.0.0."
+)
+class LinearNDInterpolator(_interpnd.LinearNDInterpolator): ...
 
-class LinearNDInterpolator(NDInterpolatorBase[_SCT_co], Generic[_SCT_co]):
-    @overload
-    def __init__(
-        self: LinearNDInterpolator[np.float64],
-        /,
-        points: onp.ToFloat2D | Delaunay,
-        values: onp.ToFloatND,
-        fill_value: onp.ToFloat = ...,  # np.nan
-        rescale: bool = False,
-    ) -> None: ...
-    @overload
-    def __init__(
-        self,
-        /,
-        points: onp.ToFloat2D | Delaunay,
-        values: onp.ToComplexND,
-        fill_value: onp.ToComplex = ...,  # np.nan
-        rescale: bool = False,
-    ) -> None: ...
-
-class CloughTocher2DInterpolator(NDInterpolatorBase[_SCT_co], Generic[_SCT_co]):
-    @overload
-    def __init__(
-        self: CloughTocher2DInterpolator[np.float64],
-        /,
-        points: onp.ToFloat2D | Delaunay,
-        values: onp.ToFloatND,
-        fill_value: onp.ToFloat = ...,  # np.nan
-        tol: onp.ToFloat = 1e-06,
-        maxiter: int = 400,
-        rescale: bool = False,
-    ) -> None: ...
-    @overload
-    def __init__(
-        self,
-        /,
-        points: onp.ToFloat2D | Delaunay,
-        values: onp.ToComplexND,
-        fill_value: onp.ToComplex = ...,  # np.nan
-        tol: onp.ToFloat = 1e-06,
-        maxiter: int = 400,
-        rescale: bool = False,
-    ) -> None: ...
-
-@overload
-def estimate_gradients_2d_global(
-    tri: DelaunayInfo_t,
-    y: onp.ToFloat1D | onp.ToFloat2D,
-    maxiter: onp.ToJustInt = 400,
-    tol: float = 1e-6,
-) -> onp.Array3D[np.float64]: ...
-@overload
-def estimate_gradients_2d_global(
-    tri: DelaunayInfo_t,
-    y: onp.ToComplex1D | onp.ToComplex2D,
-    maxiter: onp.ToJustInt = 400,
-    tol: float = 1e-6,
-) -> onp.Array3D[np.float64] | onp.Array3D[np.complex128]: ...
+@deprecated(
+    "`scipy.interpolate.interpnd.estimate_gradients_2d_global` is deprecated along with the `scipy.interpolate.interpnd` "
+    "namespace. `scipy.interpolate.interpnd.estimate_gradients_2d_global` will be removed in SciPy 1.14.0, and the "
+    "`scipy.interpolate.interpnd` namespace will be removed in SciPy 2.0.0."
+)
+def estimate_gradients_2d_global(tri: object, y: object, maxiter: int = 400, tol: float = 1e-6) -> Any: ...  # noqa: ANN401

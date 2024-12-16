@@ -11,6 +11,7 @@ __all__ = ["BSpline", "make_interp_spline", "make_lsq_spline", "make_smoothing_s
 
 _Extrapolate: TypeAlias = Literal["periodic"] | bool
 _BCType: TypeAlias = Literal["not-a-knot", "natural", "clamped", "periodic"]
+_LSQMethod: TypeAlias = Literal["qr", "norm-eq"]
 
 _SCT_co = TypeVar("_SCT_co", bound=np.floating[Any], default=np.floating[Any], covariant=True)
 
@@ -87,6 +88,8 @@ def make_lsq_spline(
     w: onp.ToFloat1D | None = None,
     axis: op.CanIndex = 0,
     check_finite: onp.ToBool = True,
+    *,
+    method: _LSQMethod = "qr",
 ) -> BSpline: ...
 
 #

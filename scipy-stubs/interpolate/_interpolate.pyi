@@ -6,6 +6,8 @@ import optype as op
 import optype.numpy as onp
 from ._polyint import _Interpolator1D
 
+__all__ = ["BPoly", "NdPPoly", "PPoly", "interp1d", "interp2d", "lagrange"]
+
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
 
 _ToAxis: TypeAlias = int | np.integer[Any]
@@ -15,8 +17,6 @@ _Interp1dKind: TypeAlias = Literal["linear", "nearest", "nearest-up", "zero", "s
 _Interp1dFillValue: TypeAlias = onp.ToFloat | onp.ToFloatND | tuple[onp.ToFloat | onp.ToFloatND, onp.ToFloat | onp.ToFloatND]
 
 ###
-
-__all__ = ["BPoly", "NdPPoly", "PPoly", "interp1d", "interp2d", "lagrange"]
 
 err_mesg: Final = """\
 `interp2d` has been removed in SciPy 1.14.0.
