@@ -1,3 +1,5 @@
+from typing import Final
+
 from ._basic import (
     fft as fft,
     fft2 as fft2,
@@ -18,3 +20,5 @@ from ._basic import (
     rfft2 as rfft2,
     rfftn as rfftn,
 )
+
+complex_funcs: Final = {"fft", "ifft", "fftn", "ifftn", "hfft", "irfft", "irfftn"}

@@ -1,5 +1,5 @@
 import ctypes as ct
-from _ctypes import CFuncPtr as PyCFuncPtr
+from _ctypes import CFuncPtr as _CFuncPtr
 from types import ModuleType
 from typing import ClassVar, Generic, Literal, NoReturn, Protocol, TypeAlias, final, overload, type_check_only
 from typing_extensions import CapsuleType as PyCapsule, Self, TypeVar, TypeVarTuple, Unpack, override
@@ -103,6 +103,9 @@ _DataT_co = TypeVar("_DataT_co", bound=_UserData | None, covariant=True, default
 ffi: Literal[False] | None
 
 # public api
+
+@final
+class PyCFuncPtr(_CFuncPtr): ...
 
 @final
 class CData: ...

@@ -1,3 +1,4 @@
+from _thread import _local as _Cache  # seriously, typeshed?
 from typing import TypeAlias, overload
 
 import numpy as np
@@ -8,8 +9,6 @@ __all__ = ["cc_diff", "cs_diff", "diff", "hilbert", "ihilbert", "itilbert", "sc_
 # the suffix correspond to the relevant dtype charcode(s)
 _Vec_d: TypeAlias = onp.Array1D[np.float64]
 _Vec_dD: TypeAlias = onp.Array1D[np.float64 | np.complex128]
-
-_Cache: TypeAlias = dict[tuple[onp.ToFloat, ...], _Vec_d]  # {n: kernel}
 
 ###
 
