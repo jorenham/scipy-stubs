@@ -138,6 +138,7 @@ uv run --frozen --no-editable --isolated --refresh-package=scipy-stubs
     stubtest
     --mypy-config-file=pyproject.toml
     --allowlist=.mypyignore
+    --allowlist=.mypyignore-todo
     --ignore-unused-allowlist
     $modules
 """
