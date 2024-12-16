@@ -5,7 +5,9 @@ from typing_extensions import TypeVar, override
 import optype as op
 
 _FT = TypeVar("_FT", bound=Callable[..., object], default=Callable[..., object])
-_SectionValue: TypeAlias = str | list[str] | dict[str, list[str]]
+_SectionValue: TypeAlias = str | list[str] | Mapping[str, list[str]]
+
+###
 
 class ParseError(Exception): ...
 
@@ -29,8 +31,9 @@ class Reader:
 
 class NumpyDocString(Mapping[str, _SectionValue]):
     empty_description: ClassVar[str] = ".."
-    sections: ClassVar[dict[str, _SectionValue]]
-    def __init__(self, /, docstring: str, config: dict[str, object] = {}) -> None: ...
+    sections: ClassVar[Mapping[str, _SectionValue]]
+
+    def __init__(self, /, docstring: str, config: Mapping[str, object] | None = None) -> None: ...
     @override
     def __str__(self, /, func_role: str = "") -> str: ...
     @override
@@ -48,7 +51,7 @@ class FunctionDoc(NumpyDocString, Generic[_FT]):
         func: _FT,
         role: Literal["func", "meth"] = "func",
         doc: str | None = None,
-        config: dict[str, object] = {},
+        config: Mapping[str, object] | None = None,
     ) -> None: ...
     @override
     def __str__(self, /) -> str: ...  # type: ignore[override]  # noqa: PYI029  # pyright: ignore[reportIncompatibleMethodOverride]
@@ -57,6 +60,7 @@ class FunctionDoc(NumpyDocString, Generic[_FT]):
 class ClassDoc(NumpyDocString):
     extra_public_methods: ClassVar[Sequence[str]]
     show_inherited_members: Final[bool]
+
     @property
     def methods(self, /) -> list[str]: ...
     @property
@@ -69,10 +73,21 @@ class ClassDoc(NumpyDocString):
         modulename: str = "",
         # NOTE: we can't set this to `type[FunctionDoc]` because of a mypy bug
         func_doc: type = ...,
-        config: dict[str, object] = {},
+        config: Mapping[str, object] | None = None,
     ) -> None: ...
 
+class ObjDoc(NumpyDocString):
+    def __init__(self, /, obj: object, doc: str | None = None, config: Mapping[str, object] | None = None) -> None: ...
+
 def strip_blank_lines(l: list[str]) -> list[str]: ...
-def indent(str: str | None, indent: int = 4) -> str: ...
 def dedent_lines(lines: op.CanIter[op.CanIterSelf[str]]) -> str: ...
-def header(text: str, style: str = "-") -> str: ...
+def get_doc_object(
+    obj: object,
+    what: str | None = None,
+    doc: str | None = None,
+    config: Mapping[str, object] | None = None,
+    # NOTE: due to a mypy bug, these can't be made any more specific
+    class_doc: type = ...,
+    func_doc: type = ...,
+    obj_doc: type = ...,
+) -> NumpyDocString: ...
