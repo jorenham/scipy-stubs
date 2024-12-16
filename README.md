@@ -76,7 +76,7 @@ ______________________________________________________________________
   - no additional plugins required
 - 0% runtime overhead
   - not even a single import is required
-- 100% coverage of the [public SciPy API](https://docs.scipy.org/doc/scipy-1.14.1/reference/index.html)
+- 100% coverage of the [public SciPy API](https://docs.scipy.org/doc/scipy/reference/index.html)
   - also covers most of the private API
 - Precise type-hinting of dtypes and [shape-types](https://github.com/numpy/numpy/issues/16544)
   - works with all "array-likes" and "dtype-likes"
