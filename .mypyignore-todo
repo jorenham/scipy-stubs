@@ -1,6 +1,3 @@
-scipy\.cluster\.hierarchy\.ClusterNode\.__init__
-scipy\.cluster\.vq\.kmeans2?
-
 scipy\.fft\._basic_backend\.complex_funcs
 
 scipy\.fftpack\.(_pseudo_diffs\.)?diff
