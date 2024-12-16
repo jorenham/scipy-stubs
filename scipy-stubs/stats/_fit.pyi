@@ -4,7 +4,7 @@ from typing_extensions import TypeVarTuple, Unpack
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Seed
+from scipy._typing import ToRNG
 from scipy.optimize import OptimizeResult
 from ._distn_infrastructure import rv_continuous, rv_continuous_frozen, rv_discrete
 
@@ -81,5 +81,5 @@ def goodness_of_fit(
     guessed_params: Mapping[str, onp.ToFloat] | None = None,
     statistic: _GOFStatName | _GOFStatFunc = "ad",
     n_mc_samples: int = 9999,
-    random_state: Seed | None = None,
+    random_state: ToRNG = None,
 ) -> GoodnessOfFitResult: ...

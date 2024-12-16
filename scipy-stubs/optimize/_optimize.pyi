@@ -5,7 +5,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype.numpy as onp
 from scipy._lib._util import _RichResult
-from scipy._typing import AnyBool, Seed
+from scipy._typing import AnyBool, ToRNG
 from ._linesearch import line_search_wolfe2 as line_search
 from ._typing import Brack, MethodAll, Solver
 
@@ -662,5 +662,5 @@ def check_grad(
     *args: object,
     epsilon: onp.ToFloat = ...,
     direction: Literal["all", "random"] = "all",
-    seed: Seed | None = None,
+    seed: ToRNG = None,
 ) -> _Float: ...

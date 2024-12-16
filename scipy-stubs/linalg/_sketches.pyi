@@ -15,24 +15,24 @@ _ToJust2D: TypeAlias = onp.CanArrayND[_ST] | Sequence[onp.CanArrayND[_ST]] | Seq
 
 ###
 
-def cwt_matrix(n_rows: onp.ToInt, n_columns: onp.ToInt, seed: spt.Seed | None = None) -> csc_matrix: ...
+def cwt_matrix(n_rows: onp.ToInt, n_columns: onp.ToInt, seed: spt.ToRNG = None) -> csc_matrix: ...
 
 #
 @overload
 def clarkson_woodruff_transform(
     input_matrix: onp.ToInt2D,
     sketch_size: onp.ToInt,
-    seed: spt.Seed | None = None,
+    seed: spt.ToRNG = None,
 ) -> onp.Array2D[np.int_]: ...
 @overload
 def clarkson_woodruff_transform(
     input_matrix: _ToJust2D[np.floating[Any], float],
     sketch_size: onp.ToInt,
-    seed: spt.Seed | None = None,
+    seed: spt.ToRNG = None,
 ) -> onp.Array2D[np.float64 | np.longdouble]: ...
 @overload
 def clarkson_woodruff_transform(
     input_matrix: _ToJust2D[np.complexfloating[Any, Any], complex],
     sketch_size: onp.ToInt,
-    seed: spt.Seed | None = None,
+    seed: spt.ToRNG = None,
 ) -> onp.Array2D[np.complex64 | np.clongdouble]: ...

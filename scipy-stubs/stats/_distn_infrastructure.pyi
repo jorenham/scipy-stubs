@@ -96,7 +96,7 @@ class rv_frozen(Generic[_RVT_co, _VT_f8_co]):
     @property
     def random_state(self, /) -> spt.RNG: ...
     @random_state.setter
-    def random_state(self, seed: spt.Seed, /) -> None: ...
+    def random_state(self, seed: spt.ToRNG, /) -> None: ...
 
     #
     @overload
@@ -152,7 +152,7 @@ class rv_frozen(Generic[_RVT_co, _VT_f8_co]):
     def isf(self, /, q: _ArrLike_f8_co) -> _VT_f8_co | _Arr_f8: ...
 
     #
-    def rvs(self, /, size: spt.AnyShape | None = None, random_state: spt.Seed | None = None) -> _ArrLike_f8: ...
+    def rvs(self, /, size: spt.AnyShape | None = None, random_state: spt.ToRNG = None) -> _ArrLike_f8: ...
 
     #
     @overload
@@ -223,11 +223,11 @@ class rv_discrete_frozen(rv_frozen[_RVT_d_co, _VT_f8_co], Generic[_RVT_d_co, _VT
 # NOTE: Because of the limitations of `ParamSpec`, there is no proper way to annotate specific "positional or keyword arguments".
 # Considering the Liskov Substitution Principle, the only remaining option is to annotate `*args, and `**kwargs` as `Any`.
 class rv_generic:
-    def __init__(self, /, seed: spt.Seed | None = None) -> None: ...
+    def __init__(self, /, seed: spt.ToRNG = None) -> None: ...
     @property
     def random_state(self, /) -> spt.RNG: ...
     @random_state.setter
-    def random_state(self, seed: spt.Seed, /) -> None: ...
+    def random_state(self, seed: spt.ToRNG, /) -> None: ...
     @abc.abstractmethod
     def _attach_methods(self, /) -> None: ...
     def _attach_argparser_methods(self, /) -> None: ...
@@ -270,7 +270,7 @@ class rv_generic:
     def _get_support(self, /, *args: Any, **kwargs: Any) -> _Tuple2[_ArrLike_f8]: ...
     def _support_mask(self, /, x: _Arr_f8_co, *args: Any) -> _Arr_b1: ...
     def _open_support_mask(self, /, x: _Arr_f8_co, *args: Any) -> _ArrLike_b1: ...
-    def _rvs(self, /, *args: Any, size: spt.AnyShape | None = None, random_state: spt.Seed | None = None) -> _ArrLike_f8: ...
+    def _rvs(self, /, *args: Any, size: spt.AnyShape | None = None, random_state: spt.ToRNG = None) -> _ArrLike_f8: ...
     def _logcdf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
     def _sf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
     def _logsf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
@@ -281,7 +281,7 @@ class rv_generic:
         self,
         /,
         *args: _Scalar_f8_co,
-        random_state: spt.Seed,
+        random_state: spt.ToRNG,
         discrete: Literal[True, 1],
         **kwds: _ArrLike_f8_co,
     ) -> _ArrLike_i8: ...
@@ -290,7 +290,7 @@ class rv_generic:
         self,
         /,
         *args: _Scalar_f8_co,
-        random_state: spt.Seed,
+        random_state: spt.ToRNG,
         discrete: Literal[False, 0] | None = ...,
         **kwds: _ArrLike_f8_co,
     ) -> _ArrLike_f8: ...
@@ -398,7 +398,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         name: LiteralString | None = None,
         longname: LiteralString | None = None,
         shapes: LiteralString | None = None,
-        seed: spt.Seed | None = None,
+        seed: spt.ToRNG = None,
     ) -> None: ...
     @overload
     def __call__(self, /) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
@@ -753,7 +753,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         loc: _Scalar_f8_co = 0,
         scale: _Scalar_f8_co = 1,
         size: spt.AnyShape = 1,
-        random_state: spt.Seed | None = None,
+        random_state: spt.ToRNG = None,
         **kwds: _ArrLike_f8_co,
     ) -> _ArrLike_f8: ...
 
@@ -772,7 +772,7 @@ class rv_discrete(_rv_mixin, rv_generic):
         inc: int | np.int_ = 1,
         longname: LiteralString | None = None,
         shapes: LiteralString | None = None,
-        seed: spt.Seed | None = None,
+        seed: spt.ToRNG = None,
     ) -> Self: ...
     def __init__(  # pyright: ignore[reportInconsistentConstructor]
         self,
@@ -786,7 +786,7 @@ class rv_discrete(_rv_mixin, rv_generic):
         inc: int | np.int_ = 1,
         longname: LiteralString | None = None,
         shapes: LiteralString | None = None,
-        seed: spt.Seed | None = None,
+        seed: spt.ToRNG = None,
     ) -> None: ...
 
     #
@@ -1012,7 +1012,7 @@ class rv_discrete(_rv_mixin, rv_generic):
         *args: _ArrLike_f8_co,
         loc: _ArrLike_f8_co = 0,
         size: spt.AnyShape = 1,
-        random_state: spt.Seed | None = None,
+        random_state: spt.ToRNG = None,
         **kwds: _ArrLike_f8_co,
     ) -> _ArrLike_i8: ...
 
@@ -1035,7 +1035,7 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
         inc: int = 1,
         longname: LiteralString | None = None,
         shapes: LiteralString | None = None,
-        seed: spt.Seed | None = None,
+        seed: spt.ToRNG = None,
     ) -> None: ...
     def _entropy(self, /) -> _Scalar_f8: ...
     vecentropy: Final = _entropy
@@ -1227,5 +1227,5 @@ class _rv_continuous_0(rv_continuous):
         loc: _Scalar_f8_co = 0,
         scale: _Scalar_f8_co = 1,
         size: spt.AnyShape = 1,
-        random_state: spt.Seed | None = None,
+        random_state: spt.ToRNG = None,
     ) -> _ArrLike_f8: ...

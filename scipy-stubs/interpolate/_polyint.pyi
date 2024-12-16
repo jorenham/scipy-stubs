@@ -3,7 +3,7 @@ from typing import ClassVar, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Seed
+from scipy._typing import ToRNG
 
 __all__ = [
     "BarycentricInterpolator",
@@ -62,7 +62,7 @@ class BarycentricInterpolator(_Interpolator1DWithDerivatives):
         axis: int = 0,
         *,
         wi: onp.ToFloatND | None = None,
-        random_state: Seed | None = None,
+        random_state: ToRNG = None,
     ) -> None: ...
     def set_yi(self, /, yi: onp.ToComplexND, axis: int | None = None) -> None: ...
     def add_xi(self, /, xi: onp.ToFloat1D, yi: onp.ToComplexND | None = None) -> None: ...

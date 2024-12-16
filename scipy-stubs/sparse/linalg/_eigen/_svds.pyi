@@ -3,7 +3,7 @@ from typing import Literal, TypeAlias, TypeVar
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Seed
+from scipy._typing import ToRNG
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
@@ -28,6 +28,6 @@ def svds(
     maxiter: int | None = None,
     return_singular_vectors: _ReturnSingularVectors = True,
     solver: _Solver = "arpack",
-    random_state: Seed | None = None,
+    random_state: ToRNG = None,
     options: Mapping[str, object] | None = None,
 ) -> tuple[onp.Array2D[_SCT], onp.ArrayND[np.float32 | np.float64], onp.ArrayND[_SCT]]: ...

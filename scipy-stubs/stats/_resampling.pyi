@@ -4,7 +4,7 @@ from typing import Any, Literal, Protocol, TypeAlias, type_check_only
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Alternative, Seed
+from scipy._typing import Alternative, ToRNG
 from ._common import ConfidenceInterval
 
 __all__ = ["bootstrap", "monte_carlo_test", "permutation_test"]
@@ -71,7 +71,7 @@ def bootstrap(
     alternative: Alternative = "two-sided",
     method: _BootstrapMethod = "BCa",
     bootstrap_result: BootstrapResult | None = None,
-    random_state: Seed | None = None,
+    random_state: ToRNG = None,
 ) -> BootstrapResult: ...
 def monte_carlo_test(
     data: onp.ToFloatND,
@@ -105,5 +105,5 @@ def permutation_test(
     batch: int | None = None,
     alternative: Alternative = "two-sided",
     axis: int = 0,
-    random_state: Seed | None = None,
+    random_state: ToRNG = None,
 ) -> PermutationTestResult: ...

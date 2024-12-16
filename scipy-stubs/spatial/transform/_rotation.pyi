@@ -2,7 +2,7 @@ from collections.abc import Sequence
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import Seed
+from scipy._typing import ToRNG
 
 class Rotation:
     @property
@@ -69,7 +69,7 @@ class Rotation:
     @classmethod
     def identity(cls, num: int | None = ...) -> Rotation: ...
     @classmethod
-    def random(cls, num: int | None = ..., random_state: Seed | None = ...) -> Rotation: ...
+    def random(cls, num: int | None = ..., random_state: ToRNG = ...) -> Rotation: ...
     @classmethod
     def align_vectors(
         cls,

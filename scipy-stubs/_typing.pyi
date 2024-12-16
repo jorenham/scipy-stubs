@@ -1,4 +1,4 @@
-# NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`
+# NOTE: This private(!) module only exists in `if typing.TYPE_CHECKING: ...` and in `.pyi` stubs
 
 from os import PathLike
 from collections.abc import Callable, Sequence
@@ -27,7 +27,7 @@ __all__ = [
     "NanPolicy",
     "OrderCF",
     "OrderKACF",
-    "Seed",
+    "ToRNG",
     "Untyped",
     "UntypedArray",
     "UntypedCallable",
@@ -47,6 +47,21 @@ class EnterSelfMixin:
 class EnterNoneMixin:
     def __enter__(self, /) -> None: ...
     def __exit__(self, /, type: type[BaseException] | None, value: BaseException | None, tb: TracebackType | None) -> None: ...
+
+# used in `scipy.linalg.blas` and `scipy.linalg.lapack`
+@type_check_only
+class _FortranFunction(Protocol):
+    @property
+    def dtype(self, /) -> np.dtype[np.number[Any]]: ...
+    @property
+    def int_dtype(self, /) -> np.dtype[np.integer[Any]]: ...
+    @property
+    def module_name(self, /) -> LiteralString: ...
+    @property
+    def prefix(self, /) -> LiteralString: ...
+    @property
+    def typecode(self, /) -> LiteralString: ...
+    def __call__(self, /, *args: object, **kwargs: object) -> object: ...
 
 # placeholders for missing annotations
 Untyped: TypeAlias = Any
@@ -69,32 +84,27 @@ AnyBool: TypeAlias = bool | np.bool_ | Literal[0, 1]
 # equivalent to `numpy._typing._shape._ShapeLike`
 AnyShape: TypeAlias = op.CanIndex | Sequence[op.CanIndex]
 
-# numpy types
-RNG: TypeAlias = np.random.BitGenerator | np.random.Generator | np.random.RandomState
-Seed: TypeAlias = RNG | np.random.SeedSequence | onp.ToJustInt | onp.ToJustIntND
+RNG: TypeAlias = np.random.Generator | np.random.RandomState
+# NOTE: This is less incorrect and more accurate than the current `np.random.default_rng` `seed` param annotation.
+ToRNG: TypeAlias = (
+    np.integer[Any]
+    | np.timedelta64
+    | onp.ArrayND[np.integer[Any] | np.timedelta64 | np.flexible | np.object_]
+    | np.random.SeedSequence
+    | np.random.BitGenerator
+    | RNG
+    | None
+)
+
+# numpy literals
 ByteOrder: TypeAlias = Literal["S", "<", "little", ">", "big", "=", "native", "|", "I"]
 OrderCF: TypeAlias = Literal["C", "F"]
-OrderKACF: TypeAlias = Literal["K", "A", "C", "F"]
+OrderKACF: TypeAlias = Literal["K", "A", OrderCF]
 Casting: TypeAlias = Literal["no", "equiv", "safe", "same_kind", "unsafe"]
 CorrelateMode: TypeAlias = Literal["valid", "same", "full"]
 
 # scipy literals
 NanPolicy: TypeAlias = Literal["raise", "propagate", "omit"]
 Alternative: TypeAlias = Literal["two-sided", "less", "greater"]
-DCTType: TypeAlias = Literal[1, 2, 3, 4]
 NormalizationMode: TypeAlias = Literal["backward", "ortho", "forward"]
-
-# used in `scipy.linalg.blas` and `scipy.linalg.lapack`
-@type_check_only
-class _FortranFunction(Protocol):
-    @property
-    def dtype(self, /) -> np.dtype[np.number[Any]]: ...
-    @property
-    def int_dtype(self, /) -> np.dtype[np.integer[Any]]: ...
-    @property
-    def module_name(self, /) -> LiteralString: ...
-    @property
-    def prefix(self, /) -> LiteralString: ...
-    @property
-    def typecode(self, /) -> LiteralString: ...
-    def __call__(self, /, *args: object, **kwargs: object) -> object: ...
+DCTType: TypeAlias = Literal[1, 2, 3, 4]

@@ -8,7 +8,7 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 import optype.typing as opt
-from scipy._typing import Alternative, NanPolicy, Seed
+from scipy._typing import Alternative, NanPolicy, ToRNG
 from ._resampling import BootstrapMethod, ResamplingMethod
 from ._stats_mstats_common import siegelslopes, theilslopes
 from ._typing import BaseBunch, PowerDivergenceStatistic
@@ -690,7 +690,7 @@ def ttest_ind(
     equal_var: bool = True,
     nan_policy: NanPolicy = "propagate",
     permutations: float | None = None,
-    random_state: Seed | None = None,
+    random_state: ToRNG = None,
     alternative: Alternative = "two-sided",
     trim: float = 0,
     *,
