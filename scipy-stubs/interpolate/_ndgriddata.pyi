@@ -4,7 +4,7 @@ from typing_extensions import TypeVar, Unpack, override
 import numpy as np
 import optype.numpy as onp
 from scipy.spatial._ckdtree import cKDTree
-from .interpnd import CloughTocher2DInterpolator, LinearNDInterpolator, NDInterpolatorBase
+from ._interpnd import CloughTocher2DInterpolator, LinearNDInterpolator, NDInterpolatorBase
 
 __all__ = ["CloughTocher2DInterpolator", "LinearNDInterpolator", "NearestNDInterpolator", "griddata"]
 

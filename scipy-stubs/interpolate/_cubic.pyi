@@ -5,13 +5,20 @@ import numpy as np
 import optype.numpy as onp
 from ._interpolate import PPoly
 
-_T = TypeVar("_T")
-_Tuple2: TypeAlias = tuple[_T, _T]
+__all__ = [
+    "Akima1DInterpolator",
+    "CubicHermiteSpline",
+    "CubicSpline",
+    "PchipInterpolator",
+    "pchip_interpolate",
+]
 
-_ToAxis: TypeAlias = int | np.integer[Any]
+_T = TypeVar("_T")
+_CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
 _AxisT = TypeVar("_AxisT", bound=_ToAxis)
 
-_CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
+_Tuple2: TypeAlias = tuple[_T, _T]
+_ToAxis: TypeAlias = int | np.integer[Any]
 
 _Akima1DMethod: TypeAlias = Literal["akima", "makima"]
 _Extrapolate: TypeAlias = Literal["periodic"] | bool
@@ -20,8 +27,6 @@ _CubicBCOrder: TypeAlias = Literal[1, 2]
 _CubicBCType: TypeAlias = Literal[_CubicBCName, "periodic"] | _Tuple2[_CubicBCName | tuple[_CubicBCOrder, onp.ToComplexND]]
 
 ###
-
-__all__ = ["Akima1DInterpolator", "CubicHermiteSpline", "CubicSpline", "PchipInterpolator", "pchip_interpolate"]
 
 class CubicHermiteSpline(PPoly[_CT_co]):
     @overload

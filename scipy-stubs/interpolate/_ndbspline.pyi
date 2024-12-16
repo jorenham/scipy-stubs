@@ -9,11 +9,15 @@ from scipy.sparse import csr_array
 __all__ = ["NdBSpline"]
 
 class NdBSpline:
-    t: tuple[onp.Array1D[np.float64]]
     c: onp.ArrayND[np.float64]
-    k: int
     extrapolate: bool
 
+    @property
+    def k(self, /) -> int: ...
+    @property
+    def t(self, /) -> tuple[onp.Array1D[np.float64]]: ...
+
+    #
     def __init__(
         self,
         /,
@@ -31,6 +35,8 @@ class NdBSpline:
         nu: onp.ToFloat1D | None = None,
         extrapolate: onp.ToBool | None = None,
     ) -> onp.ArrayND[np.floating[Any]]: ...
+
+    #
     @classmethod
     def design_matrix(
         cls,
@@ -38,7 +44,7 @@ class NdBSpline:
         t: tuple[onp.ToFloat1D, ...],
         k: op.CanIndex | tuple[op.CanIndex, ...],
         extrapolate: onp.ToBool = True,
-    ) -> csr_array: ...
+    ) -> csr_array[np.float32 | np.float64, tuple[int, int]]: ...
 
 def make_ndbspl(
     points: tuple[onp.ToFloat1D, ...],

@@ -62,7 +62,7 @@ class BarycentricInterpolator(_Interpolator1DWithDerivatives):
         axis: int = 0,
         *,
         wi: onp.ToFloatND | None = None,
-        random_state: ToRNG = None,
+        rng: ToRNG = None,
     ) -> None: ...
     def set_yi(self, /, yi: onp.ToComplexND, axis: int | None = None) -> None: ...
     def add_xi(self, /, xi: onp.ToFloat1D, yi: onp.ToComplexND | None = None) -> None: ...
@@ -103,6 +103,7 @@ def barycentric_interpolate(
     axis: int = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
+    rng: ToRNG = None,
 ) -> np.float64 | _FloatND: ...
 @overload
 def barycentric_interpolate(
@@ -112,4 +113,5 @@ def barycentric_interpolate(
     axis: int = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
+    rng: ToRNG = None,
 ) -> np.float64 | np.complex128 | _FloatND | _ComplexND: ...

@@ -2,14 +2,14 @@
 
 from typing_extensions import deprecated
 
-from . import _ndgriddata, interpnd
+from . import _interpnd, _ndgriddata
 
 __all__ = ["CloughTocher2DInterpolator", "LinearNDInterpolator", "NearestNDInterpolator", "griddata"]
 
 # interpnd
 
 @deprecated("will be removed in SciPy v2.0.0")
-class LinearNDInterpolator(interpnd.LinearNDInterpolator): ...
+class LinearNDInterpolator(_interpnd.LinearNDInterpolator): ...
 
 # _ndgriddata
 

@@ -1,13 +1,3 @@
-scipy\.interpolate\.__all__
-scipy\.interpolate\.AAA
-scipy\.interpolate\.FloaterHormannInterpolator
-scipy\.interpolate\.(_bsplines\.)?make_lsq_spline
-scipy\.interpolate\.(_ndbspline\.)?(An|N)dBSpline\.(k|t)
-scipy\.interpolate\.(_?polyint\.)?BarycentricInterpolator\.__init__
-scipy\.interpolate\.(_?polyint\.)?barycentric_interpolate
-scipy\.interpolate\.generate_knots
-scipy\.interpolate\.make_spl(p)?rep
-
 scipy\.io\._idl\.AttrDict\.__init__
 scipy\.io\._mmio\.MMFile\.read
 scipy\.io\.(_?harwell_boeing\.(hb\.)?)?hb_read
