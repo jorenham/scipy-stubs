@@ -27,10 +27,6 @@ scipy\._lib\._util\.(Generator|Seed)Type
 scipy\.cluster\.hierarchy\.ClusterNode\.__init__
 scipy\.cluster\.vq\.kmeans2?
 
-scipy\.constants\._codata\.exact_values
-scipy\.constants\._codata\.(epsilon|mu)0
-scipy\.constants\._codata\.parse_constants_(2002to2014|2018toXXXX)
-
 scipy\.fft\._basic_backend\.complex_funcs
 
 scipy\.fftpack\.(_pseudo_diffs\.)?diff
