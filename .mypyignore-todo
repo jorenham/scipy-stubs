@@ -1,15 +1,3 @@
-scipy\.io\._idl\.AttrDict\.__init__
-scipy\.io\._mmio\.MMFile\.read
-scipy\.io\.(_?harwell_boeing\.(hb\.)?)?hb_read
-scipy\.io\.((_fast_matrix_market|_?mmio)\.)?mmread
-scipy\.io\.arff\._arffread\.basic_stats
-scipy\.io\.arff\._arffread\.print_attribute
-scipy\.io\.arff\._arffread\.test_weka
-scipy\.io\.matlab\.__all__
-scipy\.io\.matlab\._miobase\.docfiller
-scipy\.io\.matlab\.varmats_from_mat
-scipy\.io\.(matlab\.(_?mio\.)?)?loadmat
-
 scipy\.linalg\.(_basic\.)?solve
 scipy\.linalg\.(_?decomp_svd\.)?null_space
 scipy\.linalg\._matfuncs_expm\.__all__
