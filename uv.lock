@@ -715,7 +715,7 @@ typecheck = [
 [package.metadata]
 requires-dist = [
     { name = "optype", specifier = ">=0.7.3" },
-    { name = "scipy", marker = "extra == 'scipy'", specifier = ">=1.10" },
+    { name = "scipy", marker = "extra == 'scipy'", specifier = ">=1.15.0rc1" },
 ]
 
 [package.metadata.requires-dev]

@@ -63,7 +63,7 @@ dev = [
 ]
 
 [project.optional-dependencies]
-scipy = ["scipy>=1.10"]
+scipy = ["scipy>=1.15.0rc1"]
 
 [project.urls]
 Repository = "https://github.com/jorenham/scipy-stubs/"
