@@ -7,7 +7,14 @@ import optype.numpy as onp
 from numpy._typing import _DTypeLike
 from scipy._typing import AnyShape
 
-__all__ = ["chirp", "gausspulse", "sawtooth", "square", "sweep_poly", "unit_impulse"]
+__all__ = [
+    "chirp",
+    "gausspulse",
+    "sawtooth",
+    "square",
+    "sweep_poly",
+    "unit_impulse",
+]
 
 _SCT = TypeVar("_SCT", bound=np.generic)
 

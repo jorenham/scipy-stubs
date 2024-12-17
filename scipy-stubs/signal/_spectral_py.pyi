@@ -7,7 +7,18 @@ import optype as op
 import optype.numpy as onp
 from .windows._windows import _Window, _WindowNeedsParams
 
-__all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle", "periodogram", "spectrogram", "stft", "welch"]
+__all__ = [
+    "check_COLA",
+    "check_NOLA",
+    "coherence",
+    "csd",
+    "istft",
+    "lombscargle",
+    "periodogram",
+    "spectrogram",
+    "stft",
+    "welch",
+]
 
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]

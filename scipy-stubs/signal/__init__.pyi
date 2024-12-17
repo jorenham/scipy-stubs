@@ -11,22 +11,131 @@ from . import (
     wavelets,
     windows,
 )
-from ._bsplines import *
-from ._czt import *
-from ._filter_design import *
-from ._fir_filter_design import *
-from ._lti_conversion import *
-from ._ltisys import *
+from ._czt import CZT, ZoomFFT, czt, czt_points, zoom_fft
+from ._filter_design import (
+    BadCoefficients,
+    band_stop_obj,
+    bessel,
+    besselap,
+    bilinear,
+    bilinear_zpk,
+    buttap,
+    butter,
+    buttord,
+    cheb1ap,
+    cheb1ord,
+    cheb2ap,
+    cheb2ord,
+    cheby1,
+    cheby2,
+    ellip,
+    ellipap,
+    ellipord,
+    findfreqs,
+    freqs,
+    freqs_zpk,
+    freqz,
+    freqz_sos,
+    freqz_zpk,
+    gammatone,
+    group_delay,
+    iircomb,
+    iirdesign,
+    iirfilter,
+    iirnotch,
+    iirpeak,
+    lp2bp,
+    lp2bp_zpk,
+    lp2bs,
+    lp2bs_zpk,
+    lp2hp,
+    lp2hp_zpk,
+    lp2lp,
+    lp2lp_zpk,
+    normalize,
+    sos2tf,
+    sos2zpk,
+    sosfreqz,
+    tf2sos,
+    tf2zpk,
+    zpk2sos,
+    zpk2tf,
+)
+from ._fir_filter_design import firls, firwin, firwin2, kaiser_atten, kaiser_beta, kaiserord, minimum_phase, remez
+from ._lti_conversion import abcd_normalize, cont2discrete, ss2tf, ss2zpk, tf2ss, zpk2ss
+from ._ltisys import (
+    StateSpace,
+    TransferFunction,
+    ZerosPolesGain,
+    bode,
+    dbode,
+    dfreqresp,
+    dimpulse,
+    dlsim,
+    dlti,
+    dstep,
+    freqresp,
+    impulse,
+    lsim,
+    lti,
+    place_poles,
+    step,
+)
 from ._max_len_seq import max_len_seq
-from ._peak_finding import *
+from ._peak_finding import argrelextrema, argrelmax, argrelmin, find_peaks, find_peaks_cwt, peak_prominences, peak_widths
 from ._savitzky_golay import savgol_coeffs, savgol_filter
-from ._short_time_fft import *
-from ._signaltools import *
-from ._spectral_py import *
-from ._spline import cspline2d, qspline2d, sepfir2d, symiirorder1, symiirorder2
+from ._short_time_fft import ShortTimeFFT
+from ._signaltools import (
+    choose_conv_method,
+    convolve,
+    convolve2d,
+    correlate,
+    correlate2d,
+    correlation_lags,
+    decimate,
+    deconvolve,
+    detrend,
+    envelope,
+    fftconvolve,
+    filtfilt,
+    hilbert,
+    hilbert2,
+    invres,
+    invresz,
+    lfilter,
+    lfilter_zi,
+    lfiltic,
+    medfilt,
+    medfilt2d,
+    oaconvolve,
+    order_filter,
+    resample,
+    resample_poly,
+    residue,
+    residuez,
+    sosfilt,
+    sosfilt_zi,
+    sosfiltfilt,
+    unique_roots,
+    vectorstrength,
+    wiener,
+)
+from ._spectral_py import check_COLA, check_NOLA, coherence, csd, istft, lombscargle, periodogram, spectrogram, stft, welch
+from ._spline import sepfir2d
+from ._spline_filters import (
+    cspline1d,
+    cspline1d_eval,
+    cspline2d,
+    gauss_spline,
+    qspline1d,
+    qspline1d_eval,
+    qspline2d,
+    spline_filter,
+    symiirorder1,
+    symiirorder2,
+)
 from ._upfirdn import upfirdn
-from ._waveforms import *
-from ._wavelets import *
+from ._waveforms import chirp, gausspulse, sawtooth, square, sweep_poly, unit_impulse
 from .windows import get_window
 
 __all__ = [
@@ -51,7 +160,6 @@ __all__ = [
     "buttap",
     "butter",
     "buttord",
-    "cascade",
     "cheb1ap",
     "cheb1ord",
     "cheb2ap",
@@ -62,7 +170,6 @@ __all__ = [
     "check_NOLA",
     "chirp",
     "choose_conv_method",
-    "cmplx_sort",
     "coherence",
     "cont2discrete",
     "convolve",
@@ -74,10 +181,8 @@ __all__ = [
     "cspline1d",
     "cspline1d_eval",
     "cspline2d",
-    "cwt",
     "czt",
     "czt_points",
-    "daub",
     "dbode",
     "decimate",
     "deconvolve",
@@ -90,6 +195,7 @@ __all__ = [
     "ellip",
     "ellipap",
     "ellipord",
+    "envelope",
     "fftconvolve",
     "filter_design",
     "filtfilt",
@@ -104,6 +210,7 @@ __all__ = [
     "freqs",
     "freqs_zpk",
     "freqz",
+    "freqz_sos",
     "freqz_zpk",
     "gammatone",
     "gauss_spline",
@@ -144,8 +251,6 @@ __all__ = [
     "medfilt",
     "medfilt2d",
     "minimum_phase",
-    "morlet",
-    "morlet2",
     "normalize",
     "oaconvolve",
     "order_filter",
@@ -153,7 +258,6 @@ __all__ = [
     "peak_widths",
     "periodogram",
     "place_poles",
-    "qmf",
     "qspline1d",
     "qspline1d_eval",
     "qspline2d",
@@ -162,7 +266,6 @@ __all__ = [
     "resample_poly",
     "residue",
     "residuez",
-    "ricker",
     "savgol_coeffs",
     "savgol_filter",
     "sawtooth",
