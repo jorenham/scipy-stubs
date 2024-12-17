@@ -7,33 +7,33 @@ import optype.numpy as onp
 from numpy._typing import _DTypeLike
 from scipy._typing import AnyShape
 
-__all__ = ["chirp", "gausspulse", "sawtooth", "square", "sweep_poly", "unit_impulse"]
+__all__ = [
+    "chirp",
+    "gausspulse",
+    "sawtooth",
+    "square",
+    "sweep_poly",
+    "unit_impulse",
+]
 
 _SCT = TypeVar("_SCT", bound=np.generic)
 
 _Truthy: TypeAlias = Literal[1, True]
 _Falsy: TypeAlias = Literal[0, False]
-_ArrayLikeFloat: TypeAlias = onp.ToFloat | onp.ToFloatND
-_Array_f: TypeAlias = onp.ArrayND[np.floating[Any]]
-_Array_f8: TypeAlias = onp.ArrayND[np.float64]
+
+_ToFloat0ND: TypeAlias = onp.ToFloat | onp.ToFloatND
+_FloatingND: TypeAlias = onp.ArrayND[np.floating[Any]]
+_FloatND: TypeAlias = onp.ArrayND[np.float64]
 
 _ChirpMethod: TypeAlias = Literal["linear", "quadratic", "logarithmic", "hyperbolic"]
 
-def sawtooth(t: _ArrayLikeFloat, width: _ArrayLikeFloat = 1) -> _Array_f8: ...
-def square(t: _ArrayLikeFloat, duty: _ArrayLikeFloat = 0.5) -> _Array_f8: ...
+###
+
+def sawtooth(t: _ToFloat0ND, width: _ToFloat0ND = 1) -> _FloatND: ...
+def square(t: _ToFloat0ND, duty: _ToFloat0ND = 0.5) -> _FloatND: ...
 
 #
-@overload  # Arrays
-def chirp(
-    t: onp.ToFloatND,
-    f0: onp.ToFloat,
-    t1: onp.ToFloat,
-    f1: onp.ToFloat,
-    method: _ChirpMethod = "linear",
-    phi: onp.ToFloat = 0,
-    vertex_zero: op.CanBool = True,
-) -> _Array_f: ...
-@overload  # Scalars
+@overload  # real scalars
 def chirp(
     t: onp.ToFloat,
     f0: onp.ToFloat,
@@ -42,14 +42,52 @@ def chirp(
     method: _ChirpMethod = "linear",
     phi: onp.ToFloat = 0,
     vertex_zero: op.CanBool = True,
+    *,
+    complex: _Falsy = False,
 ) -> np.floating[Any]: ...
+@overload  # real arrays
+def chirp(
+    t: onp.ToFloatND,
+    f0: onp.ToFloat,
+    t1: onp.ToFloat,
+    f1: onp.ToFloat,
+    method: _ChirpMethod = "linear",
+    phi: onp.ToFloat = 0,
+    vertex_zero: op.CanBool = True,
+    *,
+    complex: _Falsy = False,
+) -> _FloatingND: ...
+@overload  # complex scalars
+def chirp(
+    t: onp.ToFloat,
+    f0: onp.ToFloat,
+    t1: onp.ToFloat,
+    f1: onp.ToFloat,
+    method: _ChirpMethod = "linear",
+    phi: onp.ToFloat = 0,
+    vertex_zero: op.CanBool = True,
+    *,
+    complex: _Truthy,
+) -> np.complexfloating[Any, Any]: ...
+@overload  # complex arrays
+def chirp(
+    t: onp.ToFloatND,
+    f0: onp.ToFloat,
+    t1: onp.ToFloat,
+    f1: onp.ToFloat,
+    method: _ChirpMethod = "linear",
+    phi: onp.ToFloat = 0,
+    vertex_zero: op.CanBool = True,
+    *,
+    complex: _Truthy,
+) -> onp.ArrayND[np.complexfloating[Any, Any]]: ...
 
 #
 def sweep_poly(
-    t: _ArrayLikeFloat,
+    t: _ToFloat0ND,
     poly: onp.ToFloatND | np.poly1d,
     phi: onp.ToFloat = 0,
-) -> _Array_f8: ...
+) -> _FloatND: ...
 
 #
 @overload  # dtype is not given
@@ -57,7 +95,7 @@ def unit_impulse(
     shape: AnyShape,
     idx: op.CanIndex | Iterable[op.CanIndex] | Literal["mid"] | None = None,
     dtype: type[float] = ...,
-) -> _Array_f8: ...
+) -> _FloatND: ...
 @overload  # dtype is given
 def unit_impulse(
     shape: AnyShape,
@@ -162,7 +200,7 @@ def gausspulse(
     tpr: onp.ToFloat = -60,
     retquad: _Falsy = False,
     retenv: _Falsy = False,
-) -> _Array_f8: ...
+) -> _FloatND: ...
 @overload  # retquad: False = ..., retenv: True (keyword)
 def gausspulse(
     t: onp.ToFloatND,
@@ -173,7 +211,7 @@ def gausspulse(
     retquad: _Falsy = False,
     *,
     retenv: _Truthy,
-) -> tuple[_Array_f8, _Array_f8]: ...
+) -> tuple[_FloatND, _FloatND]: ...
 @overload  # retquad: False (positional), retenv: False (positional)
 def gausspulse(
     t: onp.ToFloatND,
@@ -183,7 +221,7 @@ def gausspulse(
     tpr: onp.ToFloat,
     retquad: _Falsy,
     retenv: _Truthy,
-) -> tuple[_Array_f8, _Array_f8]: ...
+) -> tuple[_FloatND, _FloatND]: ...
 @overload  # retquad: True (positional), retenv: False = ...
 def gausspulse(
     t: onp.ToFloatND,
@@ -193,7 +231,7 @@ def gausspulse(
     tpr: onp.ToFloat,
     retquad: _Truthy,
     retenv: _Falsy = False,
-) -> tuple[_Array_f8, _Array_f8]: ...
+) -> tuple[_FloatND, _FloatND]: ...
 @overload  # retquad: True (keyword), retenv: False = ...
 def gausspulse(
     t: onp.ToFloatND,
@@ -204,7 +242,7 @@ def gausspulse(
     *,
     retquad: _Truthy,
     retenv: _Falsy = False,
-) -> tuple[_Array_f8, _Array_f8]: ...
+) -> tuple[_FloatND, _FloatND]: ...
 @overload  # retquad: True (positional), retenv: True (positional/keyword)
 def gausspulse(
     t: onp.ToFloatND,
@@ -214,7 +252,7 @@ def gausspulse(
     tpr: onp.ToFloat,
     retquad: _Truthy,
     retenv: _Truthy,
-) -> tuple[_Array_f8, _Array_f8, _Array_f8]: ...
+) -> tuple[_FloatND, _FloatND, _FloatND]: ...
 @overload  # retquad: True (keyword), retenv: True
 def gausspulse(
     t: onp.ToFloatND,
@@ -225,4 +263,4 @@ def gausspulse(
     *,
     retquad: _Truthy,
     retenv: _Truthy,
-) -> tuple[_Array_f8, _Array_f8, _Array_f8]: ...
+) -> tuple[_FloatND, _FloatND, _FloatND]: ...

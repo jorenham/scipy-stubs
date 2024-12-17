@@ -24,6 +24,7 @@ __all__ = [
     "freqs",
     "freqs_zpk",
     "freqz",
+    "freqz_sos",
     "freqz_zpk",
     "gammatone",
     "group_delay",
@@ -74,7 +75,10 @@ def freqz_zpk(z: object, p: object, k: object, worN: object = ..., whole: object
 @deprecated("will be removed in SciPy v2.0.0")
 def group_delay(system: object, w: object = ..., whole: object = ..., fs: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def sosfreqz(sos: object, worN: object = ..., whole: object = ..., fs: object = ...) -> object: ...
+def freqz_sos(sos: object, worN: object = ..., whole: object = ..., fs: object = ...) -> object: ...
+
+sosfreqz = freqz_sos  # pyright: ignore[reportDeprecated]
+
 @deprecated("will be removed in SciPy v2.0.0")
 def tf2zpk(b: object, a: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")

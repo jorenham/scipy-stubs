@@ -29,6 +29,7 @@ __all__ = [
     "freqs",
     "freqs_zpk",
     "freqz",
+    "freqz_sos",
     "freqz_zpk",
     "gammatone",
     "group_delay",
@@ -161,19 +162,21 @@ def group_delay(
 
 #
 @overload  # worN: real
-def sosfreqz(
+def freqz_sos(
     sos: onp.ToFloat2D,
     worN: op.CanIndex | onp.ToFloat1D = 512,
     whole: op.CanBool = False,
     fs: onp.ToFloat = ...,  # 2 * pi
 ) -> tuple[_Float1D, _Complex1D]: ...
 @overload  # worN: real
-def sosfreqz(
+def freqz_sos(
     sos: onp.ToFloat2D,
     worN: onp.ToComplex1D,
     whole: op.CanBool = False,
     fs: onp.ToFloat = ...,  # 2 * pi
 ) -> tuple[_Inexact1D, _Complex1D]: ...
+
+sosfreqz = freqz_sos
 
 # TODO(jorenham): https://github.com/jorenham/scipy-stubs/issues/99
 
