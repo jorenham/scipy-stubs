@@ -47,6 +47,8 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         shape: ToShape | None = None,
         dtype: None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: None
     def __init__(
@@ -56,6 +58,8 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         shape: None = None,
         dtype: None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: type[bool] | None
     def __init__(
@@ -65,6 +69,8 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         shape: ToShape | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.int, dtype: type[int] | None
     def __init__(
@@ -74,6 +80,8 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         shape: ToShape | None = None,
         dtype: type[opt.JustInt] | onp.AnyIntPDType | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.float, dtype: type[float] | None
     def __init__(
@@ -83,6 +91,8 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         shape: ToShape | None = None,
         dtype: type[opt.Just[float]] | onp.AnyFloat64DType | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.complex, dtype: type[complex] | None
     def __init__(
@@ -92,6 +102,8 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         shape: ToShape | None = None,
         dtype: type[opt.Just[complex]] | onp.AnyComplex128DType | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: <known> (positional)
     def __init__(
@@ -101,6 +113,8 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         shape: ToShape | None,
         dtype: _ToDType[_SCT],
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: <known> (keyword)
     def __init__(
@@ -111,6 +125,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         *,
         dtype: _ToDType[_SCT],
         copy: bool = False,
+        maxprint: int | None = None,
     ) -> None: ...
 
     #

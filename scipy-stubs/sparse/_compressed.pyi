@@ -77,6 +77,8 @@ class _cs_matrix(
         shape: _ShapeT_co | None = None,
         dtype: ToDType[_SCT] | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d array-like (know dtype), dtype: None
     def __init__(
@@ -86,6 +88,8 @@ class _cs_matrix(
         shape: ToShape1D | None = None,
         dtype: ToDType[_SCT0] | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like (know dtype), dtype: None
     def __init__(
@@ -95,6 +99,8 @@ class _cs_matrix(
         shape: ToShape2D | None = None,
         dtype: ToDType[_SCT0] | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
@@ -104,6 +110,8 @@ class _cs_matrix(
         shape: ToShape | None = None,
         dtype: ToDType[_SCT] | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: None
     def __init__(
@@ -113,6 +121,8 @@ class _cs_matrix(
         shape: ToShape1D | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: None
     def __init__(
@@ -122,6 +132,8 @@ class _cs_matrix(
         shape: ToShape2D | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d array-like bool, dtype: type[bool] | None
     def __init__(
@@ -131,6 +143,8 @@ class _cs_matrix(
         shape: ToShape1D | None = None,
         dtype: ToDTypeBool | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like bool, dtype: type[bool] | None
     def __init__(
@@ -140,6 +154,8 @@ class _cs_matrix(
         shape: ToShape2D | None = None,
         dtype: ToDTypeBool | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d array-like ~int, dtype: type[int] | None
     def __init__(
@@ -149,6 +165,8 @@ class _cs_matrix(
         shape: ToShape | None = None,
         dtype: ToDTypeInt | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like ~int, dtype: type[int] | None
     def __init__(
@@ -158,6 +176,8 @@ class _cs_matrix(
         shape: ToShape | None = None,
         dtype: ToDTypeInt | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d array-like ~float, dtype: type[float] | None
     def __init__(
@@ -167,6 +187,8 @@ class _cs_matrix(
         shape: ToShape | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like ~float, dtype: type[float] | None
     def __init__(
@@ -176,6 +198,8 @@ class _cs_matrix(
         shape: ToShape | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d array-like ~complex, dtype: type[complex] | None
     def __init__(
@@ -185,6 +209,8 @@ class _cs_matrix(
         shape: ToShape | None = None,
         dtype: ToDTypeComplex | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like ~complex, dtype: type[complex] | None
     def __init__(
@@ -194,6 +220,8 @@ class _cs_matrix(
         shape: ToShape | None = None,
         dtype: ToDTypeComplex | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-D, dtype: <known> (positional)
     def __init__(
@@ -203,6 +231,8 @@ class _cs_matrix(
         shape: ToShape1D | None,
         dtype: ToDType[_SCT0],
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-D, dtype: <known> (keyword)
     def __init__(
@@ -213,6 +243,7 @@ class _cs_matrix(
         *,
         dtype: ToDType[_SCT0],
         copy: bool = False,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (positional)
     def __init__(
@@ -222,6 +253,8 @@ class _cs_matrix(
         shape: ToShape2D | None,
         dtype: ToDType[_SCT0],
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (keyword)
     def __init__(
@@ -232,6 +265,7 @@ class _cs_matrix(
         *,
         dtype: ToDType[_SCT0],
         copy: bool = False,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # shape: known
     def __init__(
@@ -241,6 +275,8 @@ class _cs_matrix(
         shape: ToShape | None = None,
         dtype: npt.DTypeLike | None = ...,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
 
     #

@@ -68,6 +68,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: _ShapeT_co | None = None,
         dtype: ToDType[_SCT] | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
@@ -77,6 +79,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: _ShapeT_co | None = None,
         dtype: ToDType[_SCT] | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: None
     def __init__(  # type: ignore[misc]
@@ -86,6 +90,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: ToShape1D | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: None
     def __init__(
@@ -95,6 +101,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: ToShape2D | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # vector-like builtins.bool, dtype: type[bool] | None
     def __init__(
@@ -104,6 +112,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: ToShape1D | None = None,
         dtype: ToDTypeBool | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: type[bool] | None
     def __init__(
@@ -113,6 +123,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: ToShape2D | None = None,
         dtype: ToDTypeBool | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # vector-like builtins.int, dtype: type[int] | None
     def __init__(
@@ -122,6 +134,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: ToShape1D | None = None,
         dtype: ToDTypeInt | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.int, dtype: type[int] | None
     def __init__(
@@ -131,6 +145,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: ToShape2D | None = None,
         dtype: ToDTypeInt | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # vectir-like builtins.float, dtype: type[float] | None
     def __init__(
@@ -140,6 +156,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: ToShape1D | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.float, dtype: type[float] | None
     def __init__(
@@ -149,6 +167,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: ToShape2D | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.complex, dtype: type[complex] | None
     def __init__(
@@ -158,6 +178,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: ToShape1D | None = None,
         dtype: ToDTypeComplex | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.complex, dtype: type[complex] | None
     def __init__(
@@ -167,6 +189,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: ToShape2D | None = None,
         dtype: ToDTypeComplex | None = None,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-D, dtype: <known> (positional)
     def __init__(
@@ -176,6 +200,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: ToShape1D | None,
         dtype: ToDType[_SCT0],
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-D, dtype: <known> (keyword)
     def __init__(
@@ -186,6 +212,7 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         *,
         dtype: ToDType[_SCT0],
         copy: bool = False,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (positional)
     def __init__(
@@ -195,6 +222,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: ToShape2D | None,
         dtype: ToDType[_SCT0],
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (keyword)
     def __init__(
@@ -205,6 +234,7 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         *,
         dtype: ToDType[_SCT0],
         copy: bool = False,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # shape: known
     def __init__(
@@ -214,6 +244,8 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
         shape: ToShape | None = None,
         dtype: npt.DTypeLike | None = ...,
         copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
 
     #

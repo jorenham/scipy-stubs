@@ -1,7 +1,5 @@
 scipy\.sparse\.__all__
 scipy\.sparse\._sputils\.__all__
-scipy\.sparse\._(data\._data|compressed\._cs)_matrix\.__init__
-scipy\.sparse\._(base\._sp|bsr\._bsr_|coo\._coo_|dia\._dia_|dok\._dok_|lil\._lil_)base\.__init__
 scipy\.sparse\._(base\._sp|coo\._coo_|dia\._dia_|dok\._dok_|lil\._lil_)base\.count_nonzero
 scipy\.sparse\.((_?base|_matrix|bsr|coo|csc|csr|dia|dok)\.)?spmatrix\.todense
 scipy\.sparse\.(_?construct\.)?rand(om(_array)?)?

@@ -33,17 +33,47 @@ class _data_matrix(_spbase[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
 
     #
     @overload
-    def __init__(self, /, arg1: _spbase[_SCT_co, _ShapeT_co] | onp.CanArrayND[_SCT_co, _ShapeT_co]) -> None: ...
+    def __init__(
+        self,
+        /,
+        arg1: _spbase[_SCT_co, _ShapeT_co] | onp.CanArrayND[_SCT_co, _ShapeT_co],
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
     @overload
-    def __init__(self: _data_matrix[_SCT, tuple[int]], /, arg1: Sequence[_SCT]) -> None: ...
+    def __init__(
+        self: _data_matrix[_SCT, tuple[int]],
+        /,
+        arg1: Sequence[_SCT],
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
     @overload
-    def __init__(self: _data_matrix[_SCT, tuple[int, int]], /, arg1: Sequence[onp.CanArrayND[_SCT] | Sequence[_SCT]]) -> None: ...
+    def __init__(
+        self: _data_matrix[_SCT, tuple[int, int]],
+        /,
+        arg1: Sequence[onp.CanArrayND[_SCT] | Sequence[_SCT]],
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
     @overload
-    def __init__(self: _data_matrix[np.float64, tuple[int]], /, arg1: ToShape1D) -> None: ...
+    def __init__(
+        self: _data_matrix[np.float64, tuple[int]],
+        /,
+        arg1: ToShape1D,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
     @overload
-    def __init__(self: _data_matrix[np.float64, tuple[int, int]], /, arg1: ToShape2D) -> None: ...
+    def __init__(
+        self: _data_matrix[np.float64, tuple[int, int]],
+        /,
+        arg1: ToShape2D,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
     @overload
-    def __init__(self, /, arg1: onp.CanArrayND[_SCT_co]) -> None: ...
+    def __init__(self, /, arg1: onp.CanArrayND[_SCT_co], *, maxprint: int | None = None) -> None: ...
 
     #
     def __imul__(self, rhs: _ScalarLike, /) -> Self: ...  # type: ignore[misc,override]
