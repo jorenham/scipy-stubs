@@ -38,8 +38,8 @@ def least_squares(
     jac_sparsity: object = ...,
     max_nfev: object = ...,
     verbose: object = ...,
-    args: object = ...,
-    kwargs: dict[str, object] = ...,
+    args: tuple[object, ...] = (),
+    kwargs: dict[str, object] | None = None,
 ) -> OptimizeResult: ...  # pyright: ignore[reportDeprecated]
 @deprecated("will be removed in SciPy v2.0.0")
 def fsolve(

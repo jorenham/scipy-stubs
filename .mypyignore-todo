@@ -1,16 +1,3 @@
-scipy\.optimize\.elementwise
-scipy\.optimize\._cobyqa_py\.COBYQA_LOCK
-scipy\.optimize\.(_basinhopping\.)?basinhopping
-scipy\.optimize\.(_differentialevolution\.)?differential_evolution
-scipy\.optimize\.(_dual_annealing\.)?dual_annealing
-scipy\.optimize\.(_hessian_update_strategy\.)?HessianUpdateStrategy\.__matmul__
-scipy\.optimize\.(_?optimize\.)?check_grad
-scipy\.optimize\._lsq\.(least_squares\.)?least_squares
-scipy\.optimize\._numdiff\.(approx|check)_derivative
-scipy\.optimize\._trustregion_constr\.minimize_trustregion_constr\.LagrangianHessian\.__call__
-scipy\.optimize\._trustregion_constr\.tr_interior_point\.tr_interior_point
-scipy\.optimize\.minpack\.least_squares
-
 scipy\.signal\._bsplines
 scipy\.signal\._spectral
 scipy\.signal\.(_?filter_design\.)?__all__

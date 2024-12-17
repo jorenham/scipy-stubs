@@ -47,4 +47,5 @@ def tr_interior_point(
     initial_penalty: onp.ToFloat,
     initial_trust_radius: onp.ToFloat,
     factorization_method: Literal["NormalEquation", "AugmentedSystem", "QRFactorization", "SVDFactorization"],
+    finite_diff_bounds: tuple[onp.ToFloat1D, onp.ToFloat1D],
 ) -> tuple[onp.Array1D[np.floating[Any]], _StateT]: ...

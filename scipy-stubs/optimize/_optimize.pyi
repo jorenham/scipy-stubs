@@ -662,5 +662,5 @@ def check_grad(
     *args: object,
     epsilon: onp.ToFloat = ...,
     direction: Literal["all", "random"] = "all",
-    seed: ToRNG = None,
+    rng: ToRNG = None,
 ) -> _Float: ...
