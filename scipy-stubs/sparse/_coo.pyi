@@ -28,11 +28,27 @@ from ._typing import (
 
 __all__ = ["coo_array", "coo_matrix", "isspmatrix_coo"]
 
+_T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Scalar, default=Any)
 _SCT0 = TypeVar("_SCT0", bound=Scalar)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int], covariant=True)
 
-_ToData: TypeAlias = tuple[onp.ArrayND[_SCT], tuple[onp.ArrayND[Int]] | tuple[onp.ArrayND[Int], onp.ArrayND[Int]]]
+_ToData: TypeAlias = tuple[onp.ArrayND[_SCT0], tuple[onp.ArrayND[Int]] | tuple[onp.ArrayND[Int], onp.ArrayND[Int]]]
+_ToDense: TypeAlias = onp.ArrayND[_SCT0] | onp.SequenceND[onp.ArrayND[_SCT0]] | onp.SequenceND[_SCT0]
+
+_ScalarOrDense: TypeAlias = onp.ArrayND[_SCT0] | _SCT0
+_JustND: TypeAlias = onp.SequenceND[opt.Just[_T]]
+
+_SubInt: TypeAlias = np.bool_ | np.int8 | np.int16 | np.int32 | np.intp | np.int_ | np.uint8 | np.uint16
+_SubFloat: TypeAlias = np.bool_ | Int | np.float32 | np.float64
+_SubComplex: TypeAlias = _SubFloat | np.complex64 | np.complex128
+_SupComplex: TypeAlias = np.complex128 | np.clongdouble
+_SupFloat: TypeAlias = np.float64 | np.longdouble | _SupComplex
+_SupInt: TypeAlias = np.int_ | np.int64 | np.uint32 | np.uintp | np.uint | np.uint64 | _SupFloat
+
+_SupComplexT = TypeVar("_SupComplexT", bound=_SupComplex)
+_SupFloatT = TypeVar("_SupFloatT", bound=_SupFloat)
+_SupIntT = TypeVar("_SupIntT", bound=_SupInt)
 
 ###
 
@@ -52,12 +68,12 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
     @property
     def row(self, /) -> Index1D: ...
     @row.setter
-    def row(self, new_row: onp.ToInt1D, /) -> None: ...
+    def row(self, row: onp.ToInt1D, /) -> None: ...
     #
     @property
     def col(self, /) -> Index1D: ...
     @col.setter
-    def col(self, new_col: onp.ToInt1D, /) -> None: ...
+    def col(self, col: onp.ToInt1D, /) -> None: ...
 
     #
     @overload  # matrix-like (known dtype), dtype: None
@@ -251,6 +267,28 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
     #
     def sum_duplicates(self, /) -> None: ...
     def eliminate_zeros(self, /) -> None: ...
+
+    # NOTE: all combinations (self dtype, other dtype, self shape, other shape, self: array|matrix, other dense|sparse, axes)
+    #   would  result in more overloads than that mypy has bugs (i.e. >1_200).
+    # NOTE: due to a bug in `axes`, only `int` can be used at the moment (passing a 2-tuple or 2-list raises `TypeError`)
+    @overload
+    def tensordot(self, /, other: _spbase[_SCT0], axes: int = 2) -> _SCT | _SCT0 | coo_array[_SCT | _SCT0]: ...
+    @overload
+    def tensordot(self, /, other: _ToDense[_SCT0], axes: int = 2) -> _ScalarOrDense[_SCT | _SCT0]: ...
+    @overload
+    def tensordot(self, /, other: onp.SequenceND[bool], axes: int = 2) -> _ScalarOrDense[_SCT]: ...
+    @overload
+    def tensordot(self: _spbase[_SubInt], /, other: _JustND[int], axes: int = 2) -> _ScalarOrDense[np.int_]: ...
+    @overload
+    def tensordot(self: _spbase[_SubFloat], /, other: _JustND[float], axes: int = 2) -> _ScalarOrDense[np.float64]: ...
+    @overload
+    def tensordot(self: _spbase[_SubComplex], /, other: _JustND[complex], axes: int = 2) -> _ScalarOrDense[np.complex128]: ...
+    @overload
+    def tensordot(self: _spbase[_SupComplexT], /, other: _JustND[complex], axes: int = 2) -> _ScalarOrDense[_SupComplexT]: ...
+    @overload
+    def tensordot(self: _spbase[_SupFloatT], /, other: _JustND[float], axes: int = 2) -> _ScalarOrDense[_SupFloatT]: ...
+    @overload
+    def tensordot(self: _spbase[_SupIntT], /, other: _JustND[int], axes: int = 2) -> _ScalarOrDense[_SupIntT]: ...
 
 class coo_array(_coo_base[_SCT, _ShapeT_co], sparray, Generic[_SCT, _ShapeT_co]): ...
 

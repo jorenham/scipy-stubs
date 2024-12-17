@@ -1,5 +1,3 @@
-scipy\.sparse\._coo\._coo_base\.tensordot
-
 scipy\.spatial\.distance\.directed_hausdorff
 scipy\.spatial\.transform\.(_?rotation\.)?Rotation\.random
 
