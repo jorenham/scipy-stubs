@@ -41,6 +41,8 @@ def iterate_structure(
     origin: _Origin | None = None,
 ) -> _BoolArrayOut: ...
 def generate_binary_structure(rank: int, connectivity: int) -> _BoolArrayOut: ...
+
+#
 def binary_erosion(
     input: onp.ToComplex | onp.ToComplexND,
     structure: onp.ToInt | onp.ToIntND | None = None,
@@ -50,6 +52,8 @@ def binary_erosion(
     border_value: _BorderValue = 0,
     origin: _Origin = 0,
     brute_force: onp.ToBool = False,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _BoolArrayOut: ...
 def binary_dilation(
     input: onp.ToComplex | onp.ToComplexND,
@@ -60,6 +64,8 @@ def binary_dilation(
     border_value: _BorderValue = 0,
     origin: _Origin = 0,
     brute_force: onp.ToBool = False,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _BoolArrayOut: ...
 def binary_opening(
     input: onp.ToComplex | onp.ToComplexND,
@@ -70,6 +76,8 @@ def binary_opening(
     mask: onp.ToInt | onp.ToIntND | None = None,
     border_value: _BorderValue = 0,
     brute_force: onp.ToBool = False,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _BoolArrayOut: ...
 def binary_closing(
     input: onp.ToComplex | onp.ToComplexND,
@@ -80,7 +88,11 @@ def binary_closing(
     mask: onp.ToInt | onp.ToIntND | None = None,
     border_value: _BorderValue = 0,
     brute_force: onp.ToBool = False,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _BoolArrayOut: ...
+
+#
 def binary_hit_or_miss(
     input: onp.ToComplex | onp.ToComplexND,
     structure1: onp.ToInt | onp.ToIntND | None = None,
@@ -88,6 +100,8 @@ def binary_hit_or_miss(
     output: _BoolArrayOut | type[bool | np.bool_] | None = None,
     origin1: _Origin = 0,
     origin2: _Origin | None = None,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _BoolArrayOut: ...
 def binary_propagation(
     input: onp.ToComplex | onp.ToComplexND,
@@ -96,13 +110,19 @@ def binary_propagation(
     output: _BoolArrayOut | type[bool | np.bool_] | None = None,
     border_value: _BorderValue = 0,
     origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _BoolArrayOut: ...
 def binary_fill_holes(
     input: onp.ToComplex | onp.ToComplexND,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _BoolArrayOut | None = None,
     origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _BoolArrayOut: ...
+
+#
 def grey_erosion(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
@@ -112,6 +132,8 @@ def grey_erosion(
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 def grey_dilation(
     input: onp.ToComplex | onp.ToComplexND,
@@ -122,6 +144,8 @@ def grey_dilation(
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 def grey_opening(
     input: onp.ToComplex | onp.ToComplexND,
@@ -132,6 +156,8 @@ def grey_opening(
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 def grey_closing(
     input: onp.ToComplex | onp.ToComplexND,
@@ -142,7 +168,11 @@ def grey_closing(
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _ScalarArrayOut: ...
+
+#
 def morphological_gradient(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
@@ -152,6 +182,8 @@ def morphological_gradient(
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 def morphological_laplace(
     input: onp.ToComplex | onp.ToComplexND,
@@ -162,7 +194,11 @@ def morphological_laplace(
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _ScalarArrayOut: ...
+
+#
 def white_tophat(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
@@ -172,6 +208,8 @@ def white_tophat(
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 def black_tophat(
     input: onp.ToComplex | onp.ToComplexND,
@@ -182,7 +220,11 @@ def black_tophat(
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: onp.ToComplex = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> _ScalarArrayOut: ...
+
+#
 def distance_transform_bf(
     input: onp.ToComplex | onp.ToComplexND,
     metric: _MetricBF = "euclidean",

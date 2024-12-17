@@ -36,6 +36,8 @@ def convolve(
     mode: object = ...,
     cval: object = ...,
     origin: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def convolve1d(
@@ -55,6 +57,8 @@ def correlate(
     mode: object = ...,
     cval: object = ...,
     origin: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def correlate1d(
@@ -99,6 +103,8 @@ def gaussian_gradient_magnitude(
     output: object = ...,
     mode: object = ...,
     cval: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
     **kwargs: object,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
@@ -108,6 +114,8 @@ def gaussian_laplace(
     output: object = ...,
     mode: object = ...,
     cval: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
     **kwargs: object,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
@@ -122,6 +130,8 @@ def generic_filter(
     origin: object = ...,
     extra_arguments: object = ...,
     extra_keywords: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def generic_filter1d(
@@ -145,6 +155,8 @@ def generic_gradient_magnitude(
     cval: object = ...,
     extra_arguments: object = ...,
     extra_keywords: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def generic_laplace(
@@ -155,9 +167,18 @@ def generic_laplace(
     cval: object = ...,
     extra_arguments: object = ...,
     extra_keywords: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def laplace(input: object, output: object = ..., mode: object = ..., cval: object = ...) -> object: ...
+def laplace(
+    input: object,
+    output: object = ...,
+    mode: object = ...,
+    cval: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def maximum_filter(
     input: object,
@@ -228,8 +249,6 @@ def percentile_filter(
     axes: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def prewitt(input: object, axis: object = ..., output: object = ..., mode: object = ..., cval: object = ...) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
 def rank_filter(
     input: object,
     rank: object,
@@ -242,8 +261,6 @@ def rank_filter(
     *,
     axes: object = ...,
 ) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def sobel(input: object, axis: object = ..., output: object = ..., mode: object = ..., cval: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def uniform_filter(
     input: object,
@@ -265,3 +282,7 @@ def uniform_filter1d(
     cval: object = ...,
     origin: object = ...,
 ) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def prewitt(input: object, axis: object = ..., output: object = ..., mode: object = ..., cval: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def sobel(input: object, axis: object = ..., output: object = ..., mode: object = ..., cval: object = ...) -> object: ...

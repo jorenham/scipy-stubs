@@ -1,4 +1,13 @@
-from . import filters, fourier, interpolation, measurements, morphology
+# Deprecated namespaces, to be removed in v2.0.0
+from . import (
+    filters as filters,
+    fourier as fourier,
+    interpolation as interpolation,
+    measurements as measurements,
+    morphology as morphology,
+)
+
+#
 from ._filters import (
     convolve,
     convolve1d,
@@ -36,8 +45,48 @@ from ._interpolation import (
     spline_filter1d,
     zoom,
 )
-from ._measurements import *
-from ._morphology import *
+from ._measurements import (
+    center_of_mass,
+    extrema,
+    find_objects,
+    histogram,
+    label,
+    labeled_comprehension,
+    maximum,
+    maximum_position,
+    mean,
+    median,
+    minimum,
+    minimum_position,
+    standard_deviation,
+    sum,
+    sum_labels,
+    value_indices,
+    variance,
+    watershed_ift,
+)
+from ._morphology import (
+    binary_closing,
+    binary_dilation,
+    binary_erosion,
+    binary_fill_holes,
+    binary_hit_or_miss,
+    binary_opening,
+    binary_propagation,
+    black_tophat,
+    distance_transform_bf,
+    distance_transform_cdt,
+    distance_transform_edt,
+    generate_binary_structure,
+    grey_closing,
+    grey_dilation,
+    grey_erosion,
+    grey_opening,
+    iterate_structure,
+    morphological_gradient,
+    morphological_laplace,
+    white_tophat,
+)
 
 __all__ = [
     "affine_transform",
@@ -58,9 +107,7 @@ __all__ = [
     "distance_transform_cdt",
     "distance_transform_edt",
     "extrema",
-    "filters",
     "find_objects",
-    "fourier",
     "fourier_ellipsoid",
     "fourier_gaussian",
     "fourier_shift",
@@ -80,7 +127,6 @@ __all__ = [
     "grey_erosion",
     "grey_opening",
     "histogram",
-    "interpolation",
     "iterate_structure",
     "label",
     "labeled_comprehension",
@@ -91,7 +137,6 @@ __all__ = [
     "maximum_filter1d",
     "maximum_position",
     "mean",
-    "measurements",
     "median",
     "median_filter",
     "minimum",
@@ -100,7 +145,6 @@ __all__ = [
     "minimum_position",
     "morphological_gradient",
     "morphological_laplace",
-    "morphology",
     "percentile_filter",
     "prewitt",
     "rank_filter",

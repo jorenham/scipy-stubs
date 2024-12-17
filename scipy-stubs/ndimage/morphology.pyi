@@ -24,6 +24,7 @@ __all__ = [
     "white_tophat",
 ]
 
+#
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_closing(
     input: object,
@@ -34,6 +35,8 @@ def binary_closing(
     mask: object = ...,
     border_value: object = ...,
     brute_force: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_dilation(
@@ -45,6 +48,8 @@ def binary_dilation(
     border_value: object = ...,
     origin: object = ...,
     brute_force: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_erosion(
@@ -56,17 +61,8 @@ def binary_erosion(
     border_value: object = ...,
     origin: object = ...,
     brute_force: object = ...,
-) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def binary_fill_holes(input: object, structure: object = ..., output: object = ..., origin: object = ...) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def binary_hit_or_miss(
-    input: object,
-    structure1: object = ...,
-    structure2: object = ...,
-    output: object = ...,
-    origin1: object = ...,
-    origin2: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_opening(
@@ -78,6 +74,30 @@ def binary_opening(
     mask: object = ...,
     border_value: object = ...,
     brute_force: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> object: ...
+
+#
+@deprecated("will be removed in SciPy v2.0.0")
+def binary_fill_holes(
+    input: object,
+    structure: object = ...,
+    output: object = ...,
+    origin: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def binary_hit_or_miss(
+    input: object,
+    structure1: object = ...,
+    structure2: object = ...,
+    output: object = ...,
+    origin1: object = ...,
+    origin2: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_propagation(
@@ -87,18 +107,11 @@ def binary_propagation(
     output: object = ...,
     border_value: object = ...,
     origin: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def black_tophat(
-    input: object,
-    size: object = ...,
-    footprint: object = ...,
-    structure: object = ...,
-    output: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    origin: object = ...,
-) -> object: ...
+
+#
 @deprecated("will be removed in SciPy v2.0.0")
 def distance_transform_bf(
     input: object,
@@ -127,8 +140,8 @@ def distance_transform_edt(
     distances: object = ...,
     indices: object = ...,
 ) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def generate_binary_structure(rank: object, connectivity: object) -> object: ...
+
+#
 @deprecated("will be removed in SciPy v2.0.0")
 def grey_closing(
     input: object,
@@ -139,6 +152,8 @@ def grey_closing(
     mode: object = ...,
     cval: object = ...,
     origin: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def grey_dilation(
@@ -150,6 +165,8 @@ def grey_dilation(
     mode: object = ...,
     cval: object = ...,
     origin: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def grey_erosion(
@@ -161,6 +178,8 @@ def grey_erosion(
     mode: object = ...,
     cval: object = ...,
     origin: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def grey_opening(
@@ -172,9 +191,11 @@ def grey_opening(
     mode: object = ...,
     cval: object = ...,
     origin: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def iterate_structure(structure: object, iterations: object, origin: object = ...) -> object: ...
+
+#
 @deprecated("will be removed in SciPy v2.0.0")
 def morphological_gradient(
     input: object,
@@ -185,6 +206,8 @@ def morphological_gradient(
     mode: object = ...,
     cval: object = ...,
     origin: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def morphological_laplace(
@@ -196,7 +219,11 @@ def morphological_laplace(
     mode: object = ...,
     cval: object = ...,
     origin: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
+
+#
 @deprecated("will be removed in SciPy v2.0.0")
 def white_tophat(
     input: object,
@@ -207,4 +234,25 @@ def white_tophat(
     mode: object = ...,
     cval: object = ...,
     origin: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
 ) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def black_tophat(
+    input: object,
+    size: object = ...,
+    footprint: object = ...,
+    structure: object = ...,
+    output: object = ...,
+    mode: object = ...,
+    cval: object = ...,
+    origin: object = ...,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> object: ...
+
+#
+@deprecated("will be removed in SciPy v2.0.0")
+def iterate_structure(structure: object, iterations: object, origin: object = ...) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
+def generate_binary_structure(rank: object, connectivity: object) -> object: ...
