@@ -4,7 +4,7 @@ from typing import Any, Literal, TypeAlias, final, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
-from scipy.sparse import csc_matrix, csr_matrix
+from scipy.sparse import csc_array, csc_matrix, csr_matrix
 
 _Int1D: TypeAlias = onp.Array1D[np.int32]
 _Float1D: TypeAlias = onp.Array1D[np.float64]
@@ -21,8 +21,8 @@ class SuperLU:
     nnz: int
     perm_r: onp.Array1D[np.intp]
     perm_c: onp.Array1D[np.intp]
-    L: csc_matrix
-    U: csc_matrix
+    L: csc_array[np.float64 | np.complex128]
+    U: csc_array[np.float64 | np.complex128]
 
     @overload
     def solve(self, /, rhs: onp.Array1D[np.integer[Any] | np.floating[Any]]) -> _Float1D: ...
@@ -57,7 +57,7 @@ def gstrf(
     nzvals: _Inexact2D,
     colind: _Int1D,
     rowptr: _Int1D,
-    csc_construct_func: type[csc_matrix] | Callable[..., csc_matrix],
+    csc_construct_func: type[csc_array] | Callable[..., csc_array],
     ilu: onp.ToBool = 0,
     options: Mapping[str, object] = ...,
 ) -> SuperLU: ...
