@@ -27,6 +27,8 @@ _ComplexSVD: TypeAlias = tuple[_Complex2D, _Float1D, _Complex2D]
 _RealT = TypeVar("_RealT", bound=np.bool_ | np.integer[Any] | np.floating[Any])
 _InexactT = TypeVar("_InexactT", bound=_Float | _Complex)
 
+###
+
 @overload
 def svd(
     a: onp.ToFloat2D,
@@ -88,11 +90,32 @@ def orth(A: onp.ToComplex2D, rcond: onp.ToFloat | None = None) -> _Inexact2D: ..
 
 #
 @overload
-def null_space(A: onp.CanArray2D[_InexactT], rcond: onp.ToFloat | None = None) -> onp.Array2D[_InexactT]: ...
+def null_space(
+    A: onp.CanArray2D[_InexactT],
+    rcond: onp.ToFloat | None = None,
+    *,
+    overwrite_a: onp.ToBool = False,
+    check_finite: onp.ToBool = True,
+    lapack_driver: _LapackDriver = "gesdd",
+) -> onp.Array2D[_InexactT]: ...
 @overload
-def null_space(A: onp.ToFloat2D, rcond: onp.ToFloat | None = None) -> _Float2D: ...
+def null_space(
+    A: onp.ToFloat2D,
+    rcond: onp.ToFloat | None = None,
+    *,
+    overwrite_a: onp.ToBool = False,
+    check_finite: onp.ToBool = True,
+    lapack_driver: _LapackDriver = "gesdd",
+) -> _Float2D: ...
 @overload
-def null_space(A: onp.ToComplex2D, rcond: onp.ToFloat | None = None) -> _Inexact2D: ...
+def null_space(
+    A: onp.ToComplex2D,
+    rcond: onp.ToFloat | None = None,
+    *,
+    overwrite_a: onp.ToBool = False,
+    check_finite: onp.ToBool = True,
+    lapack_driver: _LapackDriver = "gesdd",
+) -> _Inexact2D: ...
 
 #
 def subspace_angles(A: onp.ToComplex2D, B: onp.ToComplex2D) -> _Float1D: ...

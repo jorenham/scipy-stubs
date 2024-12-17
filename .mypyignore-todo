@@ -1,4 +1,3 @@
-scipy\.linalg\.(_?decomp_svd\.)?null_space
 scipy\.linalg\._matfuncs_expm\.__all__
 
 scipy\.ndimage\.__all__
