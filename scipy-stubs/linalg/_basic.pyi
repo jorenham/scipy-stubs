@@ -38,7 +38,17 @@ _Complex1D: TypeAlias = onp.Array1D[_Complex]
 _Complex2D: TypeAlias = onp.Array2D[_Complex]
 _ComplexND: TypeAlias = onp.ArrayND[_Complex]
 
-_AssumeA: TypeAlias = Literal["gen", "sym", "her", "pos"]
+_AssumeA: TypeAlias = Literal[
+    "diagonal",
+    "tridiagonal",
+    "banded",
+    "upper triangular",
+    "lower triangular",
+    "symmetric", "sym",
+    "hermitian", "her",
+    "positive definite", "pos",
+    "general", "gen",
+]  # fmt: skip
 _TransSystem: TypeAlias = Literal[0, "N", 1, "T", 2, "C"]
 _Singular: TypeAlias = Literal["lstsq", "raise"]
 _LapackDriver: TypeAlias = Literal["gelsd", "gelsy", "gelss"]
@@ -55,7 +65,7 @@ def solve(
     overwrite_a: onp.ToBool = False,
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
-    assume_a: _AssumeA = "gen",
+    assume_a: _AssumeA | None = None,
     transposed: onp.ToBool = False,
 ) -> _Float2D: ...
 @overload  # (complex[:, :], complex[:, :]) -> complex[:, :]
@@ -66,7 +76,7 @@ def solve(
     overwrite_a: onp.ToBool = False,
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
-    assume_a: _AssumeA = "gen",
+    assume_a: _AssumeA | None = None,
     transposed: onp.ToBool = False,
 ) -> _Complex2D: ...
 

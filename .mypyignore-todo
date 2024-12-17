@@ -1,9 +1,3 @@
-scipy\.linalg\.(_basic\.)?solve
-scipy\.linalg\.(_?decomp_svd\.)?null_space
-scipy\.linalg\._matfuncs_expm\.__all__
-scipy\.linalg\.(_sketches\.)?clarkson_woodruff_transform
-scipy\.linalg\._sketches\.cwt_matrix
-
 scipy\.ndimage\.__all__
 scipy\.ndimage\.(_?filters\.)?convolve
 scipy\.ndimage\.(_?filters\.)?correlate
