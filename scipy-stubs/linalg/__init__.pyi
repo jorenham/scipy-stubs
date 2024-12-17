@@ -14,27 +14,93 @@ from . import (
     misc,
     special_matrices,
 )
-from ._basic import *
-from ._cythonized_array_utils import *
-from ._decomp import *
-from ._decomp_cholesky import *
-from ._decomp_cossin import *
-from ._decomp_ldl import *
-from ._decomp_lu import *
-from ._decomp_polar import *
-from ._decomp_qr import *
-from ._decomp_qz import *
-from ._decomp_schur import *
-from ._decomp_svd import *
-from ._decomp_update import *
-from ._matfuncs import *
-from ._misc import *
-from ._procrustes import *
-from ._sketches import *
-from ._solvers import *
-from ._special_matrices import *
-from .blas import *
-from .lapack import *
+from ._basic import (
+    det,
+    inv,
+    lstsq,
+    matmul_toeplitz,
+    matrix_balance,
+    pinv,
+    pinvh,
+    solve,
+    solve_banded,
+    solve_circulant,
+    solve_toeplitz,
+    solve_triangular,
+    solveh_banded,
+)
+from ._cythonized_array_utils import bandwidth, ishermitian, issymmetric
+from ._decomp import (
+    cdf2rdf,
+    eig,
+    eig_banded,
+    eigh,
+    eigh_tridiagonal,
+    eigvals,
+    eigvals_banded,
+    eigvalsh,
+    eigvalsh_tridiagonal,
+    hessenberg,
+)
+from ._decomp_cholesky import cho_factor, cho_solve, cho_solve_banded, cholesky, cholesky_banded
+from ._decomp_cossin import cossin
+from ._decomp_ldl import ldl
+from ._decomp_lu import lu, lu_factor, lu_solve
+from ._decomp_polar import polar
+from ._decomp_qr import qr, qr_multiply, rq
+from ._decomp_qz import ordqz, qz
+from ._decomp_schur import rsf2csf, schur
+from ._decomp_svd import diagsvd, null_space, orth, subspace_angles, svd, svdvals
+from ._decomp_update import qr_delete, qr_insert, qr_update
+from ._matfuncs import (
+    coshm,
+    cosm,
+    expm,
+    expm_cond,
+    expm_frechet,
+    fractional_matrix_power,
+    funm,
+    khatri_rao,
+    logm,
+    signm,
+    sinhm,
+    sinm,
+    sqrtm,
+    tanhm,
+    tanm,
+)
+from ._misc import LinAlgError, LinAlgWarning, norm
+from ._procrustes import orthogonal_procrustes
+from ._sketches import clarkson_woodruff_transform
+from ._solvers import (
+    solve_continuous_are,
+    solve_continuous_lyapunov,
+    solve_discrete_are,
+    solve_discrete_lyapunov,
+    solve_lyapunov,
+    solve_sylvester,
+)
+from ._special_matrices import (
+    block_diag,
+    circulant,
+    companion,
+    convolution_matrix,
+    dft,
+    fiedler,
+    fiedler_companion,
+    hadamard,
+    hankel,
+    helmert,
+    hilbert,
+    invhilbert,
+    invpascal,
+    kron,
+    leslie,
+    pascal,
+    toeplitz,
+)
+from .blas import find_best_blas_type, get_blas_funcs
+from .lapack import get_lapack_funcs
 
 __all__ = [
     "LinAlgError",
