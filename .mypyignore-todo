@@ -120,5 +120,3 @@ scipy\.stats\.make_distribution
 scipy\.stats\.order_statistic
 scipy\.stats\.rvs_ratio_uniforms
 scipy\.stats\.chatterjeexi
-
-scipy\.version\.commit_count
