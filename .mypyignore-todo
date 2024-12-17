@@ -2,9 +2,6 @@ scipy\.sparse\.(_?construct\.)?rand(om(_array)?)?
 scipy\.sparse\._coo\._coo_base\.tensordot
 scipy\.sparse\._data\._minmax_mixin\.(arg|nan)?(max|min)
 scipy\.sparse\._(base\._sp|coo\._coo_|dia\._dia_|dok\._dok_|lil\._lil_)base\.count_nonzero
-scipy\.sparse\.((_?base|_matrix|bsr|coo|csc|csr|dia|dok)\.)?spmatrix\.todense
-scipy\.sparse\.(_sputils|base|compressed|bsr|coo|dia|dok)\.check_shape
-scipy\.sparse\.(_sputils|compressed|bsr|coo|dia|dok)\.isshape
 
 scipy\.spatial\.distance\.directed_hausdorff
 scipy\.spatial\.transform\.(_?rotation\.)?Rotation\.random

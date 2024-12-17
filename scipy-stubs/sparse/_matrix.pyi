@@ -11,6 +11,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.typing as opt
+from scipy._typing import OrderCF
 from ._base import _spbase
 from ._bsr import bsr_matrix
 from ._coo import coo_matrix
@@ -19,7 +20,7 @@ from ._csr import csr_matrix
 from ._dia import dia_matrix
 from ._dok import dok_matrix
 from ._lil import lil_matrix
-from ._typing import Complex, Float, Int, Scalar, SPFormat, ToShape2D
+from ._typing import Complex, Float, Int, Matrix, Scalar, SPFormat, ToShape2D
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Scalar)
@@ -133,3 +134,11 @@ class spmatrix(Generic[_SCT_co]):
     def asfptype(self: spmatrix[np.int32 | np.int64 | np.uint32 | np.uint64], /) -> spmatrix[np.float64]: ...
     @overload
     def asfptype(self, /) -> Self: ...
+
+    #
+    @overload
+    def todense(self, /, order: OrderCF | None = None, out: None = None) -> Matrix[_SCT_co]: ...
+    @overload
+    def todense(self, /, order: OrderCF | None, out: onp.ArrayND[_SCT]) -> Matrix[_SCT]: ...
+    @overload
+    def todense(self, /, order: OrderCF | None = None, *, out: onp.ArrayND[_SCT]) -> Matrix[_SCT]: ...
