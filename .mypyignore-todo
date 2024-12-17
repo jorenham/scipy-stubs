@@ -1,6 +1,5 @@
-scipy\.sparse\.(_?construct\.)?rand(om(_array)?)?
 scipy\.sparse\._coo\._coo_base\.tensordot
-scipy\.sparse\._data\._minmax_mixin\.(arg|nan)?(max|min)
+scipy\.sparse\.(_?construct\.)?rand(om(_array)?)?
 
 scipy\.spatial\.distance\.directed_hausdorff
 scipy\.spatial\.transform\.(_?rotation\.)?Rotation\.random
