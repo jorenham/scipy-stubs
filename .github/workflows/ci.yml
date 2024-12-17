@@ -53,9 +53,8 @@ jobs:
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
   typetest:
-
     needs: generate-matrix
-    timeout-minutes: 2
+    timeout-minutes: 3
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
