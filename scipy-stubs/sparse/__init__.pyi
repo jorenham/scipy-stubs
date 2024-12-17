@@ -28,6 +28,7 @@ from ._extract import find, tril, triu
 from ._lil import isspmatrix_lil, lil_array, lil_matrix
 from ._matrix import spmatrix
 from ._matrix_io import load_npz, save_npz
+from ._sputils import get_index_dtype, safely_cast_index_arrays
 
 __all__ = [
     "SparseEfficiencyWarning",
@@ -64,6 +65,7 @@ __all__ = [
     "eye",
     "eye_array",
     "find",
+    "get_index_dtype",
     "hstack",
     "identity",
     "issparse",
@@ -85,6 +87,7 @@ __all__ = [
     "rand",
     "random",
     "random_array",
+    "safely_cast_index_arrays",
     "save_npz",
     "sparray",
     "sparsetools",

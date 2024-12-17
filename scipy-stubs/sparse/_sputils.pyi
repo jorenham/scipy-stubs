@@ -7,9 +7,22 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from scipy._typing import OrderKACF
+from scipy.sparse import (
+    bsr_array,
+    bsr_matrix,
+    coo_array,
+    coo_matrix,
+    csc_array,
+    csc_matrix,
+    csr_array,
+    csr_matrix,
+    dia_array,
+    dia_matrix,
+)
 from scipy.sparse._typing import Matrix, ToDType
 
 __all__ = [
+    "broadcast_shapes",
     "get_sum_dtype",
     "getdata",
     "getdtype",
@@ -25,6 +38,7 @@ __all__ = [
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=Any)
 _DTypeT = TypeVar("_DTypeT", bound=np.dtype[Any])
 _SCT = TypeVar("_SCT", bound=np.generic, default=Any)
+_IntT = TypeVar("_IntT", bound=np.integer[Any])
 _NonIntDTypeT = TypeVar(
     "_NonIntDTypeT",
     bound=np.dtype[np.inexact[Any] | np.flexible | np.datetime64 | np.timedelta64 | np.object_],
@@ -133,3 +147,56 @@ def matrix(
 
 #
 def asmatrix(data: _ToArray2D[_SCT], dtype: ToDType[_SCT] | type | str | None = None) -> Matrix[_SCT]: ...
+
+#
+@overload  # BSR/CSC/CSR, dtype: <default>
+def safely_cast_index_arrays(
+    A: bsr_array | bsr_matrix | csc_array | csc_matrix | csr_array | csr_matrix,
+    idx_dtype: ToDType[np.int32] = ...,
+    msg: str = "",
+) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]]: ...
+@overload  # BSR/CSC/CSR, dtype: <known>
+def safely_cast_index_arrays(
+    A: bsr_array | bsr_matrix | csc_array | csc_matrix | csr_array | csr_matrix,
+    idx_dtype: ToDType[_IntT],
+    msg: str = "",
+) -> tuple[onp.Array1D[_IntT], onp.Array1D[_IntT]]: ...
+@overload  # 2d COO, dtype: <default>
+def safely_cast_index_arrays(
+    A: coo_array[Any, tuple[int, int]] | coo_matrix,
+    idx_dtype: ToDType[np.int32] = ...,
+    msg: str = "",
+) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]]: ...
+@overload  # 2d COO, dtype: <known>
+def safely_cast_index_arrays(
+    A: coo_array[Any, tuple[int, int]] | coo_matrix,
+    idx_dtype: ToDType[_IntT],
+    msg: str = "",
+) -> tuple[onp.Array1D[_IntT], onp.Array1D[_IntT]]: ...
+@overload  # nd COO, dtype: <default>
+def safely_cast_index_arrays(
+    A: coo_array,
+    idx_dtype: ToDType[np.int32] = ...,
+    msg: str = "",
+) -> tuple[onp.Array1D[np.int32], ...]: ...
+@overload  # nd COO, dtype: <known>
+def safely_cast_index_arrays(
+    A: coo_array,
+    idx_dtype: ToDType[_IntT],
+    msg: str = "",
+) -> tuple[onp.Array1D[_IntT], ...]: ...
+@overload  # DIA, dtype: <default>
+def safely_cast_index_arrays(
+    A: dia_array | dia_matrix,
+    idx_dtype: ToDType[np.int32] = ...,
+    msg: str = "",
+) -> onp.Array1D[np.int32]: ...
+@overload  # DIA, dtype: <known>
+def safely_cast_index_arrays(
+    A: dia_array | dia_matrix,
+    idx_dtype: ToDType[_IntT],
+    msg: str = "",
+) -> onp.Array1D[_IntT]: ...
+
+#
+def broadcast_shapes(*shapes: tuple[int, ...]) -> tuple[int, ...]: ...
