@@ -8,7 +8,7 @@ import optype.typing as opt
 from ._base import _spbase, sparray
 from ._data import _data_matrix
 from ._matrix import spmatrix
-from ._typing import Index1D, Int, Scalar, ToShape2D
+from ._typing import Index1D, Int, Scalar, ToShape2d
 
 __all__ = ["dia_array", "dia_matrix", "isspmatrix_dia"]
 
@@ -42,7 +42,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         self,
         /,
         arg1: _ToMatrix[_SCT] | _ToData[_SCT],
-        shape: ToShape2D | None = None,
+        shape: ToShape2d | None = None,
         dtype: None = None,
         copy: bool = False,
         *,
@@ -52,7 +52,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     def __init__(
         self: _dia_base[np.float64],
         /,
-        arg1: ToShape2D,
+        arg1: ToShape2d,
         shape: None = None,
         dtype: None = None,
         copy: bool = False,
@@ -64,7 +64,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         self: _dia_base[np.bool_],
         /,
         arg1: _ToMatrixPy[bool],
-        shape: ToShape2D | None = None,
+        shape: ToShape2d | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
@@ -75,7 +75,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         self: _dia_base[np.int_],
         /,
         arg1: _ToMatrixPy[opt.JustInt],
-        shape: ToShape2D | None = None,
+        shape: ToShape2d | None = None,
         dtype: type[opt.JustInt] | onp.AnyIntPDType | None = None,
         copy: bool = False,
         *,
@@ -86,7 +86,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         self: _dia_base[np.float64],
         /,
         arg1: _ToMatrixPy[opt.Just[float]],
-        shape: ToShape2D | None = None,
+        shape: ToShape2d | None = None,
         dtype: type[opt.Just[float]] | onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
@@ -97,7 +97,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         self: _dia_base[np.complex128],
         /,
         arg1: _ToMatrixPy[opt.Just[complex]],
-        shape: ToShape2D | None = None,
+        shape: ToShape2d | None = None,
         dtype: type[opt.Just[complex]] | onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
@@ -108,7 +108,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         self,
         /,
         arg1: onp.ToComplexND,
-        shape: ToShape2D | None,
+        shape: ToShape2d | None,
         dtype: _ToDType[_SCT],
         copy: bool = False,
         *,
@@ -119,7 +119,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         self,
         /,
         arg1: onp.ToComplexND,
-        shape: ToShape2D | None = None,
+        shape: ToShape2d | None = None,
         *,
         dtype: _ToDType[_SCT],
         copy: bool = False,

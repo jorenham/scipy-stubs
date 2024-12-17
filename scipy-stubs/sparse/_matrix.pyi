@@ -20,7 +20,7 @@ from ._csr import csr_matrix
 from ._dia import dia_matrix
 from ._dok import dok_matrix
 from ._lil import lil_matrix
-from ._typing import Complex, Float, Int, Matrix, Scalar, SPFormat, ToShape2D
+from ._typing import Complex, Float, Int, Matrix, Scalar, SPFormat, ToShape2d
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Scalar)
@@ -70,7 +70,7 @@ class spmatrix(Generic[_SCT_co]):
     @property
     def shape(self, /) -> tuple[int, int]: ...
     def get_shape(self, /) -> tuple[int, int]: ...
-    def set_shape(self, /, shape: ToShape2D) -> None: ...
+    def set_shape(self, /, shape: ToShape2d) -> None: ...
 
     #
     @overload  # Self[-Bool], other: scalar-like +Bool

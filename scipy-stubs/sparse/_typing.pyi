@@ -1,6 +1,6 @@
 # NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`
 from typing import Any, Literal, TypeAlias
-from typing_extensions import TypeAliasType, TypeVar
+from typing_extensions import TypeAliasType, TypeVar, Unpack
 
 import numpy as np
 import optype as op
@@ -15,14 +15,25 @@ __all__ = (
     "Matrix",
     "SPFormat",
     "Scalar",
+    "Shape",
+    "ShapeBSR",
+    "ShapeCOO",
+    "ShapeCSC",
+    "ShapeCSR",
+    "ShapeDIA",
+    "ShapeDOK",
     "ToDType",
     "ToDTypeBool",
     "ToDTypeComplex",
     "ToDTypeFloat",
     "ToDTypeInt",
-    "ToShape",
-    "ToShape1D",
-    "ToShape2D",
+    "ToShape1d",
+    "ToShape1d",
+    "ToShape1d2d",
+    "ToShape1dNd",
+    "ToShape2d",
+    "ToShape2dNd",
+    "ToShape3dNd",
 )
 
 ###
@@ -54,6 +65,17 @@ ToDTypeComplex: TypeAlias = (
     | Literal["complex", "complex128", "cdouble", "c16", "D"]
 )  # fmt: skip
 
-ToShape1D: TypeAlias = tuple[op.CanIndex]
-ToShape2D: TypeAlias = tuple[op.CanIndex, op.CanIndex]
-ToShape: TypeAlias = ToShape1D | ToShape2D
+ToShape1d: TypeAlias = tuple[op.CanIndex]  # ndim == 1
+ToShape2d: TypeAlias = tuple[op.CanIndex, op.CanIndex]  # ndim == 2
+ToShape1d2d: TypeAlias = ToShape2d | ToShape1d  # 1 <= ndim <= 2
+ToShape1dNd: TypeAlias = tuple[op.CanIndex, Unpack[tuple[op.CanIndex, ...]]]  # ndim >= 1
+ToShape2dNd: TypeAlias = tuple[op.CanIndex, op.CanIndex, Unpack[tuple[op.CanIndex, ...]]]  # ndim >= 2
+ToShape3dNd: TypeAlias = tuple[op.CanIndex, op.CanIndex, op.CanIndex, Unpack[tuple[op.CanIndex, ...]]]  # ndim >= 2
+
+Shape: TypeAlias = onp.AtLeast1D
+ShapeBSR: TypeAlias = tuple[int, int]
+ShapeCOO: TypeAlias = onp.AtLeast1D
+ShapeCSC: TypeAlias = onp.AtLeast2D
+ShapeCSR: TypeAlias = tuple[int, int] | tuple[int]
+ShapeDIA: TypeAlias = tuple[int, int]
+ShapeDOK: TypeAlias = tuple[int, int] | tuple[int]

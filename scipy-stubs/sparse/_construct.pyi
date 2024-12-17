@@ -15,7 +15,7 @@ from ._dia import dia_array, dia_matrix
 from ._dok import dok_array, dok_matrix
 from ._lil import lil_array, lil_matrix
 from ._matrix import spmatrix
-from ._typing import Float, Scalar, SPFormat, ToDType, ToDTypeBool, ToDTypeComplex, ToDTypeFloat, ToDTypeInt, ToShape2D
+from ._typing import Float, Scalar, SPFormat, ToDType, ToDTypeBool, ToDTypeComplex, ToDTypeFloat, ToDTypeInt, ToShape2d
 
 __all__ = [
     "block_array",
@@ -146,7 +146,7 @@ def diags_array(
     /,
     *,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtDIA | None = None,
     dtype: None = None,
 ) -> dia_array[_SCT]: ...
@@ -156,7 +156,7 @@ def diags_array(
     /,
     *,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtNonDIA,
     dtype: None = None,
 ) -> _NonDIAArray[_SCT]: ...
@@ -166,7 +166,7 @@ def diags_array(
     /,
     *,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtDIA | None = None,
     dtype: ToDTypeInt,
 ) -> dia_array[np.int_]: ...
@@ -176,7 +176,7 @@ def diags_array(
     /,
     *,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtNonDIA,
     dtype: ToDTypeInt,
 ) -> _NonDIAArray[np.int_]: ...
@@ -186,7 +186,7 @@ def diags_array(
     /,
     *,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtDIA | None = None,
     dtype: ToDTypeFloat,
 ) -> dia_array[np.float64]: ...
@@ -196,7 +196,7 @@ def diags_array(
     /,
     *,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtNonDIA,
     dtype: ToDTypeFloat,
 ) -> _NonDIAArray[np.float64]: ...
@@ -206,7 +206,7 @@ def diags_array(
     /,
     *,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtDIA | None = None,
     dtype: ToDTypeComplex,
 ) -> dia_array[np.complex128]: ...
@@ -216,7 +216,7 @@ def diags_array(
     /,
     *,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtNonDIA,
     dtype: ToDTypeComplex,
 ) -> _NonDIAArray[np.complex128]: ...
@@ -226,7 +226,7 @@ def diags_array(
     /,
     *,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtDIA | None = None,
     dtype: ToDType[_SCT],
 ) -> dia_array[_SCT]: ...
@@ -236,7 +236,7 @@ def diags_array(
     /,
     *,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtNonDIA,
     dtype: ToDType[_SCT],
 ) -> _NonDIAArray[_SCT]: ...
@@ -246,7 +246,7 @@ def diags_array(
     /,
     *,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtDIA | None = None,
     dtype: npt.DTypeLike | None = None,
 ) -> dia_array: ...
@@ -256,7 +256,7 @@ def diags_array(
     /,
     *,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtNonDIA,
     dtype: npt.DTypeLike | None = None,
 ) -> _NonDIAArray: ...
@@ -266,7 +266,7 @@ def diags_array(
 def diags(
     diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtDIA | None = None,
     dtype: ToDType[_SCT] | None = None,
 ) -> dia_array[_SCT]: ...
@@ -274,7 +274,7 @@ def diags(
 def diags(
     diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
     offsets: onp.ToInt | onp.ToInt1D,
-    shape: ToShape2D | None,
+    shape: ToShape2d | None,
     format: _FmtNonDIA,
     dtype: ToDType[_SCT] | None = None,
 ) -> _NonDIAArray[_SCT]: ...
@@ -282,7 +282,7 @@ def diags(
 def diags(
     diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     *,
     format: _FmtNonDIA,
     dtype: ToDType[_SCT] | None = None,
@@ -291,7 +291,7 @@ def diags(
 def diags(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     offsets: onp.ToInt | onp.ToInt1D,
-    shape: ToShape2D | None,
+    shape: ToShape2d | None,
     format: _FmtDIA | None,
     dtype: ToDType[_SCT],
 ) -> dia_array[_SCT]: ...
@@ -299,7 +299,7 @@ def diags(
 def diags(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtDIA | None = None,
     *,
     dtype: ToDType[_SCT],
@@ -308,7 +308,7 @@ def diags(
 def diags(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     offsets: onp.ToInt | onp.ToInt1D,
-    shape: ToShape2D | None,
+    shape: ToShape2d | None,
     format: _FmtNonDIA,
     dtype: ToDType[_SCT],
 ) -> _NonDIAArray[_SCT]: ...
@@ -316,7 +316,7 @@ def diags(
 def diags(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     *,
     format: _FmtNonDIA,
     dtype: ToDType[_SCT],
@@ -325,7 +325,7 @@ def diags(
 def diags(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     format: _FmtDIA | None = None,
     dtype: npt.DTypeLike | None = None,
 ) -> dia_array: ...
@@ -333,7 +333,7 @@ def diags(
 def diags(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     offsets: onp.ToInt | onp.ToInt1D,
-    shape: ToShape2D | None,
+    shape: ToShape2d | None,
     format: _FmtNonDIA,
     dtype: npt.DTypeLike | None = None,
 ) -> _NonDIAArray: ...
@@ -341,7 +341,7 @@ def diags(
 def diags(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: ToShape2D | None = None,
+    shape: ToShape2d | None = None,
     *,
     format: _FmtNonDIA,
     dtype: npt.DTypeLike | None = None,

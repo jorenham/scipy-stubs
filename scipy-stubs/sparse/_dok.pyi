@@ -11,28 +11,30 @@ import optype.typing as opt
 from ._base import _spbase, sparray
 from ._index import IndexMixin
 from ._matrix import spmatrix
-from ._typing import Scalar, ToShape
+from ._typing import Scalar, ShapeDOK, ToShape1dNd
 
 __all__ = ["dok_array", "dok_matrix", "isspmatrix_dok"]
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Scalar, default=Any)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], covariant=True, default=tuple[int] | tuple[int, int])
+_ShapeT_co = TypeVar("_ShapeT_co", bound=ShapeDOK, default=ShapeDOK, covariant=True)
 
 _ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 
-_Key: TypeAlias = tuple[onp.ToJustInt] | tuple[onp.ToJustInt, onp.ToJustInt]
-
 ###
 
-class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_Key, _SCT], Generic[_SCT, _ShapeT_co]):
+class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[ShapeDOK, _SCT], Generic[_SCT, _ShapeT_co]):
     dtype: np.dtype[_SCT]
 
     @property
     @override
     def format(self, /) -> Literal["dok"]: ...
+    #
+    @property
+    @override
+    def ndim(self, /) -> Literal[1, 2]: ...
     #
     @property
     @override
@@ -44,7 +46,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         self,
         /,
         arg1: _ToMatrix[_SCT],
-        shape: ToShape | None = None,
+        shape: ToShape1dNd | None = None,
         dtype: None = None,
         copy: bool = False,
         *,
@@ -54,7 +56,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
     def __init__(
         self: _dok_base[np.float64],
         /,
-        arg1: ToShape,
+        arg1: ToShape1dNd,
         shape: None = None,
         dtype: None = None,
         copy: bool = False,
@@ -66,7 +68,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         self: _dok_base[np.bool_],
         /,
         arg1: _ToMatrixPy[bool],
-        shape: ToShape | None = None,
+        shape: ToShape1dNd | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
@@ -77,7 +79,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         self: _dok_base[np.int_],
         /,
         arg1: _ToMatrixPy[opt.JustInt],
-        shape: ToShape | None = None,
+        shape: ToShape1dNd | None = None,
         dtype: type[opt.JustInt] | onp.AnyIntPDType | None = None,
         copy: bool = False,
         *,
@@ -88,7 +90,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         self: _dok_base[np.float64],
         /,
         arg1: _ToMatrixPy[opt.Just[float]],
-        shape: ToShape | None = None,
+        shape: ToShape1dNd | None = None,
         dtype: type[opt.Just[float]] | onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
@@ -99,7 +101,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         self: _dok_base[np.complex128],
         /,
         arg1: _ToMatrixPy[opt.Just[complex]],
-        shape: ToShape | None = None,
+        shape: ToShape1dNd | None = None,
         dtype: type[opt.Just[complex]] | onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
@@ -110,7 +112,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         self,
         /,
         arg1: onp.ToComplexND,
-        shape: ToShape | None,
+        shape: ToShape1dNd | None,
         dtype: _ToDType[_SCT],
         copy: bool = False,
         *,
@@ -121,7 +123,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
         self,
         /,
         arg1: onp.ToComplexND,
-        shape: ToShape | None = None,
+        shape: ToShape1dNd | None = None,
         *,
         dtype: _ToDType[_SCT],
         copy: bool = False,
@@ -144,12 +146,12 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
 
     # TODO(jorenham)
     @override
-    def get(self, key: onp.ToJustInt | _Key, /, default: onp.ToComplex = 0.0) -> _SCT: ...
+    def get(self, key: onp.ToJustInt | ShapeDOK, /, default: onp.ToComplex = 0.0) -> _SCT: ...
     @override
-    def setdefault(self, key: onp.ToJustInt | _Key, default: onp.ToComplex | None = None, /) -> _SCT: ...
+    def setdefault(self, key: onp.ToJustInt | ShapeDOK, default: onp.ToComplex | None = None, /) -> _SCT: ...
     @classmethod
     @override
-    def fromkeys(cls, iterable: Iterable[_Key], value: int = 1, /) -> Self: ...
+    def fromkeys(cls, iterable: Iterable[ShapeDOK], value: int = 1, /) -> Self: ...
 
     #
     def conjtransp(self, /) -> Self: ...
@@ -157,11 +159,6 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[_K
 class dok_array(_dok_base[_SCT, _ShapeT_co], sparray, Generic[_SCT, _ShapeT_co]): ...
 
 class dok_matrix(_dok_base[_SCT, tuple[int, int]], spmatrix[_SCT], Generic[_SCT]):
-    @property
-    @override
-    def ndim(self, /) -> Literal[2]: ...
-
-    #
     @override
     def get(self, key: tuple[onp.ToJustInt, onp.ToJustInt], /, default: onp.ToComplex = 0.0) -> _SCT: ...
     @override
