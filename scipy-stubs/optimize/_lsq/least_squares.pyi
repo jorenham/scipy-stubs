@@ -54,12 +54,12 @@ def least_squares(
     f_scale: onp.ToFloat = 1.0,
     diff_step: onp.ToFloat1D | None = None,
     tr_solver: Literal["exact", "lsmr"] | None = None,
-    tr_options: Mapping[str, object] = {},
+    tr_options: Mapping[str, object] | None = None,
     jac_sparsity: _ToJac2D | None = None,
     max_nfev: onp.ToInt | None = None,
     verbose: Literal[0, 1, 2] = 0,
     args: Iterable[object] = (),
-    kwargs: Mapping[str, object] = {},
+    kwargs: Mapping[str, object] | None = None,
 ) -> _OptimizeResult: ...
 
 # undocumented

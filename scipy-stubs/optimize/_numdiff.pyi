@@ -36,7 +36,7 @@ def approx_derivative(
     sparsity: None = None,
     as_linear_operator: Literal[False, 0] = False,
     args: tuple[object, ...] = (),
-    kwargs: Mapping[str, object] = {},
+    kwargs: Mapping[str, object] | None = None,
 ) -> _Float1D | onp.Array2D[np.float64]: ...
 @overload  # sparsity: <given>, as_linear_operator: False (default)
 def approx_derivative(
@@ -51,7 +51,7 @@ def approx_derivative(
     sparsity: _Sparsity,
     as_linear_operator: Literal[False, 0] = False,
     args: tuple[object, ...] = (),
-    kwargs: Mapping[str, object] = {},
+    kwargs: Mapping[str, object] | None = None,
 ) -> csr_matrix: ...
 @overload  # as_linear_operator: True
 def approx_derivative(
@@ -66,7 +66,7 @@ def approx_derivative(
     *,
     as_linear_operator: Literal[True, 1],
     args: tuple[object, ...] = (),
-    kwargs: Mapping[str, object] = {},
+    kwargs: Mapping[str, object] | None = None,
 ) -> LinearOperator: ...
 
 #
@@ -76,5 +76,5 @@ def check_derivative(
     x0: _ToFloatOr1D,
     bounds: tuple[_ToFloatOr1D, _ToFloatOr1D] = ...,
     args: tuple[object, ...] = (),
-    kwargs: Mapping[str, object] = {},
+    kwargs: Mapping[str, object] | None = None,
 ) -> float | np.float64: ...

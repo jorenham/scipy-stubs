@@ -85,7 +85,7 @@ def check_grad(
     *args: object,
     epsilon: object = ...,
     direction: object = ...,
-    seed: object = ...,
+    rng: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def fmin(

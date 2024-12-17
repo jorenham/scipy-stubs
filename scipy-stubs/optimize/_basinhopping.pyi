@@ -61,7 +61,7 @@ def basinhopping(
     interval: onp.ToJustInt = 50,
     disp: onp.ToBool = False,
     niter_success: onp.ToJustInt | None = None,
-    seed: ToRNG = None,
+    rng: ToRNG = None,
     *,
     target_accept_rate: onp.ToFloat = 0.5,
     stepwise_factor: onp.ToFloat = 0.9,

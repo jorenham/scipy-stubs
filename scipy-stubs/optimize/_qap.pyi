@@ -2,12 +2,13 @@ from typing import Final, Literal, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+from scipy._typing import ToRNG
 from ._optimize import OptimizeResult as _OptimizeResult
 
 @type_check_only
 class _CommonOptions(TypedDict, total=False):
     maximize: onp.ToBool
-    rng: onp.ToJustInt | np.random.Generator | np.random.RandomState | None
+    rng: ToRNG
     partial_match: onp.ToInt2D | None
 
 @type_check_only
