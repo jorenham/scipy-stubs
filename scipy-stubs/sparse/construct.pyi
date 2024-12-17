@@ -73,18 +73,11 @@ def random(
     density: object = ...,
     format: object = ...,
     dtype: object = ...,
-    random_state: object = ...,
+    rng: object = ...,
     data_rvs: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def rand(
-    m: object,
-    n: object,
-    density: object = ...,
-    format: object = ...,
-    dtype: object = ...,
-    random_state: object = ...,
-) -> object: ...
+def rand(m: object, n: object, density: object = ..., format: object = ..., dtype: object = ..., rng: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def kron(A: object, B: object, format: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")

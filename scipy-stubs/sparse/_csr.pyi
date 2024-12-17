@@ -5,16 +5,19 @@ import optype as op
 from ._base import sparray
 from ._compressed import _cs_matrix
 from ._matrix import spmatrix
-from ._typing import Index1D, Scalar
+from ._typing import Index1D, Scalar, ShapeCSR
 
 __all__ = ["csr_array", "csr_matrix", "isspmatrix_csr"]
 
 _SCT = TypeVar("_SCT", bound=Scalar, default=Any)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int], covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=ShapeCSR, default=ShapeCSR, covariant=True)
 
 ###
 
 class _csr_base(_cs_matrix[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]):
+    @property
+    @override
+    def ndim(self, /) -> Literal[1, 2]: ...
     @property
     @override
     def format(self, /) -> Literal["csr"]: ...

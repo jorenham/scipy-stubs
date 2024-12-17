@@ -9,13 +9,13 @@ from ._base import _spbase, sparray
 from ._coo import coo_array, coo_matrix
 from ._matrix import spmatrix
 from ._sputils import _ScalarLike
-from ._typing import Matrix, Scalar, ToShape1D, ToShape2D
+from ._typing import Matrix, Scalar, ShapeCOO, ToShape1d, ToShape2d
 
 __all__: list[str] = []
 
 _SCT = TypeVar("_SCT", bound=Scalar)
 _SCT_co = TypeVar("_SCT_co", bound=Scalar, default=Scalar, covariant=True)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int, int], covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=ShapeCOO, default=ShapeCOO, covariant=True)
 
 ###
 
@@ -33,17 +33,47 @@ class _data_matrix(_spbase[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
 
     #
     @overload
-    def __init__(self, /, arg1: _spbase[_SCT_co, _ShapeT_co] | onp.CanArrayND[_SCT_co, _ShapeT_co]) -> None: ...
+    def __init__(
+        self,
+        /,
+        arg1: _spbase[_SCT_co, _ShapeT_co] | onp.CanArrayND[_SCT_co, _ShapeT_co],
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
     @overload
-    def __init__(self: _data_matrix[_SCT, tuple[int]], /, arg1: Sequence[_SCT]) -> None: ...
+    def __init__(
+        self: _data_matrix[_SCT, tuple[int]],
+        /,
+        arg1: Sequence[_SCT],
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
     @overload
-    def __init__(self: _data_matrix[_SCT, tuple[int, int]], /, arg1: Sequence[onp.CanArrayND[_SCT] | Sequence[_SCT]]) -> None: ...
+    def __init__(
+        self: _data_matrix[_SCT, tuple[int, int]],
+        /,
+        arg1: Sequence[onp.CanArrayND[_SCT] | Sequence[_SCT]],
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
     @overload
-    def __init__(self: _data_matrix[np.float64, tuple[int]], /, arg1: ToShape1D) -> None: ...
+    def __init__(
+        self: _data_matrix[np.float64, tuple[int]],
+        /,
+        arg1: ToShape1d,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
     @overload
-    def __init__(self: _data_matrix[np.float64, tuple[int, int]], /, arg1: ToShape2D) -> None: ...
+    def __init__(
+        self: _data_matrix[np.float64, tuple[int, int]],
+        /,
+        arg1: ToShape2d,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
     @overload
-    def __init__(self, /, arg1: onp.CanArrayND[_SCT_co]) -> None: ...
+    def __init__(self, /, arg1: onp.CanArrayND[_SCT_co], *, maxprint: int | None = None) -> None: ...
 
     #
     def __imul__(self, rhs: _ScalarLike, /) -> Self: ...  # type: ignore[misc,override]
@@ -128,56 +158,113 @@ class _data_matrix(_spbase[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
 class _minmax_mixin(Generic[_SCT_co, _ShapeT_co]):
     # NOTE: The following 4 methods have identical signatures
     @overload  # axis: None = ..., out: None = ...
-    def max(self, /, axis: None = None, out: None = None) -> _SCT_co: ...
+    def max(self, /, axis: None = None, out: None = None, *, explicit: bool = False) -> _SCT_co: ...
     @overload  # 1-d, axis: int, out: None = ...
-    def max(self: _minmax_mixin[Any, tuple[int]], /, axis: onp.ToInt | None = None, out: None = None) -> _SCT_co: ...
+    def max(
+        self: _minmax_mixin[Any, tuple[int]],
+        /,
+        axis: onp.ToInt | None = None,
+        out: None = None,
+        *,
+        explicit: bool = False,
+    ) -> _SCT_co: ...
     @overload  # sparray, axis: int, out: None = ...
-    def max(self: sparray, /, axis: onp.ToInt, out: None = None) -> coo_array[_SCT_co, tuple[int]]: ...  # type: ignore[misc]
+    def max(self: sparray, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> coo_array[_SCT_co, tuple[int]]: ...  # type: ignore[misc]
     @overload  # spmatrix, axis: int, out: None = ...
-    def max(self: spmatrix, /, axis: onp.ToInt, out: None = None) -> coo_matrix[_SCT_co]: ...  # type: ignore[misc]
+    def max(self: spmatrix, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> coo_matrix[_SCT_co]: ...  # type: ignore[misc]
     #
     @overload  # axis: None = ..., out: None = ...
-    def nanmax(self, /, axis: None = None, out: None = None) -> _SCT_co: ...
+    def nanmax(self, /, axis: None = None, out: None = None, *, explicit: bool = False) -> _SCT_co: ...
     @overload  # 1-d, axis: int, out: None = ...
-    def nanmax(self: _minmax_mixin[Any, tuple[int]], /, axis: onp.ToInt | None = None, out: None = None) -> _SCT_co: ...
+    def nanmax(
+        self: _minmax_mixin[Any, tuple[int]],
+        /,
+        axis: onp.ToInt | None = None,
+        out: None = None,
+        *,
+        explicit: bool = False,
+    ) -> _SCT_co: ...
     @overload  # sparray, axis: int, out: None = ...
-    def nanmax(self: sparray, /, axis: onp.ToInt, out: None = None) -> coo_array[_SCT_co, tuple[int]]: ...  # type: ignore[misc]
+    def nanmax(  # type: ignore[misc]
+        self: sparray,
+        /,
+        axis: onp.ToInt,
+        out: None = None,
+        *,
+        explicit: bool = False,
+    ) -> coo_array[_SCT_co, tuple[int]]: ...
     @overload  # spmatrix, axis: int, out: None = ...
-    def nanmax(self: spmatrix, /, axis: onp.ToInt, out: None = None) -> coo_matrix[_SCT_co]: ...  # type: ignore[misc]
+    def nanmax(self: spmatrix, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> coo_matrix[_SCT_co]: ...  # type: ignore[misc]
     #
     @overload  # axis: None = ..., out: None = ...
-    def min(self, /, axis: None = None, out: None = None) -> _SCT_co: ...
+    def min(self, /, axis: None = None, out: None = None, *, explicit: bool = False) -> _SCT_co: ...
     @overload  # 1-d, axis: int, out: None = ...
-    def min(self: _minmax_mixin[Any, tuple[int]], /, axis: onp.ToInt | None = None, out: None = None) -> _SCT_co: ...
+    def min(
+        self: _minmax_mixin[Any, tuple[int]],
+        /,
+        axis: onp.ToInt | None = None,
+        out: None = None,
+        *,
+        explicit: bool = False,
+    ) -> _SCT_co: ...
     @overload  # sparray, axis: int, out: None = ...
-    def min(self: sparray, /, axis: onp.ToInt, out: None = None) -> coo_array[_SCT_co, tuple[int]]: ...  # type: ignore[misc]
+    def min(self: sparray, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> coo_array[_SCT_co, tuple[int]]: ...  # type: ignore[misc]
     @overload  # spmatrix, axis: int, out: None = ...
-    def min(self: spmatrix, /, axis: onp.ToInt, out: None = None) -> coo_matrix[_SCT_co]: ...  # type: ignore[misc]
+    def min(self: spmatrix, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> coo_matrix[_SCT_co]: ...  # type: ignore[misc]
     #
     @overload  # axis: None = ..., out: None = ...
-    def nanmin(self, /, axis: None = None, out: None = None) -> _SCT_co: ...
+    def nanmin(self, /, axis: None = None, out: None = None, *, explicit: bool = False) -> _SCT_co: ...
     @overload  # 1-d, axis: int, out: None = ...
-    def nanmin(self: _minmax_mixin[Any, tuple[int]], /, axis: onp.ToInt | None = None, out: None = None) -> _SCT_co: ...
+    def nanmin(
+        self: _minmax_mixin[Any, tuple[int]],
+        /,
+        axis: onp.ToInt | None = None,
+        out: None = None,
+        *,
+        explicit: bool = False,
+    ) -> _SCT_co: ...
     @overload  # sparray, axis: int, out: None = ...
-    def nanmin(self: sparray, /, axis: onp.ToInt, out: None = None) -> coo_array[_SCT_co, tuple[int]]: ...  # type: ignore[misc]
+    def nanmin(  # type: ignore[misc]
+        self: sparray,
+        /,
+        axis: onp.ToInt,
+        out: None = None,
+        *,
+        explicit: bool = False,
+    ) -> coo_array[_SCT_co, tuple[int]]: ...
     @overload  # spmatrix, axis: int, out: None = ...
-    def nanmin(self: spmatrix, /, axis: onp.ToInt, out: None = None) -> coo_matrix[_SCT_co]: ...  # type: ignore[misc]
+    def nanmin(self: spmatrix, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> coo_matrix[_SCT_co]: ...  # type: ignore[misc]
 
     # NOTE: The following 2 methods have identical signatures
     @overload  # axis: None = ..., out: None = ...
-    def argmax(self, /, axis: None = None, out: None = None) -> int: ...
+    def argmax(self, /, axis: None = None, out: None = None, *, explicit: bool = False) -> int: ...
     @overload  # 1-d, axis: int, out: None = ...
-    def argmax(self: _minmax_mixin[Any, tuple[int]], /, axis: onp.ToInt | None = None, out: None = None) -> int: ...
+    def argmax(
+        self: _minmax_mixin[Any, tuple[int]],
+        /,
+        axis: onp.ToInt | None = None,
+        out: None = None,
+        *,
+        explicit: bool = False,
+    ) -> int: ...
     @overload  # sparray, axis: int, out: None = ...
-    def argmax(self: sparray, /, axis: onp.ToInt, out: None = None) -> onp.Array1D[np.intp]: ...  # type: ignore[misc]
+    def argmax(self: sparray, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> onp.Array1D[np.intp]: ...  # type: ignore[misc]
     @overload  # spmatrix, axis: int, out: None = ...
-    def argmax(self: spmatrix, /, axis: onp.ToInt, out: None = None) -> Matrix[np.intp]: ...  # type: ignore[misc]
+    def argmax(self: spmatrix, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> Matrix[np.intp]: ...  # type: ignore[misc]
+
     #
     @overload  # axis: None = ..., out: None = ...
-    def argmin(self, /, axis: None = None, out: None = None) -> int: ...
+    def argmin(self, /, axis: None = None, out: None = None, *, explicit: bool = False) -> int: ...
     @overload  # 1-d, axis: int, out: None = ...
-    def argmin(self: _minmax_mixin[Any, tuple[int]], /, axis: onp.ToInt | None = None, out: None = None) -> int: ...
+    def argmin(
+        self: _minmax_mixin[Any, tuple[int]],
+        /,
+        axis: onp.ToInt | None = None,
+        out: None = None,
+        *,
+        explicit: bool = False,
+    ) -> int: ...
     @overload  # sparray, axis: int, out: None = ...
-    def argmin(self: sparray, /, axis: onp.ToInt, out: None = None) -> onp.Array1D[np.intp]: ...  # type: ignore[misc]
+    def argmin(self: sparray, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> onp.Array1D[np.intp]: ...  # type: ignore[misc]
     @overload  # spmatrix, axis: int, out: None = ...
-    def argmin(self: spmatrix, /, axis: onp.ToInt, out: None = None) -> Matrix[np.intp]: ...  # type: ignore[misc]
+    def argmin(self: spmatrix, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> Matrix[np.intp]: ...  # type: ignore[misc]

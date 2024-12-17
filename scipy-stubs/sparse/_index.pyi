@@ -6,10 +6,10 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 from ._base import _spbase
-from ._typing import Complex, Float, Int, Scalar
+from ._typing import Complex, Float, Int, Scalar, Shape
 
 _SCT = TypeVar("_SCT", bound=Scalar, default=Any)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int, int], covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=Shape, default=Shape, covariant=True)
 
 _Self1DT = TypeVar("_Self1DT", bound=IndexMixin[Any, tuple[int]])
 _Self2DT = TypeVar("_Self2DT", bound=IndexMixin[Any, tuple[int, int]])
@@ -39,6 +39,8 @@ _ToSlice2D: TypeAlias = (
 INT_TYPES: tuple[type[int], type[np.integer[Any]]] = ...
 
 class IndexMixin(Generic[_SCT, _ShapeT_co]):
+    # NOTE: >2-d indexing is bugged at the moment (scipy==1.15.0rc1), see https://github.com/scipy/scipy/issues/22112
+
     @overload
     def __getitem__(self: IndexMixin[Any, tuple[int]], ix: op.CanIndex, /) -> _SCT: ...
     @overload
