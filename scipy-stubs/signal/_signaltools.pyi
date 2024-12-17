@@ -1,12 +1,10 @@
 from typing import Literal
-from typing_extensions import deprecated
 
 import optype.numpy as onp
 from scipy._typing import Untyped, UntypedArray
 
 __all__ = [
     "choose_conv_method",
-    "cmplx_sort",
     "convolve",
     "convolve2d",
     "correlate",
@@ -109,5 +107,3 @@ def decimate(
     axis: int = -1,
     zero_phase: bool = True,
 ) -> Untyped: ...
-@deprecated("Will be removed in SciPy 1.5")
-def cmplx_sort(p: Untyped) -> tuple[Untyped, Untyped]: ...
