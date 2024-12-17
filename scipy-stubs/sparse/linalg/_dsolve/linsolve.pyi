@@ -1,12 +1,25 @@
 from collections.abc import Mapping
 from typing import Any, Literal, Protocol, TypeAlias, TypeVar, overload, type_check_only
+from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
-from scipy.sparse._base import _spbase
+from scipy.sparse._base import SparseEfficiencyWarning, _spbase
+from scipy.sparse._bsr import _bsr_base
+from scipy.sparse._lil import _lil_base
 from ._superlu import SuperLU
 
-__all__ = ["MatrixRankWarning", "factorized", "spilu", "splu", "spsolve", "spsolve_triangular", "use_solver"]
+__all__ = [
+    "MatrixRankWarning",
+    "factorized",
+    "is_sptriangular",
+    "spbandwidth",
+    "spilu",
+    "splu",
+    "spsolve",
+    "spsolve_triangular",
+    "use_solver",
+]
 
 _SparseT = TypeVar("_SparseT", bound=_spbase)
 
@@ -73,7 +86,7 @@ def splu(
     diag_pivot_thresh: onp.ToFloat | None = None,
     relax: int | None = None,
     panel_size: int | None = None,
-    options: Mapping[str, object] | None = {},
+    options: Mapping[str, object] | None = None,
 ) -> SuperLU: ...
 
 #
@@ -88,3 +101,17 @@ def spilu(
     panel_size: int | None = None,
     options: Mapping[str, object] | None = None,
 ) -> SuperLU: ...
+
+#
+@overload
+@deprecated("is_sptriangular needs sparse and not BSR format. Converting to CSR.", category=SparseEfficiencyWarning)
+def is_sptriangular(A: _bsr_base) -> tuple[bool, bool]: ...
+@overload
+def is_sptriangular(A: _spbase) -> tuple[bool, bool]: ...
+
+#
+@overload
+@deprecated("spbandwidth needs sparse format not LIL and BSR. Converting to CSR.", category=SparseEfficiencyWarning)
+def spbandwidth(A: _bsr_base | _lil_base) -> tuple[int, int]: ...
+@overload
+def spbandwidth(A: _spbase) -> tuple[int, int]: ...

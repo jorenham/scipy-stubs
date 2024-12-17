@@ -28,6 +28,6 @@ def svds(
     maxiter: int | None = None,
     return_singular_vectors: _ReturnSingularVectors = True,
     solver: _Solver = "arpack",
-    random_state: ToRNG = None,
+    rng: ToRNG = None,
     options: Mapping[str, object] | None = None,
 ) -> tuple[onp.Array2D[_SCT], onp.ArrayND[np.float32 | np.float64], onp.ArrayND[_SCT]]: ...
