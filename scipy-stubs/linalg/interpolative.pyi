@@ -3,6 +3,7 @@ from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
+from scipy._typing import ToRNG
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = [
@@ -29,35 +30,51 @@ _AnyNumber: TypeAlias = np.number[Any]
 def seed(seed: None = None) -> None: ...
 @deprecated("will be removed in SciPy 1.17.0.")
 def rand(*shape: int) -> onp.ArrayND[np.float64]: ...
+
+#
 def interp_decomp(
     A: onp.ArrayND[_AnyNumber] | LinearOperator,
     eps_or_k: onp.ToFloat,
     rand: bool = True,
+    rng: ToRNG = None,
 ) -> tuple[int, onp.ArrayND[np.intp], onp.ArrayND[np.float64]]: ...
+
+#
 def reconstruct_matrix_from_id(
     B: onp.ArrayND,
     idx: onp.ArrayND[np.integer[Any]],
     proj: onp.ArrayND[_AnyNumber],
 ) -> onp.ArrayND[_AnyNumber]: ...
+
+#
 def reconstruct_interp_matrix(
     idx: onp.ArrayND[np.integer[Any]],
     proj: onp.ArrayND[_AnyNumber],
 ) -> onp.ArrayND[np.float64 | np.complex128]: ...
+
+#
 def reconstruct_skel_matrix(
     A: np.ndarray[tuple[int, ...], _DT],
     k: SupportsIndex,
     idx: onp.ArrayND[np.integer[Any]],
 ) -> np.ndarray[tuple[int, ...], _DT]: ...
+
+#
 def id_to_svd(
     B: onp.ArrayND,
     idx: onp.ArrayND[np.integer[Any]],
     proj: onp.ArrayND[_AnyNumber],
 ) -> tuple[_Inexact2D, _Inexact1D, _Inexact2D]: ...
-def estimate_spectral_norm(A: LinearOperator, its: int = 20) -> float | np.float64: ...
-def estimate_spectral_norm_diff(A: LinearOperator, B: LinearOperator, its: int = 20) -> float | np.float64: ...
+
+#
 def svd(
     A: onp.ArrayND[_AnyNumber] | LinearOperator,
     eps_or_k: onp.ToFloat,
     rand: bool = True,
+    rng: ToRNG = None,
 ) -> tuple[_Inexact2D, _Inexact1D, _Inexact2D]: ...
-def estimate_rank(A: onp.ArrayND[_AnyNumber] | LinearOperator, eps: onp.ToFloat) -> int: ...
+
+#
+def estimate_spectral_norm(A: LinearOperator, its: int = 20, rng: ToRNG = None) -> float | np.float64: ...
+def estimate_spectral_norm_diff(A: LinearOperator, B: LinearOperator, its: int = 20, rng: ToRNG = None) -> float | np.float64: ...
+def estimate_rank(A: onp.ArrayND[_AnyNumber] | LinearOperator, eps: onp.ToFloat, rng: ToRNG = None) -> int: ...

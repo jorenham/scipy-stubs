@@ -4,11 +4,6 @@ scipy\.linalg\._matfuncs_expm\.__all__
 scipy\.linalg\.(_sketches\.)?clarkson_woodruff_transform
 scipy\.linalg\._sketches\.cwt_matrix
 
-scipy\.linalg\.interpolative\.estimate_rank
-scipy\.linalg\.interpolative\.estimate_spectral_norm(_diff)?
-scipy\.linalg\.interpolative\.interp_decomp
-scipy\.linalg\.interpolative\.svd
-
 scipy\.ndimage\.__all__
 scipy\.ndimage\.(_?filters\.)?convolve
 scipy\.ndimage\.(_?filters\.)?correlate
