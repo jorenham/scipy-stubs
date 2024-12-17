@@ -1,11 +1,6 @@
-scipy\.ndimage\.(_?filters\.)?convolve
-scipy\.ndimage\.(_?filters\.)?correlate
-scipy\.ndimage\.(_?filters\.)?laplace
-scipy\.ndimage\.(_?filters\.)?generic_filter
-scipy\.ndimage\.(_?filters\.)?(gaussian|generic)_(gradient_magnitude|laplace)
 scipy\.ndimage\.(_?morphology\.)?(black|white)_tophat
-scipy\.ndimage\.(_?morphology\.)?binary_(propagation|fill_holes|hit_or_miss)
 scipy\.ndimage\.(_?morphology\.)?(binary|grey)_(closing|opening|dilation|erosion)
+scipy\.ndimage\.(_?morphology\.)?binary_(propagation|fill_holes|hit_or_miss)
 scipy\.ndimage\.(_?morphology\.)?morphological_(gradient|laplace)
 
 scipy\.optimize\.elementwise
