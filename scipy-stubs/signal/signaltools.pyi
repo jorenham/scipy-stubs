@@ -4,7 +4,6 @@ from typing_extensions import Self, deprecated
 __all__ = [
     "cheby1",
     "choose_conv_method",
-    "cmplx_sort",
     "convolve",
     "convolve2d",
     "correlate",
@@ -199,5 +198,3 @@ def decimate(
     axis: object = ...,
     zero_phase: object = ...,
 ) -> object: ...
-@deprecated("will be removed in SciPy v1.15.0")
-def cmplx_sort(p: object) -> object: ...
