@@ -1,5 +1,3 @@
-scipy\.linalg\._matfuncs_expm\.__all__
-
 scipy\.ndimage\.__all__
 scipy\.ndimage\.(_?filters\.)?convolve
 scipy\.ndimage\.(_?filters\.)?correlate
