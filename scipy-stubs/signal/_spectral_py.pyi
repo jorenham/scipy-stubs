@@ -36,12 +36,17 @@ _Boundary: TypeAlias = Literal["even", "odd", "constant", "zeros"] | None
 ###
 
 def lombscargle(
-    x: onp.ToFloatND,
-    y: onp.ToFloatND,
-    freqs: onp.ToFloatND,
+    x: onp.ToFloat1D,
+    y: onp.ToFloat1D,
+    freqs: onp.ToFloat1D,
     precenter: op.CanBool = False,
     normalize: op.CanBool = False,
+    *,
+    weights: onp.ToFloat1D | None = None,
+    floating_mean: bool = False,
 ) -> _Float1D: ...
+
+#
 def periodogram(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
@@ -52,6 +57,8 @@ def periodogram(
     scaling: _Scaling = "density",
     axis: op.CanIndex = -1,
 ) -> tuple[_FloatND, _FloatingND]: ...
+
+#
 def welch(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
@@ -65,6 +72,8 @@ def welch(
     axis: op.CanIndex = -1,
     average: _Average = "mean",
 ) -> tuple[_FloatND, _FloatingND]: ...
+
+#
 def csd(
     x: onp.ToComplexND,
     y: onp.ToComplexND,

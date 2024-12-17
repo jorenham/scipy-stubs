@@ -1,4 +1,5 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
+
 from typing_extensions import deprecated
 
 __all__ = ["chirp", "gausspulse", "sawtooth", "square", "sweep_poly", "unit_impulse"]
@@ -26,6 +27,8 @@ def chirp(
     method: object = ...,
     phi: object = ...,
     vertex_zero: object = ...,
+    *,
+    complex: object = False,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def sweep_poly(t: object, poly: object, phi: object = ...) -> object: ...

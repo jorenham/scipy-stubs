@@ -61,7 +61,16 @@ def istft(
     scaling: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def lombscargle(x: object, y: object, freqs: object, precenter: object = ..., normalize: object = ...) -> object: ...
+def lombscargle(
+    x: object,
+    y: object,
+    freqs: object,
+    precenter: object = ...,
+    normalize: object = ...,
+    *,
+    weights: object | None = None,
+    floating_mean: bool = False,
+) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def periodogram(
     x: object,

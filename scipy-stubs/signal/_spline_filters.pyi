@@ -78,15 +78,23 @@ def qspline1d(signal: onp.ToComplexND, lamb: onp.ToFloat = 0.0) -> onp.Array1D[_
 
 #
 @overload
-def cspline2d(signal: onp.ToFloatND, lamb: onp.ToFloat = 0.0) -> onp.Array1D[np.float64]: ...
+def cspline2d(signal: onp.ToFloatND, lamb: onp.ToFloat = 0.0, precision: onp.ToFloat = -1.0) -> onp.Array1D[np.float64]: ...
 @overload
-def cspline2d(signal: onp.ToComplexND, lamb: onp.ToFloat = 0.0) -> onp.Array1D[np.float64 | np.complex128]: ...
+def cspline2d(
+    signal: onp.ToComplexND,
+    lamb: onp.ToFloat = 0.0,
+    precision: onp.ToFloat = -1.0,
+) -> onp.Array1D[np.float64 | np.complex128]: ...
 
 #
 @overload
-def qspline2d(signal: onp.ToFloatND, lamb: onp.ToFloat = 0.0) -> onp.Array1D[np.float64]: ...
+def qspline2d(signal: onp.ToFloatND, lamb: onp.ToFloat = 0.0, precision: onp.ToFloat = -1.0) -> onp.Array1D[np.float64]: ...
 @overload
-def qspline2d(signal: onp.ToComplexND, lamb: onp.ToFloat = 0.0) -> onp.Array1D[np.float64 | np.complex128]: ...
+def qspline2d(
+    signal: onp.ToComplexND,
+    lamb: onp.ToFloat = 0.0,
+    precision: onp.ToFloat = -1.0,
+) -> onp.Array1D[np.float64 | np.complex128]: ...
 
 #
 def cspline1d_eval(
