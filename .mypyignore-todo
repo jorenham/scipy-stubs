@@ -1,8 +1,3 @@
-scipy\.ndimage\.(_?morphology\.)?(black|white)_tophat
-scipy\.ndimage\.(_?morphology\.)?(binary|grey)_(closing|opening|dilation|erosion)
-scipy\.ndimage\.(_?morphology\.)?binary_(propagation|fill_holes|hit_or_miss)
-scipy\.ndimage\.(_?morphology\.)?morphological_(gradient|laplace)
-
 scipy\.optimize\.elementwise
 scipy\.optimize\._cobyqa_py\.COBYQA_LOCK
 scipy\.optimize\.(_basinhopping\.)?basinhopping
