@@ -1,5 +1,4 @@
 scipy\.sparse\._coo\._coo_base\.tensordot
-scipy\.sparse\.(_?construct\.)?rand(om(_array)?)?
 
 scipy\.spatial\.distance\.directed_hausdorff
 scipy\.spatial\.transform\.(_?rotation\.)?Rotation\.random
