@@ -22,7 +22,9 @@ _ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
 DTYPE: Final[type[np.float64]] = ...
 ITYPE: Final[type[np.int32]] = ...
 
-def csgraph_from_masked(graph: _MaskedArray2D) -> csr_matrix[np.float64 | np.int32]: ...
+def csgraph_from_masked(graph: _MaskedArray2D) -> csr_array[np.float64 | np.int32]: ...
+
+#
 def csgraph_masked_from_dense(
     graph: onp.ToFloat2D,
     null_value: float | None = 0,
@@ -30,19 +32,27 @@ def csgraph_masked_from_dense(
     infinity_null: bool = True,
     copy: bool = True,
 ) -> _MaskedArray2D[np.float64 | np.int32]: ...
+
+#
 def csgraph_from_dense(
     graph: onp.ToFloat2D,
     null_value: float | None = 0,
     nan_null: bool = True,
     infinity_null: bool = True,
-) -> csr_matrix[np.float64 | np.int32]: ...
+) -> csr_array[np.float64 | np.int32]: ...
+
+#
 def csgraph_to_dense(csgraph: _SparseGraph[_Real], null_value: float | None = 0) -> onp.Array2D[np.float64 | np.int32]: ...
 def csgraph_to_masked(csgraph: _SparseGraph[_Real]) -> _MaskedArray2D[np.float64 | np.int32]: ...
+
+#
 def reconstruct_path(
     csgraph: _ToGraph,
     predecessors: onp.ToFloatND,
     directed: bool = True,
 ) -> csr_matrix[np.float64 | np.int32]: ...
+
+#
 def construct_dist_matrix(
     graph: _ToGraph,
     predecessors: onp.ToFloatND,
