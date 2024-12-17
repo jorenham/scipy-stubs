@@ -1,4 +1,3 @@
-scipy\.ndimage\.__all__
 scipy\.ndimage\.(_?filters\.)?convolve
 scipy\.ndimage\.(_?filters\.)?correlate
 scipy\.ndimage\.(_?filters\.)?laplace
@@ -8,8 +7,6 @@ scipy\.ndimage\.(_?morphology\.)?(black|white)_tophat
 scipy\.ndimage\.(_?morphology\.)?binary_(propagation|fill_holes|hit_or_miss)
 scipy\.ndimage\.(_?morphology\.)?(binary|grey)_(closing|opening|dilation|erosion)
 scipy\.ndimage\.(_?morphology\.)?morphological_(gradient|laplace)
-scipy\.ndimage\._ni_docstrings\.docfiller
-scipy\.ndimage\._ni_support\._extend_mode_to_code
 
 scipy\.optimize\.elementwise
 scipy\.optimize\._cobyqa_py\.COBYQA_LOCK
