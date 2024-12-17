@@ -1,5 +1,6 @@
-from typing import Literal
+from typing import Any, Literal, overload
 
+import numpy as np
 import optype.numpy as onp
 from scipy._typing import Untyped, UntypedArray
 
@@ -13,6 +14,7 @@ __all__ = [
     "decimate",
     "deconvolve",
     "detrend",
+    "envelope",
     "fftconvolve",
     "filtfilt",
     "hilbert",
@@ -107,3 +109,26 @@ def decimate(
     axis: int = -1,
     zero_phase: bool = True,
 ) -> Untyped: ...
+
+#
+
+@overload
+def envelope(
+    z: onp.ArrayND[np.floating[Any]],
+    bp_in: tuple[int | None, int | None] = (1, None),
+    *,
+    n_out: int | None = None,
+    squared: bool = False,
+    residual: Literal["lowpass", "all"] | None = "lowpass",
+    axis: int = -1,
+) -> onp.ArrayND[np.floating[Any]]: ...
+@overload
+def envelope(
+    z: onp.ArrayND[np.inexact[Any]],
+    bp_in: tuple[int | None, int | None] = (1, None),
+    *,
+    n_out: int | None = None,
+    squared: bool = False,
+    residual: Literal["lowpass", "all"] | None = "lowpass",
+    axis: int = -1,
+) -> onp.ArrayND[np.inexact[Any]]: ...
