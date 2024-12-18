@@ -7,7 +7,7 @@ import numpy as np
 import optype.numpy as onp
 import optype.typing as opt
 from scipy._lib._disjoint_set import DisjointSet
-from scipy.spatial.distance import _MetricCallback, _MetricKind
+from scipy.spatial.distance import _Metric
 
 __all__ = [
     "ClusterNode",
@@ -53,7 +53,6 @@ _ClusterCriterion: TypeAlias = Literal["inconsistent", "distance", "maxclust", "
 _SortOrder: TypeAlias = Literal["ascending", "descending"]
 _TruncateMode: TypeAlias = Literal["lastp", "level"]
 _Orientation: TypeAlias = Literal["top", "bottom", "left", "right"]
-_Metric: TypeAlias = _MetricKind | _MetricCallback
 
 # for the lack of better types
 _MatplotlibAxes: TypeAlias = object

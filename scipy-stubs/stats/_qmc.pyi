@@ -9,7 +9,7 @@ import optype as op
 import optype.numpy as onp
 import optype.typing as opt
 from scipy._typing import RNG, ToRNG
-from scipy.spatial.distance import _MetricCallback, _MetricKind
+from scipy.spatial.distance import _Metric
 
 __all__ = [
     "Halton",
@@ -53,7 +53,6 @@ _Any2D_f_co: TypeAlias = _CanLenArray[_Scalar_f_co] | Sequence[Sequence[onp.ToFl
 _MethodQMC: TypeAlias = Literal["random-cd", "lloyd"]
 _MethodDisc: TypeAlias = Literal["CD", "WD", "MD", "L2-star"]
 _MethodDist: TypeAlias = Literal["mindist", "mst"]
-_MetricDist: TypeAlias = _MetricKind | _MetricCallback
 
 _FuncOptimize: TypeAlias = Callable[[_Any2D_f], _Any2D_f]
 
@@ -228,7 +227,7 @@ def discrepancy(
 def geometric_discrepancy(
     sample: _Any2D_f,
     method: _MethodDist = "mindist",
-    metric: _MetricDist = "euclidean",
+    metric: _Metric = "euclidean",
 ) -> float | np.float64: ...
 def update_discrepancy(x_new: _Any1D_f, sample: _Any2D_f, initial_disc: opt.AnyFloat) -> float: ...
 def primes_from_2_to(n: onp.ToInt) -> _Array1D[np.int_]: ...
