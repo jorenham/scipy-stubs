@@ -1,12 +1,15 @@
 # TODO: overloads for specific scalar-types (mind the int/float/complex promotion)
 # TODO: pass the literal shape sizes to the shape parameters of the `_zeroes` return types (i.e. 1d arrays)
 
+from collections.abc import Sequence
 from typing import Any, Literal, TypeAlias, TypeVar, overload
+from typing_extensions import Unpack
 
 import numpy as np
+import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from ._ufuncs import psi as digamma
+from ._ufuncs import _KwBase, psi as digamma
 
 __all__ = [
     "ai_zeros",
@@ -60,6 +63,7 @@ __all__ = [
     "riccati_jn",
     "riccati_yn",
     "sinc",
+    "softplus",
     "stirling2",
     "y0_zeros",
     "y1_zeros",
@@ -80,7 +84,10 @@ _tuple8: TypeAlias = tuple[_T0, _T1, _T1, _T1, _T1, _T1, _T1, _T1]
 
 _ArrayT = TypeVar("_ArrayT", bound=onp.Array)
 _SCT = TypeVar("_SCT", bound=np.generic)
+_SCT_f = TypeVar("_SCT_f", bound=np.floating[Any])
 _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+
 _ArrayOrScalar: TypeAlias = _SCT | onp.ArrayND[_SCT]
 
 _i1: TypeAlias = np.int8
@@ -255,3 +262,71 @@ def zeta(x: onp.ToFloat, q: onp.ToFloat | None = None, out: None = None) -> _f8:
 def zeta(x: onp.ToFloat, q: onp.ToFloatND, out: None = None) -> onp.ArrayND[_f8]: ...
 @overload
 def zeta(x: onp.ToFloatND, q: onp.ToFloat | onp.ToFloatND | None = None, out: None = None) -> onp.ArrayND[_f8]: ...
+
+#
+@overload
+def softplus(x: onp.ToFloat | onp.ToFloatND, *, out: _ArrayT, dtype: None = None, **kwds: Unpack[_KwBase]) -> _ArrayT: ...
+@overload
+def softplus(x: float, *, out: None = None, dtype: None = None, **kwds: Unpack[_KwBase]) -> np.float64: ...
+@overload
+def softplus(x: _SCT_f, *, out: None = None, dtype: None = None, **kwds: Unpack[_KwBase]) -> _SCT_f: ...
+@overload
+def softplus(x: onp.ToFloat, *, out: None, dtype: npt.DTypeLike | None = None, **kwds: Unpack[_KwBase]) -> np.floating[Any]: ...
+@overload
+def softplus(x: Sequence[float], *, out: None = None, dtype: None = None, **kwds: Unpack[_KwBase]) -> onp.Array1D[np.float64]: ...
+@overload
+def softplus(
+    x: Sequence[Sequence[float]],
+    *,
+    out: None = None,
+    dtype: None = None,
+    **kwds: Unpack[_KwBase],
+) -> onp.Array2D[np.float64]: ...
+@overload
+def softplus(
+    x: Sequence[Sequence[Sequence[float]]],
+    *,
+    out: None = None,
+    dtype: None = None,
+    **kwds: Unpack[_KwBase],
+) -> onp.Array3D[np.float64]: ...
+@overload
+def softplus(
+    x: onp.SequenceND[float],
+    *,
+    out: None = None,
+    dtype: None = None,
+    **kwds: Unpack[_KwBase],
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def softplus(
+    x: onp.CanArrayND[_SCT_f, _ShapeT],
+    *,
+    out: None = None,
+    dtype: None = None,
+    **kwds: Unpack[_KwBase],
+) -> onp.ArrayND[_SCT_f, _ShapeT]: ...
+@overload
+def softplus(
+    x: onp.SequenceND[_SCT_f] | onp.SequenceND[onp.CanArrayND[_SCT_f]],
+    *,
+    out: None = None,
+    dtype: None = None,
+    **kwds: Unpack[_KwBase],
+) -> onp.ArrayND[_SCT_f]: ...
+@overload
+def softplus(
+    x: onp.ToFloatND,
+    *,
+    out: None = None,
+    dtype: type[_SCT_f] | np.dtype[_SCT_f] | onp.HasDType[np.dtype[_SCT_f]],
+    **kwds: Unpack[_KwBase],
+) -> onp.ArrayND[_SCT_f]: ...
+@overload
+def softplus(
+    x: onp.ToFloatND,
+    *,
+    out: onp.ArrayND[np.floating[Any]] | None,
+    dtype: npt.DTypeLike | None = None,
+    **kwds: Unpack[_KwBase],
+) -> onp.ArrayND[np.floating[Any]]: ...
