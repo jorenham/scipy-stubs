@@ -21,5 +21,3 @@ scipy\.stats\.(_sensitivity_analysis\.)?sobol_indices
 
 scipy\.stats\.(_stats_py\.|m?stats\.)?chisquare
 scipy\.stats\.(_stats_py\.|stats\.)?fisher_exact
-scipy\.stats\._stats_py\._SimpleChi2\.cdf
-scipy\.stats\._stats_py\._SimpleNormal\.isf

@@ -1,14 +1,13 @@
 from dataclasses import dataclass
 from collections.abc import Callable, Sequence
 from types import ModuleType
-from typing import Any, Generic, Literal as L, Protocol, TypeAlias, final, overload, type_check_only
+from typing import Any, Generic, Literal as L, Protocol, TypeAlias, overload, type_check_only
 from typing_extensions import NamedTuple, Self, TypeVar, deprecated
 
 import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-import optype.typing as opt
 from scipy._typing import Alternative, NanPolicy, ToRNG
 from ._resampling import BootstrapMethod, ResamplingMethod
 from ._stats_mstats_common import siegelslopes, theilslopes
@@ -142,43 +141,6 @@ class _RVSCallable(Protocol):
 @type_check_only
 class _MADCenterFunc(Protocol):
     def __call__(self, x: onp.Array1D[np.float64], /, *, axis: int | None) -> onp.ToFloat: ...
-
-@final
-class _SimpleNormal:
-    @overload
-    def cdf(self, /, x: np.float64) -> np.float64: ...
-    @overload  # this is a workaround for yet another mypy bug...
-    def cdf(self, /, x: np.float16 | np.float32 | np.float64) -> np.float32 | np.float64: ...
-    @overload
-    def cdf(self, /, x: np.uint32 | np.int32 | np.uint64 | np.int64) -> np.float64: ...
-    @overload
-    def cdf(self, /, x: np.uint8 | np.int8 | np.uint16 | np.int16) -> np.float32: ...
-    @overload  # for some reason mypy only understands this if the `np.bool_` overload is separate...
-    def cdf(self, /, x: np.bool_) -> np.float32: ...
-    @overload  # this is a workaround for --- yes, you guessed it -- another mypy bug!
-    def cdf(self, /, x: np.complex128) -> np.complex128: ...
-    @overload
-    def cdf(self, /, x: np.complex64 | np.clongdouble) -> np.complex64 | np.complex128: ...
-    @overload
-    def cdf(self, /, x: bool) -> np.float32: ...
-    @overload
-    def cdf(self, /, x: opt.JustInt) -> np.float64: ...
-    @overload
-    def cdf(self, /, x: float) -> np.float32 | np.float64: ...
-    @overload
-    def cdf(self, /, x: complex) -> np.complex128 | np.float64 | np.float32: ...
-    sf = cdf
-
-@final
-class _SimpleChi2:
-    df: int
-    def __init__(self, /, df: int) -> None: ...
-    @overload
-    def sf(self, /, x: float | np.float64 | np.uint64 | np.int64 | np.uint32 | np.int32 | np.bool_) -> np.float64: ...
-    @overload
-    def sf(self, /, x: np.uint16 | np.int16 | np.uint8 | np.int8) -> np.float32: ...
-    @overload  # workaround for a mypy bug on numpy>=2.2
-    def sf(self, /, x: np.float32) -> np.float32 | np.float64: ...
 
 @type_check_only
 class _TestResultTuple(NamedTuple, Generic[_NDT_float_co]):
