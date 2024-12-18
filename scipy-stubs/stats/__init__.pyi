@@ -15,6 +15,7 @@ from ._binned_statistic import binned_statistic, binned_statistic_2d, binned_sta
 from ._binomtest import binomtest
 from ._bws_test import bws_test
 from ._censored_data import CensoredData
+from ._correlation import chatterjeexi
 from ._covariance import Covariance
 from ._entropy import differential_entropy, entropy
 from ._fit import fit, goodness_of_fit
@@ -121,6 +122,7 @@ from ._stats_py import (
     kurtosis,
     kurtosistest,
     linregress,
+    lmoment,
     median_abs_deviation,
     mode,
     moment,

@@ -40,6 +40,7 @@ __all__ = [
     "kurtosis",
     "kurtosistest",
     "linregress",
+    "lmoment",
     "median_abs_deviation",
     "mode",
     "moment",
@@ -101,10 +102,10 @@ _RealND: TypeAlias = _GenericND[_SCT_real]
 
 _Interpolation: TypeAlias = Literal["linear", "lower", "higher", "nearest", "midpoint"]
 
-_NDT_int_co = TypeVar("_NDT_int_co", covariant=True, bound=int | _IntND, default=int | _IntND)
-_NDT_float = TypeVar("_NDT_float", bound=float | _FloatND, default=float | _FloatND)
-_NDT_float_co = TypeVar("_NDT_float_co", covariant=True, bound=float | _FloatND, default=float | _FloatND)
-_NDT_real_co = TypeVar("_NDT_real_co", covariant=True, bound=float | _RealND, default=float | _RealND)
+_NDT_int_co = TypeVar("_NDT_int_co", covariant=True, bound=int | _Int0D | _IntND, default=int | _IntND)
+_NDT_float = TypeVar("_NDT_float", bound=float | _Float0D | _FloatND, default=float | _FloatND)
+_NDT_float_co = TypeVar("_NDT_float_co", covariant=True, bound=float | _Float0D | _FloatND, default=float | _FloatND)
+_NDT_real_co = TypeVar("_NDT_real_co", covariant=True, bound=float | _Real0D | _RealND, default=float | _RealND)
 
 @type_check_only
 class _RVSCallable(Protocol):

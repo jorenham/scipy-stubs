@@ -2,7 +2,6 @@ scipy\.stats\.(Uniform|Normal|Mixture)
 scipy\.stats\.(abs|truncate|exp|log)
 scipy\.stats\.make_distribution
 scipy\.stats\.order_statistic
-scipy\.stats\.chatterjeexi
 
 scipy\.stats\.(contingency\.|morestats\.)?chi2_contingency
 scipy\.stats\.(_fit\.)?goodness_of_fit
