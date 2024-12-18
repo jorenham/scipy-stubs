@@ -1,12 +1,15 @@
 # TODO: overloads for specific scalar-types (mind the int/float/complex promotion)
 # TODO: pass the literal shape sizes to the shape parameters of the `_zeroes` return types (i.e. 1d arrays)
 
-from typing import Any, Literal, TypeAlias, TypeVar, overload
+from collections.abc import Sequence
+from typing import Any, Literal as L, TypeAlias, overload
+from typing_extensions import TypeVar, Unpack, deprecated
 
 import numpy as np
+import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from ._ufuncs import psi as digamma
+from ._ufuncs import _KwBase, psi as digamma
 
 __all__ = [
     "ai_zeros",
@@ -60,6 +63,7 @@ __all__ = [
     "riccati_jn",
     "riccati_yn",
     "sinc",
+    "softplus",
     "stirling2",
     "y0_zeros",
     "y1_zeros",
@@ -70,33 +74,44 @@ __all__ = [
     "zeta",
 ]
 
-# ruff: noqa: PYI042
-
 _T0 = TypeVar("_T0")
 _T1 = TypeVar("_T1")
+
+_ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND)
+
+_SCT = TypeVar("_SCT", bound=np.generic)
+_SCT_f = TypeVar("_SCT_f", bound=np.floating[Any])
+_SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
+
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+
+_ArrayOrScalar: TypeAlias = _SCT | onp.ArrayND[_SCT]
+
+# ruff: noqa: PYI042
 _tuple2: TypeAlias = tuple[_T0, _T0]
 _tuple4: TypeAlias = tuple[_T0, _T1, _T1, _T1]
 _tuple8: TypeAlias = tuple[_T0, _T1, _T1, _T1, _T1, _T1, _T1, _T1]
-
-_ArrayT = TypeVar("_ArrayT", bound=onp.Array)
-_SCT = TypeVar("_SCT", bound=np.generic)
-_SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
-_ArrayOrScalar: TypeAlias = _SCT | onp.ArrayND[_SCT]
 
 _i1: TypeAlias = np.int8
 _i2: TypeAlias = np.int16
 _i4: TypeAlias = np.int32
 _i8: TypeAlias = np.int64
-_i: TypeAlias = _i1 | _i2 | _i4 | _i8
-
 _f2: TypeAlias = np.float16
 _f4: TypeAlias = np.float32
 _f8: TypeAlias = np.float64
-_f: TypeAlias = _f2 | _f4 | _f8 | np.longdouble
-
 _c8: TypeAlias = np.complex64
 _c16: TypeAlias = np.complex128
+_i: TypeAlias = _i1 | _i2 | _i4 | _i8
+_f: TypeAlias = _f2 | _f4 | _f8 | np.longdouble
 _c: TypeAlias = _c8 | _c16 | np.clongdouble
+
+_Falsy: TypeAlias = L[False, 0]
+_Truthy: TypeAlias = L[True, 1]
+_Extend0: TypeAlias = L["zero"]
+_ExtendZ: TypeAlias = L["complex"]
+_Extend: TypeAlias = L[_Extend0, _ExtendZ]
+
+###
 
 @overload
 def sinc(x: _SCT_fc) -> _SCT_fc: ...
@@ -142,17 +157,9 @@ def assoc_laguerre(
 def polygamma(n: onp.ToInt | onp.ToIntND, x: onp.ToFloat | onp.ToFloatND) -> _ArrayOrScalar[_f8]: ...
 def mathieu_even_coef(m: onp.ToInt, q: onp.ToFloat) -> onp.Array1D[_f8]: ...
 def mathieu_odd_coef(m: onp.ToInt, q: onp.ToFloat) -> onp.Array1D[_f8]: ...
-def lpmn(m: onp.ToInt, n: onp.ToInt, z: onp.ToFloat | onp.ToFloatND) -> _tuple2[onp.Array2D[_f8]]: ...
-def clpmn(
-    m: onp.ToInt,
-    n: onp.ToInt,
-    z: onp.ToComplex | onp.ToComplexND,
-    type: Literal[2, 3] = 3,
-) -> _tuple2[onp.Array2D[_c16]]: ...
 def lqmn(m: onp.ToInt, n: onp.ToInt, z: onp.ToFloat | onp.ToFloatND) -> _tuple2[onp.Array2D[_f]] | _tuple2[onp.Array2D[_c]]: ...
 def bernoulli(n: onp.ToInt) -> onp.Array1D[_f8]: ...
 def euler(n: onp.ToInt) -> onp.Array1D[_f8]: ...
-def lpn(n: onp.ToInt, z: onp.ToFloat) -> _tuple2[onp.Array1D[_f]] | _tuple2[onp.Array1D[_c]]: ...  # the dtype propagates
 def lqn(n: onp.ToInt, z: onp.ToComplex | onp.ToComplexND) -> _tuple2[onp.Array1D[_f8]] | _tuple2[onp.Array1D[_c16]]: ...
 def ai_zeros(nt: onp.ToInt) -> _tuple4[onp.Array1D[_f8], onp.Array1D[_f8]]: ...
 def bi_zeros(nt: onp.ToInt) -> _tuple4[onp.Array1D[_f8], onp.Array1D[_f8]]: ...
@@ -173,12 +180,20 @@ def pro_cv_seq(m: onp.ToInt, n: onp.ToInt, c: onp.ToFloat) -> onp.Array1D[_f8]: 
 def obl_cv_seq(m: onp.ToInt, n: onp.ToInt, c: onp.ToFloat) -> onp.Array1D[_f8]: ...
 
 #
+@deprecated("This function is deprecated and will be removed in a future version. Use `assoc_legendre_p_all` instead.")
+def lpmn(m: onp.ToInt, n: onp.ToInt, z: onp.ToFloat | onp.ToFloatND) -> _tuple2[onp.Array2D[_f8]]: ...
+@deprecated("This function is deprecated and will be removed in a future version. Use `assoc_legendre_p_all` instead.")
+def clpmn(m: onp.ToInt, n: onp.ToInt, z: onp.ToComplex | onp.ToComplexND, type: L[2, 3] = 3) -> _tuple2[onp.Array2D[_c16]]: ...
+@deprecated("This function is deprecated and will be removed in a future version. Use `legendre_p_all` instead.")
+def lpn(n: onp.ToInt, z: onp.ToFloat) -> _tuple2[onp.Array1D[_f]] | _tuple2[onp.Array1D[_c]]: ...  # the dtype propagates
+
+#
 @overload
 def comb(
     N: onp.ToInt | onp.Array0D[_i],
     k: onp.ToInt | onp.Array0D[_i],
     *,
-    exact: Literal[True, 1],
+    exact: _Truthy,
     repetition: op.CanBool = False,
 ) -> int: ...
 @overload
@@ -186,72 +201,166 @@ def comb(
     N: onp.ToFloat | onp.ToFloatND,
     k: onp.ToFloat | onp.ToFloatND,
     *,
-    exact: Literal[False, 0] = False,
+    exact: L[False, 0] = False,
     repetition: op.CanBool = False,
 ) -> _ArrayOrScalar[_f4 | _f8]: ...
 
 #
 @overload
-def perm(N: onp.ToInt | onp.Array0D[_i], k: onp.ToInt | onp.Array0D[_i], exact: Literal[True, 1]) -> int: ...
+def perm(N: onp.ToInt | onp.Array0D[_i], k: onp.ToInt | onp.Array0D[_i], exact: _Truthy) -> int: ...
 @overload
-def perm(
-    N: onp.ToFloat | onp.ToFloatND,
-    k: onp.ToFloat | onp.ToFloatND,
-    exact: Literal[False, 0] | None = False,
-) -> _ArrayOrScalar[_f4 | _f8]: ...
+def perm(N: onp.ToFloat | onp.ToFloatND, k: onp.ToFloat | onp.ToFloatND, exact: _Falsy = False) -> _ArrayOrScalar[_f4 | _f8]: ...
 
 #
 @overload
-def factorial(n: onp.ToInt, exact: Literal[True, 1]) -> _i: ...
+def factorial(n: onp.ToInt, exact: _Truthy, extend: _Extend0 = "zero") -> _i: ...
 @overload
-def factorial(n: onp.ToIntND, exact: Literal[True, 1]) -> onp.ArrayND[np.int_]: ...
+def factorial(n: onp.ToIntND, exact: _Truthy, extend: _Extend0 = "zero") -> onp.ArrayND[np.int_]: ...
 @overload
-def factorial(n: onp.ToFloat, exact: Literal[False, 0] | None = False) -> _f8: ...
+def factorial(n: onp.ToFloat, exact: _Falsy = False, extend: _Extend = "zero") -> _f8: ...
 @overload
-def factorial(n: onp.ToFloatND, exact: Literal[False, 0] | None = False) -> onp.ArrayND[_f8]: ...
+def factorial(n: onp.ToFloatND, exact: _Falsy = False, extend: _Extend = "zero") -> onp.ArrayND[_f8]: ...
+@overload
+def factorial(n: onp.ToComplex, exact: _Falsy, extend: _ExtendZ) -> _f8 | _c16: ...
+@overload
+def factorial(n: onp.ToComplexND, exact: _Falsy, extend: _ExtendZ) -> onp.ArrayND[_f8 | _c16]: ...
+@overload
+def factorial(n: onp.ToComplex, exact: _Falsy = False, *, extend: _ExtendZ) -> _f8 | _c16: ...
+@overload
+def factorial(n: onp.ToComplexND, exact: _Falsy = False, *, extend: _ExtendZ) -> onp.ArrayND[_f8 | _c16]: ...
 
 #
 @overload
-def factorial2(n: onp.ToInt, exact: Literal[True, 1]) -> _i: ...
+def factorial2(n: onp.ToInt, exact: _Truthy, extend: _Extend0 = "zero") -> _i: ...
 @overload
-def factorial2(n: onp.ToIntND, exact: Literal[True, 1]) -> onp.ArrayND[np.int_]: ...
+def factorial2(n: onp.ToIntND, exact: _Truthy, extend: _Extend0 = "zero") -> onp.ArrayND[np.int_]: ...
 @overload
-def factorial2(n: onp.ToFloat, exact: Literal[False, 0] | None = False) -> _f8: ...
+def factorial2(n: onp.ToFloat, exact: _Falsy = False, extend: _Extend = "zero") -> _f8: ...
 @overload
-def factorial2(n: onp.ToFloatND, exact: Literal[False, 0] | None = False) -> onp.ArrayND[_f8]: ...
+def factorial2(n: onp.ToFloatND, exact: _Falsy = False, extend: _Extend = "zero") -> onp.ArrayND[_f8]: ...
+@overload
+def factorial2(n: onp.ToComplex, exact: _Falsy, extend: _ExtendZ) -> _f8 | _c16: ...
+@overload
+def factorial2(n: onp.ToComplexND, exact: _Falsy, extend: _ExtendZ) -> onp.ArrayND[_f8 | _c16]: ...
+@overload
+def factorial2(n: onp.ToComplex, exact: _Falsy = False, *, extend: _ExtendZ) -> _f8 | _c16: ...
+@overload
+def factorial2(n: onp.ToComplexND, exact: _Falsy = False, *, extend: _ExtendZ) -> onp.ArrayND[_f8 | _c16]: ...
 
 #
 @overload
-def factorialk(n: onp.ToInt, k: onp.ToInt, exact: Literal[True, 1]) -> _i: ...
+def factorialk(n: onp.ToInt, k: onp.ToInt, exact: _Truthy, extend: _Extend0 = "zero") -> _i: ...
 @overload
-def factorialk(n: onp.ToIntND, k: onp.ToInt, exact: Literal[True, 1]) -> onp.ArrayND[np.int_]: ...
+def factorialk(n: onp.ToIntND, k: onp.ToInt, exact: _Truthy, extend: _Extend0 = "zero") -> onp.ArrayND[np.int_]: ...
 @overload
-def factorialk(n: onp.ToFloat, k: onp.ToInt, exact: Literal[False, 0] | None = False) -> _f8: ...
+def factorialk(n: onp.ToFloat, k: onp.ToInt, exact: _Falsy = False, extend: _Extend = "zero") -> _f8: ...
 @overload
-def factorialk(n: onp.ToFloatND, k: onp.ToInt, exact: Literal[False, 0] | None = False) -> onp.ArrayND[_f8]: ...
+def factorialk(n: onp.ToFloatND, k: onp.ToInt, exact: _Falsy = False, extend: _Extend = "zero") -> onp.ArrayND[_f8]: ...
+@overload
+def factorialk(n: onp.ToComplex, k: onp.ToInt, exact: _Falsy, extend: _ExtendZ) -> _f8 | _c16: ...
+@overload
+def factorialk(n: onp.ToComplexND, k: onp.ToInt, exact: _Falsy, extend: _ExtendZ) -> onp.ArrayND[_f8 | _c16]: ...
+@overload
+def factorialk(n: onp.ToComplex, k: onp.ToInt, exact: _Falsy = False, *, extend: _ExtendZ) -> _f8 | _c16: ...
+@overload
+def factorialk(n: onp.ToComplexND, k: onp.ToInt, exact: _Falsy = False, *, extend: _ExtendZ) -> onp.ArrayND[_f8 | _c16]: ...
 
 #
 @overload
-def stirling2(N: onp.ToInt, K: onp.ToInt, *, exact: Literal[True, 1]) -> int: ...
+def stirling2(N: onp.ToInt, K: onp.ToInt, *, exact: _Truthy) -> int: ...
 @overload
-def stirling2(N: onp.ToInt, K: onp.ToIntND, *, exact: Literal[True, 1]) -> onp.ArrayND[np.object_]: ...
+def stirling2(N: onp.ToInt, K: onp.ToIntND, *, exact: _Truthy) -> onp.ArrayND[np.object_]: ...
 @overload
-def stirling2(N: onp.ToIntND, K: onp.ToInt | onp.ToIntND, *, exact: Literal[True, 1]) -> onp.ArrayND[np.object_]: ...
+def stirling2(N: onp.ToIntND, K: onp.ToInt | onp.ToIntND, *, exact: _Truthy) -> onp.ArrayND[np.object_]: ...
 @overload
-def stirling2(N: onp.ToInt, K: onp.ToInt, *, exact: Literal[False, 0] | None = False) -> _f8: ...
+def stirling2(N: onp.ToInt, K: onp.ToInt, *, exact: _Falsy = False) -> _f8: ...
 @overload
-def stirling2(N: onp.ToInt, K: onp.ToIntND, *, exact: Literal[False, 0] | None = False) -> onp.ArrayND[_f8]: ...
+def stirling2(N: onp.ToInt, K: onp.ToIntND, *, exact: _Falsy = False) -> onp.ArrayND[_f8]: ...
 @overload
-def stirling2(N: onp.ToIntND, K: onp.ToInt | onp.ToIntND, *, exact: Literal[False, 0] | None = False) -> onp.ArrayND[_f8]: ...
+def stirling2(N: onp.ToIntND, K: onp.ToInt | onp.ToIntND, *, exact: _Falsy = False) -> onp.ArrayND[_f8]: ...
 
 #
 @overload
-def zeta(x: onp.ToFloatND, q: onp.ToFloatND | None, out: _ArrayT) -> _ArrayT: ...
+def zeta(x: onp.ToComplexND, q: onp.ToFloatND | None, out: _ArrayT) -> _ArrayT: ...
 @overload
-def zeta(x: onp.ToFloatND, q: onp.ToFloatND | None = None, *, out: _ArrayT) -> _ArrayT: ...
+def zeta(x: onp.ToComplexND, q: onp.ToFloatND | None = None, *, out: _ArrayT) -> _ArrayT: ...
 @overload
 def zeta(x: onp.ToFloat, q: onp.ToFloat | None = None, out: None = None) -> _f8: ...
 @overload
 def zeta(x: onp.ToFloat, q: onp.ToFloatND, out: None = None) -> onp.ArrayND[_f8]: ...
 @overload
 def zeta(x: onp.ToFloatND, q: onp.ToFloat | onp.ToFloatND | None = None, out: None = None) -> onp.ArrayND[_f8]: ...
+@overload
+def zeta(x: onp.ToComplex, q: onp.ToFloat | None = None, out: None = None) -> _f8 | _c16: ...
+@overload
+def zeta(x: onp.ToComplex, q: onp.ToFloatND, out: None = None) -> onp.ArrayND[_f8 | _c16]: ...
+@overload
+def zeta(x: onp.ToComplexND, q: onp.ToFloat | onp.ToFloatND | None = None, out: None = None) -> onp.ArrayND[_f8 | _c16]: ...
+
+#
+@overload
+def softplus(x: onp.ToFloat | onp.ToFloatND, *, out: _ArrayT, dtype: None = None, **kwds: Unpack[_KwBase]) -> _ArrayT: ...
+@overload
+def softplus(x: float, *, out: None = None, dtype: None = None, **kwds: Unpack[_KwBase]) -> np.float64: ...
+@overload
+def softplus(x: _SCT_f, *, out: None = None, dtype: None = None, **kwds: Unpack[_KwBase]) -> _SCT_f: ...
+@overload
+def softplus(x: onp.ToFloat, *, out: None, dtype: npt.DTypeLike | None = None, **kwds: Unpack[_KwBase]) -> np.floating[Any]: ...
+@overload
+def softplus(x: Sequence[float], *, out: None = None, dtype: None = None, **kwds: Unpack[_KwBase]) -> onp.Array1D[np.float64]: ...
+@overload
+def softplus(
+    x: Sequence[Sequence[float]],
+    *,
+    out: None = None,
+    dtype: None = None,
+    **kwds: Unpack[_KwBase],
+) -> onp.Array2D[np.float64]: ...
+@overload
+def softplus(
+    x: Sequence[Sequence[Sequence[float]]],
+    *,
+    out: None = None,
+    dtype: None = None,
+    **kwds: Unpack[_KwBase],
+) -> onp.Array3D[np.float64]: ...
+@overload
+def softplus(
+    x: onp.SequenceND[float],
+    *,
+    out: None = None,
+    dtype: None = None,
+    **kwds: Unpack[_KwBase],
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def softplus(
+    x: onp.CanArrayND[_SCT_f, _ShapeT],
+    *,
+    out: None = None,
+    dtype: None = None,
+    **kwds: Unpack[_KwBase],
+) -> onp.ArrayND[_SCT_f, _ShapeT]: ...
+@overload
+def softplus(
+    x: onp.SequenceND[_SCT_f] | onp.SequenceND[onp.CanArrayND[_SCT_f]],
+    *,
+    out: None = None,
+    dtype: None = None,
+    **kwds: Unpack[_KwBase],
+) -> onp.ArrayND[_SCT_f]: ...
+@overload
+def softplus(
+    x: onp.ToFloatND,
+    *,
+    out: None = None,
+    dtype: type[_SCT_f] | np.dtype[_SCT_f] | onp.HasDType[np.dtype[_SCT_f]],
+    **kwds: Unpack[_KwBase],
+) -> onp.ArrayND[_SCT_f]: ...
+@overload
+def softplus(
+    x: onp.ToFloatND,
+    *,
+    out: None,
+    dtype: npt.DTypeLike | None = None,
+    **kwds: Unpack[_KwBase],
+) -> onp.ArrayND[np.floating[Any]]: ...
