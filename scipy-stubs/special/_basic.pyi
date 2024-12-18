@@ -2,8 +2,8 @@
 # TODO: pass the literal shape sizes to the shape parameters of the `_zeroes` return types (i.e. 1d arrays)
 
 from collections.abc import Sequence
-from typing import Any, Literal as L, TypeAlias, TypeVar, overload
-from typing_extensions import Unpack, deprecated
+from typing import Any, Literal as L, TypeAlias, overload
+from typing_extensions import TypeVar, Unpack, deprecated
 
 import numpy as np
 import numpy.typing as npt
@@ -74,40 +74,39 @@ __all__ = [
     "zeta",
 ]
 
-# ruff: noqa: PYI042
-
 _T0 = TypeVar("_T0")
 _T1 = TypeVar("_T1")
-_tuple2: TypeAlias = tuple[_T0, _T0]
-_tuple4: TypeAlias = tuple[_T0, _T1, _T1, _T1]
-_tuple8: TypeAlias = tuple[_T0, _T1, _T1, _T1, _T1, _T1, _T1, _T1]
 
-_ArrayT = TypeVar("_ArrayT", bound=onp.Array)
+_ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND)
+
 _SCT = TypeVar("_SCT", bound=np.generic)
 _SCT_f = TypeVar("_SCT_f", bound=np.floating[Any])
 _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
+
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 _ArrayOrScalar: TypeAlias = _SCT | onp.ArrayND[_SCT]
+
+# ruff: noqa: PYI042
+_tuple2: TypeAlias = tuple[_T0, _T0]
+_tuple4: TypeAlias = tuple[_T0, _T1, _T1, _T1]
+_tuple8: TypeAlias = tuple[_T0, _T1, _T1, _T1, _T1, _T1, _T1, _T1]
 
 _i1: TypeAlias = np.int8
 _i2: TypeAlias = np.int16
 _i4: TypeAlias = np.int32
 _i8: TypeAlias = np.int64
-_i: TypeAlias = _i1 | _i2 | _i4 | _i8
-
 _f2: TypeAlias = np.float16
 _f4: TypeAlias = np.float32
 _f8: TypeAlias = np.float64
-_f: TypeAlias = _f2 | _f4 | _f8 | np.longdouble
-
 _c8: TypeAlias = np.complex64
 _c16: TypeAlias = np.complex128
+_i: TypeAlias = _i1 | _i2 | _i4 | _i8
+_f: TypeAlias = _f2 | _f4 | _f8 | np.longdouble
 _c: TypeAlias = _c8 | _c16 | np.clongdouble
 
 _Falsy: TypeAlias = L[False, 0]
 _Truthy: TypeAlias = L[True, 1]
-
 _Extend0: TypeAlias = L["zero"]
 _ExtendZ: TypeAlias = L["complex"]
 _Extend: TypeAlias = L[_Extend0, _ExtendZ]
@@ -361,7 +360,7 @@ def softplus(
 def softplus(
     x: onp.ToFloatND,
     *,
-    out: onp.ArrayND[np.floating[Any]] | None,
+    out: None,
     dtype: npt.DTypeLike | None = None,
     **kwds: Unpack[_KwBase],
 ) -> onp.ArrayND[np.floating[Any]]: ...
