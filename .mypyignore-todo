@@ -18,7 +18,6 @@ scipy\.stats\._sensitivity_analysis\.PPFDist
 scipy\.stats\._sensitivity_analysis\.sample_A_B
 scipy\.stats\.(_sensitivity_analysis\.)?sobol_indices
 
-scipy\.stats\.(_stats_py\.)?lmoment
 scipy\.stats\.(_stats_py\.|m?stats\.)?chisquare
 scipy\.stats\.(_stats_py\.|stats\.)?fisher_exact
 scipy\.stats\._stats_py\._SimpleChi2\.cdf

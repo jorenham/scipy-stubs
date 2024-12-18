@@ -6,6 +6,7 @@ from typing_extensions import NamedTuple, Self, TypeVar, deprecated
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 import optype.numpy as onp
 import optype.typing as opt
 from scipy._typing import Alternative, NanPolicy, ToRNG
@@ -114,6 +115,9 @@ _KS2TestMethod: TypeAlias = L["auto", "exact", "asymp"]
 _CombinePValuesMethod: TypeAlias = L["fisher", "pearson", "tippett", "stouffer", "mudholkar_george"]
 _RankMethod: TypeAlias = L["average", "min", "max", "dense", "ordinal"]
 
+_Falsy: TypeAlias = L[False, 0]
+_Truthy: TypeAlias = L[True, 1]
+
 @type_check_only
 class _RVSCallable(Protocol):
     def __call__(self, /, *, size: int | tuple[int, ...]) -> onp.ArrayND[np.floating[Any]]: ...
@@ -163,7 +167,6 @@ class _SimpleChi2:
 class _TestResultTuple(NamedTuple, Generic[_NDT_float_co]):
     statistic: _NDT_float_co
     pvalue: _NDT_float_co
-
 
 @type_check_only
 class _TestResultBunch(BaseBunch[_NDT_float_co, _NDT_float_co], Generic[_NDT_float_co]):  # pyright: ignore[reportInvalidTypeArguments]
@@ -964,3 +967,176 @@ def linregress(x: onp.ToFloatND, y: None = None, alternative: Alternative = "two
     "Please use `numpy.unique`/`numpy.unique_counts` instead."
 )
 def find_repeats(arr: onp.ToFloatND) -> RepeatedResults: ...
+
+# NOTE: `lmoment` is currently numerically unstable after `order > 16`.
+# See https://github.com/jorenham/Lmo/ for a more stable implementation that additionally supports generalized trimmed TL-moments,
+# multivariate L- and TL-comoments, theoretical L- and TL-moments or `scipy.stats` distributions, and much more ;)
+
+_LMomentOrder: TypeAlias = L[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16] | np.integer[Any]
+_LMomentOrder1D: TypeAlias = Sequence[_LMomentOrder] | onp.CanArrayND[np.integer[Any]]
+
+@overload  # sample: 1-d, order: 0-d, keepdims: falsy
+def lmoment(
+    sample: onp.ToFloatStrict1D,
+    order: _LMomentOrder,
+    *,
+    axis: L[0, -1] | None = 0,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> np.float32 | np.float64: ...
+@overload  # sample: 1-d, order: 0-d, keepdims: truthy
+def lmoment(
+    sample: onp.ToFloatStrict1D,
+    order: _LMomentOrder,
+    *,
+    axis: L[0, -1] | None = 0,
+    keepdims: _Truthy,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.float32 | np.float64]: ...
+@overload  # sample: 1-d, order: 1-d, keepdims: falsy
+def lmoment(
+    sample: onp.ToFloatStrict1D,
+    order: _LMomentOrder1D | None = None,
+    *,
+    axis: L[0, -1] | None = 0,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.float32 | np.float64]: ...
+@overload  # sample: 1-d, order: 1-d, keepdims: truthy
+def lmoment(
+    sample: onp.ToFloatStrict1D,
+    order: _LMomentOrder1D | None = None,
+    *,
+    axis: L[0, -1] | None = 0,
+    keepdims: _Truthy,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array2D[np.float32 | np.float64]: ...
+@overload  # sample: 2-d, order: 0-d, keepdims: falsy
+def lmoment(
+    sample: onp.ToFloatStrict2D,
+    order: _LMomentOrder,
+    *,
+    axis: L[0, 1, -1, -2] = 0,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.float32 | np.float64]: ...
+@overload  # sample: 2-d, order: 0-d, keepdims: truthy
+def lmoment(
+    sample: onp.ToFloatStrict2D,
+    order: _LMomentOrder,
+    *,
+    axis: L[0, 1, -1, -2] | None = 0,
+    keepdims: _Truthy,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array2D[np.float32 | np.float64]: ...
+@overload  # sample: 2-d, order: 1-d, keepdims: falsy
+def lmoment(
+    sample: onp.ToFloatStrict2D,
+    order: _LMomentOrder1D | None = None,
+    *,
+    axis: L[0, 1, -1, -2] = 0,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array2D[np.float32 | np.float64]: ...
+@overload  # sample: 2-d, order: 1-d, keepdims: truthy
+def lmoment(
+    sample: onp.ToFloatStrict2D,
+    order: _LMomentOrder1D | None = None,
+    *,
+    axis: L[0, 1, -1, -2] | None = 0,
+    keepdims: _Truthy,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array3D[np.float32 | np.float64]: ...
+@overload  # sample: 3-d, order: 0-d, keepdims: falsy
+def lmoment(
+    sample: onp.ToFloatStrict3D,
+    order: _LMomentOrder,
+    *,
+    axis: L[0, 1, 2, -1, -2, -3] = 0,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array2D[np.float32 | np.float64]: ...
+@overload  # sample: 3-d, order: 0-d, keepdims: truthy
+def lmoment(
+    sample: onp.ToFloatStrict3D,
+    order: _LMomentOrder,
+    *,
+    axis: L[0, 1, 2, -1, -2, -3] | None = 0,
+    keepdims: _Truthy,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array3D[np.float32 | np.float64]: ...
+@overload  # sample: 2-d, order: 1-d, keepdims: falsy
+def lmoment(
+    sample: onp.ToFloatStrict3D,
+    order: _LMomentOrder1D | None = None,
+    *,
+    axis: L[0, 1, 2, -1, -2, -3] = 0,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array3D[np.float32 | np.float64]: ...
+@overload  # sample: 3-d, order: 1-d, keepdims: truthy
+def lmoment(
+    sample: onp.ToFloatStrict3D,
+    order: _LMomentOrder1D | None = None,
+    *,
+    axis: L[0, 1, 2, -1, -2, -3] | None = 0,
+    keepdims: _Truthy,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array[tuple[int, int, int, int], np.float32 | np.float64]: ...
+@overload  # sample: N-d, order: 0-d, keepdims: falsy, axis: None
+def lmoment(
+    sample: onp.ToFloatND,
+    order: _LMomentOrder,
+    *,
+    axis: None,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> np.float32 | np.float64: ...
+@overload  # sample: N-d, order: 1-d, keepdims: falsy, axis: None
+def lmoment(
+    sample: onp.ToFloatND,
+    order: _LMomentOrder1D | None = None,
+    *,
+    axis: None,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.float32 | np.float64]: ...
+@overload  # sample: N-d, keepdims: truthy
+def lmoment(
+    sample: onp.ToFloatND,
+    order: _LMomentOrder | _LMomentOrder1D | None = None,
+    *,
+    axis: int | None = 0,
+    keepdims: _Truthy,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float32 | np.float64]: ...

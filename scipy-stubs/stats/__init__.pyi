@@ -1,16 +1,4 @@
-from . import (
-    biasedurn,
-    contingency,
-    distributions,
-    kde,
-    morestats,
-    mstats,
-    mstats_basic,
-    mstats_extras,
-    mvn,
-    qmc,
-    stats,
-)
+from . import biasedurn, contingency, distributions, kde, morestats, mstats, mstats_basic, mstats_extras, mvn, qmc, stats
 from ._binned_statistic import binned_statistic, binned_statistic_2d, binned_statistic_dd
 from ._binomtest import binomtest
 from ._bws_test import bws_test

@@ -335,6 +335,7 @@ def ttest_ind_from_stats(
 def ttest_ind(
     a: object,
     b: object,
+    *,
     axis: object = ...,
     equal_var: object = ...,
     nan_policy: object = ...,
@@ -342,7 +343,7 @@ def ttest_ind(
     random_state: object = ...,
     alternative: object = ...,
     trim: object = ...,
-    *,
+    method: object = ...,
     keepdims: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
