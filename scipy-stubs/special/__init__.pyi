@@ -63,6 +63,16 @@ from ._basic import (
 from ._ellip_harm import ellip_harm, ellip_harm_2, ellip_normal
 from ._lambertw import lambertw
 from ._logsumexp import log_softmax, logsumexp, softmax
+from ._multiufuncs import (
+    assoc_legendre_p,
+    assoc_legendre_p_all,
+    legendre_p,
+    legendre_p_all,
+    sph_harm_y,
+    sph_harm_y_all,
+    sph_legendre_p,
+    sph_legendre_p_all,
+)
 from ._orthogonal import (
     c_roots,
     cg_roots,
@@ -360,6 +370,8 @@ __all__ = [
     "airy",
     "airye",
     "assoc_laguerre",
+    "assoc_legendre_p",
+    "assoc_legendre_p_all",
     "bdtr",
     "bdtrc",
     "bdtri",
@@ -554,6 +566,8 @@ __all__ = [
     "laguerre",
     "lambertw",
     "legendre",
+    "legendre_p",
+    "legendre_p_all",
     "lmbda",
     "log1p",
     "log_expit",
@@ -673,6 +687,10 @@ __all__ = [
     "softplus",
     "spence",
     "sph_harm",
+    "sph_harm_y",
+    "sph_harm_y_all",
+    "sph_legendre_p",
+    "sph_legendre_p_all",
     "spherical_in",
     "spherical_jn",
     "spherical_kn",
