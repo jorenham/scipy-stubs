@@ -1,9 +1,5 @@
-scipy\.special\.(cython_special\.)?btdtri?
 scipy\.special\.(assoc_)?legendre_p(_all)?
 scipy\.special\.sph_(harm_y|legendre_p)(_all)?
-scipy\.special\.(_basic\.)?__all__
-scipy\.special\.(_basic\.)?softplus
-scipy\.special\.(_?basic\.)?factorial(2|k)?
 scipy\.special\._spherical_bessel\.spherical_kn_reflection
 scipy\.special\._spherical_bessel\.use_reflection
 
