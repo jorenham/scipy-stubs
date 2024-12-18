@@ -64,7 +64,7 @@ def hdmedian(
 #
 def hdquantiles_sd(
     data: onp.ToFloatND,
-    prob: onp.ToFloat | onp.ToFloatND = [0.25, 0.5, 0.75],
+    prob: onp.ToFloat | onp.ToFloatND = (0.25, 0.5, 0.75),
     axis: op.CanIndex | None = None,
 ) -> np.ma.MaskedArray[onp.AtLeast1D, np.dtype[np.float64]]: ...
 
@@ -80,14 +80,14 @@ def trimmed_mean_ci(
 #
 def mjci(
     data: onp.ToFloatND,
-    prob: onp.ToFloat | onp.ToFloatND = [0.25, 0.5, 0.75],
+    prob: onp.ToFloat | onp.ToFloatND = (0.25, 0.5, 0.75),
     axis: op.CanIndex | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 
 #
 def mquantiles_cimj(
     data: onp.ToFloatND,
-    prob: onp.ToFloat | onp.ToFloatND = [0.25, 0.5, 0.75],
+    prob: onp.ToFloat | onp.ToFloatND = (0.25, 0.5, 0.75),
     alpha: float | np.floating[Any] = 0.05,
     axis: op.CanIndex | None = None,
 ) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...

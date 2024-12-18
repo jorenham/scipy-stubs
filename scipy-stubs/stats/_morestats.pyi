@@ -644,7 +644,7 @@ def wilcoxon(
     zero_method: Literal["wilcox", "pratt", "zsplit"] = "wilcox",
     correction: AnyBool = False,
     alternative: Alternative = "two-sided",
-    method: Literal["auto", "exact", "approx"] | PermutationMethod = "auto",
+    method: Literal["auto", "exact", "approx", "asymptotic"] | PermutationMethod = "auto",
     *,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",

@@ -599,12 +599,16 @@ def f_oneway(
     axis: int | None = 0,
     keepdims: bool = False,
 ) -> F_onewayResult: ...
+
+#
 def alexandergovern(
     *samples: onp.ToFloatND,
     nan_policy: NanPolicy = "propagate",
     axis: int | None = 0,
     keepdims: bool = False,
 ) -> AlexanderGovernResult: ...
+
+#
 def pearsonr(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
@@ -613,9 +617,13 @@ def pearsonr(
     method: ResamplingMethod | None = None,
     axis: int | None = 0,
 ) -> PearsonRResult: ...
+
+#
 def fisher_exact(
     table: onp.ArrayND[_Real0D],
-    alternative: Alternative = "two-sided",
+    alternative: Alternative | None = None,
+    *,
+    method: ResamplingMethod | None = None,
 ) -> SignificanceResult[float]: ...
 
 #
@@ -793,6 +801,8 @@ def chisquare(
     f_exp: onp.ToFloatND | None = None,
     ddof: int = 0,
     axis: int | None = 0,
+    *,
+    sum_check: bool = True,
 ) -> Power_divergenceResult: ...
 
 #

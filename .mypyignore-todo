@@ -4,20 +4,8 @@ scipy\.stats\.(abs|truncate|exp|log)
 scipy\.stats\.make_distribution
 scipy\.stats\.order_statistic
 
-scipy\.stats\.(contingency\.|morestats\.)?chi2_contingency
 scipy\.stats\.(_fit\.)?goodness_of_fit
-scipy\.stats\.(_mstats_basic|mstats)\.mquantiles
-scipy\.stats\.(_mstats_extras|mstats)\.mjci
-scipy\.stats\.(_mstats_extras|mstats)\.hdquantiles_sd
-scipy\.stats\.(_mstats_extras|mstats)\.mquantiles_cimj
 scipy\.stats\.(_multicomp\.)?dunnett
-
-scipy\.stats\._?qmc\.(QMCEngine|Halton|LatinHypercube|PoissonDisk|Sobol)\.__init__
-scipy\.stats\._qmc\.van_der_corput
-
-scipy\.stats\._sensitivity_analysis\.PPFDist
-scipy\.stats\._sensitivity_analysis\.sample_A_B
 scipy\.stats\.(_sensitivity_analysis\.)?sobol_indices
-
-scipy\.stats\.(_stats_py\.|m?stats\.)?chisquare
-scipy\.stats\.(_stats_py\.|stats\.)?fisher_exact
+scipy\.stats\._qmc\.van_der_corput
+scipy\.stats\._?qmc\.(QMCEngine|Halton|LatinHypercube|PoissonDisk|Sobol)\.__init__

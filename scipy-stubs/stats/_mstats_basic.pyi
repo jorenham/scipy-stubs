@@ -609,6 +609,8 @@ def describe(
 def stde_median(data: onp.ToFloatND, axis: op.CanIndex | None = None) -> _MArrayND0[np.floating[Any]]: ...
 @overload
 def stde_median(data: onp.ToComplexND, axis: op.CanIndex | None = None) -> _MArrayND0[np.inexact[Any]]: ...
+
+#
 @overload
 def skewtest(
     a: onp.ToFloatND,
@@ -621,6 +623,8 @@ def skewtest(
     axis: op.CanIndex | None = 0,
     alternative: Alternative = "two-sided",
 ) -> SkewtestResult[_MArrayND0[np.float64], _MArrayND0[np.float64 | np.complex128]]: ...
+
+#
 @overload
 def kurtosistest(
     a: onp.ToFloatND,
@@ -633,15 +637,21 @@ def kurtosistest(
     axis: op.CanIndex | None = 0,
     alternative: Alternative = "two-sided",
 ) -> KurtosistestResult[_MArrayND0[np.float64], _MArrayND0[np.float64 | np.complex128]]: ...
+
+#
 def normaltest(a: onp.ToFloatND, axis: op.CanIndex | None = 0) -> NormaltestResult[_MArrayND0[np.float64]]: ...
+
+#
 def mquantiles(
     a: onp.ToFloatND,
-    prob: onp.ToFloatND = [0.25, 0.5, 0.75],
+    prob: onp.ToFloatND = (0.25, 0.5, 0.75),
     alphap: onp.ToFloat = 0.4,
     betap: onp.ToFloat = 0.4,
     axis: op.CanIndex | None = None,
     limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
 ) -> _MArrayND: ...
+
+#
 def scoreatpercentile(
     data: onp.ToFloatND,
     per: onp.ToFloat,
@@ -649,11 +659,23 @@ def scoreatpercentile(
     alphap: onp.ToFloat = 0.4,
     betap: onp.ToFloat = 0.4,
 ) -> _MArrayND: ...
+
+#
 def plotting_positions(data: onp.ToFloatND, alpha: onp.ToFloat = 0.4, beta: onp.ToFloat = 0.4) -> _MArrayND: ...
+
+#
 def obrientransform(arg0: onp.ToFloatND, /, *args: onp.ToFloatND) -> _MArrayND: ...
+
+#
 def sem(a: onp.ToFloatND, axis: op.CanIndex | None = 0, ddof: onp.ToInt = 1) -> np.float64 | _MArrayND: ...
+
+#
 def f_oneway(arg0: onp.ToFloatND, arg1: onp.ToFloatND, /, *args: onp.ToFloatND) -> F_onewayResult: ...
+
+#
 def friedmanchisquare(arg0: onp.ToFloatND, *args: onp.ToFloatND) -> FriedmanchisquareResult: ...
+
+#
 def brunnermunzel(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
@@ -661,6 +683,7 @@ def brunnermunzel(
     distribution: Literal["t", "normal"] = "t",
 ) -> BrunnerMunzelResult: ...
 
+#
 ttest_onesamp = ttest_1samp
 kruskalwallis = kruskal
 ks_twosamp = ks_2samp
