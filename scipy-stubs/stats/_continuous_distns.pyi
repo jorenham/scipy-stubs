@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, ClassVar, Final, TypeAlias
+from typing import Any, ClassVar, Final, TypeAlias, final
 from typing_extensions import LiteralString, deprecated, override
 
 import numpy as np
@@ -344,7 +344,8 @@ class skewcauchy_gen(rv_continuous): ...
 class skewnorm_gen(rv_continuous): ...
 class trapezoid_gen(rv_continuous): ...
 
-@deprecated("will be removed in SciPy 1.16.0.")
+@final
+@deprecated("`trapz` is deprecated in favour of `trapezoid` and will be removed in SciPy 1.16.0.")
 class trapz_gen(trapezoid_gen): ...
 
 class triang_gen(rv_continuous): ...

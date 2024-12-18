@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from collections.abc import Callable, Sequence
 from types import ModuleType
-from typing import Any, Generic, Literal, Protocol, TypeAlias, final, overload, type_check_only
-from typing_extensions import NamedTuple, Self, TypeVar
+from typing import Any, Generic, Literal as L, Protocol, TypeAlias, final, overload, type_check_only
+from typing_extensions import NamedTuple, Self, TypeVar, deprecated
 
 import numpy as np
 import numpy.typing as npt
@@ -100,16 +100,27 @@ _IntND: TypeAlias = _GenericND[_SCT_int]
 _FloatND: TypeAlias = _GenericND[_SCT_float]
 _RealND: TypeAlias = _GenericND[_SCT_real]
 
-_Interpolation: TypeAlias = Literal["linear", "lower", "higher", "nearest", "midpoint"]
-
 _NDT_int_co = TypeVar("_NDT_int_co", covariant=True, bound=int | _Int0D | _IntND, default=int | _IntND)
 _NDT_float = TypeVar("_NDT_float", bound=float | _Float0D | _FloatND, default=float | _FloatND)
 _NDT_float_co = TypeVar("_NDT_float_co", covariant=True, bound=float | _Float0D | _FloatND, default=float | _FloatND)
 _NDT_real_co = TypeVar("_NDT_real_co", covariant=True, bound=float | _Real0D | _RealND, default=float | _RealND)
 
+_InterpolationMethod: TypeAlias = L["linear", "lower", "higher", "nearest", "midpoint"]
+_TrimTail: TypeAlias = L["left", "right"]
+_KendallTauMethod: TypeAlias = L["auto", "asymptotic", "exact"]
+_KendallTauVariant: TypeAlias = L["b", "c"]
+_KS1TestMethod: TypeAlias = L[_KS2TestMethod, "approx"]
+_KS2TestMethod: TypeAlias = L["auto", "exact", "asymp"]
+_CombinePValuesMethod: TypeAlias = L["fisher", "pearson", "tippett", "stouffer", "mudholkar_george"]
+_RankMethod: TypeAlias = L["average", "min", "max", "dense", "ordinal"]
+
 @type_check_only
 class _RVSCallable(Protocol):
     def __call__(self, /, *, size: int | tuple[int, ...]) -> onp.ArrayND[np.floating[Any]]: ...
+
+@type_check_only
+class _MADCenterFunc(Protocol):
+    def __call__(self, x: onp.Array1D[np.float64], /, *, axis: int | None) -> onp.ToFloat: ...
 
 @final
 class _SimpleNormal:
@@ -153,6 +164,18 @@ class _TestResultTuple(NamedTuple, Generic[_NDT_float_co]):
     statistic: _NDT_float_co
     pvalue: _NDT_float_co
 
+
+@type_check_only
+class _TestResultBunch(BaseBunch[_NDT_float_co, _NDT_float_co], Generic[_NDT_float_co]):  # pyright: ignore[reportInvalidTypeArguments]
+    @property
+    def statistic(self, /) -> _NDT_float_co: ...
+    @property
+    def pvalue(self, /) -> _NDT_float_co: ...
+    def __new__(_cls, statistic: _NDT_float_co, pvalue: _NDT_float_co) -> Self: ...
+    def __init__(self, /, statistic: _NDT_float_co, pvalue: _NDT_float_co) -> None: ...
+
+###
+
 class SkewtestResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
 class KurtosistestResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
 class NormaltestResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
@@ -182,19 +205,19 @@ class ModeResult(NamedTuple, Generic[_NDT_real_co, _NDT_int_co]):
 
 class HistogramResult(NamedTuple):
     count: onp.Array1D[np.float64]  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
-    lowerlimit: Literal[0] | np.floating[Any]
+    lowerlimit: L[0] | np.floating[Any]
     binsize: onp.Array1D[np.float64]
     extrapoints: int
 
 class CumfreqResult(NamedTuple):
     cumcount: onp.Array1D[np.float64]
-    lowerlimit: Literal[0] | np.floating[Any]
+    lowerlimit: L[0] | np.floating[Any]
     binsize: onp.Array1D[np.float64]
     extrapoints: int
 
 class RelfreqResult(NamedTuple):
     frequency: onp.Array1D[np.float64]
-    lowerlimit: Literal[0] | np.floating[Any]
+    lowerlimit: L[0] | np.floating[Any]
     binsize: onp.Array1D[np.float64]
     extrapoints: int
 
@@ -221,15 +244,6 @@ class QuantileTestResult:
     _x: onp.ArrayND[_Real0D]
     _p: float
     def confidence_interval(self, /, confidence_level: float = 0.95) -> float: ...
-
-@type_check_only
-class _TestResultBunch(BaseBunch[_NDT_float_co, _NDT_float_co], Generic[_NDT_float_co]):  # pyright: ignore[reportInvalidTypeArguments]
-    @property
-    def statistic(self, /) -> _NDT_float_co: ...
-    @property
-    def pvalue(self, /) -> _NDT_float_co: ...
-    def __new__(_cls, statistic: _NDT_float_co, pvalue: _NDT_float_co) -> Self: ...
-    def __init__(self, /, statistic: _NDT_float_co, pvalue: _NDT_float_co) -> None: ...
 
 class SignificanceResult(_TestResultBunch[_NDT_float_co], Generic[_NDT_float_co]): ...
 class PearsonRResultBase(_TestResultBunch[_NDT_float_co], Generic[_NDT_float_co]): ...
@@ -510,13 +524,13 @@ def scoreatpercentile(
     a: onp.ToFloat1D,
     per: onp.ToFloat | onp.ToFloatND,
     limit: tuple[float | _Real0D, float | _Real0D] | tuple[()] = (),
-    interpolation_method: Literal["fraction", "lower", "higher"] = "fraction",
+    interpolation_method: L["fraction", "lower", "higher"] = "fraction",
     axis: int | None = None,
 ) -> _FloatND: ...
 def percentileofscore(
     a: onp.ToFloat1D,
     score: onp.ToFloat | onp.ToFloatND,
-    kind: Literal["rank", "weak", "strict", "mean"] = "rank",
+    kind: L["rank", "weak", "strict", "mean"] = "rank",
     nan_policy: NanPolicy = "propagate",
 ) -> float | np.float64: ...
 
@@ -569,27 +583,31 @@ def zmap(
 
 #
 def gstd(a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1) -> _FloatND: ...
+
+#
 def iqr(
     x: onp.ToFloatND,
     axis: int | Sequence[int] | None = None,
     rng: tuple[float, float] = (25, 75),
-    scale: Literal["normal"] | onp.ToFloat | onp.ToFloatND = 1.0,
+    scale: L["normal"] | onp.ToFloat | onp.ToFloatND = 1.0,
     nan_policy: NanPolicy = "propagate",
-    interpolation: _Interpolation = "linear",
+    interpolation: _InterpolationMethod = "linear",
     keepdims: bool = False,
 ) -> _FloatND: ...
+
+#
 def median_abs_deviation(
     x: onp.ToFloatND,
     axis: int | None = 0,
-    center: np.ufunc | Callable[[_NDT_float, int | None], _NDT_float] = ...,
-    scale: Literal["normal"] | float = 1.0,
+    center: np.ufunc | _MADCenterFunc = ...,
+    scale: L["normal"] | onp.ToFloat = 1.0,
     nan_policy: NanPolicy = "propagate",
 ) -> _FloatND: ...
 
 #
 def sigmaclip(a: onp.ToFloatND, low: float = 4.0, high: float = 4.0) -> SigmaclipResult: ...
 def trimboth(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
-def trim1(a: onp.ToFloatND, proportiontocut: float, tail: str = "right", axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
+def trim1(a: onp.ToFloatND, proportiontocut: float, tail: _TrimTail = "right", axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
 def trim_mean(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> _FloatND: ...
 
 #
@@ -626,16 +644,22 @@ def spearmanr(
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
 ) -> SignificanceResult: ...
+
+#
 def pointbiserialr(x: onp.ToBoolND, y: onp.ToFloatND) -> SignificanceResult[float]: ...
+
+#
 def kendalltau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
     *,
     nan_policy: NanPolicy = "propagate",
-    method: Literal["auto", "asymptotic", "exact"] = "auto",
-    variant: Literal["b", "c"] = "b",
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
 ) -> SignificanceResult[float]: ...
+
+#
 def weightedtau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
@@ -653,15 +677,17 @@ def pack_TtestResult(
     standard_error: _NDT_float,
     estimate: _NDT_float,
 ) -> TtestResult[_NDT_float]: ...
+
+#
 def unpack_TtestResult(
     res: TtestResult[_NDT_float],
 ) -> tuple[
-    _NDT_float,
-    _NDT_float,
-    _NDT_float,
-    Alternative,
-    _NDT_float,
-    _NDT_float,
+    _NDT_float,  # statistic
+    _NDT_float,  # pvalue
+    _NDT_float,  # df
+    Alternative,  # _alternative
+    _NDT_float,  # _standard_error
+    _NDT_float,  # _estimate
 ]: ...
 
 #
@@ -674,6 +700,8 @@ def ttest_1samp(
     *,
     keepdims: bool = False,
 ) -> TtestResult: ...
+
+#
 def ttest_ind_from_stats(
     mean1: onp.ToFloat | onp.ToFloatND,
     std1: onp.ToFloat | onp.ToFloatND,
@@ -684,19 +712,80 @@ def ttest_ind_from_stats(
     equal_var: bool = True,
     alternative: Alternative = "two-sided",
 ) -> Ttest_indResult: ...
+
+#
+@overload
 def ttest_ind(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
+    *,
     axis: int | None = 0,
     equal_var: bool = True,
     nan_policy: NanPolicy = "propagate",
-    permutations: float | None = None,
-    random_state: ToRNG = None,
+    permutations: None = None,
+    random_state: None = None,
     alternative: Alternative = "two-sided",
-    trim: float = 0,
-    *,
+    trim: onp.ToFloat = 0,
+    method: ResamplingMethod | None = None,
     keepdims: bool = False,
 ) -> TtestResult: ...
+@overload
+@deprecated(
+    "Argument `random_state` is deprecated, and will be removed in SciPy 1.17. Use `method to perform a permutation test.",
+)
+def ttest_ind(
+    a: onp.ToFloatND,
+    b: onp.ToFloatND,
+    *,
+    axis: int | None = 0,
+    equal_var: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    permutations: None = None,
+    random_state: ToRNG,
+    alternative: Alternative = "two-sided",
+    trim: onp.ToFloat = 0,
+    method: ResamplingMethod | None = None,
+    keepdims: bool = False,
+) -> TtestResult: ...
+@overload
+@deprecated(
+    "Argument `permutations` is deprecated, and will be removed in SciPy 1.17. Use method` to perform a permutation test.",
+)
+def ttest_ind(
+    a: onp.ToFloatND,
+    b: onp.ToFloatND,
+    *,
+    axis: int | None = 0,
+    equal_var: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    permutations: onp.ToFloat,
+    random_state: None = None,
+    alternative: Alternative = "two-sided",
+    trim: onp.ToFloat = 0,
+    method: ResamplingMethod | None = None,
+    keepdims: bool = False,
+) -> TtestResult: ...
+@overload
+@deprecated(
+    "Arguments {'random_state', 'permutations'} are deprecated, and will be removed in SciPy 1.17. "
+    "Use `method` to perform a permutation test.",
+)
+def ttest_ind(
+    a: onp.ToFloatND,
+    b: onp.ToFloatND,
+    *,
+    axis: int | None = 0,
+    equal_var: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    permutations: onp.ToFloat,
+    random_state: ToRNG,
+    alternative: Alternative = "two-sided",
+    trim: onp.ToFloat = 0,
+    method: ResamplingMethod | None = None,
+    keepdims: bool = False,
+) -> TtestResult: ...
+
+#
 def ttest_rel(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
@@ -715,6 +804,8 @@ def power_divergence(
     axis: int | None = 0,
     lambda_: PowerDivergenceStatistic | float | None = None,
 ) -> Power_divergenceResult: ...
+
+#
 def chisquare(
     f_obs: onp.ToFloatND,
     f_exp: onp.ToFloatND | None = None,
@@ -728,29 +819,33 @@ def ks_1samp(
     cdf: Callable[[float], float | _Real0D],
     args: tuple[object, ...] = (),
     alternative: Alternative = "two-sided",
-    method: Literal["auto", "exact", "approx", "asymp"] = "auto",
+    method: _KS1TestMethod = "auto",
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> KstestResult: ...
+
+#
 def ks_2samp(
     data1: onp.ToFloatND,
     data2: onp.ToFloatND,
     alternative: Alternative = "two-sided",
-    method: Literal["auto", "exact", "asymp"] = "auto",
+    method: _KS2TestMethod = "auto",
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> KstestResult: ...
+
+#
 def kstest(
     rvs: str | onp.ToFloatND | _RVSCallable,
     cdf: str | onp.ToFloatND | Callable[[float], float | _Float0D],
     args: tuple[object, ...] = (),
     N: int = 20,
     alternative: Alternative = "two-sided",
-    method: Literal["auto", "exact", "approx", "asymp"] = "auto",
+    method: _KS1TestMethod = "auto",
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
@@ -788,7 +883,7 @@ def brunnermunzel(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
     alternative: Alternative = "two-sided",
-    distribution: Literal["t", "normal"] = "t",
+    distribution: L["t", "normal"] = "t",
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: bool = False,
@@ -798,7 +893,7 @@ def brunnermunzel(
 #
 def combine_pvalues(
     pvalues: onp.ToFloatND,
-    method: Literal["fisher", "pearson", "tippett", "stouffer", "mudholkar_george"] = "fisher",
+    method: _CombinePValuesMethod = "fisher",
     weights: onp.ToFloatND | None = None,
     *,
     axis: int | None = 0,
@@ -842,13 +937,30 @@ def energy_distance(
 ) -> np.float64: ...
 
 #
-def find_repeats(arr: onp.ToFloatND) -> RepeatedResults: ...
 def rankdata(
     a: onp.ToFloatND,
-    method: Literal["average", "min", "max", "dense", "ordinal"] = "average",
+    method: _RankMethod = "average",
     *,
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[_Real0D]: ...
+
+#
 def expectile(a: onp.ToFloatND, alpha: float = 0.5, *, weights: onp.ToFloatND | None = None) -> np.float64: ...
-def linregress(x: onp.ToFloatND, y: onp.ToFloatND | None = None, alternative: Alternative = "two-sided") -> LinregressResult: ...
+
+#
+@overload
+def linregress(x: onp.ToFloatND, y: onp.ToFloatND, alternative: Alternative = "two-sided") -> LinregressResult: ...
+@overload
+@deprecated(
+    "Inference of the two sets of measurements from a single argument `x` is deprecated will result in an error in SciPy 1.16.0; "
+    "the sets must be specified separately as `x` and `y`."
+)
+def linregress(x: onp.ToFloatND, y: None = None, alternative: Alternative = "two-sided") -> LinregressResult: ...
+
+#
+@deprecated(
+    "`scipy.stats.find_repeats` is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
+    "Please use `numpy.unique`/`numpy.unique_counts` instead."
+)
+def find_repeats(arr: onp.ToFloatND) -> RepeatedResults: ...
