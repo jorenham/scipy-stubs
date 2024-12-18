@@ -14,17 +14,12 @@ scipy\.stats\.(_multicomp\.)?dunnett
 scipy\.stats\._?qmc\.(QMCEngine|Halton|LatinHypercube|PoissonDisk|Sobol)\.__init__
 scipy\.stats\._qmc\.van_der_corput
 
-scipy\.stats\.(_resampling\.)?bootstrap
-scipy\.stats\.(_resampling\.)?permutation_test
-scipy\.stats\.(_resampling\.)?(Bootstrap|MonteCarlo|Permutation)Method\.(__init__|__match_args__|rng)
-
 scipy\.stats\._sensitivity_analysis\.PPFDist
 scipy\.stats\._sensitivity_analysis\.sample_A_B
 scipy\.stats\.(_sensitivity_analysis\.)?sobol_indices
 
-scipy\.stats\._stats_py\._SimpleChi2\.cdf
-scipy\.stats\._stats_py\._SimpleNormal\.isf
 scipy\.stats\.(_stats_py\.)?lmoment
 scipy\.stats\.(_stats_py\.|m?stats\.)?chisquare
 scipy\.stats\.(_stats_py\.|stats\.)?fisher_exact
-scipy\.stats\.(_stats_py\.|stats\.)?ttest_ind
+scipy\.stats\._stats_py\._SimpleChi2\.cdf
+scipy\.stats\._stats_py\._SimpleNormal\.isf
