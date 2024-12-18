@@ -91,20 +91,37 @@ _Int0D: TypeAlias = np.integer[Any]
 _Float0D: TypeAlias = np.floating[Any]
 _Real0D: TypeAlias = _Int0D | _Float0D
 
-_SCT_int = TypeVar("_SCT_int", bound=_Int0D, default=_Int0D)
 _SCT_float = TypeVar("_SCT_float", bound=_Float0D, default=_Float0D)
 _SCT_real = TypeVar("_SCT_real", bound=_Real0D, default=_Real0D)
 _SCT_real_co = TypeVar("_SCT_real_co", covariant=True, bound=_Real0D, default=_Real0D)
 
 _GenericND: TypeAlias = _SCT | onp.ArrayND[_SCT]
-_IntND: TypeAlias = _GenericND[_SCT_int]
 _FloatND: TypeAlias = _GenericND[_SCT_float]
 _RealND: TypeAlias = _GenericND[_SCT_real]
 
-_NDT_int_co = TypeVar("_NDT_int_co", covariant=True, bound=int | _Int0D | _IntND, default=int | _IntND)
-_NDT_float = TypeVar("_NDT_float", bound=float | _Float0D | _FloatND, default=float | _FloatND)
-_NDT_float_co = TypeVar("_NDT_float_co", covariant=True, bound=float | _Float0D | _FloatND, default=float | _FloatND)
-_NDT_real_co = TypeVar("_NDT_real_co", covariant=True, bound=float | _Real0D | _RealND, default=float | _RealND)
+_NDT_int_co = TypeVar(
+    "_NDT_int_co",
+    bound=int | np.integer[Any] | onp.ArrayND[np.integer[Any]],
+    default=int | np.int_ | onp.ArrayND[np.int_],
+    covariant=True,
+)
+_NDT_float = TypeVar(
+    "_NDT_float",
+    bound=float | np.floating[Any] | onp.Array[Any, np.floating[Any]],
+    default=float | np.float64 | onp.ArrayND[np.float64],
+)
+_NDT_float_co = TypeVar(
+    "_NDT_float_co",
+    bound=float | np.floating[Any] | onp.Array[Any, np.floating[Any]],
+    default=float | np.float64 | onp.ArrayND[np.float64],
+    covariant=True,
+)
+_NDT_real_co = TypeVar(
+    "_NDT_real_co",
+    bound=float | np.integer[Any] | np.floating[Any] | onp.Array[Any, np.integer[Any] | np.floating[Any]],
+    default=float | np.int_ | np.float64 | onp.ArrayND[np.int_ | np.float64],
+    covariant=True,
+)
 
 _InterpolationMethod: TypeAlias = L["linear", "lower", "higher", "nearest", "midpoint"]
 _TrimTail: TypeAlias = L["left", "right"]

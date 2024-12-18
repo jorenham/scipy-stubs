@@ -10,7 +10,7 @@ from ._common import ConfidenceInterval
 
 __all__ = ["bootstrap", "monte_carlo_test", "permutation_test"]
 
-_FloatND: TypeAlias = float | np.float64 | onp.ArrayND[np.float64]
+_FloatND: TypeAlias = float | np.float64 | onp.Array[Any, np.float64]
 _FloatNDT_co = TypeVar("_FloatNDT_co", bound=_FloatND, default=_FloatND, covariant=True)
 
 _BootstrapMethod: TypeAlias = Literal["percentile", "basic", "bca", "BCa"]
