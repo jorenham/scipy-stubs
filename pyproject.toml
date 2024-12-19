@@ -47,7 +47,7 @@ typecheck = [
     {include-group = "scipy"},
     {include-group = "codegen"},
     "basedmypy[faster-cache]>=2.8.1",
-    "basedpyright>=1.23.0",
+    "basedpyright>=1.23.1",
     "packaging",
 ]
 codegen = [
@@ -235,12 +235,11 @@ ignore = [
 ]
 
 [tool.ruff]
-builtins = ["reveal_locals", "reveal_type"]
+src = ["scipy-stubs", "codegen", "scripts"]
 exclude = [".venv"]
 force-exclude = true
 # https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#maximum-line-length
 line-length = 130
-src = ["scipy-stubs", "codegen", "scripts"]
 
 [tool.ruff.format]
 docstring-code-format = true
