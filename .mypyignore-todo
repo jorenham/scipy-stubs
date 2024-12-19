@@ -3,7 +3,3 @@ scipy\.stats\.(Uniform|Normal|Mixture)
 scipy\.stats\.(abs|truncate|exp|log)
 scipy\.stats\.make_distribution
 scipy\.stats\.order_statistic
-
-scipy\.stats\.(_fit\.)?goodness_of_fit
-scipy\.stats\.(_multicomp\.)?dunnett
-scipy\.stats\.(_sensitivity_analysis\.)?sobol_indices

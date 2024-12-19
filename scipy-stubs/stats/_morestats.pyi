@@ -80,12 +80,12 @@ class _CanPPF(Protocol):
 class _HasX(Protocol):
     x: float | np.floating[Any]
 
+_Falsy: TypeAlias = Literal[False, 0]
+_Truthy: TypeAlias = Literal[True, 1]
+
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
-_VectorF8: TypeAlias = onp.Array1D[np.float64]
-
-_FuncObjective1D: TypeAlias = Callable[[float], float | np.floating[Any]]
-_FuncMinimize1D: TypeAlias = Callable[[_FuncObjective1D], _HasX] | Callable[[_FuncObjective1D], OptimizeResult]
+_Float1D: TypeAlias = onp.Array1D[np.float64]
 
 _KStatOrder: TypeAlias = Literal[1, 2, 3, 4]
 _CenterMethod: TypeAlias = Literal["mean", "median", "trimmed"]
@@ -161,6 +161,11 @@ _RVC1: TypeAlias = Literal[
     "wrapcauchy",
 ]
 
+_ObjFun1D: TypeAlias = Callable[[float], float | np.floating[Any]]
+_MinFun1D: TypeAlias = Callable[[_ObjFun1D], _HasX] | Callable[[_ObjFun1D], OptimizeResult]
+
+_AndersonResult: TypeAlias = FitResult[Callable[[onp.ToFloat, onp.ToFloat], np.float64]]
+
 ###
 
 @final
@@ -169,6 +174,7 @@ class _BigFloat: ...
 class DirectionalStats:
     mean_direction: onp.ArrayND[np.float64]
     mean_resultant_length: onp.ArrayND[np.float64]
+    #
     def __init__(self, /, mean_direction: onp.ArrayND[np.float64], mean_resultant_length: onp.ArrayND[np.float64]) -> None: ...
 
 class ShapiroResult(_TestResult[_NDT_co], Generic[_NDT_co]): ...
@@ -182,42 +188,44 @@ class Mean(_ConfidenceInterval): ...
 class Variance(_ConfidenceInterval): ...
 class Std_dev(_ConfidenceInterval): ...
 
-class AndersonResult(BaseBunch[np.float64, _VectorF8, _VectorF8]):
+class AndersonResult(BaseBunch[np.float64, _Float1D, _Float1D]):
     @property
     def statistic(self, /) -> np.float64: ...
     @property
-    def critical_values(self, /) -> _VectorF8: ...
+    def critical_values(self, /) -> _Float1D: ...
     @property
-    def significance_level(self, /) -> _VectorF8: ...
+    def significance_level(self, /) -> _Float1D: ...
     @property
-    def fit_result(self, /) -> FitResult[np.float64, np.float64]: ...
+    def fit_result(self, /) -> _AndersonResult: ...
+
+    #
     def __new__(
         _cls,
         statistic: np.float64,
-        critical_values: _VectorF8,
-        significance_level: _VectorF8,
+        critical_values: _Float1D,
+        significance_level: _Float1D,
         *,
-        fit_result: FitResult[np.float64, np.float64],
+        fit_result: _AndersonResult,
     ) -> Self: ...
     def __init__(
         self,
         /,
         statistic: np.float64,
-        critical_values: _VectorF8,
-        significance_level: _VectorF8,
+        critical_values: _Float1D,
+        significance_level: _Float1D,
         *,
-        fit_result: FitResult[np.float64, np.float64],
+        fit_result: _AndersonResult,
     ) -> None: ...
 
-class Anderson_ksampResult(BaseBunch[np.float64, _VectorF8, np.float64]):
+class Anderson_ksampResult(BaseBunch[np.float64, _Float1D, np.float64]):
     @property
     def statistic(self, /) -> np.float64: ...
     @property
-    def critical_values(self, /) -> _VectorF8: ...
+    def critical_values(self, /) -> _Float1D: ...
     @property
     def pvalue(self, /) -> np.float64: ...
-    def __new__(_cls, statistic: np.float64, critical_values: _VectorF8, pvalue: np.float64) -> Self: ...
-    def __init__(self, /, statistic: np.float64, critical_values: _VectorF8, pvalue: np.float64) -> None: ...
+    def __new__(_cls, statistic: np.float64, critical_values: _Float1D, pvalue: np.float64) -> Self: ...
+    def __init__(self, /, statistic: np.float64, critical_values: _Float1D, pvalue: np.float64) -> None: ...
 
 class WilcoxonResult(BaseBunch[_NDT_co, _NDT_co], Generic[_NDT_co]):  # pyright: ignore[reportInvalidTypeArguments]
     @property
@@ -247,6 +255,8 @@ class MedianTestResult(BaseBunch[np.float64, np.float64, np.float64, onp.Array2D
     ) -> None: ...
 
 def bayes_mvs(data: onp.ToFloatND, alpha: onp.ToFloat = 0.9) -> tuple[Mean, Variance, Std_dev]: ...
+
+#
 def mvsdist(data: onp.ToFloatND) -> _Tuple3[rv_continuous_frozen]: ...
 
 #
@@ -257,7 +267,7 @@ def kstat(
     *,
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[0, False] = False,
+    keepdims: _Falsy = False,
 ) -> np.float64: ...
 @overload
 def kstat(
@@ -266,7 +276,7 @@ def kstat(
     *,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[1, True],
+    keepdims: _Truthy,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def kstat(
@@ -286,7 +296,7 @@ def kstatvar(
     *,
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[0, False] = False,
+    keepdims: _Falsy = False,
 ) -> np.float64: ...
 @overload
 def kstatvar(
@@ -295,7 +305,7 @@ def kstatvar(
     *,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[1, True],
+    keepdims: _Truthy,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def kstatvar(
@@ -353,6 +363,8 @@ def ppcc_max(
     brack: _Tuple2[onp.ToFloat] | _Tuple3[onp.ToFloat] = (0.0, 1.0),
     dist: _RVC1 | _CanPPF = "tukeylambda",
 ) -> np.float64: ...
+
+#
 def ppcc_plot(
     x: onp.ToFloat | onp.ToFloatND,
     a: onp.ToFloat,
@@ -364,41 +376,45 @@ def ppcc_plot(
 
 #
 def boxcox_llf(lmb: onp.ToFloat, data: onp.ToFloatND) -> np.float64 | onp.ArrayND[np.float64]: ...
+
+#
 @overload
 def boxcox(
     x: onp.ToFloat | onp.ToFloatND,
     lmbda: None = None,
     alpha: None = None,
-    optimizer: _FuncMinimize1D | None = None,
-) -> tuple[_VectorF8, np.float64]: ...
+    optimizer: _MinFun1D | None = None,
+) -> tuple[_Float1D, np.float64]: ...
 @overload
 def boxcox(
     x: onp.ToFloat | onp.ToFloatND,
     lmbda: onp.ToFloat,
     alpha: float | np.floating[Any] | None = None,
-    optimizer: _FuncMinimize1D | None = None,
-) -> _VectorF8: ...
+    optimizer: _MinFun1D | None = None,
+) -> _Float1D: ...
 @overload
 def boxcox(
     x: onp.ToFloat | onp.ToFloatND,
     lmbda: None,
     alpha: float | np.floating[Any],
-    optimizer: _FuncMinimize1D | None = None,
-) -> tuple[_VectorF8, np.float64, _Tuple2[float]]: ...
+    optimizer: _MinFun1D | None = None,
+) -> tuple[_Float1D, np.float64, _Tuple2[float]]: ...
 @overload
 def boxcox(
     x: onp.ToFloat | onp.ToFloatND,
     lmbda: None = None,
     *,
     alpha: float | np.floating[Any],
-    optimizer: _FuncMinimize1D | None = None,
-) -> tuple[_VectorF8, np.float64, _Tuple2[float]]: ...
+    optimizer: _MinFun1D | None = None,
+) -> tuple[_Float1D, np.float64, _Tuple2[float]]: ...
+
+#
 @overload
 def boxcox_normmax(
     x: onp.ToFloat | onp.ToFloatND,
     brack: _Tuple2[onp.ToFloat] | None = None,
     method: Literal["pearsonr", "mle"] = "pearsonr",
-    optimizer: _FuncMinimize1D | None = None,
+    optimizer: _MinFun1D | None = None,
     *,
     ymax: onp.ToFloat | _BigFloat = ...,
 ) -> np.float64: ...
@@ -408,7 +424,7 @@ def boxcox_normmax(
     brack: _Tuple2[onp.ToFloat] | None = None,
     *,
     method: Literal["all"],
-    optimizer: _FuncMinimize1D | None = None,
+    optimizer: _MinFun1D | None = None,
     ymax: onp.ToFloat | _BigFloat = ...,
 ) -> onp.Array1D[np.float64]: ...
 @overload
@@ -416,10 +432,12 @@ def boxcox_normmax(
     x: onp.ToFloat | onp.ToFloatND,
     brack: _Tuple2[onp.ToFloat] | None,
     method: Literal["all"],
-    optimizer: _FuncMinimize1D | None = None,
+    optimizer: _MinFun1D | None = None,
     *,
     ymax: onp.ToFloat | _BigFloat = ...,
 ) -> onp.Array1D[np.float64]: ...
+
+#
 def boxcox_normplot(
     x: onp.ToFloat | onp.ToFloatND,
     la: onp.ToFloat,
@@ -430,11 +448,17 @@ def boxcox_normplot(
 
 #
 def yeojohnson_llf(lmb: onp.ToFloat, data: onp.ToFloatND) -> onp.Array0D[np.float64]: ...
+
+#
 @overload
-def yeojohnson(x: onp.ToFloat | onp.ToFloatND, lmbda: None = None) -> tuple[_VectorF8, np.float64]: ...
+def yeojohnson(x: onp.ToFloat | onp.ToFloatND, lmbda: None = None) -> tuple[_Float1D, np.float64]: ...
 @overload
-def yeojohnson(x: onp.ToFloat | onp.ToFloatND, lmbda: onp.ToFloat) -> _VectorF8: ...
+def yeojohnson(x: onp.ToFloat | onp.ToFloatND, lmbda: onp.ToFloat) -> _Float1D: ...
+
+#
 def yeojohnson_normmax(x: onp.ToFloat | onp.ToFloatND, brack: _Tuple2[onp.ToFloat] | None = None) -> np.float64: ...
+
+#
 def yeojohnson_normplot(
     x: onp.ToFloat | onp.ToFloatND,
     la: onp.ToFloat,
@@ -445,6 +469,8 @@ def yeojohnson_normplot(
 
 #
 def anderson(x: onp.ToFloat | onp.ToFloatND, dist: _RVCAnderson = "norm") -> AndersonResult: ...
+
+#
 def anderson_ksamp(
     samples: onp.ToFloatND,
     midrank: bool = True,
@@ -459,7 +485,7 @@ def shapiro(
     *,
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[0, False] = False,
+    keepdims: _Falsy = False,
 ) -> ShapiroResult[np.float64]: ...
 @overload
 def shapiro(
@@ -467,7 +493,7 @@ def shapiro(
     *,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[1, True],
+    keepdims: _Truthy,
 ) -> ShapiroResult[onp.ArrayND[np.float64]]: ...
 @overload
 def shapiro(
@@ -487,7 +513,7 @@ def ansari(
     *,
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[0, False] = False,
+    keepdims: _Falsy = False,
 ) -> AnsariResult[np.float64]: ...
 @overload
 def ansari(
@@ -497,7 +523,7 @@ def ansari(
     *,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[1, True],
+    keepdims: _Truthy,
 ) -> AnsariResult[onp.ArrayND[np.float64]]: ...
 @overload
 def ansari(
@@ -516,14 +542,14 @@ def bartlett(
     *samples: onp.ToFloatND,
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[0, False] = False,
+    keepdims: _Falsy = False,
 ) -> BartlettResult[np.float64]: ...
 @overload
 def bartlett(
     *samples: onp.ToFloatND,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[1, True],
+    keepdims: _Truthy,
 ) -> BartlettResult[onp.ArrayND[np.float64]]: ...
 @overload
 def bartlett(
@@ -541,7 +567,7 @@ def levene(
     proportiontocut: onp.ToFloat = 0.05,
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[0, False] = False,
+    keepdims: _Falsy = False,
 ) -> LeveneResult[np.float64]: ...
 @overload
 def levene(
@@ -550,7 +576,7 @@ def levene(
     proportiontocut: onp.ToFloat = 0.05,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[1, True],
+    keepdims: _Truthy,
 ) -> LeveneResult[onp.ArrayND[np.float64]]: ...
 @overload
 def levene(
@@ -570,7 +596,7 @@ def fligner(
     proportiontocut: onp.ToFloat = 0.05,
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[0, False] = False,
+    keepdims: _Falsy = False,
 ) -> FlignerResult[np.float64]: ...
 @overload
 def fligner(
@@ -579,7 +605,7 @@ def fligner(
     proportiontocut: onp.ToFloat = 0.05,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[1, True],
+    keepdims: _Truthy,
 ) -> FlignerResult[onp.ArrayND[np.float64]]: ...
 @overload
 def fligner(
@@ -600,7 +626,7 @@ def mood(
     alternative: Alternative = "two-sided",
     *,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[0, False] = False,
+    keepdims: _Falsy = False,
 ) -> SignificanceResult[np.float64]: ...
 @overload
 def mood(
@@ -610,7 +636,7 @@ def mood(
     alternative: Alternative = "two-sided",
     *,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[1, True],
+    keepdims: _Truthy,
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
 @overload
 def mood(
@@ -635,7 +661,7 @@ def wilcoxon(
     *,
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[0, False] = False,
+    keepdims: _Falsy = False,
 ) -> WilcoxonResult[np.float64]: ...
 @overload
 def wilcoxon(
@@ -648,7 +674,7 @@ def wilcoxon(
     *,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Literal[1, True],
+    keepdims: _Truthy,
 ) -> WilcoxonResult[onp.ArrayND[np.float64]]: ...
 @overload
 def wilcoxon(
@@ -691,7 +717,7 @@ def circmean(
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
     *,
-    keepdims: Literal[0, False] = False,
+    keepdims: _Falsy = False,
 ) -> np.float64: ...
 @overload
 def circmean(
@@ -701,7 +727,7 @@ def circmean(
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
-    keepdims: Literal[1, True],
+    keepdims: _Truthy,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def circmean(
@@ -723,7 +749,7 @@ def circvar(
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
     *,
-    keepdims: Literal[0, False] = False,
+    keepdims: _Falsy = False,
 ) -> np.float64: ...
 @overload
 def circvar(
@@ -733,7 +759,7 @@ def circvar(
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
-    keepdims: Literal[1, True],
+    keepdims: _Truthy,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def circvar(
@@ -756,7 +782,7 @@ def circstd(
     nan_policy: NanPolicy = "propagate",
     *,
     normalize: AnyBool = False,
-    keepdims: Literal[0, False] = False,
+    keepdims: _Falsy = False,
 ) -> np.float64: ...
 @overload
 def circstd(
@@ -767,7 +793,7 @@ def circstd(
     nan_policy: NanPolicy = "propagate",
     *,
     normalize: AnyBool = False,
-    keepdims: Literal[1, True],
+    keepdims: _Truthy,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def circstd(
