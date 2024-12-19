@@ -69,6 +69,6 @@ repos:
     hooks:
       - id: basedpyright
         name: basedpyright
-        entry: uv run --no-sync basedpyright
+        entry: uv run --no-sync --locked basedpyright
         language: system
         types_or: [python, pyi]
