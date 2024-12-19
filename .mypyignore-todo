@@ -7,5 +7,3 @@ scipy\.stats\.order_statistic
 scipy\.stats\.(_fit\.)?goodness_of_fit
 scipy\.stats\.(_multicomp\.)?dunnett
 scipy\.stats\.(_sensitivity_analysis\.)?sobol_indices
-scipy\.stats\._qmc\.van_der_corput
-scipy\.stats\._?qmc\.(QMCEngine|Halton|LatinHypercube|PoissonDisk|Sobol)\.__init__
