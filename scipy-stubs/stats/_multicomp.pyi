@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Literal
+from typing import Any
 
 import numpy as np
 import optype.numpy as onp
@@ -10,25 +10,27 @@ __all__ = ["dunnett"]
 
 @dataclass
 class DunnettResult:
-    statistic: onp.ArrayND[np.float64]
-    pvalue: onp.ArrayND[np.float64]
-    _alternative: Literal["two-sided", "less", "greater"]
-    _rho: onp.ArrayND[np.float64]
-    _df: int
-    _std: float
-    _mean_samples: onp.ArrayND[np.float64]
-    _mean_control: onp.ArrayND[np.float64]
-    _n_samples: onp.ArrayND[np.int_]
-    _n_control: int
-    _rng: ToRNG
-    _ci: ConfidenceInterval | None = None
-    _ci_cl: float | np.floating[Any] | np.integer[Any] | None = None
+    statistic: onp.Array1D[np.float64]
+    pvalue: onp.Array1D[np.float64]
 
-    def confidence_interval(self, /, confidence_level: onp.ToFloat = 0.95) -> ConfidenceInterval: ...
+    _alternative: Alternative
+    _rho: onp.Array2D[np.float64]
+    _df: int
+    _std: np.float64
+    _mean_samples: onp.Array1D[np.float64]
+    _mean_control: np.float64  # incorrectly annotated as `ndarray` at runtime
+    _n_samples: onp.Array1D[np.int_]
+    _n_control: int
+    _rng: np.random.Generator | np.random.RandomState
+
+    _ci: ConfidenceInterval | None = None
+    _ci_cl: float | np.floating[Any] | None = None
+
+    def confidence_interval(self, /, confidence_level: float | np.floating[Any] = 0.95) -> ConfidenceInterval: ...
 
 def dunnett(
     *samples: onp.ToFloat1D,
     control: onp.ToFloat1D,
     alternative: Alternative = "two-sided",
-    random_state: ToRNG = None,
+    rng: ToRNG = None,
 ) -> DunnettResult: ...

@@ -17,6 +17,7 @@ __all__ = [
     "multivariate_hypergeom",
     "multivariate_normal",
     "multivariate_t",
+    "normal_inverse_gamma",
     "ortho_group",
     "random_correlation",
     "random_table",
@@ -746,6 +747,85 @@ class vonmises_fisher_frozen(multi_rv_frozen[vonmises_fisher_gen]):
         random_state: spt.ToRNG = None,
     ) -> onp.Array[onp.AtLeast2D, np.float64]: ...
 
+class normal_inverse_gamma_gen(multi_rv_generic):
+    def __call__(
+        self,
+        /,
+        mu: onp.ToFloat | onp.ToFloatND = 0,
+        lmbda: onp.ToFloat | onp.ToFloatND = 1,
+        a: onp.ToFloat | onp.ToFloatND = 1,
+        b: onp.ToFloat | onp.ToFloatND = 1,
+        seed: spt.ToRNG = None,
+    ) -> normal_inverse_gamma_frozen: ...
+    def logpdf(
+        self,
+        /,
+        x: onp.ToFloat | onp.ToFloatND,
+        s2: onp.ToFloat | onp.ToFloatND,
+        mu: onp.ToFloat | onp.ToFloatND = 0,
+        lmbda: onp.ToFloat | onp.ToFloatND = 1,
+        a: onp.ToFloat | onp.ToFloatND = 1,
+        b: onp.ToFloat | onp.ToFloatND = 1,
+    ) -> _ScalarOrArray_f8: ...
+    def pdf(
+        self,
+        /,
+        x: onp.ToFloat | onp.ToFloatND,
+        s2: onp.ToFloat | onp.ToFloatND,
+        mu: onp.ToFloat | onp.ToFloatND = 0,
+        lmbda: onp.ToFloat | onp.ToFloatND = 1,
+        a: onp.ToFloat | onp.ToFloatND = 1,
+        b: onp.ToFloat | onp.ToFloatND = 1,
+    ) -> _ScalarOrArray_f8: ...
+    def mean(
+        self,
+        /,
+        mu: onp.ToFloat | onp.ToFloatND = 0,
+        lmbda: onp.ToFloat | onp.ToFloatND = 1,
+        a: onp.ToFloat | onp.ToFloatND = 1,
+        b: onp.ToFloat | onp.ToFloatND = 1,
+    ) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
+    def var(
+        self,
+        /,
+        mu: onp.ToFloat | onp.ToFloatND = 0,
+        lmbda: onp.ToFloat | onp.ToFloatND = 1,
+        a: onp.ToFloat | onp.ToFloatND = 1,
+        b: onp.ToFloat | onp.ToFloatND = 1,
+    ) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
+    def rvs(
+        self,
+        /,
+        mu: onp.ToFloat | onp.ToFloatND = 0,
+        lmbda: onp.ToFloat | onp.ToFloatND = 1,
+        a: onp.ToFloat | onp.ToFloatND = 1,
+        b: onp.ToFloat | onp.ToFloatND = 1,
+        size: op.CanIndex | tuple[op.CanIndex, ...] | None = None,
+        random_state: spt.ToRNG = None,
+    ) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
+
+# TODO(jorenham): Generic shape-type (or `_ScalarOrArray_f8` itself?)
+class normal_inverse_gamma_frozen(multi_rv_frozen[normal_inverse_gamma_gen]):
+    def __init__(
+        self,
+        /,
+        mu: onp.ToFloat | onp.ToFloatND = 0,
+        lmbda: onp.ToFloat | onp.ToFloatND = 1,
+        a: onp.ToFloat | onp.ToFloatND = 1,
+        b: onp.ToFloat | onp.ToFloatND = 1,
+        seed: spt.ToRNG = None,
+    ) -> None: ...
+    def logpdf(self, /, x: onp.ToFloat | onp.ToFloatND, s2: onp.ToFloat | onp.ToFloatND) -> _ScalarOrArray_f8: ...
+    def pdf(self, /, x: onp.ToFloat | onp.ToFloatND, s2: onp.ToFloat | onp.ToFloatND) -> _ScalarOrArray_f8: ...
+    def mean(self, /) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
+    def var(self, /) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
+    def rvs(
+        self,
+        /,
+        size: op.CanIndex | tuple[op.CanIndex, ...] | None = None,
+        random_state: spt.ToRNG = None,
+    ) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
+
 multivariate_normal: Final[multivariate_normal_gen] = ...
 matrix_normal: Final[matrix_normal_gen] = ...
 dirichlet: Final[dirichlet_gen] = ...
@@ -762,3 +842,4 @@ random_table: Final[random_table_gen] = ...
 uniform_direction: Final[uniform_direction_gen] = ...
 dirichlet_multinomial: Final[dirichlet_multinomial_gen] = ...
 vonmises_fisher: Final[vonmises_fisher_gen] = ...
+normal_inverse_gamma: Final[normal_inverse_gamma_gen] = ...

@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from collections.abc import Callable, Sequence
 from types import ModuleType
-from typing import Any, Generic, Literal, Protocol, TypeAlias, final, overload, type_check_only
-from typing_extensions import NamedTuple, Self, TypeVar
+from typing import Any, Generic, Literal as L, Protocol, TypeAlias, overload, type_check_only
+from typing_extensions import NamedTuple, Self, TypeVar, deprecated
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 import optype.numpy as onp
-import optype.typing as opt
 from scipy._typing import Alternative, NanPolicy, ToRNG
 from ._resampling import BootstrapMethod, ResamplingMethod
 from ._stats_mstats_common import siegelslopes, theilslopes
@@ -40,6 +40,7 @@ __all__ = [
     "kurtosis",
     "kurtosistest",
     "linregress",
+    "lmoment",
     "median_abs_deviation",
     "mode",
     "moment",
@@ -89,68 +90,73 @@ _Int0D: TypeAlias = np.integer[Any]
 _Float0D: TypeAlias = np.floating[Any]
 _Real0D: TypeAlias = _Int0D | _Float0D
 
-_SCT_int = TypeVar("_SCT_int", bound=_Int0D, default=_Int0D)
 _SCT_float = TypeVar("_SCT_float", bound=_Float0D, default=_Float0D)
 _SCT_real = TypeVar("_SCT_real", bound=_Real0D, default=_Real0D)
 _SCT_real_co = TypeVar("_SCT_real_co", covariant=True, bound=_Real0D, default=_Real0D)
 
 _GenericND: TypeAlias = _SCT | onp.ArrayND[_SCT]
-_IntND: TypeAlias = _GenericND[_SCT_int]
 _FloatND: TypeAlias = _GenericND[_SCT_float]
 _RealND: TypeAlias = _GenericND[_SCT_real]
 
-_Interpolation: TypeAlias = Literal["linear", "lower", "higher", "nearest", "midpoint"]
+_NDT_int_co = TypeVar(
+    "_NDT_int_co",
+    bound=int | np.integer[Any] | onp.ArrayND[np.integer[Any]],
+    default=int | np.int_ | onp.ArrayND[np.int_],
+    covariant=True,
+)
+_NDT_float = TypeVar(
+    "_NDT_float",
+    bound=float | np.floating[Any] | onp.Array[Any, np.floating[Any]],
+    default=float | np.float64 | onp.ArrayND[np.float64],
+)
+_NDT_float_co = TypeVar(
+    "_NDT_float_co",
+    bound=float | np.floating[Any] | onp.Array[Any, np.floating[Any]],
+    default=float | np.float64 | onp.ArrayND[np.float64],
+    covariant=True,
+)
+_NDT_real_co = TypeVar(
+    "_NDT_real_co",
+    bound=float | np.integer[Any] | np.floating[Any] | onp.Array[Any, np.integer[Any] | np.floating[Any]],
+    default=float | np.int_ | np.float64 | onp.ArrayND[np.int_ | np.float64],
+    covariant=True,
+)
 
-_NDT_int_co = TypeVar("_NDT_int_co", covariant=True, bound=int | _IntND, default=int | _IntND)
-_NDT_float = TypeVar("_NDT_float", bound=float | _FloatND, default=float | _FloatND)
-_NDT_float_co = TypeVar("_NDT_float_co", covariant=True, bound=float | _FloatND, default=float | _FloatND)
-_NDT_real_co = TypeVar("_NDT_real_co", covariant=True, bound=float | _RealND, default=float | _RealND)
+_InterpolationMethod: TypeAlias = L["linear", "lower", "higher", "nearest", "midpoint"]
+_TrimTail: TypeAlias = L["left", "right"]
+_KendallTauMethod: TypeAlias = L["auto", "asymptotic", "exact"]
+_KendallTauVariant: TypeAlias = L["b", "c"]
+_KS1TestMethod: TypeAlias = L[_KS2TestMethod, "approx"]
+_KS2TestMethod: TypeAlias = L["auto", "exact", "asymp"]
+_CombinePValuesMethod: TypeAlias = L["fisher", "pearson", "tippett", "stouffer", "mudholkar_george"]
+_RankMethod: TypeAlias = L["average", "min", "max", "dense", "ordinal"]
+
+_Falsy: TypeAlias = L[False, 0]
+_Truthy: TypeAlias = L[True, 1]
 
 @type_check_only
 class _RVSCallable(Protocol):
     def __call__(self, /, *, size: int | tuple[int, ...]) -> onp.ArrayND[np.floating[Any]]: ...
 
-@final
-class _SimpleNormal:
-    @overload
-    def cdf(self, /, x: np.float64) -> np.float64: ...
-    @overload  # this is a workaround for yet another mypy bug...
-    def cdf(self, /, x: np.float16 | np.float32 | np.float64) -> np.float32 | np.float64: ...
-    @overload
-    def cdf(self, /, x: np.uint32 | np.int32 | np.uint64 | np.int64) -> np.float64: ...
-    @overload
-    def cdf(self, /, x: np.uint8 | np.int8 | np.uint16 | np.int16) -> np.float32: ...
-    @overload  # for some reason mypy only understands this if the `np.bool_` overload is separate...
-    def cdf(self, /, x: np.bool_) -> np.float32: ...
-    @overload  # this is a workaround for --- yes, you guessed it -- another mypy bug!
-    def cdf(self, /, x: np.complex128) -> np.complex128: ...
-    @overload
-    def cdf(self, /, x: np.complex64 | np.clongdouble) -> np.complex64 | np.complex128: ...
-    @overload
-    def cdf(self, /, x: bool) -> np.float32: ...
-    @overload
-    def cdf(self, /, x: opt.JustInt) -> np.float64: ...
-    @overload
-    def cdf(self, /, x: float) -> np.float32 | np.float64: ...
-    @overload
-    def cdf(self, /, x: complex) -> np.complex128 | np.float64 | np.float32: ...
-    sf = cdf
-
-@final
-class _SimpleChi2:
-    df: int
-    def __init__(self, /, df: int) -> None: ...
-    @overload
-    def sf(self, /, x: float | np.float64 | np.uint64 | np.int64 | np.uint32 | np.int32 | np.bool_) -> np.float64: ...
-    @overload
-    def sf(self, /, x: np.uint16 | np.int16 | np.uint8 | np.int8) -> np.float32: ...
-    @overload  # workaround for a mypy bug on numpy>=2.2
-    def sf(self, /, x: np.float32) -> np.float32 | np.float64: ...
+@type_check_only
+class _MADCenterFunc(Protocol):
+    def __call__(self, x: onp.Array1D[np.float64], /, *, axis: int | None) -> onp.ToFloat: ...
 
 @type_check_only
 class _TestResultTuple(NamedTuple, Generic[_NDT_float_co]):
     statistic: _NDT_float_co
     pvalue: _NDT_float_co
+
+@type_check_only
+class _TestResultBunch(BaseBunch[_NDT_float_co, _NDT_float_co], Generic[_NDT_float_co]):  # pyright: ignore[reportInvalidTypeArguments]
+    @property
+    def statistic(self, /) -> _NDT_float_co: ...
+    @property
+    def pvalue(self, /) -> _NDT_float_co: ...
+    def __new__(_cls, statistic: _NDT_float_co, pvalue: _NDT_float_co) -> Self: ...
+    def __init__(self, /, statistic: _NDT_float_co, pvalue: _NDT_float_co) -> None: ...
+
+###
 
 class SkewtestResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
 class KurtosistestResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
@@ -181,19 +187,19 @@ class ModeResult(NamedTuple, Generic[_NDT_real_co, _NDT_int_co]):
 
 class HistogramResult(NamedTuple):
     count: onp.Array1D[np.float64]  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
-    lowerlimit: Literal[0] | np.floating[Any]
+    lowerlimit: L[0] | np.floating[Any]
     binsize: onp.Array1D[np.float64]
     extrapoints: int
 
 class CumfreqResult(NamedTuple):
     cumcount: onp.Array1D[np.float64]
-    lowerlimit: Literal[0] | np.floating[Any]
+    lowerlimit: L[0] | np.floating[Any]
     binsize: onp.Array1D[np.float64]
     extrapoints: int
 
 class RelfreqResult(NamedTuple):
     frequency: onp.Array1D[np.float64]
-    lowerlimit: Literal[0] | np.floating[Any]
+    lowerlimit: L[0] | np.floating[Any]
     binsize: onp.Array1D[np.float64]
     extrapoints: int
 
@@ -220,15 +226,6 @@ class QuantileTestResult:
     _x: onp.ArrayND[_Real0D]
     _p: float
     def confidence_interval(self, /, confidence_level: float = 0.95) -> float: ...
-
-@type_check_only
-class _TestResultBunch(BaseBunch[_NDT_float_co, _NDT_float_co], Generic[_NDT_float_co]):  # pyright: ignore[reportInvalidTypeArguments]
-    @property
-    def statistic(self, /) -> _NDT_float_co: ...
-    @property
-    def pvalue(self, /) -> _NDT_float_co: ...
-    def __new__(_cls, statistic: _NDT_float_co, pvalue: _NDT_float_co) -> Self: ...
-    def __init__(self, /, statistic: _NDT_float_co, pvalue: _NDT_float_co) -> None: ...
 
 class SignificanceResult(_TestResultBunch[_NDT_float_co], Generic[_NDT_float_co]): ...
 class PearsonRResultBase(_TestResultBunch[_NDT_float_co], Generic[_NDT_float_co]): ...
@@ -509,13 +506,13 @@ def scoreatpercentile(
     a: onp.ToFloat1D,
     per: onp.ToFloat | onp.ToFloatND,
     limit: tuple[float | _Real0D, float | _Real0D] | tuple[()] = (),
-    interpolation_method: Literal["fraction", "lower", "higher"] = "fraction",
+    interpolation_method: L["fraction", "lower", "higher"] = "fraction",
     axis: int | None = None,
 ) -> _FloatND: ...
 def percentileofscore(
     a: onp.ToFloat1D,
     score: onp.ToFloat | onp.ToFloatND,
-    kind: Literal["rank", "weak", "strict", "mean"] = "rank",
+    kind: L["rank", "weak", "strict", "mean"] = "rank",
     nan_policy: NanPolicy = "propagate",
 ) -> float | np.float64: ...
 
@@ -568,27 +565,31 @@ def zmap(
 
 #
 def gstd(a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1) -> _FloatND: ...
+
+#
 def iqr(
     x: onp.ToFloatND,
     axis: int | Sequence[int] | None = None,
     rng: tuple[float, float] = (25, 75),
-    scale: Literal["normal"] | onp.ToFloat | onp.ToFloatND = 1.0,
+    scale: L["normal"] | onp.ToFloat | onp.ToFloatND = 1.0,
     nan_policy: NanPolicy = "propagate",
-    interpolation: _Interpolation = "linear",
+    interpolation: _InterpolationMethod = "linear",
     keepdims: bool = False,
 ) -> _FloatND: ...
+
+#
 def median_abs_deviation(
     x: onp.ToFloatND,
     axis: int | None = 0,
-    center: np.ufunc | Callable[[_NDT_float, int | None], _NDT_float] = ...,
-    scale: Literal["normal"] | float = 1.0,
+    center: np.ufunc | _MADCenterFunc = ...,
+    scale: L["normal"] | onp.ToFloat = 1.0,
     nan_policy: NanPolicy = "propagate",
 ) -> _FloatND: ...
 
 #
 def sigmaclip(a: onp.ToFloatND, low: float = 4.0, high: float = 4.0) -> SigmaclipResult: ...
 def trimboth(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
-def trim1(a: onp.ToFloatND, proportiontocut: float, tail: str = "right", axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
+def trim1(a: onp.ToFloatND, proportiontocut: float, tail: _TrimTail = "right", axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
 def trim_mean(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> _FloatND: ...
 
 #
@@ -598,12 +599,16 @@ def f_oneway(
     axis: int | None = 0,
     keepdims: bool = False,
 ) -> F_onewayResult: ...
+
+#
 def alexandergovern(
     *samples: onp.ToFloatND,
     nan_policy: NanPolicy = "propagate",
     axis: int | None = 0,
     keepdims: bool = False,
 ) -> AlexanderGovernResult: ...
+
+#
 def pearsonr(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
@@ -612,9 +617,13 @@ def pearsonr(
     method: ResamplingMethod | None = None,
     axis: int | None = 0,
 ) -> PearsonRResult: ...
+
+#
 def fisher_exact(
     table: onp.ArrayND[_Real0D],
-    alternative: Alternative = "two-sided",
+    alternative: Alternative | None = None,
+    *,
+    method: ResamplingMethod | None = None,
 ) -> SignificanceResult[float]: ...
 
 #
@@ -625,16 +634,22 @@ def spearmanr(
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
 ) -> SignificanceResult: ...
+
+#
 def pointbiserialr(x: onp.ToBoolND, y: onp.ToFloatND) -> SignificanceResult[float]: ...
+
+#
 def kendalltau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
     *,
     nan_policy: NanPolicy = "propagate",
-    method: Literal["auto", "asymptotic", "exact"] = "auto",
-    variant: Literal["b", "c"] = "b",
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
 ) -> SignificanceResult[float]: ...
+
+#
 def weightedtau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
@@ -652,15 +667,17 @@ def pack_TtestResult(
     standard_error: _NDT_float,
     estimate: _NDT_float,
 ) -> TtestResult[_NDT_float]: ...
+
+#
 def unpack_TtestResult(
     res: TtestResult[_NDT_float],
 ) -> tuple[
-    _NDT_float,
-    _NDT_float,
-    _NDT_float,
-    Alternative,
-    _NDT_float,
-    _NDT_float,
+    _NDT_float,  # statistic
+    _NDT_float,  # pvalue
+    _NDT_float,  # df
+    Alternative,  # _alternative
+    _NDT_float,  # _standard_error
+    _NDT_float,  # _estimate
 ]: ...
 
 #
@@ -673,6 +690,8 @@ def ttest_1samp(
     *,
     keepdims: bool = False,
 ) -> TtestResult: ...
+
+#
 def ttest_ind_from_stats(
     mean1: onp.ToFloat | onp.ToFloatND,
     std1: onp.ToFloat | onp.ToFloatND,
@@ -683,19 +702,80 @@ def ttest_ind_from_stats(
     equal_var: bool = True,
     alternative: Alternative = "two-sided",
 ) -> Ttest_indResult: ...
+
+#
+@overload
 def ttest_ind(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
+    *,
     axis: int | None = 0,
     equal_var: bool = True,
     nan_policy: NanPolicy = "propagate",
-    permutations: float | None = None,
-    random_state: ToRNG = None,
+    permutations: None = None,
+    random_state: None = None,
     alternative: Alternative = "two-sided",
-    trim: float = 0,
-    *,
+    trim: onp.ToFloat = 0,
+    method: ResamplingMethod | None = None,
     keepdims: bool = False,
 ) -> TtestResult: ...
+@overload
+@deprecated(
+    "Argument `random_state` is deprecated, and will be removed in SciPy 1.17. Use `method to perform a permutation test.",
+)
+def ttest_ind(
+    a: onp.ToFloatND,
+    b: onp.ToFloatND,
+    *,
+    axis: int | None = 0,
+    equal_var: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    permutations: None = None,
+    random_state: ToRNG,
+    alternative: Alternative = "two-sided",
+    trim: onp.ToFloat = 0,
+    method: ResamplingMethod | None = None,
+    keepdims: bool = False,
+) -> TtestResult: ...
+@overload
+@deprecated(
+    "Argument `permutations` is deprecated, and will be removed in SciPy 1.17. Use method` to perform a permutation test.",
+)
+def ttest_ind(
+    a: onp.ToFloatND,
+    b: onp.ToFloatND,
+    *,
+    axis: int | None = 0,
+    equal_var: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    permutations: onp.ToFloat,
+    random_state: None = None,
+    alternative: Alternative = "two-sided",
+    trim: onp.ToFloat = 0,
+    method: ResamplingMethod | None = None,
+    keepdims: bool = False,
+) -> TtestResult: ...
+@overload
+@deprecated(
+    "Arguments {'random_state', 'permutations'} are deprecated, and will be removed in SciPy 1.17. "
+    "Use `method` to perform a permutation test.",
+)
+def ttest_ind(
+    a: onp.ToFloatND,
+    b: onp.ToFloatND,
+    *,
+    axis: int | None = 0,
+    equal_var: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    permutations: onp.ToFloat,
+    random_state: ToRNG,
+    alternative: Alternative = "two-sided",
+    trim: onp.ToFloat = 0,
+    method: ResamplingMethod | None = None,
+    keepdims: bool = False,
+) -> TtestResult: ...
+
+#
 def ttest_rel(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
@@ -714,11 +794,15 @@ def power_divergence(
     axis: int | None = 0,
     lambda_: PowerDivergenceStatistic | float | None = None,
 ) -> Power_divergenceResult: ...
+
+#
 def chisquare(
     f_obs: onp.ToFloatND,
     f_exp: onp.ToFloatND | None = None,
     ddof: int = 0,
     axis: int | None = 0,
+    *,
+    sum_check: bool = True,
 ) -> Power_divergenceResult: ...
 
 #
@@ -727,29 +811,33 @@ def ks_1samp(
     cdf: Callable[[float], float | _Real0D],
     args: tuple[object, ...] = (),
     alternative: Alternative = "two-sided",
-    method: Literal["auto", "exact", "approx", "asymp"] = "auto",
+    method: _KS1TestMethod = "auto",
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> KstestResult: ...
+
+#
 def ks_2samp(
     data1: onp.ToFloatND,
     data2: onp.ToFloatND,
     alternative: Alternative = "two-sided",
-    method: Literal["auto", "exact", "asymp"] = "auto",
+    method: _KS2TestMethod = "auto",
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> KstestResult: ...
+
+#
 def kstest(
     rvs: str | onp.ToFloatND | _RVSCallable,
     cdf: str | onp.ToFloatND | Callable[[float], float | _Float0D],
     args: tuple[object, ...] = (),
     N: int = 20,
     alternative: Alternative = "two-sided",
-    method: Literal["auto", "exact", "approx", "asymp"] = "auto",
+    method: _KS1TestMethod = "auto",
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
@@ -787,7 +875,7 @@ def brunnermunzel(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
     alternative: Alternative = "two-sided",
-    distribution: Literal["t", "normal"] = "t",
+    distribution: L["t", "normal"] = "t",
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: bool = False,
@@ -797,7 +885,7 @@ def brunnermunzel(
 #
 def combine_pvalues(
     pvalues: onp.ToFloatND,
-    method: Literal["fisher", "pearson", "tippett", "stouffer", "mudholkar_george"] = "fisher",
+    method: _CombinePValuesMethod = "fisher",
     weights: onp.ToFloatND | None = None,
     *,
     axis: int | None = 0,
@@ -841,13 +929,203 @@ def energy_distance(
 ) -> np.float64: ...
 
 #
-def find_repeats(arr: onp.ToFloatND) -> RepeatedResults: ...
 def rankdata(
     a: onp.ToFloatND,
-    method: Literal["average", "min", "max", "dense", "ordinal"] = "average",
+    method: _RankMethod = "average",
     *,
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[_Real0D]: ...
+
+#
 def expectile(a: onp.ToFloatND, alpha: float = 0.5, *, weights: onp.ToFloatND | None = None) -> np.float64: ...
-def linregress(x: onp.ToFloatND, y: onp.ToFloatND | None = None, alternative: Alternative = "two-sided") -> LinregressResult: ...
+
+#
+@overload
+def linregress(x: onp.ToFloatND, y: onp.ToFloatND, alternative: Alternative = "two-sided") -> LinregressResult: ...
+@overload
+@deprecated(
+    "Inference of the two sets of measurements from a single argument `x` is deprecated will result in an error in SciPy 1.16.0; "
+    "the sets must be specified separately as `x` and `y`."
+)
+def linregress(x: onp.ToFloatND, y: None = None, alternative: Alternative = "two-sided") -> LinregressResult: ...
+
+#
+@deprecated(
+    "`scipy.stats.find_repeats` is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
+    "Please use `numpy.unique`/`numpy.unique_counts` instead."
+)
+def find_repeats(arr: onp.ToFloatND) -> RepeatedResults: ...
+
+# NOTE: `lmoment` is currently numerically unstable after `order > 16`.
+# See https://github.com/jorenham/Lmo/ for a more stable implementation that additionally supports generalized trimmed TL-moments,
+# multivariate L- and TL-comoments, theoretical L- and TL-moments or `scipy.stats` distributions, and much more ;)
+
+_LMomentOrder: TypeAlias = L[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16] | np.integer[Any]
+_LMomentOrder1D: TypeAlias = Sequence[_LMomentOrder] | onp.CanArrayND[np.integer[Any]]
+
+@overload  # sample: 1-d, order: 0-d, keepdims: falsy
+def lmoment(
+    sample: onp.ToFloatStrict1D,
+    order: _LMomentOrder,
+    *,
+    axis: L[0, -1] | None = 0,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> np.float32 | np.float64: ...
+@overload  # sample: 1-d, order: 0-d, keepdims: truthy
+def lmoment(
+    sample: onp.ToFloatStrict1D,
+    order: _LMomentOrder,
+    *,
+    axis: L[0, -1] | None = 0,
+    keepdims: _Truthy,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.float32 | np.float64]: ...
+@overload  # sample: 1-d, order: 1-d, keepdims: falsy
+def lmoment(
+    sample: onp.ToFloatStrict1D,
+    order: _LMomentOrder1D | None = None,
+    *,
+    axis: L[0, -1] | None = 0,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.float32 | np.float64]: ...
+@overload  # sample: 1-d, order: 1-d, keepdims: truthy
+def lmoment(
+    sample: onp.ToFloatStrict1D,
+    order: _LMomentOrder1D | None = None,
+    *,
+    axis: L[0, -1] | None = 0,
+    keepdims: _Truthy,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array2D[np.float32 | np.float64]: ...
+@overload  # sample: 2-d, order: 0-d, keepdims: falsy
+def lmoment(
+    sample: onp.ToFloatStrict2D,
+    order: _LMomentOrder,
+    *,
+    axis: L[0, 1, -1, -2] = 0,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.float32 | np.float64]: ...
+@overload  # sample: 2-d, order: 0-d, keepdims: truthy
+def lmoment(
+    sample: onp.ToFloatStrict2D,
+    order: _LMomentOrder,
+    *,
+    axis: L[0, 1, -1, -2] | None = 0,
+    keepdims: _Truthy,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array2D[np.float32 | np.float64]: ...
+@overload  # sample: 2-d, order: 1-d, keepdims: falsy
+def lmoment(
+    sample: onp.ToFloatStrict2D,
+    order: _LMomentOrder1D | None = None,
+    *,
+    axis: L[0, 1, -1, -2] = 0,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array2D[np.float32 | np.float64]: ...
+@overload  # sample: 2-d, order: 1-d, keepdims: truthy
+def lmoment(
+    sample: onp.ToFloatStrict2D,
+    order: _LMomentOrder1D | None = None,
+    *,
+    axis: L[0, 1, -1, -2] | None = 0,
+    keepdims: _Truthy,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array3D[np.float32 | np.float64]: ...
+@overload  # sample: 3-d, order: 0-d, keepdims: falsy
+def lmoment(
+    sample: onp.ToFloatStrict3D,
+    order: _LMomentOrder,
+    *,
+    axis: L[0, 1, 2, -1, -2, -3] = 0,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array2D[np.float32 | np.float64]: ...
+@overload  # sample: 3-d, order: 0-d, keepdims: truthy
+def lmoment(
+    sample: onp.ToFloatStrict3D,
+    order: _LMomentOrder,
+    *,
+    axis: L[0, 1, 2, -1, -2, -3] | None = 0,
+    keepdims: _Truthy,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array3D[np.float32 | np.float64]: ...
+@overload  # sample: 2-d, order: 1-d, keepdims: falsy
+def lmoment(
+    sample: onp.ToFloatStrict3D,
+    order: _LMomentOrder1D | None = None,
+    *,
+    axis: L[0, 1, 2, -1, -2, -3] = 0,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array3D[np.float32 | np.float64]: ...
+@overload  # sample: 3-d, order: 1-d, keepdims: truthy
+def lmoment(
+    sample: onp.ToFloatStrict3D,
+    order: _LMomentOrder1D | None = None,
+    *,
+    axis: L[0, 1, 2, -1, -2, -3] | None = 0,
+    keepdims: _Truthy,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array[tuple[int, int, int, int], np.float32 | np.float64]: ...
+@overload  # sample: N-d, order: 0-d, keepdims: falsy, axis: None
+def lmoment(
+    sample: onp.ToFloatND,
+    order: _LMomentOrder,
+    *,
+    axis: None,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> np.float32 | np.float64: ...
+@overload  # sample: N-d, order: 1-d, keepdims: falsy, axis: None
+def lmoment(
+    sample: onp.ToFloatND,
+    order: _LMomentOrder1D | None = None,
+    *,
+    axis: None,
+    keepdims: _Falsy = False,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.float32 | np.float64]: ...
+@overload  # sample: N-d, keepdims: truthy
+def lmoment(
+    sample: onp.ToFloatND,
+    order: _LMomentOrder | _LMomentOrder1D | None = None,
+    *,
+    axis: int | None = 0,
+    keepdims: _Truthy,
+    sorted: op.CanBool = False,
+    standardize: op.CanBool = True,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float32 | np.float64]: ...

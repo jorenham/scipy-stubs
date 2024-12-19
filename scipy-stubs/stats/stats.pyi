@@ -287,7 +287,7 @@ def alexandergovern(*samples: object, nan_policy: object = ..., axis: object = .
 @deprecated("will be removed in SciPy v2.0.0")
 def pearsonr(x: object, y: object, *, alternative: object = ..., method: object = ..., axis: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def fisher_exact(table: object, alternative: object = ...) -> object: ...
+def fisher_exact(table: object, alternative: object = ..., *, method: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def spearmanr(
     a: object,
@@ -335,6 +335,7 @@ def ttest_ind_from_stats(
 def ttest_ind(
     a: object,
     b: object,
+    *,
     axis: object = ...,
     equal_var: object = ...,
     nan_policy: object = ...,
@@ -342,7 +343,7 @@ def ttest_ind(
     random_state: object = ...,
     alternative: object = ...,
     trim: object = ...,
-    *,
+    method: object = ...,
     keepdims: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
@@ -364,7 +365,7 @@ def power_divergence(
     lambda_: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def chisquare(f_obs: object, f_exp: object = ..., ddof: object = ..., axis: object = ...) -> object: ...
+def chisquare(f_obs: object, f_exp: object = ..., ddof: object = ..., axis: object = ..., *, sum_check: bool = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def ks_1samp(
     x: object,

@@ -33,6 +33,8 @@ __all__ = [
     "planck",
     "planck_gen",
     "poisson",
+    "poisson_binom",
+    "poisson_binom_gen",
     "poisson_gen",
     "randint",
     "randint_gen",
@@ -62,6 +64,7 @@ class randint_gen(rv_discrete): ...
 class zipf_gen(rv_discrete): ...
 class zipfian_gen(rv_discrete): ...
 class dlaplace_gen(rv_discrete): ...
+class poisson_binom_gen(rv_discrete): ...
 class skellam_gen(rv_discrete): ...
 class yulesimon_gen(rv_discrete): ...
 
@@ -95,6 +98,7 @@ randint: Final[randint_gen]
 zipf: Final[zipf_gen]
 zipfian: Final[zipfian_gen]
 dlaplace: Final[dlaplace_gen]
+poisson_binom: Final[poisson_binom_gen]
 skellam: Final[skellam_gen]
 yulesimon: Final[yulesimon_gen]
 nchypergeom_fisher: Final[nchypergeom_fisher_gen]

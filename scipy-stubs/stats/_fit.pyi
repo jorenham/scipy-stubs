@@ -1,6 +1,6 @@
 from collections.abc import Callable, Mapping, Sequence
 from typing import Any, Concatenate, Generic, Literal, NamedTuple, Protocol, TypeAlias, overload, type_check_only
-from typing_extensions import TypeVarTuple, Unpack
+from typing_extensions import TypeVar, Unpack
 
 import numpy as np
 import optype.numpy as onp
@@ -8,44 +8,63 @@ from scipy._typing import ToRNG
 from scipy.optimize import OptimizeResult
 from ._distn_infrastructure import rv_continuous, rv_continuous_frozen, rv_discrete
 
-_Ts = TypeVarTuple("_Ts", default=Unpack[tuple[onp.ToFloat, ...]])
-
-# matplotlib.lines.Axes
-_MPL_Axes: TypeAlias = Any
-
-_RealVectorLike: TypeAlias = Sequence[onp.ToFloat] | onp.CanArray[Any, np.dtype[np.floating[Any] | np.integer[Any] | np.bool_]]
+_Params: TypeAlias = Mapping[str, onp.ToFloat]
 _Bounds: TypeAlias = Mapping[str, tuple[onp.ToFloat, onp.ToFloat]] | Sequence[tuple[onp.ToFloat, onp.ToFloat]]
-# TODO: make more specific
-_Optimizer: TypeAlias = Callable[Concatenate[Callable[..., onp.ToFloat], ...], OptimizeResult]
 
 _GOFStatName: TypeAlias = Literal["ad", "ks", "cvm", "filliben"]
 _GOFStatFunc: TypeAlias = Callable[[rv_continuous_frozen, onp.ArrayND[np.float64]], float | np.float32 | np.float64]
+_FitMethod: TypeAlias = Literal["mle", "mse"]
+_PlotType: TypeAlias = Literal["hist", "qq", "pp", "cdf"]
+
+# TODO(jorenham): make more specific
+_Optimizer: TypeAlias = Callable[Concatenate[Callable[..., Any], ...], OptimizeResult]
 
 @type_check_only
-class _PXF(Protocol[Unpack[_Ts]]):
-    def __call__(self, x: onp.ToFloat, /, *params: Unpack[_Ts]) -> np.float64: ...
+class _PXF1n(Protocol):
+    def __call__(self, x: onp.ToFloat, arg0: onp.ToFloat, /, *args: onp.ToFloat) -> np.float64: ...
 
-class FitResult(Generic[Unpack[_Ts]]):
+@type_check_only
+class _PXF2n(Protocol):
+    def __call__(self, x: onp.ToFloat, arg0: onp.ToFloat, arg1: onp.ToFloat, /, *args: onp.ToFloat) -> np.float64: ...
+
+_PXFT_co = TypeVar("_PXFT_co", bound=Callable[Concatenate[onp.ToFloat, ...], np.float64], default=_PXF1n | _PXF2n, covariant=True)
+_AxesT = TypeVar("_AxesT", default=Any)  # represents a `matplotlib.lines.Axes`
+
+###
+
+class FitResult(Generic[_PXFT_co]):
     # tuple of at least size 1
+    pxf: _PXFT_co
     params: tuple[onp.ToFloat, Unpack[tuple[onp.ToFloat, ...]]]
     success: bool | None
     message: str | None
     discrete: bool
-    pxf: _PXF[Unpack[_Ts]]
 
+    @overload
     def __init__(
-        self,
+        self: FitResult[_PXF1n],
         /,
-        dist: rv_continuous | rv_discrete,
+        dist: rv_discrete,
         data: onp.ToFloatND,
         discrete: bool,
         res: OptimizeResult,
     ) -> None: ...
+    @overload
+    def __init__(
+        self: FitResult[_PXF2n],
+        /,
+        dist: rv_continuous,
+        data: onp.ToFloatND,
+        discrete: bool,
+        res: OptimizeResult,
+    ) -> None: ...
+
+    #
     def nllf(self, /, params: tuple[onp.ToFloat, ...] | None = None, data: onp.ToFloatND | None = None) -> np.float64: ...
-    def plot(self, /, ax: _MPL_Axes | None = None, *, plot_type: Literal["hist", "qq", "pp", "cdf"] = "hist") -> _MPL_Axes: ...
+    def plot(self, /, ax: _AxesT | None = None, *, plot_type: _PlotType = "hist") -> _AxesT: ...
 
 class GoodnessOfFitResult(NamedTuple):
-    fit_result: FitResult
+    fit_result: FitResult[_PXF2n]  # always continuous
     statistic: float | np.float64
     pvalue: float | np.float64
     null_distribution: onp.Array1D[np.float64]
@@ -53,33 +72,33 @@ class GoodnessOfFitResult(NamedTuple):
 @overload
 def fit(
     dist: rv_discrete,
-    data: _RealVectorLike,
+    data: onp.ToFloat1D,
     bounds: _Bounds | None = None,
     *,
-    guess: Mapping[str, onp.ToFloat] | _RealVectorLike | None = None,
-    method: Literal["mle", "mse"] = "mle",
+    guess: _Params | onp.ToFloat1D | None = None,
+    method: _FitMethod = "mle",
     optimizer: _Optimizer = ...,
-) -> FitResult[onp.ToFloat, Unpack[tuple[onp.ToFloat, ...]]]: ...
+) -> FitResult[_PXF1n]: ...
 @overload
 def fit(
     dist: rv_continuous,
-    data: _RealVectorLike,
+    data: onp.ToFloat1D,
     bounds: _Bounds | None = None,
     *,
-    guess: Mapping[str, onp.ToFloat] | _RealVectorLike | None = None,
-    method: Literal["mle", "mse"] = "mle",
+    guess: _Params | onp.ToFloat1D | None = None,
+    method: _FitMethod = "mle",
     optimizer: _Optimizer = ...,
-) -> FitResult[onp.ToFloat, onp.ToFloat, Unpack[tuple[onp.ToFloat, ...]]]: ...
+) -> FitResult[_PXF2n]: ...
 
 #
 def goodness_of_fit(
     dist: rv_continuous,
-    data: _RealVectorLike,
+    data: onp.ToFloat1D,
     *,
-    known_params: Mapping[str, onp.ToFloat] | None = None,
-    fit_params: Mapping[str, onp.ToFloat] | None = None,
-    guessed_params: Mapping[str, onp.ToFloat] | None = None,
+    known_params: _Params | None = None,
+    fit_params: _Params | None = None,
+    guessed_params: _Params | None = None,
     statistic: _GOFStatName | _GOFStatFunc = "ad",
-    n_mc_samples: int = 9999,
-    random_state: ToRNG = None,
+    n_mc_samples: onp.ToJustInt = 9_999,
+    rng: ToRNG = None,
 ) -> GoodnessOfFitResult: ...

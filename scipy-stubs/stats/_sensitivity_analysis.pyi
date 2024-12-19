@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from collections.abc import Callable, Mapping, Sequence
-from typing import Any, Literal, Protocol, TypeAlias
+from typing import Any, Literal, Protocol, TypeAlias, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -15,12 +15,12 @@ _SobolMethod: TypeAlias = Callable[
     tuple[onp.ToFloat | onp.ToFloatND, onp.ToFloat | onp.ToFloatND],
 ]
 
-###
-
-# this protocol exists at runtime (but it has an incorrect reutrn type, which is corrected here)
-class PPFDist(Protocol):
+@type_check_only
+class _HasPPF(Protocol):
     @property
     def ppf(self, /) -> Callable[..., np.float64]: ...
+
+###
 
 @dataclass
 class BootstrapSobolResult:
@@ -46,7 +46,7 @@ class SobolResult:
 def f_ishigami(x: onp.ToFloat2D) -> onp.Array1D[np.floating[Any]]: ...
 
 #
-def sample_A_B(n: onp.ToInt, dists: Sequence[PPFDist], random_state: ToRNG = None) -> onp.ArrayND[np.float64]: ...
+def sample_A_B(n: onp.ToInt, dists: Sequence[_HasPPF], rng: ToRNG = None) -> onp.ArrayND[np.float64]: ...
 def sample_AB(A: onp.ArrayND[np.float64], B: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
 
 #
@@ -59,9 +59,9 @@ def saltelli_2010(
 #
 def sobol_indices(
     *,
-    func: Callable[[onp.Array2D[np.float64]], onp.ToComplex2D] | Mapping[_SobolKey, onp.Array2D[np.number[Any]]],
-    n: onp.ToInt,
-    dists: Sequence[PPFDist] | None = None,
+    func: Callable[[onp.Array2D[np.float64]], onp.ToComplex2D] | Mapping[_SobolKey, onp.ArrayND[np.number[Any]]],
+    n: onp.ToJustInt,
+    dists: Sequence[_HasPPF] | None = None,
     method: _SobolMethod | Literal["saltelli_2010"] = "saltelli_2010",
-    random_state: ToRNG = None,
+    rng: ToRNG = None,
 ) -> SobolResult: ...
