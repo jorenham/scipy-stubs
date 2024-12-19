@@ -40,7 +40,7 @@ lint = [
     {include-group = "scipy"},
     "mdformat-gfm>=0.4.1",
     "mdformat-gfm-alerts>=1.0.1,<2",
-    "ruff>=0.8.3",
+    "ruff>=0.8.4",
     "sp-repo-review[cli]>=2024.8.19",
 ]
 typecheck = [
