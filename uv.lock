@@ -179,15 +179,15 @@ wheels = [
 
 [[package]]
 name = "mdformat"
-version = "0.7.20"
+version = "0.7.19"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "markdown-it-py" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7b/1a/2bb185fa636d2d7b3ad6516addf9763d36d1f71fa139dba6d9345dd77d1e/mdformat-0.7.20.tar.gz", hash = "sha256:3b35740322f0949f73775933380100267cbed6441b0ed10fcc09bff091dbb3e7", size = 33976 }
+sdist = { url = "https://files.pythonhosted.org/packages/1c/bc/71d461905953d1c716c30e11ca513d7b43097c2d0aa46fde838e30eefe32/mdformat-0.7.19.tar.gz", hash = "sha256:a7d22df9802383432367864da907d2d147485b5cb6872e2d66937c1333e4d58a", size = 43513 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5f/0f/d77dbdd41a49cf19f390e8a5efd8728e74b48471307e0dab4543445c492f/mdformat-0.7.20-py3-none-any.whl", hash = "sha256:60bd4e59882836e9c85a408398d8fc6a74b979d411188116d147395159eb97c1", size = 33672 },
+    { url = "https://files.pythonhosted.org/packages/a5/7e/a7a904ec104e21c85333a02dd54456f53d5be31bee716217a1450844a044/mdformat-0.7.19-py3-none-any.whl", hash = "sha256:5c360992adc118cf1479cbbe92bb3bd66dcd7f1a5a3a2ad6675915622c678cf1", size = 33109 },
 ]
 
 [[package]]
@@ -684,6 +684,7 @@ dev = [
     { name = "basedmypy", extra = ["faster-cache"] },
     { name = "basedpyright" },
     { name = "libcst" },
+    { name = "mdformat" },
     { name = "mdformat-gfm" },
     { name = "mdformat-gfm-alerts" },
     { name = "packaging" },
@@ -695,6 +696,7 @@ dev = [
     { name = "sp-repo-review", extra = ["cli"] },
 ]
 lint = [
+    { name = "mdformat" },
     { name = "mdformat-gfm" },
     { name = "mdformat-gfm-alerts" },
     { name = "ruff" },
@@ -724,6 +726,7 @@ dev = [
     { name = "basedmypy", extras = ["faster-cache"], specifier = ">=2.8.1" },
     { name = "basedpyright", specifier = ">=1.23.1" },
     { name = "libcst", specifier = ">=1.5.1,<2" },
+    { name = "mdformat", specifier = ">=0.7.19,!=0.7.20" },
     { name = "mdformat-gfm", specifier = ">=0.4.1" },
     { name = "mdformat-gfm-alerts", specifier = ">=1.0.1,<2" },
     { name = "packaging" },
@@ -735,6 +738,7 @@ dev = [
     { name = "sp-repo-review", extras = ["cli"], specifier = ">=2024.8.19" },
 ]
 lint = [
+    { name = "mdformat", specifier = ">=0.7.19,!=0.7.20" },
     { name = "mdformat-gfm", specifier = ">=0.4.1" },
     { name = "mdformat-gfm-alerts", specifier = ">=1.0.1,<2" },
     { name = "ruff", specifier = ">=0.8.4" },

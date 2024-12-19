@@ -38,6 +38,7 @@ scipy = [
 ]
 lint = [
     {include-group = "scipy"},
+    "mdformat>=0.7.19,!=0.7.20",  # https://github.com/hukkin/mdformat/issues/501
     "mdformat-gfm>=0.4.1",
     "mdformat-gfm-alerts>=1.0.1,<2",
     "ruff>=0.8.4",

@@ -42,7 +42,9 @@ repos:
       - id: markdownlint
 
   - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.20
+    # NOTE: Don't bump to 0.7.20 !
+    # https://github.com/hukkin/mdformat/issues/501
+    rev: 0.7.19
     hooks:
       - id: mdformat
         additional_dependencies:
