@@ -1,3 +1,4 @@
 scipy\.stats\.__all__
 scipy\.stats\.(Normal|Uniform)
 scipy\.stats\.(_distribution_infrastructure\.)?(abs|exp|log|make_distribution|order_statistic|truncate)
+scipy\.stats\._distribution_infrastructure\.((Monotonic)?Transformed|Folded|Truncated|OrderStatistic)Distribution\.__init__
