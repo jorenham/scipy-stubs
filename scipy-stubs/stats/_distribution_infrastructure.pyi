@@ -145,7 +145,7 @@ class _Parameterization:
         self,
         /,
         parameter_values: Mapping[str, _Parameter],
-    ) -> tuple[onp.ArrayND[np.bool] | np.dtype[np.floating[Any]]]: ...
+    ) -> tuple[onp.ArrayND[np.bool_] | np.dtype[np.floating[Any]]]: ...
     def draw(
         self,
         /,
