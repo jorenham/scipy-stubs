@@ -2,7 +2,7 @@
 
 import abc
 from collections.abc import Mapping, Sequence, Set as AbstractSet
-from typing import Any, ClassVar, Final, Literal as L, TypeAlias, overload
+from typing import Any, Final, Literal as L, TypeAlias, overload
 from typing_extensions import LiteralString, TypeVar, override
 
 import numpy as np
@@ -23,7 +23,9 @@ _FloatT = TypeVar("_FloatT", bound=np.floating[Any])
 
 # TODO(jorenham): Generic dtype
 class _Domain(abc.ABC):
-    symbols: ClassVar[Mapping[float, LiteralString]]
+    # NOTE: This is a `ClassVar[dict[str, float]]` that's overridden as instance attribute in `_SimpleDomain`.
+    # https://github.com/scipy/scipy/pull/22139
+    symbols: Mapping[float, LiteralString] = ...
 
     @abc.abstractmethod
     @override
