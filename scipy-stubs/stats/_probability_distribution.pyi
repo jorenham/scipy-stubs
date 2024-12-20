@@ -313,6 +313,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     def logentropy(self: _Self[Any, _ShapeT], /, *, method: _EntropyMethod = None) -> _ComplexND[_ShapeT]: ...
 
     #
+    # TODO(jorenham): Adjust these, depending on the result of https://github.com/scipy/scipy/issues/22145
     # NOTE: The signatures of `pdf` and `logpdf` are equivalent
     @overload  # self: T1-d, x: 0-d
     def pdf(self: _Self[Any, _ShapeT], x: onp.ToFloat, /, *, method: _PDFMethod = None) -> _FloatND[_ShapeT]: ...
