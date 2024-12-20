@@ -7,7 +7,7 @@ from ._correlation import chatterjeexi
 from ._covariance import Covariance
 
 # TODO(jorenham)
-from ._distribution_infrastructure import Mixture  # , abs, exp, log, make_distribution, order_statistic, truncate
+from ._distribution_infrastructure import Mixture, truncate  # , abs, exp, log, make_distribution, order_statistic
 from ._entropy import differential_entropy, entropy
 from ._fit import fit, goodness_of_fit
 from ._hypotests import (
@@ -574,7 +574,7 @@ __all__ = [
     "trim1",
     "trim_mean",
     "trimboth",
-    # "truncate",
+    "truncate",
     "truncexpon",
     "truncnorm",
     "truncpareto",
