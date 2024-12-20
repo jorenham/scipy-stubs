@@ -1,14 +1,16 @@
 # mypy: disable-error-code="explicit-override"
+# pyright: reportUnannotatedClassAttribute=false
 
 import abc
 from collections.abc import Mapping, Sequence, Set as AbstractSet
-from typing import Any, Final, Literal as L, TypeAlias, overload
-from typing_extensions import LiteralString, TypeVar, override
+from typing import Any, ClassVar, Final, Generic, Literal as L, TypeAlias, overload
+from typing_extensions import LiteralString, Self, TypeVar, override
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
 import optype.typing as opt
-from scipy._typing import ToRNG
+from scipy._typing import AnyShape, ToRNG
 from ._probability_distribution import _BaseDistribution
 
 # TODO:
@@ -157,41 +159,159 @@ class _Parameterization:
 
 ###
 
-class ContinuousDistribution(_BaseDistribution):
+_XT_co = TypeVar("_XT_co", bound=np.number[Any], default=np.float64, covariant=True)
+_InexactT_co = TypeVar("_InexactT_co", bound=np.inexact[Any], default=np.float64, covariant=True)
+_ShapeT0_co = TypeVar("_ShapeT0_co", bound=tuple[int, ...], default=tuple[int, ...], covariant=True)
+_DistrT_co = TypeVar(
+    "_DistrT_co",
+    bound=ContinuousDistribution[np.number[Any]],
+    default=ContinuousDistribution[np.number[Any]],
+    covariant=True,
+)
+
+# placeholder for `matplotlib.axes.Axes`
+_Axes: TypeAlias = object
+_AxesT = TypeVar("_AxesT", bound=_Axes, default=Any)
+
+_PlotQuantity: TypeAlias = L["x", "cdf", "ccdf", "icdf", "iccdf", "logcdf", "logccdf", "ilogcdf", "ilogccdf"]
+
+_JustFloat: TypeAlias = opt.Just[float] | np.floating[Any]
+_Null: TypeAlias = opt.Just[object]
+
+_null: Final[_Null] = ...
+
+class ContinuousDistribution(_BaseDistribution[_XT_co, _ShapeT0_co], Generic[_XT_co, _ShapeT0_co]):
+    __array_priority__: ClassVar[float] = 1
+
+    @property
+    def tol(self, /) -> float | np.float64 | _Null | None: ...
+    @tol.setter
+    def tol(self, tol: float | np.float64 | _Null | None, /) -> None: ...
+    #
+    @property
+    def validation_policy(self, /) -> _ValidationPolicy: ...
+    @validation_policy.setter
+    def validation_policy(self, validation_policy: _ValidationPolicy, /) -> None: ...
+    #
+    @property
+    def cache_policy(self, /) -> _CachePolicy: ...
+    @cache_policy.setter
+    def cache_policy(self, cache_policy: _CachePolicy, /) -> None: ...
+    #
     def __init__(
         self,
         /,
         *,
-        tol: opt.Just[float],
+        tol: opt.Just[float] | _Null = ...,
         validation_policy: _ValidationPolicy = None,
         cache_policy: _CachePolicy = None,
     ) -> None: ...
+
+    #
+    def __neg__(self, /) -> ShiftedScaledDistribution[Self, _ShapeT0_co]: ...
+    def __abs__(self, /) -> FoldedDistribution[Self, _ShapeT0_co]: ...
+
+    # TODO(jorenham): Accept `onp.ToFloatND`?
+    def __add__(self, rshift: onp.ToFloat, /) -> ShiftedScaledDistribution[Self, _ShapeT0_co]: ...
+    def __sub__(self, lshift: onp.ToFloat, /) -> ShiftedScaledDistribution[Self, _ShapeT0_co]: ...
+    def __mul__(self, scale: onp.ToFloat, /) -> ShiftedScaledDistribution[Self, _ShapeT0_co]: ...
+    def __truediv__(self, iscale: onp.ToFloat, /) -> ShiftedScaledDistribution[Self, _ShapeT0_co]: ...
+    def __pow__(self, exp: onp.ToInt, /) -> MonotonicTransformedDistribution[Self, _ShapeT0_co]: ...
+    __radd__ = __add__
+    __rsub__ = __sub__
+    __rmul__ = __mul__
+    __rtruediv__ = __truediv__
+    __rpow__ = __pow__
+
+    #
     def reset_cache(self, /) -> None: ...
 
-class TransformedDistribution(ContinuousDistribution):
+    #
+    def plot(
+        self,
+        x: str = "x",
+        y: str = "pdf",
+        *,
+        t: tuple[_PlotQuantity, _JustFloat, _JustFloat] = ("cdf", 0.0005, 0.9995),
+        ax: _AxesT | None = None,
+    ) -> _AxesT: ...
+
+    #
+    @overload
+    def llf(self, sample: onp.ToFloat | onp.ToFloatND, /, *, axis: None) -> np.float64: ...
+    @overload
+    def llf(self, sample: onp.ToFloat | onp.ToFloatStrict1D, /, *, axis: AnyShape | None = -1) -> np.float64: ...
+    @overload
+    def llf(self, sample: onp.ToFloatStrict2D, /, *, axis: op.CanIndex | tuple[op.CanIndex] = -1) -> onp.Array1D[np.float64]: ...
+    @overload
+    def llf(self, sample: onp.ToFloatStrict2D, /, *, axis: tuple[op.CanIndex, op.CanIndex]) -> np.float64: ...
+    @overload
+    def llf(self, sample: onp.ToFloatStrict3D, /, *, axis: op.CanIndex | tuple[op.CanIndex] = -1) -> onp.Array2D[np.float64]: ...
+    @overload
+    def llf(self, sample: onp.ToFloatStrict3D, /, *, axis: tuple[op.CanIndex, op.CanIndex]) -> onp.Array1D[np.float64]: ...
+    @overload
+    def llf(self, sample: onp.ToFloatStrict3D, /, *, axis: tuple[op.CanIndex, op.CanIndex, op.CanIndex]) -> np.float64: ...
+    @overload
+    def llf(
+        self,
+        sample: onp.ToFloat | onp.ToFloatND,
+        /,
+        *,
+        axis: AnyShape | None = -1,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+
+    #
+
+class TransformedDistribution(ContinuousDistribution[np.float64, _ShapeT0_co], Generic[_DistrT_co, _ShapeT0_co]):
     # TODO(jorenham)
     ...
 
-class TruncatedDistribution(TransformedDistribution):
+class TruncatedDistribution(TransformedDistribution[_DistrT_co, _ShapeT0_co], Generic[_DistrT_co, _ShapeT0_co]):
     # TODO(jorenham)
     ...
 
-class ShiftedScaledDistribution(TransformedDistribution):
+class ShiftedScaledDistribution(TransformedDistribution[_DistrT_co, _ShapeT0_co], Generic[_DistrT_co, _ShapeT0_co]):
     # TODO(jorenham)
     ...
 
-class OrderStatisticDistribution(TransformedDistribution):
+class OrderStatisticDistribution(TransformedDistribution[_DistrT_co, _ShapeT0_co], Generic[_DistrT_co, _ShapeT0_co]):
     # TODO(jorenham)
     ...
 
-class MonotonicTransformedDistribution(TransformedDistribution):
+class MonotonicTransformedDistribution(TransformedDistribution[_DistrT_co, _ShapeT0_co], Generic[_DistrT_co, _ShapeT0_co]):
     # TODO(jorenham)
     ...
 
-class FoldedDistribution(TransformedDistribution):
+class FoldedDistribution(TransformedDistribution[_DistrT_co, _ShapeT0_co], Generic[_DistrT_co, _ShapeT0_co]):
     # TODO(jorenham)
     ...
 
-class Mixture(_BaseDistribution):
-    # TODO(jorenham)
-    ...
+class Mixture(_BaseDistribution[_InexactT_co, tuple[()]], Generic[_InexactT_co]):
+    _shape: tuple[()]
+    _dtype: np.dtype[_InexactT_co]
+    _components: Sequence[ContinuousDistribution[_InexactT_co, tuple[()]]]
+    _weights: onp.Array1D[_InexactT_co]
+    validation_policy: None
+
+    @property
+    def components(self, /) -> list[ContinuousDistribution[_InexactT_co, tuple[()]]]: ...
+    @property
+    def weights(self, /) -> onp.Array1D[_InexactT_co]: ...
+
+    #
+    def __init__(
+        self,
+        /,
+        components: Sequence[ContinuousDistribution[_InexactT_co, tuple[()]]],
+        *,
+        weights: onp.ToFloat1D | None = None,
+    ) -> None: ...
+
+    #
+    @override
+    def kurtosis(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+        self,
+        /,
+        *,
+        method: L["formula", "general", "transform", "normalize", "cache"] | None = None,
+    ) -> np.float64 | np.longdouble: ...

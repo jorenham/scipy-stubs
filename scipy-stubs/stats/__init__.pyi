@@ -5,6 +5,9 @@ from ._bws_test import bws_test
 from ._censored_data import CensoredData
 from ._correlation import chatterjeexi
 from ._covariance import Covariance
+
+# TODO(jorenham)
+from ._distribution_infrastructure import Mixture  # , abs, exp, log, make_distribution, order_statistic, truncate
 from ._entropy import differential_entropy, entropy
 from ._fit import fit, goodness_of_fit
 from ._hypotests import (
@@ -72,6 +75,7 @@ from ._multivariate import (
     vonmises_fisher,
     wishart,
 )
+from ._new_distributions import Normal, Uniform
 from ._page_trend_test import page_trend_test
 from ._resampling import (
     BootstrapMethod,
@@ -302,9 +306,13 @@ __all__ = [
     "Covariance",
     "DegenerateDataWarning",
     "FitError",
+    "Mixture",
     "MonteCarloMethod",
     "NearConstantInputWarning",
+    "Normal",
     "PermutationMethod",
+    "Uniform",
+    # "abs",
     "alexandergovern",
     "alpha",
     "anderson",
@@ -371,6 +379,7 @@ __all__ = [
     "entropy",
     "epps_singleton_2samp",
     "erlang",
+    # "exp",
     "expectile",
     "expon",
     "exponnorm",
@@ -450,6 +459,7 @@ __all__ = [
     "levy_stable",
     "linregress",
     "lmoment",
+    # "log",
     "loggamma",
     "logistic",
     "loglaplace",
@@ -458,6 +468,7 @@ __all__ = [
     "logser",
     "loguniform",
     "lomax",
+    # "make_distribution",
     "mannwhitneyu",
     "matrix_normal",
     "maxwell",
@@ -493,6 +504,7 @@ __all__ = [
     "normaltest",
     "norminvgauss",
     "obrientransform",
+    # "order_statistic",
     "ortho_group",
     "page_trend_test",
     "pareto",
@@ -560,6 +572,7 @@ __all__ = [
     "trim1",
     "trim_mean",
     "trimboth",
+    # "truncate",
     "truncexpon",
     "truncnorm",
     "truncpareto",
@@ -598,13 +611,4 @@ __all__ = [
     "zipfian",
     "zmap",
     "zscore",
-    # "Mixture",
-    # "Normal",
-    # "Uniform",
-    # "abs",
-    # "exp",
-    # "log",
-    # "make_distribution",
-    # "order_statistic",
-    # "truncate",
 ]
