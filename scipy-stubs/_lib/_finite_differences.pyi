@@ -7,6 +7,11 @@ import optype.numpy as onp
 
 _T = TypeVar("_T", bound=np.floating[Any] | onp.ArrayND[np.floating[Any]])
 
+###
+
+def _central_diff_weights(Np: int, ndiv: int = 1) -> onp.Array1D[np.float64]: ...
+
+#
 @overload
 def _derivative(
     func: Callable[Concatenate[float, ...], onp.ToFloat],
