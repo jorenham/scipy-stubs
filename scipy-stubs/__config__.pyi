@@ -2,30 +2,116 @@
 # It contains system_info results at the time of building this package.
 from enum import Enum
 from types import ModuleType
-from typing import Final, Literal, TypedDict, overload
+from typing import Final, Literal, TypedDict, TypeVar, overload, type_check_only
+from typing_extensions import NotRequired
 
 __all__ = ["show"]
+
+_ConfigCompilerDict = TypedDict(
+    "_ConfigCompilerDict",
+    {
+        "name": str,
+        "version": str,
+        "linker": str,
+        "commands": str,
+        "args": NotRequired[str],
+        "linker args": NotRequired[str],
+    },
+)
+_ConfigCompilerFortranDict = TypedDict(
+    "_ConfigCompilerFortranDict",
+    {
+        "version": str,
+        "include directory": str,
+    },
+)
+_ConfigCompilersDict = TypedDict(
+    "_ConfigCompilersDict",
+    {
+        "c": _ConfigCompilerDict,
+        "cython": _ConfigCompilerDict,
+        "c++": _ConfigCompilerDict,
+        "fortran": _ConfigCompilerDict,
+        "pythran": _ConfigCompilerFortranDict,
+    },
+)
+
+@type_check_only
+class _ConfigMachineInformationValueDict(TypedDict):
+    cpu: str
+    family: str
+    endian: Literal["little", "big"]
+    system: str
+
+_ConfigMachineInformationDict = TypedDict(
+    "_ConfigMachineInformationDict",
+    {
+        "host": _ConfigMachineInformationValueDict,
+        "build": _ConfigMachineInformationValueDict,
+        "cross-compiled": bool,
+    },
+)
+_ConfigBuildDependencyDict = TypedDict(
+    "_ConfigBuildDependencyDict",
+    {
+        "name": str,
+        "found": bool,
+        "version": str,
+        "detection method": str,
+        "include directory": str,
+        "lib directory": str,
+        "openblas configuration": str,
+        "pc file directory": str,
+    },
+)
+_ConfigBuildDependencyPybind11Dict = TypedDict(
+    "_ConfigBuildDependencyPybind11Dict",
+    {
+        "name": Literal["pybind11"],
+        "version": str,
+        "detection method": NotRequired[str],
+        "include directory": str,
+    },
+)
+
+@type_check_only
+class _ConfigBuildDependenciesDict(TypedDict):
+    blas: _ConfigBuildDependencyDict
+    lapack: _ConfigBuildDependencyDict
+    pybind11: _ConfigBuildDependencyPybind11Dict
+
+@type_check_only
+class _ConfigPythonInformationDict(TypedDict):
+    path: str
+    version: Literal["3.10", "3.11", "3.12", "3.13", "3.14"]
 
 _ConfigDict = TypedDict(
     "_ConfigDict",
     {
-        "Compilers": dict[str, dict[str, str]],
-        "Machine Information": dict[str, dict[str, str] | bool],
-        "Build Dependencies": dict[str, dict[str, str | bool]],
-        "Python Information": dict[str, str],
+        "Compilers": _ConfigCompilersDict,
+        "Machine Information": _ConfigMachineInformationDict,
+        "Build Dependencies": _ConfigBuildDependenciesDict,
+        "Python Information": _ConfigPythonInformationDict,
     },
 )
 
-_built_with_meson: Final[bool]
+###
+
+_built_with_meson: Final[bool] = ...
+CONFIG: Final[_ConfigDict] = ...
 
 class DisplayModes(Enum):
     stdout = "stdout"
     dicts = "dicts"
 
-CONFIG: Final[_ConfigDict]
-
-def _check_pyyaml() -> ModuleType: ...
+#
 @overload
-def show(mode: Literal["stdout"] = "stdout") -> _ConfigDict: ...
+def show(mode: Literal["stdout"] = "stdout") -> None: ...
 @overload
 def show(mode: Literal["dicts"]) -> _ConfigDict: ...
+
+#
+_ConfigT = TypeVar("_ConfigT", bound=_ConfigDict)
+
+def _cleanup(d: _ConfigT) -> _ConfigT: ...
+def _check_pyyaml() -> ModuleType: ...

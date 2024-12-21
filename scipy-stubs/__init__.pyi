@@ -1,6 +1,5 @@
 from collections.abc import Sequence
-from typing import Final, Literal
-from typing_extensions import LiteralString
+from typing import Final, Literal, TypeAlias
 
 from numpy import __version__ as __numpy_version__  # noqa: ICN003
 from . import (
@@ -53,32 +52,33 @@ __all__ = [
     "stats",
     "test",
 ]
-np_minversion: Final[LiteralString]
-np_maxversion: Final[LiteralString]
 
-test: Final[PytestTester]
+###
 
-submodules: Final[
-    Sequence[
-        Literal[
-            "cluster",
-            "constants",
-            "datasets",
-            "differentiate",
-            "fft",
-            "fftpack",
-            "integrate",
-            "interpolate",
-            "io",
-            "linalg",
-            "ndimage",
-            "odr",
-            "optimize",
-            "signal",
-            "sparse",
-            "spatial",
-            "special",
-            "stats",
-        ]
-    ]
+_SubModule: TypeAlias = Literal[
+    "cluster",
+    "constants",
+    "datasets",
+    "differentiate",
+    "fft",
+    "fftpack",
+    "integrate",
+    "interpolate",
+    "io",
+    "linalg",
+    "ndimage",
+    "odr",
+    "optimize",
+    "signal",
+    "sparse",
+    "spatial",
+    "special",
+    "stats",
 ]
+
+###
+
+np_minversion: Final = "1.23.5"  # undocumented
+np_maxversion: Final = "2.5.0"  # undocumented
+test: Final[PytestTester] = ...  # undocumented
+submodules: Final[Sequence[_SubModule]] = ...  # undocumented
