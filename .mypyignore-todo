@@ -1,5 +1,0 @@
-scipy\.stats\.__all__
-scipy\.stats\.(Uniform|Normal|Mixture)
-scipy\.stats\.(abs|truncate|exp|log)
-scipy\.stats\.make_distribution
-scipy\.stats\.order_statistic

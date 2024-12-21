@@ -28,6 +28,9 @@ scipy\.(_lib|integrate|stats)\.((_|\w)+\.)+__replace__  # `NamedTuple` on `pytho
 # stubtest doesn't understand `if sys.version_info >= _: ...` blocks
 scipy\.sparse\.(\w+)\.warn
 
+# annoying and useless __new__
+scipy\.stats\.(_new_distributions\.)?Normal\.__new__
+
 # mypy fails recognize type-check-only ufunc subtypes as ufuncs
 # https://github.com/KotlinIsland/basedmypy/issues/816
 scipy\.special\._basic\.digamma

@@ -75,18 +75,7 @@ commands = [
 [env.basedpyright]
 description = "basedpyright"
 dependency_groups = ["typecheck"]
-commands = [
-    [
-        "uv",
-        "pip",
-        "freeze",
-    ],
-    [
-        "basedpyright",
-        "scipy-stubs",
-        "codegen",
-    ],
-]
+commands = [["uv", "pip", "freeze"], ["basedpyright", "scipy-stubs", "codegen"]]
 
 [env.min-versions-test]
 description = "min versions tests"
@@ -140,7 +129,6 @@ commands = [
         "stubtest",
         "--mypy-config-file=pyproject.toml",
         "--allowlist=.mypyignore",
-        "--allowlist=.mypyignore-todo",
         "--ignore-unused-allowlist",
         "scipy",
     ],
@@ -168,19 +156,7 @@ commands = [
 [env.pyright]
 description = "Run pyright"
 dependency_groups = ["typecheck"]
-commands = [
-    [
-        "uv",
-        "pip",
-        "freeze",
-    ],
-    [
-        "uv",
-        "run",
-        "--no-sync",
-        "basedpyright",
-    ],
-]
+commands = [["uv", "pip", "freeze"], ["uv", "run", "--no-sync", "basedpyright"]]
 
 [env.typetest]
 description = "Run all type tests"
