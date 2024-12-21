@@ -1,4 +1,2 @@
 scipy\.stats\.__all__
 scipy\.stats\.(Normal|Uniform)
-scipy\.stats\.(_distribution_infrastructure\.)?(make_distribution|order_statistic)
-scipy\.stats\._distribution_infrastructure\.(Folded|OrderStatistic)Distribution\.__init__

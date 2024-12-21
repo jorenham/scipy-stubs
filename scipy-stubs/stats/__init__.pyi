@@ -5,9 +5,7 @@ from ._bws_test import bws_test
 from ._censored_data import CensoredData
 from ._correlation import chatterjeexi
 from ._covariance import Covariance
-
-# TODO(jorenham)
-from ._distribution_infrastructure import Mixture, abs, exp, log, truncate  # make_distribution, order_statistic
+from ._distribution_infrastructure import Mixture, abs, exp, log, make_distribution, order_statistic, truncate
 from ._entropy import differential_entropy, entropy
 from ._fit import fit, goodness_of_fit
 from ._hypotests import (
@@ -470,7 +468,7 @@ __all__ = [
     "logser",
     "loguniform",
     "lomax",
-    # "make_distribution",
+    "make_distribution",
     "mannwhitneyu",
     "matrix_normal",
     "maxwell",
@@ -506,7 +504,7 @@ __all__ = [
     "normaltest",
     "norminvgauss",
     "obrientransform",
-    # "order_statistic",
+    "order_statistic",
     "ortho_group",
     "page_trend_test",
     "pareto",

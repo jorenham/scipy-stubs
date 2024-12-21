@@ -62,25 +62,20 @@ class _ProbabilityDistribution(Generic[_XT_co], metaclass=abc.ABCMeta):
     def mode(self, /, *, method: _ModeMethod) -> _XT_co | onp.ArrayND[_XT_co]: ...
     @abc.abstractmethod
     def sample(
-        self,
-        /,
-        shape: int | tuple[int, ...],
-        *,
-        method: _SampleMethod,
-        rng: _ToQRNG,
+        self, /, shape: int | tuple[int, ...], *, method: _SampleMethod, rng: _ToQRNG
     ) -> _XT_co | onp.Array[Any, _XT_co]: ...  # `Any` shape is needed on `numpy<2.1`
 
     #
     @abc.abstractmethod
-    def mean(self, /, *, method: _RMomentMethod) -> _Float | _FloatND: ...
+    def mean(self, /, *, method: _RMomentMethod) -> _XT_co | onp.ArrayND[_XT_co]: ...
     @abc.abstractmethod
-    def variance(self, /, *, method: _CMomentMethod) -> _Float | _FloatND: ...
+    def variance(self, /, *, method: _CMomentMethod) -> _XT_co | onp.ArrayND[_XT_co]: ...
     @abc.abstractmethod
-    def standard_deviation(self, /, *, method: _CMomentMethod) -> _Float | _FloatND: ...
+    def standard_deviation(self, /, *, method: _CMomentMethod) -> _XT_co | onp.ArrayND[_XT_co]: ...
     @abc.abstractmethod
-    def skewness(self, /, *, method: _SMomentMethod) -> _Float | _FloatND: ...
+    def skewness(self, /, *, method: _SMomentMethod) -> _XT_co | onp.ArrayND[_XT_co]: ...
     @abc.abstractmethod
-    def kurtosis(self, /, *, method: _SMomentMethod) -> _Float | _FloatND: ...
+    def kurtosis(self, /, *, method: _SMomentMethod) -> _XT_co | onp.ArrayND[_XT_co]: ...
 
     #
     @overload
@@ -203,45 +198,37 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
 
     #
     @overload
-    def mean(self: _Self0, /, *, method: _RMomentMethod = None) -> _Float: ...
+    def mean(self: _Self0[_XT], /, *, method: _RMomentMethod = None) -> _XT: ...
     @overload
-    def mean(self: _Self[Any, _ShapeT], /, *, method: _RMomentMethod = None) -> _FloatND[_ShapeT]: ...
+    def mean(self: _Self[_XT, _ShapeT], /, *, method: _RMomentMethod = None) -> onp.ArrayND[_XT, _ShapeT]: ...
 
     #
     @overload
-    def variance(self: _Self0, /, *, method: _CMomentMethod = None) -> _Float: ...
+    def variance(self: _Self0[_XT], /, *, method: _CMomentMethod = None) -> _XT: ...
     @overload
-    def variance(self: _Self[Any, _ShapeT], /, *, method: _CMomentMethod = None) -> _FloatND[_ShapeT]: ...
+    def variance(self: _Self[_XT, _ShapeT], /, *, method: _CMomentMethod = None) -> onp.ArrayND[_XT, _ShapeT]: ...
 
     #
     @overload
-    def standard_deviation(self: _Self0, /, *, method: _CMomentMethod = None) -> _Float: ...
+    def standard_deviation(self: _Self0[_XT], /, *, method: _CMomentMethod = None) -> _XT: ...
     @overload
-    def standard_deviation(self: _Self[Any, _ShapeT], /, *, method: _CMomentMethod = None) -> _FloatND[_ShapeT]: ...
+    def standard_deviation(self: _Self[_XT, _ShapeT], /, *, method: _CMomentMethod = None) -> onp.ArrayND[_XT, _ShapeT]: ...
 
     #
     @overload
-    def skewness(self: _Self0, /, *, method: _SMomentMethod = None) -> _Float: ...
+    def skewness(self: _Self0[_XT], /, *, method: _SMomentMethod = None) -> _XT: ...
     @overload
-    def skewness(self: _Self[Any, _ShapeT], /, *, method: _SMomentMethod = None) -> _FloatND[_ShapeT]: ...
+    def skewness(self: _Self[_XT, _ShapeT], /, *, method: _SMomentMethod = None) -> onp.ArrayND[_XT, _ShapeT]: ...
 
     #
     @overload
     def kurtosis(
-        self: _Self0,
-        /,
-        *,
-        method: _SMomentMethod = None,
-        convention: _KurtosisConvention = "non-excess",
-    ) -> _Float: ...
+        self: _Self0[_XT], /, *, method: _SMomentMethod = None, convention: _KurtosisConvention = "non-excess"
+    ) -> _XT: ...
     @overload
     def kurtosis(
-        self: _Self[Any, _ShapeT],
-        /,
-        *,
-        method: _SMomentMethod = None,
-        convention: _KurtosisConvention = "non-excess",
-    ) -> _FloatND[_ShapeT]: ...
+        self: _Self[_XT, _ShapeT], /, *, method: _SMomentMethod = None, convention: _KurtosisConvention = "non-excess"
+    ) -> onp.ArrayND[_XT, _ShapeT]: ...
 
     #
     @overload
@@ -256,48 +243,23 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     def moment(self: _Self0, /, order: onp.ToInt = 1, *, kind: L["standardized"], method: _SMomentMethod = None) -> _Float: ...
     @overload
     def moment(
-        self: _Self[Any, _ShapeT],
-        /,
-        order: onp.ToInt = 1,
-        kind: L["raw"] = "raw",
-        *,
-        method: _RMomentMethod = None,
+        self: _Self[Any, _ShapeT], /, order: onp.ToInt = 1, kind: L["raw"] = "raw", *, method: _RMomentMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload
     def moment(
-        self: _Self[Any, _ShapeT],
-        /,
-        order: onp.ToInt,
-        kind: L["central"],
-        *,
-        method: _CMomentMethod = None,
+        self: _Self[Any, _ShapeT], /, order: onp.ToInt, kind: L["central"], *, method: _CMomentMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload
     def moment(
-        self: _Self[Any, _ShapeT],
-        /,
-        order: onp.ToInt = 1,
-        *,
-        kind: L["central"],
-        method: _CMomentMethod = None,
+        self: _Self[Any, _ShapeT], /, order: onp.ToInt = 1, *, kind: L["central"], method: _CMomentMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload
     def moment(
-        self: _Self[Any, _ShapeT],
-        /,
-        order: onp.ToInt,
-        kind: L["standardized"],
-        *,
-        method: _SMomentMethod = None,
+        self: _Self[Any, _ShapeT], /, order: onp.ToInt, kind: L["standardized"], *, method: _SMomentMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload
     def moment(  # pyright: ignore[reportIncompatibleMethodOverride]  # pyright false positive bug
-        self: _Self[Any, _ShapeT],
-        /,
-        order: onp.ToInt = 1,
-        *,
-        kind: L["standardized"],
-        method: _SMomentMethod = None,
+        self: _Self[Any, _ShapeT], /, order: onp.ToInt = 1, *, kind: L["standardized"], method: _SMomentMethod = None
     ) -> _FloatND[_ShapeT]: ...
 
     #
