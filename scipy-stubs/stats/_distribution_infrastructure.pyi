@@ -33,8 +33,11 @@ _ShapeT0_co = TypeVar("_ShapeT0_co", bound=tuple[int, ...], default=tuple[int, .
 
 _CDistT0 = TypeVar("_CDistT0", bound=_CDist0)
 _CDistT1 = TypeVar("_CDistT1", bound=_CDist[tuple[int]])
+_CDistT_1 = TypeVar("_CDistT_1", bound=_CDist[onp.AtMost1D])
 _CDistT2 = TypeVar("_CDistT2", bound=_CDist[tuple[int, int]])
+_CDistT_2 = TypeVar("_CDistT_2", bound=_CDist[onp.AtMost2D])
 _CDistT3 = TypeVar("_CDistT3", bound=_CDist[tuple[int, int, int]])
+_CDistT_3 = TypeVar("_CDistT_3", bound=_CDist[onp.AtMost3D])
 _CDistT = TypeVar("_CDistT", bound=ContinuousDistribution)
 _CDistT_co = TypeVar("_CDistT_co", bound=ContinuousDistribution, default=ContinuousDistribution, covariant=True)
 
@@ -234,34 +237,131 @@ class ContinuousDistribution(_BaseDistribution[_FloatingT_co, _ShapeT0_co], Gene
     ) -> None: ...
 
     #
-    def _update_parameters(
-        self,
-        /,
-        *,
-        validation_policy: _ValidationPolicy = None,
-        **params: onp.ToFloat | onp.ToFloatND,
-    ) -> None: ...
-
-    #
     def __neg__(self, /) -> ShiftedScaledDistribution[Self, _FloatingT_co, _ShapeT0_co]: ...
     def __abs__(self, /) -> FoldedDistribution[Self, _FloatingT_co, _ShapeT0_co]: ...
 
-    # TODO(jorenham): Accept `onp.ToFloatND`?
-    def __add__(self, rshift: onp.ToFloat, /) -> ShiftedScaledDistribution[Self, _FloatingT_co, _ShapeT0_co]: ...
-    def __sub__(self, lshift: onp.ToFloat, /) -> ShiftedScaledDistribution[Self, _FloatingT_co, _ShapeT0_co]: ...
-    def __mul__(self, scale: onp.ToFloat, /) -> ShiftedScaledDistribution[Self, _FloatingT_co, _ShapeT0_co]: ...
-    def __truediv__(self, iscale: onp.ToFloat, /) -> ShiftedScaledDistribution[Self, _FloatingT_co, _ShapeT0_co]: ...
-    def __pow__(self, exp: onp.ToInt, /) -> MonotonicTransformedDistribution[Self, _ShapeT0_co]: ...
+    #
+    @overload
+    def __add__(
+        self, rshift: float | np.integer[Any] | np.bool_, /
+    ) -> ShiftedScaledDistribution[Self, np.float64 | _FloatingT_co, _ShapeT0_co]: ...
+    @overload
+    def __add__(self, rshift: _FloatingT, /) -> ShiftedScaledDistribution[Self, _FloatingT | _FloatingT_co, _ShapeT0_co]: ...
+    @overload
+    def __add__(self, rshift: onp.ToFloat, /) -> ShiftedScaledDistribution[Self, np.floating[Any], _ShapeT0_co]: ...
+    @overload
+    def __add__(
+        self: _CDistT0, rshift: onp.CanArrayND[_FloatingT, _ShapeT0], /
+    ) -> ShiftedScaledDistribution[_CDistT0, _FloatingT | _FloatingT_co, _ShapeT0]: ...
+    @overload
+    def __add__(
+        self: _CDistT_1, rshift: onp.ToFloatStrict1D, /
+    ) -> ShiftedScaledDistribution[_CDistT_1, np.floating[Any], tuple[int]]: ...
+    @overload
+    def __add__(
+        self: _CDistT_2, rshift: onp.ToFloatStrict2D, /
+    ) -> ShiftedScaledDistribution[_CDistT_2, np.floating[Any], tuple[int, int]]: ...
+    @overload
+    def __add__(
+        self: _CDistT_3, rshift: onp.ToFloatStrict3D, /
+    ) -> ShiftedScaledDistribution[_CDistT_3, np.floating[Any], tuple[int, int, int]]: ...
+    @overload
+    def __add__(self, rshift: onp.ToFloatND, /) -> ShiftedScaledDistribution[Self]: ...
     __radd__ = __add__
+
+    #
+    @overload
+    def __sub__(
+        self, lshift: float | np.integer[Any] | np.bool_, /
+    ) -> ShiftedScaledDistribution[Self, np.float64 | _FloatingT_co, _ShapeT0_co]: ...
+    @overload
+    def __sub__(self, lshift: _FloatingT, /) -> ShiftedScaledDistribution[Self, _FloatingT | _FloatingT_co, _ShapeT0_co]: ...
+    @overload
+    def __sub__(self, lshift: onp.ToFloat, /) -> ShiftedScaledDistribution[Self, np.floating[Any], _ShapeT0_co]: ...
+    @overload
+    def __sub__(
+        self: _CDistT0, lshift: onp.CanArrayND[_FloatingT, _ShapeT0], /
+    ) -> ShiftedScaledDistribution[_CDistT0, _FloatingT | _FloatingT_co, _ShapeT0]: ...
+    @overload
+    def __sub__(
+        self: _CDistT_1, lshift: onp.ToFloatStrict1D, /
+    ) -> ShiftedScaledDistribution[_CDistT_1, np.floating[Any], tuple[int]]: ...
+    @overload
+    def __sub__(
+        self: _CDistT_2, lshift: onp.ToFloatStrict2D, /
+    ) -> ShiftedScaledDistribution[_CDistT_2, np.floating[Any], tuple[int, int]]: ...
+    @overload
+    def __sub__(
+        self: _CDistT_3, lshift: onp.ToFloatStrict3D, /
+    ) -> ShiftedScaledDistribution[_CDistT_3, np.floating[Any], tuple[int, int, int]]: ...
+    @overload
+    def __sub__(self, lshift: onp.ToFloatND, /) -> ShiftedScaledDistribution[Self]: ...
     __rsub__ = __sub__
+
+    #
+    @overload
+    def __mul__(
+        self, scale: float | np.integer[Any] | np.bool_, /
+    ) -> ShiftedScaledDistribution[Self, np.float64 | _FloatingT_co, _ShapeT0_co]: ...
+    @overload
+    def __mul__(self, scale: _FloatingT, /) -> ShiftedScaledDistribution[Self, _FloatingT | _FloatingT_co, _ShapeT0_co]: ...
+    @overload
+    def __mul__(self, scale: onp.ToFloat, /) -> ShiftedScaledDistribution[Self, np.floating[Any], _ShapeT0_co]: ...
+    @overload
+    def __mul__(
+        self: _CDistT0, scale: onp.CanArrayND[_FloatingT, _ShapeT0], /
+    ) -> ShiftedScaledDistribution[_CDistT0, _FloatingT | _FloatingT_co, _ShapeT0]: ...
+    @overload
+    def __mul__(
+        self: _CDistT_1, scale: onp.ToFloatStrict1D, /
+    ) -> ShiftedScaledDistribution[_CDistT_1, np.floating[Any], tuple[int]]: ...
+    @overload
+    def __mul__(
+        self: _CDistT_2, scale: onp.ToFloatStrict2D, /
+    ) -> ShiftedScaledDistribution[_CDistT_2, np.floating[Any], tuple[int, int]]: ...
+    @overload
+    def __mul__(
+        self: _CDistT_3, scale: onp.ToFloatStrict3D, /
+    ) -> ShiftedScaledDistribution[_CDistT_3, np.floating[Any], tuple[int, int, int]]: ...
+    @overload
+    def __mul__(self, scale: onp.ToFloatND, /) -> ShiftedScaledDistribution[Self]: ...
     __rmul__ = __mul__
+
+    #
+    @overload
+    def __truediv__(
+        self, iscale: float | np.integer[Any] | np.bool_, /
+    ) -> ShiftedScaledDistribution[Self, np.float64 | _FloatingT_co, _ShapeT0_co]: ...
+    @overload
+    def __truediv__(self, iscale: _FloatingT, /) -> ShiftedScaledDistribution[Self, _FloatingT | _FloatingT_co, _ShapeT0_co]: ...
+    @overload
+    def __truediv__(self, iscale: onp.ToFloat, /) -> ShiftedScaledDistribution[Self, np.floating[Any], _ShapeT0_co]: ...
+    @overload
+    def __truediv__(
+        self: _CDistT0, iscale: onp.CanArrayND[_FloatingT, _ShapeT0], /
+    ) -> ShiftedScaledDistribution[_CDistT0, _FloatingT | _FloatingT_co, _ShapeT0]: ...
+    @overload
+    def __truediv__(
+        self: _CDistT_1, iscale: onp.ToFloatStrict1D, /
+    ) -> ShiftedScaledDistribution[_CDistT_1, np.floating[Any], tuple[int]]: ...
+    @overload
+    def __truediv__(
+        self: _CDistT_2, iscale: onp.ToFloatStrict2D, /
+    ) -> ShiftedScaledDistribution[_CDistT_2, np.floating[Any], tuple[int, int]]: ...
+    @overload
+    def __truediv__(
+        self: _CDistT_3, iscale: onp.ToFloatStrict3D, /
+    ) -> ShiftedScaledDistribution[_CDistT_3, np.floating[Any], tuple[int, int, int]]: ...
+    @overload
+    def __truediv__(self, iscale: onp.ToFloatND, /) -> ShiftedScaledDistribution[Self]: ...
     __rtruediv__ = __truediv__
+
+    #
+    def __pow__(self, exp: onp.ToInt, /) -> MonotonicTransformedDistribution[Self, _ShapeT0_co]: ...
     __rpow__ = __pow__
 
     #
     def reset_cache(self, /) -> None: ...
-
-    #
     def plot(
         self,
         x: _PlotQuantity = "x",
@@ -272,7 +372,7 @@ class ContinuousDistribution(_BaseDistribution[_FloatingT_co, _ShapeT0_co], Gene
     ) -> _AxesT: ...
 
     #
-    # TODO: This will be removed after 1.15.0rc1 (1.15.0rc2 perhaps?): https://github.com/scipy/scipy/pull/22149
+    # NOTE: This will be removed in 1.15.0rc2, see https://github.com/scipy/scipy/pull/22149
     @overload
     def llf(self, sample: onp.ToFloat | onp.ToFloatND, /, *, axis: None) -> _Float: ...
     @overload
@@ -297,8 +397,8 @@ class ContinuousDistribution(_BaseDistribution[_FloatingT_co, _ShapeT0_co], Gene
     def llf(self: _CDist0, sample: onp.ToFloatStrict3D, /, *, axis: tuple[op.CanIndex, op.CanIndex, op.CanIndex]) -> _Float: ...
     @overload
     def llf(
-        self: _CDist[onp.AtLeast1D], sample: onp.ToFloat | onp.ToFloatND, /, *, axis: AnyShape = -1
-    ) -> onp.ArrayND[_Float]: ...
+        self: _CDist[_ShapeT1], sample: onp.ToFloat | onp.ToFloatND, /, *, axis: AnyShape = -1
+    ) -> onp.Array[_ShapeT1, _Float] | onp.ArrayND[_Float]: ...  # the first union type is needed on numpy <2.1
     @overload
     def llf(self, sample: onp.ToFloat | onp.ToFloatND, /, *, axis: AnyShape | None = -1) -> _Float | onp.ArrayND[_Float]: ...
 
@@ -319,37 +419,38 @@ class TransformedDistribution(
         cache_policy: _CachePolicy = None,
     ) -> None: ...
 
-class MonotonicTransformedDistribution(
-    TransformedDistribution[_CDistT_co, np.float64, _ShapeT0_co],
-    Generic[_CDistT_co, _ShapeT0_co],
+class ShiftedScaledDistribution(
+    TransformedDistribution[_CDistT_co, _FloatingT_co, _ShapeT0_co],
+    Generic[_CDistT_co, _FloatingT_co, _ShapeT0_co],
 ):
-    _g: Final[_ElementwiseFunction]
-    _h: Final[_ElementwiseFunction]
-    _dh: Final[_ElementwiseFunction]
-    _logdh: Final[_ElementwiseFunction]
-    _increasing: Final[bool]
-    _repr_pattern: Final[str]
+    _loc_domain: ClassVar[_RealDomain] = ...
+    _loc_param: ClassVar[_RealParameter] = ...
 
-    def __init__(
-        self: MonotonicTransformedDistribution[_CDist[_ShapeT0], _ShapeT0],
-        X: _CDistT_co,
-        /,
-        *args: Never,
-        g: _ElementwiseFunction,
-        h: _ElementwiseFunction,
-        dh: _ElementwiseFunction,
-        logdh: _ElementwiseFunction | None = None,
-        increasing: bool = True,
-        repr_pattern: str | None = None,
-        tol: opt.Just[float] | _Null = ...,
-        validation_policy: _ValidationPolicy = None,
-        cache_policy: _CachePolicy = None,
-    ) -> None: ...
+    _scale_domain: ClassVar[_RealDomain] = ...
+    _scale_param: ClassVar[_RealParameter] = ...
+
+    loc: _ParameterField[_FloatingT_co, _ShapeT0_co]
+    scale: _ParameterField[_FloatingT_co, _ShapeT0_co]
+
+    # TODO(jorenham): override `__[r]{add,sub,mul,truediv}__` so that it returns a `Self` (but maybe with different shape)
+
+class FoldedDistribution(
+    TransformedDistribution[_CDistT_co, _FloatingT_co, _ShapeT0_co],
+    Generic[_CDistT_co, _FloatingT_co, _ShapeT0_co],
+):
+    # TODO(jorenham)
+    ...
 
 class TruncatedDistribution(
     TransformedDistribution[_CDistT_co, _FloatingT_co, _ShapeT0_co],
     Generic[_CDistT_co, _FloatingT_co, _ShapeT0_co],
 ):
+    _lb_domain: ClassVar[_RealDomain] = ...
+    _lb_param: ClassVar[_RealParameter] = ...
+
+    _ub_domain: ClassVar[_RealDomain] = ...
+    _ub_param: ClassVar[_RealParameter] = ...
+
     lb: _ParameterField[_FloatingT_co, _ShapeT0_co]
     ub: _ParameterField[_FloatingT_co, _ShapeT0_co]
 
@@ -414,23 +515,37 @@ class TruncatedDistribution(
         cache_policy: _CachePolicy = None,
     ) -> None: ...
 
-class FoldedDistribution(
-    TransformedDistribution[_CDistT_co, _FloatingT_co, _ShapeT0_co],
-    Generic[_CDistT_co, _FloatingT_co, _ShapeT0_co],
-):
-    # TODO(jorenham)
-    ...
-
-class ShiftedScaledDistribution(
-    TransformedDistribution[_CDistT_co, _FloatingT_co, _ShapeT0_co],
-    Generic[_CDistT_co, _FloatingT_co, _ShapeT0_co],
-):
-    # TODO(jorenham)
-    ...
-
 class OrderStatisticDistribution(TransformedDistribution[_CDistT_co, np.float64, _ShapeT0_co], Generic[_CDistT_co, _ShapeT0_co]):
     # TODO(jorenham)
     ...
+
+# without HKT there's no reasonable way tot determine the floating scalar type
+class MonotonicTransformedDistribution(
+    TransformedDistribution[_CDistT_co, np.floating[Any], _ShapeT0_co],
+    Generic[_CDistT_co, _ShapeT0_co],
+):
+    _g: Final[_ElementwiseFunction]
+    _h: Final[_ElementwiseFunction]
+    _dh: Final[_ElementwiseFunction]
+    _logdh: Final[_ElementwiseFunction]
+    _increasing: Final[bool]
+    _repr_pattern: Final[str]
+
+    def __init__(
+        self: MonotonicTransformedDistribution[_CDist[_ShapeT0], _ShapeT0],
+        X: _CDistT_co,
+        /,
+        *args: Never,
+        g: _ElementwiseFunction,
+        h: _ElementwiseFunction,
+        dh: _ElementwiseFunction,
+        logdh: _ElementwiseFunction | None = None,
+        increasing: bool = True,
+        repr_pattern: str | None = None,
+        tol: opt.Just[float] | _Null = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+    ) -> None: ...
 
 class Mixture(_BaseDistribution[_FloatingT_co, tuple[()]], Generic[_FloatingT_co]):
     _shape: tuple[()]
@@ -484,3 +599,27 @@ def truncate(
     lb: onp.ToFloat | onp.ToFloatND = ...,
     ub: onp.ToFloat | onp.ToFloatND = ...,
 ) -> TruncatedDistribution[_CDistT, np.floating[Any], tuple[int, ...]]: ...
+
+#
+@overload
+def exp(X: _CDistT0, /) -> MonotonicTransformedDistribution[_CDistT0, tuple[()]]: ...
+@overload
+def exp(X: _CDistT1, /) -> MonotonicTransformedDistribution[_CDistT1, tuple[int]]: ...
+@overload
+def exp(X: _CDistT2, /) -> MonotonicTransformedDistribution[_CDistT2, tuple[int, int]]: ...
+@overload
+def exp(X: _CDistT3, /) -> MonotonicTransformedDistribution[_CDistT3, tuple[int, int, int]]: ...
+@overload
+def exp(X: _CDistT, /) -> MonotonicTransformedDistribution[_CDistT, tuple[int, ...]]: ...
+
+#
+@overload
+def log(X: _CDistT0, /) -> MonotonicTransformedDistribution[_CDistT0, tuple[()]]: ...
+@overload
+def log(X: _CDistT1, /) -> MonotonicTransformedDistribution[_CDistT1, tuple[int]]: ...
+@overload
+def log(X: _CDistT2, /) -> MonotonicTransformedDistribution[_CDistT2, tuple[int, int]]: ...
+@overload
+def log(X: _CDistT3, /) -> MonotonicTransformedDistribution[_CDistT3, tuple[int, int, int]]: ...
+@overload
+def log(X: _CDistT, /) -> MonotonicTransformedDistribution[_CDistT, tuple[int, ...]]: ...

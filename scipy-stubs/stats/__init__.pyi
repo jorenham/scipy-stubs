@@ -7,7 +7,7 @@ from ._correlation import chatterjeexi
 from ._covariance import Covariance
 
 # TODO(jorenham)
-from ._distribution_infrastructure import Mixture, truncate  # , abs, exp, log, make_distribution, order_statistic
+from ._distribution_infrastructure import Mixture, exp, log, truncate  # abs, make_distribution, order_statistic
 from ._entropy import differential_entropy, entropy
 from ._fit import fit, goodness_of_fit
 from ._hypotests import (
@@ -381,7 +381,7 @@ __all__ = [
     "entropy",
     "epps_singleton_2samp",
     "erlang",
-    # "exp",
+    "exp",
     "expectile",
     "expon",
     "exponnorm",
@@ -461,7 +461,7 @@ __all__ = [
     "levy_stable",
     "linregress",
     "lmoment",
-    # "log",
+    "log",
     "loggamma",
     "logistic",
     "loglaplace",
