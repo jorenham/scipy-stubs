@@ -73,9 +73,7 @@ from ._multivariate import (
     vonmises_fisher,
     wishart,
 )
-
-# TODO(jorenham)
-# `from ._new_distributions import Normal, Uniform
+from ._new_distributions import Normal, Uniform
 from ._page_trend_test import page_trend_test
 from ._resampling import (
     BootstrapMethod,
@@ -309,9 +307,9 @@ __all__ = [
     "Mixture",
     "MonteCarloMethod",
     "NearConstantInputWarning",
-    # "Normal",
+    "Normal",
     "PermutationMethod",
-    # "Uniform",
+    "Uniform",
     "abs",
     "alexandergovern",
     "alpha",
