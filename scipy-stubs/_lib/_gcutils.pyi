@@ -2,8 +2,14 @@ from contextlib import _GeneratorContextManager
 from collections.abc import Callable
 from typing import Final, ParamSpec, TypeVar
 
+__all__ = ["assert_deallocated", "gc_state", "set_gc_state"]
+
+###
+
 _T = TypeVar("_T")
 _Tss = ParamSpec("_Tss")
+
+###
 
 IS_PYPY: Final[bool] = ...
 
