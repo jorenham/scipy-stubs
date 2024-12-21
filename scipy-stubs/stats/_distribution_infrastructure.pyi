@@ -438,8 +438,56 @@ class FoldedDistribution(
     TransformedDistribution[_CDistT_co, _FloatingT_co, _ShapeT0_co],
     Generic[_CDistT_co, _FloatingT_co, _ShapeT0_co],
 ):
-    # TODO(jorenham)
-    ...
+    @overload
+    def __init__(
+        self: FoldedDistribution[_CDistT0, np.floating[Any], tuple[()]],
+        X: _CDistT0,
+        /,
+        *args: Never,
+        tol: opt.Just[float] | _Null = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: FoldedDistribution[_CDistT1, np.floating[Any], tuple[int]],
+        X: _CDistT1,
+        /,
+        *args: Never,
+        tol: opt.Just[float] | _Null = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: FoldedDistribution[_CDistT2, np.floating[Any], tuple[int, int]],
+        X: _CDistT2,
+        /,
+        *args: Never,
+        tol: opt.Just[float] | _Null = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: FoldedDistribution[_CDistT3, np.floating[Any], tuple[int, int, int]],
+        X: _CDistT3,
+        /,
+        *args: Never,
+        tol: opt.Just[float] | _Null = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: FoldedDistribution[_CDistT, np.floating[Any], tuple[int, ...]],
+        X: _CDistT,
+        /,
+        *args: Never,
+        tol: opt.Just[float] | _Null = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+    ) -> None: ...
 
 class TruncatedDistribution(
     TransformedDistribution[_CDistT_co, _FloatingT_co, _ShapeT0_co],
@@ -515,10 +563,6 @@ class TruncatedDistribution(
         cache_policy: _CachePolicy = None,
     ) -> None: ...
 
-class OrderStatisticDistribution(TransformedDistribution[_CDistT_co, np.float64, _ShapeT0_co], Generic[_CDistT_co, _ShapeT0_co]):
-    # TODO(jorenham)
-    ...
-
 # without HKT there's no reasonable way tot determine the floating scalar type
 class MonotonicTransformedDistribution(
     TransformedDistribution[_CDistT_co, np.floating[Any], _ShapeT0_co],
@@ -546,6 +590,10 @@ class MonotonicTransformedDistribution(
         validation_policy: _ValidationPolicy = None,
         cache_policy: _CachePolicy = None,
     ) -> None: ...
+
+class OrderStatisticDistribution(TransformedDistribution[_CDistT_co, np.float64, _ShapeT0_co], Generic[_CDistT_co, _ShapeT0_co]):
+    # TODO(jorenham)
+    ...
 
 class Mixture(_BaseDistribution[_FloatingT_co, tuple[()]], Generic[_FloatingT_co]):
     _shape: tuple[()]
@@ -599,6 +647,18 @@ def truncate(
     lb: onp.ToFloat | onp.ToFloatND = ...,
     ub: onp.ToFloat | onp.ToFloatND = ...,
 ) -> TruncatedDistribution[_CDistT, np.floating[Any], tuple[int, ...]]: ...
+
+#
+@overload
+def abs(X: _CDistT0, /) -> FoldedDistribution[_CDistT0, np.floating[Any], tuple[()]]: ...
+@overload
+def abs(X: _CDistT1, /) -> FoldedDistribution[_CDistT1, np.floating[Any], tuple[int]]: ...
+@overload
+def abs(X: _CDistT2, /) -> FoldedDistribution[_CDistT2, np.floating[Any], tuple[int, int]]: ...
+@overload
+def abs(X: _CDistT3, /) -> FoldedDistribution[_CDistT3, np.floating[Any], tuple[int, int, int]]: ...
+@overload
+def abs(X: _CDistT, /) -> FoldedDistribution[_CDistT, np.floating[Any], tuple[int, ...]]: ...
 
 #
 @overload

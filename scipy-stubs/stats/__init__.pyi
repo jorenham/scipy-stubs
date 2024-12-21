@@ -7,7 +7,7 @@ from ._correlation import chatterjeexi
 from ._covariance import Covariance
 
 # TODO(jorenham)
-from ._distribution_infrastructure import Mixture, exp, log, truncate  # abs, make_distribution, order_statistic
+from ._distribution_infrastructure import Mixture, abs, exp, log, truncate  # make_distribution, order_statistic
 from ._entropy import differential_entropy, entropy
 from ._fit import fit, goodness_of_fit
 from ._hypotests import (
@@ -314,7 +314,7 @@ __all__ = [
     # "Normal",
     "PermutationMethod",
     # "Uniform",
-    # "abs",
+    "abs",
     "alexandergovern",
     "alpha",
     "anderson",
