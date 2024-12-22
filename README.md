@@ -122,17 +122,37 @@ To install using Conda from the [conda-forge channel](https://anaconda.org/conda
 conda install conda-forge::scipy-stubs
 ```
 
-## Supported static type-checkers
+It's also possible to install both `scipy` and `scipy-stubs` together through the bundled
+[`scipy-typed`](https://anaconda.org/conda-forge/scipy-typed) package:
 
-1. [`basedpyright`](https://github.com/DetachHead/basedpyright) (recommended)
-1. [`basedmypy`](https://github.com/KotlinIsland/basedmypy)
-1. [`pyright`](https://pyright.readthedocs.io/en/latest/index.html)
-1. [`mypy`](https://mypy.readthedocs.io/en/stable/index.html) (not recommended, see [erictraut/mypy_issues](https://github.com/erictraut/mypy_issues))
+```bash
+conda install conda-forge::scipy-typed
+```
 
-For validation and testing, `scipy-stubs` primarily uses [`basedmypy`](https://github.com/KotlinIsland/basedmypy) (a `mypy` fork)
-and [`basedpyright`](https://github.com/DetachHead/basedpyright) (a `pyright` fork).
-They are in generally stricter than `mypy` and `pyright`, so you can assume compatibility with `mypy` and `pyright` as well.
-But if you find that this isn't the case, then don't hesitate to open an issue or submit a pull request.
+### Packages overview
+
+<table>
+  <tr>
+    <th rowspan="2" colspan="2"></th>
+    <th colspan="2">Python packages</th>
+  </tr>
+  <tr>
+    <th><code>scipy-stubs</code></th>
+    <th><code>scipy</code> + <code>scipy-stubs</code></td>
+  </tr>
+  <tr>
+    <th>PyPI</th>
+    <th align="right"><code>pip install {}</code></th>
+    <td><code>scipy-stubs</code></td>
+    <td><code>scipy-stubs[scipy]</code></td>
+  </tr>
+  <tr>
+    <th>conda-forge</th>
+    <th align="right"><code>conda install conda-forge::{}</code></th>
+    <td><code>scipy-stubs</code></td>
+    <td><code>scipy-typed</code></td>
+  </tr>
+</table>
 
 ## Versioning and requirements
 
@@ -150,42 +170,47 @@ At the moment, `scipy-stubs` requires the latest version `optype`.
 
 The exact version requirements are specified in the [`pyproject.toml`](pyproject.toml).
 
+## Supported static type-checkers
+
+1. [`basedpyright`](https://github.com/DetachHead/basedpyright) (recommended)
+1. [`basedmypy`](https://github.com/KotlinIsland/basedmypy)
+1. [`pyright`](https://pyright.readthedocs.io/en/latest/index.html)
+1. [`mypy`](https://mypy.readthedocs.io/en/stable/index.html) (not recommended, see [erictraut/mypy_issues](https://github.com/erictraut/mypy_issues))
+
+For validation and testing, `scipy-stubs` primarily uses [`basedmypy`](https://github.com/KotlinIsland/basedmypy) (a `mypy` fork)
+and [`basedpyright`](https://github.com/DetachHead/basedpyright) (a `pyright` fork).
+They are in generally stricter than `mypy` and `pyright`, so you can assume compatibility with `mypy` and `pyright` as well.
+But if you find that this isn't the case, then don't hesitate to open an issue or submit a pull request.
+
 ## `scipy` coverage
 
 The entire public API of `scipy` is **fully annotated** and **verifiably valid**.
 For the most part, this can also be said about `scipy`'s private API and other internal machinery.
 
-However, a small portion uses `Untyped` (an alias of `Any`) as "placeholder annotations".
-In those cases static type-checkers won't do any type-checking, and won't bother you with errors or warnings.
+### `Untyped`
 
-The following table shows the (subjective) proportion of `scipy-stubs` that is(n't) annotated with `Untyped`, ranging
-from 🌑 (100% `Untyped`) to 🌕 (0% `Untyped`).
+A small portion of the stubs uses the `Untyped` type (an alias of `Any`) as a "placeholder" or "to-do" annotation.
+In those cases static type-checkers won't do any type-checking, and won't bother you with errors or warnings, so you probably
+won't even notice it.
+The current goal of `scipy-stubs` is to replace all `Untyped` annotations with more meaningful ones.
 
-| `scipy._`       | `ruff` & `flake8-pyi` | `stubtest` | `basedmypy` | `basedpyright` | phase |
-| :-------------- | :-------------------: | :--------: | :---------: | :------------: | :---: |
-| `cluster`       |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `constants`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌝   |
-| `datasets`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌝   |
-| `differentiate` |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `fft`           |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `fftpack`       |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `integrate`     |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `interpolate`   |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `io`            |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `linalg`        |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `ndimage`       |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `odr`           |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `optimize`      |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `signal`        |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌔   |
-| `sparse`        |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `spatial`       |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `special`       |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| `stats`         |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
-| *`_lib`*        |          ✔️           |     ✔️     |     ✔️      |       ✔️       |  🌕   |
+At the moment, out of the 21 `scipy.*` subpackages, the only one that still has (some) `Untyped` annotations, is `scipy.signal`.
+See [scipy-stubs#99](https://github.com/jorenham/scipy-stubs/issues/99) for an overview.
 
-Currently, only `scipy.signal` contains `Untyped` annotations; all other submodules have complete typing coverage.
+## Contributing
 
-## Podcast (AI generated)
+There are many ways that you can help improve `scipy-stubs`, for example
+
+- reporting issues, bugs, or other unexpected outcomes
+- improving the `.pyi` stubs (see [CONTRIBUTING.md](https://github.com/jorenham/scipy-stubs/blob/master/CONTRIBUTING.md))
+- type-testing (see the `README.md` in [`scipy-stubs/tests`](https://github.com/jorenham/scipy-stubs/tree/master/tests) for the
+  specifics)
+- write new documentation (usage examples, guides, tips & tricks, FAQ, etc.), or e.g. improve this `README.md`
+- help spread the word on `scipy-stubs`, so that more can benefit from using it
+
+## AI generated Podcast
+
+### Typing in SciPy
 
 <https://github.com/user-attachments/assets/adbec640-2329-488b-bda2-d9687c6b1f7b>
 
