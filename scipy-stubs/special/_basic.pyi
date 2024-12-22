@@ -180,12 +180,21 @@ def pro_cv_seq(m: onp.ToInt, n: onp.ToInt, c: onp.ToFloat) -> onp.Array1D[_f8]: 
 def obl_cv_seq(m: onp.ToInt, n: onp.ToInt, c: onp.ToFloat) -> onp.Array1D[_f8]: ...
 
 #
-@deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `assoc_legendre_p_all` instead.")
-def lpmn(m: onp.ToInt, n: onp.ToInt, z: onp.ToFloat | onp.ToFloatND) -> _tuple2[onp.Array2D[_f8]]: ...
-@deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `assoc_legendre_p_all` instead.")
-def clpmn(m: onp.ToInt, n: onp.ToInt, z: onp.ToComplex | onp.ToComplexND, type: L[2, 3] = 3) -> _tuple2[onp.Array2D[_c16]]: ...
-@deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `legendre_p_all` instead.")
+@deprecated(
+    "This function is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
+    "Please use `scipy.special.legendre_p_all` instead."
+)
 def lpn(n: onp.ToInt, z: onp.ToFloat) -> _tuple2[onp.Array1D[_f]] | _tuple2[onp.Array1D[_c]]: ...  # the dtype propagates
+@deprecated(
+    "This function is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
+    "Please use `scipy.special.assoc_legendre_p_all` instead."
+)
+def lpmn(m: onp.ToInt, n: onp.ToInt, z: onp.ToFloat | onp.ToFloatND) -> _tuple2[onp.Array2D[_f8]]: ...
+@deprecated(
+    "This function is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
+    "Please use `scipy.special.assoc_legendre_p_all` instead."
+)
+def clpmn(m: onp.ToInt, n: onp.ToInt, z: onp.ToComplex | onp.ToComplexND, type: L[2, 3] = 3) -> _tuple2[onp.Array2D[_c16]]: ...
 
 #
 @overload
