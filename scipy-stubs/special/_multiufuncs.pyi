@@ -24,297 +24,255 @@ _UFuncT_co = TypeVar("_UFuncT_co", bound=Callable[..., object], default=Callable
 _Complex: TypeAlias = np.complex64 | np.complex128  # `clongdouble` isn't supported
 _ToJustComplex: TypeAlias = opt.Just[complex] | _Complex
 _ToJustComplexND: TypeAlias = onp.CanArrayND[_Complex] | onp.SequenceND[onp.CanArrayND[_Complex]] | onp.SequenceND[_ToJustComplex]
+_ToJustComplex_D: TypeAlias = _ToJustComplex | _ToJustComplexND
 
-_BranchCut: TypeAlias = L[2, 3]
+_ToInt_D: TypeAlias = onp.ToInt | onp.ToIntND
+_ToFloat_D: TypeAlias = onp.ToFloat | onp.ToFloatND
+_ToComplex_D: TypeAlias = onp.ToComplex | onp.ToComplexND
+
+_Float1D: TypeAlias = onp.Array1D[np.float64]
+_Float3D: TypeAlias = onp.Array3D[np.float64]
+_Float1_D: TypeAlias = onp.Array[onp.AtLeast1D, np.float64]
+_Float2_D: TypeAlias = onp.Array[onp.AtLeast2D, np.float64]
+_Float3_D: TypeAlias = onp.Array[onp.AtLeast3D, np.float64]
+
+_Complex0D: TypeAlias = onp.Array0D[np.complex128]
+_Complex1D: TypeAlias = onp.Array1D[np.complex128]
+_Complex2D: TypeAlias = onp.Array2D[np.complex128]
+_Complex3D: TypeAlias = onp.Array3D[np.complex128]
+_Complex4D: TypeAlias = onp.ArrayND[np.complex128, tuple[int, int, int, int]]
+_Complex1_D: TypeAlias = onp.Array[onp.AtLeast1D, np.complex128]
+_Complex2_D: TypeAlias = onp.Array[onp.AtLeast2D, np.complex128]
+_Complex3_D: TypeAlias = onp.Array[onp.AtLeast3D, np.complex128]
+
+_Complex01D: TypeAlias = tuple[_Complex0D, _Complex1D]
+_Complex012D: TypeAlias = tuple[_Complex0D, _Complex1D, _Complex2D]
+_Complex23D: TypeAlias = tuple[_Complex2D, _Complex3D]
+_Complex234D: TypeAlias = tuple[_Complex2D, _Complex3D, _Complex4D]
+_Complex12_D: TypeAlias = tuple[_Complex1_D, _Complex2_D]
+_Complex123_D: TypeAlias = tuple[_Complex1_D, _Complex2_D, _Complex3_D]
+_Complex33_D: TypeAlias = tuple[_Complex3_D, _Complex3_D]
+_Complex333_D: TypeAlias = tuple[_Complex3_D, _Complex3_D, _Complex3_D]
+
+_Branch: TypeAlias = L[2, 3]
+_Branch_D: TypeAlias = _Branch | onp.SequenceND[_Branch] | onp.CanArrayND[np.integer[Any]]
+
+_D0: TypeAlias = L[False, 0]
+_D1: TypeAlias = L[True, 1]
+_D2: TypeAlias = L[2]
+_Dn: TypeAlias = L[0, 1, 2] | bool | np.bool_
 
 ###
 
 @type_check_only
 class _LegendreP(Protocol):
-    @overload
-    def __call__(self, /, n: onp.ToJustInt, z: onp.ToFloat, *, diff_n: opt.JustInt = 0) -> onp.Array1D[np.float64]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustInt,
-        z: onp.ToFloatND,
-        *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast2D, np.float64]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustIntND,
-        z: onp.ToFloat | onp.ToFloatND,
-        *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast2D, np.float64]: ...
+    @overload  # 0-d, 0-d
+    def __call__(self, /, n: onp.ToInt, z: onp.ToFloat, *, diff_n: _Dn = 0) -> _Float1D: ...
+    @overload  # 0-d, >0-d
+    def __call__(self, /, n: onp.ToInt, z: onp.ToFloatND, *, diff_n: _Dn = 0) -> _Float2_D: ...
+    @overload  # >0-d, >=0-d
+    def __call__(self, /, n: onp.ToIntND, z: _ToFloat_D, *, diff_n: _Dn = 0) -> _Float2_D: ...
 
 @type_check_only
 class _LegendrePAll(Protocol):
-    @overload
-    def __call__(self, /, n: onp.ToJustInt, z: onp.ToFloat, *, diff_n: opt.JustInt = 0) -> onp.Array3D[np.float64]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustInt,
-        z: onp.ToFloat | onp.ToFloatND,
-        *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast3D, np.float64]: ...
+    @overload  # float
+    def __call__(self, /, n: onp.ToInt, z: _ToFloat_D, *, diff_n: _Dn = 0) -> _Float3_D: ...
+    @overload  # complex
+    def __call__(self, /, n: onp.ToInt, z: _ToJustComplex_D, *, diff_n: _Dn = 0) -> _Complex3_D: ...
+    @overload  # float or complex
+    def __call__(self, /, n: onp.ToInt, z: _ToComplex_D, *, diff_n: _Dn = 0) -> _Float3_D | _Complex3_D: ...
 
 @type_check_only
 class _AssocLegendreP(Protocol):
-    @overload  # real scalar-like
+    @overload  # float
     def __call__(
         self,
         /,
-        n: onp.ToJustInt,
-        m: onp.ToJustInt,
-        z: onp.ToFloat,
+        n: _ToInt_D,
+        m: _ToInt_D,
+        z: _ToFloat_D,
         *,
-        branch_cut: _BranchCut = 2,
+        branch_cut: _Branch_D = 2,
         norm: onp.ToBool = False,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array1D[np.float64]: ...
-    @overload  # complex scalar-like
+        diff_n: _Dn = 0,
+    ) -> _Float1_D: ...
+    @overload  # complex
     def __call__(
         self,
         /,
-        n: onp.ToJustInt,
-        m: onp.ToJustInt,
-        z: _ToJustComplex,
+        n: _ToInt_D,
+        m: _ToInt_D,
+        z: _ToJustComplex_D,
         *,
-        branch_cut: _BranchCut = 2,
+        branch_cut: _Branch_D = 2,
         norm: onp.ToBool = False,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array1D[np.complex128]: ...
-    @overload  # real array-like
+        diff_n: _Dn = 0,
+    ) -> _Complex1_D: ...
+    @overload  # float or complex
     def __call__(
         self,
         /,
-        n: onp.ToJustInt | onp.ToJustIntND,
-        m: onp.ToJustInt | onp.ToJustIntND,
-        z: onp.ToFloat | onp.ToFloatND,
+        n: _ToInt_D,
+        m: _ToInt_D,
+        z: _ToComplex_D,
         *,
-        branch_cut: _BranchCut | onp.ToJustIntND = 2,
+        branch_cut: _Branch_D = 2,
         norm: onp.ToBool = False,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast1D, np.float64]: ...
-    @overload  # complex array-like
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustInt | onp.ToJustIntND,
-        m: onp.ToJustInt | onp.ToJustIntND,
-        z: _ToJustComplexND,
-        *,
-        branch_cut: _BranchCut | onp.ToJustIntND = 2,
-        norm: onp.ToBool = False,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast1D, np.complex128]: ...
+        diff_n: _Dn = 0,
+    ) -> _Float1_D | _Complex1_D: ...
 
 @type_check_only
 class _AssocLegendrePAll(Protocol):
-    @overload  # real scalar-like
+    @overload  # z: 0-d float
     def __call__(
         self,
         /,
-        n: onp.ToJustInt,
-        m: onp.ToJustInt,
+        n: onp.ToInt,
+        m: onp.ToInt,
         z: onp.ToFloat,
         *,
-        branch_cut: _BranchCut = 2,
+        branch_cut: _Branch = 2,
         norm: onp.ToBool = False,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array3D[np.float64]: ...
-    @overload  # complex scalar-like
+        diff_n: _Dn = 0,
+    ) -> _Float3D: ...
+    @overload  # z: >=0-d float
     def __call__(
         self,
         /,
-        n: onp.ToJustInt,
-        m: onp.ToJustInt,
+        n: onp.ToInt,
+        m: onp.ToInt,
+        z: _ToFloat_D,
+        *,
+        branch_cut: _Branch_D = 2,
+        norm: onp.ToBool = False,
+        diff_n: _Dn = 0,
+    ) -> _Float3_D: ...
+    @overload  # z: 0-d complex
+    def __call__(
+        self,
+        /,
+        n: onp.ToInt,
+        m: onp.ToInt,
         z: _ToJustComplex,
         *,
-        branch_cut: _BranchCut = 2,
+        branch_cut: _Branch = 2,
         norm: onp.ToBool = False,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array3D[np.complex128]: ...
-    @overload  # real array-like
+        diff_n: _Dn = 0,
+    ) -> _Complex3D: ...
+    @overload  # z: >=0-d complex
     def __call__(
         self,
         /,
-        n: onp.ToJustInt,
-        m: onp.ToJustInt,
-        z: onp.ToFloat | onp.ToFloatND,
-        *,
-        branch_cut: _BranchCut | onp.ToJustIntND = 2,
-        norm: onp.ToBool = False,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast3D, np.float64]: ...
-    @overload  # complex array-like
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustInt,
-        m: onp.ToJustInt,
+        n: onp.ToInt,
+        m: onp.ToInt,
         z: _ToJustComplexND,
         *,
-        branch_cut: _BranchCut | onp.ToJustIntND = 2,
+        branch_cut: _Branch_D = 2,
         norm: onp.ToBool = False,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast3D, np.complex128]: ...
+        diff_n: _Dn = 0,
+    ) -> _Complex3_D: ...
+    @overload  # z: >=0-d float or complex
+    def __call__(
+        self,
+        /,
+        n: onp.ToInt,
+        m: onp.ToInt,
+        z: onp.ToComplexND,
+        *,
+        branch_cut: _Branch_D = 2,
+        norm: onp.ToBool = False,
+        diff_n: _Dn = 0,
+    ) -> _Float3_D | _Complex3_D: ...
 
 @type_check_only
 class _SphLegendreP(Protocol):
-    @overload
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustInt,
-        m: onp.ToJustInt,
-        theta: onp.ToFloat,
-        *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array1D[np.float64]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustInt | onp.ToJustIntND,
-        m: onp.ToJustInt | onp.ToJustIntND,
-        theta: onp.ToFloatND,
-        *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast2D, np.float64]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustInt | onp.ToJustIntND,
-        m: onp.ToJustIntND,
-        theta: onp.ToFloat | onp.ToFloatND,
-        *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast2D, np.float64]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustIntND,
-        m: onp.ToJustInt | onp.ToJustIntND,
-        theta: onp.ToFloat | onp.ToFloatND,
-        *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast2D, np.float64]: ...
+    @overload  # 0-d, 0-d, 0-d
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToFloat, *, diff_n: _Dn = 0) -> _Float1D: ...
+    @overload  # >=0-d, >=0-d, >0-d
+    def __call__(self, /, n: _ToInt_D, m: _ToInt_D, theta: onp.ToFloatND, *, diff_n: _Dn = 0) -> _Float2_D: ...
+    @overload  # >=0-d, >0-d, >=0-d
+    def __call__(self, /, n: _ToInt_D, m: onp.ToIntND, theta: _ToFloat_D, *, diff_n: _Dn = 0) -> _Float2_D: ...
+    @overload  # >0-d, >=0-d, >=0-d
+    def __call__(self, /, n: onp.ToIntND, m: _ToInt_D, theta: _ToFloat_D, *, diff_n: _Dn = 0) -> _Float2_D: ...
 
 @type_check_only
 class _SphLegendrePAll(Protocol):
-    @overload
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustInt,
-        m: onp.ToJustInt,
-        theta: onp.ToFloat,
-        *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array3D[np.float64]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustInt,
-        m: onp.ToJustInt,
-        theta: onp.ToFloat | onp.ToFloatND,
-        *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast3D, np.float64]: ...
+    @overload  # 0-d, 0-d, 0-d
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToFloat, *, diff_n: _Dn = 0) -> _Float3D: ...
+    @overload  # 0-d, 0-d, >=0-d
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: _ToFloat_D, *, diff_n: _Dn = 0) -> _Float3_D: ...
 
 @type_check_only
 class _SphHarmY(Protocol):
-    @overload
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustInt,
-        m: onp.ToJustInt,
-        theta: onp.ToFloat,
-        phi: onp.ToFloat,
-        *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array0D[np.float64]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustInt | onp.ToJustIntND,
-        m: onp.ToJustInt | onp.ToJustIntND,
-        theta: onp.ToFloat | onp.ToFloatND,
-        phi: onp.ToFloatND,
-        *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast1D, np.float64]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustInt | onp.ToJustIntND,
-        m: onp.ToJustInt | onp.ToJustIntND,
-        theta: onp.ToFloatND,
-        phi: onp.ToFloat | onp.ToFloatND,
-        *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast1D, np.float64]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustInt | onp.ToJustIntND,
-        m: onp.ToJustIntND,
-        theta: onp.ToFloat | onp.ToFloatND,
-        phi: onp.ToFloat | onp.ToFloatND,
-        *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast1D, np.float64]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        n: onp.ToJustIntND,
-        m: onp.ToJustInt | onp.ToJustIntND,
-        theta: onp.ToFloat | onp.ToFloatND,
-        phi: onp.ToFloat | onp.ToFloatND,
-        *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast1D, np.float64]: ...
+    @overload  # 0-d,     0-d,   0-d,   0-d, diff_n == 0
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToFloat, phi: onp.ToFloat, *, diff_n: _D0 = 0) -> _Complex0D: ...
+    @overload  # >=0-d, >=0-d, >=0-d, > 0-d, diff_n == 0
+    def __call__(self, /, n: _ToInt_D, m: _ToInt_D, theta: _ToFloat_D, phi: onp.ToFloatND, *, diff_n: _D0 = 0) -> _Complex1_D: ...
+    @overload  # >=0-d, >=0-d, > 0-d, >=0-d, diff_n == 0
+    def __call__(self, /, n: _ToInt_D, m: _ToInt_D, theta: onp.ToFloatND, phi: _ToFloat_D, *, diff_n: _D0 = 0) -> _Complex1_D: ...
+    @overload  # >=0-d, > 0-d, >=0-d, >=0-d, diff_n == 0
+    def __call__(self, /, n: _ToInt_D, m: onp.ToIntND, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: _D0 = 0) -> _Complex1_D: ...
+    @overload  # > 0-d, >=0-d, >=0-d, >=0-d, diff_n == 0
+    def __call__(self, /, n: onp.ToIntND, m: _ToInt_D, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: _D0 = 0) -> _Complex1_D: ...
+    @overload  # 0-d,     0-d,   0-d,   0-d, diff_n == 1
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToFloat, phi: onp.ToFloat, *, diff_n: _D1) -> _Complex01D: ...
+    @overload  # >=0-d, >=0-d, >=0-d, > 0-d, diff_n == 1
+    def __call__(self, /, n: _ToInt_D, m: _ToInt_D, theta: _ToFloat_D, phi: onp.ToFloatND, *, diff_n: _D1) -> _Complex12_D: ...
+    @overload  # >=0-d, >=0-d, > 0-d, >=0-d, diff_n == 1
+    def __call__(self, /, n: _ToInt_D, m: _ToInt_D, theta: onp.ToFloatND, phi: _ToFloat_D, *, diff_n: _D1) -> _Complex12_D: ...
+    @overload  # >=0-d, > 0-d, >=0-d, >=0-d, diff_n == 1
+    def __call__(self, /, n: _ToInt_D, m: onp.ToIntND, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: _D1) -> _Complex12_D: ...
+    @overload  # > 0-d, >=0-d, >=0-d, >=0-d, diff_n == 1
+    def __call__(self, /, n: onp.ToIntND, m: _ToInt_D, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: _D1) -> _Complex12_D: ...
+    @overload  # 0-d,     0-d,   0-d,   0-d, diff_n == 2
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToFloat, phi: onp.ToFloat, *, diff_n: _D2) -> _Complex012D: ...
+    @overload  # >=0-d, >=0-d, >=0-d, > 0-d, diff_n == 2
+    def __call__(self, /, n: _ToInt_D, m: _ToInt_D, theta: _ToFloat_D, phi: onp.ToFloatND, *, diff_n: _D2) -> _Complex123_D: ...
+    @overload  # >=0-d, >=0-d, > 0-d, >=0-d, diff_n == 2
+    def __call__(self, /, n: _ToInt_D, m: _ToInt_D, theta: onp.ToFloatND, phi: _ToFloat_D, *, diff_n: _D2) -> _Complex123_D: ...
+    @overload  # >=0-d, > 0-d, >=0-d, >=0-d, diff_n == 2
+    def __call__(self, /, n: _ToInt_D, m: onp.ToIntND, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: _D2) -> _Complex123_D: ...
+    @overload  # > 0-d, >=0-d, >=0-d, >=0-d, diff_n == 2
+    def __call__(self, /, n: onp.ToIntND, m: _ToInt_D, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: _D2) -> _Complex123_D: ...
 
 @type_check_only
 class _SphHarmYAll(Protocol):
-    @overload
+    @overload  # theta: 0-d, phi: 0-d,    diff_n == 0
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToFloat, phi: onp.ToFloat, *, diff_n: _D0 = 0) -> _Complex2D: ...
+    @overload  # theta: >=0-d, phi: >0-d, diff_n == 0
     def __call__(
         self,
         /,
-        n: onp.ToJustInt,
-        m: onp.ToJustInt,
-        theta: onp.ToFloat,
-        phi: onp.ToFloat,
+        n: onp.ToInt,
+        m: onp.ToInt,
+        theta: _ToFloat_D,
+        phi: onp.ToFloatND,
         *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array3D[np.complex128]: ...
-    @overload
+        diff_n: _D0 = 0,
+    ) -> _Complex3_D: ...
+    @overload  # theta: >=0-d, phi: >0-d, diff_n == 0
     def __call__(
         self,
         /,
-        n: onp.ToJustInt,
-        m: onp.ToJustInt,
-        theta: onp.ToFloat | onp.ToFloatND,
+        n: onp.ToInt,
+        m: onp.ToInt,
+        theta: onp.ToFloatND,
+        phi: _ToFloat_D,
         *,
-        diff_n: opt.JustInt = 0,
-    ) -> onp.Array[onp.AtLeast3D, np.complex128]: ...
+        diff_n: _D0 = 0,
+    ) -> _Complex3_D: ...
+    @overload  # theta: 0-d, phi: 0-d,    diff_n == 1
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToFloat, phi: onp.ToFloat, *, diff_n: _D1) -> _Complex23D: ...
+    @overload  # theta: >=0-d, phi: >0-d, diff_n == 1
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: _ToFloat_D, phi: onp.ToFloatND, *, diff_n: _D1) -> _Complex33_D: ...
+    @overload  # theta: >=0-d, phi: >0-d, diff_n == 1
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToFloatND, phi: _ToFloat_D, *, diff_n: _D1) -> _Complex33_D: ...
+    @overload  # theta: 0-d, phi: 0-d,    diff_n == 2
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToFloat, phi: onp.ToFloat, *, diff_n: _D2) -> _Complex234D: ...
+    @overload  # theta: >=0-d, phi: >0-d, diff_n == 2
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: _ToFloat_D, phi: onp.ToFloatND, *, diff_n: _D2) -> _Complex333_D: ...
+    @overload  # theta: >=0-d, phi: >0-d, diff_n == 2
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToFloatND, phi: _ToFloat_D, *, diff_n: _D2) -> _Complex333_D: ...
 
 ###
 
