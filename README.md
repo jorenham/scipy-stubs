@@ -160,8 +160,8 @@ The versioning scheme of `scipy-stubs` includes the compatible `scipy` version a
 Even though `scipy-stubs` doesn't enforce an upper bound on the `scipy` version, later `scipy` versions aren't guaranteed to be
 fully compatible.
 
-The supported range of `numpy` versions are specified in [`SPEC 0`](https://scientific-python.org/specs/spec-0000/), which
-`scipy-stubs` aims to follow as close as feasible.
+There are no additional restrictions enforced by `scipy-stubs` on the `numpy` requirements.
+For `scipy[-stubs]` `1.14.*` and `1.15.*` that is `numpy >= 1.23.5`.
 
 Currently, `scipy-stubs` has one required dependency: [`optype`](https://github.com/jorenham/optype).
 This is essential for `scipy-stubs` to work properly, as it relies heavily on it for annotating (shaped) array-likes,
@@ -175,7 +175,8 @@ The exact version requirements are specified in the [`pyproject.toml`](pyproject
 1. [`basedpyright`](https://github.com/DetachHead/basedpyright) (recommended)
 1. [`basedmypy`](https://github.com/KotlinIsland/basedmypy)
 1. [`pyright`](https://pyright.readthedocs.io/en/latest/index.html)
-1. [`mypy`](https://mypy.readthedocs.io/en/stable/index.html) (not recommended, see [erictraut/mypy_issues](https://github.com/erictraut/mypy_issues))
+1. [`mypy`](https://mypy.readthedocs.io/en/stable/index.html) (not recommended, see
+   [mypy_issues](https://github.com/erictraut/mypy_issues))
 
 For validation and testing, `scipy-stubs` primarily uses [`basedmypy`](https://github.com/KotlinIsland/basedmypy) (a `mypy` fork)
 and [`basedpyright`](https://github.com/DetachHead/basedpyright) (a `pyright` fork).
