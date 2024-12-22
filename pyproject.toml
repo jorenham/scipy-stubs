@@ -33,38 +33,37 @@ dependencies = [
 ]
 
 [dependency-groups]
-scipy = [
-    "scipy==1.15.0rc1",
+scipy = ["scipy==1.15.0rc1"]
+ci = ["packaging>=24.2"]
+codegen = ["libcst>=1.5.1,<2"]
+mdformat = [
+    "mdformat>=0.7.21",
+    "mdformat-gfm>=0.4.1",
+    "mdformat-gfm-alerts>=1.0.1",
 ]
 lint = [
     {include-group = "scipy"},
-    "mdformat>=0.7.21",
-    "mdformat-gfm>=0.4.1",
-    "mdformat-gfm-alerts>=1.0.1,<2",
+    {include-group = "mdformat"},
     "ruff>=0.8.4",
     "sp-repo-review[cli]>=2024.8.19",
 ]
 typecheck = [
     {include-group = "scipy"},
+    {include-group = "ci"},
     {include-group = "codegen"},
     "basedmypy[faster-cache]>=2.8.1",
     "basedpyright>=1.23.1",
-    "packaging",
-]
-codegen = [
-    "libcst>=1.5.1,<2",
 ]
 dev = [
     {include-group = "lint"},
     {include-group = "typecheck"},
-    {include-group = "codegen"},
     "poethepoet>=0.31.1,<1",
     "pre-commit>=4.0.1,<5",
     "pre-commit-uv>=4.1.4,<5",
 ]
 
 [project.optional-dependencies]
-scipy = ["scipy>=1.15.0rc1"]
+scipy = ["scipy>=1.15.0rc1,<1.16"]
 
 [project.urls]
 Repository = "https://github.com/jorenham/scipy-stubs/"
