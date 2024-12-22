@@ -1,6 +1,8 @@
-from typing import Any
 from typing_extensions import deprecated
 
+import numpy as np
+import optype.numpy as onp
+from scipy.spatial._qhull import DelaunayInfo_t
 from . import _interpnd
 
 __all__ = [
@@ -11,18 +13,16 @@ __all__ = [
     "estimate_gradients_2d_global",
 ]
 
-# NOTE: See https://github.com/scipy/scipy/issues/22097 for `GradientEstimationWarning` and `NDInterpolatorBase`
-
 @deprecated(
     "`scipy.interpolate.interpnd.GradientEstimationWarning` is deprecated along with the `scipy.interpolate.interpnd` namespace. "
-    "`scipy.interpolate.interpnd.GradientEstimationWarning` will be removed in SciPy 1.14.0, "
+    "`scipy.interpolate.interpnd.GradientEstimationWarning` will be removed in SciPy 1.17.0, "
     "and the `scipy.interpolate.interpnd` namespace will be removed in SciPy 2.0.0."
 )
 class GradientEstimationWarning(_interpnd.GradientEstimationWarning): ...
 
 @deprecated(
     "`scipy.interpolate.interpnd.NDInterpolatorBase` is deprecated along with the `scipy.interpolate.interpnd` namespace. "
-    "`scipy.interpolate.interpnd.NDInterpolatorBase` will be removed in SciPy 1.14.0, and the `scipy.interpolate.interpnd` "
+    "`scipy.interpolate.interpnd.NDInterpolatorBase` will be removed in SciPy 1.17.0, and the `scipy.interpolate.interpnd` "
     "namespace will be removed in SciPy 2.0.0."
 )
 class NDInterpolatorBase(_interpnd.NDInterpolatorBase): ...
@@ -41,7 +41,12 @@ class LinearNDInterpolator(_interpnd.LinearNDInterpolator): ...
 
 @deprecated(
     "`scipy.interpolate.interpnd.estimate_gradients_2d_global` is deprecated along with the `scipy.interpolate.interpnd` "
-    "namespace. `scipy.interpolate.interpnd.estimate_gradients_2d_global` will be removed in SciPy 1.14.0, and the "
+    "namespace. `scipy.interpolate.interpnd.estimate_gradients_2d_global` will be removed in SciPy 1.17.0, and the "
     "`scipy.interpolate.interpnd` namespace will be removed in SciPy 2.0.0."
 )
-def estimate_gradients_2d_global(tri: object, y: object, maxiter: int = 400, tol: float = 1e-6) -> Any: ...  # noqa: ANN401
+def estimate_gradients_2d_global(
+    tri: DelaunayInfo_t,
+    y: onp.ToComplex1D | onp.ToComplex2D,
+    maxiter: int = 400,
+    tol: float = 1e-6,
+) -> onp.Array3D[np.float64] | onp.Array3D[np.complex128]: ...
