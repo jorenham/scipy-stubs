@@ -460,15 +460,20 @@ class _Kw11fc(_KwBase, TypedDict, total=False):
     signature: L["f->f", "d->d", "F->F", "D->D"] | _ToSignature1_fd | _ToSignature1_FD
 
 _ToSignature2_fd2: TypeAlias = _Tuple3[_ToDType_f] | _Tuple3[_ToDType_d]
+_ToSignature2_FD2: TypeAlias = _Tuple3[_ToDType_F] | _Tuple3[_ToDType_D]
+_ToSignature2_fFdD: TypeAlias = tuple[_ToDType_f, _ToDType_F, _ToDType_F] | tuple[_ToDType_d, _ToDType_D, _ToDType_D]
 
 @type_check_only
 class _Kw12f(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fd
     signature: L["f->ff", "d->dd"] | _ToSignature2_fd2
 
+@type_check_only
+class _Kw12c(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_FD
+    signature: L["f->FF", "d->DD"] | _ToSignature2_fFdD
+
 _ToSignature2_ld: TypeAlias = tuple[_ToDType_l, _ToDType_d, _ToDType_d]
-_ToSignature2_fFdD: TypeAlias = tuple[_ToDType_f, _ToDType_F, _ToDType_F] | tuple[_ToDType_d, _ToDType_D, _ToDType_D]
-_ToSignature2_FD2: TypeAlias = _Tuple3[_ToDType_F] | _Tuple3[_ToDType_D]
 
 @type_check_only
 class _Kw21ld(_KwBase, TypedDict, total=False):
@@ -641,6 +646,25 @@ class _UFunc12f(_UFunc12[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     def __call__(self, x: _ToFloat64_D, /, out: tuple[_OutT1, _OutT2], **kw: Unpack[_Kw12f]) -> tuple[_OutT1, _OutT2]: ...
     @overload
     def __call__(self, x: _ToFloat64_D, out1: _OutT1, out2: _OutT2, /, **kw: Unpack[_Kw12f]) -> tuple[_OutT1, _OutT2]: ...
+
+@final
+@type_check_only
+class _UFunc12c(_UFunc12[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+    @property
+    @override
+    def ntypes(self, /) -> L[2]: ...
+    @property
+    @override
+    def types(self, /) -> list[L["f->FF", "d->DD"]]: ...
+    #
+    @overload
+    def __call__(self, x: _ToFloat64, /, out: _Out2 = ..., **kw: Unpack[_Kw12c]) -> _Tuple2[_Complex]: ...
+    @overload
+    def __call__(self, x: _ToFloat64ND, /, out: _Out2 = ..., **kw: Unpack[_Kw12c]) -> _Tuple2[_ComplexND]: ...
+    @overload
+    def __call__(self, x: _ToFloat64_D, /, out: tuple[_OutT1, _OutT2], **kw: Unpack[_Kw12c]) -> tuple[_OutT1, _OutT2]: ...
+    @overload
+    def __call__(self, x: _ToFloat64_D, out1: _OutT1, out2: _OutT2, /, **kw: Unpack[_Kw12c]) -> tuple[_OutT1, _OutT2]: ...
 
 @final
 @type_check_only
@@ -1904,9 +1928,8 @@ itj0y0: _UFunc12f[L["itj0y0"]] = ...
 it2j0y0: _UFunc12f[L["it2j0y0"]] = ...
 
 # f->FF; d->DD
-# TODO
-modfresnelm: np.ufunc = ...
-modfresnelp: np.ufunc = ...
+modfresnelm: _UFunc12c[L["modfresnelm"]] = ...
+modfresnelp: _UFunc12c[L["modfresnelp"]] = ...
 
 # f->ff; d->dd; f->FF; D->DD
 # TODO

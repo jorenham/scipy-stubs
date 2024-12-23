@@ -80,6 +80,7 @@ scipy\.special\.(_ufuncs\.)?it(2|mod)?struve0
 scipy\.special\.(_ufuncs\.)?it2?(i0k|j0y)0
 scipy\.special\.(_ufuncs\.)?(j|y)(0|1|n|ve?)
 scipy\.special\.(_ufuncs\.)?k(e(i|r)p?|n)
+scipy\.special\.(_ufuncs\.)?modfresnel(m|p)
 scipy\.special\.(_ufuncs\.)?(rel_)?entr
 scipy\.special\.(_ufuncs\.)?kl_div
 scipy\.special\.(_ufuncs\.)?kolmog(i|orov)
