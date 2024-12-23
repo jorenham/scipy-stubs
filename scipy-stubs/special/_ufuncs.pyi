@@ -3,7 +3,7 @@
 
 from types import EllipsisType
 from typing import Any, Generic, Literal as L, TypeAlias, TypedDict, final, overload, type_check_only
-from typing_extensions import LiteralString, Never, TypeVar, Unpack, override
+from typing_extensions import LiteralString, Never, TypeVar, Unpack, deprecated, override
 
 import numpy as np
 import optype as op
@@ -297,6 +297,7 @@ _SubFloat: TypeAlias = np.float16 | np.integer[Any] | np.bool_
 _ToSubFloat: TypeAlias = float | _SubFloat
 
 _ToDType_l: TypeAlias = onp.AnyLongDType
+_ToDType_q: TypeAlias = onp.AnyLongLongDType
 _ToDType_f: TypeAlias = onp.AnyFloat32DType
 _ToDType_d: TypeAlias = onp.AnyFloat64DType
 _ToDType_g: TypeAlias = onp.AnyLongDoubleDType
@@ -461,6 +462,15 @@ _ToSignature3_fd4: TypeAlias = _Tuple5[_ToDType_f] | _Tuple5[_ToDType_d]
 class _Kw41f(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fd
     signature: L["ffff->f", "dddd->d"] | _ToSignature3_fd4
+
+@type_check_only
+class _KwSphHarm(_KwBase, TypedDict, total=False):
+    # (qq|ff)ff->F; (qq|dd)dd->D
+    dtype: _ToDType_FD
+    signature: (
+        L["qqff->F", "ffff->F", "qqdd->D", "dddd->D"]
+        | tuple[_ToDType_q | _ToDType_fd, _ToDType_q | _ToDType_fd, _ToDType_fd, _ToDType_fd, _ToDType_FD]
+    )
 
 @final
 @type_check_only
@@ -1194,6 +1204,77 @@ class _UFunc41f(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         **kw: Unpack[_Kw41f],
     ) -> _OutT: ...
 
+@final
+@type_check_only
+class _UFuncSphHarm(_UFunc41[L["sph_harm"], None]):
+    @property
+    @override
+    def ntypes(self, /) -> L[4]: ...
+    @property
+    @override
+    def types(self, /) -> list[L["qqff->F", "ffff->F", "qqdd->D", "dddd->D"]]: ...
+    #
+    @overload
+    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
+    def __call__(
+        self,
+        m: onp.ToFloat,
+        n: onp.ToFloat,
+        theta: onp.ToFloat,
+        phi: onp.ToFloat,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_KwSphHarm],
+    ) -> _Complex: ...
+    @overload
+    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
+    def __call__(
+        self,
+        m: _ToFloat_D,
+        n: _ToFloat_D,
+        theta: _ToFloat_D,
+        phi: onp.ToFloatND,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_KwSphHarm],
+    ) -> _ComplexND: ...
+    @overload
+    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
+    def __call__(
+        self,
+        m: _ToFloat_D,
+        n: _ToFloat_D,
+        theta: onp.ToFloatND,
+        phi: _ToFloat_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_KwSphHarm],
+    ) -> _ComplexND: ...
+    @overload
+    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
+    def __call__(
+        self,
+        m: _ToFloat_D,
+        n: onp.ToFloatND,
+        theta: _ToFloat_D,
+        phi: _ToFloat_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_KwSphHarm],
+    ) -> _ComplexND: ...
+    @overload
+    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
+    def __call__(
+        self,
+        m: _ToFloat_D,
+        n: _ToFloat_D,
+        theta: _ToFloat_D,
+        phi: _ToFloat_D,
+        /,
+        out: _Out1[_OutT],
+        **kw: Unpack[_KwSphHarm],
+    ) -> _OutT: ...
+
 ###
 
 def geterr() -> dict[str, str]: ...
@@ -1585,9 +1666,9 @@ hyp2f1: np.ufunc = ...
 # TODO
 elliprj: np.ufunc = ...
 
-# (ll|ff)ff->F; (ll|dd)dd->D
-# TODO
-sph_harm: np.ufunc = ...
+# NOTE: Deprecated in SciPy 1.15.0
+# (qq|ff)ff->F; (qq|dd)dd->D
+sph_harm: _UFuncSphHarm = ...
 
 # ffff->ff; dddd->dd
 # TODO
