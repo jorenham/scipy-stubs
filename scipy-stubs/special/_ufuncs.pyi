@@ -252,12 +252,18 @@ _T = TypeVar("_T")
 _NameT_co = TypeVar("_NameT_co", bound=LiteralString, covariant=True)
 _IdentityT_co = TypeVar("_IdentityT_co", bound=L[0] | None, default=None, covariant=True)
 _OutT = TypeVar("_OutT", bound=onp.ArrayND[np.number[Any]])
+_OutT1 = TypeVar("_OutT1", bound=onp.ArrayND[np.number[Any]])
+_OutT2 = TypeVar("_OutT2", bound=onp.ArrayND[np.number[Any]])
 _MaybeOutT = TypeVar("_MaybeOutT", bound=onp.ArrayND[np.number[Any]] | None, default=None)
+_MaybeOutT1 = TypeVar("_MaybeOutT1", bound=onp.ArrayND[np.number[Any]] | None, default=None)
+_MaybeOutT2 = TypeVar("_MaybeOutT2", bound=onp.ArrayND[np.number[Any]] | None, default=_MaybeOutT1)
 
 _Falsy: TypeAlias = L[False, 0]
 _Truthy: TypeAlias = L[True, 1]
 
 _Out1: TypeAlias = tuple[_MaybeOutT] | _MaybeOutT
+_Out2: TypeAlias = tuple[_MaybeOutT1, _MaybeOutT2]
+
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
 _Tuple4: TypeAlias = tuple[_T, _T, _T, _T]
@@ -382,6 +388,18 @@ class _UFunc11(_WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_
     def nargs(self, /) -> L[2]: ...
 
 @type_check_only
+class _UFunc12(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+    @property
+    @override
+    def nin(self, /) -> L[1]: ...
+    @property
+    @override
+    def nout(self, /) -> L[2]: ...
+    @property
+    @override
+    def nargs(self, /) -> L[2]: ...
+
+@type_check_only
 class _UFunc21(_UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
@@ -441,8 +459,14 @@ class _Kw11fc(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fdFD | None
     signature: L["f->f", "d->d", "F->F", "D->D"] | _ToSignature1_fd | _ToSignature1_FD
 
-_ToSignature2_ld: TypeAlias = tuple[_ToDType_l, _ToDType_d, _ToDType_d]
 _ToSignature2_fd2: TypeAlias = _Tuple3[_ToDType_f] | _Tuple3[_ToDType_d]
+
+@type_check_only
+class _Kw12f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd
+    signature: L["f->ff", "d->dd"] | _ToSignature2_fd2
+
+_ToSignature2_ld: TypeAlias = tuple[_ToDType_l, _ToDType_d, _ToDType_d]
 _ToSignature2_fFdD: TypeAlias = tuple[_ToDType_f, _ToDType_F, _ToDType_F] | tuple[_ToDType_d, _ToDType_D, _ToDType_D]
 _ToSignature2_FD2: TypeAlias = _Tuple3[_ToDType_F] | _Tuple3[_ToDType_D]
 
@@ -596,6 +620,27 @@ class _UFunc11fc(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
     #
     @override
     def at(self, a: _CoComplex128ND, indices: _Indices, /) -> None: ...
+
+@final
+@type_check_only
+class _UFunc12f(_UFunc12[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+    @property
+    @override
+    def ntypes(self, /) -> L[2]: ...
+    @property
+    @override
+    def types(self, /) -> list[L["f->ff", "d->dd"]]: ...
+    #
+    @overload
+    def __call__(self, x: _ToSubFloat, /, out: _Out2 = ..., **kw: Unpack[_Kw12f]) -> _Tuple2[_Float]: ...
+    @overload
+    def __call__(self, x: _Float_DT, /, out: _Out2 = ..., **kw: Unpack[_Kw12f]) -> _Tuple2[_Float_DT]: ...
+    @overload
+    def __call__(self, x: _ToFloat64ND, /, out: _Out2 = ..., **kw: Unpack[_Kw12f]) -> _Tuple2[_FloatND]: ...
+    @overload
+    def __call__(self, x: _ToFloat64_D, /, out: tuple[_OutT1, _OutT2], **kw: Unpack[_Kw12f]) -> tuple[_OutT1, _OutT2]: ...
+    @overload
+    def __call__(self, x: _ToFloat64_D, out1: _OutT1, out2: _OutT2, /, **kw: Unpack[_Kw12f]) -> tuple[_OutT1, _OutT2]: ...
 
 @final
 @type_check_only
@@ -1853,11 +1898,10 @@ voigt_profile: _UFunc31f[L["voigt_profile"], L[0]] = ...
 wright_bessel: _UFunc31f[L["wright_bessel"]] = ...
 
 # f->ff; d->dd
-# TODO
-it2i0k0: np.ufunc = ...
-it2j0y0: np.ufunc = ...
-iti0k0: np.ufunc = ...
-itj0y0: np.ufunc = ...
+iti0k0: _UFunc12f[L["iti0k0"]] = ...
+it2i0k0: _UFunc12f[L["it2i0k0"]] = ...
+itj0y0: _UFunc12f[L["itj0y0"]] = ...
+it2j0y0: _UFunc12f[L["it2j0y0"]] = ...
 
 # f->FF; d->DD
 # TODO

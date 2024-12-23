@@ -77,6 +77,7 @@ scipy\.special\.(_ufuncs\.)?be(i|r)p?
 scipy\.special\.(_ufuncs\.)?(i|k)(0|1|v)e?
 scipy\.special\.(_ufuncs\.)?(mod)?struve
 scipy\.special\.(_ufuncs\.)?it(2|mod)?struve0
+scipy\.special\.(_ufuncs\.)?it2?(i0k|j0y)0
 scipy\.special\.(_ufuncs\.)?(j|y)(0|1|n|ve?)
 scipy\.special\.(_ufuncs\.)?k(e(i|r)p?|n)
 scipy\.special\.(_ufuncs\.)?(rel_)?entr
