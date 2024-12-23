@@ -464,6 +464,15 @@ class _Kw41f(_KwBase, TypedDict, total=False):
     signature: L["ffff->f", "dddd->d"] | _ToSignature3_fd4
 
 @type_check_only
+class _Kw41fc1(_KwBase, TypedDict, total=False):
+    # (qq|ff)ff->F; (qq|dd)dd->D
+    dtype: _ToDType_FD
+    signature: (
+        L["ffff->f", "lddd->d", "dddd->d", "fffF->F", "dddD->D"]
+        | tuple[_ToDType_l | _ToDType_fd, _ToDType_fd, _ToDType_fd, _ToDType_fdFD, _ToDType_fdFD]
+    )
+
+@type_check_only
 class _KwSphHarm(_KwBase, TypedDict, total=False):
     # (qq|ff)ff->F; (qq|dd)dd->D
     dtype: _ToDType_FD
@@ -1206,6 +1215,150 @@ class _UFunc41f(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
 
 @final
 @type_check_only
+class _UFunc41fc1(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+    # `eval_[sh_]jacobi` and `hyp2f1`
+    @property
+    @override
+    def ntypes(self, /) -> L[4, 5]: ...
+    @property
+    @override
+    def types(self, /) -> list[L["ffff->f", "lddd->d", "dddd->d", "fffF->F", "dddD->D"]]: ...
+    #
+    @overload
+    def __call__(
+        self,
+        n: _ToSubFloat,
+        a: _ToSubFloat,
+        b: _ToSubFloat,
+        x: _ToSubFloat,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc1],
+    ) -> _Float: ...
+    @overload
+    def __call__(
+        self,
+        n: _Float_DT | _ToSubFloat,
+        a: _Float_DT | _ToSubFloat,
+        b: _Float_DT | _ToSubFloat,
+        x: _Float_DT | _ToSubFloat,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc1],
+    ) -> _Float_DT: ...
+    @overload
+    def __call__(
+        self,
+        n: onp.ToFloat | np.complex64,
+        a: onp.ToFloat | np.complex64,
+        b: onp.ToFloat | np.complex64,
+        x: _Complex_DT,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc1],
+    ) -> _Complex_DT: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat_D,
+        a: _ToFloat_D,
+        b: _ToFloat_D,
+        x: onp.ToFloatND,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc1],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat_D,
+        a: _ToFloat_D,
+        b: onp.ToFloatND,
+        x: _ToFloat_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc1],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat_D,
+        a: onp.ToFloatND,
+        b: _ToFloat_D,
+        x: _ToFloat_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc1],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        n: onp.ToFloatND,
+        a: _ToFloat_D,
+        b: _ToFloat_D,
+        x: _ToFloat_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc1],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat_D,
+        a: _ToFloat_D,
+        b: _ToFloat_D,
+        x: onp.ToComplexND,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc1],
+    ) -> _InexactND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat_D,
+        a: _ToFloat_D,
+        b: onp.ToFloatND,
+        x: _ToComplex_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc1],
+    ) -> _InexactND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat_D,
+        a: onp.ToFloatND,
+        b: _ToFloat_D,
+        x: _ToComplex_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc1],
+    ) -> _InexactND: ...
+    @overload
+    def __call__(
+        self,
+        n: onp.ToFloatND,
+        a: _ToFloat_D,
+        b: _ToFloat_D,
+        x: _ToComplex_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc1],
+    ) -> _InexactND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat_D,
+        a: _ToFloat_D,
+        b: _ToFloat_D,
+        x: _ToComplex_D,
+        /,
+        out: _Out1[_OutT],
+        **kw: Unpack[_Kw41fc1],
+    ) -> _OutT: ...
+
+@final
+@type_check_only
 class _UFuncSphHarm(_UFunc41[L["sph_harm"], None]):
     @property
     @override
@@ -1657,10 +1810,9 @@ ncfdtridfn: _UFunc41f[L["ncfdtridfn"], L[0]] = ...
 ncfdtrinc: _UFunc41f[L["ncfdtrinc"], L[0]] = ...
 
 # ffff->f; (l|d)ddd->d; fffF->F; dddD->D
-# TODO
-eval_jacobi: np.ufunc = ...
-eval_sh_jacobi: np.ufunc = ...
-hyp2f1: np.ufunc = ...
+eval_jacobi: _UFunc41fc1[L["eval_jacobi"], L[0]] = ...
+eval_sh_jacobi: _UFunc41fc1[L["eval_sh_jacobi"], L[0]] = ...
+hyp2f1: _UFunc41fc1[L["hyp2f1"]] = ...
 
 # ffff->f; dddd->d; FFFF->F; DDDD->D
 # TODO
