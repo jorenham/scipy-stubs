@@ -1617,11 +1617,40 @@ class _UFuncSphHarm(_UFunc41[L["sph_harm"], None]):
 
 ###
 
-def geterr() -> dict[str, str]: ...
-def seterr(**kwargs: str) -> dict[str, str]: ...
+_ErrOption: TypeAlias = L["ignored", "warn", "raise"]
+
+@type_check_only
+class _ErrDict(TypedDict):
+    singular: _ErrOption
+    underflow: _ErrOption
+    overflow: _ErrOption
+    slow: _ErrOption
+    loss: _ErrOption
+    no_result: _ErrOption
+    domain: _ErrOption
+    arg: _ErrOption
+    other: _ErrOption
+
+@type_check_only
+class _ErrKwargs(TypedDict, total=False):
+    all: _ErrOption
+    singular: _ErrOption
+    underflow: _ErrOption
+    overflow: _ErrOption
+    slow: _ErrOption
+    loss: _ErrOption
+    no_result: _ErrOption
+    domain: _ErrOption
+    arg: _ErrOption
+    other: _ErrOption
+
+def geterr() -> _ErrDict: ...
+def seterr(**kwargs: Unpack[_ErrKwargs]) -> _ErrDict: ...
 
 class errstate(EnterNoneMixin):
-    def __init__(self, /, **kwargs: str) -> None: ...
+    def __init__(self, /, **kwargs: Unpack[_ErrKwargs]) -> None: ...
+
+###
 
 # l->l
 _sf_error_test_function: np.ufunc
