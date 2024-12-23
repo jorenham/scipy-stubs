@@ -1,5 +1,6 @@
-# mypy: disable-error-code="explicit-override, override, misc"
 # pyright: reportIncompatibleMethodOverride=false, reportIncompatibleVariableOverride=false, reportImplicitOverride=false
+# NOTE: the last 2 ignores are for the `ComplexWarning` stuffs
+# mypy: disable-error-code="explicit-override, override, misc, import-not-found, attr-defined"
 
 from types import EllipsisType
 from typing import Any, Generic, Literal as L, TypeAlias, TypedDict, final, overload, type_check_only
@@ -9,6 +10,12 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 from scipy._typing import AnyShape, Casting, EnterNoneMixin, OrderKACF
+
+try:
+    from numpy.exceptions import ComplexWarning
+except ImportError:
+    # numpy<1.25
+    ComplexWarning = np.ComplexWarning  # pyright: ignore[reportAttributeAccessIssue, reportUnknownVariableType, reportUnknownMemberType]  # noqa: NPY201
 
 __all__ = [
     "agm",
@@ -871,7 +878,7 @@ class _UFunc21c1(_WithoutIdentity, _UFunc21[_NameT_co, _IdentityT_co], Generic[_
     def __call__(self, a: _ToFloat64_D, b: _ToComplex128_D, /, out: _Out1[_OutT], **kw: Unpack[_Kw21c1]) -> _OutT: ...
     #
     @override
-    @deprecated("Casting complex values to real discards the imaginary part.", category=np.exceptions.ComplexWarning)
+    @deprecated("Casting complex values to real discards the imaginary part.", category=ComplexWarning)  # pyright: ignore[reportUnknownArgumentType]
     def at(self, a: _CoFloat64ND, indices: _Indices, b: _ToFloat64ND, /) -> None: ...
 
     #
