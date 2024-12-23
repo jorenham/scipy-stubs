@@ -49,8 +49,8 @@ scipy\.special\.(cos|sin|tan|cot)dg
 scipy\.special\.(cos|pow|exp)m1
 scipy\.special\.ellip((e|k)(inc)?|km1|rc)
 scipy\.special\.erf(c(inv|x)?|i(nv)?)?
-scipy\.special\.eval_(cheby(c|s|t|u)|hermite(norm)?|laguerre|legendre)
-scipy\.special\.eval_sh_(cheby(t|u)|legendre)
+scipy\.special\.eval_(cheby(c|s)|hermite(norm)?|laguerre)
+scipy\.special\.eval_(sh_)?(cheby(t|u)|legendre|jacobi)
 scipy\.special\.exp(10?|2|i|n|rel)
 scipy\.special\.(exp|log|log_exp)it
 scipy\.special\.log1p
@@ -58,7 +58,7 @@ scipy\.special\.xlog(1p)?y
 scipy\.special\.(di|log|r)?gamma
 scipy\.special\.gamma(incc?(inv)?|ln|sgn)?
 scipy\.special\.(pseudo_)?huber
-scipy\.special\.hyp(0f1|eru)
+scipy\.special\.hyp((0|2)f1|eru)
 scipy\.special\.be(i|r)p?
 scipy\.special\.(i|k)(0|1|v)e?
 scipy\.special\.(mod)?struve
