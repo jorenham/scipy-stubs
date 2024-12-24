@@ -1,17 +1,21 @@
 # pyright: reportIncompatibleMethodOverride=false, reportIncompatibleVariableOverride=false, reportImplicitOverride=false
-# NOTE: this pyright ignore is for the `ComplexWarning` stuff
-# pyright: reportUnnecessaryTypeIgnoreComment=false
-# NOTE: the last 2 mypy ignores are for the `ComplexWarning` stuff
-# mypy: disable-error-code="explicit-override, override, misc, import-not-found, attr-defined"
 
 from types import EllipsisType
 from typing import Any, Generic, Literal as L, TypeAlias, TypedDict, final, overload, type_check_only
-from typing_extensions import LiteralString, Never, TypeVar, Unpack, deprecated, override
+from typing_extensions import LiteralString, Never, TypeAliasType, TypeVar, Unpack, deprecated, override
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
 from scipy._typing import AnyShape, Casting, EnterNoneMixin, OrderKACF
+
+# NOTE: The only way I was able to get `ComplexWarning` to work on both numpy<1.25 and >=1.25, and is needed until `scipy>=1.16`
+
+# NOTE: this pyright ignore is for the `ComplexWarning` stuff
+# pyright: reportUnnecessaryTypeIgnoreComment=false
+
+# NOTE: the last 2 mypy ignores (`import-not-found` and `attr-defined`) are for the `ComplexWarning` stuff
+# mypy: disable-error-code="explicit-override, override, misc, import-not-found, attr-defined"
 
 try:
     from numpy.exceptions import ComplexWarning  # pyright: ignore[reportMissingImports, reportUnknownVariableType]
@@ -273,13 +277,6 @@ _Truthy: TypeAlias = L[True, 1]
 _Out1: TypeAlias = tuple[_MaybeOutT] | _MaybeOutT
 _Out2: TypeAlias = tuple[_MaybeOutT1, _MaybeOutT2]
 
-_Tuple2: TypeAlias = tuple[_T, _T]
-_Tuple3: TypeAlias = tuple[_T, _T, _T]
-_Tuple4: TypeAlias = tuple[_T, _T, _T, _T]
-_Tuple5: TypeAlias = tuple[_T, _T, _T, _T, _T]
-_Tuple6: TypeAlias = tuple[_T, _T, _T, _T, _T, _T]
-_Tuple7: TypeAlias = tuple[_T, _T, _T, _T, _T, _T, _T]
-
 _ToBool_D: TypeAlias = onp.ToBool | onp.ToBoolND
 _ToInt_D: TypeAlias = onp.ToInt | onp.ToIntND
 
@@ -332,8 +329,13 @@ _ToComplex128: TypeAlias = complex | _CoComplex128
 _ToComplex128ND: TypeAlias = _ToND[_CoComplex128, _ToComplex128]
 _ToComplex128_D: TypeAlias = _ToComplex128 | _ToComplex128ND
 
+_Axis: TypeAlias = AnyShape | None
+_Indices: TypeAlias = op.CanIndex | slice | EllipsisType | tuple[op.CanIndex | slice | EllipsisType, ...] | onp.ToIntND
+
+###
+
 _ToDType_l: TypeAlias = onp.AnyLongDType
-_ToDType_q: TypeAlias = onp.AnyLongLongDType
+_ToDType_q: TypeAlias = onp.AnyInt64DType | onp.AnyLongLongDType
 _ToDType_f: TypeAlias = onp.AnyFloat32DType
 _ToDType_d: TypeAlias = onp.AnyFloat64DType
 _ToDType_g: TypeAlias = onp.AnyLongDoubleDType
@@ -344,8 +346,50 @@ _ToDType_fdg: TypeAlias = _ToDType_fd | _ToDType_g
 _ToDType_FD: TypeAlias = _ToDType_F | _ToDType_D
 _ToDType_fdFD: TypeAlias = _ToDType_fd | _ToDType_FD
 
-_Axis: TypeAlias = AnyShape | None
-_Indices: TypeAlias = op.CanIndex | slice | EllipsisType | tuple[op.CanIndex | slice | EllipsisType, ...] | onp.ToIntND
+# NOTE: The `TypeAliasType` prevents error messages from becoming too unreadable (especially those of mypy)
+
+_Tuple2: TypeAlias = tuple[_T, _T]
+_ToDTypes_ff = TypeAliasType("_ToDTypes_ff", _Tuple2[_ToDType_f])
+_ToDTypes_dd = TypeAliasType("_ToDTypes_dd", _Tuple2[_ToDType_d])
+_ToDTypes_gg = TypeAliasType("_ToDTypes_gg", _Tuple2[_ToDType_g])
+_ToDTypes_FF = TypeAliasType("_ToDTypes_FF", _Tuple2[_ToDType_F])
+_ToDTypes_DD = TypeAliasType("_ToDTypes_DD", _Tuple2[_ToDType_D])
+
+_ToDTypes_fff = TypeAliasType("_ToDTypes_fff", tuple[_ToDType_f, _ToDType_f, _ToDType_f])
+_ToDTypes_ldd = TypeAliasType("_ToDTypes_ldd", tuple[_ToDType_l, _ToDType_d, _ToDType_d])
+_ToDTypes_ddd = TypeAliasType("_ToDTypes_ddd", tuple[_ToDType_d, _ToDType_d, _ToDType_d])
+_ToDTypes_fFF = TypeAliasType("_ToDTypes_fFF", tuple[_ToDType_f, _ToDType_F, _ToDType_F])
+_ToDTypes_FFF = TypeAliasType("_ToDTypes_FFF", tuple[_ToDType_F, _ToDType_F, _ToDType_F])
+_ToDTypes_dDD = TypeAliasType("_ToDTypes_dDD", tuple[_ToDType_d, _ToDType_D, _ToDType_D])
+_ToDTypes_DDD = TypeAliasType("_ToDTypes_DDD", tuple[_ToDType_D, _ToDType_D, _ToDType_D])
+
+_ToDTypes_ffff = TypeAliasType("_ToDTypes_ffff", tuple[_ToDType_f, _ToDType_f, _ToDType_f, _ToDType_f])
+_ToDTypes_lldd = TypeAliasType("_ToDTypes_lldd", tuple[_ToDType_l, _ToDType_l, _ToDType_d, _ToDType_d])
+_ToDTypes_lddd = TypeAliasType("_ToDTypes_lddd", tuple[_ToDType_l, _ToDType_d, _ToDType_d, _ToDType_d])
+_ToDTypes_dldd = TypeAliasType("_ToDTypes_dldd", tuple[_ToDType_d, _ToDType_l, _ToDType_d, _ToDType_d])
+_ToDTypes_dddd = TypeAliasType("_ToDTypes_dddd", tuple[_ToDType_d, _ToDType_d, _ToDType_d, _ToDType_d])
+_ToDTypes_ffFF = TypeAliasType("_ToDTypes_ffFF", tuple[_ToDType_f, _ToDType_f, _ToDType_F, _ToDType_F])
+_ToDTypes_ddDD = TypeAliasType("_ToDTypes_ddDD", tuple[_ToDType_d, _ToDType_d, _ToDType_D, _ToDType_D])
+
+_ToDTypes_fffff = TypeAliasType("_ToDTypes_fffff", tuple[_ToDType_f, _ToDType_f, _ToDType_f, _ToDType_f, _ToDType_f])
+_ToDTypes_ldddd = TypeAliasType("_ToDTypes_ldddd", tuple[_ToDType_l, _ToDType_d, _ToDType_d, _ToDType_d, _ToDType_d])
+_ToDTypes_ddddd = TypeAliasType("_ToDTypes_ddddd", tuple[_ToDType_d, _ToDType_d, _ToDType_d, _ToDType_d, _ToDType_d])
+_ToDTypes_qqffF = TypeAliasType("_ToDTypes_qqffF", tuple[_ToDType_q, _ToDType_q, _ToDType_f, _ToDType_f, _ToDType_F])
+_ToDTypes_ffffF = TypeAliasType("_ToDTypes_ffffF", tuple[_ToDType_f, _ToDType_f, _ToDType_f, _ToDType_f, _ToDType_F])
+_ToDTypes_fffFF = TypeAliasType("_ToDTypes_fffFF", tuple[_ToDType_f, _ToDType_f, _ToDType_f, _ToDType_F, _ToDType_F])
+_ToDTypes_qqddD = TypeAliasType("_ToDTypes_qqddD", tuple[_ToDType_q, _ToDType_q, _ToDType_d, _ToDType_d, _ToDType_D])
+_ToDTypes_ddddD = TypeAliasType("_ToDTypes_ddddD", tuple[_ToDType_d, _ToDType_d, _ToDType_d, _ToDType_d, _ToDType_D])
+_ToDTypes_dddDD = TypeAliasType("_ToDTypes_dddDD", tuple[_ToDType_d, _ToDType_d, _ToDType_d, _ToDType_D, _ToDType_D])
+
+_Tuple6: TypeAlias = tuple[_T, _T, _T, _T, _T, _T]
+_ToDTypes_f6 = TypeAliasType("_ToDTypes_f6", _Tuple6[_ToDType_f])
+_ToDTypes_d6 = TypeAliasType("_ToDTypes_d6", _Tuple6[_ToDType_d])
+
+_Tuple7: TypeAlias = tuple[_T, _T, _T, _T, _T, _T, _T]
+_ToDTypes_f7 = TypeAliasType("_ToDTypes_f7", _Tuple7[_ToDType_f])
+_ToDTypes_d7 = TypeAliasType("_ToDTypes_d7", _Tuple7[_ToDType_d])
+
+###
 
 @type_check_only
 class _KwBase(TypedDict, total=False):
@@ -353,6 +397,140 @@ class _KwBase(TypedDict, total=False):
     casting: Casting
     subok: onp.ToBool
     where: _ToBool_D
+
+@type_check_only
+class _Kw11f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd
+    signature: L["f->f", "d->d"] | _ToDTypes_ff | _ToDTypes_dd
+
+@type_check_only
+class _Kw11g(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fdg | None
+    signature: L["f->f", "d->d", "g->g"] | _ToDTypes_ff | _ToDTypes_dd | _ToDTypes_gg
+
+@type_check_only
+class _Kw11c(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_FD | None
+    signature: L["F->F", "D->D"] | _ToDTypes_FF | _ToDTypes_DD
+
+@type_check_only
+class _Kw11fc(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fdFD | None
+    signature: L["f->f", "d->d", "F->F", "D->D"] | _ToDTypes_ff | _ToDTypes_dd | _ToDTypes_FF | _ToDTypes_DD
+
+@type_check_only
+class _Kw12f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd
+    signature: L["f->ff", "d->dd"] | _ToDTypes_fff | _ToDTypes_ddd
+
+@type_check_only
+class _Kw12c(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_FD
+    signature: L["f->FF", "d->DD"] | _ToDTypes_fFF | _ToDTypes_dDD
+
+@type_check_only
+class _Kw12fc(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fdFD
+    signature: L["f->ff", "d->dd", "F->FF", "D->DD"] | _ToDTypes_fff | _ToDTypes_ddd | _ToDTypes_FFF | _ToDTypes_DDD
+
+@type_check_only
+class _Kw21ld(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_d | None
+    signature: L["ld->d"] | _ToDTypes_ldd
+
+@type_check_only
+class _Kw21f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd
+    signature: L["ff->f", "dd->d"] | _ToDTypes_fff | _ToDTypes_ddd
+
+@type_check_only
+class _Kw21c1(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_FD | None
+    signature: L["fF->F", "dD->D"] | _ToDTypes_fFF | _ToDTypes_dDD
+
+@type_check_only
+class _Kw21fc1(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fdFD | None
+    signature: (
+        L["ff->f", "ld->d", "dd->d", "fF->F", "dD->D"]
+        | _ToDTypes_fff
+        | _ToDTypes_ldd
+        | _ToDTypes_ddd
+        | _ToDTypes_fFF
+        | _ToDTypes_dDD
+    )
+
+@type_check_only
+class _Kw21fc2(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fdFD | None
+    signature: L["ff->f", "dd->d", "FF->F", "DD->D"] | _ToDTypes_fff | _ToDTypes_ddd | _ToDTypes_FFF | _ToDTypes_DDD
+
+@type_check_only
+class _Kw22f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd
+    signature: L["ff->ff", "dd->dd"] | _ToDTypes_ffff | _ToDTypes_dddd
+
+@type_check_only
+class _Kw31f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd
+    signature: L["fff->f", "lld->d", "dld->d", "ddd->d"] | _ToDTypes_ffff | _ToDTypes_lldd | _ToDTypes_dldd | _ToDTypes_dddd
+
+@type_check_only
+class _Kw31fc1(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fdFD
+    signature: (
+        L["fff->f", "ldd->d", "ddd->d", "ffF->F", "ddD->D"]
+        | _ToDTypes_ffff
+        | _ToDTypes_lddd
+        | _ToDTypes_dddd
+        | _ToDTypes_ffFF
+        | _ToDTypes_ddDD
+    )
+
+@type_check_only
+class _Kw32f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd
+    signature: L["fff->ff", "ddd->dd"] | _ToDTypes_fffff | _ToDTypes_ddddd
+
+@type_check_only
+class _Kw41f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd
+    signature: L["ffff->f", "dddd->d"] | _ToDTypes_fffff | _ToDTypes_ddddd
+
+@type_check_only
+class _Kw41fc1(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_FD
+    signature: (
+        L["ffff->f", "lddd->d", "dddd->d", "fffF->F", "dddD->D"]
+        | _ToDTypes_fffff
+        | _ToDTypes_ldddd
+        | _ToDTypes_ddddd
+        | _ToDTypes_fffFF
+        | _ToDTypes_dddDD
+    )
+
+@type_check_only
+class _KwSphHarm(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_FD
+    signature: (
+        L["qqff->F", "ffff->F", "qqdd->D", "dddd->D"]
+        | _ToDTypes_qqffF
+        | _ToDTypes_ffffF
+        | _ToDTypes_qqddD
+        | _ToDTypes_ddddD
+    )  # fmt: skip
+
+@type_check_only
+class _Kw42f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd
+    signature: L["ffff->ff", "dddd->dd"] | _ToDTypes_f6 | _ToDTypes_d6
+
+@type_check_only
+class _Kw52f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd
+    signature: L["fffff->ff", "ddddd->dd"] | _ToDTypes_f7 | _ToDTypes_d7
+
+###
 
 @type_check_only
 class _UFunc(np.ufunc, Generic[_NameT_co, _IdentityT_co]):  # pyright: ignore[reportGeneralTypeIssues]
@@ -372,23 +550,27 @@ class _UFunc(np.ufunc, Generic[_NameT_co, _IdentityT_co]):  # pyright: ignore[re
     def signature(self, /) -> None: ...
 
 @type_check_only
-class _WithoutAt:
+class _UFuncWithoutAt:
     def at(self, /, *args: object, **kwargs: object) -> Never: ...
 
 @type_check_only
-class _WithoutIdentity:
-    # in binops, these will raise `TypeError`, otherwise a `ValueError`
+class _UFuncWithoutIdentity:
     def accumulate(self, /, *args: object, **kwargs: object) -> Never: ...
     def reduce(self, /, *args: object, **kwargs: object) -> Never: ...
     def reduceat(self, /, *args: object, **kwargs: object) -> Never: ...
 
 @type_check_only
-class _WithoutBinOps(_WithoutIdentity):
-    # Will raise `ValueError`
+class _UFuncWithout2in(_UFuncWithoutIdentity):
     def outer(self, /, *args: object, **kwargs: object) -> Never: ...
 
 @type_check_only
-class _UFunc11(_WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+class _UFuncWithout1out(_UFuncWithoutAt, _UFuncWithoutIdentity): ...
+
+@type_check_only
+class _UFuncWithout2in1out(_UFuncWithoutAt, _UFuncWithout2in): ...
+
+@type_check_only
+class _UFunc11(_UFuncWithout2in, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def nin(self, /) -> L[1]: ...
@@ -400,7 +582,7 @@ class _UFunc11(_WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_
     def nargs(self, /) -> L[2]: ...
 
 @type_check_only
-class _UFunc12(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+class _UFunc12(_UFuncWithout2in, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def nin(self, /) -> L[1]: ...
@@ -424,7 +606,7 @@ class _UFunc21(_UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_c
     def nargs(self, /) -> L[3]: ...
 
 @type_check_only
-class _UFunc22(_WithoutAt, _WithoutIdentity, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+class _UFunc22(_UFuncWithout1out, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     # NOTE: supports outer
     @property
     @override
@@ -437,7 +619,7 @@ class _UFunc22(_WithoutAt, _WithoutIdentity, _UFunc[_NameT_co, _IdentityT_co], G
     def nargs(self, /) -> L[4]: ...
 
 @type_check_only
-class _UFunc31(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+class _UFunc31(_UFuncWithout2in1out, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def nin(self, /) -> L[3]: ...
@@ -449,7 +631,7 @@ class _UFunc31(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Gen
     def nargs(self, /) -> L[4]: ...
 
 @type_check_only
-class _UFunc32(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+class _UFunc32(_UFuncWithout2in1out, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def nin(self, /) -> L[3]: ...
@@ -461,7 +643,7 @@ class _UFunc32(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Gen
     def nargs(self, /) -> L[5]: ...
 
 @type_check_only
-class _UFunc41(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+class _UFunc41(_UFuncWithout2in1out, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def nin(self, /) -> L[4]: ...
@@ -473,7 +655,7 @@ class _UFunc41(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Gen
     def nargs(self, /) -> L[5]: ...
 
 @type_check_only
-class _UFunc42(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+class _UFunc42(_UFuncWithout2in1out, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def nin(self, /) -> L[4]: ...
@@ -485,7 +667,7 @@ class _UFunc42(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Gen
     def nargs(self, /) -> L[6]: ...
 
 @type_check_only
-class _UFunc52(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+class _UFunc52(_UFuncWithout2in1out, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def nin(self, /) -> L[5]: ...
@@ -495,135 +677,6 @@ class _UFunc52(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Gen
     @property
     @override
     def nargs(self, /) -> L[7]: ...
-
-_ToSignature2_fd: TypeAlias = _Tuple2[_ToDType_f] | _Tuple2[_ToDType_d]
-_ToSignature2_fdg: TypeAlias = _ToSignature2_fd | _Tuple2[_ToDType_g]
-_ToSignature2_FD: TypeAlias = _Tuple2[_ToDType_F] | _Tuple2[_ToDType_D]
-
-@type_check_only
-class _Kw11f(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_fd
-    signature: L["f->f", "d->d"] | _ToSignature2_fd
-
-@type_check_only
-class _Kw11g(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_fdg | None
-    signature: L["f->f", "d->d", "g->g"] | _ToSignature2_fdg
-
-@type_check_only
-class _Kw11c(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_FD | None
-    signature: L["F->F", "D->D"] | _ToSignature2_FD
-
-@type_check_only
-class _Kw11fc(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_fdFD | None
-    signature: L["f->f", "d->d", "F->F", "D->D"] | _ToSignature2_fd | _ToSignature2_FD
-
-_ToSignature3_fd2: TypeAlias = _Tuple3[_ToDType_f] | _Tuple3[_ToDType_d]
-_ToSignature3_FD2: TypeAlias = _Tuple3[_ToDType_F] | _Tuple3[_ToDType_D]
-_ToSignature3_fFdD: TypeAlias = tuple[_ToDType_f, _ToDType_F, _ToDType_F] | tuple[_ToDType_d, _ToDType_D, _ToDType_D]
-
-@type_check_only
-class _Kw12f(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_fd
-    signature: L["f->ff", "d->dd"] | _ToSignature3_fd2
-
-@type_check_only
-class _Kw12c(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_FD
-    signature: L["f->FF", "d->DD"] | _ToSignature3_fFdD
-
-@type_check_only
-class _Kw12fc(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_fdFD
-    signature: L["f->ff", "d->dd", "F->FF", "D->DD"] | _ToSignature3_fd2 | _ToSignature3_FD2
-
-_ToSignature3_ld: TypeAlias = tuple[_ToDType_l, _ToDType_d, _ToDType_d]
-
-@type_check_only
-class _Kw21ld(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_d | None
-    signature: L["ld->d"] | _ToSignature3_ld
-
-@type_check_only
-class _Kw21f(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_fd
-    signature: L["ff->f", "dd->d"] | _ToSignature3_fd2
-
-@type_check_only
-class _Kw21c1(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_FD | None
-    signature: L["fF->F", "dD->D"] | _ToSignature3_fFdD
-
-@type_check_only
-class _Kw21fc1(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_fdFD | None
-    signature: L["ff->f", "ld->d", "dd->d", "fF->F", "dD->D"] | _ToSignature3_ld | _ToSignature3_fd2 | _ToSignature3_fFdD
-
-@type_check_only
-class _Kw21fc2(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_fdFD | None
-    signature: L["ff->f", "dd->d", "FF->F", "DD->D"] | _ToSignature3_fd2 | _ToSignature3_FD2
-
-_ToSignature4_fd: TypeAlias = _Tuple4[_ToDType_f] | _Tuple4[_ToDType_d]
-
-@type_check_only
-class _Kw22f(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_fd
-    signature: L["ff->ff", "dd->dd"] | _ToSignature4_fd
-
-_ToSignature4_lld: TypeAlias = tuple[_ToDType_l, _ToDType_l, _ToDType_d, _ToDType_d]
-_ToSignature4_dld: TypeAlias = tuple[_ToDType_d, _ToDType_l, _ToDType_d, _ToDType_d]
-
-@type_check_only
-class _Kw31f(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_fd
-    signature: L["fff->f", "ddd->d", "lld->d", "dld->d"] | _ToSignature4_fd | _ToSignature4_lld | _ToSignature4_dld
-
-_ToSignature5_fd: TypeAlias = _Tuple5[_ToDType_f] | _Tuple5[_ToDType_d]
-
-@type_check_only
-class _Kw32f(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_fd
-    signature: L["fff->ff", "ddd->dd"] | _ToSignature5_fd
-
-@type_check_only
-class _Kw41f(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_fd
-    signature: L["ffff->f", "dddd->d"] | _ToSignature5_fd
-
-@type_check_only
-class _Kw41fc1(_KwBase, TypedDict, total=False):
-    # (qq|ff)ff->F; (qq|dd)dd->D
-    dtype: _ToDType_FD
-    signature: (
-        L["ffff->f", "lddd->d", "dddd->d", "fffF->F", "dddD->D"]
-        | tuple[_ToDType_l | _ToDType_fd, _ToDType_fd, _ToDType_fd, _ToDType_fdFD, _ToDType_fdFD]
-    )
-
-@type_check_only
-class _KwSphHarm(_KwBase, TypedDict, total=False):
-    # (qq|ff)ff->F; (qq|dd)dd->D
-    dtype: _ToDType_FD
-    signature: (
-        L["qqff->F", "ffff->F", "qqdd->D", "dddd->D"]
-        | tuple[_ToDType_q | _ToDType_fd, _ToDType_q | _ToDType_fd, _ToDType_fd, _ToDType_fd, _ToDType_FD]
-    )
-
-_ToSignature6_fd: TypeAlias = _Tuple6[_ToDType_f] | _Tuple6[_ToDType_d]
-
-@type_check_only
-class _Kw42f(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_fd
-    signature: L["ffff->ff", "dddd->dd"] | _ToSignature6_fd
-
-_ToSignature7_fd: TypeAlias = _Tuple7[_ToDType_f] | _Tuple7[_ToDType_d]
-
-@type_check_only
-class _Kw52f(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_fd
-    signature: L["fffff->ff", "ddddd->dd"] | _ToSignature7_fd
 
 @final
 @type_check_only
@@ -787,7 +840,7 @@ class _UFunc12fc(_UFunc12[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
 
 @final
 @type_check_only
-class _UFunc21ld(_WithoutIdentity, _UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+class _UFunc21ld(_UFuncWithoutIdentity, _UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
     def ntypes(self, /) -> L[1]: ...
@@ -936,7 +989,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
 
 @final
 @type_check_only
-class _UFunc21c1(_WithoutIdentity, _UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+class _UFunc21c1(_UFuncWithoutIdentity, _UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     # for the four `hankel(1|2)e?` functions
     @property
     @override
@@ -1390,6 +1443,138 @@ class _UFunc31f(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         /,
         out: _Out1[_OutT],
         **kw: Unpack[_Kw31f],
+    ) -> _OutT: ...
+
+@final
+@type_check_only
+class _UFunc31fc1(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+    # `eval_{gegenbauer,genlaguerre}` and `hyp1f1`
+    @property
+    @override
+    def ntypes(self, /) -> L[3, 4]: ...
+    @property
+    @override
+    def types(self, /) -> list[L["fff->f", "ldd->d", "ddd->d", "ffF->F", "ddD->D"]]: ...
+    #
+    @overload
+    def __call__(
+        self,
+        n: _ToSubFloat,
+        a: _ToSubFloat,
+        x: _ToSubFloat,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc1],
+    ) -> _Float: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToSubFloat,
+        a: _ToSubFloat,
+        x: _ToSubComplex,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc1],
+    ) -> _Inexact: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat64,
+        a: _ToFloat64,
+        x: _Inexact_DT,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc1],
+    ) -> _Inexact_DT: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat64,
+        a: _Float_DT,
+        x: _ToFloat64,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc1],
+    ) -> _Float_DT: ...
+    @overload
+    def __call__(
+        self,
+        n: _Float_DT,
+        a: _ToFloat64,
+        x: _ToFloat64,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc1],
+    ) -> _Float_DT: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat64_D,
+        a: _ToFloat64_D,
+        x: _ToFloat64ND,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc1],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat64_D,
+        a: _ToFloat64ND,
+        x: _ToFloat64_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc1],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat64ND,
+        a: _ToFloat64_D,
+        x: _ToFloat64_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc1],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat64_D,
+        a: _ToFloat64_D,
+        x: _ToComplex128ND,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc1],
+    ) -> _InexactND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat64_D,
+        a: _ToFloat64ND,
+        x: _ToComplex128_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc1],
+    ) -> _InexactND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat64ND,
+        a: _ToFloat64_D,
+        x: _ToComplex128_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc1],
+    ) -> _InexactND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat64_D,
+        a: _ToFloat64_D,
+        x: _ToComplex128_D,
+        /,
+        out: _Out1[_OutT],
+        **kw: Unpack[_Kw31fc1],
     ) -> _OutT: ...
 
 @final
@@ -2193,6 +2378,8 @@ class _ErrKwargs(TypedDict, total=False):
     arg: _ErrOption
     other: _ErrOption
 
+###
+
 def geterr() -> _ErrDict: ...
 def seterr(**kwargs: Unpack[_ErrKwargs]) -> _ErrDict: ...
 
@@ -2403,11 +2590,10 @@ _zeta: np.ufunc = ...
 # Flf->F; Dld->D
 _lambertw: np.ufunc = ...
 
-# fff->f; ddd->d; ffF->F; (l|d)dD->D
-# TODO
-eval_gegenbauer: np.ufunc = ...
-eval_genlaguerre: np.ufunc = ...
-hyp1f1: np.ufunc = ...
+# fff->f; (l|d)dd->d; ffF->F; ddD->D
+eval_gegenbauer: _UFunc31fc1[L["eval_gegenbauer"], L[0]] = ...
+eval_genlaguerre: _UFunc31fc1[L["eval_genlaguerre"], L[0]] = ...
+hyp1f1: _UFunc31fc1[L["hyp1f1"], L[0]] = ...
 
 # fff->f; ddd->d; FFF->F; DDD->D
 # TODO
