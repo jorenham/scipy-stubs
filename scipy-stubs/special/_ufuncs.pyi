@@ -277,6 +277,8 @@ _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
 _Tuple4: TypeAlias = tuple[_T, _T, _T, _T]
 _Tuple5: TypeAlias = tuple[_T, _T, _T, _T, _T]
+_Tuple6: TypeAlias = tuple[_T, _T, _T, _T, _T, _T]
+_Tuple7: TypeAlias = tuple[_T, _T, _T, _T, _T, _T, _T]
 
 _ToBool_D: TypeAlias = onp.ToBool | onp.ToBoolND
 _ToInt_D: TypeAlias = onp.ToInt | onp.ToIntND
@@ -470,102 +472,126 @@ class _UFunc41(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Gen
     @override
     def nargs(self, /) -> L[5]: ...
 
-_ToSignature1_fd: TypeAlias = _Tuple2[_ToDType_f] | _Tuple2[_ToDType_d]
-_ToSignature1_fdg: TypeAlias = _ToSignature1_fd | _Tuple2[_ToDType_g]
-_ToSignature1_FD: TypeAlias = _Tuple2[_ToDType_F] | _Tuple2[_ToDType_D]
+@type_check_only
+class _UFunc42(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+    @property
+    @override
+    def nin(self, /) -> L[4]: ...
+    @property
+    @override
+    def nout(self, /) -> L[2]: ...
+    @property
+    @override
+    def nargs(self, /) -> L[6]: ...
+
+@type_check_only
+class _UFunc52(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+    @property
+    @override
+    def nin(self, /) -> L[5]: ...
+    @property
+    @override
+    def nout(self, /) -> L[2]: ...
+    @property
+    @override
+    def nargs(self, /) -> L[7]: ...
+
+_ToSignature2_fd: TypeAlias = _Tuple2[_ToDType_f] | _Tuple2[_ToDType_d]
+_ToSignature2_fdg: TypeAlias = _ToSignature2_fd | _Tuple2[_ToDType_g]
+_ToSignature2_FD: TypeAlias = _Tuple2[_ToDType_F] | _Tuple2[_ToDType_D]
 
 @type_check_only
 class _Kw11f(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fd
-    signature: L["f->f", "d->d"] | _ToSignature1_fd
+    signature: L["f->f", "d->d"] | _ToSignature2_fd
 
 @type_check_only
 class _Kw11g(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fdg | None
-    signature: L["f->f", "d->d", "g->g"] | _ToSignature1_fdg
+    signature: L["f->f", "d->d", "g->g"] | _ToSignature2_fdg
 
 @type_check_only
 class _Kw11c(_KwBase, TypedDict, total=False):
     dtype: _ToDType_FD | None
-    signature: L["F->F", "D->D"] | _ToSignature1_FD
+    signature: L["F->F", "D->D"] | _ToSignature2_FD
 
 @type_check_only
 class _Kw11fc(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fdFD | None
-    signature: L["f->f", "d->d", "F->F", "D->D"] | _ToSignature1_fd | _ToSignature1_FD
+    signature: L["f->f", "d->d", "F->F", "D->D"] | _ToSignature2_fd | _ToSignature2_FD
 
-_ToSignature2_fd2: TypeAlias = _Tuple3[_ToDType_f] | _Tuple3[_ToDType_d]
-_ToSignature2_FD2: TypeAlias = _Tuple3[_ToDType_F] | _Tuple3[_ToDType_D]
-_ToSignature2_fFdD: TypeAlias = tuple[_ToDType_f, _ToDType_F, _ToDType_F] | tuple[_ToDType_d, _ToDType_D, _ToDType_D]
+_ToSignature3_fd2: TypeAlias = _Tuple3[_ToDType_f] | _Tuple3[_ToDType_d]
+_ToSignature3_FD2: TypeAlias = _Tuple3[_ToDType_F] | _Tuple3[_ToDType_D]
+_ToSignature3_fFdD: TypeAlias = tuple[_ToDType_f, _ToDType_F, _ToDType_F] | tuple[_ToDType_d, _ToDType_D, _ToDType_D]
 
 @type_check_only
 class _Kw12f(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fd
-    signature: L["f->ff", "d->dd"] | _ToSignature2_fd2
+    signature: L["f->ff", "d->dd"] | _ToSignature3_fd2
 
 @type_check_only
 class _Kw12c(_KwBase, TypedDict, total=False):
     dtype: _ToDType_FD
-    signature: L["f->FF", "d->DD"] | _ToSignature2_fFdD
+    signature: L["f->FF", "d->DD"] | _ToSignature3_fFdD
 
 @type_check_only
 class _Kw12fc(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fdFD
-    signature: L["f->ff", "d->dd", "F->FF", "D->DD"] | _ToSignature2_fd2 | _ToSignature2_FD2
+    signature: L["f->ff", "d->dd", "F->FF", "D->DD"] | _ToSignature3_fd2 | _ToSignature3_FD2
 
-_ToSignature2_ld: TypeAlias = tuple[_ToDType_l, _ToDType_d, _ToDType_d]
+_ToSignature3_ld: TypeAlias = tuple[_ToDType_l, _ToDType_d, _ToDType_d]
 
 @type_check_only
 class _Kw21ld(_KwBase, TypedDict, total=False):
     dtype: _ToDType_d | None
-    signature: L["ld->d"] | _ToSignature2_ld
+    signature: L["ld->d"] | _ToSignature3_ld
 
 @type_check_only
 class _Kw21f(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fd
-    signature: L["ff->f", "dd->d"] | _ToSignature2_fd2
+    signature: L["ff->f", "dd->d"] | _ToSignature3_fd2
 
 @type_check_only
 class _Kw21c1(_KwBase, TypedDict, total=False):
     dtype: _ToDType_FD | None
-    signature: L["fF->F", "dD->D"] | _ToSignature2_fFdD
+    signature: L["fF->F", "dD->D"] | _ToSignature3_fFdD
 
 @type_check_only
 class _Kw21fc1(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fdFD | None
-    signature: L["ff->f", "ld->d", "dd->d", "fF->F", "dD->D"] | _ToSignature2_ld | _ToSignature2_fd2 | _ToSignature2_fFdD
+    signature: L["ff->f", "ld->d", "dd->d", "fF->F", "dD->D"] | _ToSignature3_ld | _ToSignature3_fd2 | _ToSignature3_fFdD
 
 @type_check_only
 class _Kw21fc2(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fdFD | None
-    signature: L["ff->f", "dd->d", "FF->F", "DD->D"] | _ToSignature2_fd2 | _ToSignature2_FD2
+    signature: L["ff->f", "dd->d", "FF->F", "DD->D"] | _ToSignature3_fd2 | _ToSignature3_FD2
 
-_ToSignature3_fd3: TypeAlias = _Tuple4[_ToDType_f] | _Tuple4[_ToDType_d]
+_ToSignature4_fd: TypeAlias = _Tuple4[_ToDType_f] | _Tuple4[_ToDType_d]
 
 @type_check_only
 class _Kw22f(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fd
-    signature: L["ff->ff", "dd->dd"] | _ToSignature3_fd3
+    signature: L["ff->ff", "dd->dd"] | _ToSignature4_fd
 
-_ToSignature3_lld: TypeAlias = tuple[_ToDType_l, _ToDType_l, _ToDType_d, _ToDType_d]
-_ToSignature3_dld: TypeAlias = tuple[_ToDType_d, _ToDType_l, _ToDType_d, _ToDType_d]
+_ToSignature4_lld: TypeAlias = tuple[_ToDType_l, _ToDType_l, _ToDType_d, _ToDType_d]
+_ToSignature4_dld: TypeAlias = tuple[_ToDType_d, _ToDType_l, _ToDType_d, _ToDType_d]
 
 @type_check_only
 class _Kw31f(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fd
-    signature: L["fff->f", "ddd->d", "lld->d", "dld->d"] | _ToSignature3_fd3 | _ToSignature3_lld | _ToSignature3_dld
+    signature: L["fff->f", "ddd->d", "lld->d", "dld->d"] | _ToSignature4_fd | _ToSignature4_lld | _ToSignature4_dld
 
-_ToSignature3_fd4: TypeAlias = _Tuple5[_ToDType_f] | _Tuple5[_ToDType_d]
+_ToSignature5_fd: TypeAlias = _Tuple5[_ToDType_f] | _Tuple5[_ToDType_d]
 
 @type_check_only
 class _Kw32f(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fd
-    signature: L["fff->ff", "ddd->dd"] | _ToSignature3_fd4
+    signature: L["fff->ff", "ddd->dd"] | _ToSignature5_fd
 
 @type_check_only
 class _Kw41f(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fd
-    signature: L["ffff->f", "dddd->d"] | _ToSignature3_fd4
+    signature: L["ffff->f", "dddd->d"] | _ToSignature5_fd
 
 @type_check_only
 class _Kw41fc1(_KwBase, TypedDict, total=False):
@@ -584,6 +610,20 @@ class _KwSphHarm(_KwBase, TypedDict, total=False):
         L["qqff->F", "ffff->F", "qqdd->D", "dddd->D"]
         | tuple[_ToDType_q | _ToDType_fd, _ToDType_q | _ToDType_fd, _ToDType_fd, _ToDType_fd, _ToDType_FD]
     )
+
+_ToSignature6_fd: TypeAlias = _Tuple6[_ToDType_f] | _Tuple6[_ToDType_d]
+
+@type_check_only
+class _Kw42f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd
+    signature: L["ffff->ff", "dddd->dd"] | _ToSignature6_fd
+
+_ToSignature7_fd: TypeAlias = _Tuple7[_ToDType_f] | _Tuple7[_ToDType_d]
+
+@type_check_only
+class _Kw52f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd
+    signature: L["fffff->ff", "ddddd->dd"] | _ToSignature7_fd
 
 @final
 @type_check_only
@@ -1534,8 +1574,8 @@ class _UFunc41f(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     def __call__(
         self,
         dfn: _ToFloat64_D,
-        dfd: _ToFloat64ND,
-        nc: _ToFloat64_D,
+        dfd: _ToFloat64_D,
+        nc: _ToFloat64ND,
         f: _ToFloat64_D,
         /,
         out: _Out1 = None,
@@ -1545,8 +1585,8 @@ class _UFunc41f(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     def __call__(
         self,
         dfn: _ToFloat64_D,
-        dfd: _ToFloat64_D,
-        nc: _ToFloat64ND,
+        dfd: _ToFloat64ND,
+        nc: _ToFloat64_D,
         f: _ToFloat64_D,
         /,
         out: _Out1 = None,
@@ -1822,6 +1862,307 @@ class _UFuncSphHarm(_UFunc41[L["sph_harm"], None]):
         out: _Out1[_OutT],
         **kw: Unpack[_KwSphHarm],
     ) -> _OutT: ...
+
+@final
+@type_check_only
+class _UFunc42f(_UFunc42[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+    @property
+    @override
+    def ntypes(self, /) -> L[2]: ...
+    @property
+    @override
+    def types(self, /) -> list[L["ffff->ff", "dddd->dd"]]: ...
+    #
+    @overload
+    def __call__(
+        self,
+        m: _ToSubFloat,
+        n: _ToSubFloat,
+        c: _ToSubFloat,
+        x: _ToSubFloat,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw42f],
+    ) -> _Float: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64,
+        n: _ToFloat64,
+        c: _ToFloat64,
+        x: _Float_DT,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw42f],
+    ) -> _Float_DT: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64,
+        n: _ToFloat64,
+        c: _Float_DT,
+        x: _ToFloat64,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw42f],
+    ) -> _Float_DT: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64,
+        n: _Float_DT,
+        c: _ToFloat64,
+        x: _ToFloat64,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw42f],
+    ) -> _Float_DT: ...
+    @overload
+    def __call__(
+        self,
+        m: _Float_DT,
+        n: _ToFloat64,
+        c: _ToFloat64,
+        x: _ToFloat64,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw42f],
+    ) -> _Float_DT: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64_D,
+        c: _ToFloat64_D,
+        x: _ToFloat64ND,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw42f],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64_D,
+        c: _ToFloat64ND,
+        x: _ToFloat64_D,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw42f],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64ND,
+        c: _ToFloat64_D,
+        x: _ToFloat64_D,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw42f],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64ND,
+        n: _ToFloat64_D,
+        c: _ToFloat64_D,
+        x: _ToFloat64_D,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw42f],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64_D,
+        c: _ToFloat64_D,
+        x: _ToFloat64_D,
+        /,
+        out: tuple[_OutT1, _OutT2],
+        **kw: Unpack[_Kw42f],
+    ) -> tuple[_OutT1, _OutT2]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64_D,
+        c: _ToFloat64_D,
+        x: _ToFloat64_D,
+        out1: _OutT1,
+        out2: _OutT2,
+        /,
+        **kw: Unpack[_Kw42f],
+    ) -> tuple[_OutT1, _OutT2]: ...
+
+@final
+@type_check_only
+class _UFunc52f(_UFunc52[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+    @property
+    @override
+    def ntypes(self, /) -> L[2]: ...
+    @property
+    @override
+    def types(self, /) -> list[L["fffff->ff", "ddddd->dd"]]: ...
+    #
+    @overload
+    def __call__(
+        self,
+        m: _ToSubFloat,
+        n: _ToSubFloat,
+        c: _ToSubFloat,
+        cv: _ToSubFloat,
+        x: _ToSubFloat,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> _Float: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64,
+        n: _ToFloat64,
+        c: _ToFloat64,
+        cv: _ToFloat64,
+        x: _Float_DT,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> _Float_DT: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64,
+        n: _ToFloat64,
+        c: _ToFloat64,
+        cv: _Float_DT,
+        x: _ToFloat64,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> _Float_DT: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64,
+        n: _ToFloat64,
+        c: _Float_DT,
+        cv: _ToFloat64,
+        x: _ToFloat64,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> _Float_DT: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64,
+        n: _Float_DT,
+        c: _ToFloat64,
+        cv: _ToFloat64,
+        x: _ToFloat64,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> _Float_DT: ...
+    @overload
+    def __call__(
+        self,
+        m: _Float_DT,
+        n: _ToFloat64,
+        c: _ToFloat64,
+        cv: _ToFloat64,
+        x: _ToFloat64,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> _Float_DT: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64_D,
+        c: _ToFloat64_D,
+        cv: _ToFloat64_D,
+        x: _ToFloat64ND,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64_D,
+        c: _ToFloat64_D,
+        cv: _ToFloat64ND,
+        x: _ToFloat64_D,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64_D,
+        c: _ToFloat64ND,
+        cv: _ToFloat64_D,
+        x: _ToFloat64_D,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64ND,
+        c: _ToFloat64_D,
+        cv: _ToFloat64_D,
+        x: _ToFloat64_D,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64ND,
+        n: _ToFloat64_D,
+        c: _ToFloat64_D,
+        cv: _ToFloat64_D,
+        x: _ToFloat64_D,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64_D,
+        c: _ToFloat64_D,
+        cv: _ToFloat64_D,
+        x: _ToFloat64_D,
+        /,
+        out: tuple[_OutT1, _OutT2],
+        **kw: Unpack[_Kw52f],
+    ) -> tuple[_OutT1, _OutT2]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64_D,
+        c: _ToFloat64_D,
+        cv: _ToFloat64_D,
+        x: _ToFloat64_D,
+        out1: _OutT1,
+        out2: _OutT2,
+        /,
+        **kw: Unpack[_Kw52f],
+    ) -> tuple[_OutT1, _OutT2]: ...
 
 ###
 
@@ -2225,22 +2566,20 @@ _struve_bessel_series: np.ufunc = ...
 _struve_power_series: np.ufunc = ...
 
 # ffff->ff; dddd->dd
-# TODO
-obl_ang1: np.ufunc = ...
-obl_rad1: np.ufunc = ...
-obl_rad2: np.ufunc = ...
-pro_ang1: np.ufunc = ...
-pro_rad1: np.ufunc = ...
-pro_rad2: np.ufunc = ...
+obl_ang1: _UFunc42f[L["obl_ang1"]] = ...
+obl_rad1: _UFunc42f[L["obl_rad1"]] = ...
+obl_rad2: _UFunc42f[L["obl_rad2"]] = ...
+pro_ang1: _UFunc42f[L["pro_ang1"]] = ...
+pro_rad1: _UFunc42f[L["pro_rad1"]] = ...
+pro_rad2: _UFunc42f[L["pro_rad2"]] = ...
 
 # fffff->ff; ddddd->dd
-# TODO
-obl_ang1_cv: np.ufunc = ...
-obl_rad1_cv: np.ufunc = ...
-obl_rad2_cv: np.ufunc = ...
-pro_ang1_cv: np.ufunc = ...
-pro_rad1_cv: np.ufunc = ...
-pro_rad2_cv: np.ufunc = ...
+obl_ang1_cv: _UFunc52f[L["obl_ang1_cv"]] = ...
+obl_rad1_cv: _UFunc52f[L["obl_rad1_cv"]] = ...
+obl_rad2_cv: _UFunc52f[L["obl_rad2_cv"]] = ...
+pro_ang1_cv: _UFunc52f[L["pro_ang1_cv"]] = ...
+pro_rad1_cv: _UFunc52f[L["pro_rad1_cv"]] = ...
+pro_rad2_cv: _UFunc52f[L["pro_rad2_cv"]] = ...
 
 # f->ffff; d->dddd
 # TODO
