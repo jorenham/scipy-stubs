@@ -162,7 +162,7 @@ warn_unreachable = true
 warn_unused_ignores = true
 disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[Any]`
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
-# plugins = ["numpy.typing.mypy_plugin"]
+plugins = ["numpy.typing.mypy_plugin"]
 
 [tool.pyright]
 include = ["codegen", "scipy-stubs", "tests"]
