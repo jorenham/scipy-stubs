@@ -7,7 +7,6 @@ import scipy.special as sp
 
 _Float32ND: TypeAlias = onp.ArrayND[np.float32]
 _Float64ND: TypeAlias = onp.ArrayND[np.float64]
-_LongDoubleND: TypeAlias = onp.ArrayND[np.longdouble]
 _Complex64ND: TypeAlias = onp.ArrayND[np.complex64]
 _Complex128ND: TypeAlias = onp.ArrayND[np.complex128]
 
@@ -17,7 +16,6 @@ _f: np.floating[Any]
 _f2: np.float16
 _f4: np.float32
 _f8: np.float64
-_g: np.longdouble
 _c8: np.complex64
 _c16: np.complex128
 
@@ -26,9 +24,10 @@ _i1_nd: onp.ArrayND[np.uint8 | np.int8]
 _f2_nd: onp.ArrayND[np.float16]
 _f4_nd: _Float32ND
 _f8_nd: _Float64ND
-_g_nd: _LongDoubleND
 _c8_nd: _Complex64ND
 _c16_nd: _Complex128ND
+
+# NOTE: `[c]longdouble` can't be tested, because it types as `floating[Any]` on `numpy<2.2`
 
 # _UFunc
 assert_type(sp.cbrt.__name__, L["cbrt"])
@@ -75,8 +74,6 @@ assert_type(sp.logit(_f4), np.float32)
 assert_type(sp.logit(_f4_nd), _Float32ND)
 assert_type(sp.logit(_f8), np.float64)
 assert_type(sp.logit(_f8_nd), _Float64ND)
-assert_type(sp.logit(_g), np.longdouble)
-assert_type(sp.logit(_g_nd), _LongDoubleND)
 sp.logit(_c16)  # type:ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
 sp.logit(_c16_nd)  # type:ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
 assert_type(sp.logit(0), np.float64)
@@ -85,7 +82,6 @@ assert_type(sp.logit(0.0), np.float64)
 assert_type(sp.logit([0.0]), _Float64ND)
 assert_type(sp.logit.at(_b1_nd, _i), None)
 assert_type(sp.logit.at(_f8_nd, _i), None)
-assert_type(sp.logit.at(_g_nd, _i), None)
 sp.logit.at(_c16, _i)  # type:ignore[arg-type]  # pyright: ignore[reportArgumentType]
 
 # _UFunc11c - TODO: wofz

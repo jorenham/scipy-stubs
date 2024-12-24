@@ -26,13 +26,13 @@ class ArpackError(RuntimeError):
     def __init__(self, /, info: _KT, infodict: Mapping[_KT, str] = ...) -> None: ...
 
 class ArpackNoConvergence(ArpackError):
-    eigenvalues: Final[onp.Array1D[np.float64 | np.float128]]
+    eigenvalues: Final[onp.Array1D[np.float64 | np.complex128]]
     eigenvectors: Final[onp.Array2D[np.float64]]
     def __init__(
         self,
         /,
         msg: str,
-        eigenvalues: onp.Array1D[np.float64 | np.float128],
+        eigenvalues: onp.Array1D[np.float64 | np.complex128],
         eigenvectors: onp.Array2D[np.float64],
     ) -> None: ...
 
