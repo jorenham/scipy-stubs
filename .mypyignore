@@ -92,6 +92,7 @@ scipy\.special\.(_ufuncs\.)?mathieu_(a|b)
 scipy\.special\.(_ufuncs\.)?hankel(1|2)e?
 scipy\.special\.(_ufuncs\.)?(obl|pro)_cv
 scipy\.special\.(_ufuncs\.)?owens_t
+scipy\.special\.(_ufuncs\.)?pb(dv|vv|wa)
 scipy\.special\.(_ufuncs\.)?psi
 scipy\.special\.(_ufuncs\.)?radian
 scipy\.special\.(_ufuncs\.)?round
