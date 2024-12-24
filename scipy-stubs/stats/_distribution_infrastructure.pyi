@@ -7,10 +7,9 @@ from typing import Any, ClassVar, Final, Generic, Literal as L, Protocol, TypeAl
 from typing_extensions import LiteralString, Never, Self, TypeIs, TypeVar, Unpack, override
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.typing as opt
-from scipy._typing import AnyShape, ToRNG
+from scipy._typing import ToRNG
 from ._distn_infrastructure import rv_continuous
 from ._probability_distribution import _BaseDistribution
 
@@ -52,10 +51,6 @@ _1D: TypeAlias = tuple[_NT]  # noqa: PYI042
 _2D: TypeAlias = tuple[_NT, _NT]  # noqa: PYI042
 _3D: TypeAlias = tuple[_NT, _NT, _NT]  # noqa: PYI042
 _ND: TypeAlias = tuple[_NT, ...]
-
-_To1D: TypeAlias = op.CanIndex | _1D[op.CanIndex]
-_To2D: TypeAlias = _2D[op.CanIndex]
-_To3D: TypeAlias = _3D[op.CanIndex]
 
 _ToFloatMax1D: TypeAlias = onp.ToFloatStrict1D | onp.ToFloat
 _ToFloatMax2D: TypeAlias = onp.ToFloatStrict2D | _ToFloatMax1D
@@ -347,31 +342,6 @@ class ContinuousDistribution(_BaseDistribution[_FloatT_co, _ShapeT_co], Generic[
         t: tuple[_PlotQuantity, _JustFloat, _JustFloat] = ("cdf", 0.0005, 0.9995),
         ax: _AxesT | None = None,
     ) -> _AxesT: ...
-
-    #
-    # NOTE: This will be removed in 1.15.0rc2, see https://github.com/scipy/scipy/pull/22149
-    @overload
-    def llf(self, sample: _ToFloatMaxND, /, *, axis: None) -> _OutFloat: ...
-    @overload
-    def llf(self: _CDist0, sample: _ToFloatMax1D, /, *, axis: AnyShape | None = -1) -> _OutFloat: ...
-    @overload
-    def llf(self: _CDist[_ShapeT1], sample: _ToFloatMax1D, /, *, axis: AnyShape = -1) -> onp.ArrayND[_OutFloat, _ShapeT1]: ...
-    @overload
-    def llf(self: _CDist0, sample: onp.ToFloatStrict2D, /, *, axis: _To1D = -1) -> onp.Array1D[_OutFloat]: ...
-    @overload
-    def llf(self: _CDist0, sample: onp.ToFloatStrict2D, /, *, axis: _To2D) -> _OutFloat: ...
-    @overload
-    def llf(self: _CDist0, sample: onp.ToFloatStrict3D, /, *, axis: _To1D = -1) -> onp.Array2D[_OutFloat]: ...
-    @overload
-    def llf(self: _CDist0, sample: onp.ToFloatStrict3D, /, *, axis: _To2D) -> onp.Array1D[_OutFloat]: ...
-    @overload
-    def llf(self: _CDist0, sample: onp.ToFloatStrict3D, /, *, axis: _To3D) -> _OutFloat: ...
-    @overload
-    def llf(
-        self: _CDist[_ShapeT1], sample: _ToFloatMaxND, /, *, axis: AnyShape = -1
-    ) -> onp.Array[_ShapeT1, _OutFloat] | onp.ArrayND[_OutFloat]: ...  # the first union type is needed on numpy <2.1
-    @overload
-    def llf(self, sample: _ToFloatMaxND, /, *, axis: AnyShape | None = -1) -> _OutFloat | onp.ArrayND[_OutFloat]: ...
 
 # 7 years of asking and >400 upvotes, but still no higher-kinded typing support: https://github.com/python/typing/issues/548
 class TransformedDistribution(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_DistT_co, _FloatT_co, _ShapeT_co]):
