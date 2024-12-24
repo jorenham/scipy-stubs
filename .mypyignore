@@ -84,6 +84,8 @@ scipy\.special\.(_ufuncs\.)?(j|y)(0|1|n|ve?)
 scipy\.special\.(_ufuncs\.)?k(e(i|r)p?|n)
 scipy\.special\.(_ufuncs\.)?fresnel
 scipy\.special\.(_ufuncs\.)?modfresnel(m|p)
+scipy\.special\.(_ufuncs\.)?mathieu_(c|s)em
+scipy\.special\.(_ufuncs\.)?mathieu_mod(c|s)em(1|2)
 scipy\.special\.(_ufuncs\.)?(rel_)?entr
 scipy\.special\.(_ufuncs\.)?kl_div
 scipy\.special\.(_ufuncs\.)?kolmog(i|orov)

@@ -447,6 +447,18 @@ class _UFunc31(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Gen
     def nargs(self, /) -> L[4]: ...
 
 @type_check_only
+class _UFunc32(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+    @property
+    @override
+    def nin(self, /) -> L[3]: ...
+    @property
+    @override
+    def nout(self, /) -> L[2]: ...
+    @property
+    @override
+    def nargs(self, /) -> L[5]: ...
+
+@type_check_only
 class _UFunc41(_WithoutAt, _WithoutBinOps, _UFunc[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
@@ -544,6 +556,11 @@ class _Kw31f(_KwBase, TypedDict, total=False):
     signature: L["fff->f", "ddd->d", "lld->d", "dld->d"] | _ToSignature3_fd3 | _ToSignature3_lld | _ToSignature3_dld
 
 _ToSignature3_fd4: TypeAlias = _Tuple5[_ToDType_f] | _Tuple5[_ToDType_d]
+
+@type_check_only
+class _Kw32f(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fd
+    signature: L["fff->ff", "ddd->dd"] | _ToSignature3_fd4
 
 @type_check_only
 class _Kw41f(_KwBase, TypedDict, total=False):
@@ -1337,6 +1354,108 @@ class _UFunc31f(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
 
 @final
 @type_check_only
+class _UFunc32f(_UFunc32[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+    @property
+    @override
+    def ntypes(self, /) -> L[2]: ...
+    @property
+    @override
+    def types(self, /) -> list[L["fff->ff", "ddd->dd"]]: ...
+    #
+    @overload
+    def __call__(
+        self,
+        m: _ToSubFloat,
+        q: _ToSubFloat,
+        x: _ToSubFloat,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw32f],
+    ) -> _Tuple2[_Float]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64,
+        q: _ToFloat64,
+        x: _Float_DT,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw32f],
+    ) -> _Tuple2[_Float_DT]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64,
+        q: _Float_DT,
+        x: _ToFloat64,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw32f],
+    ) -> _Tuple2[_Float_DT]: ...
+    @overload
+    def __call__(
+        self,
+        m: _Float_DT,
+        q: _ToFloat64,
+        x: _ToFloat64,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw32f],
+    ) -> _Tuple2[_Float_DT]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        q: _ToFloat64_D,
+        x: _ToFloat64ND,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw32f],
+    ) -> _Tuple2[_FloatND]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        q: _ToFloat64ND,
+        x: _ToFloat64_D,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw32f],
+    ) -> _Tuple2[_FloatND]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64ND,
+        q: _ToFloat64_D,
+        x: _ToFloat64_D,
+        /,
+        out: _Out2 = ...,
+        **kw: Unpack[_Kw32f],
+    ) -> _Tuple2[_FloatND]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        q: _ToFloat64_D,
+        x: _ToFloat64_D,
+        /,
+        out: tuple[_OutT1, _OutT2],
+        **kw: Unpack[_Kw32f],
+    ) -> tuple[_OutT1, _OutT2]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        q: _ToFloat64_D,
+        x: _ToFloat64_D,
+        out1: _OutT1,
+        out2: _OutT2,
+        /,
+        **kw: Unpack[_Kw32f],
+    ) -> tuple[_OutT1, _OutT2]: ...
+
+@final
+@type_check_only
 class _UFunc41f(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     @property
     @override
@@ -2093,13 +2212,12 @@ pbvv: _UFunc22f[L["pbvv"]] = ...
 pbwa: _UFunc22f[L["pbwa"]] = ...
 
 # fff->ff; ddd->dd
-# TODO
-mathieu_cem: np.ufunc = ...
-mathieu_modcem1: np.ufunc = ...
-mathieu_modcem2: np.ufunc = ...
-mathieu_sem: np.ufunc = ...
-mathieu_modsem1: np.ufunc = ...
-mathieu_modsem2: np.ufunc = ...
+mathieu_cem: _UFunc32f[L["mathieu_cem"]] = ...
+mathieu_modcem1: _UFunc32f[L["mathieu_modcem1"]] = ...
+mathieu_modcem2: _UFunc32f[L["mathieu_modcem2"]] = ...
+mathieu_sem: _UFunc32f[L["mathieu_sem"]] = ...
+mathieu_modsem1: _UFunc32f[L["mathieu_modsem1"]] = ...
+mathieu_modsem2: _UFunc32f[L["mathieu_modsem2"]] = ...
 
 # ddl->dd
 _struve_asymp_large_z: np.ufunc = ...
