@@ -63,7 +63,7 @@ scipy\.special\.(_ufuncs\.)?(cos|sin|tan|cot)dg
 scipy\.special\.(_ufuncs\.)?(cos|pow|exp)m1
 scipy\.special\.(_ufuncs\.)?sici
 scipy\.special\.(_ufuncs\.)?shichi
-scipy\.special\.(_ufuncs\.)?ellip((e|k)(inc)?|km1|rc)
+scipy\.special\.(_ufuncs\.)?ellip((e|k)(inc)?|km1|r(c|d|f|g|j))
 scipy\.special\.(_ufuncs\.)?erf(c(inv|x)?|i(nv)?)?
 scipy\.special\.(_ufuncs\.)?eval_(cheby(c|s)|hermite(norm)?|(gen)?laguerre|gegenbauer)
 scipy\.special\.(_ufuncs\.)?eval_(sh_)?(cheby(t|u)|legendre|jacobi)

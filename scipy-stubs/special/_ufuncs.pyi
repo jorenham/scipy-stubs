@@ -320,11 +320,12 @@ _CoT = TypeVar("_CoT", bound=np.generic)
 _ToT = TypeVar("_ToT")
 _ToND: TypeAlias = onp.CanArrayND[_CoT] | onp.SequenceND[onp.CanArrayND[_CoT]] | onp.SequenceND[_ToT]
 
-_ToFloat32: TypeAlias = _ToSubFloat | np.float32
+_ToFloat32: TypeAlias = np.float32 | _ToSubFloat
 _ToFloat64: TypeAlias = float | _CoFloat64
 _ToFloat64ND: TypeAlias = _ToND[_CoFloat64, _ToFloat64]
 _ToFloat64_D: TypeAlias = _ToFloat64 | _ToFloat64ND
 
+_ToComplex64: TypeAlias = np.complex64 | _ToFloat32
 _ToComplex128: TypeAlias = complex | _CoComplex128
 _ToComplex128ND: TypeAlias = _ToND[_CoComplex128, _ToComplex128]
 _ToComplex128_D: TypeAlias = _ToComplex128 | _ToComplex128ND
@@ -369,7 +370,9 @@ _ToDTypes_lddd = TypeAliasType("_ToDTypes_lddd", tuple[_ToDType_l, _ToDType_d, _
 _ToDTypes_dldd = TypeAliasType("_ToDTypes_dldd", tuple[_ToDType_d, _ToDType_l, _ToDType_d, _ToDType_d])
 _ToDTypes_dddd = TypeAliasType("_ToDTypes_dddd", tuple[_ToDType_d, _ToDType_d, _ToDType_d, _ToDType_d])
 _ToDTypes_ffFF = TypeAliasType("_ToDTypes_ffFF", tuple[_ToDType_f, _ToDType_f, _ToDType_F, _ToDType_F])
+_ToDTypes_FFFF = TypeAliasType("_ToDTypes_FFFF", tuple[_ToDType_F, _ToDType_F, _ToDType_F, _ToDType_F])
 _ToDTypes_ddDD = TypeAliasType("_ToDTypes_ddDD", tuple[_ToDType_d, _ToDType_d, _ToDType_D, _ToDType_D])
+_ToDTypes_DDDD = TypeAliasType("_ToDTypes_DDDD", tuple[_ToDType_D, _ToDType_D, _ToDType_D, _ToDType_D])
 
 _ToDTypes_fffff = TypeAliasType("_ToDTypes_fffff", tuple[_ToDType_f, _ToDType_f, _ToDType_f, _ToDType_f, _ToDType_f])
 _ToDTypes_ldddd = TypeAliasType("_ToDTypes_ldddd", tuple[_ToDType_l, _ToDType_d, _ToDType_d, _ToDType_d, _ToDType_d])
@@ -377,9 +380,11 @@ _ToDTypes_ddddd = TypeAliasType("_ToDTypes_ddddd", tuple[_ToDType_d, _ToDType_d,
 _ToDTypes_qqffF = TypeAliasType("_ToDTypes_qqffF", tuple[_ToDType_q, _ToDType_q, _ToDType_f, _ToDType_f, _ToDType_F])
 _ToDTypes_ffffF = TypeAliasType("_ToDTypes_ffffF", tuple[_ToDType_f, _ToDType_f, _ToDType_f, _ToDType_f, _ToDType_F])
 _ToDTypes_fffFF = TypeAliasType("_ToDTypes_fffFF", tuple[_ToDType_f, _ToDType_f, _ToDType_f, _ToDType_F, _ToDType_F])
+_ToDTypes_FFFFF = TypeAliasType("_ToDTypes_FFFFF", tuple[_ToDType_F, _ToDType_F, _ToDType_F, _ToDType_F, _ToDType_F])
 _ToDTypes_qqddD = TypeAliasType("_ToDTypes_qqddD", tuple[_ToDType_q, _ToDType_q, _ToDType_d, _ToDType_d, _ToDType_D])
 _ToDTypes_ddddD = TypeAliasType("_ToDTypes_ddddD", tuple[_ToDType_d, _ToDType_d, _ToDType_d, _ToDType_d, _ToDType_D])
 _ToDTypes_dddDD = TypeAliasType("_ToDTypes_dddDD", tuple[_ToDType_d, _ToDType_d, _ToDType_d, _ToDType_D, _ToDType_D])
+_ToDTypes_DDDDD = TypeAliasType("_ToDTypes_DDDDD", tuple[_ToDType_D, _ToDType_D, _ToDType_D, _ToDType_D, _ToDType_D])
 
 _Tuple6: TypeAlias = tuple[_T, _T, _T, _T, _T, _T]
 _ToDTypes_f6 = TypeAliasType("_ToDTypes_f6", _Tuple6[_ToDType_f])
@@ -488,6 +493,11 @@ class _Kw31fc1(_KwBase, TypedDict, total=False):
     )
 
 @type_check_only
+class _Kw31fc3(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fdFD
+    signature: L["fff->f", "ddd->d", "FFF->F", "DDD->D"] | _ToDTypes_ffff | _ToDTypes_dddd | _ToDTypes_FFFF | _ToDTypes_DDDD
+
+@type_check_only
 class _Kw32f(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fd
     signature: L["fff->ff", "ddd->dd"] | _ToDTypes_fffff | _ToDTypes_ddddd
@@ -496,6 +506,17 @@ class _Kw32f(_KwBase, TypedDict, total=False):
 class _Kw41f(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fd
     signature: L["ffff->f", "dddd->d"] | _ToDTypes_fffff | _ToDTypes_ddddd
+
+@type_check_only
+class _Kw41fc0(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_FD
+    signature: (
+        L["qqff->F", "ffff->F", "qqdd->D", "dddd->D"]
+        | _ToDTypes_qqffF
+        | _ToDTypes_ffffF
+        | _ToDTypes_qqddD
+        | _ToDTypes_ddddD
+    )  # fmt: skip
 
 @type_check_only
 class _Kw41fc1(_KwBase, TypedDict, total=False):
@@ -510,14 +531,14 @@ class _Kw41fc1(_KwBase, TypedDict, total=False):
     )
 
 @type_check_only
-class _KwSphHarm(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_FD
+class _Kw41fc4(_KwBase, TypedDict, total=False):
+    dtype: _ToDType_fdFD
     signature: (
-        L["qqff->F", "ffff->F", "qqdd->D", "dddd->D"]
-        | _ToDTypes_qqffF
-        | _ToDTypes_ffffF
-        | _ToDTypes_qqddD
-        | _ToDTypes_ddddD
+        L["ffff->f", "dddd->d", "FFFF->F", "DDDD->D"]
+        | _ToDTypes_fffff
+        | _ToDTypes_ddddd
+        | _ToDTypes_FFFFF
+        | _ToDTypes_DDDDD
     )  # fmt: skip
 
 @type_check_only
@@ -1479,19 +1500,29 @@ class _UFunc31fc1(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     @overload
     def __call__(
         self,
-        n: _ToFloat64,
-        a: _ToFloat64,
-        x: _Inexact_DT,
+        n: _Float_DT | _ToFloat32,
+        a: _Float_DT | _ToFloat32,
+        x: _Float_DT,
         /,
         out: _Out1 = None,
         **kw: Unpack[_Kw31fc1],
-    ) -> _Inexact_DT: ...
+    ) -> _Float_DT: ...
     @overload
     def __call__(
         self,
-        n: _ToFloat64,
+        n: _ToFloat32,
+        a: _ToFloat32,
+        x: _Complex_DT,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc1],
+    ) -> _Complex_DT: ...
+    @overload
+    def __call__(
+        self,
+        n: _Float_DT | _ToFloat32,
         a: _Float_DT,
-        x: _ToFloat64,
+        x: _Float_DT | _ToFloat32,
         /,
         out: _Out1 = None,
         **kw: Unpack[_Kw31fc1],
@@ -1500,8 +1531,8 @@ class _UFunc31fc1(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     def __call__(
         self,
         n: _Float_DT,
-        a: _ToFloat64,
-        x: _ToFloat64,
+        a: _Float_DT | _ToFloat32,
+        x: _Float_DT | _ToFloat32,
         /,
         out: _Out1 = None,
         **kw: Unpack[_Kw31fc1],
@@ -1575,6 +1606,138 @@ class _UFunc31fc1(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         /,
         out: _Out1[_OutT],
         **kw: Unpack[_Kw31fc1],
+    ) -> _OutT: ...
+
+@final
+@type_check_only
+class _UFunc31fc3(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+    # `ellipr{d,f,g}``
+    @property
+    @override
+    def ntypes(self, /) -> L[4]: ...
+    @property
+    @override
+    def types(self, /) -> list[L["fff->f", "ddd->d", "FFF->F", "DDD->D"]]: ...
+    #
+    @overload
+    def __call__(
+        self,
+        x: _ToSubFloat,
+        y: _ToSubFloat,
+        z: _ToSubFloat,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc3],
+    ) -> _Float: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToSubComplex,
+        y: _ToSubComplex,
+        z: _ToSubComplex,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc3],
+    ) -> _Inexact: ...
+    @overload
+    def __call__(
+        self,
+        x: _Inexact_DT | _ToComplex64,
+        y: _Inexact_DT | _ToComplex64,
+        z: _Inexact_DT,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc3],
+    ) -> _Inexact_DT: ...
+    @overload
+    def __call__(
+        self,
+        x: _Inexact_DT | _ToComplex64,
+        y: _Inexact_DT,
+        z: _Inexact_DT | _ToComplex64,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc3],
+    ) -> _Inexact_DT: ...
+    @overload
+    def __call__(
+        self,
+        x: _Inexact_DT,
+        y: _Inexact_DT | _ToComplex64,
+        z: _Inexact_DT | _ToComplex64,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc3],
+    ) -> _Inexact_DT: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToFloat64_D,
+        y: _ToFloat64_D,
+        z: _ToFloat64ND,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc3],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToFloat64_D,
+        y: _ToFloat64ND,
+        z: _ToFloat64_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc3],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToFloat64ND,
+        y: _ToFloat64_D,
+        z: _ToFloat64_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc3],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToComplex128_D,
+        y: _ToComplex128_D,
+        z: _ToComplex128ND,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc3],
+    ) -> _InexactND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToComplex128_D,
+        y: _ToComplex128ND,
+        z: _ToComplex128_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc3],
+    ) -> _InexactND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToComplex128ND,
+        y: _ToComplex128_D,
+        z: _ToComplex128_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw31fc3],
+    ) -> _InexactND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToComplex128_D,
+        y: _ToComplex128_D,
+        z: _ToComplex128_D,
+        /,
+        out: _Out1[_OutT],
+        **kw: Unpack[_Kw31fc3],
     ) -> _OutT: ...
 
 @final
@@ -1802,6 +1965,77 @@ class _UFunc41f(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
 
 @final
 @type_check_only
+class _UFuncSphHarm(_UFunc41[L["sph_harm"], None]):
+    @property
+    @override
+    def ntypes(self, /) -> L[4]: ...
+    @property
+    @override
+    def types(self, /) -> list[L["qqff->F", "ffff->F", "qqdd->D", "dddd->D"]]: ...
+    #
+    @overload
+    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
+    def __call__(
+        self,
+        m: _ToFloat64,
+        n: _ToFloat64,
+        theta: _ToFloat64,
+        phi: _ToFloat64,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc0],
+    ) -> _Complex: ...
+    @overload
+    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64_D,
+        theta: _ToFloat64_D,
+        phi: _ToFloat64ND,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc0],
+    ) -> _ComplexND: ...
+    @overload
+    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64_D,
+        theta: _ToFloat64ND,
+        phi: _ToFloat64_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc0],
+    ) -> _ComplexND: ...
+    @overload
+    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64ND,
+        theta: _ToFloat64_D,
+        phi: _ToFloat64_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc0],
+    ) -> _ComplexND: ...
+    @overload
+    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
+    def __call__(
+        self,
+        m: _ToFloat64_D,
+        n: _ToFloat64_D,
+        theta: _ToFloat64_D,
+        phi: _ToFloat64_D,
+        /,
+        out: _Out1[_OutT],
+        **kw: Unpack[_Kw41fc0],
+    ) -> _OutT: ...
+
+@final
+@type_check_only
 class _UFunc41fc1(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
     # `eval_[sh_]jacobi` and `hyp2f1`
     @property
@@ -1979,73 +2213,179 @@ class _UFunc41fc1(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
 
 @final
 @type_check_only
-class _UFuncSphHarm(_UFunc41[L["sph_harm"], None]):
+class _UFunc41fc4(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):
+    # `elliprj``
     @property
     @override
     def ntypes(self, /) -> L[4]: ...
     @property
     @override
-    def types(self, /) -> list[L["qqff->F", "ffff->F", "qqdd->D", "dddd->D"]]: ...
+    def types(self, /) -> list[L["ffff->f", "dddd->d", "FFFF->F", "DDDD->D"]]: ...
     #
     @overload
-    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
     def __call__(
         self,
-        m: _ToFloat64,
-        n: _ToFloat64,
-        theta: _ToFloat64,
-        phi: _ToFloat64,
+        x: _ToSubFloat,
+        y: _ToSubFloat,
+        z: _ToSubFloat,
+        p: _ToSubFloat,
         /,
         out: _Out1 = None,
-        **kw: Unpack[_KwSphHarm],
-    ) -> _Complex: ...
+        **kw: Unpack[_Kw41fc4],
+    ) -> _Float: ...
     @overload
-    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
     def __call__(
         self,
-        m: _ToFloat64_D,
-        n: _ToFloat64_D,
-        theta: _ToFloat64_D,
-        phi: _ToFloat64ND,
+        x: _ToSubComplex,
+        y: _ToSubComplex,
+        z: _ToSubComplex,
+        p: _ToSubComplex,
         /,
         out: _Out1 = None,
-        **kw: Unpack[_KwSphHarm],
-    ) -> _ComplexND: ...
+        **kw: Unpack[_Kw41fc4],
+    ) -> _Inexact: ...
     @overload
-    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
     def __call__(
         self,
-        m: _ToFloat64_D,
-        n: _ToFloat64_D,
-        theta: _ToFloat64ND,
-        phi: _ToFloat64_D,
+        x: _Inexact_DT | _ToComplex64,
+        y: _Inexact_DT | _ToComplex64,
+        z: _Inexact_DT | _ToComplex64,
+        p: _Inexact_DT,
         /,
         out: _Out1 = None,
-        **kw: Unpack[_KwSphHarm],
-    ) -> _ComplexND: ...
+        **kw: Unpack[_Kw41fc4],
+    ) -> _Inexact_DT: ...
     @overload
-    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
     def __call__(
         self,
-        m: _ToFloat64_D,
-        n: _ToFloat64ND,
-        theta: _ToFloat64_D,
-        phi: _ToFloat64_D,
+        x: _Inexact_DT | _ToComplex64,
+        y: _Inexact_DT | _ToComplex64,
+        z: _Inexact_DT,
+        p: _Inexact_DT | _ToComplex64,
         /,
         out: _Out1 = None,
-        **kw: Unpack[_KwSphHarm],
-    ) -> _ComplexND: ...
+        **kw: Unpack[_Kw41fc4],
+    ) -> _Inexact_DT: ...
     @overload
-    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
     def __call__(
         self,
-        m: _ToFloat64_D,
-        n: _ToFloat64_D,
-        theta: _ToFloat64_D,
-        phi: _ToFloat64_D,
+        x: _Inexact_DT | _ToComplex64,
+        y: _Inexact_DT,
+        z: _Inexact_DT | _ToComplex64,
+        p: _Inexact_DT | _ToComplex64,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc4],
+    ) -> _Inexact_DT: ...
+    @overload
+    def __call__(
+        self,
+        x: _Inexact_DT,
+        y: _Inexact_DT | _ToComplex64,
+        z: _Inexact_DT | _ToComplex64,
+        p: _Inexact_DT | _ToComplex64,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc4],
+    ) -> _Inexact_DT: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToFloat64_D,
+        y: _ToFloat64_D,
+        z: _ToFloat64_D,
+        p: _ToFloat64ND,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc4],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToFloat64_D,
+        y: _ToFloat64_D,
+        z: _ToFloat64ND,
+        p: _ToFloat64_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc4],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToFloat64_D,
+        y: _ToFloat64ND,
+        z: _ToFloat64_D,
+        p: _ToFloat64_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc4],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToFloat64ND,
+        y: _ToFloat64_D,
+        z: _ToFloat64_D,
+        p: _ToFloat64_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc4],
+    ) -> _FloatND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToComplex128_D,
+        y: _ToComplex128_D,
+        z: _ToComplex128_D,
+        p: _ToComplex128ND,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc4],
+    ) -> _InexactND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToComplex128_D,
+        y: _ToComplex128_D,
+        z: _ToComplex128ND,
+        p: _ToComplex128_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc4],
+    ) -> _InexactND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToComplex128_D,
+        y: _ToComplex128ND,
+        z: _ToComplex128_D,
+        p: _ToComplex128_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc4],
+    ) -> _InexactND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToComplex128ND,
+        y: _ToComplex128_D,
+        z: _ToComplex128_D,
+        p: _ToComplex128_D,
+        /,
+        out: _Out1 = None,
+        **kw: Unpack[_Kw41fc4],
+    ) -> _InexactND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToComplex128_D,
+        y: _ToComplex128_D,
+        z: _ToComplex128_D,
+        p: _ToComplex128_D,
         /,
         out: _Out1[_OutT],
-        **kw: Unpack[_KwSphHarm],
+        **kw: Unpack[_Kw41fc4],
     ) -> _OutT: ...
 
 @final
@@ -2596,10 +2936,9 @@ eval_genlaguerre: _UFunc31fc1[L["eval_genlaguerre"], L[0]] = ...
 hyp1f1: _UFunc31fc1[L["hyp1f1"], L[0]] = ...
 
 # fff->f; ddd->d; FFF->F; DDD->D
-# TODO
-elliprd: np.ufunc = ...
-elliprf: np.ufunc = ...
-elliprg: np.ufunc = ...
+elliprd: _UFunc31fc3[L["elliprd"], L[0]] = ...
+elliprf: _UFunc31fc3[L["elliprf"], L[0]] = ...
+elliprg: _UFunc31fc3[L["elliprg"], L[0]] = ...
 
 # ffff->f; dddd->d
 _hypergeom_pmf: _UFunc41f[L["_hypergeom_pmf"], L[0]] = ...
@@ -2629,8 +2968,7 @@ eval_sh_jacobi: _UFunc41fc1[L["eval_sh_jacobi"], L[0]] = ...
 hyp2f1: _UFunc41fc1[L["hyp2f1"]] = ...
 
 # ffff->f; dddd->d; FFFF->F; DDDD->D
-# TODO
-elliprj: np.ufunc = ...
+elliprj: _UFunc41fc4[L["elliprj"], L[0]] = ...
 
 # fffffff->f; dd(ll|dd)ddd->d
 _ellip_harm: np.ufunc = ...
