@@ -39,8 +39,6 @@ _ToSlice2D: TypeAlias = (
 INT_TYPES: tuple[type[int], type[np.integer[Any]]] = ...
 
 class IndexMixin(Generic[_SCT, _ShapeT_co]):
-    # NOTE: >2-d indexing is bugged at the moment (scipy==1.15.0rc1), see https://github.com/scipy/scipy/issues/22112
-
     @overload
     def __getitem__(self: IndexMixin[Any, tuple[int]], ix: op.CanIndex, /) -> _SCT: ...
     @overload
