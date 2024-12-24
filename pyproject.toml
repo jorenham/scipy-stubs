@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "scipy-stubs"
-version = "1.15.0.0.dev0"
+version = "1.15.0.0.dev1"
 description = "Precise type-hints for all of SciPy"
 readme = "README.md"
 authors = [
@@ -33,7 +33,7 @@ dependencies = [
 ]
 
 [dependency-groups]
-scipy = ["scipy==1.15.0rc1"]
+scipy = ["scipy==1.15.0rc2"]
 ci = ["packaging>=24.2"]
 codegen = ["libcst>=1.5.1,<2"]
 mdformat = [
@@ -63,7 +63,7 @@ dev = [
 ]
 
 [project.optional-dependencies]
-scipy = ["scipy>=1.15.0rc1,<1.16"]
+scipy = ["scipy>=1.15.0rc2,<1.16"]
 
 [project.urls]
 Repository = "https://github.com/jorenham/scipy-stubs/"
