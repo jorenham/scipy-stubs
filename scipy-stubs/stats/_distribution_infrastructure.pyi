@@ -505,6 +505,7 @@ class MonotonicTransformedDistribution(_TransDist[_DistT_co, _Float, _ShapeT_co]
     _logdh: Final[_Elementwise]
     _increasing: Final[bool]
     _repr_pattern: Final[str]
+    _str_pattern: Final[str]
 
     def __init__(
         self: MonotonicTransformedDistribution[_CDist[_ShapeT], _ShapeT],
@@ -517,6 +518,7 @@ class MonotonicTransformedDistribution(_TransDist[_DistT_co, _Float, _ShapeT_co]
         logdh: _Elementwise | None = None,
         increasing: bool = True,
         repr_pattern: str | None = None,
+        str_pattern: str | None = None,
         **kwargs: Unpack[_DistOpts],
     ) -> None: ...
 
