@@ -17,7 +17,7 @@ __all__ = [
     "AnyShape",
     "ByteOrder",
     "Casting",
-    "CorrelateMode",
+    "ConvMode",
     "EnterNoneMixin",
     "EnterSelfMixin",
     "FileLike",
@@ -102,7 +102,7 @@ ByteOrder: TypeAlias = Literal["S", "<", "little", ">", "big", "=", "native", "|
 OrderCF: TypeAlias = Literal["C", "F"]
 OrderKACF: TypeAlias = Literal["K", "A", OrderCF]
 Casting: TypeAlias = Literal["no", "equiv", "safe", "same_kind", "unsafe"]
-CorrelateMode: TypeAlias = Literal["valid", "same", "full"]
+ConvMode: TypeAlias = Literal["valid", "same", "full"]
 
 # scipy literals
 NanPolicy: TypeAlias = Literal["raise", "propagate", "omit"]
