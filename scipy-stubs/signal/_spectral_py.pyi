@@ -1,32 +1,18 @@
 from collections.abc import Callable
 from typing import Literal, TypeAlias, overload
-from typing_extensions import Unpack
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
-from .windows._windows import _Window, _WindowNeedsParams
+from .windows._windows import _ToWindow
 
-__all__ = [
-    "check_COLA",
-    "check_NOLA",
-    "coherence",
-    "csd",
-    "istft",
-    "lombscargle",
-    "periodogram",
-    "spectrogram",
-    "stft",
-    "welch",
-]
+__all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle", "periodogram", "spectrogram", "stft", "welch"]
 
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
 _FloatingND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]
 _CFloatingND: TypeAlias = onp.ArrayND[np.complex64 | np.complex128 | np.clongdouble]
 
-_GetWindowArgument: TypeAlias = _Window | tuple[_Window | _WindowNeedsParams, Unpack[tuple[object, ...]]]
-_WindowLike: TypeAlias = _GetWindowArgument | onp.ToFloat1D
 _Detrend: TypeAlias = Literal["literal", "constant", False] | Callable[[onp.ArrayND], onp.ArrayND]
 _Scaling: TypeAlias = Literal["density", "spectrum"]
 _LegacyScaling: TypeAlias = Literal["psd", "spectrum"]
@@ -50,7 +36,7 @@ def lombscargle(
 def periodogram(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _WindowLike | None = "boxcar",
+    window: _ToWindow | None = "boxcar",
     nfft: onp.ToInt | None = None,
     detrend: _Detrend = "constant",
     return_onesided: op.CanBool = True,
@@ -62,7 +48,7 @@ def periodogram(
 def welch(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _WindowLike = "hann",
+    window: _ToWindow = "hann",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -78,7 +64,7 @@ def csd(
     x: onp.ToComplexND,
     y: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _WindowLike = "hann",
+    window: _ToWindow = "hann",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -94,7 +80,7 @@ def csd(
 def spectrogram(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _WindowLike = ("tukey", 0.25),
+    window: _ToWindow = ("tukey", 0.25),
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -108,7 +94,7 @@ def spectrogram(
 def spectrogram(
     x: onp.ToComplexND,
     fs: onp.ToFloat,
-    window: _WindowLike,
+    window: _ToWindow,
     nperseg: onp.ToInt | None,
     noverlap: onp.ToInt | None,
     nfft: onp.ToInt | None,
@@ -122,7 +108,7 @@ def spectrogram(
 def spectrogram(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _WindowLike = ("tukey", 0.25),
+    window: _ToWindow = ("tukey", 0.25),
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -135,14 +121,14 @@ def spectrogram(
 ) -> tuple[_FloatND, _FloatND, _CFloatingND]: ...
 
 #
-def check_COLA(window: _WindowLike, nperseg: onp.ToInt, noverlap: onp.ToInt, tol: onp.ToFloat = 1e-10) -> np.bool_: ...
-def check_NOLA(window: _WindowLike, nperseg: onp.ToInt, noverlap: onp.ToInt, tol: onp.ToFloat = 1e-10) -> np.bool_: ...
+def check_COLA(window: _ToWindow, nperseg: onp.ToInt, noverlap: onp.ToInt, tol: onp.ToFloat = 1e-10) -> np.bool_: ...
+def check_NOLA(window: _ToWindow, nperseg: onp.ToInt, noverlap: onp.ToInt, tol: onp.ToFloat = 1e-10) -> np.bool_: ...
 
 #
 def stft(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _WindowLike = "hann",
+    window: _ToWindow = "hann",
     nperseg: onp.ToInt = 256,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -159,7 +145,7 @@ def stft(
 def istft(
     Zxx: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _WindowLike = "hann",
+    window: _ToWindow = "hann",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -173,7 +159,7 @@ def istft(
 def istft(
     Zxx: onp.ToComplexND,
     fs: onp.ToFloat,
-    window: _WindowLike,
+    window: _ToWindow,
     nperseg: onp.ToInt | None,
     noverlap: onp.ToInt | None,
     nfft: onp.ToInt | None,
@@ -187,7 +173,7 @@ def istft(
 def istft(
     Zxx: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _WindowLike = "hann",
+    window: _ToWindow = "hann",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -204,7 +190,7 @@ def coherence(
     x: onp.ToComplexND,
     y: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _WindowLike = "hann",
+    window: _ToWindow = "hann",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
