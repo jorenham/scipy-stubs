@@ -40,7 +40,7 @@ def spline_filter(Iin: onp.ArrayND[_FloatDT], lmbda: onp.ToFloat = 5.0) -> onp.A
 
 #
 @overload
-def gauss_spline(x: onp.ArrayND[_SubFloat64, _ShapeT], n: onp.ToFloat) -> onp.ArrayND[np.float64, _ShapeT]: ...
+def gauss_spline(x: onp.ArrayND[_SubFloat64, _ShapeT], n: onp.ToFloat) -> onp.ArrayND[np.float64, _ShapeT]: ...  # type: ignore[overload-overlap]
 @overload
 def gauss_spline(x: onp.ArrayND[_InexactQT, _ShapeT], n: onp.ToFloat) -> onp.ArrayND[_InexactQT, _ShapeT]: ...
 @overload

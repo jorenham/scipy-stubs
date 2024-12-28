@@ -10,7 +10,7 @@ _FT = TypeVar("_FT", bound=onp.ToFloat | onp.ToFloatND)
 _Fun: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], ...], _FT]
 _Fun0D: TypeAlias = _Fun[onp.ToFloat]
 _Fun1D: TypeAlias = _Fun[onp.ToFloat1D]
-_Fun2D: TypeAlias = _Fun[onp.ToFloat2D]
+_Fun2D: TypeAlias = _Fun[onp.ToFloat2D]  # type: ignore[type-var]
 
 _Ignored: TypeAlias = object
 

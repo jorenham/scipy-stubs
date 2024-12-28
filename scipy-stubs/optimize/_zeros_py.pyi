@@ -154,7 +154,7 @@ def newton(
     args: tuple[object, ...] = (),
     tol: onp.ToFloat = 1.48e-08,
     maxiter: onp.ToJustInt = 50,
-    fprime2: _Fun1D[onp.ToFloat2D] | None = None,
+    fprime2: _Fun1D[onp.ToFloat2D] | None = None,  # type: ignore[type-var]
     x1: onp.ToFloat1D | None = None,
     rtol: onp.ToFloat = 0.0,
     full_output: _Falsy = False,
