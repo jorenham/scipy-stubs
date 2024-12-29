@@ -20,7 +20,7 @@ from ._csr import csr_matrix
 from ._dia import dia_matrix
 from ._dok import dok_matrix
 from ._lil import lil_matrix
-from ._typing import Complex, Float, Int, Matrix, Scalar, SPFormat, ToShape2d
+from ._typing import Complex, Float, Int, Scalar, SPFormat, ToShape2d
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Scalar)
@@ -137,8 +137,8 @@ class spmatrix(Generic[_SCT_co]):
 
     #
     @overload
-    def todense(self, /, order: OrderCF | None = None, out: None = None) -> Matrix[_SCT_co]: ...
+    def todense(self, /, order: OrderCF | None = None, out: None = None) -> onp.Matrix[_SCT_co]: ...
     @overload
-    def todense(self, /, order: OrderCF | None, out: onp.ArrayND[_SCT]) -> Matrix[_SCT]: ...
+    def todense(self, /, order: OrderCF | None, out: onp.ArrayND[_SCT]) -> onp.Matrix[_SCT]: ...
     @overload
-    def todense(self, /, order: OrderCF | None = None, *, out: onp.ArrayND[_SCT]) -> Matrix[_SCT]: ...
+    def todense(self, /, order: OrderCF | None = None, *, out: onp.ArrayND[_SCT]) -> onp.Matrix[_SCT]: ...

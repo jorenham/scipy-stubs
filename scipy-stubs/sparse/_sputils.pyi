@@ -19,7 +19,7 @@ from scipy.sparse import (
     dia_array,
     dia_matrix,
 )
-from scipy.sparse._typing import Matrix, ToDType
+from scipy.sparse._typing import ToDType
 
 __all__ = [
     "broadcast_shapes",
@@ -143,10 +143,10 @@ def matrix(
     subok: bool = False,
     ndmin: Literal[0, 1, 2] = 0,
     like: onp.CanArrayFunction | None = None,
-) -> Matrix[_SCT]: ...
+) -> onp.Matrix[_SCT]: ...
 
 #
-def asmatrix(data: _ToArray2D[_SCT], dtype: ToDType[_SCT] | type | str | None = None) -> Matrix[_SCT]: ...
+def asmatrix(data: _ToArray2D[_SCT], dtype: ToDType[_SCT] | type | str | None = None) -> onp.Matrix[_SCT]: ...
 
 #
 @overload  # BSR/CSC/CSR, dtype: <default>

@@ -10,7 +10,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 from scipy.sparse._base import _spbase
-from scipy.sparse._typing import Complex, Float, Int, Matrix, Scalar, ToDTypeComplex, ToDTypeFloat, ToDTypeInt
+from scipy.sparse._typing import Complex, Float, Int, Scalar, ToDTypeComplex, ToDTypeFloat, ToDTypeInt
 
 __all__ = ["LinearOperator", "aslinearoperator"]
 
@@ -70,9 +70,9 @@ class LinearOperator(Generic[_SCT_co]):
     @overload  # float array 1d
     def matvec(self, /, x: onp.ToFloatStrict1D) -> onp.Array1D[_SCT_co]: ...
     @overload  # float matrix
-    def matvec(self, /, x: Matrix[_Real]) -> Matrix[_SCT_co]: ...
+    def matvec(self, /, x: onp.Matrix[_Real]) -> onp.Matrix[_SCT_co]: ...
     @overload  # complex matrix
-    def matvec(self, /, x: Matrix[_Number]) -> Matrix[_SCT_co | np.complex128]: ...
+    def matvec(self, /, x: onp.Matrix[_Number]) -> onp.Matrix[_SCT_co | np.complex128]: ...
     @overload  # float array 2d
     def matvec(self, /, x: onp.ToFloatStrict2D) -> onp.Array2D[_SCT_co]: ...
     @overload  # complex array 1d

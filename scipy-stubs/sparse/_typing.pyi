@@ -12,7 +12,6 @@ __all__ = (
     "Float",
     "Index1D",
     "Int",
-    "Matrix",
     "SPFormat",
     "Scalar",
     "Shape",
@@ -49,7 +48,6 @@ Complex: TypeAlias = np.complexfloating[Any, Any]
 # NOTE: The `TypeAliasType` is used to avoid long error messages.
 Scalar = TypeAliasType("Scalar", np.bool_ | Int | Float | Complex)
 
-Matrix: TypeAlias = np.matrix[tuple[int, int], np.dtype[_SCT]]
 Index1D: TypeAlias = onp.Array1D[np.int32 | np.int64]
 
 SPFormat: TypeAlias = Literal["bsr", "coo", "csc", "csr", "dia", "dok", "lil"]
