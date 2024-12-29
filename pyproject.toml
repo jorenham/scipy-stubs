@@ -29,7 +29,7 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "optype>=0.7.3",
+    "optype>=0.8.0",
 ]
 
 [dependency-groups]
@@ -57,7 +57,7 @@ typecheck = [
 dev = [
     {include-group = "lint"},
     {include-group = "typecheck"},
-    "poethepoet>=0.31.1,<1",
+    "poethepoet>=0.32.0,<1",
     "pre-commit>=4.0.1,<5",
     "pre-commit-uv>=4.1.4,<5",
 ]
@@ -194,7 +194,6 @@ reportPropertyTypeMismatch = false
 reportShadowedImports = true
 reportUnannotatedClassAttribute = true  # based
 reportUninitializedInstanceVariable = true
-# reportUnnecessaryTypeIgnoreComment = false  # mypy compat
 reportUnnecessaryTypeIgnoreComment = true  # mypy compat
 strictGenericNarrowing = true  # based
 

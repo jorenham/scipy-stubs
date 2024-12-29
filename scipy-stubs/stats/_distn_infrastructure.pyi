@@ -1,45 +1,56 @@
 # NOTE: Using `@override` on `__call__` or `freeze` in `rv_discrete` causes stubtest to crash (mypy 1.11.1 and 1.13.0)
 # mypy: disable-error-code="explicit-override, override"
 
+# NOTE: this is needed because of the >50 LSP violations...
+# pyright: reportIncompatibleMethodOverride = false
+
 import abc
-from collections.abc import Callable, Iterable, Sequence
-from typing import Any, Final, Generic, Literal, TypeAlias, overload, type_check_only
-from typing_extensions import LiteralString, Self, TypeVar, Unpack, override
+from collections.abc import Callable, Iterable, Mapping, Sequence
+from typing import Any, Final, Generic, Literal as L, TypeAlias, overload, type_check_only
+from typing_extensions import Self, TypeVar, Unpack, override
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
-import scipy._typing as spt
+from scipy._typing import RNG, AnyShape, ToRNG
 from scipy.integrate._typing import QuadOpts as _QuadOpts
 
 _T = TypeVar("_T")
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
+
+_ArgT = TypeVar("_ArgT", bound=_ToFloatOrND, default=_ToFloatOrND)
+
+_FloatNDT = TypeVar("_FloatNDT", bound=_FloatOrND, default=_FloatOrND)
+_FloatNDT_co = TypeVar("_FloatNDT_co", bound=_FloatOrND, default=_FloatOrND, covariant=True)
+
+_RVT = TypeVar("_RVT", bound=rv_generic, default=rv_generic)
+_RVT_co = TypeVar("_RVT_co", bound=rv_generic, default=rv_generic, covariant=True)
+_CRVT_co = TypeVar("_CRVT_co", bound=rv_continuous, default=rv_continuous, covariant=True)
+_DRVT_co = TypeVar("_DRVT_co", bound=rv_discrete, default=rv_discrete, covariant=True)
+
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
 _Tuple4: TypeAlias = tuple[_T, _T, _T, _T]
 
-_Scalar_i: TypeAlias = np.integer[Any]
-_Scalar_f: TypeAlias = np.float64 | np.float32 | np.float16  # longdouble often results in trouble
-_Scalar_if: TypeAlias = _Scalar_f | _Scalar_i  # including np.bool_ here would become messy
+_Integer: TypeAlias = np.integer[Any]
+_Floating: TypeAlias = np.float64 | np.float32 | np.float16  # longdouble often results in trouble
+_CoFloat: TypeAlias = _Floating | _Integer
 
-# NOTE: this will be equivalent to `float` in `numpy>=2.2`, see https://github.com/numpy/numpy/pull/27334
-_Scalar_b1: TypeAlias = bool | np.bool_
-_Scalar_i8: TypeAlias = int | np.int64
-_Scalar_f8: TypeAlias = float | np.float64
+_Bool: TypeAlias = bool | np.bool_
+_Int: TypeAlias = int | np.int_
+_Float: TypeAlias = float | np.float64
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
-_Arr_b1: TypeAlias = onp.Array[_ShapeT, np.bool_]
-_Arr_i8: TypeAlias = onp.Array[_ShapeT, np.int64]
-_Arr_f8: TypeAlias = onp.Array[_ShapeT, np.float64]
+_BoolND: TypeAlias = onp.ArrayND[np.bool_]
+_IntND: TypeAlias = onp.ArrayND[np.int_]
+_FloatND: TypeAlias = onp.ArrayND[np.float64]
+_CoFloatND: TypeAlias = onp.ArrayND[_CoFloat]
 
-_ArrLike_b1: TypeAlias = _Scalar_b1 | _Arr_b1
-_ArrLike_i8: TypeAlias = _Scalar_i8 | _Arr_i8
-_ArrLike_f8: TypeAlias = _Scalar_f8 | _Arr_f8
+_BoolOrND: TypeAlias = _Bool | _BoolND
+_IntOrND: TypeAlias = _Int | _IntND
+_FloatOrND: TypeAlias = _Float | _FloatND
 
-_Scalar_f8_co: TypeAlias = float | _Scalar_if
-_Arr_f8_co: TypeAlias = onp.Array[_ShapeT, _Scalar_if]
-_ArrLike_f8_co: TypeAlias = _ArrLike_f8 | onp.CanArray[tuple[int, ...], np.dtype[_Scalar_if]] | Sequence[_ArrLike_f8_co]
+_ToFloatOrND: TypeAlias = onp.ToFloat | onp.ToFloatND
 
-_ArgT = TypeVar("_ArgT", bound=_ArrLike_f8_co, default=_ArrLike_f8_co)
 # there are at most 4 + 2 args
 _RVArgs: TypeAlias = (
     tuple[()]
@@ -50,29 +61,29 @@ _RVArgs: TypeAlias = (
     | tuple[_ArgT, _ArgT, _ArgT, _ArgT, _ArgT]
     | tuple[_ArgT, _ArgT, _ArgT, _ArgT, _ArgT, _ArgT]
 )
-_RVKwds: TypeAlias = dict[str, _ArrLike_f8_co]
+_RVKwds: TypeAlias = dict[str, _ToFloatOrND]
 
-_Moments1: TypeAlias = Literal["m", "v", "s", "k"]
-_Moments2: TypeAlias = Literal[
+_Moment1: TypeAlias = L["m", "v", "s", "k"]
+_Moment2: TypeAlias = L[
     "mv", "ms", "mk",
     "vm", "vs", "vk",
     "sm", "sv", "sk",
     "km", "kv", "ks",
 ]  # fmt: skip
-_Moments3: TypeAlias = Literal[
+_Moment3: TypeAlias = L[
     "mvs", "mvk", "msv", "msk", "mkv", "mks",
     "vms", "vmk", "vsm", "vsk", "vkm", "vks",
     "smv", "smk", "svm", "svk", "skm", "skv",
     "kmv", "kms", "kvm", "kvs", "ksm", "ksv",
 ]  # fmt: skip
-_Moments4: TypeAlias = Literal[
+_Moment4: TypeAlias = L[
     "mvsk", "mvks", "msvk", "mskv", "mkvs", "mksv",
     "vmsk", "vmks", "vsmk", "vskm", "vkms", "vksm",
     "smvk", "smkv", "svmk", "svkm", "skmv", "skvm",
     "kmvs", "kmsv", "kvms", "kvsm", "ksmv", "ksvm",
 ]  # fmt: skip
 
-_FitMethod: TypeAlias = Literal["MLE", "MM"]
+_FitMethod: TypeAlias = L["MLE", "MM"]
 
 ###
 
@@ -81,156 +92,153 @@ docdict: Final[dict[str, str]] = ...
 docdict_discrete: Final[dict[str, str]] = ...
 parse_arg_template: Final[str] = ...
 
-def argsreduce(cond: _Arr_b1, *args: _ArrLike_f8_co) -> list[_Arr_f8_co]: ...
+def argsreduce(cond: _BoolND, *args: _ToFloatOrND) -> list[_CoFloatND]: ...
 
-_RVT = TypeVar("_RVT", bound=rv_generic, default=rv_generic)
-_RVT_co = TypeVar("_RVT_co", bound=rv_generic, covariant=True, default=rv_generic)
-_VT_f8 = TypeVar("_VT_f8", bound=_ArrLike_f8, default=_ArrLike_f8)
-_VT_f8_co = TypeVar("_VT_f8_co", bound=_ArrLike_f8, covariant=True, default=_ArrLike_f8)
-
-class rv_frozen(Generic[_RVT_co, _VT_f8_co]):
+class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
     dist: _RVT_co
-    args: _RVArgs[_VT_f8_co]
+    args: _RVArgs[_FloatNDT_co]
     kwds: _RVKwds
 
     @property
-    def random_state(self, /) -> spt.RNG: ...
+    def random_state(self, /) -> RNG: ...
     @random_state.setter
-    def random_state(self, seed: spt.ToRNG, /) -> None: ...
+    def random_state(self, seed: ToRNG, /) -> None: ...
 
     #
     @overload
-    def __init__(self: rv_frozen[_RVT, _Scalar_f8], /, dist: _RVT) -> None: ...
+    def __init__(self: rv_frozen[_RVT, _Float], /, dist: _RVT) -> None: ...
     @overload
-    def __init__(self, /, dist: _RVT_co, *args: _VT_f8_co, **kwds: _VT_f8_co) -> None: ...
+    def __init__(self, /, dist: _RVT_co, *args: _FloatNDT_co, **kwds: _FloatNDT_co) -> None: ...
     @overload
-    def __init__(self, /, dist: _RVT_co, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> None: ...
+    def __init__(self, /, dist: _RVT_co, *args: _ToFloatOrND, **kwds: _ToFloatOrND) -> None: ...
 
     #
     @overload
-    def cdf(self, /, x: _Scalar_f8_co) -> _VT_f8_co: ...
+    def cdf(self, /, x: onp.ToFloat) -> _FloatNDT_co: ...
     @overload
-    def cdf(self, /, x: _Arr_f8_co[Any]) -> _Arr_f8: ...
+    def cdf(self, /, x: _CoFloatND) -> _FloatND: ...
     @overload
-    def cdf(self, /, x: _ArrLike_f8_co) -> _VT_f8_co | _Arr_f8: ...
+    def cdf(self, /, x: _ToFloatOrND) -> _FloatNDT_co | _FloatND: ...
     #
     @overload
-    def logcdf(self, /, x: _Scalar_f8_co) -> _VT_f8_co: ...
+    def logcdf(self, /, x: onp.ToFloat) -> _FloatNDT_co: ...
     @overload
-    def logcdf(self, /, x: _Arr_f8_co[Any]) -> _Arr_f8: ...
+    def logcdf(self, /, x: _CoFloatND) -> _FloatND: ...
     @overload
-    def logcdf(self, /, x: _ArrLike_f8_co) -> _VT_f8_co | _Arr_f8: ...
+    def logcdf(self, /, x: _ToFloatOrND) -> _FloatNDT_co | _FloatND: ...
 
     #
     @overload
-    def sf(self, /, x: _Scalar_f8_co) -> _VT_f8_co: ...
+    def sf(self, /, x: onp.ToFloat) -> _FloatNDT_co: ...
     @overload
-    def sf(self, /, x: _Arr_f8_co[Any]) -> _Arr_f8: ...
+    def sf(self, /, x: _CoFloatND) -> _FloatND: ...
     @overload
-    def sf(self, /, x: _ArrLike_f8_co) -> _VT_f8_co | _Arr_f8: ...
+    def sf(self, /, x: _ToFloatOrND) -> _FloatNDT_co | _FloatND: ...
     #
     @overload
-    def logsf(self, /, x: _Scalar_f8_co) -> _VT_f8_co: ...
+    def logsf(self, /, x: onp.ToFloat) -> _FloatNDT_co: ...
     @overload
-    def logsf(self, /, x: _Arr_f8_co[Any]) -> _Arr_f8: ...
+    def logsf(self, /, x: _CoFloatND) -> _FloatND: ...
     @overload
-    def logsf(self, /, x: _ArrLike_f8_co) -> _VT_f8_co | _Arr_f8: ...
+    def logsf(self, /, x: _ToFloatOrND) -> _FloatNDT_co | _FloatND: ...
 
     #
     @overload
-    def ppf(self, /, q: _Scalar_f8_co) -> _VT_f8_co: ...
+    def ppf(self, /, q: onp.ToFloat) -> _FloatNDT_co: ...
     @overload
-    def ppf(self, /, q: _Arr_f8_co[Any]) -> _Arr_f8: ...
+    def ppf(self, /, q: _CoFloatND) -> _FloatND: ...
     @overload
-    def ppf(self, /, q: _ArrLike_f8_co) -> _VT_f8_co | _Arr_f8: ...
+    def ppf(self, /, q: _ToFloatOrND) -> _FloatNDT_co | _FloatND: ...
     #
     @overload
-    def isf(self, /, q: _Scalar_f8_co) -> _VT_f8_co: ...
+    def isf(self, /, q: onp.ToFloat) -> _FloatNDT_co: ...
     @overload
-    def isf(self, /, q: _Arr_f8_co[Any]) -> _Arr_f8: ...
+    def isf(self, /, q: _CoFloatND) -> _FloatND: ...
     @overload
-    def isf(self, /, q: _ArrLike_f8_co) -> _VT_f8_co | _Arr_f8: ...
+    def isf(self, /, q: _ToFloatOrND) -> _FloatNDT_co | _FloatND: ...
 
     #
-    def rvs(self, /, size: spt.AnyShape | None = None, random_state: spt.ToRNG = None) -> _ArrLike_f8: ...
+    def rvs(self, /, size: AnyShape | None = None, random_state: ToRNG = None) -> _FloatOrND: ...
 
     #
     @overload
-    def stats(self, /, moments: _Moments1) -> _VT_f8_co: ...
+    def stats(self, /, moments: _Moment1) -> _FloatNDT_co: ...
     @overload
-    def stats(self, /, moments: _Moments2 = ...) -> _Tuple2[_VT_f8_co]: ...
+    def stats(self, /, moments: _Moment2 = ...) -> _Tuple2[_FloatNDT_co]: ...
     @overload
-    def stats(self, /, moments: _Moments3) -> _Tuple3[_VT_f8_co]: ...
+    def stats(self, /, moments: _Moment3) -> _Tuple3[_FloatNDT_co]: ...
     @overload
-    def stats(self, /, moments: _Moments4) -> _Tuple4[_VT_f8_co]: ...
+    def stats(self, /, moments: _Moment4) -> _Tuple4[_FloatNDT_co]: ...
     #
-    def median(self, /) -> _VT_f8_co: ...
-    def mean(self, /) -> _VT_f8_co: ...
-    def var(self, /) -> _VT_f8_co: ...
-    def std(self, /) -> _VT_f8_co: ...
+    def median(self, /) -> _FloatNDT_co: ...
+    def mean(self, /) -> _FloatNDT_co: ...
+    def var(self, /) -> _FloatNDT_co: ...
+    def std(self, /) -> _FloatNDT_co: ...
     # order defaults to `None`, but that will `raise TypeError`
-    def moment(self, /, order: int | _Scalar_i | None = None) -> _VT_f8_co: ...
-    def entropy(self, /) -> _VT_f8_co: ...
+    def moment(self, /, order: onp.ToInt | None = None) -> _FloatNDT_co: ...
+    def entropy(self, /) -> _FloatNDT_co: ...
     #
-    def interval(self, /, confidence: _Scalar_f8_co | None = None) -> _Tuple2[_VT_f8_co]: ...
-    def support(self, /) -> _Tuple2[_VT_f8_co]: ...
+    def interval(self, /, confidence: onp.ToFloat | None = None) -> _Tuple2[_FloatNDT_co]: ...
+    def support(self, /) -> _Tuple2[_FloatNDT_co]: ...
 
     #
     def expect(
-        self: rv_frozen[_RVT, _Scalar_f8],
+        self: rv_frozen[_RVT, _Float],
         /,
-        func: Callable[[float], _Scalar_f8_co] | None = None,
-        lb: _Scalar_f8_co | None = None,
-        ub: _Scalar_f8_co | None = None,
-        conditional: _Scalar_b1 = False,
+        func: Callable[[float], onp.ToFloat] | None = None,
+        lb: onp.ToFloat | None = None,
+        ub: onp.ToFloat | None = None,
+        conditional: _Bool = False,
         **kwds: Unpack[_QuadOpts],
-    ) -> _Scalar_f8: ...
+    ) -> _Float: ...
 
-_RVT_c_co = TypeVar("_RVT_c_co", bound=rv_continuous, covariant=True, default=rv_continuous)
-
-class rv_continuous_frozen(rv_frozen[_RVT_c_co, _VT_f8_co], Generic[_RVT_c_co, _VT_f8_co]):
+class rv_continuous_frozen(rv_frozen[_CRVT_co, _FloatNDT_co], Generic[_CRVT_co, _FloatNDT_co]):
     @overload
-    def pdf(self, /, x: _Scalar_f8_co) -> _VT_f8_co: ...
+    def pdf(self, /, x: onp.ToFloat) -> _FloatNDT_co: ...
     @overload
-    def pdf(self, /, x: _Arr_f8_co[Any]) -> _Arr_f8: ...
+    def pdf(self, /, x: _CoFloatND) -> _FloatND: ...
     @overload
-    def pdf(self, /, x: _ArrLike_f8_co) -> _VT_f8_co | _Arr_f8: ...
+    def pdf(self, /, x: _ToFloatOrND) -> _FloatNDT_co | _FloatND: ...
     #
     @overload
-    def logpdf(self, /, x: _Scalar_f8_co) -> _VT_f8_co: ...
+    def logpdf(self, /, x: onp.ToFloat) -> _FloatNDT_co: ...
     @overload
-    def logpdf(self, /, x: _Arr_f8_co[Any]) -> _Arr_f8: ...
+    def logpdf(self, /, x: _CoFloatND) -> _FloatND: ...
     @overload
-    def logpdf(self, /, x: _ArrLike_f8_co) -> _VT_f8_co | _Arr_f8: ...
+    def logpdf(self, /, x: _ToFloatOrND) -> _FloatNDT_co | _FloatND: ...
 
-_RVT_d_co = TypeVar("_RVT_d_co", bound=rv_discrete, covariant=True, default=rv_discrete)
-
-class rv_discrete_frozen(rv_frozen[_RVT_d_co, _VT_f8_co], Generic[_RVT_d_co, _VT_f8_co]):
+class rv_discrete_frozen(rv_frozen[_DRVT_co, _FloatNDT_co], Generic[_DRVT_co, _FloatNDT_co]):
     @overload
-    def pmf(self, /, k: _Scalar_f8_co) -> _VT_f8_co: ...
+    def pmf(self, /, k: onp.ToFloat) -> _FloatNDT_co: ...
     @overload
-    def pmf(self, /, k: _Arr_f8_co[Any]) -> _Arr_f8: ...
+    def pmf(self, /, k: _CoFloatND) -> _FloatND: ...
     @overload
-    def pmf(self, /, k: _ArrLike_f8_co) -> _VT_f8_co | _Arr_f8: ...
+    def pmf(self, /, k: _ToFloatOrND) -> _FloatNDT_co | _FloatND: ...
     #
     @overload
-    def logpmf(self, /, k: _Scalar_f8_co) -> _VT_f8_co: ...
+    def logpmf(self, /, k: onp.ToFloat) -> _FloatNDT_co: ...
     @overload
-    def logpmf(self, /, k: _Arr_f8_co[Any]) -> _Arr_f8: ...
+    def logpmf(self, /, k: _CoFloatND) -> _FloatND: ...
     @overload
-    def logpmf(self, /, k: _ArrLike_f8_co) -> _VT_f8_co | _Arr_f8: ...
+    def logpmf(self, /, k: _ToFloatOrND) -> _FloatNDT_co | _FloatND: ...
 
 # NOTE: Because of the limitations of `ParamSpec`, there is no proper way to annotate specific "positional or keyword arguments".
 # Considering the Liskov Substitution Principle, the only remaining option is to annotate `*args, and `**kwargs` as `Any`.
 class rv_generic:
-    def __init__(self, /, seed: spt.ToRNG = None) -> None: ...
     @property
-    def random_state(self, /) -> spt.RNG: ...
+    def random_state(self, /) -> RNG: ...
     @random_state.setter
-    def random_state(self, seed: spt.ToRNG, /) -> None: ...
+    def random_state(self, seed: ToRNG, /) -> None: ...
+
+    #
+    def __init__(self, /, seed: ToRNG = None) -> None: ...
+
+    #
     @abc.abstractmethod
     def _attach_methods(self, /) -> None: ...
     def _attach_argparser_methods(self, /) -> None: ...
+
+    #
     def _construct_argparser(
         self,
         /,
@@ -244,117 +252,154 @@ class rv_generic:
         /,
         longname: str | None = None,
         docdict: dict[str, str] | None = None,
-        discrete: Literal["continuous", "discrete"] = "continuous",
+        discrete: L["continuous", "discrete"] = "continuous",
     ) -> None: ...
+
+    #
     @overload
-    def __call__(self, /) -> rv_frozen[Self, _Scalar_f8]: ...
+    def __call__(self, /) -> rv_frozen[Self, _Float]: ...
     @overload
-    def __call__(self, /, *args: _Scalar_f8_co, **kwds: _Scalar_f8_co) -> rv_frozen[Self, _Scalar_f8]: ...
+    def __call__(self, /, *args: onp.ToFloat, **kwds: onp.ToFloat) -> rv_frozen[Self, _Float]: ...
     @overload
-    def __call__(self, /, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> rv_frozen[Self]: ...
+    def __call__(self, /, *args: _ToFloatOrND, **kwds: _ToFloatOrND) -> rv_frozen[Self]: ...
+
+    #
     @overload
-    def freeze(self, /) -> rv_frozen[Self, _Scalar_f8]: ...
+    def freeze(self, /) -> rv_frozen[Self, _Float]: ...
     @overload
-    def freeze(self, /, *args: _Scalar_f8_co, **kwds: _Scalar_f8_co) -> rv_frozen[Self, _Scalar_f8]: ...
+    def freeze(self, /, *args: onp.ToFloat, **kwds: onp.ToFloat) -> rv_frozen[Self, _Float]: ...
     @overload
-    def freeze(self, /, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> rv_frozen[Self]: ...
-    def _stats(self, /, *args: Any, **kwds: Any) -> _Tuple4[_Scalar_f8 | None] | _Tuple4[_Arr_f8 | None]: ...
-    def _munp(self, /, n: onp.ToInt | onp.ToIntND, *args: Any) -> _Arr_f8: ...
+    def freeze(self, /, *args: _ToFloatOrND, **kwds: _ToFloatOrND) -> rv_frozen[Self]: ...
+
+    #
+    def _stats(self, /, *args: onp.ToFloat, **kwds: Any) -> _Tuple4[_Float | None] | _Tuple4[_FloatND | None]: ...
+    def _munp(self, /, n: onp.ToInt | onp.ToIntND, *args: onp.ToFloat) -> _FloatND: ...
+
+    #
     def _argcheck_rvs(
         self,
         /,
-        *args: Any,
+        *args: onp.ToFloat,
         size: onp.ToInt | onp.ToIntND | None = None,
-    ) -> tuple[list[_Arr_f8_co], _Arr_f8_co, _Arr_f8_co, tuple[int, ...] | tuple[np.int_, ...]]: ...
-    def _argcheck(self, /, *args: Any) -> _ArrLike_b1: ...
-    def _get_support(self, /, *args: Any, **kwargs: Any) -> _Tuple2[_ArrLike_f8]: ...
-    def _support_mask(self, /, x: _Arr_f8_co, *args: Any) -> _Arr_b1: ...
-    def _open_support_mask(self, /, x: _Arr_f8_co, *args: Any) -> _ArrLike_b1: ...
-    def _rvs(self, /, *args: Any, size: spt.AnyShape | None = None, random_state: spt.ToRNG = None) -> _ArrLike_f8: ...
-    def _logcdf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
-    def _sf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
-    def _logsf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
-    def _ppf(self, /, q: _VT_f8, *args: Any) -> _VT_f8: ...
-    def _isf(self, /, q: _VT_f8, *args: Any) -> _VT_f8: ...
+    ) -> tuple[list[_CoFloatND], _CoFloatND, _CoFloatND, tuple[int, ...] | tuple[np.int_, ...]]: ...
+    def _argcheck(self, /, *args: onp.ToFloat) -> _BoolOrND: ...
+
+    #
+    def _get_support(self, /, *args: onp.ToFloat, **kwargs: onp.ToFloat) -> _Tuple2[_FloatOrND]: ...
+    def _support_mask(self, /, x: _CoFloatND, *args: onp.ToFloat) -> _BoolND: ...
+    def _open_support_mask(self, /, x: _CoFloatND, *args: onp.ToFloat) -> _BoolOrND: ...
+
+    #
+    def _rvs(self, /, *args: onp.ToFloat, size: AnyShape | None = None, random_state: ToRNG = None) -> _FloatOrND: ...
+
+    #
+    def _logcdf(self, /, x: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
+    def _sf(self, /, x: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
+    def _logsf(self, /, x: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
+    def _ppf(self, /, q: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
+    def _isf(self, /, q: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
+
+    #
     @overload
     def rvs(
         self,
         /,
-        *args: _Scalar_f8_co,
-        random_state: spt.ToRNG,
-        discrete: Literal[True, 1],
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_i8: ...
+        *args: onp.ToFloat,
+        random_state: ToRNG,
+        discrete: L[True, 1],
+        **kwds: _ToFloatOrND,
+    ) -> _IntOrND: ...
     @overload
     def rvs(
         self,
         /,
-        *args: _Scalar_f8_co,
-        random_state: spt.ToRNG,
-        discrete: Literal[False, 0] | None = ...,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        *args: onp.ToFloat,
+        random_state: ToRNG,
+        discrete: L[False, 0] | None = ...,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
+
+    #
     @overload
-    def stats(self, /, *args: _Scalar_f8_co, moment: _Moments1, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def stats(self, /, *args: onp.ToFloat, moment: _Moment1, **kwds: onp.ToFloat) -> _Float: ...
     @overload
-    def stats(self, /, *args: _ArrLike_f8_co, moment: _Moments1, **kwds: _ArrLike_f8_co) -> _Scalar_f8 | _Arr_f8: ...
+    def stats(self, /, *args: _ToFloatOrND, moment: _Moment1, **kwds: _ToFloatOrND) -> _Float | _FloatND: ...
     @overload
-    def stats(self, /, *args: _Scalar_f8_co, moment: _Moments2 = ..., **kwds: _Scalar_f8_co) -> _Tuple2[_Scalar_f8]: ...
+    def stats(self, /, *args: onp.ToFloat, moment: _Moment2 = ..., **kwds: onp.ToFloat) -> _Tuple2[_Float]: ...
     @overload
-    def stats(self, /, *args: _ArrLike_f8_co, moment: _Moments2 = ..., **kwds: _ArrLike_f8_co) -> _Tuple2[_ArrLike_f8]: ...
+    def stats(self, /, *args: _ToFloatOrND, moment: _Moment2 = ..., **kwds: _ToFloatOrND) -> _Tuple2[_FloatOrND]: ...
     @overload
-    def stats(self, /, *args: _Scalar_f8_co, moment: _Moments3, **kwds: _Scalar_f8_co) -> _Tuple3[_Scalar_f8]: ...
+    def stats(self, /, *args: onp.ToFloat, moment: _Moment3, **kwds: onp.ToFloat) -> _Tuple3[_Float]: ...
     @overload
-    def stats(self, /, *args: _ArrLike_f8_co, moment: _Moments3, **kwds: _ArrLike_f8_co) -> _Tuple3[_ArrLike_f8]: ...
+    def stats(self, /, *args: _ToFloatOrND, moment: _Moment3, **kwds: _ToFloatOrND) -> _Tuple3[_FloatOrND]: ...
     @overload
-    def stats(self, /, *args: _Scalar_f8_co, moment: _Moments4, **kwds: _Scalar_f8_co) -> _Tuple4[_Scalar_f8]: ...
+    def stats(self, /, *args: onp.ToFloat, moment: _Moment4, **kwds: onp.ToFloat) -> _Tuple4[_Float]: ...
     @overload
-    def stats(self, /, *args: _ArrLike_f8_co, moment: _Moments4, **kwds: _ArrLike_f8_co) -> _Tuple4[_ArrLike_f8]: ...
+    def stats(self, /, *args: _ToFloatOrND, moment: _Moment4, **kwds: _ToFloatOrND) -> _Tuple4[_FloatOrND]: ...
+
+    #
     @overload
-    def entropy(self, /, *args: _Scalar_f8_co, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def entropy(self, /, *args: onp.ToFloat, **kwds: onp.ToFloat) -> _Float: ...
     @overload
-    def entropy(self, /, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> _ArrLike_f8: ...
+    def entropy(self, /, *args: _ToFloatOrND, **kwds: _ToFloatOrND) -> _FloatOrND: ...
+
+    #
     @overload
-    def moment(self, /, order: onp.ToInt, *args: _Scalar_f8_co, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def moment(self, /, order: onp.ToInt, *args: onp.ToFloat, **kwds: onp.ToFloat) -> _Float: ...
     @overload
-    def moment(self, /, order: onp.ToInt, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> _ArrLike_f8: ...
+    def moment(self, /, order: onp.ToInt, *args: _ToFloatOrND, **kwds: _ToFloatOrND) -> _FloatOrND: ...
+
+    #
     @overload
-    def median(self, /, *args: _Scalar_f8_co, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def median(self, /, *args: onp.ToFloat, **kwds: onp.ToFloat) -> _Float: ...
     @overload
-    def median(self, /, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> _ArrLike_f8: ...
+    def median(self, /, *args: _ToFloatOrND, **kwds: _ToFloatOrND) -> _FloatOrND: ...
+
+    #
     @overload
-    def mean(self, /, *args: _Scalar_f8_co, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def mean(self, /, *args: onp.ToFloat, **kwds: onp.ToFloat) -> _Float: ...
     @overload
-    def mean(self, /, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> _ArrLike_f8: ...
+    def mean(self, /, *args: _ToFloatOrND, **kwds: _ToFloatOrND) -> _FloatOrND: ...
+
+    #
     @overload
-    def var(self, /, *args: _Scalar_f8_co, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def var(self, /, *args: onp.ToFloat, **kwds: onp.ToFloat) -> _Float: ...
     @overload
-    def var(self, /, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> _ArrLike_f8: ...
+    def var(self, /, *args: _ToFloatOrND, **kwds: _ToFloatOrND) -> _FloatOrND: ...
+
+    #
     @overload
-    def std(self, /, *args: _Scalar_f8_co, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def std(self, /, *args: onp.ToFloat, **kwds: onp.ToFloat) -> _Float: ...
     @overload
-    def std(self, /, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> _ArrLike_f8: ...
+    def std(self, /, *args: _ToFloatOrND, **kwds: _ToFloatOrND) -> _FloatOrND: ...
+
+    #
     @overload
-    def interval(self, /, confidence: _Scalar_f8_co, *args: _Scalar_f8_co, **kwds: _Scalar_f8_co) -> _Tuple2[_Scalar_f8]: ...
+    def interval(self, /, confidence: onp.ToFloat, *args: onp.ToFloat, **kwds: onp.ToFloat) -> _Tuple2[_Float]: ...
     @overload
-    def interval(self, /, confidence: _ArrLike_f8_co, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> _Tuple2[_ArrLike_f8]: ...
+    def interval(self, /, confidence: _ToFloatOrND, *args: _ToFloatOrND, **kwds: _ToFloatOrND) -> _Tuple2[_FloatOrND]: ...
+
+    #
     @overload
-    def support(self, /, *args: _Scalar_f8_co, **kwds: _Scalar_f8_co) -> _Tuple2[_Scalar_f8]: ...
+    def support(self, /, *args: onp.ToFloat, **kwds: onp.ToFloat) -> _Tuple2[_Float]: ...
     @overload
-    def support(self, /, *args: _ArrLike_f8_co, **kwds: _ArrLike_f8_co) -> _Tuple2[_Scalar_f8] | _Tuple2[_Arr_f8]: ...
-    def nnlf(self, /, theta: Sequence[_Scalar_f8_co], x: _ArrLike_f8_co) -> _ArrLike_f8: ...
-    def _nnlf(self, /, x: _Arr_f8_co, *args: Any) -> _ArrLike_f8: ...
-    def _penalized_nnlf(self, /, theta: Sequence[Any], x: _Arr_f8_co) -> _Scalar_f8: ...
-    def _penalized_nlpsf(self, /, theta: Sequence[Any], x: _Arr_f8_co) -> _Scalar_f8: ...
+    def support(self, /, *args: _ToFloatOrND, **kwds: _ToFloatOrND) -> _Tuple2[_Float] | _Tuple2[_FloatND]: ...
+
+    #
+    def nnlf(self, /, theta: onp.ToFloat1D, x: _ToFloatOrND) -> _FloatOrND: ...
+    def _nnlf(self, /, x: _CoFloatND, *args: onp.ToFloat) -> _FloatOrND: ...
+    def _penalized_nnlf(self, /, theta: Sequence[Any], x: _CoFloatND) -> _Float: ...
+    def _penalized_nlpsf(self, /, theta: Sequence[Any], x: _CoFloatND) -> _Float: ...
 
 class _ShapeInfo:
-    name: Final[LiteralString]
+    name: Final[str]
     integrality: Final[bool]
     domain: Final[Sequence[float]]  # in practice always a list of size two
+
     def __init__(
         self,
         /,
-        name: LiteralString,
+        name: str,
         integrality: bool = False,
         domain: Sequence[float] = ...,
         inclusive: Sequence[bool] = (True, True),
@@ -362,400 +407,418 @@ class _ShapeInfo:
 
 @type_check_only
 class _rv_mixin:
-    name: Final[LiteralString]
+    name: Final[str]
     a: Final[float]
     b: Final[float]
     badvalue: Final[float]
-    shapes: Final[LiteralString]
+    shapes: Final[str]
 
+    def generic_moment(self, /, n: onp.ToInt | onp.ToIntND, *args: onp.ToFloat) -> _FloatND: ...
+
+    #
     def _shape_info(self, /) -> list[_ShapeInfo]: ...
     def _param_info(self, /) -> list[_ShapeInfo]: ...
     def _attach_methods(self, /) -> None: ...
-    def generic_moment(self, /, n: onp.ToInt | onp.ToIntND, *args: _Scalar_f8_co) -> _Arr_f8: ...
-    def _logpxf(self, /, x: _Arr_f8_co, *args: Any) -> _Arr_f8: ...
-    def _cdf_single(self, /, x: _Scalar_f8_co, *args: Any) -> _Scalar_f8: ...
-    def _cdfvec(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
-    def _cdf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
-    def _ppfvec(self, /, q: _VT_f8, *args: Any) -> _VT_f8: ...
+    def _logpxf(self, /, x: _CoFloatND, *args: onp.ToFloat) -> _FloatND: ...
+    def _cdf_single(self, /, x: onp.ToFloat, *args: onp.ToFloat) -> _Float: ...
+    def _cdfvec(self, /, x: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
+    def _cdf(self, /, x: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
+    def _ppfvec(self, /, q: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
     def _unpack_loc_scale(
         self,
         /,
-        theta: Sequence[_ArrLike_f8_co],
-    ) -> tuple[_ArrLike_f8_co, _ArrLike_f8_co, tuple[_ArrLike_f8_co, ...]]: ...
+        theta: Sequence[_ToFloatOrND],
+    ) -> tuple[_ToFloatOrND, _ToFloatOrND, tuple[_ToFloatOrND, ...]]: ...
 
 class rv_continuous(_rv_mixin, rv_generic):
-    moment_type: Final[Literal[0, 1]]
+    moment_type: Final[L[0, 1]]
     xtol: Final[float]
 
     def __init__(
         self,
         /,
-        momtype: Literal[0, 1] = 1,
+        momtype: L[0, 1] = 1,
         a: float | None = None,
         b: float | None = None,
         xtol: float = 1e-14,
         badvalue: float | None = None,
-        name: LiteralString | None = None,
-        longname: LiteralString | None = None,
-        shapes: LiteralString | None = None,
-        seed: spt.ToRNG = None,
+        name: str | None = None,
+        longname: str | None = None,
+        shapes: str | None = None,
+        seed: ToRNG = None,
     ) -> None: ...
+
+    #
     @overload
-    def __call__(self, /) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
+    def __call__(self, /) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
     def __call__(
         self,
         /,
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
     def __call__(
         self,
         /,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        scale: _ArrLike_f8_co = 1,
-        **kwds: _ArrLike_f8_co,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        scale: _ToFloatOrND = 1,
+        **kwds: _ToFloatOrND,
     ) -> rv_continuous_frozen[Self]: ...
+
     #
     @overload
-    def freeze(self, /) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
+    def freeze(self, /) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
     def freeze(
         self,
         /,
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
     def freeze(
         self,
         /,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        scale: _ArrLike_f8_co = 1,
-        **kwds: _ArrLike_f8_co,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        scale: _ToFloatOrND = 1,
+        **kwds: _ToFloatOrND,
     ) -> rv_continuous_frozen[Self]: ...
 
     #
-    def _pdf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
-    def _logpdf(self, /, x: _VT_f8, *args: Any) -> _VT_f8: ...
+    def _pdf(self, /, x: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
+    def _logpdf(self, /, x: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
     #
     @overload
     def pdf(
         self,
         /,
-        x: _Scalar_f8_co,
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Scalar_f8: ...
+        x: onp.ToFloat,
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> _Float: ...
     @overload
     def pdf(
         self,
         /,
-        x: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def pdf(
         self,
         /,
-        x: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        scale: _ArrLike_f8_co = 1,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        x: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        scale: _ToFloatOrND = 1,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
     #
     @overload
     def logpdf(
         self,
         /,
-        x: _Scalar_f8_co,
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Scalar_f8: ...
+        x: onp.ToFloat,
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> _Float: ...
     @overload
     def logpdf(
         self,
         /,
-        x: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logpdf(
         self,
         /,
-        x: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        scale: _ArrLike_f8_co = 1,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        x: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        scale: _ToFloatOrND = 1,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
 
     #
     @overload
     def cdf(
         self,
         /,
-        x: _Scalar_f8_co,
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Scalar_f8: ...
+        x: onp.ToFloat,
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> _Float: ...
     @overload
     def cdf(
         self,
         /,
-        x: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def cdf(
         self,
         /,
-        x: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        scale: _ArrLike_f8_co = 1,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        x: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        scale: _ToFloatOrND = 1,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
     #
     @overload
     def logcdf(
         self,
         /,
-        x: _Scalar_f8_co,
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Scalar_f8: ...
+        x: onp.ToFloat,
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> _Float: ...
     @overload
     def logcdf(
         self,
         /,
-        x: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logcdf(
         self,
         /,
-        x: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        scale: _ArrLike_f8_co = 1,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        x: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        scale: _ToFloatOrND = 1,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
 
     #
     @overload
     def sf(
         self,
         /,
-        x: _Scalar_f8_co,
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Scalar_f8: ...
+        x: onp.ToFloat,
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> _Float: ...
     @overload
     def sf(
         self,
         /,
-        x: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def sf(
         self,
         /,
-        x: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        scale: _ArrLike_f8_co = 1,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        x: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        scale: _ToFloatOrND = 1,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
     #
     @overload
     def logsf(
         self,
         /,
-        x: _Scalar_f8_co,
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Scalar_f8: ...
+        x: onp.ToFloat,
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> _Float: ...
     @overload
     def logsf(
         self,
         /,
-        x: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logsf(
         self,
         /,
-        x: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        scale: _ArrLike_f8_co = 1,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        x: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        scale: _ToFloatOrND = 1,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
 
     #
     @overload
     def ppf(
         self,
         /,
-        q: _Scalar_f8_co,
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Scalar_f8: ...
+        q: onp.ToFloat,
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> _Float: ...
     @overload
     def ppf(
         self,
         /,
-        q: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        q: onp.Array[_ShapeT, _CoFloat],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def ppf(
         self,
         /,
-        q: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        scale: _ArrLike_f8_co = 1,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        q: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        scale: _ToFloatOrND = 1,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
     #
     @overload
     def isf(
         self,
         /,
-        q: _Scalar_f8_co,
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Scalar_f8: ...
+        q: onp.ToFloat,
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> _Float: ...
     @overload
     def isf(
         self,
         /,
-        q: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        q: onp.Array[_ShapeT, _CoFloat],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def isf(
         self,
         /,
-        q: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        scale: _ArrLike_f8_co = 1,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        q: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        scale: _ToFloatOrND = 1,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
 
     #
-    def _nnlf_and_penalty(self, /, x: _Arr_f8, args: Sequence[Any]) -> _Scalar_f8: ...
+    def _nnlf_and_penalty(self, /, x: _FloatND, args: Sequence[onp.ToFloat]) -> _Float: ...
+    #
     def _fitstart(
         self,
         /,
-        data: _Arr_f8,
-        args: tuple[Any, ...] | None = None,
-    ) -> tuple[Unpack[tuple[_Scalar_f8, ...]], _Scalar_f8, _Scalar_f8]: ...
+        data: _FloatND,
+        args: tuple[onp.ToFloat, ...] | None = None,
+    ) -> tuple[Unpack[tuple[_Float, ...]], _Float, _Float]: ...
+    #
     def _reduce_func(
         self,
         /,
-        args: tuple[Any, ...],
-        kwds: dict[str, Any],
-        data: _ArrLike_f8_co | None = None,
+        args: tuple[onp.ToFloat, ...],
+        kwds: Mapping[str, onp.ToFloat],
+        data: _ToFloatOrND | None = None,
     ) -> tuple[
-        list[_Scalar_f8],
-        Callable[[list[_Scalar_f8_co], _Arr_f8_co], _Scalar_f8],
-        Callable[[list[_Scalar_f8_co], _Arr_f8_co], list[_Scalar_f8]],
-        list[_Scalar_f8],
+        list[_Float],
+        Callable[[list[onp.ToFloat], _CoFloatND], _Float],
+        Callable[[list[onp.ToFloat], _CoFloatND], list[_Float]],
+        list[_Float],
     ]: ...
-    def _moment_error(self, /, theta: list[_Scalar_f8_co], x: _Arr_f8_co, data_moments: _Arr_f8_co[tuple[int]]) -> _Scalar_f8: ...
-    def _fit_loc_scale_support(self, /, data: _ArrLike_f8_co, *args: Any) -> _Tuple2[np.intp] | _Tuple2[_Scalar_f8]: ...
-    def fit_loc_scale(self, /, data: _ArrLike_f8_co, *args: _Scalar_f8_co) -> _Tuple2[_Scalar_f8]: ...
+    #
+    def _moment_error(self, /, theta: list[onp.ToFloat], x: _CoFloatND, data_moments: onp.ToFloat1D) -> _Float: ...
+    #
+    def _fit_loc_scale_support(
+        self,
+        /,
+        data: _ToFloatOrND,
+        *args: onp.ToFloat,
+    ) -> _Tuple2[np.intp] | _Tuple2[_Float]: ...
+
+    #
+    def fit_loc_scale(self, /, data: _ToFloatOrND, *args: onp.ToFloat) -> _Tuple2[_Float]: ...
+
+    #
     def fit(
         self,
         /,
-        data: _ArrLike_f8_co,
-        *args: _Scalar_f8_co,
-        optimizer: Callable[[_Arr_f8, tuple[_Scalar_f8, ...], tuple[_Scalar_f8, ...], bool], tuple[_Scalar_f8, ...]],
+        data: _ToFloatOrND,
+        *args: onp.ToFloat,
+        optimizer: Callable[[_FloatND, tuple[_Float, ...], tuple[_Float, ...], bool], tuple[_Float, ...]],
         method: _FitMethod = "MLE",
-        **kwds: _Scalar_f8_co,
-    ) -> tuple[_Scalar_f8, ...]: ...
+        **kwds: onp.ToFloat,
+    ) -> tuple[_Float, ...]: ...
 
     #
     def expect(
         self,
         /,
-        func: Callable[[float], _Scalar_f8] | None = None,
-        args: tuple[_Scalar_f8_co, ...] = (),
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        lb: _Scalar_f8_co | None = None,
-        ub: _Scalar_f8_co | None = None,
+        func: Callable[[float], _Float] | None = None,
+        args: tuple[onp.ToFloat, ...] = (),
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        lb: onp.ToFloat | None = None,
+        ub: onp.ToFloat | None = None,
         conditional: op.CanBool = False,
         **kwds: Unpack[_QuadOpts],
-    ) -> _Scalar_f8: ...
+    ) -> _Float: ...
 
     #
     @override
-    def rvs(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def rvs(
         self,
         /,
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        size: spt.AnyShape = 1,
-        random_state: spt.ToRNG = None,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        size: AnyShape = 1,
+        random_state: ToRNG = None,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
 
 class rv_discrete(_rv_mixin, rv_generic):
     inc: Final[int]
@@ -763,261 +826,261 @@ class rv_discrete(_rv_mixin, rv_generic):
 
     def __new__(
         cls,
-        a: _Scalar_f8_co = 0,
-        b: _Scalar_f8_co = ...,
-        name: LiteralString | None = None,
-        badvalue: _Scalar_f8 | None = None,
-        moment_tol: _Scalar_f8 = 1e-08,
-        values: _Tuple2[_ArrLike_f8_co] | None = None,
+        a: onp.ToFloat = 0,
+        b: onp.ToFloat = ...,
+        name: str | None = None,
+        badvalue: _Float | None = None,
+        moment_tol: _Float = 1e-08,
+        values: _Tuple2[_ToFloatOrND] | None = None,
         inc: int | np.int_ = 1,
-        longname: LiteralString | None = None,
-        shapes: LiteralString | None = None,
-        seed: spt.ToRNG = None,
+        longname: str | None = None,
+        shapes: str | None = None,
+        seed: ToRNG = None,
     ) -> Self: ...
     def __init__(  # pyright: ignore[reportInconsistentConstructor]
         self,
         /,
-        a: _Scalar_f8_co = 0,
-        b: _Scalar_f8_co = ...,
-        name: LiteralString | None = None,
-        badvalue: _Scalar_f8 | None = None,
-        moment_tol: _Scalar_f8 = 1e-08,
+        a: onp.ToFloat = 0,
+        b: onp.ToFloat = ...,
+        name: str | None = None,
+        badvalue: _Float | None = None,
+        moment_tol: _Float = 1e-08,
         values: None = None,
         inc: int | np.int_ = 1,
-        longname: LiteralString | None = None,
-        shapes: LiteralString | None = None,
-        seed: spt.ToRNG = None,
+        longname: str | None = None,
+        shapes: str | None = None,
+        seed: ToRNG = None,
     ) -> None: ...
 
     #
     # NOTE: Using `@override` on `__call__` or `freeze` causes stubtest to crash (mypy 1.11.1)
     @overload
-    def __call__(self, /) -> rv_discrete_frozen[Self, _Scalar_f8]: ...
+    def __call__(self, /) -> rv_discrete_frozen[Self, _Float]: ...
     @overload
     def __call__(
         self,
         /,
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        **kwds: _Scalar_f8_co,
-    ) -> rv_discrete_frozen[Self, _Scalar_f8]: ...
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        **kwds: onp.ToFloat,
+    ) -> rv_discrete_frozen[Self, _Float]: ...
     @overload
-    def __call__(self, /, *args: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, **kwds: _ArrLike_f8_co) -> rv_discrete_frozen[Self]: ...
+    def __call__(self, /, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, **kwds: _ToFloatOrND) -> rv_discrete_frozen[Self]: ...
     #
     @overload
-    def freeze(self, /) -> rv_discrete_frozen[Self, _Scalar_f8]: ...
+    def freeze(self, /) -> rv_discrete_frozen[Self, _Float]: ...
     @overload
     def freeze(
         self,
         /,
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        **kwds: _Scalar_f8_co,
-    ) -> rv_discrete_frozen[Self, _Scalar_f8]: ...
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        **kwds: onp.ToFloat,
+    ) -> rv_discrete_frozen[Self, _Float]: ...
     @overload
-    def freeze(self, /, *args: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, **kwds: _ArrLike_f8_co) -> rv_discrete_frozen[Self]: ...
+    def freeze(self, /, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, **kwds: _ToFloatOrND) -> rv_discrete_frozen[Self]: ...
 
     #
     @overload
-    def pmf(self, /, k: _Scalar_f8_co, *args: _Scalar_f8_co, loc: _Scalar_f8_co = 0, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def pmf(self, /, k: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def pmf(
         self,
         /,
-        k: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        k: onp.Array[_ShapeT, _CoFloat],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def pmf(
         self,
         /,
-        k: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        k: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
     #
     @overload
-    def logpmf(self, /, k: _Scalar_f8_co, *args: _Scalar_f8_co, loc: _Scalar_f8_co = 0, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def logpmf(self, /, k: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def logpmf(
         self,
         /,
-        k: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        k: onp.Array[_ShapeT, _CoFloat],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logpmf(
         self,
         /,
-        k: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        k: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
 
     #
     @overload
-    def cdf(self, /, k: _Scalar_f8_co, *args: _Scalar_f8_co, loc: _Scalar_f8_co = 0, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def cdf(self, /, k: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def cdf(
         self,
         /,
-        k: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        k: onp.Array[_ShapeT, _CoFloat],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def cdf(
         self,
         /,
-        k: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        k: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
     #
     @overload
-    def logcdf(self, /, k: _Scalar_f8_co, *args: _Scalar_f8_co, loc: _Scalar_f8_co = 0, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def logcdf(self, /, k: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def logcdf(
         self,
         /,
-        k: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        k: onp.Array[_ShapeT, _CoFloat],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logcdf(
         self,
         /,
-        k: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        k: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
 
     #
     @overload
-    def sf(self, /, k: _Scalar_f8_co, *args: _Scalar_f8_co, loc: _Scalar_f8_co = 0, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def sf(self, /, k: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def sf(
         self,
         /,
-        k: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        k: onp.Array[_ShapeT, _CoFloat],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def sf(
         self,
         /,
-        k: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        k: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
     #
     @overload
-    def logsf(self, /, k: _Scalar_f8_co, *args: _Scalar_f8_co, loc: _Scalar_f8_co = 0, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def logsf(self, /, k: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def logsf(
         self,
         /,
-        k: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        k: onp.Array[_ShapeT, _CoFloat],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logsf(
         self,
         /,
-        k: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        k: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
 
     #
     @overload
-    def ppf(self, /, q: _Scalar_f8_co, *args: _Scalar_f8_co, loc: _Scalar_f8_co = 0, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def ppf(self, /, q: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def ppf(
         self,
         /,
-        q: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        q: onp.Array[_ShapeT, _CoFloat],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def ppf(
         self,
         /,
-        q: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        q: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
     #
     @overload
-    def isf(self, /, q: _Scalar_f8_co, *args: _Scalar_f8_co, loc: _Scalar_f8_co = 0, **kwds: _Scalar_f8_co) -> _Scalar_f8: ...
+    def isf(self, /, q: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def isf(
         self,
         /,
-        q: _Arr_f8_co[_ShapeT],
-        *args: _Scalar_f8_co,
-        loc: _Scalar_f8_co = 0,
-        **kwds: _Scalar_f8_co,
-    ) -> _Arr_f8[_ShapeT]: ...
+        q: onp.Array[_ShapeT, _CoFloat],
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        **kwds: onp.ToFloat,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def isf(
         self,
         /,
-        q: _ArrLike_f8_co,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_f8: ...
+        q: _ToFloatOrND,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        **kwds: _ToFloatOrND,
+    ) -> _FloatOrND: ...
 
     #
     def expect(
         self,
         /,
-        func: Callable[[onp.ArrayND[np.int_]], _Arr_f8_co] | None = None,
-        args: tuple[_Scalar_f8_co, ...] = (),
-        loc: _Scalar_f8_co = 0,
+        func: Callable[[onp.ArrayND[np.int_]], _CoFloatND] | None = None,
+        args: tuple[onp.ToFloat, ...] = (),
+        loc: onp.ToFloat = 0,
         lb: onp.ToInt | None = None,
         ub: onp.ToInt | None = None,
         conditional: op.CanBool = False,
         maxcount: onp.ToInt = 1000,
-        tolerance: _Scalar_f8_co = 1e-10,
+        tolerance: onp.ToFloat = 1e-10,
         chunksize: onp.ToInt = 32,
-    ) -> _Scalar_f8: ...
+    ) -> _Float: ...
 
     #
     @override
-    def rvs(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def rvs(
         self,
         /,
-        *args: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        size: spt.AnyShape = 1,
-        random_state: spt.ToRNG = None,
-        **kwds: _ArrLike_f8_co,
-    ) -> _ArrLike_i8: ...
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        size: AnyShape = 1,
+        random_state: ToRNG = None,
+        **kwds: _ToFloatOrND,
+    ) -> _IntOrND: ...
 
 _XKT_co = TypeVar("_XKT_co", bound=np.number[Any], covariant=True, default=np.number[Any])
-_PKT_co = TypeVar("_PKT_co", bound=_Scalar_f, covariant=True, default=_Scalar_f)
+_PKT_co = TypeVar("_PKT_co", bound=_Floating, covariant=True, default=_Floating)
 
 class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
     xk: onp.Array1D[_XKT_co]
@@ -1026,206 +1089,282 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
     def __init__(  # pyright: ignore[reportInconsistentConstructor]
         self,
         /,
-        a: _Scalar_f8_co = 0,
-        b: _Scalar_f8_co = ...,
-        name: LiteralString | None = None,
+        a: onp.ToFloat = 0,
+        b: onp.ToFloat = ...,
+        name: str | None = None,
         badvalue: float | None = None,
         moment_tol: float = 1e-08,
-        values: tuple[_ArrLike_f8_co, _ArrLike_f8_co] | None = None,
+        values: tuple[_ToFloatOrND, _ToFloatOrND] | None = None,
         inc: int = 1,
-        longname: LiteralString | None = None,
-        shapes: LiteralString | None = None,
-        seed: spt.ToRNG = None,
+        longname: str | None = None,
+        shapes: str | None = None,
+        seed: ToRNG = None,
     ) -> None: ...
-    def _entropy(self, /) -> _Scalar_f8: ...
+    def _entropy(self, /) -> _Float: ...
     vecentropy: Final = _entropy
     @override
-    def generic_moment(self, /, n: onp.ToInt | onp.ToIntND | int | Sequence[int]) -> _Arr_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def generic_moment(self, /, n: onp.ToInt | onp.ToIntND | int | Sequence[int]) -> _FloatND: ...
 
-def get_distribution_names(namespace_pairs: Iterable[tuple[str, type]], rv_base_class: type) -> _Tuple2[list[LiteralString]]: ...
+def get_distribution_names(namespace_pairs: Iterable[tuple[str, type]], rv_base_class: type) -> _Tuple2[list[str]]: ...
 
 # private helper subtypes
 @type_check_only
 class _rv_continuous_0(rv_continuous):
     # overrides of rv_generic
-    @override
-    @overload
-    def stats(self, /, loc: _Scalar_f8_co, scale: _Scalar_f8_co, moment: _Moments1) -> _Scalar_f8: ...
-    @overload
-    def stats(self, /, loc: _ArrLike_f8_co, scale: _ArrLike_f8_co, moment: _Moments1) -> _ArrLike_f8: ...
-    @overload
-    def stats(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1, *, moment: _Moments1) -> _Scalar_f8: ...
-    @overload
-    def stats(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1, *, moment: _Moments1) -> _ArrLike_f8: ...
-    @overload
-    def stats(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1, moment: _Moments2 = ...) -> _Tuple2[_Scalar_f8]: ...
-    @overload
-    def stats(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1, moment: _Moments2 = ...) -> _Tuple2[_ArrLike_f8]: ...
-    @overload
-    def stats(self, /, loc: _Scalar_f8_co, scale: _Scalar_f8_co, moment: _Moments3) -> _Tuple3[_Scalar_f8]: ...
-    @overload
-    def stats(self, /, loc: _ArrLike_f8_co, scale: _ArrLike_f8_co, moment: _Moments3) -> _Tuple3[_ArrLike_f8]: ...
-    @overload
-    def stats(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1, *, moment: _Moments3) -> _Tuple3[_Scalar_f8]: ...
-    @overload
-    def stats(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1, *, moment: _Moments3) -> _Tuple3[_ArrLike_f8]: ...
-    @overload
-    def stats(self, /, loc: _Scalar_f8_co, scale: _Scalar_f8_co, moment: _Moments4) -> _Tuple4[_Scalar_f8]: ...
-    @overload
-    def stats(self, /, loc: _ArrLike_f8_co, scale: _ArrLike_f8_co, moment: _Moments4) -> _Tuple4[_ArrLike_f8]: ...
-    @overload
-    def stats(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1, *, moment: _Moments4) -> _Tuple4[_Scalar_f8]: ...
-    @overload
-    def stats(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1, *, moment: _Moments4) -> _Tuple4[_ArrLike_f8]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-
+    @overload  # loc: 0-d, scale: 0-d, moments: 1 (positional)
+    def stats(self, /, loc: onp.ToFloat, scale: onp.ToFloat, moment: _Moment1) -> _Float: ...
+    @overload  # loc: 0-d, scale: 0-d, moments: 1 (keyword)
+    def stats(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, *, moment: _Moment1) -> _Float: ...
+    @overload  # loc: 0-d, scale: 0-d, moments: 2 (default)
+    def stats(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, moment: _Moment2 = "mv") -> _Tuple2[_Float]: ...
+    @overload  # loc: 0-d, scale: 0-d, moments: 3 (positional)
+    def stats(self, /, loc: onp.ToFloat, scale: onp.ToFloat, moment: _Moment3) -> _Tuple3[_Float]: ...
+    @overload  # loc: 0-d, scale: 0-d, moments: 3 (keyword)
+    def stats(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, *, moment: _Moment3) -> _Tuple3[_Float]: ...
+    @overload  # loc: 0-d, scale: 0-d, moments: 4 (positional)
+    def stats(self, /, loc: onp.ToFloat, scale: onp.ToFloat, moment: _Moment4) -> _Tuple4[_Float]: ...
+    @overload  # loc: 0-d, scale: 0-d, moments: 4 (keyword)
+    def stats(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, *, moment: _Moment4) -> _Tuple4[_Float]: ...
     #
-    @override
-    @overload
-    def entropy(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
-    @overload
-    def entropy(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @overload  # loc: 0-d, scale: n-d (positional), moments: 1
+    def stats(self, /, loc: onp.ToFloat, scale: onp.ToFloatND, moment: _Moment1) -> _FloatND: ...
+    @overload  # loc: 0-d, scale: n-d (positional), moments: 2 (default)
+    def stats(self, /, loc: onp.ToFloat, scale: onp.ToFloatND, moment: _Moment2 = "mv") -> _Tuple2[_FloatND]: ...
+    @overload  # loc: 0-d, scale: n-d (positional), moments: 3
+    def stats(self, /, loc: onp.ToFloat, scale: onp.ToFloatND, moment: _Moment3) -> _Tuple3[_FloatND]: ...
+    @overload  # loc: 0-d, scale: n-d (positional), moments: 4
+    def stats(self, /, loc: onp.ToFloat, scale: onp.ToFloatND, moment: _Moment4) -> _Tuple4[_FloatND]: ...
     #
-    @override
-    @overload
-    def moment(self, /, order: int | _Scalar_i, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
-    @overload
-    def moment(self, /, order: int | _Scalar_i, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @overload  # loc: 0-d, scale: n-d (keyword), moments: 1
+    def stats(self, /, loc: onp.ToFloat = 0, *, scale: onp.ToFloatND, moment: _Moment1) -> _FloatND: ...
+    @overload  # loc: 0-d, scale: n-d (keyword), moments: 2 (default)
+    def stats(self, /, loc: onp.ToFloat = 0, *, scale: onp.ToFloatND, moment: _Moment2 = "mv") -> _Tuple2[_FloatND]: ...
+    @overload  # loc: 0-d, scale: n-d (keyword), moments: 3
+    def stats(self, /, loc: onp.ToFloat = 0, *, scale: onp.ToFloatND, moment: _Moment3) -> _Tuple3[_FloatND]: ...
+    @overload  # loc: 0-d, scale: n-d (keyword), moments: 4
+    def stats(self, /, loc: onp.ToFloat = 0, *, scale: onp.ToFloatND, moment: _Moment4) -> _Tuple4[_FloatND]: ...
     #
-    @override
-    @overload
-    def median(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
-    @overload
-    def median(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-    #
-    @override
-    @overload
-    def mean(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
-    @overload
-    def mean(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-    #
-    @override
-    @overload
-    def var(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
-    @overload
-    def var(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-    #
-    @override
-    @overload
-    def std(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
-    @overload
-    def std(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-
-    #
-    @override
-    @overload
-    def interval(self, /, confidence: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Tuple2[_Scalar_f8]: ...
-    @overload
-    def interval(  # pyright: ignore[reportIncompatibleMethodOverride]
+    @overload  # loc: n-d, scale: ?-d, moments: 1 (positional)
+    def stats(self, /, loc: onp.ToFloatND, scale: _ToFloatOrND, moment: _Moment1) -> _FloatND: ...
+    @overload  # loc: n-d, scale: ?-d, moments: 1 (keyword)
+    def stats(self, /, loc: onp.ToFloatND, scale: _ToFloatOrND = 1, *, moment: _Moment1) -> _FloatND: ...
+    @overload  # loc: n-d, scale: ?-d, moments: 2 (default)
+    def stats(
         self,
         /,
-        confidence: _ArrLike_f8_co,
-        loc: _ArrLike_f8_co = 0,
-        scale: _ArrLike_f8_co = 1,
-    ) -> _Tuple2[_Scalar_f8] | _Tuple2[_Arr_f8]: ...
+        loc: onp.ToFloatND,
+        scale: _ToFloatOrND = 1,
+        moment: _Moment2 = "mv",
+    ) -> _Tuple2[_FloatND]: ...
+    @overload  # loc: n-d, scale: ?-d, moments: 3 (positional)
+    def stats(self, /, loc: onp.ToFloatND, scale: _ToFloatOrND, moment: _Moment3) -> _Tuple3[_FloatND]: ...
+    @overload  # loc: n-d, scale: ?-d, moments: 3 (keyword)
+    def stats(self, /, loc: onp.ToFloatND, scale: _ToFloatOrND = 1, *, moment: _Moment3) -> _Tuple3[_FloatND]: ...
+    @overload  # loc: n-d, scale: ?-d, moments: 4 (positional)
+    def stats(self, /, loc: onp.ToFloatND, scale: _ToFloatOrND, moment: _Moment4) -> _Tuple4[_FloatND]: ...
+    @overload  # loc: n-d, scale: ?-d, moments: 4 (keyword)
+    def stats(self, /, loc: onp.ToFloatND, scale: _ToFloatOrND = 1, *, moment: _Moment4) -> _Tuple4[_FloatND]: ...
+
     #
     @override
     @overload
-    def support(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Tuple2[_Scalar_f8]: ...
+    def entropy(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
-    def support(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _Tuple2[_Scalar_f8] | _Tuple2[_Arr_f8]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def entropy(self, /, loc: onp.ToFloat, scale: onp.ToFloatND) -> _FloatND: ...
+    @overload
+    def entropy(self, /, loc: onp.ToFloat = 0, *, scale: onp.ToFloatND) -> _FloatND: ...
+    @overload
+    def entropy(self, /, loc: onp.ToFloatND, scale: _ToFloatOrND = 1) -> _FloatND: ...
+    #
+    @override
+    @overload
+    def moment(self, /, order: onp.ToInt, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
+    @overload
+    def moment(self, /, order: onp.ToInt, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
+    #
+    @override
+    @overload
+    def median(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
+    @overload
+    def median(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
+    #
+    @override
+    @overload
+    def mean(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
+    @overload
+    def mean(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
+    #
+    @override
+    @overload
+    def var(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
+    @overload
+    def var(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
+    #
+    @override
+    @overload
+    def std(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
+    @overload
+    def std(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
+
+    #
+    @override
+    @overload
+    def interval(self, /, confidence: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Tuple2[_Float]: ...
+    @overload
+    def interval(
+        self,
+        /,
+        confidence: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        scale: _ToFloatOrND = 1,
+    ) -> _Tuple2[_Float] | _Tuple2[_FloatND]: ...
+    #
+    @override
+    @overload
+    def support(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Tuple2[_Float]: ...
+    @overload
+    def support(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _Tuple2[_Float] | _Tuple2[_FloatND]: ...
 
     # overrides of rv_continuous
     @override
     @overload
-    def __call__(self, /) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
+    def __call__(self, /) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
-    def __call__(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
+    def __call__(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
-    def __call__(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> rv_continuous_frozen[Self]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __call__(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> rv_continuous_frozen[Self]: ...
     #
     @override
     @overload
-    def freeze(self, /) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
+    def freeze(self, /) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
-    def freeze(self, /, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> rv_continuous_frozen[Self, _Scalar_f8]: ...
+    def freeze(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
-    def freeze(self, /, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> rv_continuous_frozen[Self]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def freeze(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> rv_continuous_frozen[Self]: ...
 
     #
     @override
     @overload
-    def pdf(self, /, x: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
+    def pdf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
-    def pdf(self, /, x: _Arr_f8_co[_ShapeT], loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Arr_f8[_ShapeT]: ...
-    @overload
-    def pdf(self, /, x: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-    #
-    @override
-    @overload
-    def logpdf(self, /, x: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
-    @overload
-    def logpdf(self, /, x: _Arr_f8_co[_ShapeT], loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Arr_f8[_ShapeT]: ...
-    @overload
-    def logpdf(self, /, x: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-
-    #
-    @override
-    @overload
-    def cdf(self, /, x: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
-    @overload
-    def cdf(self, /, x: _Arr_f8_co[_ShapeT], loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Arr_f8[_ShapeT]: ...
-    @overload
-    def cdf(self, /, x: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-    #
-    @override
-    @overload
-    def logcdf(self, /, x: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
-    @overload
-    def logcdf(self, /, x: _Arr_f8_co[_ShapeT], loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Arr_f8[_ShapeT]: ...
-    @overload
-    def logcdf(self, /, x: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-
-    #
-    @override
-    @overload
-    def sf(self, /, x: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
-    @overload
-    def sf(self, /, x: _Arr_f8_co[_ShapeT], loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Arr_f8[_ShapeT]: ...
-    @overload
-    def sf(self, /, x: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-    #
-    @override
-    @overload
-    def logsf(self, /, x: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
-    @overload
-    def logsf(self, /, x: _Arr_f8_co[_ShapeT], loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Arr_f8[_ShapeT]: ...
-    @overload
-    def logsf(self, /, x: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-
-    #
-    @override
-    @overload
-    def ppf(self, /, q: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
-    @overload
-    def ppf(self, /, q: _Arr_f8_co[_ShapeT], loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Arr_f8[_ShapeT]: ...
-    @overload
-    def ppf(self, /, q: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-    #
-    @override
-    @overload
-    def isf(self, /, q: _Scalar_f8_co, loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Scalar_f8: ...
-    @overload
-    def isf(self, /, q: _Arr_f8_co[_ShapeT], loc: _Scalar_f8_co = 0, scale: _Scalar_f8_co = 1) -> _Arr_f8[_ShapeT]: ...
-    @overload
-    def isf(self, /, q: _ArrLike_f8_co, loc: _ArrLike_f8_co = 0, scale: _ArrLike_f8_co = 1) -> _ArrLike_f8: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-
-    #
-    @override
-    def rvs(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def pdf(
         self,
         /,
-        loc: _Scalar_f8_co = 0,
-        scale: _Scalar_f8_co = 1,
-        size: spt.AnyShape = 1,
-        random_state: spt.ToRNG = None,
-    ) -> _ArrLike_f8: ...
+        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
+    @overload
+    def pdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
+    #
+    @override
+    @overload
+    def logpdf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
+    @overload
+    def logpdf(
+        self,
+        /,
+        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
+    @overload
+    def logpdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
+
+    #
+    @override
+    @overload
+    def cdf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
+    @overload
+    def cdf(
+        self,
+        /,
+        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
+    @overload
+    def cdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
+    #
+    @override
+    @overload
+    def logcdf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
+    @overload
+    def logcdf(
+        self,
+        /,
+        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
+    @overload
+    def logcdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
+
+    #
+    @override
+    @overload
+    def sf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
+    @overload
+    def sf(
+        self,
+        /,
+        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
+    @overload
+    def sf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
+    #
+    @override
+    @overload
+    def logsf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
+    @overload
+    def logsf(
+        self,
+        /,
+        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
+    @overload
+    def logsf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
+
+    #
+    @override
+    @overload
+    def ppf(self, /, q: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
+    @overload
+    def ppf(
+        self,
+        /,
+        q: onp.Array[_ShapeT, _CoFloat],
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
+    @overload
+    def ppf(self, /, q: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
+    #
+    @override
+    @overload
+    def isf(self, /, q: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
+    @overload
+    def isf(
+        self,
+        /,
+        q: onp.Array[_ShapeT, _CoFloat],
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+    ) -> onp.Array[_ShapeT, np.float64]: ...
+    @overload
+    def isf(self, /, q: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
+
+    #
+    @override
+    def rvs(
+        self,
+        /,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        size: AnyShape = 1,
+        random_state: ToRNG = None,
+    ) -> _FloatOrND: ...
