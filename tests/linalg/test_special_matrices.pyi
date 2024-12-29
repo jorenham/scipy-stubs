@@ -6,7 +6,7 @@ from scipy.linalg import kron, toeplitz
 
 arr_f8_1d: onp.Array1D[np.float64]
 arr_f8_2d: onp.Array2D[np.float64]
-arr_f8_nd: onp.ArrayND[np.float64]
+arr_f8_nd: onp.Array[tuple[int, ...], np.float64]
 
 ###
 # kron
