@@ -184,7 +184,7 @@ class _cs_matrix(
     def __init__(
         self: _cs_matrix[np.float64, tuple[int]],
         /,
-        arg1: Sequence[opt.Just[float]],
+        arg1: Sequence[opt.JustFloat],
         shape: ToShape1dNd | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
@@ -195,7 +195,7 @@ class _cs_matrix(
     def __init__(
         self: _cs_matrix[np.float64, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[opt.Just[float]]],
+        arg1: Sequence[Sequence[opt.JustFloat]],
         shape: ToShape1dNd | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
@@ -206,7 +206,7 @@ class _cs_matrix(
     def __init__(
         self: _cs_matrix[np.complex128, tuple[int]],
         /,
-        arg1: Sequence[opt.Just[complex]],
+        arg1: Sequence[opt.JustComplex],
         shape: ToShape1dNd | None = None,
         dtype: ToDTypeComplex | None = None,
         copy: bool = False,
@@ -217,7 +217,7 @@ class _cs_matrix(
     def __init__(
         self: _cs_matrix[np.complex128, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[opt.Just[complex]]],
+        arg1: Sequence[Sequence[opt.JustComplex]],
         shape: ToShape1dNd | None = None,
         dtype: ToDTypeComplex | None = None,
         copy: bool = False,

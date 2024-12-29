@@ -1,6 +1,6 @@
 import abc
 import numbers
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable, Mapping
 from typing import Any, ClassVar, Concatenate, Final, Generic, Literal, Protocol, TypeAlias, overload, type_check_only
 from typing_extensions import Self, TypeVar, override
 
@@ -33,10 +33,6 @@ _InexactT_co = TypeVar("_InexactT_co", bound=np.inexact[Any], default=np.float64
 _EngineT_co = TypeVar("_EngineT_co", bound=QMCEngine[np.inexact[Any]], default=Sobol, covariant=True)
 
 _Real: TypeAlias = np.floating[Any] | np.integer[Any]
-
-_ToJustFloat: TypeAlias = opt.Just[float] | np.floating[Any]
-_ToJustFloat1D: TypeAlias = onp.CanArrayND[np.floating[Any]] | Sequence[_ToJustFloat]
-_ToJustFloat2D: TypeAlias = onp.CanArrayND[np.floating[Any]] | Sequence[_ToJustFloat1D]
 
 _MethodQMC: TypeAlias = Literal["random-cd", "lloyd"]
 _MethodDisc: TypeAlias = Literal["CD", "WD", "MD", "L2-star"]
@@ -257,7 +253,7 @@ class MultinomialQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co]):
     def __init__(
         self: MultinomialQMC[Sobol],
         /,
-        pvals: _ToJustFloat | _ToJustFloat1D,
+        pvals: onp.ToJustFloat | onp.ToJustFloat1D,
         n_trials: onp.ToJustInt,
         *,
         engine: None = None,
@@ -267,7 +263,7 @@ class MultinomialQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co]):
     def __init__(
         self,
         /,
-        pvals: _ToJustFloat | _ToJustFloat1D,
+        pvals: onp.ToJustFloat | onp.ToJustFloat1D,
         n_trials: onp.ToJustInt,
         *,
         engine: _EngineT_co,
@@ -300,29 +296,29 @@ def discrepancy(
 
 #
 def geometric_discrepancy(
-    sample: _ToJustFloat2D,
+    sample: onp.ToJustFloat2D,
     method: _MethodDist = "mindist",
     metric: _Metric = "euclidean",
 ) -> float | np.float64: ...
 
 #
-def update_discrepancy(x_new: _ToJustFloat1D, sample: _ToJustFloat2D, initial_disc: opt.AnyFloat) -> float: ...
+def update_discrepancy(x_new: onp.ToJustFloat1D, sample: onp.ToJustFloat2D, initial_disc: opt.AnyFloat) -> float: ...
 def primes_from_2_to(n: onp.ToInt) -> onp.Array1D[np.int_]: ...
 def n_primes(n: onp.ToInt) -> list[int] | onp.Array1D[np.int_]: ...
 
 #
 def _select_optimizer(optimization: _MethodQMC | None, config: Mapping[str, object]) -> _Optimizer | None: ...
 def _random_cd(best_sample: _FloatArrayT, n_iters: onp.ToInt, n_nochange: onp.ToInt, rng: RNG) -> _FloatArrayT: ...
-def _l1_norm(sample: _ToJustFloat2D) -> float | np.float64: ...
+def _l1_norm(sample: onp.ToJustFloat2D) -> float | np.float64: ...
 def _lloyd_iteration(sample: _FloatArrayT, decay: onp.ToFloat, qhull_options: str | None) -> _FloatArrayT: ...
 def _lloyd_centroidal_voronoi_tessellation(
-    sample: _ToJustFloat2D,
+    sample: onp.ToJustFloat2D,
     *,
     tol: onp.ToFloat = 1e-5,
     maxiter: onp.ToJustInt = 10,
     qhull_options: str | None = None,
 ) -> onp.Array2D[np.float64]: ...
-def _ensure_in_unit_hypercube(sample: _ToJustFloat2D) -> onp.Array2D[np.float64]: ...
+def _ensure_in_unit_hypercube(sample: onp.ToJustFloat2D) -> onp.Array2D[np.float64]: ...
 
 #
 @overload

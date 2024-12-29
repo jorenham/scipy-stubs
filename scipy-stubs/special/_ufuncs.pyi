@@ -326,10 +326,10 @@ _CoFloat64ND: TypeAlias = onp.ArrayND[_CoFloat64]
 _CoComplex128ND: TypeAlias = onp.ArrayND[_CoComplex128]
 
 _SubFloat: TypeAlias = _Float16 | _CoInt  # anything "below" float32 | float64 that isn't float32 | float64
-_ToSubFloat: TypeAlias = opt.Just[float] | int | _SubFloat  # does not overlap with float32 | float64
-_ToSubFloatND: TypeAlias = _ToND[_SubFloat, opt.Just[float] | int]
+_ToSubFloat: TypeAlias = opt.JustFloat | int | _SubFloat  # does not overlap with float32 | float64
+_ToSubFloatND: TypeAlias = _ToND[_SubFloat, opt.JustFloat | int]
 
-_ToSubComplex: TypeAlias = opt.Just[complex] | _ToSubFloat  # does not overlap with complex64 | complex128
+_ToSubComplex: TypeAlias = opt.JustComplex | _ToSubFloat  # does not overlap with complex64 | complex128
 
 _CoT = TypeVar("_CoT", bound=np.generic)
 _ToT = TypeVar("_ToT")
@@ -854,11 +854,11 @@ class _UFunc11fc(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
     def types(self, /) -> list[L["f->f", "d->d", "F->F", "D->D"]]: ...
     #
     @overload
-    def __call__(self, x: opt.Just[float] | opt.JustInt, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> _Float64: ...
+    def __call__(self, x: opt.JustFloat | opt.JustInt, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> _Float64: ...
     @overload
     def __call__(self, x: _ToSubFloat, /, out: _Out1 = None, **kw: Unpack[_Kw11fc]) -> _Float: ...
     @overload
-    def __call__(self, x: opt.Just[complex], /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> _Complex128: ...
+    def __call__(self, x: opt.JustComplex, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> _Complex128: ...
     @overload
     def __call__(self, x: _ToSubComplex, /, out: _Out1 = None, **kw: Unpack[_Kw11fc]) -> _Inexact: ...
     @overload

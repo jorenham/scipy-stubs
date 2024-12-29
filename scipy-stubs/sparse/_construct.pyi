@@ -139,9 +139,9 @@ class _DataSampler(Protocol):
 
 ###
 
-#
+# NOTE: The `overload-overlap` mypy errors are false positives.
 @overload  # diagonals: <known>, dtype: None = ..., format: {"dia", None} = ...
-def diags_array(
+def diags_array(  # type: ignore[overload-overlap]
     diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
     /,
     *,
@@ -151,7 +151,7 @@ def diags_array(
     dtype: None = None,
 ) -> dia_array[_SCT]: ...
 @overload  # diagonals: <known>, dtype: None = ..., format: <otherwise>
-def diags_array(
+def diags_array(  # type: ignore[overload-overlap]
     diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
     /,
     *,
@@ -652,7 +652,7 @@ def kron(
     format: SPFormat | None = None,
 ) -> _SpArray2D[_SCT] | _SpMatrix[_SCT]: ...
 
-#
+# NOTE: The `overload-overlap` mypy errors are false positives.
 @overload  # A: spmatrix or 2d array-like, B: spmatrix or 2d array-like, format: {"csr", None} = ...
 def kronsum(A: _ToSpMatrix[_SCT1], B: _ToSpMatrix[_SCT2], format: _FmtCSR | None = None) -> csr_matrix[_SCT1 | _SCT2]: ...
 @overload  # A: spmatrix or 2d array-like, B: spmatrix or 2d array-like, format: <otherwise>
@@ -702,9 +702,9 @@ def hstack(blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: npt.D
 @overload  # sparray, format: <non-default>, dtype: <unknown>
 def hstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: npt.DTypeLike) -> _SpArrayNonOut: ...
 @overload  # spmatrix, format: <default>, dtype: None
-def hstack(blocks: Seq[spmatrix[_SCT]], format: _FmtOut | None = None, dtype: None = None) -> _SpMatrixOut[_SCT]: ...
+def hstack(blocks: Seq[spmatrix[_SCT]], format: _FmtOut | None = None, dtype: None = None) -> _SpMatrixOut[_SCT]: ...  # type: ignore[overload-overlap]
 @overload  # spmatrix, format: <non-default>, dtype: None
-def hstack(blocks: Seq[spmatrix[_SCT]], format: _FmtNonOut, dtype: None = None) -> _SpMatrixNonOut[_SCT]: ...
+def hstack(blocks: Seq[spmatrix[_SCT]], format: _FmtNonOut, dtype: None = None) -> _SpMatrixNonOut[_SCT]: ...  # type: ignore[overload-overlap]
 @overload  # spmatrix, format: <default>, dtype: <int>
 def hstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: ToDTypeBool) -> _SpMatrixOut[np.bool_]: ...
 @overload  # spmatrix, format: <non-default>, dtype: <int>
@@ -760,9 +760,9 @@ def vstack(blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: npt.D
 @overload  # sparray, format: <non-default>, dtype: <unknown>
 def vstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: npt.DTypeLike) -> _SpArrayNonOut: ...
 @overload  # spmatrix, format: <default>, dtype: None
-def vstack(blocks: Seq[spmatrix[_SCT]], format: _FmtOut | None = None, dtype: None = None) -> _SpMatrixOut[_SCT]: ...
+def vstack(blocks: Seq[spmatrix[_SCT]], format: _FmtOut | None = None, dtype: None = None) -> _SpMatrixOut[_SCT]: ...  # type: ignore[overload-overlap]
 @overload  # spmatrix, format: <non-default>, dtype: None
-def vstack(blocks: Seq[spmatrix[_SCT]], format: _FmtNonOut, dtype: None = None) -> _SpMatrixNonOut[_SCT]: ...
+def vstack(blocks: Seq[spmatrix[_SCT]], format: _FmtNonOut, dtype: None = None) -> _SpMatrixNonOut[_SCT]: ...  # type: ignore[overload-overlap]
 @overload  # spmatrix, format: <default>, dtype: <int>
 def vstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: ToDTypeBool) -> _SpMatrixOut[np.bool_]: ...
 @overload  # spmatrix, format: <non-default>, dtype: <int>

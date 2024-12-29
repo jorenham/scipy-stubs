@@ -9,7 +9,7 @@ from ._base import _spbase, sparray
 from ._coo import coo_array, coo_matrix
 from ._matrix import spmatrix
 from ._sputils import _ScalarLike
-from ._typing import Matrix, Scalar, ShapeCOO, ToShape1d, ToShape2d
+from ._typing import Scalar, ShapeCOO, ToShape1d, ToShape2d
 
 __all__: list[str] = []
 
@@ -250,7 +250,7 @@ class _minmax_mixin(Generic[_SCT_co, _ShapeT_co]):
     @overload  # sparray, axis: int, out: None = ...
     def argmax(self: sparray, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> onp.Array1D[np.intp]: ...  # type: ignore[misc]
     @overload  # spmatrix, axis: int, out: None = ...
-    def argmax(self: spmatrix, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> Matrix[np.intp]: ...  # type: ignore[misc]
+    def argmax(self: spmatrix, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> onp.Matrix[np.intp]: ...  # type: ignore[misc]
 
     #
     @overload  # axis: None = ..., out: None = ...
@@ -267,4 +267,4 @@ class _minmax_mixin(Generic[_SCT_co, _ShapeT_co]):
     @overload  # sparray, axis: int, out: None = ...
     def argmin(self: sparray, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> onp.Array1D[np.intp]: ...  # type: ignore[misc]
     @overload  # spmatrix, axis: int, out: None = ...
-    def argmin(self: spmatrix, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> Matrix[np.intp]: ...  # type: ignore[misc]
+    def argmin(self: spmatrix, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> onp.Matrix[np.intp]: ...  # type: ignore[misc]

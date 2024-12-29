@@ -52,7 +52,7 @@ assert_type(sp.cbrt(_f4), np.float32)
 assert_type(sp.cbrt(_f4_nd), _Float32ND)
 assert_type(sp.cbrt(_f8), np.float64)
 assert_type(sp.cbrt(_f8_nd), _Float64ND)
-sp.cbrt(_c16)  # type:ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
+sp.cbrt(_c16)  # type:ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
 sp.cbrt(_c16_nd)  # type:ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
 assert_type(sp.cbrt(False), np.float64)
 assert_type(sp.cbrt([False]), _Float64ND)
@@ -60,7 +60,7 @@ assert_type(sp.cbrt(0), np.float64)
 assert_type(sp.cbrt([0]), _Float64ND)
 assert_type(sp.cbrt(0.0), np.float64)
 assert_type(sp.cbrt([0.0]), _Float64ND)
-sp.cbrt(0j)  # type:ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
+sp.cbrt(0j)  # type:ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
 sp.cbrt([0j])  # type:ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
 assert_type(sp.cbrt.at(_b1_nd, _i), None)
 assert_type(sp.cbrt.at(_f8_nd, _i), None)
@@ -74,7 +74,7 @@ assert_type(sp.logit(_f4), np.float32)
 assert_type(sp.logit(_f4_nd), _Float32ND)
 assert_type(sp.logit(_f8), np.float64)
 assert_type(sp.logit(_f8_nd), _Float64ND)
-sp.logit(_c16)  # type:ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
+sp.logit(_c16)  # type:ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
 sp.logit(_c16_nd)  # type:ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
 assert_type(sp.logit(0), np.float64)
 assert_type(sp.logit([0]), _Float64ND)

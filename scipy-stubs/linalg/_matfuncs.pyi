@@ -3,7 +3,6 @@ from typing import Any, Literal, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
-import optype.typing as opt
 from ._expm_frechet import expm_cond, expm_frechet
 from ._matfuncs_sqrtm import sqrtm
 
@@ -52,7 +51,7 @@ def fractional_matrix_power(A: onp.ToFloat2D, t: onp.ToInt) -> _Real2D: ...
 @overload  # complex, int
 def fractional_matrix_power(A: onp.ToComplex2D, t: onp.ToInt) -> _Numeric2D: ...
 @overload  # complex, float
-def fractional_matrix_power(A: onp.ToComplex2D, t: opt.Just[float] | np.floating[Any]) -> _Complex2D: ...
+def fractional_matrix_power(A: onp.ToComplex2D, t: onp.ToJustFloat) -> _Complex2D: ...
 
 # NOTE: return dtype depends on the sign of the values
 @overload  # disp: True = ...

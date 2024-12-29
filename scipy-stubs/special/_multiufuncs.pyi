@@ -22,7 +22,7 @@ _RT = TypeVar("_RT")
 _UFuncT_co = TypeVar("_UFuncT_co", bound=Callable[..., object], default=Callable[..., Any], covariant=True)
 
 _Complex: TypeAlias = np.complex64 | np.complex128  # `clongdouble` isn't supported
-_ToJustComplex: TypeAlias = opt.Just[complex] | _Complex
+_ToJustComplex: TypeAlias = opt.JustComplex | _Complex
 _ToJustComplexND: TypeAlias = onp.CanArrayND[_Complex] | onp.SequenceND[onp.CanArrayND[_Complex]] | onp.SequenceND[_ToJustComplex]
 _ToJustComplex_D: TypeAlias = _ToJustComplex | _ToJustComplexND
 

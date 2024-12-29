@@ -10,10 +10,11 @@ from scipy.sparse._typing import Float, Int
 _Real: TypeAlias = Int | Float
 _RealT = TypeVar("_RealT", bound=_Real, default=_Real)
 
-_MaskedArray2D: TypeAlias = np.ma.MaskedArray[tuple[int, int], np.dtype[_RealT]]
 _SparseGraph: TypeAlias = (
-    csr_array[_RealT] | csr_matrix[_RealT] | csc_array[_RealT] | csc_matrix[_RealT] | lil_array[_RealT] | lil_matrix[_RealT]
-)
+    csr_array[_RealT] | csr_matrix[_RealT]
+    | csc_array[_RealT] | csc_matrix[_RealT]
+    | lil_array[_RealT] | lil_matrix[_RealT]
+)  # fmt: skip
 
 _ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
 
@@ -22,7 +23,7 @@ _ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
 DTYPE: Final[type[np.float64]] = ...
 ITYPE: Final[type[np.int32]] = ...
 
-def csgraph_from_masked(graph: _MaskedArray2D) -> csr_array[np.float64 | np.int32]: ...
+def csgraph_from_masked(graph: onp.MArray2D[_Real]) -> csr_array[np.float64 | np.int32]: ...
 
 #
 def csgraph_masked_from_dense(
@@ -31,7 +32,7 @@ def csgraph_masked_from_dense(
     nan_null: bool = True,
     infinity_null: bool = True,
     copy: bool = True,
-) -> _MaskedArray2D[np.float64 | np.int32]: ...
+) -> onp.MArray2D[np.float64 | np.int32]: ...
 
 #
 def csgraph_from_dense(
@@ -43,7 +44,7 @@ def csgraph_from_dense(
 
 #
 def csgraph_to_dense(csgraph: _SparseGraph[_Real], null_value: float | None = 0) -> onp.Array2D[np.float64 | np.int32]: ...
-def csgraph_to_masked(csgraph: _SparseGraph[_Real]) -> _MaskedArray2D[np.float64 | np.int32]: ...
+def csgraph_to_masked(csgraph: _SparseGraph[_Real]) -> onp.MArray2D[np.float64 | np.int32]: ...
 
 #
 def reconstruct_path(
