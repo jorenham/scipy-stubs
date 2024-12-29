@@ -85,9 +85,9 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     def __init__(
         self: _dia_base[np.float64],
         /,
-        arg1: _ToMatrixPy[opt.Just[float]],
+        arg1: _ToMatrixPy[opt.JustFloat],
         shape: ToShape2d | None = None,
-        dtype: type[opt.Just[float]] | onp.AnyFloat64DType | None = None,
+        dtype: type[opt.JustFloat] | onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -96,9 +96,9 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     def __init__(
         self: _dia_base[np.complex128],
         /,
-        arg1: _ToMatrixPy[opt.Just[complex]],
+        arg1: _ToMatrixPy[opt.JustComplex],
         shape: ToShape2d | None = None,
-        dtype: type[opt.Just[complex]] | onp.AnyComplex128DType | None = None,
+        dtype: type[opt.JustComplex] | onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,

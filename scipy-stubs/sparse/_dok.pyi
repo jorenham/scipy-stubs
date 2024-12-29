@@ -89,9 +89,9 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
     def __init__(
         self: _dok_base[np.float64],
         /,
-        arg1: _ToMatrixPy[opt.Just[float]],
+        arg1: _ToMatrixPy[opt.JustFloat],
         shape: ToShape1dNd | None = None,
-        dtype: type[opt.Just[float]] | onp.AnyFloat64DType | None = None,
+        dtype: type[opt.JustFloat] | onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -100,9 +100,9 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
     def __init__(
         self: _dok_base[np.complex128],
         /,
-        arg1: _ToMatrixPy[opt.Just[complex]],
+        arg1: _ToMatrixPy[opt.JustComplex],
         shape: ToShape1dNd | None = None,
-        dtype: type[opt.Just[complex]] | onp.AnyComplex128DType | None = None,
+        dtype: type[opt.JustComplex] | onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,

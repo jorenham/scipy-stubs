@@ -74,7 +74,7 @@ _SMomentMethod: TypeAlias = L["formula", "general", "transform", "normalize", "c
 
 _ParamValues: TypeAlias = Mapping[str, _ToFloatMaxND]
 _ToDomain: TypeAlias = tuple[onp.ToFloat | str, onp.ToFloat | str]
-_ToTol: TypeAlias = opt.Just[float] | _Null
+_ToTol: TypeAlias = opt.JustFloat | _Null
 _DrawProportions: TypeAlias = tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat, onp.ToFloat]
 _Elementwise: TypeAlias = Callable[[onp.ArrayND[np.float64]], onp.ArrayND[_FloatT]]
 

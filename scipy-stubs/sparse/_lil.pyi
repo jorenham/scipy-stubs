@@ -87,7 +87,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
     def __init__(
         self: _lil_base[np.float64],
         /,
-        arg1: _ToMatrixPy[opt.Just[float]],
+        arg1: _ToMatrixPy[opt.JustFloat],
         shape: ToShape2d | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
@@ -98,7 +98,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
     def __init__(
         self: _lil_base[np.complex128],
         /,
-        arg1: _ToMatrixPy[opt.Just[complex]],
+        arg1: _ToMatrixPy[opt.JustComplex],
         shape: ToShape2d | None = None,
         dtype: ToDTypeComplex | None = None,
         copy: bool = False,
