@@ -56,14 +56,10 @@ SPFormat: TypeAlias = Literal["bsr", "coo", "csc", "csr", "dia", "dok", "lil"]
 
 _SCT = TypeVar("_SCT", bound=np.generic)
 ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
-ToDTypeBool: TypeAlias = type[bool] | ToDType[np.bool_] | Literal["bool", "bool_", "?", "b1"]
-ToDTypeInt: TypeAlias = type[opt.JustInt] | ToDType[np.int_] | Literal["int", "int_", "n"]
-ToDTypeFloat: TypeAlias = type[opt.Just[float]] | ToDType[np.float64] | Literal["float", "float64", "double", "f8", "d"]
-ToDTypeComplex: TypeAlias = (
-    type[opt.Just[complex]]
-    | ToDType[np.complex128]
-    | Literal["complex", "complex128", "cdouble", "c16", "D"]
-)  # fmt: skip
+ToDTypeBool: TypeAlias = onp.AnyBoolDType
+ToDTypeInt: TypeAlias = type[opt.JustInt] | onp.AnyIntDType  # see https://github.com/jorenham/optype/issues/235
+ToDTypeFloat: TypeAlias = onp.AnyFloat64DType
+ToDTypeComplex: TypeAlias = onp.AnyComplex128DType
 
 ToShape1d: TypeAlias = tuple[op.CanIndex]  # ndim == 1
 ToShape2d: TypeAlias = tuple[op.CanIndex, op.CanIndex]  # ndim == 2

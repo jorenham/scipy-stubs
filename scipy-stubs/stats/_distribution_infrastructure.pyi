@@ -62,8 +62,7 @@ _ToJustIntMax2D: TypeAlias = onp.ToJustIntStrict2D | _ToJustIntMax1D
 _ToJustIntMax3D: TypeAlias = onp.ToJustIntStrict3D | _ToJustIntMax2D
 _ToJustIntMaxND: TypeAlias = onp.ToJustIntND | onp.ToJustInt
 
-_JustFloat: TypeAlias = opt.Just[float] | _Float
-_Null: TypeAlias = opt.Just[object]
+_Null: TypeAlias = opt.Just[object]  # type of `_null`
 _Axes: TypeAlias = object  # placeholder for `matplotlib.axes.Axes`
 
 _DomainRegion: TypeAlias = L["domain", "typical"]
@@ -274,7 +273,9 @@ class ContinuousDistribution(_BaseDistribution[_FloatT_co, _ShapeT_co], Generic[
     def __sub__(self, lshift: onp.ToFloat, /) -> _LinDist[Self, _Float, _ShapeT_co]: ...
     @overload
     def __sub__(
-        self: _DistT0, lshift: onp.CanArrayND[_FloatT, _ShapeT], /
+        self: _DistT0,
+        lshift: onp.CanArrayND[_FloatT, _ShapeT],
+        /,
     ) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT]: ...
     @overload
     def __sub__(self: _DistT_1, lshift: onp.ToFloatStrict1D, /) -> _LinDist[_DistT_1, _Float, _1D]: ...
@@ -295,7 +296,9 @@ class ContinuousDistribution(_BaseDistribution[_FloatT_co, _ShapeT_co], Generic[
     def __mul__(self, scale: onp.ToFloat, /) -> _LinDist[Self, _Float, _ShapeT_co]: ...
     @overload
     def __mul__(
-        self: _DistT0, scale: onp.CanArrayND[_FloatT, _ShapeT], /
+        self: _DistT0,
+        scale: onp.CanArrayND[_FloatT, _ShapeT],
+        /,
     ) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT]: ...
     @overload
     def __mul__(self: _DistT_1, scale: onp.ToFloatStrict1D, /) -> _LinDist[_DistT_1, _Float, _1D]: ...
@@ -316,7 +319,9 @@ class ContinuousDistribution(_BaseDistribution[_FloatT_co, _ShapeT_co], Generic[
     def __truediv__(self, iscale: onp.ToFloat, /) -> _LinDist[Self, _Float, _ShapeT_co]: ...
     @overload
     def __truediv__(
-        self: _DistT0, iscale: onp.CanArrayND[_FloatT, _ShapeT], /
+        self: _DistT0,
+        iscale: onp.CanArrayND[_FloatT, _ShapeT],
+        /,
     ) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT]: ...
     @overload
     def __truediv__(self: _DistT_1, iscale: onp.ToFloatStrict1D, /) -> _LinDist[_DistT_1, _Float, _1D]: ...
@@ -339,7 +344,7 @@ class ContinuousDistribution(_BaseDistribution[_FloatT_co, _ShapeT_co], Generic[
         x: _PlotQuantity = "x",
         y: _PlotQuantity = "pdf",
         *,
-        t: tuple[_PlotQuantity, _JustFloat, _JustFloat] = ("cdf", 0.0005, 0.9995),
+        t: tuple[_PlotQuantity, onp.ToJustFloat, onp.ToJustFloat] = ("cdf", 0.0005, 0.9995),
         ax: _AxesT | None = None,
     ) -> _AxesT: ...
 
