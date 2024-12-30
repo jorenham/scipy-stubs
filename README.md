@@ -188,15 +188,8 @@ But if you find that this isn't the case, then don't hesitate to open an issue o
 The entire public API of `scipy` is **fully annotated** and **verifiably valid**.
 For the most part, this can also be said about `scipy`'s private API and other internal machinery.
 
-### `Untyped`
-
-A small portion of the stubs uses the `Untyped` type (an alias of `Any`) as a "placeholder" or "to-do" annotation.
-In those cases static type-checkers won't do any type-checking, and won't bother you with errors or warnings, so you probably
-won't even notice it.
-The current goal of `scipy-stubs` is to replace all `Untyped` annotations with more meaningful ones.
-
-At the moment, out of the 21 `scipy.*` subpackages, the only one that still has (some) `Untyped` annotations, is `scipy.signal`.
-See [scipy-stubs#99](https://github.com/jorenham/scipy-stubs/issues/99) for an overview.
+Note that this does not mean that all annotations are optimal, and some might even be incorrect. If you encounter this, it would
+help a lot if you could open an issue or a PR for it.
 
 ## Contributing
 
