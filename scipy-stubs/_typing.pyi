@@ -1,7 +1,7 @@
 # NOTE: This private(!) module only exists in `if typing.TYPE_CHECKING: ...` and in `.pyi` stubs
 
 from os import PathLike
-from collections.abc import Callable, Sequence
+from collections.abc import Sequence
 from types import TracebackType
 from typing import IO, Any, Literal, Protocol, TypeAlias, type_check_only
 from typing_extensions import LiteralString, Self, TypeVar
@@ -28,12 +28,6 @@ __all__ = [
     "OrderCF",
     "OrderKACF",
     "ToRNG",
-    "Untyped",
-    "UntypedArray",
-    "UntypedCallable",
-    "UntypedDict",
-    "UntypedList",
-    "UntypedTuple",
     "_FortranFunction",
 ]
 
@@ -62,14 +56,6 @@ class _FortranFunction(Protocol):
     @property
     def typecode(self, /) -> LiteralString: ...
     def __call__(self, /, *args: object, **kwargs: object) -> object: ...
-
-# placeholders for missing annotations
-Untyped: TypeAlias = Any
-UntypedTuple: TypeAlias = tuple[Untyped, ...]
-UntypedList: TypeAlias = list[Untyped]
-UntypedDict: TypeAlias = dict[Untyped, Untyped]
-UntypedCallable: TypeAlias = Callable[..., Untyped]
-UntypedArray: TypeAlias = onp.Array[Any, np.generic]
 
 # I/O
 _ByteSOrStr = TypeVar("_ByteSOrStr", bytes, str)
