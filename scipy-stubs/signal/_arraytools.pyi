@@ -1,10 +1,14 @@
-from typing import TypeVar
+from typing import Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
 
 _SCT = TypeVar("_SCT", bound=np.generic)
+
+_Truthy: TypeAlias = Literal[True, 1]
+
+###
 
 def axis_slice(
     a: onp.ArrayND[_SCT],
@@ -14,7 +18,15 @@ def axis_slice(
     axis: op.CanIndex = -1,
 ) -> onp.ArrayND[_SCT]: ...
 def axis_reverse(a: onp.ArrayND[_SCT], axis: op.CanIndex = -1) -> onp.ArrayND[_SCT]: ...
+
+#
 def odd_ext(x: onp.ArrayND[_SCT], n: onp.ToInt, axis: op.CanIndex = -1) -> onp.ArrayND[_SCT]: ...
 def even_ext(x: onp.ArrayND[_SCT], n: onp.ToInt, axis: op.CanIndex = -1) -> onp.ArrayND[_SCT]: ...
 def const_ext(x: onp.ArrayND[_SCT], n: onp.ToInt, axis: op.CanIndex = -1) -> onp.ArrayND[_SCT]: ...
 def zero_ext(x: onp.ArrayND[_SCT], n: onp.ToInt, axis: op.CanIndex = -1) -> onp.ArrayND[_SCT]: ...
+
+#
+@overload
+def _validate_fs(fs: None, allow_none: _Truthy = True) -> None: ...
+@overload
+def _validate_fs(fs: onp.ToFloat, allow_none: onp.ToBool = True) -> float: ...
