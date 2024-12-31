@@ -11,7 +11,7 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 import optype.typing as opt
-from scipy._typing import Casting, OrderCF
+from scipy._typing import Casting, Falsy, OrderCF
 from ._bsr import bsr_array, bsr_matrix
 from ._coo import coo_array, coo_matrix
 from ._csc import csc_array, csc_matrix
@@ -263,7 +263,7 @@ class _spbase(Generic[_SCT_co, _ShapeT_co]):
 
     # NOTE: only `lil_{array,matrix}` supports non-zero scalar addition (but not subtraction), but upcasts bool + 0 to int_
     @overload  # `0` or sparse of same dtype
-    def __add__(self, other: Literal[False, 0] | _spbase[_SCT_co], /) -> Self: ...
+    def __add__(self, other: Falsy | _spbase[_SCT_co], /) -> Self: ...
     @overload  # sparse[-Int], sparse[+Int8]
     def __add__(self: _SpFromIntT, other: _spbase[_ToInt8], /) -> _SpFromIntT: ...
     @overload  # sparse[-Float], sparse[+Float32]

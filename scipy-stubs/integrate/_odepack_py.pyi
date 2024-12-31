@@ -3,6 +3,7 @@ from typing_extensions import TypeVar, TypeVarTuple, Unpack
 
 import numpy as np
 import optype.numpy as onp
+from scipy._typing import Falsy, Truthy
 from ._typing import ODEInfoDict
 
 __all__ = ["ODEintWarning", "odeint"]
@@ -31,7 +32,7 @@ def odeint(
     args: tuple[()] = (),
     Dfun: _ODEFunc[_YT] | None = None,
     col_deriv: Literal[0, 1] | bool = 0,
-    full_output: Literal[False, 0] = 0,
+    full_output: Falsy = 0,
     ml: int | None = None,
     mu: int | None = None,
     rtol: float | None = None,
@@ -46,7 +47,7 @@ def odeint(
     mxordn: int = 12,
     mxords: int = 5,
     printmessg: Literal[0, 1] | bool = 0,
-    tfirst: Literal[False, 0] = False,
+    tfirst: Falsy = False,
 ) -> onp.Array2D[np.floating[Any]]: ...
 @overload
 def odeint(
@@ -56,7 +57,7 @@ def odeint(
     args: tuple[()] = (),
     Dfun: _ODEFunc[_YT] | None = None,
     col_deriv: Literal[0, 1] | bool = 0,
-    full_output: Literal[False, 0] = 0,
+    full_output: Falsy = 0,
     ml: int | None = None,
     mu: int | None = None,
     rtol: float | None = None,
@@ -72,7 +73,7 @@ def odeint(
     mxords: int = 5,
     printmessg: Literal[0, 1] | bool = 0,
     *,
-    tfirst: Literal[True, 1],
+    tfirst: Truthy,
 ) -> onp.Array2D[np.floating[Any]]: ...
 @overload
 def odeint(
@@ -83,7 +84,7 @@ def odeint(
     Dfun: _ODEFunc[_YT] | None = None,
     col_deriv: Literal[0, 1] | bool = 0,
     *,
-    full_output: Literal[True, 1],
+    full_output: Truthy,
     ml: int | None = None,
     mu: int | None = None,
     rtol: float | None = None,
@@ -98,7 +99,7 @@ def odeint(
     mxordn: int = 12,
     mxords: int = 5,
     printmessg: Literal[0, 1] | bool = 0,
-    tfirst: Literal[False, 0] = False,
+    tfirst: Falsy = False,
 ) -> tuple[onp.Array2D[np.floating[Any]], ODEInfoDict]: ...
 @overload
 def odeint(
@@ -109,7 +110,7 @@ def odeint(
     Dfun: _ODEFunc[_YT] | None = None,
     col_deriv: Literal[0, 1] | bool = 0,
     *,
-    full_output: Literal[True, 1],
+    full_output: Truthy,
     ml: int | None = None,
     mu: int | None = None,
     rtol: float | None = None,
@@ -124,7 +125,7 @@ def odeint(
     mxordn: int = 12,
     mxords: int = 5,
     printmessg: Literal[0, 1] | bool = 0,
-    tfirst: Literal[True, 1],
+    tfirst: Truthy,
 ) -> tuple[onp.Array2D[np.floating[Any]], ODEInfoDict]: ...
 
 # specified args
@@ -136,7 +137,7 @@ def odeint(
     args: tuple[Unpack[_Ts]] = ...,
     Dfun: _ODEFunc[_YT, Unpack[_Ts]] | None = None,
     col_deriv: Literal[0, 1] | bool = 0,
-    full_output: Literal[False, 0] = 0,
+    full_output: Falsy = 0,
     ml: int | None = None,
     mu: int | None = None,
     rtol: float | None = None,
@@ -151,7 +152,7 @@ def odeint(
     mxordn: int = 12,
     mxords: int = 5,
     printmessg: Literal[0, 1] | bool = 0,
-    tfirst: Literal[False, 0] = False,
+    tfirst: Falsy = False,
 ) -> onp.Array2D[np.floating[Any]]: ...
 @overload
 def odeint(
@@ -161,7 +162,7 @@ def odeint(
     args: tuple[Unpack[_Ts]] = ...,
     Dfun: _ODEFuncInv[_YT, Unpack[_Ts]] | None = None,
     col_deriv: Literal[0, 1] | bool = 0,
-    full_output: Literal[False, 0] = 0,
+    full_output: Falsy = 0,
     ml: int | None = None,
     mu: int | None = None,
     rtol: float | None = None,
@@ -177,7 +178,7 @@ def odeint(
     mxords: int = 5,
     printmessg: Literal[0, 1] | bool = 0,
     *,
-    tfirst: Literal[True, 1],
+    tfirst: Truthy,
 ) -> onp.Array2D[np.floating[Any]]: ...
 @overload
 def odeint(
@@ -188,7 +189,7 @@ def odeint(
     Dfun: _ODEFunc[_YT, Unpack[_Ts]] | None = None,
     col_deriv: Literal[0, 1] | bool = 0,
     *,
-    full_output: Literal[True, 1],
+    full_output: Truthy,
     ml: int | None = None,
     mu: int | None = None,
     rtol: float | None = None,
@@ -203,7 +204,7 @@ def odeint(
     mxordn: int = 12,
     mxords: int = 5,
     printmessg: Literal[0, 1] | bool = 0,
-    tfirst: Literal[False, 0] = False,
+    tfirst: Falsy = False,
 ) -> tuple[onp.Array2D[np.floating[Any]], ODEInfoDict]: ...
 @overload
 def odeint(
@@ -214,7 +215,7 @@ def odeint(
     Dfun: _ODEFuncInv[_YT, Unpack[_Ts]] | None = None,
     col_deriv: Literal[0, 1] | bool = 0,
     *,
-    full_output: Literal[True, 1],
+    full_output: Truthy,
     ml: int | None = None,
     mu: int | None = None,
     rtol: float | None = None,
@@ -229,5 +230,5 @@ def odeint(
     mxordn: int = 12,
     mxords: int = 5,
     printmessg: Literal[0, 1] | bool = 0,
-    tfirst: Literal[True, 1],
+    tfirst: Truthy,
 ) -> tuple[onp.Array2D[np.floating[Any]], ODEInfoDict]: ...

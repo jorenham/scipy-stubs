@@ -1,12 +1,12 @@
 from collections.abc import Sequence
-from typing import Any, Literal, overload
+from typing import Any, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLike, _NestedSequence
-from scipy._typing import AnyBool, NanPolicy
+from scipy._typing import AnyBool, Falsy, NanPolicy, Truthy
 
 _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
 
@@ -23,7 +23,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: Literal[0, False] = False,
+    keepdims: Falsy = False,
 ) -> np.float64: ...
 @overload
 def variation(
@@ -32,7 +32,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: Literal[0, False] = False,
+    keepdims: Falsy = False,
 ) -> np.float64: ...
 @overload
 def variation(
@@ -41,7 +41,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: Literal[1, True],
+    keepdims: Truthy,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def variation(
@@ -61,7 +61,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: Literal[0, False] = False,
+    keepdims: Falsy = False,
 ) -> _SCT_fc: ...
 @overload
 def variation(
@@ -70,7 +70,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: Literal[1, True],
+    keepdims: Truthy,
 ) -> onp.ArrayND[_SCT_fc]: ...
 @overload
 def variation(
@@ -91,7 +91,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: Literal[0, False] = False,
+    keepdims: Falsy = False,
 ) -> np.complex128 | np.float64: ...
 @overload
 def variation(
@@ -100,7 +100,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: Literal[0, False] = False,
+    keepdims: Falsy = False,
 ) -> np.complex128 | np.float64: ...
 @overload
 def variation(
@@ -109,7 +109,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: Literal[1, True],
+    keepdims: Truthy,
 ) -> onp.ArrayND[np.complex128 | np.float64]: ...
 @overload
 def variation(

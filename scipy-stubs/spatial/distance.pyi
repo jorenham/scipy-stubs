@@ -5,7 +5,7 @@ from typing_extensions import TypeVar, deprecated
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import ToRNG
+from scipy._typing import Falsy, ToRNG, Truthy
 
 __all__ = [
     "braycurtis",
@@ -262,7 +262,7 @@ def jensenshannon(
     base: onp.ToFloat | None = None,
     *,
     axis: int = 0,
-    keepdims: Literal[False] = False,
+    keepdims: Falsy = False,
 ) -> np.float32 | np.float64: ...
 @overload
 def jensenshannon(
@@ -271,7 +271,7 @@ def jensenshannon(
     base: onp.ToFloat | None = None,
     *,
     axis: int = 0,
-    keepdims: Literal[True],
+    keepdims: Truthy,
 ) -> onp.Array1D[np.float32 | np.float64]: ...
 @overload
 def jensenshannon(

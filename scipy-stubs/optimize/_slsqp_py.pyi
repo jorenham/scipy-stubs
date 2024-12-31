@@ -3,8 +3,11 @@ from typing import Concatenate, Final, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
+from scipy._typing import Falsy, Truthy
 
 __all__ = ["approx_jacobian", "fmin_slsqp"]
+
+###
 
 _FT = TypeVar("_FT", bound=onp.ToFloat | onp.ToFloatND)
 _Fun: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], ...], _FT]
@@ -54,7 +57,7 @@ def fmin_slsqp(
     acc: onp.ToFloat = 1e-06,
     iprint: onp.ToJustInt = 1,
     disp: onp.ToInt | None = None,
-    full_output: Literal[False, 0] = 0,
+    full_output: Falsy = 0,
     epsilon: onp.ToFloat = ...,  # = np.sqrt(np.finfo(float).eps)
     callback: Callable[[onp.Array1D[np.float64]], _Ignored] | None = None,
 ) -> onp.Array1D[np.float64]: ...
@@ -76,7 +79,7 @@ def fmin_slsqp(
     iprint: onp.ToJustInt = 1,
     disp: onp.ToInt | None = None,
     *,
-    full_output: Literal[True, 1],
+    full_output: Truthy,
     epsilon: onp.ToFloat = ...,  # = np.sqrt(np.finfo(float).eps)
     callback: Callable[[onp.Array1D[np.float64]], _Ignored] | None = None,
 ) -> tuple[onp.Array1D[np.float64], float | np.float64, int, _ExitMode, _ExitDesc]: ...

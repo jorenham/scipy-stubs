@@ -4,8 +4,11 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+from scipy._typing import Falsy, Truthy
 from scipy.interpolate import PPoly
 from scipy.sparse import csc_matrix
+
+###
 
 _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any], default=np.float64 | np.complex128)
 
@@ -225,7 +228,7 @@ def wrap_functions(
     bc: _FunBCR[_SCT_fc],
     fun_jac: _FunRHS_jac[_SCT_fc] | None,
     bc_jac: _FunBCR_jac[_SCT_fc] | None,
-    k: Literal[False, 0],
+    k: Falsy,
     a: onp.ToFloat,
     S: onp.Array2D[np.float64] | None,
     D: onp.Array2D[np.float64] | None,
@@ -237,7 +240,7 @@ def wrap_functions(
     bc: _FunBCR_p[_SCT_fc],
     fun_jac: _FunRHS_jac_p[_SCT_fc] | None,
     bc_jac: _FunBCR_jac_p[_SCT_fc] | None,
-    k: Literal[True, 1],
+    k: Truthy,
     a: onp.ToFloat,
     S: onp.Array2D[np.float64] | None,
     D: onp.Array2D[np.float64] | None,

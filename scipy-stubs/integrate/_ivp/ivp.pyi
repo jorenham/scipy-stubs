@@ -5,6 +5,7 @@ from typing_extensions import TypedDict, TypeVar, Unpack
 import numpy as np
 import optype.numpy as onp
 from scipy._lib._util import _RichResult
+from scipy._typing import Falsy, Truthy
 from scipy.sparse import sparray, spmatrix
 from .base import DenseOutput, OdeSolver
 from .common import OdeSolution
@@ -78,7 +79,7 @@ def solve_ivp(
     t_eval: onp.ToFloat1D | None = None,
     dense_output: bool = False,
     events: _Events[_SCT_cf] | None = None,
-    vectorized: Literal[False, 0] = False,
+    vectorized: Falsy = False,
     args: tuple[object, ...] | None = None,
     **options: Unpack[_SolverOptions],
 ) -> OdeResult[_SCT_cf]: ...
@@ -92,7 +93,7 @@ def solve_ivp(
     dense_output: bool = False,
     events: _Events[_SCT_cf] | None = None,
     *,
-    vectorized: Literal[True, 1],
+    vectorized: Truthy,
     args: tuple[object, ...] | None = None,
     **options: Unpack[_SolverOptions],
 ) -> OdeResult[_SCT_cf]: ...

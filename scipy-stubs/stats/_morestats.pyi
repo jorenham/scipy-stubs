@@ -322,7 +322,7 @@ def probplot(
     x: onp.ToFloat | onp.ToFloatND,
     sparams: tuple[()] = (),
     dist: _RVC0 | _CanPPF = "norm",
-    fit: Literal[True] = True,
+    fit: Truthy = True,
     plot: _CanPlotText | ModuleType | None = None,
     rvalue: AnyBool = False,
 ) -> tuple[_Tuple2[onp.ArrayND[np.float64]], _Tuple3[np.float64]]: ...
@@ -332,7 +332,7 @@ def probplot(
     sparams: tuple[()] = (),
     dist: _RVC0 | _CanPPF = "norm",
     *,
-    fit: Literal[False],
+    fit: Falsy,
     plot: _CanPlotText | ModuleType | None = None,
     rvalue: AnyBool = False,
 ) -> _Tuple2[onp.ArrayND[np.float64]]: ...
@@ -341,7 +341,7 @@ def probplot(
     x: onp.ToFloat | onp.ToFloatND,
     sparams: tuple[onp.ToFloat, ...],
     dist: str | _CanPPF = "norm",
-    fit: Literal[True] = True,
+    fit: Truthy = True,
     plot: _CanPlotText | ModuleType | None = None,
     rvalue: AnyBool = False,
 ) -> tuple[_Tuple2[onp.ArrayND[np.float64]], _Tuple3[np.float64]]: ...
@@ -351,7 +351,7 @@ def probplot(
     sparams: tuple[onp.ToFloat],
     dist: str | _CanPPF = "norm",
     *,
-    fit: Literal[False],
+    fit: Falsy,
     plot: _CanPlotText | ModuleType | None = None,
     rvalue: AnyBool = False,
 ) -> _Tuple2[onp.ArrayND[np.float64]]: ...

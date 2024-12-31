@@ -3,6 +3,7 @@ from typing import Concatenate, Literal, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
+from scipy._typing import Falsy, Truthy
 from scipy.sparse import csr_matrix, sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
@@ -34,7 +35,7 @@ def approx_derivative(
     f0: _ToFloatOr1D | None = None,
     bounds: tuple[_ToFloatOr1D, _ToFloatOr1D] = ...,
     sparsity: None = None,
-    as_linear_operator: Literal[False, 0] = False,
+    as_linear_operator: Falsy = False,
     args: tuple[object, ...] = (),
     kwargs: Mapping[str, object] | None = None,
 ) -> _Float1D | onp.Array2D[np.float64]: ...
@@ -49,7 +50,7 @@ def approx_derivative(
     bounds: tuple[_ToFloatOr1D, _ToFloatOr1D] = ...,
     *,
     sparsity: _Sparsity,
-    as_linear_operator: Literal[False, 0] = False,
+    as_linear_operator: Falsy = False,
     args: tuple[object, ...] = (),
     kwargs: Mapping[str, object] | None = None,
 ) -> csr_matrix: ...
@@ -64,7 +65,7 @@ def approx_derivative(
     bounds: tuple[_ToFloatOr1D, _ToFloatOr1D] = ...,
     sparsity: _Sparsity | None = None,
     *,
-    as_linear_operator: Literal[True, 1],
+    as_linear_operator: Truthy,
     args: tuple[object, ...] = (),
     kwargs: Mapping[str, object] | None = None,
 ) -> LinearOperator: ...
