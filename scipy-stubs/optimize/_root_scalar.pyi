@@ -4,13 +4,11 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+from scipy._typing import Falsy, Truthy
 from ._typing import MethodRootScalar
 from ._zeros_py import RootResults
 
 __all__ = ["root_scalar"]
-
-_Falsy: TypeAlias = Literal[False, 0]
-_Truthy: TypeAlias = Literal[True, 1]
 
 _ToFloat2: TypeAlias = tuple[onp.ToFloat, onp.ToFloat]
 _ToFloat3: TypeAlias = tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat]
@@ -45,8 +43,8 @@ def root_scalar(
     args: tuple[object, ...],
     method: Literal["bisect", "brentq", "brenth", "ridder", "toms748"] | None,
     bracket: tuple[onp.ToFloat, onp.ToFloat],
-    fprime: _Falsy | None = None,
-    fprime2: _Falsy | None = None,
+    fprime: Falsy | None = None,
+    fprime2: Falsy | None = None,
     x0: None = None,
     x1: None = None,
     xtol: onp.ToFloat | None = None,
@@ -61,8 +59,8 @@ def root_scalar(
     method: Literal["bisect", "brentq", "brenth", "ridder", "toms748"] | None = None,
     *,
     bracket: tuple[onp.ToFloat, onp.ToFloat],
-    fprime: _Falsy | None = None,
-    fprime2: _Falsy | None = None,
+    fprime: Falsy | None = None,
+    fprime2: Falsy | None = None,
     x0: None = None,
     x1: None = None,
     xtol: onp.ToFloat | None = None,
@@ -76,8 +74,8 @@ def root_scalar(
     args: tuple[object, ...] = (),
     method: Literal["secant"] | None = None,
     bracket: None = None,
-    fprime: _Falsy | None = None,
-    fprime2: _Falsy | None = None,
+    fprime: Falsy | None = None,
+    fprime2: Falsy | None = None,
     *,
     x0: onp.ToFloat,
     x1: onp.ToFloat | None = None,
@@ -92,8 +90,8 @@ def root_scalar(
     args: tuple[object, ...] = (),
     method: Literal["newton"] | None = None,
     bracket: None = None,
-    fprime: _Fun1 | _Falsy | None = None,
-    fprime2: _Falsy | None = None,
+    fprime: _Fun1 | Falsy | None = None,
+    fprime2: Falsy | None = None,
     *,
     x0: onp.ToFloat,
     x1: None = None,
@@ -109,8 +107,8 @@ def root_scalar(
     method: Literal["newton"] | None = None,
     bracket: None = None,
     *,
-    fprime: _Truthy,
-    fprime2: _Falsy | None = None,
+    fprime: Truthy,
+    fprime2: Falsy | None = None,
     x0: onp.ToFloat,
     x1: None = None,
     xtol: onp.ToFloat | None = None,
@@ -141,7 +139,7 @@ def root_scalar(
     method: Literal["halley"] | None = None,
     bracket: None = None,
     *,
-    fprime: _Truthy,
+    fprime: Truthy,
     fprime2: _Fun1,
     x0: onp.ToFloat,
     x1: None = None,
@@ -157,8 +155,8 @@ def root_scalar(
     method: Literal["halley"] | None = None,
     bracket: None = None,
     *,
-    fprime: _Truthy,
-    fprime2: _Truthy,
+    fprime: Truthy,
+    fprime2: Truthy,
     x0: onp.ToFloat,
     x1: None = None,
     xtol: onp.ToFloat | None = None,

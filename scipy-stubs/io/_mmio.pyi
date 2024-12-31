@@ -3,14 +3,11 @@ from typing_extensions import Unpack
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import FileLike
+from scipy._typing import Falsy, FileLike, Truthy
 from scipy.sparse import coo_matrix, sparray, spmatrix
 from scipy.sparse._coo import coo_array
 
 __all__ = ["MMFile", "mminfo", "mmread", "mmwrite"]
-
-_Falsy: TypeAlias = Literal[False, 0]
-_Truthy: TypeAlias = Literal[True, 1]
 
 _Format: TypeAlias = Literal["coordinate", "array"]
 _Field: TypeAlias = Literal["real", "complex", "pattern", "integer"]
@@ -68,9 +65,9 @@ class MMFile:
 
     #
     @overload
-    def read(self, /, source: FileLike[bytes], *, spmatrix: _Truthy = True) -> onp.ArrayND[np.number[Any]] | coo_array: ...
+    def read(self, /, source: FileLike[bytes], *, spmatrix: Truthy = True) -> onp.ArrayND[np.number[Any]] | coo_array: ...
     @overload
-    def read(self, /, source: FileLike[bytes], *, spmatrix: _Falsy) -> onp.ArrayND[np.number[Any]] | coo_matrix: ...
+    def read(self, /, source: FileLike[bytes], *, spmatrix: Falsy) -> onp.ArrayND[np.number[Any]] | coo_matrix: ...
 
     #
     def write(
@@ -97,9 +94,9 @@ def asstr(s: object) -> str: ...
 
 #
 @overload
-def mmread(source: FileLike[bytes], *, spmatrix: _Truthy = True) -> onp.ArrayND[np.number[Any]] | coo_array: ...
+def mmread(source: FileLike[bytes], *, spmatrix: Truthy = True) -> onp.ArrayND[np.number[Any]] | coo_array: ...
 @overload
-def mmread(source: FileLike[bytes], *, spmatrix: _Falsy) -> onp.ArrayND[np.number[Any]] | coo_matrix: ...
+def mmread(source: FileLike[bytes], *, spmatrix: Falsy) -> onp.ArrayND[np.number[Any]] | coo_matrix: ...
 
 #
 def mmwrite(

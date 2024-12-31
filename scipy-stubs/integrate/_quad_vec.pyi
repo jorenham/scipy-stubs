@@ -6,6 +6,7 @@ from typing_extensions import Never, TypeVar, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+from scipy._typing import Falsy, Truthy
 
 _S = TypeVar("_S")
 _T = TypeVar("_T")
@@ -17,9 +18,6 @@ _Floating: TypeAlias = float | np.floating[Any]
 _FloatingND: TypeAlias = onp.ArrayND[np.floating[Any]] | _Floating
 
 _Fun: TypeAlias = Callable[Concatenate[float, ...], _T] | Callable[Concatenate[np.float64, ...], _T]
-
-_Falsy: TypeAlias = Literal[False, 0] | None
-_Truthy: TypeAlias = Literal[True, 1]
 
 _Norm: TypeAlias = Literal["max", "2"]
 _Quadrature: TypeAlias = Literal["gk21", "gk15", "trapezoid"]
@@ -89,7 +87,7 @@ def quad_vec(  # scalar function, full_output=False (default)
     workers: onp.ToJustInt | _DoesMap = 1,
     points: onp.ToFloat1D | None = None,
     quadrature: _Quadrature | None = None,
-    full_output: _Falsy = False,
+    full_output: Falsy = False,
     *,
     args: tuple[object, ...] = (),
 ) -> tuple[_Floating, float]: ...
@@ -107,7 +105,7 @@ def quad_vec(
     points: onp.ToFloat1D | None = None,
     quadrature: _Quadrature | None = None,
     *,
-    full_output: _Truthy,
+    full_output: Truthy,
     args: tuple[object, ...] = (),
 ) -> tuple[np.floating[Any], float, _Bunch[np.floating[Any]]]: ...
 @overload  # vector function, full_output=False (default)
@@ -124,7 +122,7 @@ def quad_vec(
     points: onp.ToFloat1D | None = None,
     quadrature: _Quadrature | None = None,
     *,
-    full_output: _Falsy,
+    full_output: Falsy,
     args: tuple[object, ...] = (),
 ) -> tuple[onp.Array1D[np.floating[Any]], float]: ...
 @overload  # vector function, full_output=True
@@ -141,6 +139,6 @@ def quad_vec(
     points: onp.ToFloat1D | None = None,
     quadrature: _Quadrature | None = None,
     *,
-    full_output: _Truthy,
+    full_output: Truthy,
     args: tuple[object, ...] = (),
 ) -> tuple[onp.Array1D[np.floating[Any]], float, _Bunch[np.floating[Any]]]: ...

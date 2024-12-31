@@ -1,18 +1,16 @@
 from collections.abc import Iterable
-from typing import Any, Literal, TypeAlias, TypeVar, overload
+from typing import Any, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
 import optype.typing as opt
+from scipy._typing import Falsy, Truthy
 
 __all__ = ["cossin"]
 
 _T = TypeVar("_T")
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
-
-_Falsy: TypeAlias = Literal[False, 0]
-_Truthy: TypeAlias = Literal[True, 1]
 
 _Float1D: TypeAlias = onp.Array1D[np.floating[Any]]
 _Float2D: TypeAlias = onp.Array2D[np.floating[Any]]
@@ -23,7 +21,7 @@ def cossin(
     X: onp.ToFloat2D | Iterable[onp.ToFloat2D],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
-    separate: _Falsy = False,
+    separate: Falsy = False,
     swap_sign: onp.ToBool = False,
     compute_u: onp.ToBool = True,
     compute_vh: onp.ToBool = True,
@@ -34,7 +32,7 @@ def cossin(
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     *,
-    separate: _Truthy,
+    separate: Truthy,
     swap_sign: onp.ToBool = False,
     compute_u: onp.ToBool = True,
     compute_vh: onp.ToBool = True,
@@ -44,7 +42,7 @@ def cossin(
     X: onp.ToComplex2D | Iterable[onp.ToComplex2D],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
-    separate: _Falsy = False,
+    separate: Falsy = False,
     swap_sign: onp.ToBool = False,
     compute_u: onp.ToBool = True,
     compute_vh: onp.ToBool = True,
@@ -55,7 +53,7 @@ def cossin(
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     *,
-    separate: _Truthy,
+    separate: Truthy,
     swap_sign: onp.ToBool = False,
     compute_u: onp.ToBool = True,
     compute_vh: onp.ToBool = True,

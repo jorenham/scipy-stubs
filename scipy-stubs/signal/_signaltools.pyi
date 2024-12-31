@@ -4,7 +4,7 @@ from typing import Any, Literal as L, TypeAlias, TypedDict, TypeVar, overload, t
 import numpy as np
 import optype as op
 import optype.numpy as onp
-from scipy._typing import ConvMode
+from scipy._typing import ConvMode, Falsy, Truthy
 from ._ltisys import dlti
 from .windows._windows import _ToWindow
 
@@ -54,9 +54,6 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _AnyShapeT = TypeVar("_AnyShapeT", tuple[int], tuple[int, int], tuple[int, int, int], tuple[int, ...])
 
 _Tuple2: TypeAlias = tuple[_T, _T]
-
-_Falsy: TypeAlias = L[False, 0]
-_Truthy: TypeAlias = L[True, 1]
 
 _ConvMethod: TypeAlias = L["direct", "fft"]
 _ToConvMethod: TypeAlias = L["auto", _ConvMethod]
@@ -115,21 +112,21 @@ def choose_conv_method(
     in1: _ToIntND,
     in2: _ToIntND,
     mode: ConvMode = "full",
-    measure: _Falsy = False,
+    measure: Falsy = False,
 ) -> L["direct"]: ...
 @overload
 def choose_conv_method(
     in1: _ToComplexND,
     in2: _ToComplexND,
     mode: ConvMode = "full",
-    measure: _Falsy = False,
+    measure: Falsy = False,
 ) -> _ConvMethod: ...
 @overload
 def choose_conv_method(
     in1: _ToComplexND,
     in2: _ToComplexND,
     mode: ConvMode,
-    measure: _Truthy,
+    measure: Truthy,
 ) -> tuple[_ConvMethod, _ConvMeasureDict]: ...
 @overload
 def choose_conv_method(
@@ -137,7 +134,7 @@ def choose_conv_method(
     in2: _ToComplexND,
     mode: ConvMode = "full",
     *,
-    measure: _Truthy,
+    measure: Truthy,
 ) -> tuple[_ConvMethod, _ConvMeasureDict]: ...
 
 #

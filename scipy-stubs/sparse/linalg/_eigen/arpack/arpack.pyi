@@ -3,15 +3,13 @@ from typing import Any, Final, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
+from scipy._typing import Falsy, Truthy
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["ArpackError", "ArpackNoConvergence", "eigs", "eigsh"]
 
 _KT = TypeVar("_KT")
-
-_Falsy: TypeAlias = Literal[False, 0]
-_Truthy: TypeAlias = Literal[True, 1]
 
 _ToRealMatrix: TypeAlias = onp.ToFloat2D | LinearOperator[np.floating[Any] | np.integer[Any]] | _spbase
 _ToComplexMatrix: TypeAlias = onp.ToComplex2D | LinearOperator | _spbase
@@ -48,7 +46,7 @@ def eigs(
     ncv: int | None = None,
     maxiter: int | None = None,
     tol: float = 0,
-    return_eigenvectors: _Truthy = True,
+    return_eigenvectors: Truthy = True,
     Minv: _ToRealMatrix | None = None,
     OPinv: _ToRealMatrix | None = None,
     OPpart: _OPpart | None = None,
@@ -64,7 +62,7 @@ def eigs(
     ncv: int | None,
     maxiter: int | None,
     tol: float,
-    return_eigenvectors: _Falsy,
+    return_eigenvectors: Falsy,
     Minv: _ToRealMatrix | None = None,
     OPinv: _ToRealMatrix | None = None,
     OPpart: _OPpart | None = None,
@@ -81,7 +79,7 @@ def eigs(
     maxiter: int | None = None,
     tol: float = 0,
     *,
-    return_eigenvectors: _Falsy,
+    return_eigenvectors: Falsy,
     Minv: _ToRealMatrix | None = None,
     OPinv: _ToRealMatrix | None = None,
     OPpart: _OPpart | None = None,
@@ -99,7 +97,7 @@ def eigsh(
     ncv: int | None = None,
     maxiter: int | None = None,
     tol: float = 0,
-    return_eigenvectors: _Truthy = True,
+    return_eigenvectors: Truthy = True,
     Minv: _ToRealMatrix | None = None,
     OPinv: _ToRealMatrix | None = None,
     mode: _Mode = "normal",
@@ -115,7 +113,7 @@ def eigsh(
     ncv: int | None,
     maxiter: int | None,
     tol: float,
-    return_eigenvectors: _Falsy,
+    return_eigenvectors: Falsy,
     Minv: _ToRealMatrix | None = None,
     OPinv: _ToRealMatrix | None = None,
     mode: _Mode = "normal",
@@ -132,7 +130,7 @@ def eigsh(
     maxiter: int | None = None,
     tol: float = 0,
     *,
-    return_eigenvectors: _Falsy,
+    return_eigenvectors: Falsy,
     Minv: _ToRealMatrix | None = None,
     OPinv: _ToRealMatrix | None = None,
     mode: _Mode = "normal",

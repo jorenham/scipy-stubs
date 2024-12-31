@@ -8,7 +8,7 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from scipy._typing import Alternative, NanPolicy, ToRNG
+from scipy._typing import Alternative, Falsy, NanPolicy, ToRNG, Truthy
 from ._resampling import BootstrapMethod, ResamplingMethod
 from ._stats_mstats_common import siegelslopes, theilslopes
 from ._typing import BaseBunch, PowerDivergenceStatistic
@@ -84,6 +84,8 @@ __all__ = [
     "zscore",
 ]
 
+###
+
 _SCT = TypeVar("_SCT", bound=np.generic, default=np.generic)
 
 _Int0D: TypeAlias = np.integer[Any]
@@ -130,9 +132,6 @@ _KS1TestMethod: TypeAlias = L[_KS2TestMethod, "approx"]
 _KS2TestMethod: TypeAlias = L["auto", "exact", "asymp"]
 _CombinePValuesMethod: TypeAlias = L["fisher", "pearson", "tippett", "stouffer", "mudholkar_george"]
 _RankMethod: TypeAlias = L["average", "min", "max", "dense", "ordinal"]
-
-_Falsy: TypeAlias = L[False, 0]
-_Truthy: TypeAlias = L[True, 1]
 
 @type_check_only
 class _RVSCallable(Protocol):
@@ -970,7 +969,7 @@ def lmoment(
     order: _LMomentOrder,
     *,
     axis: L[0, -1] | None = 0,
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",
@@ -981,7 +980,7 @@ def lmoment(
     order: _LMomentOrder,
     *,
     axis: L[0, -1] | None = 0,
-    keepdims: _Truthy,
+    keepdims: Truthy,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",
@@ -992,7 +991,7 @@ def lmoment(
     order: _LMomentOrder1D | None = None,
     *,
     axis: L[0, -1] | None = 0,
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",
@@ -1003,7 +1002,7 @@ def lmoment(
     order: _LMomentOrder1D | None = None,
     *,
     axis: L[0, -1] | None = 0,
-    keepdims: _Truthy,
+    keepdims: Truthy,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",
@@ -1014,7 +1013,7 @@ def lmoment(
     order: _LMomentOrder,
     *,
     axis: L[0, 1, -1, -2] = 0,
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",
@@ -1025,7 +1024,7 @@ def lmoment(
     order: _LMomentOrder,
     *,
     axis: L[0, 1, -1, -2] | None = 0,
-    keepdims: _Truthy,
+    keepdims: Truthy,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",
@@ -1036,7 +1035,7 @@ def lmoment(
     order: _LMomentOrder1D | None = None,
     *,
     axis: L[0, 1, -1, -2] = 0,
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",
@@ -1047,7 +1046,7 @@ def lmoment(
     order: _LMomentOrder1D | None = None,
     *,
     axis: L[0, 1, -1, -2] | None = 0,
-    keepdims: _Truthy,
+    keepdims: Truthy,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",
@@ -1058,7 +1057,7 @@ def lmoment(
     order: _LMomentOrder,
     *,
     axis: L[0, 1, 2, -1, -2, -3] = 0,
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",
@@ -1069,7 +1068,7 @@ def lmoment(
     order: _LMomentOrder,
     *,
     axis: L[0, 1, 2, -1, -2, -3] | None = 0,
-    keepdims: _Truthy,
+    keepdims: Truthy,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",
@@ -1080,7 +1079,7 @@ def lmoment(
     order: _LMomentOrder1D | None = None,
     *,
     axis: L[0, 1, 2, -1, -2, -3] = 0,
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",
@@ -1091,7 +1090,7 @@ def lmoment(
     order: _LMomentOrder1D | None = None,
     *,
     axis: L[0, 1, 2, -1, -2, -3] | None = 0,
-    keepdims: _Truthy,
+    keepdims: Truthy,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",
@@ -1102,7 +1101,7 @@ def lmoment(
     order: _LMomentOrder,
     *,
     axis: None,
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",
@@ -1113,7 +1112,7 @@ def lmoment(
     order: _LMomentOrder1D | None = None,
     *,
     axis: None,
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",
@@ -1124,7 +1123,7 @@ def lmoment(
     order: _LMomentOrder | _LMomentOrder1D | None = None,
     *,
     axis: int | None = 0,
-    keepdims: _Truthy,
+    keepdims: Truthy,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
     nan_policy: NanPolicy = "propagate",

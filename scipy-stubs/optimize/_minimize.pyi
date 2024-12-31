@@ -3,6 +3,7 @@ from typing import Any, Concatenate, Final, Literal, Protocol, TypeAlias, TypedD
 
 import numpy as np
 import optype.numpy as onp
+from scipy._typing import Falsy, Truthy
 from scipy.sparse.linalg import LinearOperator
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
@@ -10,8 +11,7 @@ from .optimize import OptimizeResult as _OptimizeResult
 
 __all__ = ["minimize", "minimize_scalar"]
 
-_Falsy: TypeAlias = Literal[False, 0]
-_Truthy: TypeAlias = Literal[True, 1]
+###
 
 _Args: TypeAlias = tuple[object, ...]
 
@@ -151,7 +151,7 @@ def minimize(
     x0: onp.ToFloat1D,
     args: _Args = (),
     method: MethodMimimize | _MinimizeMethodFun | None = None,
-    jac: _Fun1D[onp.ToFloat1D] | _FDMethod | _Falsy | None = None,
+    jac: _Fun1D[onp.ToFloat1D] | _FDMethod | Falsy | None = None,
     hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
@@ -166,7 +166,7 @@ def minimize(
     x0: onp.ToFloat1D,
     args: _Args,
     method: MethodMimimize | _MinimizeMethodFun | None,
-    jac: _Truthy,
+    jac: Truthy,
     hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
@@ -182,7 +182,7 @@ def minimize(
     args: _Args = (),
     method: _MinimizeMethodFun | MethodMimimize | None = None,
     *,
-    jac: _Truthy,
+    jac: Truthy,
     hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,

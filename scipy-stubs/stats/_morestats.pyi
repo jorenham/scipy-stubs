@@ -6,7 +6,7 @@ from typing_extensions import Self, TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
-from scipy._typing import Alternative, AnyBool, NanPolicy
+from scipy._typing import Alternative, AnyBool, Falsy, NanPolicy, Truthy
 from scipy.optimize import OptimizeResult
 from ._distn_infrastructure import rv_continuous_frozen
 from ._fit import FitResult
@@ -47,6 +47,8 @@ __all__ = [
     "yeojohnson_normplot",
 ]
 
+###
+
 _T = TypeVar("_T")
 _NDT_co = TypeVar(
     "_NDT_co",
@@ -79,9 +81,6 @@ class _CanPPF(Protocol):
 @type_check_only
 class _HasX(Protocol):
     x: float | np.floating[Any]
-
-_Falsy: TypeAlias = Literal[False, 0]
-_Truthy: TypeAlias = Literal[True, 1]
 
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
@@ -267,7 +266,7 @@ def kstat(
     *,
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
 ) -> np.float64: ...
 @overload
 def kstat(
@@ -276,7 +275,7 @@ def kstat(
     *,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Truthy,
+    keepdims: Truthy,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def kstat(
@@ -296,7 +295,7 @@ def kstatvar(
     *,
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
 ) -> np.float64: ...
 @overload
 def kstatvar(
@@ -305,7 +304,7 @@ def kstatvar(
     *,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Truthy,
+    keepdims: Truthy,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def kstatvar(
@@ -485,7 +484,7 @@ def shapiro(
     *,
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
 ) -> ShapiroResult[np.float64]: ...
 @overload
 def shapiro(
@@ -493,7 +492,7 @@ def shapiro(
     *,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Truthy,
+    keepdims: Truthy,
 ) -> ShapiroResult[onp.ArrayND[np.float64]]: ...
 @overload
 def shapiro(
@@ -513,7 +512,7 @@ def ansari(
     *,
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
 ) -> AnsariResult[np.float64]: ...
 @overload
 def ansari(
@@ -523,7 +522,7 @@ def ansari(
     *,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Truthy,
+    keepdims: Truthy,
 ) -> AnsariResult[onp.ArrayND[np.float64]]: ...
 @overload
 def ansari(
@@ -542,14 +541,14 @@ def bartlett(
     *samples: onp.ToFloatND,
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
 ) -> BartlettResult[np.float64]: ...
 @overload
 def bartlett(
     *samples: onp.ToFloatND,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Truthy,
+    keepdims: Truthy,
 ) -> BartlettResult[onp.ArrayND[np.float64]]: ...
 @overload
 def bartlett(
@@ -567,7 +566,7 @@ def levene(
     proportiontocut: onp.ToFloat = 0.05,
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
 ) -> LeveneResult[np.float64]: ...
 @overload
 def levene(
@@ -576,7 +575,7 @@ def levene(
     proportiontocut: onp.ToFloat = 0.05,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Truthy,
+    keepdims: Truthy,
 ) -> LeveneResult[onp.ArrayND[np.float64]]: ...
 @overload
 def levene(
@@ -596,7 +595,7 @@ def fligner(
     proportiontocut: onp.ToFloat = 0.05,
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
 ) -> FlignerResult[np.float64]: ...
 @overload
 def fligner(
@@ -605,7 +604,7 @@ def fligner(
     proportiontocut: onp.ToFloat = 0.05,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Truthy,
+    keepdims: Truthy,
 ) -> FlignerResult[onp.ArrayND[np.float64]]: ...
 @overload
 def fligner(
@@ -626,7 +625,7 @@ def mood(
     alternative: Alternative = "two-sided",
     *,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
 ) -> SignificanceResult[np.float64]: ...
 @overload
 def mood(
@@ -636,7 +635,7 @@ def mood(
     alternative: Alternative = "two-sided",
     *,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Truthy,
+    keepdims: Truthy,
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
 @overload
 def mood(
@@ -661,7 +660,7 @@ def wilcoxon(
     *,
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
 ) -> WilcoxonResult[np.float64]: ...
 @overload
 def wilcoxon(
@@ -674,7 +673,7 @@ def wilcoxon(
     *,
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: _Truthy,
+    keepdims: Truthy,
 ) -> WilcoxonResult[onp.ArrayND[np.float64]]: ...
 @overload
 def wilcoxon(
@@ -717,7 +716,7 @@ def circmean(
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
     *,
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
 ) -> np.float64: ...
 @overload
 def circmean(
@@ -727,7 +726,7 @@ def circmean(
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
-    keepdims: _Truthy,
+    keepdims: Truthy,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def circmean(
@@ -749,7 +748,7 @@ def circvar(
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
     *,
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
 ) -> np.float64: ...
 @overload
 def circvar(
@@ -759,7 +758,7 @@ def circvar(
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
-    keepdims: _Truthy,
+    keepdims: Truthy,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def circvar(
@@ -782,7 +781,7 @@ def circstd(
     nan_policy: NanPolicy = "propagate",
     *,
     normalize: AnyBool = False,
-    keepdims: _Falsy = False,
+    keepdims: Falsy = False,
 ) -> np.float64: ...
 @overload
 def circstd(
@@ -793,7 +792,7 @@ def circstd(
     nan_policy: NanPolicy = "propagate",
     *,
     normalize: AnyBool = False,
-    keepdims: _Truthy,
+    keepdims: Truthy,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def circstd(

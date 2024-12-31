@@ -5,11 +5,9 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
+from scipy._typing import Falsy, Truthy
 
 __all__ = ["diagsvd", "null_space", "orth", "subspace_angles", "svd", "svdvals"]
-
-_Falsy: TypeAlias = Literal[False, 0]
-_Truthy: TypeAlias = Literal[True, 1]
 
 _Float: TypeAlias = np.float32 | np.float64
 _Float1D: TypeAlias = onp.Array1D[_Float]
@@ -33,7 +31,7 @@ _InexactT = TypeVar("_InexactT", bound=_Float | _Complex)
 def svd(
     a: onp.ToFloat2D,
     full_matrices: onp.ToBool = True,
-    compute_uv: _Truthy = True,
+    compute_uv: Truthy = True,
     overwrite_a: onp.ToBool = False,
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver = "gesdd",
@@ -42,7 +40,7 @@ def svd(
 def svd(
     a: onp.ToComplex2D,
     full_matrices: onp.ToBool = True,
-    compute_uv: _Truthy = True,
+    compute_uv: Truthy = True,
     overwrite_a: onp.ToBool = False,
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver = "gesdd",
@@ -51,7 +49,7 @@ def svd(
 def svd(
     a: onp.ToComplex2D,
     full_matrices: onp.ToBool,
-    compute_uv: _Falsy,
+    compute_uv: Falsy,
     overwrite_a: onp.ToBool = False,
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver = "gesdd",
@@ -61,7 +59,7 @@ def svd(
     a: onp.ToComplex2D,
     full_matrices: onp.ToBool = True,
     *,
-    compute_uv: _Falsy,
+    compute_uv: Falsy,
     overwrite_a: onp.ToBool = False,
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver = "gesdd",

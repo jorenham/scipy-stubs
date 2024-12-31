@@ -8,7 +8,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.typing as opt
-from scipy._typing import AnyShape, Casting, EnterNoneMixin, OrderKACF
+from scipy._typing import AnyShape, Casting, EnterNoneMixin, Falsy, OrderKACF, Truthy
 
 # NOTE: The only way I was able to get `ComplexWarning` to work on both numpy<1.25 and >=1.25, and is needed until `scipy>=1.16`
 
@@ -262,6 +262,8 @@ __all__ = [
     "zetac",
 ]
 
+###
+
 _T = TypeVar("_T")
 _NameT_co = TypeVar("_NameT_co", bound=LiteralString, covariant=True)
 _IdentityT_co = TypeVar("_IdentityT_co", bound=L[0] | None, default=None, covariant=True)
@@ -277,8 +279,6 @@ _None4: TypeAlias = tuple[None, None, None, None]
 _MaybeOutT = TypeVar("_MaybeOutT", bound=onp.ArrayND[np.number[Any]] | None, default=None)
 _Out1: TypeAlias = tuple[_MaybeOutT] | _MaybeOutT
 
-_Falsy: TypeAlias = L[False, 0]
-_Truthy: TypeAlias = L[True, 1]
 _OneOrMany: TypeAlias = _T | tuple[_T, ...]
 
 # NOTE: The `TypeAliasType` helps with readability of error messages
@@ -1129,7 +1129,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         axis: None,
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
-        keepdims: _Falsy = False,
+        keepdims: Falsy = False,
         initial: _ToFloat64 = ...,
         where: _ToBool_D = True,
     ) -> _Float: ...
@@ -1141,7 +1141,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         axis: _Axis = 0,
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
-        keepdims: _Falsy = False,
+        keepdims: Falsy = False,
         initial: _ToFloat64 = ...,
         where: _ToBool_D = True,
     ) -> _Float_D: ...
@@ -1154,7 +1154,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
         *,
-        keepdims: _Truthy,
+        keepdims: Truthy,
         initial: _ToFloat64 = ...,
         where: _ToBool_D = True,
     ) -> _FloatND: ...
@@ -1289,7 +1289,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         axis: None,
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
-        keepdims: _Falsy = False,
+        keepdims: Falsy = False,
         initial: _ToFloat64 = ...,
         where: _ToBool_D = True,
     ) -> _Float: ...
@@ -1301,7 +1301,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         axis: _Axis = 0,
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
-        keepdims: _Falsy = False,
+        keepdims: Falsy = False,
         initial: _ToFloat64 = ...,
         where: _ToBool_D = True,
     ) -> _Float_D: ...
@@ -1314,7 +1314,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
         *,
-        keepdims: _Truthy,
+        keepdims: Truthy,
         initial: _ToFloat64 = ...,
         where: _ToBool_D = True,
     ) -> _FloatND: ...
@@ -1430,7 +1430,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         axis: None,
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
-        keepdims: _Falsy = False,
+        keepdims: Falsy = False,
         initial: onp.ToFloat = ...,
         where: _ToBool_D = True,
     ) -> _Float: ...
@@ -1443,7 +1443,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
         *,
-        keepdims: _Truthy,
+        keepdims: Truthy,
         initial: onp.ToFloat = ...,
         where: _ToBool_D = True,
     ) -> _FloatND: ...
@@ -1455,7 +1455,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         axis: None,
         dtype: _ToDType_fdFD | None = None,
         out: _Out1 = None,
-        keepdims: _Falsy = False,
+        keepdims: Falsy = False,
         initial: _ToComplex128 = ...,
         where: _ToBool_D = True,
     ) -> _Inexact: ...
@@ -1468,7 +1468,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         dtype: _ToDType_fdFD | None = None,
         out: _Out1 = None,
         *,
-        keepdims: _Truthy,
+        keepdims: Truthy,
         initial: _ToComplex128 = ...,
         where: _ToBool_D = True,
     ) -> _InexactND: ...
@@ -1480,7 +1480,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         axis: _Axis = 0,
         dtype: _ToDType_fdFD | None = None,
         out: _Out1 = None,
-        keepdims: _Falsy = False,
+        keepdims: Falsy = False,
         initial: _ToComplex128 = ...,
         where: _ToBool_D = True,
     ) -> _Inexact_D: ...
