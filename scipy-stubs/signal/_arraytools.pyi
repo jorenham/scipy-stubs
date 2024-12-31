@@ -1,12 +1,11 @@
-from typing import Literal, TypeAlias, TypeVar, overload
+from typing import TypeVar, overload
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+from scipy._typing import Truthy
 
 _SCT = TypeVar("_SCT", bound=np.generic)
-
-_Truthy: TypeAlias = Literal[True, 1]
 
 ###
 
@@ -27,6 +26,6 @@ def zero_ext(x: onp.ArrayND[_SCT], n: onp.ToInt, axis: op.CanIndex = -1) -> onp.
 
 #
 @overload
-def _validate_fs(fs: None, allow_none: _Truthy = True) -> None: ...
+def _validate_fs(fs: None, allow_none: Truthy = True) -> None: ...
 @overload
 def _validate_fs(fs: onp.ToFloat, allow_none: onp.ToBool = True) -> float: ...

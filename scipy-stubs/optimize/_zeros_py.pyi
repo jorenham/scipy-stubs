@@ -4,6 +4,7 @@ from typing import Any, Concatenate, Final, Generic, Literal, TypeAlias, TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
+from scipy._typing import Falsy, Truthy
 from ._optimize import OptimizeResult
 from ._typing import MethodRootScalar
 
@@ -20,9 +21,6 @@ _KT = TypeVar("_KT", bound=_FlagKey)
 _RT = TypeVar("_RT", bound=_Floating)
 _RT_co = TypeVar("_RT_co", bound=_Floating, default=_Float, covariant=True)
 _ToFloatT = TypeVar("_ToFloatT", bound=onp.ToFloat | onp.ToFloatND, default=onp.ToFloat)
-
-_Falsy: TypeAlias = Literal[False, 0]
-_Truthy: TypeAlias = Literal[True, 1]
 
 _Fun0D: TypeAlias = Callable[Concatenate[float, ...], onp.ToFloat] | Callable[Concatenate[np.float64, ...], onp.ToFloat]
 _Fun1D: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], ...], _ToFloatT]
@@ -106,10 +104,10 @@ def _update_bracket(ab: list[_Float] | _Bracket, fab: list[_Float] | _Bracket, c
 
 # undocumented
 @overload
-def results_c(full_output: _Falsy, r: _T, method: MethodRootScalar) -> _T: ...
+def results_c(full_output: Falsy, r: _T, method: MethodRootScalar) -> _T: ...
 @overload
 def results_c(
-    full_output: _Truthy,
+    full_output: Truthy,
     r: tuple[_RT, int, int, _FlagKey],
     method: MethodRootScalar,
 ) -> tuple[_RT, RootResults[_RT]]: ...
@@ -128,7 +126,7 @@ def newton(
     fprime2: _Fun0D | None = None,
     x1: onp.ToFloat | None = None,
     rtol: onp.ToFloat = 0.0,
-    full_output: _Falsy = False,
+    full_output: Falsy = False,
     disp: onp.ToBool = True,
 ) -> _Float: ...
 @overload
@@ -143,7 +141,7 @@ def newton(
     x1: onp.ToFloat | None = None,
     rtol: onp.ToFloat = 0.0,
     *,
-    full_output: _Truthy,
+    full_output: Truthy,
     disp: onp.ToBool = True,
 ) -> tuple[_Float, RootResults[_Float]]: ...
 @overload
@@ -157,7 +155,7 @@ def newton(
     fprime2: _Fun1D[onp.ToFloat2D] | None = None,  # type: ignore[type-var]
     x1: onp.ToFloat1D | None = None,
     rtol: onp.ToFloat = 0.0,
-    full_output: _Falsy = False,
+    full_output: Falsy = False,
     disp: onp.ToBool = True,
 ) -> onp.Array1D[np.float64]: ...
 @overload
@@ -172,7 +170,7 @@ def newton(
     x1: onp.ToFloat1D | None = None,
     rtol: onp.ToFloat = 0.0,
     *,
-    full_output: _Truthy,
+    full_output: Truthy,
     disp: onp.ToBool = True,
 ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.bool_], onp.Array1D[np.bool_]]: ...
 
@@ -186,7 +184,7 @@ def bisect(
     xtol: onp.ToFloat = 2e-12,
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
-    full_output: _Falsy = False,
+    full_output: Falsy = False,
     disp: op.CanBool = True,
 ) -> float: ...
 @overload
@@ -199,7 +197,7 @@ def bisect(
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
     *,
-    full_output: _Truthy,
+    full_output: Truthy,
     disp: op.CanBool = True,
 ) -> tuple[float, RootResults[_Float]]: ...
 
@@ -213,7 +211,7 @@ def ridder(
     xtol: onp.ToFloat = 2e-12,
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
-    full_output: _Falsy = False,
+    full_output: Falsy = False,
     disp: op.CanBool = True,
 ) -> float: ...
 @overload
@@ -226,7 +224,7 @@ def ridder(
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
     *,
-    full_output: _Truthy,
+    full_output: Truthy,
     disp: op.CanBool = True,
 ) -> tuple[float, RootResults[_Float]]: ...
 
@@ -240,7 +238,7 @@ def brentq(
     xtol: onp.ToFloat = 2e-12,
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
-    full_output: _Falsy = False,
+    full_output: Falsy = False,
     disp: op.CanBool = True,
 ) -> float: ...
 @overload
@@ -253,7 +251,7 @@ def brentq(
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
     *,
-    full_output: _Truthy,
+    full_output: Truthy,
     disp: op.CanBool = True,
 ) -> tuple[float, RootResults[_Float]]: ...
 
@@ -267,7 +265,7 @@ def brenth(
     xtol: onp.ToFloat = 2e-12,
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
-    full_output: _Falsy = False,
+    full_output: Falsy = False,
     disp: op.CanBool = True,
 ) -> float: ...
 @overload
@@ -280,7 +278,7 @@ def brenth(
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
     *,
-    full_output: _Truthy,
+    full_output: Truthy,
     disp: op.CanBool = True,
 ) -> tuple[float, RootResults[_Float]]: ...
 
@@ -295,7 +293,7 @@ def toms748(
     xtol: onp.ToFloat = 2e-12,
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
-    full_output: _Falsy = False,
+    full_output: Falsy = False,
     disp: op.CanBool = True,
 ) -> np.float64: ...
 @overload
@@ -309,6 +307,6 @@ def toms748(
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
     *,
-    full_output: _Truthy,
+    full_output: Truthy,
     disp: op.CanBool = True,
 ) -> tuple[np.float64, RootResults[_Float]]: ...

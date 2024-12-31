@@ -3,14 +3,11 @@ from typing_extensions import LiteralString, Protocol, Self
 
 import numpy as np
 import optype.typing as opt
-from scipy._typing import FileLike
+from scipy._typing import Falsy, FileLike, Truthy
 from scipy.sparse import csc_array, csc_matrix
 from scipy.sparse._base import _spbase
 
 __all__ = ["hb_read", "hb_write"]
-
-_Falsy: TypeAlias = Literal[False, 0]
-_Truthy: TypeAlias = Literal[True, 1]
 
 _ValueType: TypeAlias = Literal["real", "complex", "pattern", "integer"]
 _Structure: TypeAlias = Literal["symmetric", "unsymmetric", "hermitian", "skewsymmetric", "rectangular"]
@@ -123,9 +120,9 @@ def _write_data(m: _spbase, fid: IO[str], header: HBInfo) -> None: ...
 
 #
 @overload
-def hb_read(path_or_open_file: FileLike[str], *, spmatrix: _Truthy = True) -> csc_array[_Real]: ...
+def hb_read(path_or_open_file: FileLike[str], *, spmatrix: Truthy = True) -> csc_array[_Real]: ...
 @overload
-def hb_read(path_or_open_file: FileLike[str], *, spmatrix: _Falsy) -> csc_matrix[_Real]: ...
+def hb_read(path_or_open_file: FileLike[str], *, spmatrix: Falsy) -> csc_matrix[_Real]: ...
 
 #
 def hb_write(path_or_open_file: FileLike[str], m: _spbase, hb_info: HBInfo | None = None) -> None: ...

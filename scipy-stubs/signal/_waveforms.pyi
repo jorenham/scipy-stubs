@@ -5,7 +5,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _DTypeLike
-from scipy._typing import AnyShape
+from scipy._typing import AnyShape, Falsy, Truthy
 
 __all__ = [
     "chirp",
@@ -17,9 +17,6 @@ __all__ = [
 ]
 
 _SCT = TypeVar("_SCT", bound=np.generic)
-
-_Truthy: TypeAlias = Literal[1, True]
-_Falsy: TypeAlias = Literal[0, False]
 
 _ToFloat0ND: TypeAlias = onp.ToFloat | onp.ToFloatND
 _FloatingND: TypeAlias = onp.ArrayND[np.floating[Any]]
@@ -43,7 +40,7 @@ def chirp(
     phi: onp.ToFloat = 0,
     vertex_zero: op.CanBool = True,
     *,
-    complex: _Falsy = False,
+    complex: Falsy = False,
 ) -> np.floating[Any]: ...
 @overload  # real arrays
 def chirp(
@@ -55,7 +52,7 @@ def chirp(
     phi: onp.ToFloat = 0,
     vertex_zero: op.CanBool = True,
     *,
-    complex: _Falsy = False,
+    complex: Falsy = False,
 ) -> _FloatingND: ...
 @overload  # complex scalars
 def chirp(
@@ -67,7 +64,7 @@ def chirp(
     phi: onp.ToFloat = 0,
     vertex_zero: op.CanBool = True,
     *,
-    complex: _Truthy,
+    complex: Truthy,
 ) -> np.complexfloating[Any, Any]: ...
 @overload  # complex arrays
 def chirp(
@@ -79,7 +76,7 @@ def chirp(
     phi: onp.ToFloat = 0,
     vertex_zero: op.CanBool = True,
     *,
-    complex: _Truthy,
+    complex: Truthy,
 ) -> onp.ArrayND[np.complexfloating[Any, Any]]: ...
 
 #
@@ -123,8 +120,8 @@ def gausspulse(
     bw: onp.ToFloat = 0.5,
     bwr: onp.ToFloat = -6,
     tpr: onp.ToFloat = -60,
-    retquad: _Falsy = False,
-    retenv: _Falsy = False,
+    retquad: Falsy = False,
+    retenv: Falsy = False,
 ) -> np.float64: ...
 @overload  # retquad: False = ..., retenv: True (keyword)
 def gausspulse(
@@ -133,9 +130,9 @@ def gausspulse(
     bw: onp.ToFloat = 0.5,
     bwr: onp.ToFloat = -6,
     tpr: onp.ToFloat = -60,
-    retquad: _Falsy = False,
+    retquad: Falsy = False,
     *,
-    retenv: _Truthy,
+    retenv: Truthy,
 ) -> tuple[np.float64, np.float64]: ...
 @overload  # retquad: False (positional), retenv: False (positional)
 def gausspulse(
@@ -144,8 +141,8 @@ def gausspulse(
     bw: onp.ToFloat,
     bwr: onp.ToFloat,
     tpr: onp.ToFloat,
-    retquad: _Falsy,
-    retenv: _Truthy,
+    retquad: Falsy,
+    retenv: Truthy,
 ) -> tuple[np.float64, np.float64]: ...
 @overload  # retquad: True (positional), retenv: False = ...
 def gausspulse(
@@ -154,8 +151,8 @@ def gausspulse(
     bw: onp.ToFloat,
     bwr: onp.ToFloat,
     tpr: onp.ToFloat,
-    retquad: _Truthy,
-    retenv: _Falsy = False,
+    retquad: Truthy,
+    retenv: Falsy = False,
 ) -> tuple[np.float64, np.float64]: ...
 @overload  # retquad: True (keyword), retenv: False = ...
 def gausspulse(
@@ -165,8 +162,8 @@ def gausspulse(
     bwr: onp.ToFloat = -6,
     tpr: onp.ToFloat = -60,
     *,
-    retquad: _Truthy,
-    retenv: _Falsy = False,
+    retquad: Truthy,
+    retenv: Falsy = False,
 ) -> tuple[np.float64, np.float64]: ...
 @overload  # retquad: True (positional), retenv: True (positional/keyword)
 def gausspulse(
@@ -175,8 +172,8 @@ def gausspulse(
     bw: onp.ToFloat,
     bwr: onp.ToFloat,
     tpr: onp.ToFloat,
-    retquad: _Truthy,
-    retenv: _Truthy,
+    retquad: Truthy,
+    retenv: Truthy,
 ) -> tuple[np.float64, np.float64, np.float64]: ...
 @overload  # retquad: True (keyword), retenv: True
 def gausspulse(
@@ -186,8 +183,8 @@ def gausspulse(
     bwr: onp.ToFloat = -6,
     tpr: onp.ToFloat = -60,
     *,
-    retquad: _Truthy,
-    retenv: _Truthy,
+    retquad: Truthy,
+    retenv: Truthy,
 ) -> tuple[np.float64, np.float64, np.float64]: ...
 
 # Overloads for `gausspulse` when `t` is a non-scalar array like
@@ -198,8 +195,8 @@ def gausspulse(
     bw: onp.ToFloat = 0.5,
     bwr: onp.ToFloat = -6,
     tpr: onp.ToFloat = -60,
-    retquad: _Falsy = False,
-    retenv: _Falsy = False,
+    retquad: Falsy = False,
+    retenv: Falsy = False,
 ) -> _FloatND: ...
 @overload  # retquad: False = ..., retenv: True (keyword)
 def gausspulse(
@@ -208,9 +205,9 @@ def gausspulse(
     bw: onp.ToFloat = 0.5,
     bwr: onp.ToFloat = -6,
     tpr: onp.ToFloat = -60,
-    retquad: _Falsy = False,
+    retquad: Falsy = False,
     *,
-    retenv: _Truthy,
+    retenv: Truthy,
 ) -> tuple[_FloatND, _FloatND]: ...
 @overload  # retquad: False (positional), retenv: False (positional)
 def gausspulse(
@@ -219,8 +216,8 @@ def gausspulse(
     bw: onp.ToFloat,
     bwr: onp.ToFloat,
     tpr: onp.ToFloat,
-    retquad: _Falsy,
-    retenv: _Truthy,
+    retquad: Falsy,
+    retenv: Truthy,
 ) -> tuple[_FloatND, _FloatND]: ...
 @overload  # retquad: True (positional), retenv: False = ...
 def gausspulse(
@@ -229,8 +226,8 @@ def gausspulse(
     bw: onp.ToFloat,
     bwr: onp.ToFloat,
     tpr: onp.ToFloat,
-    retquad: _Truthy,
-    retenv: _Falsy = False,
+    retquad: Truthy,
+    retenv: Falsy = False,
 ) -> tuple[_FloatND, _FloatND]: ...
 @overload  # retquad: True (keyword), retenv: False = ...
 def gausspulse(
@@ -240,8 +237,8 @@ def gausspulse(
     bwr: onp.ToFloat = -6,
     tpr: onp.ToFloat = -60,
     *,
-    retquad: _Truthy,
-    retenv: _Falsy = False,
+    retquad: Truthy,
+    retenv: Falsy = False,
 ) -> tuple[_FloatND, _FloatND]: ...
 @overload  # retquad: True (positional), retenv: True (positional/keyword)
 def gausspulse(
@@ -250,8 +247,8 @@ def gausspulse(
     bw: onp.ToFloat,
     bwr: onp.ToFloat,
     tpr: onp.ToFloat,
-    retquad: _Truthy,
-    retenv: _Truthy,
+    retquad: Truthy,
+    retenv: Truthy,
 ) -> tuple[_FloatND, _FloatND, _FloatND]: ...
 @overload  # retquad: True (keyword), retenv: True
 def gausspulse(
@@ -261,6 +258,6 @@ def gausspulse(
     bwr: onp.ToFloat = -6,
     tpr: onp.ToFloat = -60,
     *,
-    retquad: _Truthy,
-    retenv: _Truthy,
+    retquad: Truthy,
+    retenv: Truthy,
 ) -> tuple[_FloatND, _FloatND, _FloatND]: ...

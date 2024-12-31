@@ -3,6 +3,7 @@ from typing import Any, ClassVar, Final, Generic, Literal, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
+from scipy._typing import Truthy
 
 _VT = TypeVar("_VT", bound=onp.ArrayND[np.inexact[Any]], default=onp.ArrayND[np.inexact[Any]])
 
@@ -32,7 +33,7 @@ class OdeSolver:
         y0: onp.ToFloatND,
         t_bound: onp.ToFloat,
         vectorized: bool,
-        support_complex: bool = False,
+        support_complex: onp.ToBool = False,
     ) -> None: ...
     @overload
     def __init__(
@@ -43,7 +44,7 @@ class OdeSolver:
         y0: onp.ToComplexND,
         t_bound: onp.ToFloat,
         vectorized: bool,
-        support_complex: Literal[True],
+        support_complex: Truthy,
     ) -> None: ...
     @property
     def step_size(self, /) -> float | None: ...

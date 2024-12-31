@@ -6,6 +6,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 from scipy._lib._ccallback import LowLevelCallable
+from scipy._typing import Falsy, Truthy
 from ._typing import QuadInfoDict, QuadOpts, QuadWeights
 
 __all__ = ["IntegrationWarning", "dblquad", "nquad", "quad", "tplquad"]
@@ -14,9 +15,6 @@ _T = TypeVar("_T")
 _T_co = TypeVar("_T_co", covariant=True)
 _T_f_contra = TypeVar("_T_f_contra", contravariant=True, default=float)
 _BT_co = TypeVar("_BT_co", bound=bool, covariant=True, default=bool)
-
-_Falsy: TypeAlias = Literal[False, 0]
-_Truthy: TypeAlias = Literal[True, 1]
 
 # NOTE: Technically `integer[Any]` and `bool_` are also allowed, but there's no valid usecase for that.
 _IntLike: TypeAlias = int | np.integer[Any]
@@ -133,7 +131,7 @@ def quad(
     a: onp.ToFloat,
     b: onp.ToFloat,
     args: tuple[()] = (),
-    full_output: _Falsy = 0,
+    full_output: Falsy = 0,
     epsabs: _FloatLike = 1.49e-08,
     epsrel: _FloatLike = 1.49e-08,
     limit: _IntLike = 50,
@@ -143,7 +141,7 @@ def quad(
     wopts: tuple[_IntLike, onp.ArrayND[np.float32 | np.float64]] | None = None,
     maxp1: _IntLike = 50,
     limlst: _IntLike = 50,
-    complex_func: _Falsy = False,
+    complex_func: Falsy = False,
 ) -> tuple[float, float]: ...
 @overload
 def quad(
@@ -151,7 +149,7 @@ def quad(
     a: onp.ToFloat,
     b: onp.ToFloat,
     args: tuple[object, ...],
-    full_output: _Falsy = 0,
+    full_output: Falsy = 0,
     epsabs: _FloatLike = 1.49e-08,
     epsrel: _FloatLike = 1.49e-08,
     limit: _IntLike = 50,
@@ -161,7 +159,7 @@ def quad(
     wopts: tuple[_IntLike, onp.ArrayND[np.float32 | np.float64]] | None = None,
     maxp1: _IntLike = 50,
     limlst: _IntLike = 50,
-    complex_func: _Falsy = False,
+    complex_func: Falsy = False,
 ) -> tuple[float, float]: ...
 @overload
 def quad(
@@ -169,7 +167,7 @@ def quad(
     a: onp.ToFloat,
     b: onp.ToFloat,
     args: tuple[()],
-    full_output: _Truthy,
+    full_output: Truthy,
     epsabs: _FloatLike = 1.49e-08,
     epsrel: _FloatLike = 1.49e-08,
     limit: _IntLike = 50,
@@ -179,7 +177,7 @@ def quad(
     wopts: tuple[_IntLike, onp.ArrayND[np.float32 | np.float64]] | None = None,
     maxp1: _IntLike = 50,
     limlst: _IntLike = 50,
-    complex_func: _Falsy = False,
+    complex_func: Falsy = False,
 ) -> (
     tuple[float, float, QuadInfoDict]
     | tuple[float, float, QuadInfoDict, str]
@@ -192,7 +190,7 @@ def quad(
     b: onp.ToFloat,
     args: tuple[()] = (),
     *,
-    full_output: _Truthy,
+    full_output: Truthy,
     epsabs: _FloatLike = 1.49e-08,
     epsrel: _FloatLike = 1.49e-08,
     limit: _IntLike = 50,
@@ -202,7 +200,7 @@ def quad(
     wopts: tuple[_IntLike, onp.ArrayND[np.float32 | np.float64]] | None = None,
     maxp1: _IntLike = 50,
     limlst: _IntLike = 50,
-    complex_func: _Falsy = False,
+    complex_func: Falsy = False,
 ) -> (
     tuple[float, float, QuadInfoDict]
     | tuple[float, float, QuadInfoDict, str]
@@ -214,7 +212,7 @@ def quad(
     a: onp.ToFloat,
     b: onp.ToFloat,
     args: tuple[object, ...],
-    full_output: _Truthy,
+    full_output: Truthy,
     epsabs: _FloatLike = 1.49e-08,
     epsrel: _FloatLike = 1.49e-08,
     limit: _IntLike = 50,
@@ -224,7 +222,7 @@ def quad(
     wopts: tuple[_IntLike, onp.ArrayND[np.float32 | np.float64]] | None = None,
     maxp1: _IntLike = 50,
     limlst: _IntLike = 50,
-    complex_func: _Falsy = False,
+    complex_func: Falsy = False,
 ) -> (
     tuple[float, float, QuadInfoDict]
     | tuple[float, float, QuadInfoDict, str]
@@ -236,7 +234,7 @@ def quad(
     a: onp.ToComplex,
     b: onp.ToComplex,
     args: tuple[()],
-    full_output: _Falsy,
+    full_output: Falsy,
     epsabs: _FloatLike,
     epsrel: _FloatLike,
     limit: _IntLike,
@@ -246,7 +244,7 @@ def quad(
     wopts: tuple[_IntLike, onp.ArrayND[np.float32 | np.float64]] | None,
     maxp1: _IntLike,
     limlst: _IntLike,
-    complex_func: _Truthy,
+    complex_func: Truthy,
 ) -> tuple[complex, complex]: ...
 @overload
 def quad(
@@ -254,7 +252,7 @@ def quad(
     a: onp.ToComplex,
     b: onp.ToComplex,
     args: tuple[()] = (),
-    full_output: _Falsy = 0,
+    full_output: Falsy = 0,
     epsabs: _FloatLike = 1.49e-08,
     epsrel: _FloatLike = 1.49e-08,
     limit: _IntLike = 50,
@@ -265,7 +263,7 @@ def quad(
     maxp1: _IntLike = 50,
     limlst: _IntLike = 50,
     *,
-    complex_func: _Truthy,
+    complex_func: Truthy,
 ) -> tuple[complex, complex]: ...
 @overload
 def quad(
@@ -273,7 +271,7 @@ def quad(
     a: onp.ToComplex,
     b: onp.ToComplex,
     args: tuple[()],
-    full_output: _Truthy,
+    full_output: Truthy,
     epsabs: _FloatLike,
     epsrel: _FloatLike,
     limit: _IntLike,
@@ -283,7 +281,7 @@ def quad(
     wopts: tuple[_IntLike, onp.ArrayND[np.float32 | np.float64]] | None,
     maxp1: _IntLike,
     limlst: _IntLike,
-    complex_func: _Truthy,
+    complex_func: Truthy,
 ) -> tuple[complex, complex, _QuadComplexFullOutput]: ...
 @overload
 def quad(
@@ -291,7 +289,7 @@ def quad(
     a: onp.ToComplex,
     b: onp.ToComplex,
     args: tuple[()],
-    full_output: _Truthy,
+    full_output: Truthy,
     epsabs: _FloatLike = 1.49e-08,
     epsrel: _FloatLike = 1.49e-08,
     limit: _IntLike = 50,
@@ -302,7 +300,7 @@ def quad(
     maxp1: _IntLike = 50,
     limlst: _IntLike = 50,
     *,
-    complex_func: _Truthy,
+    complex_func: Truthy,
 ) -> tuple[complex, complex, _QuadComplexFullOutput]: ...
 @overload
 def quad(
@@ -311,7 +309,7 @@ def quad(
     b: onp.ToComplex,
     args: tuple[()] = (),
     *,
-    full_output: _Truthy,
+    full_output: Truthy,
     epsabs: _FloatLike = 1.49e-08,
     epsrel: _FloatLike = 1.49e-08,
     limit: _IntLike = 50,
@@ -321,7 +319,7 @@ def quad(
     wopts: tuple[_IntLike, onp.ArrayND[np.float32 | np.float64]] | None = None,
     maxp1: _IntLike = 50,
     limlst: _IntLike = 50,
-    complex_func: _Truthy,
+    complex_func: Truthy,
 ) -> tuple[complex, complex, _QuadComplexFullOutput]: ...
 @overload
 def quad(
@@ -329,7 +327,7 @@ def quad(
     a: onp.ToComplex,
     b: onp.ToComplex,
     args: tuple[object, ...],
-    full_output: _Falsy,
+    full_output: Falsy,
     epsabs: _FloatLike,
     epsrel: _FloatLike,
     limit: _IntLike,
@@ -339,7 +337,7 @@ def quad(
     wopts: tuple[_IntLike, onp.ArrayND[np.float32 | np.float64]] | None,
     maxp1: _IntLike,
     limlst: _IntLike,
-    complex_func: _Truthy,
+    complex_func: Truthy,
 ) -> tuple[complex, complex]: ...
 @overload
 def quad(
@@ -347,7 +345,7 @@ def quad(
     a: onp.ToComplex,
     b: onp.ToComplex,
     args: tuple[object, ...],
-    full_output: _Falsy = 0,
+    full_output: Falsy = 0,
     epsabs: _FloatLike = 1.49e-08,
     epsrel: _FloatLike = 1.49e-08,
     limit: _IntLike = 50,
@@ -358,7 +356,7 @@ def quad(
     maxp1: _IntLike = 50,
     limlst: _IntLike = 50,
     *,
-    complex_func: _Truthy,
+    complex_func: Truthy,
 ) -> tuple[complex, complex]: ...
 @overload
 def quad(
@@ -366,7 +364,7 @@ def quad(
     a: onp.ToComplex,
     b: onp.ToComplex,
     args: tuple[object, ...],
-    full_output: _Truthy,
+    full_output: Truthy,
     epsabs: _FloatLike,
     epsrel: _FloatLike,
     limit: _IntLike,
@@ -376,7 +374,7 @@ def quad(
     wopts: tuple[_IntLike, onp.ArrayND[np.float32 | np.float64]] | None,
     maxp1: _IntLike,
     limlst: _IntLike,
-    complex_func: _Truthy,
+    complex_func: Truthy,
 ) -> tuple[complex, complex, _QuadComplexFullOutput]: ...
 @overload
 def quad(
@@ -384,7 +382,7 @@ def quad(
     a: onp.ToComplex,
     b: onp.ToComplex,
     args: tuple[object, ...],
-    full_output: _Truthy,
+    full_output: Truthy,
     epsabs: _FloatLike = 1.49e-08,
     epsrel: _FloatLike = 1.49e-08,
     limit: _IntLike = 50,
@@ -395,7 +393,7 @@ def quad(
     maxp1: _IntLike = 50,
     limlst: _IntLike = 50,
     *,
-    complex_func: _Truthy,
+    complex_func: Truthy,
 ) -> tuple[complex, complex, _QuadComplexFullOutput]: ...
 
 # 2-dimensional quadrature
@@ -460,7 +458,7 @@ def nquad(
     ranges: _SizedIterable[_QuadRange | _RangeCallable[float]],
     args: Iterable[object] | None = None,
     opts: QuadOpts | Callable[..., QuadOpts] | Iterable[QuadOpts | Callable[..., QuadOpts]] | None = None,
-    full_output: _Falsy = False,
+    full_output: Falsy = False,
 ) -> tuple[float, float]: ...
 @overload
 def nquad(
@@ -468,7 +466,7 @@ def nquad(
     ranges: _SizedIterable[_QuadRange | _RangeCallable[float]],
     args: Iterable[object] | None,
     opts: QuadOpts | _OptCallable | Iterable[QuadOpts | _OptCallable] | None,
-    full_output: _Truthy,
+    full_output: Truthy,
 ) -> tuple[float, float, _QuadOutputNC]: ...
 @overload
 def nquad(
@@ -477,5 +475,5 @@ def nquad(
     args: Iterable[object] | None = None,
     opts: QuadOpts | _OptCallable | Iterable[QuadOpts | _OptCallable] | None = None,
     *,
-    full_output: _Truthy,
+    full_output: Truthy,
 ) -> tuple[float, float, _QuadOutputNC]: ...

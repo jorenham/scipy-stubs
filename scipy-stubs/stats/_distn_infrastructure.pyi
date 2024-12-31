@@ -11,7 +11,7 @@ from typing_extensions import Self, TypeVar, Unpack, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
-from scipy._typing import RNG, AnyShape, ToRNG
+from scipy._typing import RNG, AnyShape, Falsy, ToRNG, Truthy
 from scipy.integrate._typing import QuadOpts as _QuadOpts
 
 _T = TypeVar("_T")
@@ -53,9 +53,6 @@ _IntOrND: TypeAlias = _Int | _IntND
 _FloatOrND: TypeAlias = _Float | _FloatND
 
 _ToFloatOrND: TypeAlias = onp.ToFloat | onp.ToFloatND
-
-_Falsy: TypeAlias = L[False, 0]
-_Truthy: TypeAlias = L[True, 1]
 
 _Expectant: TypeAlias = Callable[[float], onp.ToFloat]
 
@@ -297,18 +294,18 @@ class rv_generic:
     def _isf(self, /, q: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
     #
     @overload
-    def rvs(self, /, *args: onp.ToFloat, random_state: ToRNG, discrete: _Truthy, **kwds: onp.ToFloat) -> _Int: ...
+    def rvs(self, /, *args: onp.ToFloat, random_state: ToRNG, discrete: Truthy, **kwds: onp.ToFloat) -> _Int: ...
     @overload
-    def rvs(self, /, *args: onp.ToFloat, random_state: ToRNG, discrete: _Truthy, **kwds: _ToFloatOrND) -> _IntOrND: ...
+    def rvs(self, /, *args: onp.ToFloat, random_state: ToRNG, discrete: Truthy, **kwds: _ToFloatOrND) -> _IntOrND: ...
     @overload
-    def rvs(self, /, *args: onp.ToFloat, random_state: ToRNG, discrete: _Falsy | None = ..., **kwds: onp.ToFloat) -> _Float: ...
+    def rvs(self, /, *args: onp.ToFloat, random_state: ToRNG, discrete: Falsy | None = ..., **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def rvs(
         self,
         /,
         *args: _ToFloatOrND,
         random_state: ToRNG,
-        discrete: _Falsy | None = ...,
+        discrete: Falsy | None = ...,
         **kwds: _ToFloatOrND,
     ) -> _FloatOrND: ...
 

@@ -4,6 +4,7 @@ from typing_extensions import TypeAliasType
 import numpy as np
 import optype as op
 import optype.numpy as onp
+from scipy._typing import Falsy, Truthy
 
 __all__ = [
     "barthann",
@@ -33,6 +34,8 @@ __all__ = [
     "triang",
     "tukey",
 ]
+
+###
 
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
@@ -129,7 +132,7 @@ def dpss(
     Kmax: op.CanIndex,
     sym: op.CanBool = True,
     norm: _Norm | None = None,
-    return_ratios: Literal[False] = False,
+    return_ratios: Falsy = False,
 ) -> _Float2D: ...
 @overload  # `return_ratios` is `False`.
 def dpss(
@@ -138,7 +141,7 @@ def dpss(
     Kmax: None = None,
     sym: op.CanBool = True,
     norm: _Norm | None = None,
-    return_ratios: Literal[False] = False,
+    return_ratios: Falsy = False,
 ) -> _Float1D: ...
 @overload  # `return_ratios` is `True`, `return_ratios` as a positional argument
 def dpss(
@@ -147,7 +150,7 @@ def dpss(
     Kmax: op.CanIndex,
     sym: op.CanBool,
     norm: _Norm | None,
-    return_ratios: Literal[True],
+    return_ratios: Truthy,
 ) -> tuple[_Float2D, _Float1D]: ...
 @overload  # `return_ratios` as a keyword argument
 def dpss(
@@ -157,7 +160,7 @@ def dpss(
     sym: op.CanBool = True,
     norm: _Norm | None = None,
     *,
-    return_ratios: Literal[True],
+    return_ratios: Truthy,
 ) -> tuple[_Float2D, _Float1D]: ...
 @overload  # `return_ratios` as a positional argument
 def dpss(
@@ -166,7 +169,7 @@ def dpss(
     Kmax: None,
     sym: op.CanBool,
     norm: _Norm | None,
-    return_ratios: Literal[True],
+    return_ratios: Truthy,
 ) -> tuple[_Float1D, np.float64]: ...
 @overload  # `return_ratios` as a keyword argument
 def dpss(
@@ -176,5 +179,5 @@ def dpss(
     sym: op.CanBool = True,
     norm: _Norm | None = None,
     *,
-    return_ratios: Literal[True],
+    return_ratios: Truthy,
 ) -> tuple[_Float1D, np.float64]: ...

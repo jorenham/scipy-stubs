@@ -1,9 +1,10 @@
-from typing import Literal, TypeAlias, overload
+from typing import TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+from scipy._typing import Falsy, Truthy
 
 __all__ = [
     "compare_medians_ms",
@@ -20,8 +21,6 @@ __all__ = [
 
 _T = TypeVar("_T")
 _Tuple2: TypeAlias = tuple[_T, _T]
-_Falsy: TypeAlias = Literal[False, 0]
-_Truthy: TypeAlias = Literal[True, 1]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
 
 _ToProb: TypeAlias = onp.ToFloat | onp.ToFloatND
@@ -34,14 +33,14 @@ def hdquantiles(
     data: onp.ToFloat1D,
     prob: _ToProb = [0.25, 0.5, 0.75],
     axis: _ToAxis = None,
-    var: _Falsy = False,
+    var: Falsy = False,
 ) -> onp.MArray1D[np.float64]: ...
 @overload
 def hdquantiles(
     data: onp.ToFloat1D,
     prob: _ToProb,
     axis: _ToAxis,
-    var: _Truthy,
+    var: Truthy,
 ) -> onp.MArray2D[np.float64]: ...
 @overload
 def hdquantiles(
@@ -49,7 +48,7 @@ def hdquantiles(
     prob: _ToProb = [0.25, 0.5, 0.75],
     axis: _ToAxis = None,
     *,
-    var: _Truthy,
+    var: Truthy,
 ) -> onp.MArray2D[np.float64]: ...
 @overload
 def hdquantiles(
@@ -61,11 +60,11 @@ def hdquantiles(
 
 #
 @overload
-def hdmedian(data: onp.ToFloatND, axis: _ToAxis = -1, var: _Falsy = False) -> onp.MArray[np.float64]: ...
+def hdmedian(data: onp.ToFloatND, axis: _ToAxis = -1, var: Falsy = False) -> onp.MArray[np.float64]: ...
 @overload
-def hdmedian(data: onp.ToFloatND, axis: _ToAxis, var: _Truthy) -> onp.MArray[np.float64]: ...
+def hdmedian(data: onp.ToFloatND, axis: _ToAxis, var: Truthy) -> onp.MArray[np.float64]: ...
 @overload
-def hdmedian(data: onp.ToFloatND, axis: _ToAxis = -1, *, var: _Truthy) -> onp.MArray[np.float64]: ...
+def hdmedian(data: onp.ToFloatND, axis: _ToAxis = -1, *, var: Truthy) -> onp.MArray[np.float64]: ...
 
 #
 def hdquantiles_sd(data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), axis: _ToAxis = None) -> onp.MArray[np.float64]: ...

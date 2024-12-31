@@ -20,6 +20,7 @@ __all__ = [
     "ConvMode",
     "EnterNoneMixin",
     "EnterSelfMixin",
+    "Falsy",
     "FileLike",
     "FileModeRW",
     "FileModeRWA",
@@ -28,6 +29,7 @@ __all__ = [
     "OrderCF",
     "OrderKACF",
     "ToRNG",
+    "Truthy",
     "_FortranFunction",
 ]
 
@@ -63,6 +65,10 @@ FileName: TypeAlias = str | PathLike[str]
 FileLike: TypeAlias = FileName | IO[_ByteSOrStr]
 FileModeRW: TypeAlias = Literal["r", "w"]
 FileModeRWA: TypeAlias = Literal[FileModeRW, "a"]
+
+# TODO(jorenham): Include `np.bool[L[False]]` once we have `numpy>=2.2`
+Falsy: TypeAlias = Literal[False, 0]
+Truthy: TypeAlias = Literal[True, 1]
 
 # keep in sync with `numpy._typing._scalars`
 AnyBool: TypeAlias = bool | np.bool_ | Literal[0, 1]

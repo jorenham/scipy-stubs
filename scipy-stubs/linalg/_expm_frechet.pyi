@@ -2,6 +2,7 @@ from typing import Literal, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
+from scipy._typing import Falsy, Truthy
 
 __all__ = ["expm_cond", "expm_frechet"]
 
@@ -16,7 +17,7 @@ def expm_frechet(
     A: onp.ToComplex2D,
     E: onp.ToComplex2D,
     method: _Method | None = None,
-    compute_expm: Literal[True] = True,
+    compute_expm: Truthy = True,
     check_finite: bool = True,
 ) -> tuple[_Float2D, _Float2D] | tuple[_Float2D | _Complex2D, _Complex2D]: ...
 @overload
@@ -24,7 +25,7 @@ def expm_frechet(
     A: onp.ToComplex2D,
     E: onp.ToComplex2D,
     method: _Method | None,
-    compute_expm: Literal[False],
+    compute_expm: Falsy,
     check_finite: bool = True,
 ) -> tuple[_Float2D, _Float2D] | tuple[_Float2D | _Complex2D, _Complex2D]: ...
 @overload
@@ -33,7 +34,7 @@ def expm_frechet(
     E: onp.ToComplex2D,
     method: _Method | None = None,
     *,
-    compute_expm: Literal[False],
+    compute_expm: Falsy,
     check_finite: bool = True,
 ) -> tuple[_Float2D, _Float2D] | tuple[_Float2D | _Complex2D, _Complex2D]: ...
 

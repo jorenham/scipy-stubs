@@ -1,11 +1,12 @@
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from types import ModuleType
-from typing import Any, Concatenate, Final, Literal, TypeAlias
+from typing import Any, Concatenate, Final, TypeAlias
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+from scipy._typing import Falsy
 from ._util import _RichResult
 
 ###
@@ -35,7 +36,7 @@ def _initialize(
     func: _FuncRealT,
     xs: Sequence[onp.ToFloat1D],
     args: tuple[onp.ToFloat1D, ...],
-    complex_ok: Literal[False] = False,
+    complex_ok: Falsy = False,
     preserve_shape: bool | None = None,
     xp: _ModuleT | None = None,
 ) -> tuple[

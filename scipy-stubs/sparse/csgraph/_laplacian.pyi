@@ -3,6 +3,7 @@ from typing import Any, Literal, TypeAlias, overload
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
+from scipy._typing import Falsy, Truthy
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
@@ -17,7 +18,7 @@ _Form: TypeAlias = Literal["array", "function", "lo"]
 def laplacian(
     csgraph: _ToCSGraph,
     normed: bool = False,
-    return_diag: Literal[False] = False,
+    return_diag: Falsy = False,
     use_out_degree: bool = False,
     *,
     copy: bool = True,
@@ -29,7 +30,7 @@ def laplacian(
 def laplacian(
     csgraph: _ToCSGraph,
     normed: bool,
-    return_diag: Literal[True],
+    return_diag: Truthy,
     use_out_degree: bool = False,
     *,
     copy: bool = True,
@@ -42,7 +43,7 @@ def laplacian(
     csgraph: _ToCSGraph,
     normed: bool = False,
     *,
-    return_diag: Literal[True],
+    return_diag: Truthy,
     use_out_degree: bool = False,
     copy: bool = True,
     form: _Form = "array",

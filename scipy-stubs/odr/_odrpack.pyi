@@ -3,7 +3,7 @@ from typing import Any, Concatenate, Final, Literal, TypeAlias, TypedDict, overl
 
 import numpy as np
 import optype.numpy as onp
-from scipy._typing import AnyBool
+from scipy._typing import AnyBool, Falsy, Truthy
 
 __all__ = ["ODR", "Data", "Model", "OdrError", "OdrStop", "OdrWarning", "Output", "RealData", "odr", "odr_error", "odr_stop"]
 
@@ -300,7 +300,7 @@ def odr(
     scld: onp.ToFloatND | None = None,
     work: onp.ArrayND[np.float64] | None = None,
     iwork: onp.ArrayND[np.int32 | np.int64] | None = None,
-    full_output: Literal[False, 0] = 0,
+    full_output: Falsy = 0,
 ) -> tuple[_Float1D, _Float1D, _Float2D]: ...
 @overload
 def odr(
@@ -331,5 +331,5 @@ def odr(
     work: onp.ArrayND[np.float64] | None = None,
     iwork: onp.ArrayND[np.int32 | np.int64] | None = None,
     *,
-    full_output: Literal[True, 1],
+    full_output: Truthy,
 ) -> tuple[_Float1D, _Float1D, _Float2D, _FullOutput]: ...
