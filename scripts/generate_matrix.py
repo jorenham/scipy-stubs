@@ -1,22 +1,28 @@
 # ruff: noqa: TRY003
+# mypy: disable-error-code="no-any-expr, no-any-decorated"
+
 import importlib.metadata
 import json
 import sys
 import urllib.error
 import urllib.request
 from functools import cache
-import typing
+from typing import Any, Final, TypedDict, cast
 
 from packaging.specifiers import SpecifierSet
 from packaging.version import Version, parse
 
-# Constants
-PACKAGE_NAME = "scipy"
-DEPENDENCY_NAME = "numpy"
-MINIMUM_DEPENDENCY_VERSION_FOR_PYTHON_3_12 = Version("1.26.0")
+INDENT: Final = 4
+PACKAGE_NAME: Final = "scipy"
+DEPENDENCY_NAME: Final = "numpy"
+MIN_VERSIONS: Final = (
+    (Version("3.11"), Version("1.24")),
+    (Version("3.12"), Version("1.26")),
+    (Version("3.13"), Version("2.1")),
+)
 
 
-class FileInfo(typing.TypedDict, total=False):
+class FileInfo(TypedDict, total=False):
     filename: str
     arch: str
     platform: str
@@ -25,18 +31,18 @@ class FileInfo(typing.TypedDict, total=False):
     requires_python: str
 
 
-class Release(typing.TypedDict):
+class Release(TypedDict):
     version: str
     stable: bool
     release_url: str
     files: list[FileInfo]
 
 
-class PackageVersions(typing.TypedDict, total=False):
+class PackageVersions(TypedDict, total=False):
     releases: dict[str, list[FileInfo]]
 
 
-@cache  # type: ignore[no-any-expr]
+@cache
 def get_package_minimum_python_version(package: str) -> Version:
     """
     Get the minimum Python version required by the specified package.
@@ -118,7 +124,7 @@ def get_available_python_versions(
         urllib.error.URLError: If fetching data fails.
 
     """
-    data: list[Release] = typing.cast(
+    data: list[Release] = cast(
         "list[Release]",
         fetch_json("https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json"),
     )
@@ -141,8 +147,8 @@ def get_available_python_versions(
     return sorted(versions.values())
 
 
-@cache  # type: ignore[no-any-expr]
-def fetch_json(url: str) -> object:
+@cache
+def fetch_json(url: str) -> Any:  # noqa: ANN401
     """
     Fetch JSON data from a URL with caching.
 
@@ -150,16 +156,17 @@ def fetch_json(url: str) -> object:
         url (str): The URL to fetch.
 
     Returns:
-        dict[str, typing.Any] | list[typing.Any]: The parsed JSON data.
+        dict[str, Any] | list[Any]: The parsed JSON data.
 
     Raises:
         urllib.error.URLError: If fetching data fails.
 
     """
     try:
-        with urllib.request.urlopen(url) as response:  # type: ignore[no-any-expr]  # noqa: S310
-            return typing.cast("object", json.loads(response.read()))  # type: ignore[no-any-expr]
-    except urllib.error.URLError:
+        with urllib.request.urlopen(url) as response:  # noqa: S310
+            return json.loads(response.read())
+    except urllib.error.URLError as e:
+        print(e, file=sys.stderr)  # noqa: T201
         sys.exit(1)
 
 
@@ -181,10 +188,7 @@ def get_available_package_versions(package_name: str, min_version: Version) -> d
         RuntimeError: If no 'requires_python' is found for a package version.
 
     """
-    data: PackageVersions = typing.cast(
-        "PackageVersions",
-        fetch_json(f"https://pypi.org/pypi/{package_name}/json"),
-    )
+    data: PackageVersions = fetch_json(f"https://pypi.org/pypi/{package_name}/json")
 
     releases = data.get("releases", {})
     latest_versions: dict[tuple[int, int], tuple[Version, str]] = {}
@@ -205,13 +209,10 @@ def get_available_package_versions(package_name: str, min_version: Version) -> d
             # Skip versions without 'requires_python'
             continue
 
-        key = (version.major, version.minor)
+        key = version.major, version.minor
         # Update to latest version within the minor version series
         if key not in latest_versions or version > latest_versions[key][0]:
-            latest_versions[key] = (
-                version,
-                requires_python,
-            )
+            latest_versions[key] = version, requires_python
 
         # Extract the versions and requires_python from the latest_versions dict
     return dict(latest_versions.values())
@@ -254,19 +255,21 @@ def main() -> None:
         specifier_set = SpecifierSet(requires_python)
 
         for python_version in python_versions:
-            if python_version in specifier_set:
-                # Skip incompatible combinations
-                if python_version >= Version("3.12") and package_version < MINIMUM_DEPENDENCY_VERSION_FOR_PYTHON_3_12:
-                    continue
+            if python_version not in specifier_set:
+                continue
 
-                include.append(
-                    {
-                        "python": str(python_version),
-                        DEPENDENCY_NAME: str(package_version),
-                    }
-                )
+            # Skip incompatible combinations
+            if any(python_version >= py_min and package_version < np_min for py_min, np_min in MIN_VERSIONS):
+                continue
 
-    json.dump({"include": include}, indent=4, fp=sys.stdout)  # type: ignore[no-any-expr]
+            include.append({
+                "python": str(python_version),
+                DEPENDENCY_NAME: str(package_version),
+            })  # fmt: skip
+
+    json.dump({"include": include}, indent=INDENT, fp=sys.stdout)
+    sys.stderr.flush()
+    sys.stdout.flush()
 
 
 if __name__ == "__main__":
