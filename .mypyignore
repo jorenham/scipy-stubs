@@ -21,23 +21,29 @@ scipy\.stats\._rcont\.rcont
 scipy\.special\._precompute\..*
 
 # workarounds for mypy bugs
-scipy\.(_lib|integrate|stats)\.((_|\w)+\.)+__replace__  # `NamedTuple` on `python >= 3.13`
-
-# stubtest doesn't understand `if sys.version_info >= _: ...` blocks
-scipy\.sparse\.(\w+)\.warn
+scipy\.(_lib|integrate|stats)\.((_|\w)+\.)+__replace__  # `NamedTuple` on `python>=3.13`
+scipy\.sparse\.(\w+)\.warn  # all `if sys.version_info` branches are checked...?
 
 # annoying and useless __new__
 scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 
 # mypy fails recognize type-check-only ufunc subtypes as ufuncs
-# https://github.com/KotlinIsland/basedmypy/issues/816
-scipy\.special\._basic\.digamma
-scipy\.special\._support_alternative_backends\..*
-scipy\.stats\._qmvnt\.phi(nv)?
-
 # https://github.com/KotlinIsland/basedmypy/issues/815
-scipy\.special\._ufuncs\._(hypergeom|nbinom|nc(f|t))_(mean|variance|skewness|kurtosis_excess)
+# https://github.com/KotlinIsland/basedmypy/issues/816
+scipy\.stats\._qmvnt\.phi(nv)?
+scipy\.special\._basic\.digamma
+scipy\.special\._support_alternative_backends\.betaincc?
+scipy\.special\._support_alternative_backends\.gamma(incc?|ln)
+scipy\.special\._support_alternative_backends\.(rel_)?entr
+scipy\.special\._support_alternative_backends\.erfc?
+scipy\.special\._support_alternative_backends\.(exp|log)it
+scipy\.special\._support_alternative_backends\.i(0|1)e?
+scipy\.special\._support_alternative_backends\.xlogy
+scipy\.special\._support_alternative_backends\.chdtrc?
+scipy\.special\._support_alternative_backends\.(log_)?ndtri?
+scipy\.special\._support_alternative_backends\.stdtr
 scipy\.special\._ufuncs\._(hypergeom|n?binom)_(pm|cd|pp|i?s)f
+scipy\.special\._ufuncs\._(hypergeom|nbinom|nc(f|t))_(mean|variance|skewness|kurtosis_excess)
 scipy\.special\._ufuncs\._(beta|cauchy|invgauss|landau|nc(f|t|x2)|skewnorm)_(pd|cd|pp|i?s)f
 scipy\.special\._ufuncs\._cosine_(inv)?cdf
 scipy\.special\._ufuncs\._(cos|sin)pi
