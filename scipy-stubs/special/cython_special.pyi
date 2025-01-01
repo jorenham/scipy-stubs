@@ -17,7 +17,7 @@ class _BaseCythonFunctionOrMethod(Protocol):
     __qualname__: str  # cannot be `LiteralString` (blame typeshed)
     __module__: str  # cannot be `Literal["scipy.special.cython_special"]` (blame typeshed)
 
-    __annotations__: dict[str, Never]  # and that's why were here :)
+    __annotations__: dict[str, Never]  # type: ignore[assignment]
     __defaults__: tuple[()] | tuple[Literal[0]] | None
     __kwdefaults__: None  # kw-only params aren't used
 
