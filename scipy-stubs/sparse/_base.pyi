@@ -179,6 +179,9 @@ class _spbase(Generic[_SCT_co, _ShapeT_co]):
     #
     def __bool__(self, /) -> bool: ...
 
+    # only `dok_*` doesn't raise `TypeError` when passed to `len`
+    def __len__(self: dok_array[Any, Any] | dok_matrix[Any], /) -> int: ...  # pyright: ignore[reportGeneralTypeIssues]
+
     #
     @overload  # 1-d {csr,dok}_array
     def __iter__(self: csr_array[_SCT, _1D] | dok_array[_SCT, _1D], /) -> Iterator[_SCT]: ...
