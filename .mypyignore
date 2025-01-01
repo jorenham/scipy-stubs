@@ -20,11 +20,7 @@ scipy\.stats\._rcont\.rcont
 # why is this even included in the wheels?
 scipy\.special\._precompute\..*
 
-# omitted methods that always return `NotImplemented` or always raise
-# scipy\.sparse\._(\w+)\._(\w+)\.__(len|i(add|mul|sub)|(i|r)(true)?div)__
-
 # workarounds for mypy bugs
-scipy\.signal\._short_time_fft\.(FFT_MODE_TYPE|PAD_TYPE)  # `Literal[...] != def (*, **)`
 scipy\.(_lib|integrate|stats)\.((_|\w)+\.)+__replace__  # `NamedTuple` on `python >= 3.13`
 
 # stubtest doesn't understand `if sys.version_info >= _: ...` blocks
