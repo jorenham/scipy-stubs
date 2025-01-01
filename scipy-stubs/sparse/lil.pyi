@@ -1,4 +1,7 @@
+# ruff: noqa: ANN401
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
+
+from typing import Any
 from typing_extensions import deprecated
 
 from . import _lil
@@ -12,4 +15,4 @@ class lil_array(_lil.lil_array): ...
 class lil_matrix(_lil.lil_matrix): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
-def isspmatrix_lil(x: object) -> object: ...
+def isspmatrix_lil(x: object) -> Any: ...
