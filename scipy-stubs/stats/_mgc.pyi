@@ -7,6 +7,10 @@ import optype.numpy as onp
 from scipy._typing import ToRNG
 from ._typing import BaseBunch
 
+__all__ = ["multiscale_graphcorr"]
+
+###
+
 _T = TypeVar("_T")
 _R = TypeVar("_R")
 
@@ -16,6 +20,8 @@ class _MGCDict(TypedDict):
     opt_scale: Sequence[int | np.intp]  # list of size 2
     null_dist: onp.Array1D[np.float64]
 
+###
+
 class MGCResult(BaseBunch[np.float64, np.float64, _MGCDict]):
     @property
     def statistic(self, /) -> np.float64: ...
@@ -23,6 +29,8 @@ class MGCResult(BaseBunch[np.float64, np.float64, _MGCDict]):
     def pvalue(self, /) -> np.float64: ...
     @property
     def mgc_dict(self, /) -> _MGCDict: ...
+
+    #
     def __new__(_cls, statistic: np.float64, pvalue: np.float64, mgc_dict: _MGCDict) -> Self: ...
     def __init__(self, /, statistic: np.float64, pvalue: np.float64, mgc_dict: _MGCDict) -> None: ...
 
