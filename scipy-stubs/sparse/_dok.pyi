@@ -1,4 +1,5 @@
-# mypy: disable-error-code="misc, override"
+# NOTE: Adding `@override` to `@overload`ed methods will crash stubtest (basedmypy 1.13.0)
+# mypy: disable-error-code="misc, override, explicit-override"
 # pyright: reportIncompatibleMethodOverride=false
 
 from collections.abc import Iterable, Sequence
@@ -6,6 +7,7 @@ from typing import Any, Generic, Literal, TypeAlias, overload
 from typing_extensions import Never, Self, TypeIs, TypeVar, override
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
 import optype.typing as opt
 from ._base import _spbase, sparray
@@ -15,13 +17,24 @@ from ._typing import Scalar, ShapeDOK, ToShape1dNd
 
 __all__ = ["dok_array", "dok_matrix", "isspmatrix_dok"]
 
+###
+
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Scalar, default=Any)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=ShapeDOK, default=ShapeDOK, covariant=True)
 
+_1D: TypeAlias = tuple[int]  # noqa: PYI042
+_2D: TypeAlias = tuple[int, int]  # noqa: PYI042
+
 _ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
+
+_ToKey1D: TypeAlias = onp.ToJustInt | tuple[onp.ToJustInt]
+_ToKey2D: TypeAlias = tuple[onp.ToJustInt, onp.ToJustInt]
+
+_ToKeys1D: TypeAlias = Iterable[_ToKey1D]
+_ToKeys2D: TypeAlias = Iterable[_ToKey2D]
 
 ###
 
@@ -31,11 +44,9 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
     @property
     @override
     def format(self, /) -> Literal["dok"]: ...
-    #
     @property
     @override
     def ndim(self, /) -> Literal[1, 2]: ...
-    #
     @property
     @override
     def shape(self, /) -> _ShapeT_co: ...
@@ -141,27 +152,158 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
     def __ror__(self, other: Never, /) -> Never: ...
     @override
     def __ior__(self, other: Never, /) -> Never: ...  # noqa: PYI034
+
+    #
+    @overload
+    def count_nonzero(self, /, axis: None = None) -> int: ...
+    @overload
+    def count_nonzero(self, /, axis: op.CanIndex) -> onp.Array1D[np.intp]: ...
+
+    #
     @override
     def update(self, /, val: Never) -> Never: ...
 
-    # TODO(jorenham)
-    @override
-    def get(self, key: onp.ToJustInt | ShapeDOK, /, default: onp.ToComplex = 0.0) -> _SCT: ...
-    @override
-    def setdefault(self, key: onp.ToJustInt | ShapeDOK, default: onp.ToComplex | None = None, /) -> _SCT: ...
-    @classmethod
-    @override
-    def fromkeys(cls, iterable: Iterable[ShapeDOK], value: int = 1, /) -> Self: ...
+    #
+    @overload
+    def setdefault(self: _dok_base[Any, _1D], key: _ToKey1D, default: None = None, /) -> _SCT | None: ...
+    @overload
+    def setdefault(self: _dok_base[Any, _2D], key: _ToKey2D, default: None = None, /) -> _SCT | None: ...
+    @overload
+    def setdefault(self, key: _ToKey1D | _ToKey2D, default: None = None, /) -> _SCT | None: ...
+    @overload
+    def setdefault(self: _dok_base[Any, _1D], key: _ToKey1D, default: _T, /) -> _SCT | _T: ...
+    @overload
+    def setdefault(self: _dok_base[Any, _2D], key: _ToKey2D, default: _T, /) -> _SCT | _T: ...
+    @overload
+    def setdefault(self, key: _ToKey1D | _ToKey2D, default: _T, /) -> _SCT | _T: ...
+
+    #
+    @overload
+    def get(self: _dok_base[Any, _1D], key: _ToKey1D, /, default: float = 0.0) -> _SCT | float: ...
+    @overload
+    def get(self: _dok_base[Any, _2D], key: _ToKey2D, /, default: float = 0.0) -> _SCT | float: ...
+    @overload
+    def get(self, key: _ToKey1D | _ToKey2D, /, default: float = 0.0) -> _SCT | float: ...
+    @overload
+    def get(self: _dok_base[Any, _1D], key: _ToKey1D, /, default: _T) -> _SCT | _T: ...
+    @overload
+    def get(self: _dok_base[Any, _2D], key: _ToKey2D, /, default: _T) -> _SCT | _T: ...
+    @overload
+    def get(self, key: _ToKey1D | _ToKey2D, /, default: _T) -> _SCT | _T: ...
 
     #
     def conjtransp(self, /) -> Self: ...
 
-class dok_array(_dok_base[_SCT, _ShapeT_co], sparray, Generic[_SCT, _ShapeT_co]): ...
+    #
+    @overload
+    @classmethod
+    def fromkeys(cls: type[_dok_base[np.bool_, _1D]], ks: _ToKeys1D, v: onp.ToBool, /) -> _dok_base[np.bool_, _1D]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[_dok_base[np.bool_, _2D]], ks: _ToKeys2D, v: onp.ToBool, /) -> _dok_base[np.bool_, _2D]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[_dok_base[np.int_, _1D]], ks: _ToKeys1D, v: opt.JustInt = 1, /) -> _dok_base[np.int_, _1D]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[_dok_base[np.int_, _2D]], ks: _ToKeys2D, v: opt.JustInt = 1, /) -> _dok_base[np.int_, _2D]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[_dok_base[np.float64, _1D]], ks: _ToKeys1D, v: opt.JustFloat, /) -> _dok_base[np.float64, _1D]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[_dok_base[np.float64, _2D]], ks: _ToKeys2D, v: opt.JustFloat, /) -> _dok_base[np.float64, _2D]: ...
+    @overload
+    @classmethod
+    def fromkeys(
+        cls: type[_dok_base[np.complex128, _1D]],
+        ks: _ToKeys1D,
+        v: opt.JustComplex,
+        /,
+    ) -> _dok_base[np.complex128, _1D]: ...
+    @overload
+    @classmethod
+    def fromkeys(
+        cls: type[_dok_base[np.complex128, _2D]],
+        ks: _ToKeys2D,
+        v: opt.JustComplex,
+        /,
+    ) -> _dok_base[np.complex128, _2D]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[_dok_base[_SCT, _1D]], ks: _ToKeys1D, v: _SCT, /) -> _dok_base[_SCT, _1D]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[_dok_base[_SCT, _2D]], ks: _ToKeys2D, v: _SCT, /) -> _dok_base[_SCT, _2D]: ...
 
-class dok_matrix(_dok_base[_SCT, tuple[int, int]], spmatrix[_SCT], Generic[_SCT]):
-    @override
-    def get(self, key: tuple[onp.ToJustInt, onp.ToJustInt], /, default: onp.ToComplex = 0.0) -> _SCT: ...
-    @override
-    def setdefault(self, key: tuple[onp.ToJustInt, onp.ToJustInt], default: onp.ToComplex | None = None, /) -> _SCT: ...
+#
+class dok_array(_dok_base[_SCT, _ShapeT_co], sparray, Generic[_SCT, _ShapeT_co]):
+    # NOTE: This horrible code duplication is required due to the lack of higher-kinded typing (HKT) support.
+    # https://github.com/python/typing/issues/548
+    @overload
+    @classmethod
+    def fromkeys(cls: type[dok_array[np.bool_, _1D]], ks: _ToKeys1D, v: onp.ToBool, /) -> dok_array[np.bool_, _1D]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[dok_array[np.bool_, _2D]], ks: _ToKeys2D, v: onp.ToBool, /) -> dok_array[np.bool_, _2D]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[dok_array[np.int_, _1D]], ks: _ToKeys1D, v: opt.JustInt = 1, /) -> dok_array[np.int_, _1D]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[dok_array[np.int_, _2D]], ks: _ToKeys2D, v: opt.JustInt = 1, /) -> dok_array[np.int_, _2D]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[dok_array[np.float64, _1D]], ks: _ToKeys1D, v: opt.JustFloat, /) -> dok_array[np.float64, _1D]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[dok_array[np.float64, _2D]], ks: _ToKeys2D, v: opt.JustFloat, /) -> dok_array[np.float64, _2D]: ...
+    @overload
+    @classmethod
+    def fromkeys(
+        cls: type[dok_array[np.complex128, _1D]],
+        ks: _ToKeys1D,
+        v: opt.JustComplex,
+        /,
+    ) -> dok_array[np.complex128, _1D]: ...
+    @overload
+    @classmethod
+    def fromkeys(
+        cls: type[dok_array[np.complex128, _2D]],
+        ks: _ToKeys2D,
+        v: opt.JustComplex,
+        /,
+    ) -> dok_array[np.complex128, _2D]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[dok_array[_SCT, _1D]], ks: _ToKeys1D, v: _SCT, /) -> dok_array[_SCT, _1D]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[dok_array[_SCT, _2D]], ks: _ToKeys2D, v: _SCT, /) -> dok_array[_SCT, _2D]: ...
 
+#
+class dok_matrix(_dok_base[_SCT, _2D], spmatrix[_SCT], Generic[_SCT]):
+    @override
+    def get(self, key: _ToKey2D, /, default: onp.ToComplex = 0.0) -> _SCT: ...
+    @override
+    def setdefault(self, key: _ToKey2D, default: onp.ToComplex | None = None, /) -> _SCT: ...
+
+    #
+    @overload
+    @classmethod
+    def fromkeys(cls: type[dok_matrix[np.bool_]], ks: _ToKeys2D, v: onp.ToBool, /) -> dok_matrix[np.bool_]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[dok_matrix[np.int_]], ks: _ToKeys2D, v: opt.JustInt = 1, /) -> dok_matrix[np.int_]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[dok_matrix[np.float64]], ks: _ToKeys2D, v: opt.JustFloat, /) -> dok_matrix[np.float64]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls: type[dok_matrix[np.complex128]], ks: _ToKeys2D, v: opt.JustComplex, /) -> dok_matrix[np.complex128]: ...
+    @overload
+    @classmethod
+    def fromkeys(cls, ks: _ToKeys2D, v: _SCT, /) -> Self: ...
+
+#
 def isspmatrix_dok(x: object) -> TypeIs[dok_matrix]: ...
