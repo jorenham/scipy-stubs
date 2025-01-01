@@ -14,12 +14,14 @@ scipy\.fftpack\.(_?helper\.)?fftfreq
 
 # accidental implicit exports of internal scipy machinery
 scipy\._lib\.decorator\.(DEF|ArgSpec|FunctionMaker|__init__|append|dispatch_on|get_init|getargspec|init|n_args)
-scipy\.special\._precompute\..*  # TODO??
 scipy\.special\.libsf_error_state
 scipy\.stats\._rcont\.rcont
 
+# why is this even included in the wheels?
+scipy\.special\._precompute\..*
+
 # omitted methods that always return `NotImplemented` or always raise
-scipy\.sparse\._(\w+)\._(\w+)\.__(len|i(add|mul|sub)|(i|r)(true)?div)__
+# scipy\.sparse\._(\w+)\._(\w+)\.__(len|i(add|mul|sub)|(i|r)(true)?div)__
 
 # workarounds for mypy bugs
 scipy\.signal\._short_time_fft\.(FFT_MODE_TYPE|PAD_TYPE)  # `Literal[...] != def (*, **)`
