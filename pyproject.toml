@@ -51,7 +51,7 @@ typecheck = [
     {include-group = "extras"},
     {include-group = "ci"},
     {include-group = "codegen"},
-    "basedmypy[faster-cache]>=2.8.1",
+    "basedmypy[faster-cache]>=2.9.0",
     "basedpyright>=1.23.1",
 ]
 dev = [
