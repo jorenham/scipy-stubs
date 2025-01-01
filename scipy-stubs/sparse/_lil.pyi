@@ -6,6 +6,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.typing as opt
+from scipy._typing import Falsy
 from ._base import _spbase, sparray
 from ._csr import csr_array, csr_matrix
 from ._index import IndexMixin
@@ -130,7 +131,27 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
 
     #
     @override
+    def __iadd__(self, other: Falsy | _spbase[Scalar] | onp.ArrayND[Scalar], /) -> Self: ...
+    @override
+    def __isub__(self, other: Falsy | _spbase[Scalar] | onp.ArrayND[Scalar], /) -> Self: ...
+    @override
+    def __imul__(self, other: onp.ToComplex, /) -> Self: ...  # type: ignore[override]
+    @override
+    def __itruediv__(self, other: onp.ToComplex, /) -> Self: ...  # type: ignore[override]
+    @override
+    def __idiv__(self, other: onp.ToComplex, /) -> Self: ...
+
+    #
+    @override
+    def tolil(self, /, copy: bool = False) -> Self: ...  # type: ignore[override]
+    @override
     def resize(self, /, *shape: int) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+
+    # NOTE: Adding `@override` here will crash stubtest (basedmypy 1.13.0)
+    @overload  # type: ignore[explicit-override]
+    def count_nonzero(self, /, axis: None = None) -> int: ...
+    @overload
+    def count_nonzero(self, /, axis: op.CanIndex) -> onp.Array1D[np.intp]: ...
 
     #
     def getrowview(self, /, i: int) -> Self: ...
