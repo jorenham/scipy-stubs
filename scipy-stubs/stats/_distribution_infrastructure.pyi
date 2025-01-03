@@ -341,6 +341,7 @@ class ContinuousDistribution(_BaseDistribution[_FloatT_co, _ShapeT_co], Generic[
     def reset_cache(self, /) -> None: ...
     def plot(
         self,
+        /,
         x: _PlotQuantity = "x",
         y: _PlotQuantity = "pdf",
         *,

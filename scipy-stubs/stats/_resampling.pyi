@@ -59,6 +59,7 @@ class MonteCarloMethod(ResamplingMethod):
 
     def __init__(
         self,
+        /,
         n_resamples: int = 9_999,
         batch: int | None = None,
         rvs: _RVSCallable | Sequence[_RVSCallable] | None = None,
@@ -81,6 +82,7 @@ class PermutationMethod(ResamplingMethod):
     @overload
     def __init__(
         self,
+        /,
         n_resamples: int = 9_999,
         batch: int | None = None,
         random_state: None = None,
@@ -89,10 +91,18 @@ class PermutationMethod(ResamplingMethod):
     ) -> None: ...
     @overload
     @deprecated("`random_state` is deprecated, use `rng` instead")  # this is a reasonable lie
-    def __init__(self, n_resamples: int, batch: int | None, random_state: ToRNG, *, rng: ToRNG = None) -> None: ...
+    def __init__(self, /, n_resamples: int, batch: int | None, random_state: ToRNG, *, rng: ToRNG = None) -> None: ...
     @overload
     @deprecated("`random_state` is deprecated, use `rng` instead")  # this is a reasonable lie
-    def __init__(self, n_resamples: int = 9_999, batch: int | None = None, *, random_state: ToRNG, rng: ToRNG = None) -> None: ...
+    def __init__(
+        self,
+        /,
+        n_resamples: int = 9_999,
+        batch: int | None = None,
+        *,
+        random_state: ToRNG,
+        rng: ToRNG = None,
+    ) -> None: ...
 
 @dataclass(match_args=False)
 class BootstrapMethod(ResamplingMethod):
