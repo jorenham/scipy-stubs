@@ -1,6 +1,5 @@
-from collections.abc import Callable
+from collections.abc import Callable, Generator
 from typing import Any, Final, Literal, TypeAlias, type_check_only
-from typing_extensions import Generator
 
 import numpy as np
 import optype.numpy as onp
