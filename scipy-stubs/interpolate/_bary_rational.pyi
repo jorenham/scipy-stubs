@@ -44,14 +44,15 @@ class AAA(_BarycentricRational[_SCT_co, tuple[int]], Generic[_SCT_co]):
     weights: onp.Array1D[_SCT_co]
 
     @property
-    def support_points(self) -> onp.Array1D[_SCT_co]: ...
+    def support_points(self, /) -> onp.Array1D[_SCT_co]: ...
     @property
-    def support_values(self) -> onp.Array1D[_SCT_co]: ...
+    def support_values(self, /) -> onp.Array1D[_SCT_co]: ...
 
     #
     @overload
     def __init__(
         self,
+        /,
         x: onp.CanArrayND[_SCT_co] | Sequence[_SCT_co],
         y: onp.CanArrayND[_SCT_co | _ToFloat16] | Sequence[_SCT_co | _ToFloat16],
         *,
@@ -63,6 +64,7 @@ class AAA(_BarycentricRational[_SCT_co, tuple[int]], Generic[_SCT_co]):
     @overload
     def __init__(
         self: AAA[np.float64],
+        /,
         x: Sequence[float],
         y: onp.CanArrayND[_ToFloat64] | Sequence[float | _ToFloat64],
         *,
@@ -74,6 +76,7 @@ class AAA(_BarycentricRational[_SCT_co, tuple[int]], Generic[_SCT_co]):
     @overload
     def __init__(
         self: AAA[np.float64],
+        /,
         x: onp.CanArrayND[_ToFloat64] | Sequence[float | _ToFloat64],
         y: Sequence[float],
         *,
@@ -85,6 +88,7 @@ class AAA(_BarycentricRational[_SCT_co, tuple[int]], Generic[_SCT_co]):
     @overload
     def __init__(
         self: AAA[np.complex128],
+        /,
         x: Sequence[complex],
         y: onp.CanArrayND[_ToFloat64] | Sequence[complex | _ToComplex128],
         *,
@@ -96,6 +100,7 @@ class AAA(_BarycentricRational[_SCT_co, tuple[int]], Generic[_SCT_co]):
     @overload
     def __init__(
         self: AAA[np.complex128],
+        /,
         x: onp.CanArrayND[_ToComplex128] | Sequence[complex | _ToComplex128],
         y: Sequence[complex],
         *,
