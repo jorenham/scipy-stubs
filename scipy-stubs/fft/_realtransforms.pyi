@@ -8,7 +8,7 @@ from scipy._typing import AnyShape, DCTType, NormalizationMode
 __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 
 # this doesn't include `numpy.float16`
-_RealND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]
+_FloatND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]
 
 ###
 
@@ -25,7 +25,9 @@ def dctn(
     workers: onp.ToInt | None = None,
     *,
     orthogonalize: op.CanBool | None = None,
-) -> _RealND: ...
+) -> _FloatND: ...
+
+#
 def idctn(
     x: onp.ToComplexND,
     type: DCTType = 2,
@@ -35,7 +37,9 @@ def idctn(
     overwrite_x: op.CanBool = False,
     workers: onp.ToInt | None = None,
     orthogonalize: op.CanBool | None = None,
-) -> _RealND: ...
+) -> _FloatND: ...
+
+#
 def dstn(
     x: onp.ToComplexND,
     type: DCTType = 2,
@@ -45,7 +49,9 @@ def dstn(
     overwrite_x: op.CanBool = False,
     workers: onp.ToInt | None = None,
     orthogonalize: op.CanBool | None = None,
-) -> _RealND: ...
+) -> _FloatND: ...
+
+#
 def idstn(
     x: onp.ToComplexND,
     type: DCTType = 2,
@@ -55,7 +61,9 @@ def idstn(
     overwrite_x: op.CanBool = False,
     workers: onp.ToInt | None = None,
     orthogonalize: op.CanBool | None = None,
-) -> _RealND: ...
+) -> _FloatND: ...
+
+#
 def dct(
     x: onp.ToComplexND,
     type: DCTType = 2,
@@ -65,7 +73,9 @@ def dct(
     overwrite_x: op.CanBool = False,
     workers: onp.ToInt | None = None,
     orthogonalize: op.CanBool | None = None,
-) -> _RealND: ...
+) -> _FloatND: ...
+
+#
 def idct(
     x: onp.ToComplexND,
     type: DCTType = 2,
@@ -75,7 +85,9 @@ def idct(
     overwrite_x: op.CanBool = False,
     workers: onp.ToInt | None = None,
     orthogonalize: op.CanBool | None = None,
-) -> _RealND: ...
+) -> _FloatND: ...
+
+#
 def dst(
     x: onp.ToComplexND,
     type: DCTType = 2,
@@ -85,7 +97,9 @@ def dst(
     overwrite_x: op.CanBool = False,
     workers: onp.ToInt | None = None,
     orthogonalize: op.CanBool | None = None,
-) -> _RealND: ...
+) -> _FloatND: ...
+
+#
 def idst(
     x: onp.ToComplexND,
     type: DCTType = 2,
@@ -95,4 +109,4 @@ def idst(
     overwrite_x: op.CanBool = False,
     workers: onp.ToInt | None = None,
     orthogonalize: op.CanBool | None = None,
-) -> _RealND: ...
+) -> _FloatND: ...

@@ -105,7 +105,6 @@ _null: Final[_Null] = ...
 
 def _isnull(x: object) -> TypeIs[_Null | None]: ...
 
-# TODO(jorenham): Generic dtype and shape
 class _Domain(abc.ABC):
     # NOTE: This is a `ClassVar[dict[str, float]]` that's overridden as instance attribute in `_SimpleDomain`.
     # https://github.com/scipy/scipy/pull/22139
@@ -121,7 +120,6 @@ class _Domain(abc.ABC):
     @abc.abstractmethod
     def get_numerical_endpoints(self, /, x: _ParamValues) -> tuple[onp.ArrayND[_OutFloat], onp.ArrayND[_OutFloat]]: ...
 
-# TODO(jorenham): Generic dtype
 class _SimpleDomain(_Domain, metaclass=abc.ABCMeta):
     def __init__(self, /, endpoints: _ToDomain = ..., inclusive: tuple[bool, bool] = (False, False)) -> None: ...
     @override
@@ -369,8 +367,6 @@ class ShiftedScaledDistribution(_TransDist[_DistT_co, _FloatT_co, _ShapeT_co], G
 
     loc: _ParamField[_FloatT_co, _ShapeT_co]
     scale: _ParamField[_FloatT_co, _ShapeT_co]
-
-    # TODO(jorenham): override `__[r]{add,sub,mul,truediv}__` so that it returns a `Self` (but maybe with different shape)
 
 class FoldedDistribution(_TransDist[_DistT_co, _FloatT_co, _ShapeT_co], Generic[_DistT_co, _FloatT_co, _ShapeT_co]):
     @overload

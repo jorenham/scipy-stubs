@@ -10,7 +10,6 @@ _Complex: TypeAlias = np.complex128 | np.clongdouble
 
 ###
 
-# TODO: make generic on `_Complex`
 class CZT:
     w: Final[onp.ToComplex]
     a: Final[onp.ToComplex]

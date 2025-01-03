@@ -348,7 +348,7 @@ def pinv(
     check_finite: onp.ToBool = True,
 ) -> tuple[_Complex2D, int]: ...
 
-# TODO(jorenham): pos-only `return_rank`
+#
 @overload  # (float[:, :], return_rank=False) -> float[:, :]
 def pinvh(
     a: onp.ToFloat2D,

@@ -200,7 +200,7 @@ def minimize_scalar(
     args: _Args = (),
     method: MethodMinimizeScalar | Callable[..., _MinimizeScalarResult] | None = None,
     tol: onp.ToFloat | None = None,
-    options: Mapping[str, object] | None = None,  # TODO(jorenham): TypedDict
+    options: Mapping[str, object] | None = None,
 ) -> _MinimizeScalarResult: ...
 
 # undocumented

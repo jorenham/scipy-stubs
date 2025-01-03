@@ -7,9 +7,10 @@ import optype.numpy as onp
 from scipy.sparse import sparray, spmatrix
 from .base import DenseOutput, OdeSolver
 
+###
+
 _SCT_co = TypeVar("_SCT_co", covariant=True, bound=np.inexact[Any], default=np.float64 | np.complex128)
 
-# TODO(jorenham): sparse
 _LU: TypeAlias = tuple[onp.ArrayND[np.inexact[Any]], onp.ArrayND[np.integer[Any]]]
 _FuncLU: TypeAlias = Callable[[onp.ArrayND[np.float64]], _LU] | Callable[[onp.ArrayND[np.complex128]], _LU]
 _FuncSolveLU: TypeAlias = Callable[[_LU, onp.ArrayND], onp.ArrayND[np.inexact[Any]]]
@@ -46,9 +47,9 @@ class BDF(OdeSolver, Generic[_SCT_co]):
     def __init__(
         self,
         /,
-        fun: Callable[[float, onp.ArrayND[_SCT_co]], onp.ToComplex1D],
+        fun: Callable[[float, onp.Array1D[_SCT_co]], onp.ToComplex1D],
         t0: onp.ToFloat,
-        y0: onp.ArrayND[_SCT_co] | onp.ToComplexND,
+        y0: onp.Array1D[_SCT_co] | onp.ToComplexND,
         t_bound: onp.ToFloat,
         max_step: onp.ToFloat = ...,
         rtol: onp.ToFloat = 0.001,

@@ -25,5 +25,5 @@ def milp(
     integrality: onp.ToInt1D | None = None,
     bounds: Bounds | None = None,
     constraints: Sequence[LinearConstraint] | None = None,
-    options: Mapping[str, object] | None = None,  # TODO(jorenham): TypedDict
+    options: Mapping[str, object] | None = None,
 ) -> _OptimizeResult: ...

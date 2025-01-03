@@ -139,7 +139,7 @@ def derivative(
     callback: Callable[[_DerivativeResultND[_FloatT, _ShapeT]], _Ignored] | None = None,
 ) -> _DerivativeResultND[_FloatT, _ShapeT]: ...
 
-# TODO(jorenham): shape overloads
+#
 def jacobian(
     f: Callable[[onp.Array[Any, _FloatT]], onp.ToFloat | onp.ToFloatND],
     x: onp.ToFloatND,
@@ -152,7 +152,7 @@ def jacobian(
     step_direction: onp.ToJustInt | onp.ToJustIntND = 0,
 ) -> _JacobianResult[_FloatT, onp.AtLeast1D]: ...
 
-# TODO(jorenham): shape overloads
+#
 def hessian(
     f: Callable[[onp.Array[Any, _FloatT]], onp.ToFloat | onp.ToFloatND],
     x: onp.ToFloatND,

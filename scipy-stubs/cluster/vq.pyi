@@ -19,7 +19,7 @@ _InexactT = TypeVar("_InexactT", bound=_Inexact)
 
 class ClusterError(Exception): ...
 
-# TODO(jorenham): Array API support
+#
 @overload
 def whiten(obs: onp.ArrayND[np.bool_ | np.integer[Any]], check_finite: bool = True) -> onp.Array2D[np.float64]: ...
 @overload

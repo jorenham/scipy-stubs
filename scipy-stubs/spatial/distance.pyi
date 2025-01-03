@@ -105,7 +105,7 @@ _ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND[np.number[Any]])
 
 ###
 
-# TODO(jorenham): Add `metric`-specific overloads
+#
 @overload
 def cdist(
     XA: onp.ToFloat2D,
@@ -149,7 +149,7 @@ def cdist(XA: onp.ToComplex2D, XB: onp.ToComplex2D, metric: _MetricFunc, *, out:
 @overload
 def cdist(XA: onp.ToComplex2D, XB: onp.ToComplex2D, metric: _MetricFunc, *, out: _ArrayT, **kwds: object) -> _ArrayT: ...
 
-# TODO(jorenham): Add `metric`-specific overloads
+#
 @overload
 def pdist(
     X: onp.ToFloat2D,

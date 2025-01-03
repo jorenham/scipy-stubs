@@ -111,7 +111,6 @@ class TerminationCondition:
     ) -> None: ...
     def check(self, /, f: _InexactND, x: _InexactND, dx: _InexactND) -> int: ...
 
-# TODO(jorenham): Make generic on (inexact) dtype
 class Jacobian:
     shape: Final[tuple[int, int]]
     dtype: Final[np.dtype[np.generic]]
@@ -126,7 +125,6 @@ class Jacobian:
     def update(self, /, x: _InexactND, F: _InexactND) -> None: ...  # does nothing
     def aspreconditioner(self, /) -> InverseJacobian: ...
 
-# TODO(jorenham): Make generic on shape an dtype
 class InverseJacobian:  # undocumented
     jacobian: Final[Jacobian]
     matvec: Final[Callable[[_InexactND], _Inexact1D] | Callable[[_InexactND, onp.ToFloat], _Inexact1D]]
