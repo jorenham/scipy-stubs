@@ -1,6 +1,3 @@
-# TODO: overloads for specific scalar-types (mind the int/float/complex promotion)
-# TODO: pass the literal shape sizes to the shape parameters of the `_zeroes` return types (i.e. 1d arrays)
-
 from collections.abc import Sequence
 from typing import Any, Literal as L, TypeAlias, overload
 from typing_extensions import TypeVar, Unpack, deprecated

@@ -596,7 +596,7 @@ def brent(
     maxiter: int = 500,
 ) -> tuple[_Float, _Float, int, int]: ...
 
-# TODO(jorenham): overload `full_output`
+#
 @overload  # full_output: False = ...
 def golden(
     func: _Fn1_0d,

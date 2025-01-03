@@ -375,7 +375,7 @@ class multinomial_gen(multi_rv_generic):
         random_state: spt.ToRNG = None,
     ) -> onp.Array[onp.AtLeast2D, np.float64]: ...
 
-# TODO: make generic on the (output) shape-type, i.e. to capture the broadcasting effects (use `TypeVar` with default)
+#
 class multinomial_frozen(multi_rv_frozen[multinomial_gen]):
     def __init__(self, /, n: onp.ToJustIntND, p: _ToJustFloatND, seed: spt.ToRNG = None) -> None: ...
     def logpmf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
@@ -417,7 +417,7 @@ class ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[ortho_group_gen
 class unitary_group_gen(_group_rv_gen_mixin[unitary_group_frozen], multi_rv_generic): ...
 class unitary_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[unitary_group_gen]): ...
 
-# TODO(jorenham): `uniform_direction` is vector-valued, so make generic on the shape-type, default to `tuple[int, int, int]`
+#
 class uniform_direction_gen(multi_rv_generic):
     def __call__(self, /, dim: onp.ToJustInt | None = None, seed: spt.ToRNG = None) -> uniform_direction_frozen: ...
     def rvs(
@@ -639,7 +639,6 @@ class multivariate_hypergeom_gen(multi_rv_generic):
         random_state: spt.ToRNG = None,
     ) -> onp.Array[onp.AtLeast2D, np.float64]: ...
 
-# TODO: make generic with a shape type-param (with default) to capture the broadcasting effects
 class multivariate_hypergeom_frozen(multi_rv_frozen[multivariate_hypergeom_gen]):
     def __init__(self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND, seed: spt.ToRNG = None) -> None: ...
     def logpmf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
@@ -702,7 +701,6 @@ class dirichlet_multinomial_gen(multi_rv_generic):
     def var(self, /, alpha: onp.ToFloatND, n: onp.ToJustIntND) -> onp.Array[onp.AtLeast1D, np.float64]: ...
     def cov(self, /, alpha: onp.ToFloatND, n: onp.ToJustIntND) -> onp.Array[onp.AtLeast2D, np.float64]: ...
 
-# TODO: make generic with a shape type-param (with default) to capture the broadcasting effects
 class dirichlet_multinomial_frozen(multi_rv_frozen[dirichlet_multinomial_gen]):
     alpha: onp.Array[onp.AtLeast1D, np.float64]
     n: onp.Array[onp.AtLeast1D, np.int_]  # broadcasted against alpha
@@ -804,7 +802,7 @@ class normal_inverse_gamma_gen(multi_rv_generic):
         random_state: spt.ToRNG = None,
     ) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
 
-# TODO(jorenham): Generic shape-type (or `_ScalarOrArray_f8` itself?)
+#
 class normal_inverse_gamma_frozen(multi_rv_frozen[normal_inverse_gamma_gen]):
     def __init__(
         self,

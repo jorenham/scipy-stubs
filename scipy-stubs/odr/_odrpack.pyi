@@ -232,8 +232,8 @@ class ODR:
         delta0: onp.ToFloat1D | None = None,
         ifixb: onp.ToInt1D | None = None,
         ifixx: onp.ToIntND | None = None,
-        job: int | None = None,  # TODO: Use literal, see ODRPACK User's Guide p. 31
-        iprint: int | None = None,  # TODO: Use literal, seeODRPACK User's Guide p. 33-34
+        job: int | None = None,
+        iprint: int | None = None,
         errfile: str | None = None,
         rptfile: str | None = None,
         ndigit: int | None = None,

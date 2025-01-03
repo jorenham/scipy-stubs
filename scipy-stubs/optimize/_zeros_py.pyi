@@ -112,9 +112,7 @@ def results_c(
     method: MethodRootScalar,
 ) -> tuple[_RT, RootResults[_RT]]: ...
 
-# TODO: overload `shape(x0)`: `() | (1) | (1, 1), ... -> root: scalar[_]`, `_ -> root: array[_]`
-# TODO: overload `dtype(x0)`: `floating -> root: _[float64]`; `complexfloating -> root: _[complex128]`
-# TODO: overload `full_output`: `falsy -> root`, `truthy -> (root, r, converged, zero_der)`
+#
 @overload
 def newton(
     func: _Fun0D,

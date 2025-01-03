@@ -36,9 +36,6 @@ _ToHessFun: TypeAlias = _HessFun[_XT_contra] | _FDMethod | HessianUpdateStrategy
 
 FD_METHODS: Final = "2-point", "3-point", "cs"
 
-# TODO(jorenham): Array API compatibility
-# https://github.com/jorenham/scipy-stubs/issues/140
-
 class ScalarFunction(Generic[_XT_contra]):
     xp: Final[ModuleType]
 

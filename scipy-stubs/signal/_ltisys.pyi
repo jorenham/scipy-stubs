@@ -54,7 +54,6 @@ _ToDLTI: TypeAlias = _ToTFDiscReal | _ToZPKDiscReal | _ToSSDiscReal
 
 ###
 
-# TODO(jorenham): Generic scalar type
 class LinearTimeInvariant:
     inputs: Final[int]
     outputs: Final[int]

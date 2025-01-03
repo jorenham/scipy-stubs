@@ -3,7 +3,16 @@ from typing import Literal, TypeAlias, TypeVar, overload
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
-from ._ltisys import dlti, lti
+from ._ltisys import (
+    StateSpaceContinuous,
+    StateSpaceDiscrete,
+    TransferFunctionContinuous,
+    TransferFunctionDiscrete,
+    ZerosPolesGainContinuous,
+    ZerosPolesGainDiscrete,
+    dlti,
+    lti,
+)
 
 __all__ = ["abcd_normalize", "cont2discrete", "ss2tf", "ss2zpk", "tf2ss", "zpk2ss"]
 
@@ -81,7 +90,28 @@ def ss2zpk(
     input: onp.ToInt = 0,
 ) -> _SystemZPK: ...
 
-# TODO: overload on lti subclasses
+#
+@overload
+def cont2discrete(
+    system: TransferFunctionContinuous,
+    dt: float,
+    method: _DiscretizeMethod = "zoh",
+    alpha: onp.ToJustFloat | None = None,
+) -> TransferFunctionDiscrete: ...
+@overload
+def cont2discrete(
+    system: ZerosPolesGainContinuous,
+    dt: float,
+    method: _DiscretizeMethod = "zoh",
+    alpha: onp.ToJustFloat | None = None,
+) -> ZerosPolesGainDiscrete: ...
+@overload
+def cont2discrete(
+    system: StateSpaceContinuous,
+    dt: float,
+    method: _DiscretizeMethod = "zoh",
+    alpha: onp.ToJustFloat | None = None,
+) -> StateSpaceDiscrete: ...
 @overload
 def cont2discrete(
     system: lti,

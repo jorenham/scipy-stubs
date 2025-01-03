@@ -25,7 +25,7 @@ LINPROG_METHODS: Final[Sequence[MethodLinprog]] = ...
 def linprog_verbose_callback(res: _OptimizeResult) -> None: ...
 def linprog_terse_callback(res: _OptimizeResult) -> None: ...
 
-# TODO: Tighen these array-like types
+#
 def linprog(
     c: onp.ToScalar | onp.ToArrayND,
     A_ub: onp.ToScalar | onp.ToArrayND | None = None,
@@ -35,7 +35,6 @@ def linprog(
     bounds: Bound = (0, None),
     method: MethodLinprog = "highs",
     callback: Callable[[_OptimizeResult], None] | None = None,
-    # TODO: `TypedDict`
     options: Mapping[str, object] | None = None,
     x0: onp.ToScalar | onp.ToArrayND | None = None,
     integrality: onp.ToScalar | onp.ToArrayND | None = None,
