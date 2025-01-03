@@ -101,7 +101,8 @@ class FixTrailingComma(_BaseMod):
 
     @override
     def leave_FunctionDef(self, /, original_node: cst.FunctionDef, updated_node: cst.FunctionDef) -> cst.FunctionDef:
-        params = updated_node.params.params
+        params_node = updated_node.params
+        params = *params_node.posonly_params, *params_node.params, *params_node.kwonly_params
 
         if (
             # the parameters start on a new line
