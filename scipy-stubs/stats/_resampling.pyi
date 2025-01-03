@@ -95,7 +95,13 @@ class PermutationMethod(ResamplingMethod):
     @overload
     @deprecated("`random_state` is deprecated, use `rng` instead")  # this is a reasonable lie
     def __init__(
-        self, /, n_resamples: int = 9_999, batch: int | None = None, *, random_state: ToRNG, rng: ToRNG = None
+        self,
+        /,
+        n_resamples: int = 9_999,
+        batch: int | None = None,
+        *,
+        random_state: ToRNG,
+        rng: ToRNG = None,
     ) -> None: ...
 
 @dataclass(match_args=False)
