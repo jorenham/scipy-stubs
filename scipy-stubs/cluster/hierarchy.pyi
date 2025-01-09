@@ -73,7 +73,7 @@ class _DendrogramResult(TypedDict):
 class ClusterWarning(UserWarning): ...
 
 # NOTE: this can't be made generic, because mypy doesn't support cyclical generic types (classic mypy...)
-class ClusterNode:  # noqa: PLW1641
+class ClusterNode:
     id: Final[int]
     left: Final[ClusterNode | None]
     right: Final[ClusterNode | None]
