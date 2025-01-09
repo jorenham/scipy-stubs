@@ -1,5 +1,5 @@
-from typing import Final, overload
-from typing_extensions import Self, override
+from typing import Final, Generic, TypeAlias, overload
+from typing_extensions import Self, TypeVar
 
 import numpy as np
 import optype as op
@@ -8,10 +8,18 @@ from ._ckdtree import cKDTree, cKDTreeNode
 
 __all__ = ["KDTree", "Rectangle", "distance_matrix", "minkowski_distance", "minkowski_distance_p"]
 
+_Float1D: TypeAlias = onp.Array1D[np.float64]
+_Float2D: TypeAlias = onp.Array2D[np.float64]
+
+_BoxSizeT_co = TypeVar("_BoxSizeT_co", bound=_Float2D | None, default=_Float2D | None, covariant=True)
+_BoxSizeDataT_co = TypeVar("_BoxSizeDataT_co", bound=_Float1D | None, default=_Float1D | None, covariant=True)
+
+###
+
 class Rectangle:
     maxes: Final[onp.Array1D[np.float64]]
     mins: Final[onp.Array1D[np.float64]]
-    def __init__(self, /, maxes: onp.ToFloatND, mins: onp.ToFloatND) -> None: ...
+    def __init__(self, /, maxes: onp.ToFloat1D, mins: onp.ToFloat1D) -> None: ...
     def volume(self, /) -> np.float64: ...
     def split(self, /, d: op.CanIndex, split: onp.ToFloat) -> tuple[Self, Self]: ...
     def min_distance_point(self, /, x: onp.ToFloat | onp.ToFloatND, p: onp.ToFloat = 2.0) -> onp.ArrayND[np.float64]: ...
@@ -19,7 +27,7 @@ class Rectangle:
     def min_distance_rectangle(self, /, other: Rectangle, p: onp.ToFloat = 2.0) -> onp.ArrayND[np.float64]: ...
     def max_distance_rectangle(self, /, other: Rectangle, p: onp.ToFloat = 2.0) -> onp.ArrayND[np.float64]: ...
 
-class KDTree(cKDTree):
+class KDTree(cKDTree[_BoxSizeT_co, _BoxSizeDataT_co], Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     class node:
         @staticmethod
         def _create(ckdtree_node: cKDTreeNode | None = None) -> KDTree.leafnode | KDTree.innernode: ...
@@ -47,48 +55,40 @@ class KDTree(cKDTree):
         @property
         def children(self, /) -> int: ...
 
+    @overload
     def __init__(
-        self,
+        self: KDTree[None, None],
         /,
         data: onp.ToComplexND,
         leafsize: onp.ToInt = 10,
         compact_nodes: bool = True,
         copy_data: bool = False,
         balanced_tree: bool = True,
-        boxsize: onp.ToFloat | onp.ToFloatND | None = None,
+        boxsize: None = None,
     ) -> None: ...
-    @override
-    def query(
-        self,
+    @overload
+    def __init__(
+        self: KDTree[_Float2D, _Float1D],
         /,
-        x: onp.ToFloat1D,
-        k: onp.ToInt | onp.ToInt1D = 1,
-        eps: onp.ToFloat = 0,
-        p: onp.ToFloat = 2.0,
-        distance_upper_bound: float = ...,  # inf
-        workers: int | None = None,
-    ) -> tuple[float, np.intp] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]: ...
-    @override
-    def query_ball_point(
-        self,
+        data: onp.ToComplexND,
+        leafsize: onp.ToInt,
+        compact_nodes: bool,
+        copy_data: bool,
+        balanced_tree: bool,
+        boxsize: onp.ToFloat2D,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: KDTree[_Float2D, _Float1D],
         /,
-        x: onp.ToFloatND,
-        r: onp.ToFloat | onp.ToFloatND,
-        p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = 0,
-        workers: int | None = None,
-        return_sorted: bool | None = None,
-        return_length: bool = False,
-    ) -> list[int] | onp.ArrayND[np.object_]: ...
-    @override
-    def query_ball_tree(
-        self,
-        /,
-        other: cKDTree,
-        r: onp.ToFloat,
-        p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = 0,
-    ) -> list[list[int]]: ...
+        data: onp.ToComplexND,
+        leafsize: onp.ToInt = 10,
+        compact_nodes: bool = True,
+        copy_data: bool = False,
+        balanced_tree: bool = True,
+        *,
+        boxsize: onp.ToFloat2D,
+    ) -> None: ...
 
 @overload
 def minkowski_distance_p(x: onp.ToFloatND, y: onp.ToFloatND, p: int = 2) -> onp.ArrayND[np.float64]: ...
