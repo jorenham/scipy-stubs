@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "scipy-stubs"
-version = "1.15.0.1.dev0"
-description = "Precise type-hints for all of SciPy"
+version = "1.15.1.0.dev0"
+description = "Type annotations for SciPy"
 readme = "README.md"
 authors = [
     {name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com"},
@@ -35,7 +35,7 @@ dependencies = [
 [dependency-groups]
 extras = ["scipy-stubs[scipy]"]
 ci = ["packaging>=24.2"]
-codegen = ["libcst>=1.5.1,<2"]
+codegen = ["libcst>=1.6.0,<2"]
 mdformat = [
     "mdformat>=0.7.21",
     "mdformat-gfm>=0.4.1",
@@ -44,7 +44,7 @@ mdformat = [
 lint = [
     {include-group = "extras"},
     {include-group = "mdformat"},
-    "ruff>=0.9.0",
+    "ruff>=0.9.1",
     "sp-repo-review[cli]>=2024.8.19",
 ]
 typecheck = [
@@ -57,13 +57,13 @@ typecheck = [
 dev = [
     {include-group = "lint"},
     {include-group = "typecheck"},
-    "poethepoet>=0.32.0,<1",
+    "poethepoet>=0.32.1,<1",
     "pre-commit>=4.0.1,<5",
     "pre-commit-uv>=4.1.4,<5",
 ]
 
 [project.optional-dependencies]
-scipy = ["scipy>=1.15.0,<1.16"]
+scipy = ["scipy>=1.15.1,<1.16"]
 
 [project.urls]
 Repository = "https://github.com/jorenham/scipy-stubs/"
