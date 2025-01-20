@@ -50,12 +50,12 @@ repos:
           - mdformat-gfm-alerts
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.28.4
+    rev: dictgen-v0.3.1
     hooks:
       - id: typos
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.1
+    rev: v0.9.2
     hooks:
       - id: ruff
         args: [--fix, --show-fixes]
