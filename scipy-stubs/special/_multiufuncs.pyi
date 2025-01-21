@@ -3,8 +3,8 @@ from typing import Any, Final, Generic, Literal as L, ParamSpec, Protocol, TypeA
 from typing_extensions import TypeVar, override
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
-import optype.typing as opt
 
 __all__ = [
     "assoc_legendre_p",
@@ -22,7 +22,7 @@ _RT = TypeVar("_RT")
 _UFuncT_co = TypeVar("_UFuncT_co", bound=Callable[..., object], default=Callable[..., Any], covariant=True)
 
 _Complex: TypeAlias = np.complex64 | np.complex128  # `clongdouble` isn't supported
-_ToJustComplex: TypeAlias = opt.JustComplex | _Complex
+_ToJustComplex: TypeAlias = op.JustComplex | _Complex
 _ToJustComplexND: TypeAlias = onp.CanArrayND[_Complex] | onp.SequenceND[onp.CanArrayND[_Complex]] | onp.SequenceND[_ToJustComplex]
 _ToJustComplex_D: TypeAlias = _ToJustComplex | _ToJustComplexND
 

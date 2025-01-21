@@ -2,8 +2,8 @@ from collections.abc import Callable, Generator
 from typing import Any, Final, Literal, TypeAlias, type_check_only
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
-import optype.typing as opt
 from ._bsplines import BSpline
 
 _Float: TypeAlias = float | np.float32 | np.float64 | np.longdouble
@@ -101,9 +101,9 @@ def generate_knots(
     w: onp.ToFloat1D | None = None,
     xb: onp.ToFloat | None = None,
     xe: onp.ToFloat | None = None,
-    k: opt.JustInt = 3,
+    k: op.JustInt = 3,
     s: onp.ToFloat = 0,
-    nest: opt.JustInt | None = None,
+    nest: op.JustInt | None = None,
 ) -> Generator[onp.Array1D[np.float64]]: ...
 
 #
@@ -114,10 +114,10 @@ def make_splrep(
     w: onp.ToFloat1D | None = None,
     xb: onp.ToFloat | None = None,
     xe: onp.ToFloat | None = None,
-    k: opt.JustInt = 3,
+    k: op.JustInt = 3,
     s: onp.ToFloat = 0,
     t: onp.ToFloat1D | None = None,
-    nest: opt.JustInt | None = None,
+    nest: op.JustInt | None = None,
 ) -> BSpline: ...
 
 #
@@ -128,8 +128,8 @@ def make_splprep(
     u: onp.ToFloat1D | None = None,
     ub: onp.ToFloat | None = None,
     ue: onp.ToFloat | None = None,
-    k: opt.JustInt = 3,
+    k: op.JustInt = 3,
     s: onp.ToFloat = 0,
     t: onp.ToFloat1D | None = None,
-    nest: opt.JustInt | None = None,
+    nest: op.JustInt | None = None,
 ) -> tuple[BSpline, onp.Array1D[np.floating[Any]]]: ...

@@ -4,8 +4,8 @@ from typing import Any, Final, Literal, TypeAlias, TypedDict, overload, type_che
 from typing_extensions import TypeVar, override
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
-import optype.typing as opt
 from scipy._lib._disjoint_set import DisjointSet
 from scipy._typing import Falsy, Truthy
 from scipy.spatial.distance import _Metric
@@ -179,7 +179,7 @@ def fcluster(
     Z: onp.ToArray2D,
     t: onp.ToFloat,
     criterion: _ClusterCriterion = "inconsistent",
-    depth: opt.JustInt = 2,
+    depth: op.JustInt = 2,
     R: onp.ToArrayND | None = None,
     monocrit: onp.ToArrayND | None = None,
 ) -> onp.Array1D[np.int32]: ...
@@ -190,7 +190,7 @@ def fclusterdata(
     t: onp.ToFloat,
     criterion: _ClusterCriterion = "inconsistent",
     metric: _Metric = "euclidean",
-    depth: opt.JustInt = 2,
+    depth: op.JustInt = 2,
     method: _LinkageMethod = "single",
     R: onp.ToArrayND | None = None,
 ) -> onp.Array1D[np.int32]: ...

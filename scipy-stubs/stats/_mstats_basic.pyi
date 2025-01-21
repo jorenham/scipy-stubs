@@ -5,7 +5,6 @@ from typing_extensions import Self, TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
-import optype.typing as opt
 from numpy._typing import _ArrayLike
 from scipy._typing import Alternative, AnyBool, NanPolicy
 from ._stats_mstats_common import SiegelslopesResult, TheilslopesResult
@@ -279,7 +278,7 @@ def trima(
 ) -> onp.MArray[np.bool_]: ...
 @overload
 def trima(
-    a: onp.SequenceND[opt.JustInt],
+    a: onp.SequenceND[op.JustInt],
     limits: tuple[onp.ToInt, onp.ToInt] | None = None,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
 ) -> onp.MArray[np.int_]: ...
@@ -305,7 +304,7 @@ def trima(
 #
 @overload
 def trimr(
-    a: onp.SequenceND[opt.JustInt | np.int_],
+    a: onp.SequenceND[op.JustInt | np.int_],
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
@@ -335,7 +334,7 @@ def trimr(
 #
 @overload
 def trim(
-    a: onp.SequenceND[opt.JustInt | np.int_],
+    a: onp.SequenceND[op.JustInt | np.int_],
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     relative: op.CanBool = False,
@@ -369,7 +368,7 @@ def trim(
 #
 @overload
 def trimboth(
-    data: onp.SequenceND[opt.JustInt | np.int_],
+    data: onp.SequenceND[op.JustInt | np.int_],
     proportiontocut: float | np.floating[Any] = 0.2,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
@@ -399,7 +398,7 @@ def trimboth(
 #
 @overload
 def trimtail(
-    data: onp.SequenceND[opt.JustInt | np.int_],
+    data: onp.SequenceND[op.JustInt | np.int_],
     proportiontocut: float | np.floating[Any] = 0.2,
     tail: Literal["left", "right"] = "left",
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
@@ -504,7 +503,7 @@ def tvar(
 #
 @overload
 def tmin(
-    a: onp.SequenceND[opt.JustInt | np.int_],
+    a: onp.SequenceND[op.JustInt | np.int_],
     lowerlimit: onp.ToFloat | None = None,
     axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,
@@ -534,7 +533,7 @@ def tmin(
 #
 @overload
 def tmax(
-    a: onp.SequenceND[opt.JustInt | np.int_],
+    a: onp.SequenceND[op.JustInt | np.int_],
     upperlimit: onp.ToFloat | None = None,
     axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,

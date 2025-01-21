@@ -5,8 +5,8 @@ from typing_extensions import Self, TypeVar, override
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 import optype.numpy as onp
-import optype.typing as opt
 from ._base import _spbase
 from ._data import _data_matrix, _minmax_mixin
 from ._index import IndexMixin
@@ -162,7 +162,7 @@ class _cs_matrix(
     def __init__(
         self: _cs_matrix[np.int_, tuple[int]],
         /,
-        arg1: Sequence[opt.JustInt],
+        arg1: Sequence[op.JustInt],
         shape: ToShape1dNd | None = None,
         dtype: ToDTypeInt | None = None,
         copy: bool = False,
@@ -173,7 +173,7 @@ class _cs_matrix(
     def __init__(
         self: _cs_matrix[np.int_, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[opt.JustInt]],
+        arg1: Sequence[Sequence[op.JustInt]],
         shape: ToShape1dNd | None = None,
         dtype: ToDTypeInt | None = None,
         copy: bool = False,
@@ -184,7 +184,7 @@ class _cs_matrix(
     def __init__(
         self: _cs_matrix[np.float64, tuple[int]],
         /,
-        arg1: Sequence[opt.JustFloat],
+        arg1: Sequence[op.JustFloat],
         shape: ToShape1dNd | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
@@ -195,7 +195,7 @@ class _cs_matrix(
     def __init__(
         self: _cs_matrix[np.float64, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[opt.JustFloat]],
+        arg1: Sequence[Sequence[op.JustFloat]],
         shape: ToShape1dNd | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
@@ -206,7 +206,7 @@ class _cs_matrix(
     def __init__(
         self: _cs_matrix[np.complex128, tuple[int]],
         /,
-        arg1: Sequence[opt.JustComplex],
+        arg1: Sequence[op.JustComplex],
         shape: ToShape1dNd | None = None,
         dtype: ToDTypeComplex | None = None,
         copy: bool = False,
@@ -217,7 +217,7 @@ class _cs_matrix(
     def __init__(
         self: _cs_matrix[np.complex128, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[opt.JustComplex]],
+        arg1: Sequence[Sequence[op.JustComplex]],
         shape: ToShape1dNd | None = None,
         dtype: ToDTypeComplex | None = None,
         copy: bool = False,

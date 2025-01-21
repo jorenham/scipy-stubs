@@ -8,7 +8,6 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-import optype.typing as opt
 from ._base import _spbase, sparray
 from ._data import _data_matrix, _minmax_mixin
 from ._matrix import spmatrix
@@ -39,7 +38,7 @@ _ToData: TypeAlias = tuple[onp.ArrayND[_SCT0], tuple[onp.ArrayND[Int]] | tuple[o
 _ToDense: TypeAlias = onp.ArrayND[_SCT0] | onp.SequenceND[onp.ArrayND[_SCT0]] | onp.SequenceND[_SCT0]
 
 _ScalarOrDense: TypeAlias = onp.ArrayND[_SCT0] | _SCT0
-_JustND: TypeAlias = onp.SequenceND[opt.Just[_T]]
+_JustND: TypeAlias = onp.SequenceND[op.Just[_T]]
 
 _SubInt: TypeAlias = np.bool_ | np.int8 | np.int16 | np.int32 | np.intp | np.int_ | np.uint8 | np.uint16
 _SubFloat: TypeAlias = np.bool_ | Int | np.float32 | np.float64
@@ -161,7 +160,7 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
     def __init__(
         self: _coo_base[np.int_, tuple[int]],
         /,
-        arg1: Sequence[opt.JustInt],
+        arg1: Sequence[op.JustInt],
         shape: ToShape1d | None = None,
         dtype: ToDTypeInt | None = None,
         copy: bool = False,
@@ -172,7 +171,7 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
     def __init__(
         self: _coo_base[np.int_, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[opt.JustInt]],
+        arg1: Sequence[Sequence[op.JustInt]],
         shape: ToShape2d | None = None,
         dtype: ToDTypeInt | None = None,
         copy: bool = False,
@@ -183,7 +182,7 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
     def __init__(
         self: _coo_base[np.float64, tuple[int]],
         /,
-        arg1: Sequence[opt.JustFloat],
+        arg1: Sequence[op.JustFloat],
         shape: ToShape1d | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
@@ -194,7 +193,7 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
     def __init__(
         self: _coo_base[np.float64, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[opt.JustFloat]],
+        arg1: Sequence[Sequence[op.JustFloat]],
         shape: ToShape2d | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
@@ -205,7 +204,7 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
     def __init__(
         self: _coo_base[np.complex128, tuple[int]],
         /,
-        arg1: Sequence[opt.JustComplex],
+        arg1: Sequence[op.JustComplex],
         shape: ToShape1d | None = None,
         dtype: ToDTypeComplex | None = None,
         copy: bool = False,
@@ -216,7 +215,7 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
     def __init__(
         self: _coo_base[np.complex128, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[opt.JustComplex]],
+        arg1: Sequence[Sequence[op.JustComplex]],
         shape: ToShape2d | None = None,
         dtype: ToDTypeComplex | None = None,
         copy: bool = False,
