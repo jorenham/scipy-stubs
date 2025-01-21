@@ -133,24 +133,25 @@ _Self3: TypeAlias = _Self[_XT, tuple[int, int, int]]
 _Self1_: TypeAlias = _Self[_XT, onp.AtLeast1D]
 
 # TODO(jorenham): Merge into ContinuousDistribution?
+# NOTE: the incompatible method overrides appear to be pyright-only false positives
 @type_check_only
 class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _ShapeT0_co]):
     @overload
     def support(self: _Self0[_XT], /) -> _Tuple2[_XT]: ...
     @overload
-    def support(self: _Self[_XT, _ShapeT], /) -> _Tuple2[onp.Array[_ShapeT, _XT]]: ...
+    def support(self: _Self[_XT, _ShapeT], /) -> _Tuple2[onp.Array[_ShapeT, _XT]]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
     @overload
     def median(self: _Self0[_XT], /, *, method: _MedianMethod = None) -> _XT: ...
     @overload
-    def median(self: _Self[_XT, _ShapeT], /, *, method: _MedianMethod = None) -> onp.Array[_ShapeT, _XT]: ...
+    def median(self: _Self[_XT, _ShapeT], /, *, method: _MedianMethod = None) -> onp.Array[_ShapeT, _XT]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
     @overload
     def mode(self: _Self0[_XT], /, *, method: _ModeMethod = None) -> _XT: ...
     @overload
-    def mode(self: _Self[_XT, _ShapeT], /, *, method: _ModeMethod = None) -> onp.Array[_ShapeT, _XT]: ...
+    def mode(self: _Self[_XT, _ShapeT], /, *, method: _ModeMethod = None) -> onp.Array[_ShapeT, _XT]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
     @overload
@@ -205,25 +206,25 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def mean(self: _Self0[_XT], /, *, method: _RMomentMethod = None) -> _XT: ...
     @overload
-    def mean(self: _Self[_XT, _ShapeT], /, *, method: _RMomentMethod = None) -> onp.ArrayND[_XT, _ShapeT]: ...
+    def mean(self: _Self[_XT, _ShapeT], /, *, method: _RMomentMethod = None) -> onp.ArrayND[_XT, _ShapeT]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
     @overload
     def variance(self: _Self0[_XT], /, *, method: _CMomentMethod = None) -> _XT: ...
     @overload
-    def variance(self: _Self[_XT, _ShapeT], /, *, method: _CMomentMethod = None) -> onp.ArrayND[_XT, _ShapeT]: ...
+    def variance(self: _Self[_XT, _ShapeT], /, *, method: _CMomentMethod = None) -> onp.ArrayND[_XT, _ShapeT]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
     @overload
     def standard_deviation(self: _Self0[_XT], /, *, method: _CMomentMethod = None) -> _XT: ...
     @overload
-    def standard_deviation(self: _Self[_XT, _ShapeT], /, *, method: _CMomentMethod = None) -> onp.ArrayND[_XT, _ShapeT]: ...
+    def standard_deviation(self: _Self[_XT, _ShapeT], /, *, method: _CMomentMethod = None) -> onp.ArrayND[_XT, _ShapeT]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
     @overload
     def skewness(self: _Self0[_XT], /, *, method: _SMomentMethod = None) -> _XT: ...
     @overload
-    def skewness(self: _Self[_XT, _ShapeT], /, *, method: _SMomentMethod = None) -> onp.ArrayND[_XT, _ShapeT]: ...
+    def skewness(self: _Self[_XT, _ShapeT], /, *, method: _SMomentMethod = None) -> onp.ArrayND[_XT, _ShapeT]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
     @overload
@@ -235,7 +236,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         convention: _KurtosisConvention = "non-excess",
     ) -> _XT: ...
     @overload
-    def kurtosis(
+    def kurtosis(  # pyright: ignore[reportIncompatibleMethodOverride]
         self: _Self[_XT, _ShapeT],
         /,
         *,
@@ -291,7 +292,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         method: _SMomentMethod = None,
     ) -> _FloatND[_ShapeT]: ...
     @overload
-    def moment(  # pyright: ignore[reportIncompatibleMethodOverride]  # pyright false positive bug
+    def moment(  # pyright: ignore[reportIncompatibleMethodOverride]
         self: _Self[Any, _ShapeT],
         /,
         order: onp.ToInt = 1,
