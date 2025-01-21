@@ -5,7 +5,6 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
-import optype.typing as opt
 from scipy._typing import Falsy, Truthy
 from ._ufuncs import _KwBase, psi as digamma
 
@@ -133,7 +132,7 @@ def sinc(x: _SCT_fc) -> _SCT_fc: ...
 @overload
 def sinc(x: float | onp.ToInt) -> _f8: ...
 @overload
-def sinc(x: opt.JustComplex) -> _c8: ...
+def sinc(x: op.JustComplex) -> _c8: ...
 @overload
 def sinc(x: complex) -> _fc8: ...  # type: ignore[overload-cannot-match]  # pyright: ignore[reportOverlappingOverload]s
 @overload

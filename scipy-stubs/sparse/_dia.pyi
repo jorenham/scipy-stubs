@@ -3,8 +3,8 @@ from typing import Any, Generic, Literal, TypeAlias, overload
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
-import optype.typing as opt
 from ._base import _spbase, sparray
 from ._data import _data_matrix
 from ._matrix import spmatrix
@@ -74,9 +74,9 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     def __init__(
         self: _dia_base[np.int_],
         /,
-        arg1: _ToMatrixPy[opt.JustInt],
+        arg1: _ToMatrixPy[op.JustInt],
         shape: ToShape2d | None = None,
-        dtype: type[opt.JustInt] | onp.AnyIntPDType | None = None,
+        dtype: type[op.JustInt] | onp.AnyIntPDType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -85,9 +85,9 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     def __init__(
         self: _dia_base[np.float64],
         /,
-        arg1: _ToMatrixPy[opt.JustFloat],
+        arg1: _ToMatrixPy[op.JustFloat],
         shape: ToShape2d | None = None,
-        dtype: type[opt.JustFloat] | onp.AnyFloat64DType | None = None,
+        dtype: type[op.JustFloat] | onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -96,9 +96,9 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     def __init__(
         self: _dia_base[np.complex128],
         /,
-        arg1: _ToMatrixPy[opt.JustComplex],
+        arg1: _ToMatrixPy[op.JustComplex],
         shape: ToShape2d | None = None,
-        dtype: type[opt.JustComplex] | onp.AnyComplex128DType | None = None,
+        dtype: type[op.JustComplex] | onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,

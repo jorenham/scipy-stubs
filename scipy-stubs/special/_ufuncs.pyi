@@ -7,7 +7,6 @@ from typing_extensions import LiteralString, Never, TypeAliasType, TypeVar, Unpa
 import numpy as np
 import optype as op
 import optype.numpy as onp
-import optype.typing as opt
 from scipy._typing import AnyShape, Casting, EnterNoneMixin, Falsy, OrderKACF, Truthy
 
 # NOTE: The only way I was able to get `ComplexWarning` to work on both numpy<1.25 and >=1.25, and is needed until `scipy>=1.16`
@@ -326,10 +325,10 @@ _CoFloat64ND: TypeAlias = onp.ArrayND[_CoFloat64]
 _CoComplex128ND: TypeAlias = onp.ArrayND[_CoComplex128]
 
 _SubFloat: TypeAlias = _Float16 | _CoInt  # anything "below" float32 | float64 that isn't float32 | float64
-_ToSubFloat: TypeAlias = opt.JustFloat | int | _SubFloat  # does not overlap with float32 | float64
-_ToSubFloatND: TypeAlias = _ToND[_SubFloat, opt.JustFloat | int]
+_ToSubFloat: TypeAlias = op.JustFloat | int | _SubFloat  # does not overlap with float32 | float64
+_ToSubFloatND: TypeAlias = _ToND[_SubFloat, op.JustFloat | int]
 
-_ToSubComplex: TypeAlias = opt.JustComplex | _ToSubFloat  # does not overlap with complex64 | complex128
+_ToSubComplex: TypeAlias = op.JustComplex | _ToSubFloat  # does not overlap with complex64 | complex128
 
 _CoT = TypeVar("_CoT", bound=np.generic)
 _ToT = TypeVar("_ToT")
@@ -350,7 +349,7 @@ _Indices = TypeAliasType("_Indices", _OneOrMany[op.CanIndex | slice | EllipsisTy
 
 ###
 
-_ToDType_l = TypeAliasType("_ToDType_l", onp.AnyLongDType)
+_ToDType_l = TypeAliasType("_ToDType_l", onp.AnyIntDType)
 _ToDType_q = TypeAliasType("_ToDType_q", onp.AnyInt64DType | onp.AnyLongLongDType)
 _ToDType_f = TypeAliasType("_ToDType_f", onp.AnyFloat32DType)
 _ToDType_d = TypeAliasType("_ToDType_d", onp.AnyFloat64DType)
@@ -854,11 +853,11 @@ class _UFunc11fc(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
     def types(self, /) -> list[L["f->f", "d->d", "F->F", "D->D"]]: ...
     #
     @overload
-    def __call__(self, x: opt.JustFloat | opt.JustInt, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> _Float64: ...
+    def __call__(self, x: op.JustFloat | op.JustInt, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> _Float64: ...
     @overload
     def __call__(self, x: _ToSubFloat, /, out: _Out1 = None, **kw: Unpack[_Kw11fc]) -> _Float: ...
     @overload
-    def __call__(self, x: opt.JustComplex, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> _Complex128: ...
+    def __call__(self, x: op.JustComplex, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> _Complex128: ...
     @overload
     def __call__(self, x: _ToSubComplex, /, out: _Out1 = None, **kw: Unpack[_Kw11fc]) -> _Inexact: ...
     @overload

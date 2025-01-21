@@ -5,7 +5,6 @@ from typing_extensions import Self, TypeIs, TypeVar, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
-import optype.typing as opt
 from scipy._typing import Falsy
 from ._base import _spbase, sparray
 from ._csr import csr_array, csr_matrix
@@ -77,7 +76,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
     def __init__(
         self: _lil_base[np.int_],
         /,
-        arg1: _ToMatrixPy[opt.JustInt],
+        arg1: _ToMatrixPy[op.JustInt],
         shape: ToShape2d | None = None,
         dtype: ToDTypeInt | None = None,
         copy: bool = False,
@@ -88,7 +87,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
     def __init__(
         self: _lil_base[np.float64],
         /,
-        arg1: _ToMatrixPy[opt.JustFloat],
+        arg1: _ToMatrixPy[op.JustFloat],
         shape: ToShape2d | None = None,
         dtype: ToDTypeFloat | None = None,
         copy: bool = False,
@@ -99,7 +98,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
     def __init__(
         self: _lil_base[np.complex128],
         /,
-        arg1: _ToMatrixPy[opt.JustComplex],
+        arg1: _ToMatrixPy[op.JustComplex],
         shape: ToShape2d | None = None,
         dtype: ToDTypeComplex | None = None,
         copy: bool = False,

@@ -7,8 +7,8 @@ from typing import Any, ClassVar, Final, Generic, Literal as L, Protocol, TypeAl
 from typing_extensions import LiteralString, Never, Self, TypeIs, TypeVar, Unpack, override
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
-import optype.typing as opt
 from scipy._typing import ToRNG
 from ._distn_infrastructure import rv_continuous
 from ._probability_distribution import _BaseDistribution
@@ -62,7 +62,7 @@ _ToJustIntMax2D: TypeAlias = onp.ToJustIntStrict2D | _ToJustIntMax1D
 _ToJustIntMax3D: TypeAlias = onp.ToJustIntStrict3D | _ToJustIntMax2D
 _ToJustIntMaxND: TypeAlias = onp.ToJustIntND | onp.ToJustInt
 
-_Null: TypeAlias = opt.Just[object]  # type of `_null`
+_Null: TypeAlias = op.Just[object]  # type of `_null`
 _Axes: TypeAlias = object  # placeholder for `matplotlib.axes.Axes`
 
 _DomainRegion: TypeAlias = L["domain", "typical"]
@@ -74,7 +74,7 @@ _SMomentMethod: TypeAlias = L["formula", "general", "transform", "normalize", "c
 
 _ParamValues: TypeAlias = Mapping[str, _ToFloatMaxND]
 _ToDomain: TypeAlias = tuple[onp.ToFloat | str, onp.ToFloat | str]
-_ToTol: TypeAlias = opt.JustFloat | _Null
+_ToTol: TypeAlias = op.JustFloat | _Null
 _DrawProportions: TypeAlias = tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat, onp.ToFloat]
 _Elementwise: TypeAlias = Callable[[onp.ArrayND[np.float64]], onp.ArrayND[_FloatT]]
 
