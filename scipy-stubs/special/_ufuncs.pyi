@@ -350,7 +350,7 @@ _Indices = TypeAliasType("_Indices", _OneOrMany[op.CanIndex | slice | EllipsisTy
 ###
 
 _ToDType_l = TypeAliasType("_ToDType_l", onp.AnyIntDType)
-_ToDType_q = TypeAliasType("_ToDType_q", onp.AnyInt64DType | onp.AnyLongLongDType)
+_ToDType_q = TypeAliasType("_ToDType_q", onp.AnyLongLongDType)
 _ToDType_f = TypeAliasType("_ToDType_f", onp.AnyFloat32DType)
 _ToDType_d = TypeAliasType("_ToDType_d", onp.AnyFloat64DType)
 _ToDType_g = TypeAliasType("_ToDType_g", onp.AnyLongDoubleDType)

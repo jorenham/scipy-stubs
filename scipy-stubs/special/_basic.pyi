@@ -79,12 +79,9 @@ _T1 = TypeVar("_T1")
 
 _ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-_SCT = TypeVar("_SCT", bound=np.generic)
 _SCT_iu = TypeVar("_SCT_iu", bound=npc.integer)
 _SCT_f = TypeVar("_SCT_f", bound=npc.floating)
 _SCT_fc = TypeVar("_SCT_fc", bound=npc.inexact)
-
-_ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
 
 _ToIntOrND: TypeAlias = onp.ToInt | onp.ToIntND
 _ToFloatOrND: TypeAlias = onp.ToFloat | onp.ToFloatND
@@ -517,9 +514,9 @@ def softplus(x: onp.ToInt, *, out: None, dtype: None = None, **kwds: Unpack[_KwB
 @overload
 def softplus(x: onp.ToIntND, *, out: None, dtype: None = None, **kwds: Unpack[_KwBase]) -> _f_nd: ...
 @overload
-def softplus(x: _SCT_f, *, out: None = None, dtype: _ToDType[_SCT_f] | None = None, **kwds: Unpack[_KwBase]) -> _SCT_f: ...
+def softplus(x: _SCT_f, *, out: None = None, dtype: onp.ToDType[_SCT_f] | None = None, **kwds: Unpack[_KwBase]) -> _SCT_f: ...
 @overload
-def softplus(x: onp.ToFloat, *, out: None, dtype: _ToDType[_SCT_f], **kwds: Unpack[_KwBase]) -> _SCT_f: ...
+def softplus(x: onp.ToFloat, *, out: None, dtype: onp.ToDType[_SCT_f], **kwds: Unpack[_KwBase]) -> _SCT_f: ...
 @overload
 def softplus(
     x: onp.ToFloat,
@@ -565,11 +562,17 @@ def softplus(
     x: onp.CanArrayND[_SCT_f, _ShapeT],
     *,
     out: None = None,
-    dtype: _ToDType[_SCT_f] | None = None,
+    dtype: onp.ToDType[_SCT_f] | None = None,
     **kwds: Unpack[_KwBase],
 ) -> onp.ArrayND[_SCT_f, _ShapeT]: ...
 @overload
-def softplus(x: onp.ToFloatND, *, out: None = None, dtype: _ToDType[_SCT_f], **kwds: Unpack[_KwBase]) -> onp.ArrayND[_SCT_f]: ...
+def softplus(
+    x: onp.ToFloatND,
+    *,
+    out: None = None,
+    dtype: onp.ToDType[_SCT_f],
+    **kwds: Unpack[_KwBase],
+) -> onp.ArrayND[_SCT_f]: ...
 @overload
 def softplus(
     x: onp.ToFloatND,

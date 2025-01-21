@@ -1,9 +1,10 @@
-from typing import Any, TypedDict, final, overload, type_check_only
+from typing import TypedDict, final, overload, type_check_only
 from typing_extensions import Unpack
 
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
+import optype.numpy.compat as npc
 from scipy._typing import EnterSelfMixin, FileLike, FileModeRW
 
 __all__ = ["FortranEOFError", "FortranFile", "FortranFormattingError"]
@@ -27,12 +28,12 @@ class FortranFile(EnterSelfMixin):
     @overload
     def read_ints(self, /) -> onp.Array1D[np.int32]: ...
     @overload
-    def read_ints(self, /, dtype: onp.AnyIntegerDType) -> onp.Array1D[np.integer[Any]]: ...
+    def read_ints(self, /, dtype: onp.AnyIntegerDType) -> onp.Array1D[npc.integer]: ...
     @overload
     def read_ints(self, /, dtype: npt.DTypeLike) -> onp.Array1D: ...
     @overload
     def read_reals(self, /) -> onp.Array1D[np.float64]: ...
     @overload
-    def read_reals(self, /, dtype: onp.AnyFloatingDType) -> onp.Array1D[np.floating[Any]]: ...
+    def read_reals(self, /, dtype: onp.AnyFloatingDType) -> onp.Array1D[npc.floating]: ...
     @overload
     def read_reals(self, /, dtype: npt.DTypeLike) -> onp.Array1D: ...

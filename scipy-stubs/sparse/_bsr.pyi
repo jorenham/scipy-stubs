@@ -16,7 +16,6 @@ __all__ = ["bsr_array", "bsr_matrix", "isspmatrix_bsr"]
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Scalar, default=Any)
 
-_ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 
@@ -82,7 +81,7 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         /,
         arg1: _ToMatrixPy[op.JustInt],
         shape: ToShape2d | None = None,
-        dtype: type[op.JustInt] | onp.AnyIntPDType | None = None,
+        dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
         *,
@@ -94,7 +93,7 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         /,
         arg1: _ToMatrixPy[op.JustFloat],
         shape: ToShape2d | None = None,
-        dtype: type[op.JustFloat] | onp.AnyFloat64DType | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
         *,
@@ -106,7 +105,7 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         /,
         arg1: _ToMatrixPy[op.JustComplex],
         shape: ToShape2d | None = None,
-        dtype: type[op.JustComplex] | onp.AnyComplex128DType | None = None,
+        dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
         *,
@@ -118,7 +117,6 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         /,
         arg1: onp.ToComplexND,
         shape: ToShape2d | None,
-        dtype: _ToDType[_SCT],
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
         *,
@@ -131,7 +129,6 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         arg1: onp.ToComplexND,
         shape: ToShape2d | None = None,
         *,
-        dtype: _ToDType[_SCT],
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
         maxprint: int | None = None,
