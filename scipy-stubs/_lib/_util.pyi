@@ -1,12 +1,13 @@
 import multiprocessing.pool as mpp
 import types
 from collections.abc import Callable, Iterable, Mapping, Sequence
-from typing import Any, Concatenate, Final, Generic, NamedTuple, TypeAlias, overload
+from typing import Concatenate, Final, Generic, NamedTuple, TypeAlias, overload
 from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 from scipy._typing import RNG, EnterSelfMixin
 
 _AnyRNG = TypeVar("_AnyRNG", np.random.RandomState, np.random.Generator)
@@ -16,7 +17,7 @@ _T_co = TypeVar("_T_co", covariant=True, default=object)
 _T_contra = TypeVar("_T_contra", contravariant=True, default=object)
 _VT = TypeVar("_VT")
 _RT = TypeVar("_RT")
-_AxisT = TypeVar("_AxisT", bound=np.integer[Any])
+_AxisT = TypeVar("_AxisT", bound=npc.integer)
 
 ###
 
@@ -24,8 +25,8 @@ np_long: Final[type[np.int32 | np.int64]] = ...
 np_ulong: Final[type[np.uint32 | np.uint64]] = ...
 copy_if_needed: Final[bool | None] = ...
 
-IntNumber: TypeAlias = int | np.integer[Any]
-DecimalNumber: TypeAlias = float | np.floating[Any] | np.integer[Any]
+IntNumber: TypeAlias = int | npc.integer
+DecimalNumber: TypeAlias = float | npc.floating | npc.integer
 
 _RNG: TypeAlias = np.random.Generator | np.random.RandomState
 SeedType: TypeAlias = IntNumber | _RNG | None
@@ -89,7 +90,7 @@ def getfullargspec_no_self(func: Callable[..., object]) -> FullArgSpec: ...
 @overload
 def check_random_state(seed: _AnyRNG) -> _AnyRNG: ...
 @overload
-def check_random_state(seed: int | np.integer[Any] | types.ModuleType | None) -> np.random.RandomState: ...
+def check_random_state(seed: int | npc.integer | types.ModuleType | None) -> np.random.RandomState: ...
 
 #
 @overload
@@ -100,7 +101,7 @@ def rng_integers(
     size: tuple[()] | None = None,
     dtype: onp.AnyIntegerDType = "int64",
     endpoint: op.CanBool = False,
-) -> np.integer[Any]: ...
+) -> npc.integer: ...
 @overload
 def rng_integers(
     gen: RNG | None,
@@ -109,7 +110,7 @@ def rng_integers(
     size: op.CanIndex | Sequence[op.CanIndex] | None = None,
     dtype: onp.AnyIntegerDType = "int64",
     endpoint: op.CanBool = False,
-) -> np.integer[Any] | onp.ArrayND[np.integer[Any]]: ...
+) -> npc.integer | onp.ArrayND[npc.integer]: ...
 
 #
 @overload

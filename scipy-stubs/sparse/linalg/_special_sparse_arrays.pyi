@@ -12,13 +12,12 @@ __all__ = ["LaplacianNd"]
 
 _SCT = TypeVar("_SCT", bound=Int | Float, default=Any)
 
-_BCs: TypeAlias = Literal["dirichlet", "neumann", "periodic"]
-_ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
-
 # because `scipy.sparse.sparray` does not implement anything :(
 _SpArray: TypeAlias = (
     bsr_array[_SCT] | coo_array[_SCT] | csc_array[_SCT] | csr_array[_SCT] | dia_array[_SCT] | dok_array[_SCT] | lil_array[_SCT]
 )
+
+_BCs: TypeAlias = Literal["dirichlet", "neumann", "periodic"]
 
 ###
 
@@ -27,11 +26,31 @@ class LaplacianNd(LinearOperator[_SCT], Generic[_SCT]):
     boundary_conditions: Final[_BCs]
 
     @overload  # default dtype (int8)
-    def __init__(self: LaplacianNd[np.int8], /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann") -> None: ...
+    def __init__(
+        self: LaplacianNd[np.int8],
+        /,
+        grid_shape: onp.AtLeast1D,
+        *,
+        boundary_conditions: _BCs = "neumann",
+    ) -> None: ...
     @overload  # know dtype
-    def __init__(self, /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann", dtype: _ToDType[_SCT]) -> None: ...
+    def __init__(
+        self,
+        /,
+        grid_shape: onp.AtLeast1D,
+        *,
+        boundary_conditions: _BCs = "neumann",
+        dtype: onp.ToDType[_SCT],
+    ) -> None: ...
     @overload  # unknow dtype
-    def __init__(self, /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann", dtype: npt.DTypeLike) -> None: ...
+    def __init__(
+        self,
+        /,
+        grid_shape: onp.AtLeast1D,
+        *,
+        boundary_conditions: _BCs = "neumann",
+        dtype: npt.DTypeLike,
+    ) -> None: ...
 
     #
     def eigenvalues(self, /, m: onp.ToJustInt | None = None) -> onp.Array1D[np.float64]: ...

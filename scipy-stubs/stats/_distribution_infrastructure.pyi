@@ -62,7 +62,7 @@ _ToJustIntMax2D: TypeAlias = onp.ToJustIntStrict2D | _ToJustIntMax1D
 _ToJustIntMax3D: TypeAlias = onp.ToJustIntStrict3D | _ToJustIntMax2D
 _ToJustIntMaxND: TypeAlias = onp.ToJustIntND | onp.ToJustInt
 
-_Null: TypeAlias = op.Just[object]  # type of `_null`
+_Null: TypeAlias = op.JustObject  # type of `_null`
 _Axes: TypeAlias = object  # placeholder for `matplotlib.axes.Axes`
 
 _DomainRegion: TypeAlias = L["domain", "typical"]

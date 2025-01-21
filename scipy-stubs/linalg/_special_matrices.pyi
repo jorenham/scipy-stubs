@@ -48,7 +48,6 @@ _To1D: TypeAlias = Sequence[_To0D[_SCT]] | onp.CanArrayND[_SCT]
 _ToStrict1D: TypeAlias = Sequence[_To0D[_SCT]] | onp.CanArray1D[_SCT]
 _ToStrict2ND: TypeAlias = onp.SequenceND[_To1D[_SCT]] | onp.CanArrayND[_SCT, onp.AtLeast2D]
 _ToND: TypeAlias = onp.SequenceND[_To0D[_SCT]] | onp.SequenceND[_To1D[_SCT]] | onp.CanArrayND[_SCT]
-_ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
 
 _ToJustIntStrict2ND: TypeAlias = onp.SequenceND[onp.ToJustInt1D] | onp.CanArrayND[npc.integer, onp.AtLeast2D]
 _ToJustFloatStrict2ND: TypeAlias = onp.SequenceND[onp.ToJustFloat1D] | onp.CanArrayND[npc.floating, onp.AtLeast2D]
@@ -255,7 +254,7 @@ def hadamard(n: onp.ToInt, dtype: type[op.JustFloat]) -> _Float2D: ...
 @overload
 def hadamard(n: onp.ToInt, dtype: type[op.JustComplex]) -> _Complex2D: ...
 @overload
-def hadamard(n: onp.ToInt, dtype: _ToDType[_SCT]) -> onp.Array2D[_SCT]: ...
+def hadamard(n: onp.ToInt, dtype: onp.ToDType[_SCT]) -> onp.Array2D[_SCT]: ...
 @overload
 def hadamard(n: onp.ToInt, dtype: npt.DTypeLike = ...) -> onp.Array2D: ...
 

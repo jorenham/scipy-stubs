@@ -27,8 +27,6 @@ _FunMatVecT_co = TypeVar("_FunMatVecT_co", bound=_FunMatVec, default=_FunMatVec,
 _InexactT = TypeVar("_InexactT", bound=_Inexact)
 
 _ToShape: TypeAlias = Iterable[op.CanIndex]
-_ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
-
 _FunMatVec: TypeAlias = Callable[[onp.Array1D[_Number] | onp.Array2D[_Number]], onp.ToComplex1D | onp.ToComplex2D]
 _FunMatMat: TypeAlias = Callable[[onp.Array2D[_Number]], onp.ToComplex2D]
 
@@ -56,7 +54,7 @@ class LinearOperator(Generic[_SCT_co]):
 
     #
     @overload
-    def __init__(self, /, dtype: _ToDType[_SCT_co], shape: _ToShape) -> None: ...
+    def __init__(self, /, dtype: onp.ToDType[_SCT_co], shape: _ToShape) -> None: ...
     @overload
     def __init__(self: LinearOperator[np.int_], /, dtype: ToDTypeInt, shape: _ToShape) -> None: ...
     @overload
@@ -164,7 +162,7 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
         matmat: _FunMatMat | None,
-        dtype: _ToDType[_SCT_co],
+        dtype: onp.ToDType[_SCT_co],
         rmatmat: _FunMatMat | None = None,
     ) -> None: ...
     @overload  # dtype known (keyword)
@@ -176,7 +174,7 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
         *,
-        dtype: _ToDType[_SCT_co],
+        dtype: onp.ToDType[_SCT_co],
         rmatmat: _FunMatMat | None = None,
     ) -> None: ...
     @overload  # dtype-like float64 (positional)
@@ -283,7 +281,7 @@ class _AdjointMatrixOperator(MatrixLinearOperator[_SCT_co], Generic[_SCT_co]):
 
 class IdentityOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     @overload
-    def __init__(self, /, shape: _ToShape, dtype: _ToDType[_SCT_co]) -> None: ...
+    def __init__(self, /, shape: _ToShape, dtype: onp.ToDType[_SCT_co]) -> None: ...
     @overload
     def __init__(self: IdentityOperator[np.float64], /, shape: _ToShape, dtype: ToDTypeFloat | None = None) -> None: ...
     @overload

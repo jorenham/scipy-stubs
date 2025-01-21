@@ -17,7 +17,6 @@ __all__ = ["isspmatrix_lil", "lil_array", "lil_matrix"]
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Scalar, default=Any)
 
-_ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 
@@ -111,7 +110,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         /,
         arg1: onp.ToComplexND,
         shape: ToShape2d | None,
-        dtype: _ToDType[_SCT],
+        dtype: onp.ToDType[_SCT],
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -123,7 +122,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         arg1: onp.ToComplexND,
         shape: ToShape2d | None = None,
         *,
-        dtype: _ToDType[_SCT],
+        dtype: onp.ToDType[_SCT],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...

@@ -54,7 +54,7 @@ SPFormat: TypeAlias = Literal["bsr", "coo", "csc", "csr", "dia", "dok", "lil"]
 _SCT = TypeVar("_SCT", bound=np.generic)
 ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
 ToDTypeBool: TypeAlias = onp.AnyBoolDType
-ToDTypeInt: TypeAlias = type[op.JustInt] | onp.AnyIntDType  # see https://github.com/jorenham/optype/issues/235
+ToDTypeInt: TypeAlias = onp.AnyIntDType
 ToDTypeFloat: TypeAlias = onp.AnyFloat64DType
 ToDTypeComplex: TypeAlias = onp.AnyComplex128DType
 

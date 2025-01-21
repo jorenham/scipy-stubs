@@ -27,7 +27,7 @@ _ScalarFloat_co: TypeAlias = np.floating[Any] | _ScalarInt_co
 
 _ScalarLikeInt_co: TypeAlias = int | _ScalarInt_co
 _ScalarLikeFloat_co: TypeAlias = float | _ScalarFloat_co
-_VectorLikeFloat_co: TypeAlias = Sequence[_ScalarLikeFloat_co] | onp.CanArray[tuple[int], np.dtype[_ScalarFloat_co]]
+_VectorLikeFloat_co: TypeAlias = Sequence[_ScalarLikeFloat_co] | onp.CanArray1D[_ScalarFloat_co]
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _SCT_float = TypeVar("_SCT_float", bound=_ScalarFloat_co)

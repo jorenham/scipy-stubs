@@ -15,7 +15,6 @@ __all__ = ["dia_array", "dia_matrix", "isspmatrix_dia"]
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Scalar, default=Any)
 
-_ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 _ToData: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Int]]
@@ -76,7 +75,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         /,
         arg1: _ToMatrixPy[op.JustInt],
         shape: ToShape2d | None = None,
-        dtype: type[op.JustInt] | onp.AnyIntPDType | None = None,
+        dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -87,7 +86,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         /,
         arg1: _ToMatrixPy[op.JustFloat],
         shape: ToShape2d | None = None,
-        dtype: type[op.JustFloat] | onp.AnyFloat64DType | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -98,7 +97,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         /,
         arg1: _ToMatrixPy[op.JustComplex],
         shape: ToShape2d | None = None,
-        dtype: type[op.JustComplex] | onp.AnyComplex128DType | None = None,
+        dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -109,7 +108,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         /,
         arg1: onp.ToComplexND,
         shape: ToShape2d | None,
-        dtype: _ToDType[_SCT],
+        dtype: onp.ToDType[_SCT],
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -121,7 +120,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         arg1: onp.ToComplexND,
         shape: ToShape2d | None = None,
         *,
-        dtype: _ToDType[_SCT],
+        dtype: onp.ToDType[_SCT],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...

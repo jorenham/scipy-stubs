@@ -25,7 +25,6 @@ _ShapeT_co = TypeVar("_ShapeT_co", bound=ShapeDOK, default=ShapeDOK, covariant=T
 _1D: TypeAlias = tuple[int]  # noqa: PYI042
 _2D: TypeAlias = tuple[int, int]  # noqa: PYI042
 
-_ToDType: TypeAlias = type[_SCT] | np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]]
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 
@@ -90,7 +89,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
         /,
         arg1: _ToMatrixPy[op.JustInt],
         shape: ToShape1dNd | None = None,
-        dtype: type[op.JustInt] | onp.AnyIntPDType | None = None,
+        dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -101,7 +100,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
         /,
         arg1: _ToMatrixPy[op.JustFloat],
         shape: ToShape1dNd | None = None,
-        dtype: type[op.JustFloat] | onp.AnyFloat64DType | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -112,7 +111,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
         /,
         arg1: _ToMatrixPy[op.JustComplex],
         shape: ToShape1dNd | None = None,
-        dtype: type[op.JustComplex] | onp.AnyComplex128DType | None = None,
+        dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -123,7 +122,6 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
         /,
         arg1: onp.ToComplexND,
         shape: ToShape1dNd | None,
-        dtype: _ToDType[_SCT],
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -135,7 +133,6 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
         arg1: onp.ToComplexND,
         shape: ToShape1dNd | None = None,
         *,
-        dtype: _ToDType[_SCT],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
