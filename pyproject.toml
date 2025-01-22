@@ -45,7 +45,7 @@ lint = [
     {include-group = "extras"},
     {include-group = "mdformat"},
     "ruff>=0.9.2",
-    "sp-repo-review[cli]>=2024.8.19",
+    "sp-repo-review[cli]>=2025.1.22",
 ]
 typecheck = [
     {include-group = "extras"},
