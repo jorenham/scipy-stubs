@@ -11,13 +11,20 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
+env:
+  UV_FROZEN: 1
+
 jobs:
   lint:
-    timeout-minutes: 1
     runs-on: ubuntu-latest
+    timeout-minutes: 2
 
     steps:
       - uses: actions/checkout@v4
+
+      - uses: scientific-python/repo-review@v0.11.3
+        with:
+          plugins: sp-repo-review
 
       - name: markdownlint
         uses: DavidAnson/markdownlint-cli2-action@v19
@@ -28,10 +35,21 @@ jobs:
       - name: typos
         uses: crate-ci/typos@master
 
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          python-version: "3.13"
+          version: latest
+
+      - name: ruff
+        run: |
+          uv run ruff check --output-format=github
+          uv run ruff format --check
+
   generate-matrix:
     name: Generate Test Matrix
-    timeout-minutes: 1
     runs-on: ubuntu-latest
+    timeout-minutes: 1
 
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -41,10 +59,10 @@ jobs:
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
-
-      - name: Install dependencies
-        run: |
-          uv sync --locked
+        with:
+          enable-cache: true
+          python-version: "3.13"
+          version: latest
 
       - name: Generate Matrix
         id: set-matrix
@@ -55,8 +73,8 @@ jobs:
 
   typetest:
     needs: generate-matrix
-    timeout-minutes: 3
     runs-on: ubuntu-latest
+    timeout-minutes: 3
 
     strategy:
       fail-fast: false
@@ -65,31 +83,32 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install uv
+      - name: setup uv
         uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
           python-version: ${{ matrix.python }}
 
-      - name: setup tox
-        run: uv tool install tox --with tox-uv
-
-      - name: Install dependencies
-        run: |
-          rm -rf .venv
-          uv add --no-build-package=numpy "numpy<=${{ matrix.numpy }}"
-
-      - name: Run typetest
-        run: uv run tox -e=typetest
-
-      - name: Run stubtest
-        run: uv run tox -e=stubtest
-
-      - name: lint
-        run: uv run tox -e=lint
+      - name: basedpyright
+        run: >
+          uv run --with="numpy==${{ matrix.numpy }}"
+          basedpyright
 
       - name: basedmypy
-        run: uv run tox -e=mypy
+        run: >
+          uv run --with="numpy==${{ matrix.numpy }}"
+          mypy
+          --tb
+          --hide-error-context
+          --hide-error-code-links
+          .
 
-      - name: basedpyright
-        run: uv run tox -e=pyright
+      - name: stubtest
+        run: >
+          uv run --with="numpy==${{ matrix.numpy }}" --no-editable
+          stubtest
+          --tb
+          --ignore-unused-allowlist
+          --allowlist=.mypyignore
+          --mypy-config-file=pyproject.toml
+          scipy

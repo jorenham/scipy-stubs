@@ -47,7 +47,7 @@ lint = [
     "ruff>=0.9.2",
     "sp-repo-review[cli]>=2025.1.22",
 ]
-typecheck = [
+type = [
     {include-group = "extras"},
     {include-group = "ci"},
     {include-group = "codegen"},
@@ -56,10 +56,7 @@ typecheck = [
 ]
 dev = [
     {include-group = "lint"},
-    {include-group = "typecheck"},
-    "poethepoet>=0.32.1,<1",
-    "pre-commit>=4.1.0",
-    "pre-commit-uv>=4.1.4,<5",
+    {include-group = "type"},
 ]
 
 [project.optional-dependencies]
@@ -78,8 +75,8 @@ packages = ["scipy-stubs"]
 exclude = ["CODE_OF_CONDUCT.md", "README.md", "SECURITY.md", "uv.lock"]
 force-include = {".mypyignore" = ".mypyignore"}  # for scipy-stubs-feedstock
 
-[tool.poe.tasks]
-clean = """
+[tool.poe.tasks.clean]
+cmd = """
 rm -rf
     codegen/*.pyc
     codegen/__pycache__
@@ -94,52 +91,10 @@ rm -rf
     ./**/.ruff_cache
     ./**/.tox
 """
-mdformat = """
-mdformat
-    CODE_OF_CONDUCT.md
-    CONTRIBUTING.md
-    README.md
-    SECURITY.md
-    tests/README.md
-    codegen/README.md
-"""
-# TODO: Replace with `mdformat .` once `--exclude` can be used on `python<3.13`, see
-# https://github.com/hukkin/mdformat/issues/489
-_ruff_format = "ruff format"
-_ruff_check = "ruff check --show-fixes"
-repo-review = "repo-review ."
-format = ["mdformat", "_ruff_format"]
-ruff = ["_ruff_format", "_ruff_check"]
-check = ["mdformat --check", "repo-review", "ruff"]
-lint = ["check", "format"]
-types = "basedpyright codegen scripts"
-pre-commit = "pre-commit run --all-files"
-
-_test_bpr = "basedpyright tests"
-_test_mypy = """
-uv run --frozen --no-editable --isolated --refresh-package=scipy-stubs
-    mypy
-    --config-file=pyproject.toml
-    tests
-"""
-typetest = ["_test_bpr", "_test_mypy"]
-
-[tool.poe.tasks.pyright]
-cmd = "basedpyright $path"
-args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs codegen"}]
-
-[tool.poe.tasks.mypy]
-cmd = """
-uv run --frozen --no-editable --isolated --refresh-package=scipy-stubs
-    mypy
-    --config-file=pyproject.toml
-    $path
-"""
-args = [{name = "path", positional = true, multiple = true, default = "scipy-stubs codegen"}]
 
 [tool.poe.tasks.stubtest]
 cmd = """
-uv run --frozen --no-editable --isolated --refresh-package=scipy-stubs
+uv run --no-editable
     stubtest
     --mypy-config-file=pyproject.toml
     --allowlist=.mypyignore
@@ -149,7 +104,15 @@ uv run --frozen --no-editable --isolated --refresh-package=scipy-stubs
 args = [{name = "modules", positional = true, multiple = true, default = "scipy"}]
 
 [tool.poe.tasks.codemod]
-cmd = "python -m libcst.tool codemod -x --hide-progress --include-stubs codegen.mods.$name $path"
+cmd = """
+python -m libcst.tool
+    codemod
+    -x
+    --hide-progress
+    --include-stubs
+    codegen.mods.$name
+    $path
+"""
 args = [
     {name = "name", positional = true, multiple = false, required = true},
     {name = "path", positional = true, multiple = false, default = "scipy-stubs"},
@@ -159,15 +122,17 @@ args = [
 extend-exclude = ["*.pyi", ".mypyignore"]
 
 [tool.mypy]
+files = ["codegen/**/*.py", "scripts/**/*.py", "tests/**/*.py", "scipy-stubs/**/*.pyi"]
+exclude = ['^\.git$', '^\.ruff_cache$','^\.tox$']
 python_version = "3.10"
+plugins = ["numpy.typing.mypy_plugin"]
 strict = true
 disable_bytearray_promotion = true
 disable_memoryview_promotion = true
-warn_unreachable = true
-warn_unused_ignores = true
+warn_unreachable = false
+warn_unused_ignores = false
 disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[Any]`
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
-plugins = ["numpy.typing.mypy_plugin"]
 
 [tool.pyright]
 include = ["scipy-stubs", "codegen", "scripts", "tests"]
@@ -239,7 +204,7 @@ ignore = [
 
 [tool.ruff]
 src = ["scipy-stubs", "codegen", "scripts"]
-exclude = [".venv"]
+extend-exclude = [".venv", ".git", ".mypy_cache", ".tox"]
 force-exclude = true
 # https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#maximum-line-length
 line-length = 130

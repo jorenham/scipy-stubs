@@ -1,8 +1,6 @@
 ci:
   autoupdate_branch: "master"
   autoupdate_commit_msg: "⬆️ update pre-commit hooks"
-  skip:
-    - basedpyright
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -54,6 +52,11 @@ repos:
     hooks:
       - id: typos
 
+  - repo: https://github.com/astral-sh/uv-pre-commit
+    rev: 0.5.23
+    hooks:
+      - id: uv-lock
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.9.2
     hooks:
@@ -62,12 +65,4 @@ repos:
         types_or: [python, pyi]
 
       - id: ruff-format
-        types_or: [python, pyi]
-
-  - repo: local
-    hooks:
-      - id: basedpyright
-        name: basedpyright
-        entry: uv run --no-sync --locked basedpyright
-        language: system
         types_or: [python, pyi]
