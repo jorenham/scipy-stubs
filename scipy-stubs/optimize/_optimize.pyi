@@ -4,8 +4,9 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 from scipy._lib._util import _RichResult
-from scipy._typing import AnyBool, Falsy, ToRNG, Truthy
+from scipy._typing import Falsy, ToRNG, Truthy
 from ._linesearch import line_search_wolfe2 as line_search
 from ._typing import Brack, MethodAll, Solver
 
@@ -46,17 +47,14 @@ _Fn1_1d: TypeAlias = _Fn1[_Float1D, _YT]
 _Fn2: TypeAlias = Callable[Concatenate[_XT, _PT, ...], _YT]
 _Callback_1d: TypeAlias = Callable[[_Float1D], None]
 
-_Scalar: TypeAlias = complex | np.number[Any] | np.bool_
-
-_Array: TypeAlias = onp.ArrayND[np.number[Any] | np.bool_ | np.object_]
-_Array_f: TypeAlias = onp.ArrayND[np.floating[Any]]
-_Array_f_co: TypeAlias = onp.ArrayND[np.floating[Any] | np.integer[Any] | np.bool_]
-_Array_1d: TypeAlias = onp.Array1D[np.number[Any] | np.bool_]
-
 _Int1D: TypeAlias = onp.Array1D[np.intp]
 _Float: TypeAlias = float | np.float64  # equivalent to `np.float64` in `numpy>=2.2`
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
+_ComplexCo1D: TypeAlias = onp.Array1D[npc.number | np.bool_]
+_FloatingND: TypeAlias = onp.ArrayND[npc.floating]
+_FloatingCoND: TypeAlias = onp.ArrayND[npc.floating | npc.integer | np.bool_]
+_NumericND: TypeAlias = onp.ArrayND[npc.number | np.bool_ | np.timedelta64 | np.object_]
 
 _Args: TypeAlias = tuple[object, ...]
 _Brack: TypeAlias = tuple[float, float] | tuple[float, float, float]
@@ -69,18 +67,21 @@ _BracketInfo: TypeAlias = tuple[
 _WarnFlag: TypeAlias = Literal[0, 1, 2, 3, 4]
 _AllVecs: TypeAlias = list[_Int1D | _Float1D]
 
-_XT_contra = TypeVar("_XT_contra", contravariant=True, bound=_Array_1d, default=_Float1D)
-_ValueT_co = TypeVar("_ValueT_co", covariant=True, bound=float | np.floating[Any], default=_Float)
-_JacT_co = TypeVar("_JacT_co", covariant=True, bound=_Float1D | _Float2D, default=_Float1D)
+_ResultValueT = TypeVar("_ResultValueT", default=Any)
+_XT_contra = TypeVar("_XT_contra", bound=_ComplexCo1D, default=_Float1D, contravariant=True)
+_ValueT_co = TypeVar("_ValueT_co", bound=float | npc.floating, default=_Float, covariant=True)
+_JacT_co = TypeVar("_JacT_co", bound=onp.Array[tuple[int] | tuple[int, int], npc.floating], default=_Float1D, covariant=True)
 
 @type_check_only
 class _DoesFMin(Protocol):
-    def __call__(self, func: _Fn1_1d, x0: _Float1D, /, *, args: _Args) -> _Array_f: ...
+    def __call__(self, func: _Fn1_1d, x0: _Float1D, /, *, args: _Args) -> _FloatingND: ...
 
 ###
 
-# NOTE: Unlike the docs suggest, `OptimizeResult` has no attributes by default, as e.g. `RootResult` has none of these attrs
-class OptimizeResult(_RichResult): ...
+# NOTE: Unlike the docs suggest, `OptimizeResult` has no attributes by default:
+#   For example, `RootResult` does not have any of the documented attributes,
+#   even though it is a subclass of `OptimizeResult`
+class OptimizeResult(_RichResult[_ResultValueT], Generic[_ResultValueT]): ...
 
 #
 class OptimizeWarning(UserWarning): ...
@@ -121,7 +122,7 @@ class Brent(Generic[_ValueT_co]):
         args: _Args = (),
         tol: onp.ToFloat = 1.48e-08,
         maxiter: int = 500,
-        full_output: AnyBool = 0,  # ignored
+        full_output: onp.ToBool = 0,  # ignored
         disp: _Disp = 0,
     ) -> None: ...
     def set_bracket(self, /, brack: _Brack | None = None) -> None: ...
@@ -136,24 +137,24 @@ class Brent(Generic[_ValueT_co]):
 @overload
 def is_finite_scalar(x: onp.ToScalar) -> np.bool_: ...
 @overload  # returns a `np.ndarray` of `size = 1`, but could have any `ndim`
-def is_finite_scalar(x: _Array) -> Literal[False] | onp.Array[onp.AtLeast1D, np.bool_]: ...
+def is_finite_scalar(x: _NumericND) -> Literal[False] | onp.Array[onp.AtLeast1D, np.bool_]: ...
 
 # undocumented
 @overload
-def vecnorm(x: _Scalar, ord: onp.ToFloat = 2) -> onp.ToFloat: ...
+def vecnorm(x: onp.ToComplex, ord: onp.ToFloat = 2) -> onp.ToFloat: ...
 @overload
-def vecnorm(x: _Array, ord: onp.ToInt = 2) -> _Array_f_co: ...
+def vecnorm(x: _NumericND, ord: onp.ToInt = 2) -> _FloatingCoND: ...
 @overload
 def vecnorm(x: onp.ToFloatND, ord: onp.ToInt = 2) -> onp.ToFloat: ...
 @overload
-def vecnorm(x: onp.ToComplexND, ord: onp.ToFloat = 2) -> onp.ToFloat | _Array_f_co: ...
+def vecnorm(x: onp.ToComplexND, ord: onp.ToFloat = 2) -> onp.ToFloat | _FloatingCoND: ...
 
 # undocumented
 def approx_fhess_p(
     x0: onp.ToFloat1D,
     p: onp.ToFloat,
-    fprime: _Fn1[_Float1D, _Array_f_co],
-    epsilon: onp.ToFloat | _Array_f_co,  # scalar or 1d ndarray
+    fprime: _Fn1[_Float1D, _FloatingCoND],
+    epsilon: onp.ToFloat | _FloatingCoND,  # scalar or 1d ndarray
     *args: object,
 ) -> _Float1D: ...
 
@@ -227,7 +228,7 @@ def fmin(
 def fmin_bfgs(
     f: _Fn1_1d,
     x0: onp.ToFloat1D,
-    fprime: _Fn1_1d[_Array_f_co] | None = None,
+    fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
@@ -246,7 +247,7 @@ def fmin_bfgs(
 def fmin_bfgs(
     f: _Fn1_1d,
     x0: onp.ToFloat1D,
-    fprime: _Fn1_1d[_Array_f_co] | None = None,
+    fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
@@ -266,7 +267,7 @@ def fmin_bfgs(
 def fmin_bfgs(
     f: _Fn1_1d,
     x0: onp.ToFloat1D,
-    fprime: _Fn1_1d[_Array_f_co] | None = None,
+    fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
@@ -286,7 +287,7 @@ def fmin_bfgs(
 def fmin_bfgs(
     f: _Fn1_1d,
     x0: onp.ToFloat1D,
-    fprime: _Fn1_1d[_Array_f_co] | None = None,
+    fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
@@ -308,11 +309,11 @@ def fmin_bfgs(
 def fmin_cg(
     f: _Fn1_1d,
     x0: onp.ToFloat1D,
-    fprime: _Fn1_1d[_Array_f_co] | None = None,
+    fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _Array_f_co = ...,
+    epsilon: onp.ToFloat | _FloatingCoND = ...,
     maxiter: int | None = None,
     full_output: Falsy = 0,
     disp: _Disp = 1,
@@ -325,11 +326,11 @@ def fmin_cg(
 def fmin_cg(
     f: _Fn1_1d,
     x0: onp.ToFloat1D,
-    fprime: _Fn1_1d[_Array_f_co] | None = None,
+    fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _Array_f_co = ...,
+    epsilon: onp.ToFloat | _FloatingCoND = ...,
     maxiter: int | None = None,
     full_output: Falsy = 0,
     disp: _Disp = 1,
@@ -343,11 +344,11 @@ def fmin_cg(
 def fmin_cg(
     f: _Fn1_1d,
     x0: onp.ToFloat1D,
-    fprime: _Fn1_1d[_Array_f_co] | None = None,
+    fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _Array_f_co = ...,
+    epsilon: onp.ToFloat | _FloatingCoND = ...,
     maxiter: int | None = None,
     *,
     full_output: Truthy,
@@ -361,11 +362,11 @@ def fmin_cg(
 def fmin_cg(
     f: _Fn1_1d,
     x0: onp.ToFloat1D,
-    fprime: _Fn1_1d[_Array_f_co] | None = None,
+    fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _Array_f_co = ...,
+    epsilon: onp.ToFloat | _FloatingCoND = ...,
     maxiter: int | None = None,
     *,
     full_output: Truthy,
@@ -379,12 +380,12 @@ def fmin_cg(
 def fmin_ncg(
     f: _Fn1_1d,
     x0: onp.ToFloat1D,
-    fprime: _Fn1_1d[_Array_f_co],
+    fprime: _Fn1_1d[_FloatingCoND],
     fhess_p: _Fn2[_Float1D, _Float1D] | None = None,
-    fhess: _Fn1_1d[_Array_f_co] | None = None,
+    fhess: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
-    epsilon: onp.ToFloat | _Array_f_co = ...,
+    epsilon: onp.ToFloat | _FloatingCoND = ...,
     maxiter: int | None = None,
     full_output: Falsy = 0,
     disp: _Disp = 1,
@@ -397,12 +398,12 @@ def fmin_ncg(
 def fmin_ncg(
     f: _Fn1_1d,
     x0: onp.ToFloat1D,
-    fprime: _Fn1_1d[_Array_f_co],
+    fprime: _Fn1_1d[_FloatingCoND],
     fhess_p: _Fn2[_Float1D, _Float1D] | None = None,
-    fhess: _Fn1_1d[_Array_f_co] | None = None,
+    fhess: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
-    epsilon: onp.ToFloat | _Array_f_co = ...,
+    epsilon: onp.ToFloat | _FloatingCoND = ...,
     maxiter: int | None = None,
     full_output: Falsy = 0,
     disp: _Disp = 1,
@@ -416,12 +417,12 @@ def fmin_ncg(
 def fmin_ncg(
     f: _Fn1_1d,
     x0: onp.ToFloat1D,
-    fprime: _Fn1_1d[_Array_f_co],
+    fprime: _Fn1_1d[_FloatingCoND],
     fhess_p: _Fn2[_Float1D, _Float1D] | None = None,
-    fhess: _Fn1_1d[_Array_f_co] | None = None,
+    fhess: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
-    epsilon: onp.ToFloat | _Array_f_co = ...,
+    epsilon: onp.ToFloat | _FloatingCoND = ...,
     maxiter: int | None = None,
     *,
     full_output: Truthy,
@@ -435,12 +436,12 @@ def fmin_ncg(
 def fmin_ncg(
     f: _Fn1_1d,
     x0: onp.ToFloat1D,
-    fprime: _Fn1_1d[_Array_f_co],
+    fprime: _Fn1_1d[_FloatingCoND],
     fhess_p: _Fn2[_Float1D, _Float1D] | None = None,
-    fhess: _Fn1_1d[_Array_f_co] | None = None,
+    fhess: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
-    epsilon: onp.ToFloat | _Array_f_co = ...,
+    epsilon: onp.ToFloat | _FloatingCoND = ...,
     maxiter: int | None = None,
     *,
     full_output: Truthy,
@@ -550,7 +551,7 @@ def brute(
     Ns: int = 20,
     full_output: Falsy = 0,
     finish: _DoesFMin | None = ...,  # default: `fmin`
-    disp: AnyBool = False,
+    disp: onp.ToBool = False,
     workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
 ) -> _Float1D: ...
 @overload  # full_output: True (keyword)
@@ -562,9 +563,9 @@ def brute(
     *,
     full_output: Truthy,
     finish: _DoesFMin | None = ...,  # default: `fmin`
-    disp: AnyBool = False,
+    disp: onp.ToBool = False,
     workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
-) -> tuple[_Float1D, np.float64, onp.Array3D[np.float64], onp.Array2D[np.floating[Any]]]: ...
+) -> tuple[_Float1D, np.float64, onp.Array3D[np.float64], onp.Array2D[npc.floating]]: ...
 
 #
 @overload  # full_output: False = ...
@@ -651,12 +652,12 @@ def show_options(solver: Solver | None, method: MethodAll | None, disp: Falsy) -
 def show_options(solver: Solver | None = None, method: MethodAll | None = None, *, disp: Falsy) -> str: ...
 
 #
-def approx_fprime(xk: onp.ToFloat1D, f: _Fn1_1d, epsilon: onp.ToFloat | _Array_f_co = ..., *args: object) -> _Float1D: ...
+def approx_fprime(xk: onp.ToFloat1D, f: _Fn1_1d, epsilon: onp.ToFloat | _FloatingCoND = ..., *args: object) -> _Float1D: ...
 
 #
 def check_grad(
     func: _Fn1_1d,
-    grad: _Fn1_1d[_Array_f_co],
+    grad: _Fn1_1d[_FloatingCoND],
     x0: onp.ToFloat1D,
     *args: object,
     epsilon: onp.ToFloat = ...,
