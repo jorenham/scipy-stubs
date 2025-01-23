@@ -16,6 +16,7 @@ __all__ = [
     "Constraints",
     "MethodAll",
     "MethodLinprog",
+    "MethodLinprogLegacy",
     "MethodMimimize",
     "MethodMinimizeScalar",
     "MethodRootScalar",
@@ -64,7 +65,8 @@ MethodMimimize: TypeAlias = Literal[
     "Trust-Krylov", "trust-krylov",
 ]  # fmt: skip
 MethodMinimizeScalar: TypeAlias = Literal["brent", "golden", "bounded"]
-MethodLinprog: TypeAlias = Literal["highs", "highs-ds", "highs-ipm"]  # Literal["interior-point", "revised simplex", "simplex"]
+MethodLinprog: TypeAlias = Literal["highs", "highs-ds", "highs-ipm"]
+MethodLinprogLegacy: TypeAlias = Literal["interior-point", "revised simplex", "simplex"]
 _MethodRoot: TypeAlias = Literal[
     "hybr",
     "lm",
