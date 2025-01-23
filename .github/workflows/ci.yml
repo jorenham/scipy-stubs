@@ -97,7 +97,7 @@ jobs:
       - name: basedmypy
         run: >
           uv run --with="numpy==${{ matrix.numpy }}"
-          run mypy
+          mypy
           --tb
           --hide-error-context
           --hide-error-code-links
