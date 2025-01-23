@@ -1,8 +1,10 @@
 from collections.abc import Callable, Mapping, Sequence
 from typing import Any, Concatenate, Final, Literal, Protocol, TypeAlias, TypedDict, TypeVar, overload, type_check_only
+from typing_extensions import LiteralString
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 from scipy._typing import Falsy, Truthy
 from scipy.sparse.linalg import LinearOperator
 from ._hessian_update_strategy import HessianUpdateStrategy
@@ -13,9 +15,13 @@ __all__ = ["minimize", "minimize_scalar"]
 
 ###
 
+_T = TypeVar("_T")
+_Tuple2: TypeAlias = tuple[_T, _T]
+_Tuple3: TypeAlias = tuple[_T, _T, _T]
 _Args: TypeAlias = tuple[object, ...]
 
 _Float: TypeAlias = float | np.float64
+_Floating: TypeAlias = float | npc.floating
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 
@@ -25,6 +31,13 @@ _Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], _RT]
 _Fun1Dp: TypeAlias = Callable[Concatenate[_Float1D, _Float1D, ...], _RT]
 
 _FDMethod: TypeAlias = Literal["2-point", "3-point", "cs"]
+
+_ToBracket: TypeAlias = Sequence[_Tuple2[onp.ToFloat] | _Tuple3[onp.ToFloat]]
+_ToBound: TypeAlias = _Tuple2[onp.ToFloat]
+_Ignored: TypeAlias = object
+
+_MinimizeScalarResultT = TypeVar("_MinimizeScalarResultT", bound=_MinimizeScalarResultBase)
+_MinimizeScalarResultT_co = TypeVar("_MinimizeScalarResultT_co", bound=_MinimizeScalarResultBase, covariant=True)
 
 @type_check_only
 class _CallbackResult(Protocol):
@@ -39,22 +52,35 @@ class _MinimizeMethodFun(Protocol):
     def __call__(self, fun: _Fun1D[onp.ToFloat], x0: onp.ToFloat1D, /, args: _Args, **kwargs: Any) -> OptimizeResult: ...
 
 @type_check_only
+class _MinimizeScalarMethodFun(Protocol[_MinimizeScalarResultT_co]):
+    def __call__(
+        self,
+        fun: _Fun0D[onp.ToFloat],
+        /,
+        *,
+        args: _Args,
+        bracket: _ToBracket,
+        bound: _ToBound,
+        **options: Any,
+    ) -> _MinimizeScalarResultT_co: ...
+
+@type_check_only
 class _MinimizeOptions(TypedDict, total=False):
     # Nelder-Mead, Powell, CG, BFGS, Newton-CG
-    return_all: bool
+    return_all: onp.ToBool
     # Nelder-Mead, Powell, CG, BFGS, L-BFGS-B, Newton-CG, TNC, COBYLA, COBYQA, SLSQP, trust-constr
-    disp: bool
+    disp: onp.ToBool
     # Nelder-Mead, Powell, CG, BFGS, L-BFGS-B, Newton-CG, COBYLA, SLSQP, trust-constr
     maxiter: int
     # Nelder-Mead, Powell, COBYQA
     maxfev: int
     # TNC
     maxCGit: int
-    offset: float
-    stepmx: float
-    accuracy: float
-    minfev: float
-    rescale: float
+    offset: _Floating
+    stepmx: _Floating
+    accuracy: _Floating
+    minfev: _Floating
+    rescale: _Floating
     # L-BFGS-B, TNC
     maxfun: int
     # L-BFGS-B
@@ -62,64 +88,80 @@ class _MinimizeOptions(TypedDict, total=False):
     iprint: int
     maxls: int
     # Nelder-Mead
-    initial_simplex: onp.ToArrayND
-    adaptive: bool
-    xatol: float
-    fatol: float
+    initial_simplex: onp.ToFloatND
+    adaptive: onp.ToBool
+    xatol: _Floating
+    fatol: _Floating
     # CG, BFGS, L-BFGS-B, dogleg, trust-ncg, trust-exact, TNC, trust-constr
-    gtol: float
+    gtol: _Floating
     # Powell, Newton-CG, TNC, trust-constr
-    xtol: float
+    xtol: _Floating
     # Powell, L-BFGS-B, TNC, SLSQP
-    ftol: float
+    ftol: _Floating
     # BFGS
-    xrtol: float
-    hess_inv0: onp.ArrayND[np.floating[Any]]
+    xrtol: _Floating
+    hess_inv0: onp.ArrayND[npc.floating]
     # COBYLA
-    tol: float
-    catool: float
-    rhobeg: float
-    f_target: float
+    tol: _Floating
+    catool: _Floating
+    rhobeg: _Floating
+    f_target: _Floating
     # COBYQA
-    feasibility_tol: float
-    final_tr_radius: float
+    feasibility_tol: _Floating
+    final_tr_radius: _Floating
     # Powell
-    direc: onp.ArrayND[np.floating[Any]]
+    direc: onp.ArrayND[npc.floating]
     # CG, BFGS, Newton-CG, L-BFGS-B, TNC, SLSQP
-    eps: float | onp.ArrayND[np.floating[Any]]
+    eps: _Floating | onp.ArrayND[npc.floating]
     # CG, BFGS, Newton-CG
-    c1: float
-    c2: float
+    c1: _Floating
+    c2: _Floating
     # CG, BFGS
-    norm: float
+    norm: _Floating
     # CG, BFGS, L-BFGS-B, TNC, SLSQP, trust-constr
-    finite_diff_rel_step: onp.ToFloat | onp.ToArrayND
+    finite_diff_rel_step: onp.ToFloat | onp.ToFloatND
     # dogleg, trust-ncg, trust-exact
-    initial_trust_radius: float
-    max_trust_radius: float
+    initial_trust_radius: _Floating
+    max_trust_radius: _Floating
     # COBYQA, trust-constr
-    initial_tr_radius: float
+    initial_tr_radius: _Floating
     # trust-constr
-    barrier_tol: float
-    sparse_jacobian: bool
-    initial_constr_penalty: float
-    initial_barrier_parameter: float
-    initial_barrier_tolerance: float
+    barrier_tol: _Floating
+    sparse_jacobian: onp.ToBool
+    initial_constr_penalty: _Floating
+    initial_barrier_parameter: _Floating
+    initial_barrier_tolerance: _Floating
     factorization_method: Literal["NormalEquation", "AugmentedSystem", "QRFactorization", "SVDFactorization"]
     verbose: Literal[0, 1, 2, 3]
     # dogleg, trust-ncg, trust-exact, TNC
-    eta: float
+    eta: _Floating
     # trust-krylov
-    inexact: bool
+    inexact: onp.ToBool
     # TNC (list of floats), COBYQA (bool)
-    scale: Sequence[float] | bool
+    scale: Sequence[_Floating] | onp.ToBool
 
 @type_check_only
-class _MinimizeScalarResult(_OptimizeResult):
+class _MinimizeScalarOptionsCommon(TypedDict, total=False):
+    maxiter: int
+    disp: Literal[0, 1, 2, 3]
+
+@type_check_only
+class _MinimizeScalarOptionsBracketed(_MinimizeScalarOptionsCommon, TypedDict, total=False):
+    xtol: _Floating
+
+@type_check_only
+class _MinimizeScalarOptionsBounded(_MinimizeScalarOptionsCommon, TypedDict, total=False):
+    xatol: _Floating
+
+@type_check_only
+class _MinimizeScalarResultBase(_OptimizeResult):
     x: _Float
     fun: _Float
+
+@type_check_only
+class _MinimizeScalarResult(_MinimizeScalarResultBase):
     success: bool
-    message: str
+    message: LiteralString
     nit: int
     nfev: int
 
@@ -129,11 +171,11 @@ MINIMIZE_METHODS: Final[list[MethodMimimize]] = ...
 MINIMIZE_METHODS_NEW_CB: Final[list[MethodMimimize]] = ...
 MINIMIZE_SCALAR_METHODS: Final[list[MethodMinimizeScalar]] = ...
 
-# NOTE: This `OptimizeResult` "flavor" is Specific to `minimize`
+# NOTE: This `OptimizeResult` "flavor" is specific to `minimize`
 class OptimizeResult(_OptimizeResult):
     success: bool
     status: int
-    message: str
+    message: LiteralString
     x: _Float1D
     nit: int
     maxcv: float  # requires `bounds`
@@ -180,7 +222,7 @@ def minimize(
     fun: _Fun1D[tuple[onp.ToFloat, onp.ToFloat1D]],
     x0: onp.ToFloat1D,
     args: _Args = (),
-    method: _MinimizeMethodFun | MethodMimimize | None = None,
+    method: MethodMimimize | _MinimizeMethodFun | None = None,
     *,
     jac: Truthy,
     hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
@@ -193,15 +235,58 @@ def minimize(
 ) -> OptimizeResult: ...
 
 #
+@overload  # method="brent" or method="golden"
 def minimize_scalar(
     fun: _Fun0D[onp.ToFloat],
-    bracket: Sequence[tuple[onp.ToFloat, onp.ToFloat] | tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat]] | None = None,
-    bounds: Bound | None = None,
+    bracket: _ToBracket,
+    bounds: None = None,
     args: _Args = (),
-    method: MethodMinimizeScalar | Callable[..., _MinimizeScalarResult] | None = None,
+    method: Literal["brent", "golden"] | None = None,  # default: "brent"
+    tol: onp.ToFloat | None = None,
+    options: _MinimizeScalarOptionsBracketed | None = None,
+) -> _MinimizeScalarResult: ...
+@overload  # bound=<given>  (positional)
+def minimize_scalar(
+    fun: _Fun0D[onp.ToFloat],
+    bracket: _Ignored | None,
+    bounds: _ToBound,
+    args: _Args,
+    method: Literal["bounded"] | None = None,
+    tol: onp.ToFloat | None = None,
+    options: _MinimizeScalarOptionsBounded | None = None,
+) -> _MinimizeScalarResult: ...
+@overload  # bound=<given>  (keyword)
+def minimize_scalar(
+    fun: _Fun0D[onp.ToFloat],
+    bracket: _Ignored | None = None,
+    *,
+    bounds: _ToBound,
+    args: _Args,
+    method: Literal["bounded"] | None = None,
+    tol: onp.ToFloat | None = None,
+    options: _MinimizeScalarOptionsBounded | None = None,
+) -> _MinimizeScalarResult: ...
+@overload  # method=<custom>  (positional)
+def minimize_scalar(
+    fun: _Fun0D[onp.ToFloat],
+    bracket: _ToBracket | None,
+    bounds: _ToBound | None,
+    args: _Args,
+    method: _MinimizeScalarMethodFun[_MinimizeScalarResultT],
     tol: onp.ToFloat | None = None,
     options: Mapping[str, object] | None = None,
-) -> _MinimizeScalarResult: ...
+) -> _MinimizeScalarResultT: ...
+@overload  # method=<custom>  (keyword)
+def minimize_scalar(
+    fun: _Fun0D[onp.ToFloat],
+    bracket: _ToBracket | None = None,
+    bounds: _ToBound | None = None,
+    args: _Args = (),
+    *,
+    method: _MinimizeScalarMethodFun[_MinimizeScalarResultT],
+    tol: onp.ToFloat | None = None,
+    options: Mapping[str, object] | None = None,
+) -> _MinimizeScalarResultT: ...
 
 # undocumented
 def standardize_bounds(bounds: Bounds, x0: onp.ToFloat1D, meth: MethodMimimize) -> Bounds | list[Bound]: ...
