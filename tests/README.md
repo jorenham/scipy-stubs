@@ -4,10 +4,8 @@ The `scipy-stubs` annotations are tested through the use of `.pyi` stubs.
 These can be "run" (i.e. type-checked with mypy and pyright) with:
 
 ```shell
-poe typetest
+uv run mypy tests && uv run basedpyright tests
 ```
-
-This is roughly equivalent to running `poetry run basedpyright tests && poetry run mypy tests`.
 
 ## A simple example
 
