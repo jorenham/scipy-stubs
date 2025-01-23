@@ -192,15 +192,53 @@ uv sync --frozen
 ### pre-commit
 
 `scipy-stubs` uses [pre-commit](https://pre-commit.com/) to ensure that the code is
-formatted and typed correctly when committing the changes.
+formatted and typed correctly when committing the changes. For better performance,
+you could additionally install [`pre-commit-uv`](https://github.com/tox-dev/pre-commit-uv):
 
 ```bash
-poe pre-commit
+uv tool install pre-commit --with pre-commit-uv --force-reinstall
+```
+
+<details>
+<summary>Output:</summary>
+
+```plaintext
+Resolved 11 packages in 74ms
+Prepared 11 packages in 1ms
+Uninstalled 11 packages in 9ms
+Installed 11 packages in 10ms
+ ~ cfgv==3.4.0
+ ~ distlib==0.3.9
+ ~ filelock==3.17.0
+ ~ identify==2.6.6
+ ~ nodeenv==1.9.1
+ ~ platformdirs==4.3.6
+ ~ pre-commit==4.1.0
+ ~ pre-commit-uv==4.1.4
+ ~ pyyaml==6.0.2
+ ~ uv==0.5.23
+ ~ virtualenv==20.29.1
+Installed 1 executable: pre-commit
+```
+
+</details>
+
+Now to install the git hook script, make sure that your the root directory of the `scipy-stubs` repo, then run:
+
+```bash
+uvx pre-commit install
+```
+
+Output:
+
+```plaintext
+pre-commit installed at .git/hooks/pre-commit
 ```
 
 > [!NOTE]
-> Pre-commit doesn't run `stubtest`. This will be run by github actions
-> when submitting a pull request. See the next section for more details.
+> For performance reasons, `pre-commit` won't run `mypy` and `stubtest`. You could do this
+> yourself with `tox -e mypy` and `tox -e stubtest`, as explained in the next section.
+> That way you won't have to rely on the (slow) github actions workflow when you submit your PR.
 
 ### Tox
 
@@ -208,26 +246,38 @@ The pre-commit hooks and `stubtest` can easily be run with [tox](https://github.
 It can be installed with:
 
 ```bash
-uv tool install tox --with tox-uv
+uv tool install tox --with tox-uv --upgrade
 ```
 
 To run all environments in parallel, run:
 
-```shell
-$ tox -p all
-repo-review: OK ✔ in 0.4 seconds
-3.12: OK ✔ in 10.38 seconds
-3.10: OK ✔ in 10.62 seconds
-3.11: OK ✔ in 11.04 seconds
-3.13: OK ✔ in 19.42 seconds
-  repo-review: OK (0.40=setup[0.04]+cmd[0.36] seconds)
-  pre-commit: OK (24.91=setup[0.04]+cmd[24.87] seconds)
-  3.10: OK (10.62=setup[0.11]+cmd[10.51] seconds)
-  3.11: OK (11.04=setup[0.04]+cmd[11.00] seconds)
-  3.12: OK (10.38=setup[0.04]+cmd[10.34] seconds)
-  3.13: OK (19.42=setup[0.04]+cmd[19.38] seconds)
-  congratulations :) (24.96 seconds)
+```bash
+uvx tox p
 ```
+
+<details>
+<summary>Output:</summary>
+
+```plaintext
+lint: OK ✔ in 0.52 seconds
+pre-commit: OK ✔ in 2.59 seconds
+3.11: OK ✔ in 21.59 seconds
+mypy: OK ✔ in 21.62 seconds
+pyright: OK ✔ in 25.23 seconds
+3.10: OK ✔ in 25.4 seconds
+3.12: OK ✔ in 38.71 seconds
+  pre-commit: OK (2.59=setup[0.03]+cmd[2.56] seconds)
+  lint: OK (0.52=setup[0.04]+cmd[0.41,0.03,0.05] seconds)
+  pyright: OK (25.23=setup[0.03]+cmd[25.20] seconds)
+  mypy: OK (21.62=setup[0.03]+cmd[21.59] seconds)
+  3.13: OK (53.28=setup[0.03]+cmd[53.25] seconds)
+  3.12: OK (38.71=setup[0.03]+cmd[38.68] seconds)
+  3.11: OK (21.59=setup[0.03]+cmd[21.55] seconds)
+  3.10: OK (25.40=setup[0.03]+cmd[25.36] seconds)
+  congratulations :) (53.35 seconds)
+```
+
+</details>
 
 ### Commit message style
 
