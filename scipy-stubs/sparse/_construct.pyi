@@ -821,7 +821,10 @@ def bmat(blocks: Seq[Seq[spmatrix[_SCT]]], format: _FmtCOO | None = None, dtype:
 def bmat(blocks: _ToBlocks, format: _FmtCOO | None, dtype: onp.ToDType[_SCT]) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
 @overload  # sparray, blocks: <unknown, unknown dtype>, format: <default>, dtype: <known> (keyword)
 def bmat(
-    blocks: _ToBlocks, format: _FmtCOO | None = None, *, dtype: onp.ToDType[_SCT]
+    blocks: _ToBlocks,
+    format: _FmtCOO | None = None,
+    *,
+    dtype: onp.ToDType[_SCT],
 ) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
 @overload  # sparray, blocks: <unknown, unknown dtype>, format: <default>, dtype: <unknown>
 def bmat(blocks: _ToBlocks, format: _FmtCOO | None = None, dtype: npt.DTypeLike | None = None) -> _COOArray2D | coo_matrix: ...
