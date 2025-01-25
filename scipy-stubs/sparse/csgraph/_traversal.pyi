@@ -5,12 +5,12 @@ import optype.numpy as onp
 from scipy._typing import Falsy, Truthy
 from scipy.sparse import csr_matrix
 from scipy.sparse._base import _spbase
-from scipy.sparse._typing import Float, Int
+from scipy.sparse._typing import Floating, Integer
 
 _T = TypeVar("_T")
 _Pair: TypeAlias = tuple[_T, _T]
 
-_Real: TypeAlias = Int | Float
+_Real: TypeAlias = Integer | Floating
 _Int1D: TypeAlias = onp.Array1D[np.int32]
 
 _ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]

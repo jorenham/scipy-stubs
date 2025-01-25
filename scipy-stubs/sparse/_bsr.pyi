@@ -9,18 +9,18 @@ from ._base import _spbase, sparray
 from ._compressed import _cs_matrix
 from ._data import _minmax_mixin
 from ._matrix import spmatrix
-from ._typing import Int, Scalar, ToShape2d
+from ._typing import Integer, Numeric, ToShape2D
 
 __all__ = ["bsr_array", "bsr_matrix", "isspmatrix_bsr"]
 
 _T = TypeVar("_T")
-_SCT = TypeVar("_SCT", bound=Scalar, default=Any)
+_SCT = TypeVar("_SCT", bound=Numeric, default=Any)
 
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 
-_ToData2: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Int]]
-_ToData3: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Int], onp.ArrayND[Int]]
+_ToData2: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Integer]]
+_ToData3: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Integer], onp.ArrayND[Integer]]
 _ToData: TypeAlias = _ToData2[_SCT] | _ToData3[_SCT]
 
 ###
@@ -46,7 +46,7 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         self,
         /,
         arg1: _ToMatrix[_SCT] | _ToData[_SCT],
-        shape: ToShape2d | None = None,
+        shape: ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
@@ -57,7 +57,7 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
     def __init__(
         self: _bsr_base[np.float64],
         /,
-        arg1: ToShape2d,
+        arg1: ToShape2D,
         shape: None = None,
         dtype: None = None,
         copy: bool = False,
@@ -68,7 +68,7 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         self: _bsr_base[np.bool_],
         /,
         arg1: _ToMatrixPy[bool],
-        shape: ToShape2d | None = None,
+        shape: ToShape2D | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
@@ -80,7 +80,7 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         self: _bsr_base[np.int_],
         /,
         arg1: _ToMatrixPy[op.JustInt],
-        shape: ToShape2d | None = None,
+        shape: ToShape2D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
@@ -92,7 +92,7 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         self: _bsr_base[np.float64],
         /,
         arg1: _ToMatrixPy[op.JustFloat],
-        shape: ToShape2d | None = None,
+        shape: ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
@@ -104,7 +104,7 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         self: _bsr_base[np.complex128],
         /,
         arg1: _ToMatrixPy[op.JustComplex],
-        shape: ToShape2d | None = None,
+        shape: ToShape2D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
@@ -116,7 +116,7 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         self,
         /,
         arg1: onp.ToComplexND,
-        shape: ToShape2d | None,
+        shape: ToShape2D | None,
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
         *,
@@ -127,7 +127,7 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         self,
         /,
         arg1: onp.ToComplexND,
-        shape: ToShape2d | None = None,
+        shape: ToShape2D | None = None,
         *,
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,

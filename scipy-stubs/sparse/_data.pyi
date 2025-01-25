@@ -9,13 +9,13 @@ from ._base import _spbase, sparray
 from ._coo import coo_array, coo_matrix
 from ._matrix import spmatrix
 from ._sputils import _ScalarLike
-from ._typing import Scalar, ShapeCOO, ToShape1d, ToShape2d
+from ._typing import Numeric, ToShape1D, ToShape2D
 
 __all__: list[str] = []
 
-_SCT = TypeVar("_SCT", bound=Scalar)
-_SCT_co = TypeVar("_SCT_co", bound=Scalar, default=Scalar, covariant=True)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=ShapeCOO, default=ShapeCOO, covariant=True)
+_SCT = TypeVar("_SCT", bound=Numeric)
+_SCT_co = TypeVar("_SCT_co", bound=Numeric, default=Numeric, covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast1D, covariant=True)
 
 ###
 
@@ -60,7 +60,7 @@ class _data_matrix(_spbase[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
     def __init__(
         self: _data_matrix[np.float64, tuple[int]],
         /,
-        arg1: ToShape1d,
+        arg1: ToShape1D,
         *,
         maxprint: int | None = None,
     ) -> None: ...
@@ -68,7 +68,7 @@ class _data_matrix(_spbase[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
     def __init__(
         self: _data_matrix[np.float64, tuple[int, int]],
         /,
-        arg1: ToShape2d,
+        arg1: ToShape2D,
         *,
         maxprint: int | None = None,
     ) -> None: ...

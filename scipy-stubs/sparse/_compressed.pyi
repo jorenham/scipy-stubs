@@ -10,35 +10,22 @@ import optype.numpy as onp
 from ._base import _spbase
 from ._data import _data_matrix, _minmax_mixin
 from ._index import IndexMixin
-from ._typing import (
-    Index1D,
-    Int,
-    Scalar,
-    Shape,
-    ToDType,
-    ToDTypeBool,
-    ToDTypeComplex,
-    ToDTypeFloat,
-    ToDTypeInt,
-    ToShape1d,
-    ToShape1dNd,
-    ToShape2d,
-)
+from ._typing import Index1D, Integer, Numeric, ToShape1D, ToShape2D, ToShapeMin1D
 
 __all__: list[str] = []
 
 _T = TypeVar("_T")
-_SCT = TypeVar("_SCT", bound=Scalar, default=Any)
-_SCT0 = TypeVar("_SCT0", bound=Scalar)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=Shape, default=Shape, covariant=True)
+_SCT = TypeVar("_SCT", bound=Numeric, default=Any)
+_SCT0 = TypeVar("_SCT0", bound=Numeric)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast1D, covariant=True)
 
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 
-_ToData2B: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Int]]  # bsr
-_ToData2C: TypeAlias = tuple[onp.ArrayND[_SCT], tuple[onp.ArrayND[Int], onp.ArrayND[Int]]]  # csc, csr
+_ToData2B: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Integer]]  # bsr
+_ToData2C: TypeAlias = tuple[onp.ArrayND[_SCT], tuple[onp.ArrayND[Integer], onp.ArrayND[Integer]]]  # csc, csr
 _ToData2: TypeAlias = _ToData2B[_SCT] | _ToData2C[_SCT]
-_ToData3: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Int], onp.ArrayND[Int]]
+_ToData3: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Integer], onp.ArrayND[Integer]]
 _ToData: TypeAlias = _ToData2[_SCT] | _ToData3[_SCT]
 
 ###
@@ -49,7 +36,7 @@ class _cs_matrix(
     IndexMixin[_SCT, _ShapeT_co],
     Generic[_SCT, _ShapeT_co],
 ):
-    data: onp.Array[Any, _SCT]  # the `Any` shape is needed for `numpy<2.1`
+    data: onp.ArrayND[_SCT]
     indices: Index1D
     indptr: Index1D
 
@@ -76,7 +63,7 @@ class _cs_matrix(
         /,
         arg1: _spbase[_SCT, _ShapeT_co] | onp.CanArrayND[_SCT, _ShapeT_co],
         shape: _ShapeT_co | None = None,
-        dtype: ToDType[_SCT] | None = None,
+        dtype: onp.ToDType[_SCT] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -86,8 +73,8 @@ class _cs_matrix(
         self: _cs_matrix[_SCT0, tuple[int]],
         /,
         arg1: Sequence[_SCT0],
-        shape: ToShape1d | None = None,
-        dtype: ToDType[_SCT0] | None = None,
+        shape: ToShape1D | None = None,
+        dtype: onp.ToDType[_SCT0] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -97,8 +84,8 @@ class _cs_matrix(
         self: _cs_matrix[_SCT0, tuple[int, int]],
         /,
         arg1: Sequence[Sequence[_SCT0]] | Sequence[onp.CanArrayND[_SCT0]],  # assumes max. 2-d
-        shape: ToShape2d | None = None,
-        dtype: ToDType[_SCT0] | None = None,
+        shape: ToShape2D | None = None,
+        dtype: onp.ToDType[_SCT0] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -108,8 +95,8 @@ class _cs_matrix(
         self,
         /,
         arg1: _ToMatrix[_SCT] | _ToData[_SCT],
-        shape: ToShape1dNd | None = None,
-        dtype: ToDType[_SCT] | None = None,
+        shape: ToShapeMin1D | None = None,
+        dtype: onp.ToDType[_SCT] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -118,9 +105,9 @@ class _cs_matrix(
     def __init__(
         self: _cs_matrix[np.float64, tuple[int]],
         /,
-        arg1: ToShape1d,
-        shape: ToShape1d | None = None,
-        dtype: ToDTypeFloat | None = None,
+        arg1: ToShape1D,
+        shape: ToShape1D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -129,9 +116,9 @@ class _cs_matrix(
     def __init__(
         self: _cs_matrix[np.float64, tuple[int, int]],
         /,
-        arg1: ToShape2d,
-        shape: ToShape2d | None = None,
-        dtype: ToDTypeFloat | None = None,
+        arg1: ToShape2D,
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -141,8 +128,8 @@ class _cs_matrix(
         self: _cs_matrix[np.bool_, tuple[int]],
         /,
         arg1: Sequence[bool],
-        shape: ToShape1d | None = None,
-        dtype: ToDTypeBool | None = None,
+        shape: ToShape1D | None = None,
+        dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -152,8 +139,8 @@ class _cs_matrix(
         self: _cs_matrix[np.bool_, tuple[int, int]],
         /,
         arg1: Sequence[Sequence[bool]],
-        shape: ToShape2d | None = None,
-        dtype: ToDTypeBool | None = None,
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -163,8 +150,8 @@ class _cs_matrix(
         self: _cs_matrix[np.int_, tuple[int]],
         /,
         arg1: Sequence[op.JustInt],
-        shape: ToShape1dNd | None = None,
-        dtype: ToDTypeInt | None = None,
+        shape: ToShapeMin1D | None = None,
+        dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -174,8 +161,8 @@ class _cs_matrix(
         self: _cs_matrix[np.int_, tuple[int, int]],
         /,
         arg1: Sequence[Sequence[op.JustInt]],
-        shape: ToShape1dNd | None = None,
-        dtype: ToDTypeInt | None = None,
+        shape: ToShapeMin1D | None = None,
+        dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -185,8 +172,8 @@ class _cs_matrix(
         self: _cs_matrix[np.float64, tuple[int]],
         /,
         arg1: Sequence[op.JustFloat],
-        shape: ToShape1dNd | None = None,
-        dtype: ToDTypeFloat | None = None,
+        shape: ToShapeMin1D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -196,8 +183,8 @@ class _cs_matrix(
         self: _cs_matrix[np.float64, tuple[int, int]],
         /,
         arg1: Sequence[Sequence[op.JustFloat]],
-        shape: ToShape1dNd | None = None,
-        dtype: ToDTypeFloat | None = None,
+        shape: ToShapeMin1D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -207,8 +194,8 @@ class _cs_matrix(
         self: _cs_matrix[np.complex128, tuple[int]],
         /,
         arg1: Sequence[op.JustComplex],
-        shape: ToShape1dNd | None = None,
-        dtype: ToDTypeComplex | None = None,
+        shape: ToShapeMin1D | None = None,
+        dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -218,8 +205,8 @@ class _cs_matrix(
         self: _cs_matrix[np.complex128, tuple[int, int]],
         /,
         arg1: Sequence[Sequence[op.JustComplex]],
-        shape: ToShape1dNd | None = None,
-        dtype: ToDTypeComplex | None = None,
+        shape: ToShapeMin1D | None = None,
+        dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -229,8 +216,8 @@ class _cs_matrix(
         self: _cs_matrix[_SCT0, tuple[int]],
         /,
         arg1: onp.ToComplexStrict1D,
-        shape: ToShape1d | None,
-        dtype: ToDType[_SCT0],
+        shape: ToShape1D | None,
+        dtype: onp.ToDType[_SCT0],
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -240,9 +227,9 @@ class _cs_matrix(
         self: _cs_matrix[_SCT0, tuple[int]],
         /,
         arg1: onp.ToComplexStrict1D,
-        shape: ToShape1d | None = None,
+        shape: ToShape1D | None = None,
         *,
-        dtype: ToDType[_SCT0],
+        dtype: onp.ToDType[_SCT0],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
@@ -251,8 +238,8 @@ class _cs_matrix(
         self: _cs_matrix[_SCT0, tuple[int, int]],
         /,
         arg1: onp.ToComplexStrict2D,
-        shape: ToShape2d | None,
-        dtype: ToDType[_SCT0],
+        shape: ToShape2D | None,
+        dtype: onp.ToDType[_SCT0],
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -262,9 +249,9 @@ class _cs_matrix(
         self: _cs_matrix[_SCT0, tuple[int, int]],
         /,
         arg1: onp.ToComplexStrict2D,
-        shape: ToShape2d | None = None,
+        shape: ToShape2D | None = None,
         *,
-        dtype: ToDType[_SCT0],
+        dtype: onp.ToDType[_SCT0],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
@@ -273,7 +260,7 @@ class _cs_matrix(
         self,
         /,
         arg1: onp.ToComplex1D | onp.ToComplex2D,
-        shape: ToShape1dNd | None = None,
+        shape: ToShapeMin1D | None = None,
         dtype: npt.DTypeLike | None = ...,
         copy: bool = False,
         *,

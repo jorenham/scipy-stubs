@@ -10,18 +10,18 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 from scipy.sparse._base import _spbase
-from scipy.sparse._typing import Complex, Float, Int, Scalar, ToDTypeComplex, ToDTypeFloat, ToDTypeInt
+from scipy.sparse._typing import CFloating, Floating, Integer, Numeric
 
 __all__ = ["LinearOperator", "aslinearoperator"]
 
-_Real: TypeAlias = np.bool_ | Int | Float
-_Inexact: TypeAlias = Float | Complex
-_Number: TypeAlias = Int | _Inexact
+_Real: TypeAlias = np.bool_ | Integer | Floating
+_Inexact: TypeAlias = Floating | CFloating
+_Number: TypeAlias = Integer | _Inexact  # excludes `bool_`
 
-_SCT = TypeVar("_SCT", bound=Scalar)
-_SCT_co = TypeVar("_SCT_co", bound=Scalar, default=_Inexact, covariant=True)
-_SCT1_co = TypeVar("_SCT1_co", bound=Scalar, default=_Inexact, covariant=True)
-_SCT2_co = TypeVar("_SCT2_co", bound=Scalar, default=_SCT1_co, covariant=True)
+_SCT = TypeVar("_SCT", bound=Numeric)
+_SCT_co = TypeVar("_SCT_co", bound=Numeric, default=_Inexact, covariant=True)
+_SCT1_co = TypeVar("_SCT1_co", bound=Numeric, default=_Inexact, covariant=True)
+_SCT2_co = TypeVar("_SCT2_co", bound=Numeric, default=_SCT1_co, covariant=True)
 _FunMatVecT_co = TypeVar("_FunMatVecT_co", bound=_FunMatVec, default=_FunMatVec, covariant=True)
 
 _InexactT = TypeVar("_InexactT", bound=_Inexact)
@@ -56,11 +56,11 @@ class LinearOperator(Generic[_SCT_co]):
     @overload
     def __init__(self, /, dtype: onp.ToDType[_SCT_co], shape: _ToShape) -> None: ...
     @overload
-    def __init__(self: LinearOperator[np.int_], /, dtype: ToDTypeInt, shape: _ToShape) -> None: ...
+    def __init__(self: LinearOperator[np.int_], /, dtype: onp.AnyIntDType, shape: _ToShape) -> None: ...
     @overload
-    def __init__(self: LinearOperator[np.float64], /, dtype: ToDTypeFloat, shape: _ToShape) -> None: ...
+    def __init__(self: LinearOperator[np.float64], /, dtype: onp.AnyFloat64DType, shape: _ToShape) -> None: ...
     @overload
-    def __init__(self: LinearOperator[np.complex128], /, dtype: ToDTypeComplex, shape: _ToShape) -> None: ...
+    def __init__(self: LinearOperator[np.complex128], /, dtype: onp.AnyComplex128DType, shape: _ToShape) -> None: ...
     @overload
     def __init__(self, /, dtype: onp.AnyInexactDType | None, shape: _ToShape) -> None: ...
 
@@ -185,7 +185,7 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
         matmat: _FunMatMat | None,
-        dtype: ToDTypeFloat,
+        dtype: onp.AnyFloat64DType,
         rmatmat: _FunMatMat | None = None,
     ) -> None: ...
     @overload  # dtype-like float64 (keyword)
@@ -197,7 +197,7 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
         *,
-        dtype: ToDTypeFloat,
+        dtype: onp.AnyFloat64DType,
         rmatmat: _FunMatMat | None = None,
     ) -> None: ...
     @overload  # dtype-like complex128 (positional)
@@ -208,7 +208,7 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
         matmat: _FunMatMat | None,
-        dtype: ToDTypeComplex,
+        dtype: onp.AnyComplex128DType,
         rmatmat: _FunMatMat | None = None,
     ) -> None: ...
     @overload  # dtype-like complex128 (keyword)
@@ -220,7 +220,7 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
         *,
-        dtype: ToDTypeComplex,
+        dtype: onp.AnyComplex128DType,
         rmatmat: _FunMatMat | None = None,
     ) -> None: ...
 
@@ -255,7 +255,7 @@ class _ScaledLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     @overload
     def __init__(self, /, A: LinearOperator[_SCT_co], alpha: _SCT_co | complex) -> None: ...
     @overload
-    def __init__(self: _ScaledLinearOperator[np.float64], /, A: LinearOperator[Float], alpha: float) -> None: ...
+    def __init__(self: _ScaledLinearOperator[np.float64], /, A: LinearOperator[Floating], alpha: float) -> None: ...
     @overload
     def __init__(self: _ScaledLinearOperator[np.complex128], /, A: LinearOperator, alpha: complex) -> None: ...
 
@@ -283,9 +283,9 @@ class IdentityOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     @overload
     def __init__(self, /, shape: _ToShape, dtype: onp.ToDType[_SCT_co]) -> None: ...
     @overload
-    def __init__(self: IdentityOperator[np.float64], /, shape: _ToShape, dtype: ToDTypeFloat | None = None) -> None: ...
+    def __init__(self: IdentityOperator[np.float64], /, shape: _ToShape, dtype: onp.AnyFloat64DType | None = None) -> None: ...
     @overload
-    def __init__(self: IdentityOperator[np.complex128], /, shape: _ToShape, dtype: ToDTypeComplex) -> None: ...
+    def __init__(self: IdentityOperator[np.complex128], /, shape: _ToShape, dtype: onp.AnyComplex128DType) -> None: ...
     @overload
     def __init__(self, /, shape: _ToShape, dtype: onp.AnyInexactDType) -> None: ...
 
@@ -295,9 +295,9 @@ class _HasShapeAndMatVec(Protocol[_SCT_co]):
     @overload
     def matvec(self, /, x: onp.CanArray1D[np.float64]) -> onp.CanArray1D[_SCT_co]: ...
     @overload
-    def matvec(self, /, x: onp.CanArray1D[np.complex128]) -> onp.ToComplex1D: ...
-    @overload
     def matvec(self, /, x: onp.CanArray2D[np.float64]) -> onp.CanArray2D[_SCT_co]: ...
+    @overload
+    def matvec(self, /, x: onp.CanArray1D[np.complex128]) -> onp.ToComplex1D: ...
     @overload
     def matvec(self, /, x: onp.CanArray2D[np.complex128]) -> onp.ToComplex2D: ...
 
@@ -316,7 +316,7 @@ def aslinearoperator(A: onp.CanArrayND[_InexactT]) -> MatrixLinearOperator[_Inex
 @overload
 def aslinearoperator(A: _spbase[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
 @overload
-def aslinearoperator(A: onp.ArrayND[np.bool_ | Int] | _spbase[np.bool_ | Int]) -> MatrixLinearOperator[np.float64]: ...
+def aslinearoperator(A: onp.ArrayND[np.bool_ | Integer] | _spbase[np.bool_ | Integer]) -> MatrixLinearOperator[np.float64]: ...
 @overload
 def aslinearoperator(A: _HasShapeAndDTypeAndMatVec[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
 @overload

@@ -5,12 +5,12 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 from scipy.sparse import bsr_array, coo_array, csc_array, csr_array, dia_array, dok_array, lil_array
-from scipy.sparse._typing import Float, Int
+from scipy.sparse._typing import Floating, Integer
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["LaplacianNd"]
 
-_SCT = TypeVar("_SCT", bound=Int | Float, default=Any)
+_SCT = TypeVar("_SCT", bound=Integer | Floating, default=Any)
 
 # because `scipy.sparse.sparray` does not implement anything :(
 _SpArray: TypeAlias = (

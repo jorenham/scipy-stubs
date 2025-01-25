@@ -5,7 +5,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype.numpy as onp
 from scipy.sparse._base import _spbase
-from scipy.sparse._typing import Scalar
+from scipy.sparse._typing import Numeric
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["bicg", "bicgstab", "cg", "cgs", "gmres", "qmr"]
@@ -19,7 +19,7 @@ _ToComplex: TypeAlias = _Complex | _ToFloat
 
 _FloatT = TypeVar("_FloatT", bound=_Float, default=np.float64)
 _ComplexT = TypeVar("_ComplexT", bound=_Complex)
-_ScalarT = TypeVar("_ScalarT", bound=Scalar)
+_ScalarT = TypeVar("_ScalarT", bound=Numeric)
 
 _ToLinearOperator: TypeAlias = onp.CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
 

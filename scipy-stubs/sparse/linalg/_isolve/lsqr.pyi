@@ -3,13 +3,13 @@ from typing import Literal, TypeAlias
 import numpy as np
 import optype.numpy as onp
 from scipy.sparse._base import _spbase
-from scipy.sparse._typing import Float, Int
+from scipy.sparse._typing import Floating, Integer
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["lsqr"]
 
 _Float64: TypeAlias = float | np.float64
-_Real: TypeAlias = np.bool_ | Int | Float
+_Real: TypeAlias = np.bool_ | Integer | Floating
 _ToRealMatrix: TypeAlias = onp.CanArrayND[_Real] | _spbase[_Real] | LinearOperator[_Real]
 
 _IStop: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7]
@@ -19,9 +19,9 @@ _IStop: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7]
 def lsqr(
     A: _ToRealMatrix,
     b: onp.ToFloat1D,
-    damp: float | Float = 0.0,
-    atol: float | Float = 1e-6,
-    btol: float | Float = 1e-6,
+    damp: float | Floating = 0.0,
+    atol: float | Floating = 1e-6,
+    btol: float | Floating = 1e-6,
     conlim: onp.ToFloat = 1e8,
     iter_lim: int | None = None,
     show: onp.ToBool = False,

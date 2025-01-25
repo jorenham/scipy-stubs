@@ -20,7 +20,7 @@ from scipy.sparse import (
     dia_array,
     dia_matrix,
 )
-from ._typing import Scalar
+from ._typing import Numeric
 
 __all__ = [
     "broadcast_shapes",
@@ -62,12 +62,12 @@ class _SizedIndexIterable(Protocol):
 
 ###
 
-supported_dtypes: Final[list[type[Scalar]]] = ...
+supported_dtypes: Final[list[type[Numeric]]] = ...
 
 #
 # NOTE: Technically any `numpy.generic` could be returned, but we only care about the supported scalar types in `scipy.sparse`.
-def upcast(*args: npt.DTypeLike) -> Scalar: ...
-def upcast_char(*args: npt.DTypeLike) -> Scalar: ...
+def upcast(*args: npt.DTypeLike) -> Numeric: ...
+def upcast_char(*args: npt.DTypeLike) -> Numeric: ...
 @overload
 def upcast_scalar(dtype: onp.ToDType[_SCT], scalar: onp.ToScalar) -> np.dtype[_SCT]: ...
 @overload

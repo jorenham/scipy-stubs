@@ -7,12 +7,12 @@ import optype.numpy as onp
 from ._base import sparray
 from ._compressed import _cs_matrix
 from ._matrix import spmatrix
-from ._typing import Index1D, Scalar, ShapeCSR
+from ._typing import Index1D, Numeric
 
 __all__ = ["csr_array", "csr_matrix", "isspmatrix_csr"]
 
-_SCT = TypeVar("_SCT", bound=Scalar, default=Any)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=ShapeCSR, default=ShapeCSR, covariant=True)
+_SCT = TypeVar("_SCT", bound=Numeric, default=Any)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int], covariant=True)
 
 ###
 

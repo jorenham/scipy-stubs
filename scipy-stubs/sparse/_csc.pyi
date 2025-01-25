@@ -7,11 +7,11 @@ import optype.numpy as onp
 from ._base import sparray
 from ._compressed import _cs_matrix
 from ._matrix import spmatrix
-from ._typing import Index1D, Scalar
+from ._typing import Index1D, Numeric
 
 __all__ = ["csc_array", "csc_matrix", "isspmatrix_csc"]
 
-_SCT = TypeVar("_SCT", bound=Scalar, default=Any)
+_SCT = TypeVar("_SCT", bound=Numeric, default=Any)
 
 ###
 
