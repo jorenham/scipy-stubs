@@ -12,15 +12,15 @@ import optype.numpy as onp
 from ._base import _spbase, sparray
 from ._index import IndexMixin
 from ._matrix import spmatrix
-from ._typing import Scalar, ShapeDOK, ToShape1dNd
+from ._typing import Numeric, ToShapeMin1D
 
 __all__ = ["dok_array", "dok_matrix", "isspmatrix_dok"]
 
 ###
 
 _T = TypeVar("_T")
-_SCT = TypeVar("_SCT", bound=Scalar, default=Any)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=ShapeDOK, default=ShapeDOK, covariant=True)
+_SCT = TypeVar("_SCT", bound=Numeric, default=Any)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int], covariant=True)
 
 _1D: TypeAlias = tuple[int]  # noqa: PYI042
 _2D: TypeAlias = tuple[int, int]  # noqa: PYI042
@@ -36,7 +36,12 @@ _ToKeys2D: TypeAlias = Iterable[_ToKey2D]
 
 ###
 
-class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[ShapeDOK, _SCT], Generic[_SCT, _ShapeT_co]):
+class _dok_base(
+    _spbase[_SCT, _ShapeT_co],
+    IndexMixin[_SCT, _ShapeT_co],
+    dict[tuple[int] | tuple[int, int], _SCT],
+    Generic[_SCT, _ShapeT_co],
+):
     dtype: np.dtype[_SCT]
 
     @property
@@ -55,7 +60,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
         self,
         /,
         arg1: _ToMatrix[_SCT],
-        shape: ToShape1dNd | None = None,
+        shape: ToShapeMin1D | None = None,
         dtype: None = None,
         copy: bool = False,
         *,
@@ -65,7 +70,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
     def __init__(
         self: _dok_base[np.float64],
         /,
-        arg1: ToShape1dNd,
+        arg1: ToShapeMin1D,
         shape: None = None,
         dtype: None = None,
         copy: bool = False,
@@ -77,7 +82,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
         self: _dok_base[np.bool_],
         /,
         arg1: _ToMatrixPy[bool],
-        shape: ToShape1dNd | None = None,
+        shape: ToShapeMin1D | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
@@ -88,7 +93,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
         self: _dok_base[np.int_],
         /,
         arg1: _ToMatrixPy[op.JustInt],
-        shape: ToShape1dNd | None = None,
+        shape: ToShapeMin1D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
@@ -99,7 +104,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
         self: _dok_base[np.float64],
         /,
         arg1: _ToMatrixPy[op.JustFloat],
-        shape: ToShape1dNd | None = None,
+        shape: ToShapeMin1D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
@@ -110,7 +115,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
         self: _dok_base[np.complex128],
         /,
         arg1: _ToMatrixPy[op.JustComplex],
-        shape: ToShape1dNd | None = None,
+        shape: ToShapeMin1D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
@@ -121,7 +126,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
         self,
         /,
         arg1: onp.ToComplexND,
-        shape: ToShape1dNd | None,
+        shape: ToShapeMin1D | None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -131,7 +136,7 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[Sh
         self,
         /,
         arg1: onp.ToComplexND,
-        shape: ToShape1dNd | None = None,
+        shape: ToShapeMin1D | None = None,
         *,
         copy: bool = False,
         maxprint: int | None = None,

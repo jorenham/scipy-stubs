@@ -12,11 +12,11 @@ from ._dia import dia_array, dia_matrix
 from ._dok import dok_array, dok_matrix
 from ._lil import lil_array, lil_matrix
 from ._matrix import spmatrix
-from ._typing import Index1D, Scalar, SPFormat
+from ._typing import Index1D, Numeric, SPFormat
 
 __all__ = ["find", "tril", "triu"]
 
-_SCT = TypeVar("_SCT", bound=Scalar, default=Scalar)
+_SCT = TypeVar("_SCT", bound=Numeric, default=Numeric)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int])
 
 _ToDense: TypeAlias = onp.CanArrayND[_SCT] | Seq[_SCT] | Seq[Seq[_SCT] | onp.CanArrayND[_SCT]]

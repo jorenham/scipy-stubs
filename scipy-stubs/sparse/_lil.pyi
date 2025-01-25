@@ -10,12 +10,12 @@ from ._base import _spbase, sparray
 from ._csr import csr_array, csr_matrix
 from ._index import IndexMixin
 from ._matrix import spmatrix
-from ._typing import Index1D, Scalar, ToDTypeBool, ToDTypeComplex, ToDTypeFloat, ToDTypeInt, ToShape2d
+from ._typing import Index1D, Numeric, ToShape2D
 
 __all__ = ["isspmatrix_lil", "lil_array", "lil_matrix"]
 
 _T = TypeVar("_T")
-_SCT = TypeVar("_SCT", bound=Scalar, default=Any)
+_SCT = TypeVar("_SCT", bound=Numeric, default=Any)
 
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
@@ -43,7 +43,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         self,
         /,
         arg1: _ToMatrix[_SCT],
-        shape: ToShape2d | None = None,
+        shape: ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
         *,
@@ -53,9 +53,9 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
     def __init__(
         self: _lil_base[np.float64],
         /,
-        arg1: ToShape2d,
+        arg1: ToShape2D,
         shape: None = None,
-        dtype: ToDTypeFloat | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -65,8 +65,8 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         self: _lil_base[np.bool_],
         /,
         arg1: _ToMatrixPy[bool],
-        shape: ToShape2d | None = None,
-        dtype: ToDTypeBool | None = None,
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -76,8 +76,8 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         self: _lil_base[np.int_],
         /,
         arg1: _ToMatrixPy[op.JustInt],
-        shape: ToShape2d | None = None,
-        dtype: ToDTypeInt | None = None,
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -87,8 +87,8 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         self: _lil_base[np.float64],
         /,
         arg1: _ToMatrixPy[op.JustFloat],
-        shape: ToShape2d | None = None,
-        dtype: ToDTypeFloat | None = None,
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -98,8 +98,8 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         self: _lil_base[np.complex128],
         /,
         arg1: _ToMatrixPy[op.JustComplex],
-        shape: ToShape2d | None = None,
-        dtype: ToDTypeComplex | None = None,
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -109,7 +109,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         self,
         /,
         arg1: onp.ToComplexND,
-        shape: ToShape2d | None,
+        shape: ToShape2D | None,
         dtype: onp.ToDType[_SCT],
         copy: bool = False,
         *,
@@ -120,7 +120,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         self,
         /,
         arg1: onp.ToComplexND,
-        shape: ToShape2d | None = None,
+        shape: ToShape2D | None = None,
         *,
         dtype: onp.ToDType[_SCT],
         copy: bool = False,
@@ -129,9 +129,9 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
 
     #
     @override
-    def __iadd__(self, other: Falsy | _spbase[Scalar] | onp.ArrayND[Scalar], /) -> Self: ...
+    def __iadd__(self, other: Falsy | _spbase[Numeric] | onp.ArrayND[Numeric], /) -> Self: ...
     @override
-    def __isub__(self, other: Falsy | _spbase[Scalar] | onp.ArrayND[Scalar], /) -> Self: ...
+    def __isub__(self, other: Falsy | _spbase[Numeric] | onp.ArrayND[Numeric], /) -> Self: ...
     @override
     def __imul__(self, other: onp.ToComplex, /) -> Self: ...  # type: ignore[override]
     @override

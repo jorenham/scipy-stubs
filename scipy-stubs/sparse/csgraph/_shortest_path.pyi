@@ -4,14 +4,14 @@ import numpy as np
 import optype.numpy as onp
 from scipy._typing import Falsy, Truthy
 from scipy.sparse._base import _spbase
-from scipy.sparse._typing import Float, Int
+from scipy.sparse._typing import Floating, Integer
 
 _Int1D: TypeAlias = onp.Array1D[np.int32]
 _Int2D: TypeAlias = onp.Array2D[np.int32]
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 
-_ToGraphArray: TypeAlias = onp.ToFloat2D | _spbase[np.bool_ | Int | Float]
+_ToGraphArray: TypeAlias = onp.ToFloat2D | _spbase[np.bool_ | Integer | Floating]
 
 _ShortestPathMethod: TypeAlias = Literal["auto", "FW", "D", "BF", "J"]
 

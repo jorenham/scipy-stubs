@@ -19,11 +19,11 @@ from ._csr import csr_matrix
 from ._dia import dia_matrix
 from ._dok import dok_matrix
 from ._lil import lil_matrix
-from ._typing import Complex, Float, Int, Scalar, SPFormat, ToShape2d
+from ._typing import CFloating, Floating, Integer, Numeric, SPFormat, ToShape2D
 
 _T = TypeVar("_T")
-_SCT = TypeVar("_SCT", bound=Scalar)
-_SCT_co = TypeVar("_SCT_co", bound=Scalar, default=Scalar, covariant=True)
+_SCT = TypeVar("_SCT", bound=Numeric)
+_SCT_co = TypeVar("_SCT_co", bound=Numeric, default=Numeric, covariant=True)
 
 _SpMatrixT = TypeVar("_SpMatrixT", bound=spmatrix)
 
@@ -31,16 +31,16 @@ _SpFromInT = TypeVar("_SpFromInT", bound=spmatrix[_FromInt])
 _SpFromFloatT = TypeVar("_SpFromFloatT", bound=spmatrix[_FromFloat])
 _SpFromComplexT = TypeVar("_SpFromComplexT", bound=spmatrix[_FromComplex])
 
-_FromInt: TypeAlias = Int | Float | Complex
-_FromFloat: TypeAlias = Float | Complex
-_FromComplex: TypeAlias = Complex
+_FromInt: TypeAlias = Integer | Floating | CFloating
+_FromFloat: TypeAlias = Floating | CFloating
+_FromComplex: TypeAlias = CFloating
 
 _ToBool: TypeAlias = np.bool_
 _ToInt8: TypeAlias = np.bool_ | np.int8
-_ToInt: TypeAlias = Int | _ToBool
-_ToFloat32: TypeAlias = np.bool_ | Int | np.float32
-_ToFloat: TypeAlias = np.bool_ | Int | Float
-_ToComplex64: TypeAlias = np.bool_ | Int | Float | np.complex64
+_ToInt: TypeAlias = Integer | _ToBool
+_ToFloat32: TypeAlias = np.bool_ | Integer | np.float32
+_ToFloat: TypeAlias = np.bool_ | Integer | Floating
+_ToComplex64: TypeAlias = np.bool_ | Integer | Floating | np.complex64
 
 _DualMatrixLike: TypeAlias = _T | _SCT | _spbase[_SCT]
 _DualArrayLike: TypeAlias = Sequence[Sequence[_T | _SCT] | onp.CanArrayND[_SCT]] | onp.CanArrayND[_SCT]
@@ -69,7 +69,7 @@ class spmatrix(Generic[_SCT_co]):
     @property
     def shape(self, /) -> tuple[int, int]: ...
     def get_shape(self, /) -> tuple[int, int]: ...
-    def set_shape(self, /, shape: ToShape2d) -> None: ...
+    def set_shape(self, /, shape: ToShape2D) -> None: ...
 
     #
     @overload  # Self[-Bool], other: scalar-like +Bool
@@ -99,19 +99,19 @@ class spmatrix(Generic[_SCT_co]):
     @overload  # spmatrix[-Complex], other: array-like +Complex
     def __mul__(self: spmatrix[_FromComplex], other: _DualArrayLike[float, _ToComplex64], /) -> onp.Array2D[_SCT_co]: ...
     @overload  # spmatrix[+Bool], other: scalar- or matrix-like ~Int
-    def __mul__(self: spmatrix[_ToBool], other: _DualMatrixLike[op.JustInt, Int], /) -> spmatrix[Int]: ...
+    def __mul__(self: spmatrix[_ToBool], other: _DualMatrixLike[op.JustInt, Integer], /) -> spmatrix[Integer]: ...
     @overload  # spmatrix[+Bool], other: array-like ~Int
-    def __mul__(self: spmatrix[_ToBool], other: _DualArrayLike[op.JustInt, Int], /) -> onp.Array2D[Int]: ...
+    def __mul__(self: spmatrix[_ToBool], other: _DualArrayLike[op.JustInt, Integer], /) -> onp.Array2D[Integer]: ...
     @overload  # spmatrix[+Int], other: scalar- or matrix-like ~Float
-    def __mul__(self: spmatrix[_ToInt], other: _DualMatrixLike[op.JustFloat, Float], /) -> spmatrix[Float]: ...
+    def __mul__(self: spmatrix[_ToInt], other: _DualMatrixLike[op.JustFloat, Floating], /) -> spmatrix[Floating]: ...
     @overload  # spmatrix[+Int], other: array-like ~Float
-    def __mul__(self: spmatrix[_ToInt], other: _DualArrayLike[op.JustFloat, Float], /) -> onp.Array2D[Float]: ...
+    def __mul__(self: spmatrix[_ToInt], other: _DualArrayLike[op.JustFloat, Floating], /) -> onp.Array2D[Floating]: ...
     @overload  # spmatrix[+Float], other: scalar- or matrix-like ~Complex
-    def __mul__(self: spmatrix[_ToFloat], other: _DualMatrixLike[op.JustComplex, Complex], /) -> spmatrix[Complex]: ...
+    def __mul__(self: spmatrix[_ToFloat], other: _DualMatrixLike[op.JustComplex, CFloating], /) -> spmatrix[CFloating]: ...
     @overload  # spmatrix[+Float], other: array-like ~Complex
-    def __mul__(self: spmatrix[_ToFloat], other: _DualArrayLike[op.JustComplex, Complex], /) -> onp.Array2D[Complex]: ...
+    def __mul__(self: spmatrix[_ToFloat], other: _DualArrayLike[op.JustComplex, CFloating], /) -> onp.Array2D[CFloating]: ...
     @overload  # catch-all
-    def __mul__(self, other: _DualArrayLike[complex, Scalar] | _spbase, /) -> _spbase[Any, Any] | onp.Array[Any, Any]: ...
+    def __mul__(self, other: _DualArrayLike[complex, Numeric] | _spbase, /) -> _spbase[Any, Any] | onp.Array[Any, Any]: ...
     __rmul__ = __mul__
 
     #

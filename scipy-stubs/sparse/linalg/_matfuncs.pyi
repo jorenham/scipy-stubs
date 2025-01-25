@@ -7,12 +7,12 @@ from typing_extensions import Self, TypeVar, override
 import optype as op
 import optype.numpy as onp
 from scipy.sparse._base import _spbase
-from scipy.sparse._typing import Complex, Float, Scalar
+from scipy.sparse._typing import CFloating, Floating, Numeric
 from ._interface import LinearOperator
 
 __all__ = ["expm", "inv", "matrix_power"]
 
-_SCT_co = TypeVar("_SCT_co", covariant=True, bound=Scalar, default=Float | Complex)
+_SCT_co = TypeVar("_SCT_co", covariant=True, bound=Numeric, default=Floating | CFloating)
 _SparseT = TypeVar("_SparseT", bound=_spbase)
 
 _Structure: TypeAlias = Literal["upper_triangular"]

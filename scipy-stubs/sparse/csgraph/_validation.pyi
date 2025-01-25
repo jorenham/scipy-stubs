@@ -4,9 +4,9 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 from scipy.sparse._base import _spbase
-from scipy.sparse._typing import Float, Int
+from scipy.sparse._typing import Floating, Integer
 
-_Real: TypeAlias = Int | Float
+_Real: TypeAlias = Integer | Floating
 _ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
 
 ###

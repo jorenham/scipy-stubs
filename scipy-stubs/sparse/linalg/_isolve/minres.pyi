@@ -5,13 +5,13 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype.numpy as onp
 from scipy.sparse._base import _spbase
-from scipy.sparse._typing import Scalar
+from scipy.sparse._typing import Numeric
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["minres"]
 
 _FloatT = TypeVar("_FloatT", bound=np.float32 | np.float64, default=np.float64)
-_ScalarT = TypeVar("_ScalarT", bound=Scalar)
+_ScalarT = TypeVar("_ScalarT", bound=Numeric)
 
 _Ignored: TypeAlias = object
 _ToInt: TypeAlias = np.integer[Any] | np.bool_

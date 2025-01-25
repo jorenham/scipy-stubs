@@ -4,14 +4,14 @@ import numpy as np
 import optype.numpy as onp
 from _typeshed import IdentityFunction
 from scipy.sparse._base import _spbase
-from scipy.sparse._typing import Scalar
+from scipy.sparse._typing import Numeric
 from scipy.sparse.linalg import LinearOperator
 
 __all__: list[str] = []
 
 _T = TypeVar("_T")
 _Char: TypeAlias = Literal["f", "d", "F", "D"]
-_ToLinearOperator: TypeAlias = onp.CanArrayND[Scalar] | _spbase[Scalar] | LinearOperator[Scalar]
+_ToLinearOperator: TypeAlias = onp.CanArrayND[Numeric] | _spbase[Numeric] | LinearOperator[Numeric]
 _Inexact: TypeAlias = np.float32 | np.float64 | np.complex64 | np.complex128
 
 ###
