@@ -2,12 +2,17 @@
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+
 [project]
 name = "scipy-stubs"
 version = "1.15.1.1.dev0"
 description = "Type annotations for SciPy"
 readme = "README.md"
 authors = [
+    {name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com"},
+]
+maintainers = [
+    {name = "SciPy Developers", email = "scipy-dev@python.org"},
     {name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com"},
 ]
 license = "BSD-3-Clause"
@@ -28,9 +33,17 @@ classifiers = [
     "Typing :: Typed",
 ]
 requires-python = ">=3.10"
-dependencies = [
-    "optype>=0.9.0",
-]
+dependencies = ["optype>=0.9.0"]
+
+[project.optional-dependencies]
+scipy = ["scipy>=1.15.1,<1.16"]
+
+[project.urls]
+Homepage = "https://scipy.org/"
+Repository = "https://github.com/jorenham/scipy-stubs/"
+Issues = "https://github.com/jorenham/scipy-stubs/issues"
+Changelog = "https://github.com/jorenham/scipy-stubs/releases"
+
 
 [dependency-groups]
 extras = ["scipy-stubs[scipy]"]
@@ -59,14 +72,6 @@ dev = [
     {include-group = "type"},
 ]
 
-[project.optional-dependencies]
-scipy = ["scipy>=1.15.1,<1.16"]
-
-[project.urls]
-Repository = "https://github.com/jorenham/scipy-stubs/"
-Issues = "https://github.com/jorenham/scipy-stubs/issues"
-Changelog = "https://github.com/jorenham/scipy-stubs/releases"
-Funding = "https://github.com/sponsors/jorenham"
 
 [tool.hatch.build]
 packages = ["scipy-stubs"]
