@@ -43,14 +43,14 @@ faster-cache = [
 
 [[package]]
 name = "basedpyright"
-version = "1.24.0"
+version = "1.26.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "nodejs-wheel-binaries" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d9/9a/ddf789a403dcd27469f4e51f1e75d889cb3eb3034e87d198d01a1d7d3572/basedpyright-1.24.0.tar.gz", hash = "sha256:425919327db8662f1be718dafe06b1e168781f9728e59a9cf717cbb3380acec9", size = 21271171 }
+sdist = { url = "https://files.pythonhosted.org/packages/18/c2/5685d040d4f2598788d42bfd2db5f808e9aa2eaee77fcae3c2fbe4ea0e7c/basedpyright-1.26.0.tar.gz", hash = "sha256:5e01f6eb9290a09ef39672106cf1a02924fdc8970e521838bc502ccf0676f32f", size = 24932771 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/80/8f/71e63c95eacaca491546d522812c214bc37bc8ec79a71229efbc56961e2d/basedpyright-1.24.0-py3-none-any.whl", hash = "sha256:32ae77b2334dc9737c9220bcbc1aee98f76884be033bd5f4f50e5940fa16391d", size = 11334150 },
+    { url = "https://files.pythonhosted.org/packages/8e/72/65308f45bb73efc93075426cac5f37eea937ae364aa675785521cb3512c7/basedpyright-1.26.0-py3-none-any.whl", hash = "sha256:5a6a17f2c389ec313dd2c3644f40e8221bc90252164802e626055341c0a37381", size = 11504579 },
 ]
 
 [[package]]
@@ -625,7 +625,7 @@ ci = [{ name = "packaging", specifier = ">=24.2" }]
 codegen = [{ name = "libcst", specifier = ">=1.6.0,<2" }]
 dev = [
     { name = "basedmypy", extras = ["faster-cache"], specifier = ">=2.9.1" },
-    { name = "basedpyright", specifier = ">=1.24.0" },
+    { name = "basedpyright", specifier = ">=1.26.0" },
     { name = "libcst", specifier = ">=1.6.0,<2" },
     { name = "mdformat", specifier = ">=0.7.21" },
     { name = "mdformat-gfm", specifier = ">=0.4.1" },
@@ -651,7 +651,7 @@ mdformat = [
 ]
 type = [
     { name = "basedmypy", extras = ["faster-cache"], specifier = ">=2.9.1" },
-    { name = "basedpyright", specifier = ">=1.24.0" },
+    { name = "basedpyright", specifier = ">=1.26.0" },
     { name = "libcst", specifier = ">=1.6.0,<2" },
     { name = "packaging", specifier = ">=24.2" },
     { name = "scipy-stubs", extras = ["scipy"] },
