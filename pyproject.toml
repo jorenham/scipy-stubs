@@ -35,14 +35,14 @@ classifiers = [
 requires-python = ">=3.10"
 dependencies = ["optype>=0.9.0"]
 
-[project.optional-dependencies]
-scipy = ["scipy>=1.15.1,<1.16"]
+    [project.optional-dependencies]
+    scipy = ["scipy>=1.15.1,<1.16"]
 
-[project.urls]
-Homepage = "https://scipy.org/"
-Repository = "https://github.com/jorenham/scipy-stubs/"
-Issues = "https://github.com/jorenham/scipy-stubs/issues"
-Changelog = "https://github.com/jorenham/scipy-stubs/releases"
+    [project.urls]
+    Homepage = "https://scipy.org/"
+    Repository = "https://github.com/jorenham/scipy-stubs/"
+    Issues = "https://github.com/jorenham/scipy-stubs/issues"
+    Changelog = "https://github.com/jorenham/scipy-stubs/releases"
 
 
 [dependency-groups]
@@ -76,9 +76,10 @@ dev = [
 [tool.hatch.build]
 packages = ["scipy-stubs"]
 
-[tool.hatch.build.targets.sdist]
-exclude = ["CODE_OF_CONDUCT.md", "README.md", "SECURITY.md", "uv.lock"]
-force-include = {".mypyignore" = ".mypyignore"}  # for scipy-stubs-feedstock
+    [tool.hatch.build.targets.sdist]
+    exclude = ["CODE_OF_CONDUCT.md", "README.md", "SECURITY.md", "uv.lock"]
+    force-include = {".mypyignore" = ".mypyignore"}                         # for scipy-stubs-feedstock
+
 
 [tool.poe.tasks.clean]
 cmd = """
@@ -123,12 +124,14 @@ args = [
     {name = "path", positional = true, multiple = false, default = "scipy-stubs"},
 ]
 
+
 [tool.typos.files]
 extend-exclude = ["*.pyi", ".mypyignore"]
 
+
 [tool.mypy]
 files = ["codegen/**/*.py", "scripts/**/*.py", "tests/**/*.py", "scipy-stubs/**/*.pyi"]
-exclude = ['^\.git$', '^\.ruff_cache$','^\.tox$']
+exclude = ['^\.git$', '^\.ruff_cache$', '^\.tox$']
 python_version = "3.10"
 plugins = ["numpy.typing.mypy_plugin"]
 strict = true
@@ -136,8 +139,9 @@ disable_bytearray_promotion = true
 disable_memoryview_promotion = true
 warn_unreachable = false
 warn_unused_ignores = false
-disallow_any_explicit = false  # no other way to type e.g. `float64 <: number[Any]`
+disallow_any_explicit = false                                                           # no other way to type e.g. `float64 <: number[Any]`
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
+
 
 [tool.pyright]
 include = ["scipy-stubs", "codegen", "scripts", "tests"]
@@ -152,25 +156,25 @@ typeCheckingMode = "strict"
 deprecateTypingAliases = true
 enableReachabilityAnalysis = false
 enableTypeIgnoreComments = false
-failOnWarnings = true  # based
+failOnWarnings = true                      # based
 reportCallInDefaultInitializer = true
-reportIgnoreCommentWithoutRule = true  # based
-reportImplicitAbstractClass = true  # based
+reportIgnoreCommentWithoutRule = true      # based
+reportImplicitAbstractClass = true         # based
 reportImplicitOverride = true
-reportImplicitRelativeImport = true  # based
+reportImplicitRelativeImport = true        # based
 reportImplicitStringConcatenation = false  # based, but I disagree
 reportImportCycles = true
-reportInvalidCast = true  # based
-reportInvalidStubStatement = false  # see execution environments
+reportInvalidCast = true                   # based
+reportInvalidStubStatement = false         # see execution environments
 reportMissingSuperCall = true
-reportPrivateLocalImportUsage = true  # based
+reportPrivateLocalImportUsage = true       # based
 reportPrivateUsage = false
 reportPropertyTypeMismatch = false
 reportShadowedImports = true
-reportUnannotatedClassAttribute = true  # based
+reportUnannotatedClassAttribute = true     # based
 reportUninitializedInstanceVariable = true
 reportUnnecessaryTypeIgnoreComment = true  # mypy compat
-strictGenericNarrowing = true  # based
+strictGenericNarrowing = true              # based
 
 [[executionEnvironments]]
 root = "scipy-stubs"
@@ -179,21 +183,21 @@ reportUnusedCallResult = true
 
 [[executionEnvironments]]
 root = "codegen"
-reportAny = true  # based
-reportExplicitAny = true  # based
+reportAny = true                       # based
+reportExplicitAny = true               # based
 reportInvalidStubStatement = true
 reportPrivateUsage = true
 reportUnreachable = true
-reportUnsafeMultipleInheritance = true  # based
+reportUnsafeMultipleInheritance = true # based
 reportUnusedCallResult = true
 
 [[executionEnvironments]]
 root = "tests"
-reportAny = true  # based
-reportExplicitAny = true  # based
+reportAny = true                       # based
+reportExplicitAny = true               # based
 reportPrivateUsage = true
 reportUnreachable = true
-reportUnsafeMultipleInheritance = true  # based
+reportUnsafeMultipleInheritance = true # based
 
 
 [tool.repo-review]
@@ -207,6 +211,7 @@ ignore = [
     "RTD",   # no RTD
 ]
 
+
 [tool.ruff]
 src = ["scipy-stubs", "codegen", "scripts"]
 extend-exclude = [".venv", ".git", ".mypy_cache", ".tox"]
@@ -214,39 +219,39 @@ force-exclude = true
 # https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#maximum-line-length
 line-length = 130
 
-[tool.ruff.format]
-docstring-code-format = true
-line-ending = "lf"
+    [tool.ruff.format]
+    docstring-code-format = true
+    line-ending = "lf"
 
-[tool.ruff.lint]
-preview = true
-select = ["ALL"]
-ignore = ["D", "FBT", "COM812", "CPY", "EM", "TD", "FIX", "DOC"]
+    [tool.ruff.lint]
+    preview = true
+    select = ["ALL"]
+    ignore = ["D", "FBT", "COM812", "CPY", "EM", "TD", "FIX", "DOC"]
 
-[tool.ruff.lint.per-file-ignores]
-"*.pyi" = ["F", "E741", "N", "A", "PYI054", "PLC2701", "PLW3201", "PLR", "FURB"]
+        [tool.ruff.lint.per-file-ignores]
+        "*.pyi" = ["F", "E741", "N", "A", "PYI054", "PLC2701", "PLW3201", "PLR", "FURB"]
 
-[tool.ruff.lint.flake8-import-conventions]
-banned-from = ["numpy", "numpy.typing", "optype", "optype.numpy", "optype.typing"]
-[tool.ruff.lint.flake8-import-conventions.extend-aliases]
-"ctypes" = "ct"
-"datetime" = "dt"
-"numpy" = "np"
-"numpy.typing" = "npt"
-"optype" = "op"
-"optype.numpy" = "onp"
-"optype.typing" = "opt"
+        [tool.ruff.lint.flake8-import-conventions]
+        banned-from = ["numpy", "numpy.typing", "optype", "optype.numpy", "optype.typing"]
+            [tool.ruff.lint.flake8-import-conventions.extend-aliases]
+            "ctypes" = "ct"
+            "datetime" = "dt"
+            "numpy" = "np"
+            "numpy.typing" = "npt"
+            "optype" = "op"
+            "optype.numpy" = "onp"
+            "optype.typing" = "opt"
 
-[tool.ruff.lint.isort]
-combine-as-imports = true
-known-first-party = ["scipy"]
-no-lines-before = ["typing", "first-party", "local-folder"]
-section-order = ["standard-library", "typing", "third-party", "first-party", "local-folder"]
-split-on-trailing-comma = true
+        [tool.ruff.lint.isort]
+        combine-as-imports = true
+        known-first-party = ["scipy"]
+        no-lines-before = ["typing", "first-party", "local-folder"]
+        section-order = ["standard-library", "typing", "third-party", "first-party", "local-folder"]
+        split-on-trailing-comma = true
 
-[tool.ruff.lint.isort.sections]
-typing = ["collections.abc", "types", "typing", "typing_extensions"]
+            [tool.ruff.lint.isort.sections]
+            typing = ["collections.abc", "types", "typing", "typing_extensions"]
 
-[tool.ruff.lint.flake8-annotations]
-allow-star-arg-any = true
-mypy-init-return = true
+        [tool.ruff.lint.flake8-annotations]
+        allow-star-arg-any = true
+        mypy-init-return = true

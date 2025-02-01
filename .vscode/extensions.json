@@ -3,7 +3,9 @@
     "charliermarsh.ruff",
     "detachhead.basedpyright",
     "ms-python.mypy-type-checker",
-    "ms-python.python"
+    "ms-python.python",
+    "tamasfe.even-better-toml",
+    "tekumara.typos-vscode"
   ],
   "unwantedRecommendations": ["ms-pyright.pyright", "ms-python.vscode-pylance"]
 }

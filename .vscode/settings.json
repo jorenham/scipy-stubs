@@ -1,34 +1,30 @@
 {
-  "[json]": {
+  "[json|jsonc|yaml|yml]": {
     "editor.tabSize": 2
   },
-  "[jsonc]": {
-    "editor.tabSize": 2
-  },
-  "[markdown]": {
+  "[markdown|python]": {
     "editor.rulers": [130]
   },
-  "[python]": {
-    "editor.rulers": [130]
+  "[toml]": {
+    "editor.rulers": [100],
+    "editor.tabSize": 4
   },
-  "[yaml]": {
-    "editor.autoIndent": "advanced",
-    "editor.tabSize": 2
-  },
-  "editor.rulers": [88],
-  "editor.tabSize": 4,
-  "git.branchProtection": ["master"],
-  "mypy-type-checker.args": [
-    "--ide",
-    "--config-file=${workspaceFolder}/pyproject.toml"
-  ],
-  "mypy-type-checker.cwd": "${fileDirname}",
+  "evenBetterToml.formatter.alignComments": true,
+  "evenBetterToml.formatter.allowedBlankLines": 2,
+  "evenBetterToml.formatter.arrayTrailingComma": true,
+  "evenBetterToml.formatter.columnWidth": 100,
+  "evenBetterToml.formatter.compactArrays": true,
+  "evenBetterToml.formatter.compactInlineTables": true,
+  "evenBetterToml.formatter.indentString": "    ",
+  "evenBetterToml.formatter.indentTables": true,
+  "evenBetterToml.formatter.trailingNewline": true,
+  "mypy-type-checker.args": ["--ide"],
   "mypy-type-checker.path": [
     "uv",
     "run",
     "--frozen",
-    "--no-editable",
     "--isolated",
+    "--no-editable",
     "--refresh-package=scipy-stubs",
     "mypy"
   ]
