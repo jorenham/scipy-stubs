@@ -50,14 +50,14 @@ extras = ["scipy-stubs[scipy]"]
 ci = ["packaging>=24.2"]
 codegen = ["libcst>=1.6.0,<2"]
 mdformat = [
-    "mdformat>=0.7.21",
+    "mdformat>=0.7.22",
     "mdformat-gfm>=0.4.1",
     "mdformat-gfm-alerts>=1.0.1",
 ]
 lint = [
     {include-group = "extras"},
     {include-group = "mdformat"},
-    "ruff>=0.9.3",
+    "ruff>=0.9.4",
     "sp-repo-review[cli]>=2025.1.22",
 ]
 type = [
