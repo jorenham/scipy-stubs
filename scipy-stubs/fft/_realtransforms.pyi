@@ -13,7 +13,7 @@ _FloatND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]
 ###
 
 # TODO: Add overloads for specific return dtypes, as discussed in:
-# https://github.com/jorenham/scipy-stubs/pull/118#discussion_r1807957439
+# https://github.com/scipy/scipy-stubs/pull/118#discussion_r1807957439
 
 def dctn(
     x: onp.ToComplexND,
