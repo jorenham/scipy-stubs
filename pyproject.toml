@@ -40,9 +40,9 @@ dependencies = ["optype>=0.9.0"]
 
     [project.urls]
     Homepage = "https://scipy.org/"
-    Repository = "https://github.com/jorenham/scipy-stubs/"
-    Issues = "https://github.com/jorenham/scipy-stubs/issues"
-    Changelog = "https://github.com/jorenham/scipy-stubs/releases"
+    Repository = "https://github.com/scipy/scipy-stubs/"
+    Issues = "https://github.com/scipy/scipy-stubs/issues"
+    Changelog = "https://github.com/scipy/scipy-stubs/releases"
 
 
 [dependency-groups]
