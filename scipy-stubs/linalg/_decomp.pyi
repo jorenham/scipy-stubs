@@ -38,7 +38,7 @@ _SelectV: TypeAlias = Literal["v", "value", 1]
 _SelectI: TypeAlias = Literal["i", "index", 2]
 
 # NOTE: `_check_select()` requires the `select_range` array-like to be of `int{16,32,64}` when `select: _SelectIndex`
-# https://github.com/jorenham/scipy-stubs/issues/154
+# https://github.com/scipy/scipy-stubs/issues/154
 # NOTE: This `select_range` parameter type must be of shape `(2,)` and in nondescending order
 _SelectRange: TypeAlias = Sequence[float | _Integer | _Floating]
 _SelectRangeI: TypeAlias = Sequence[int | np.int16 | np.int32 | np.int64]  # no bool, int8 or unsigned ints
