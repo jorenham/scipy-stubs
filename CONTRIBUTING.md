@@ -145,5 +145,5 @@ titles. For VSCode and VSCodium users, it is recommended to use the
 [`gitmoji-vscode` extension](https://github.com/seatonjiang/gitmoji-vscode) for this.
 
 [coc]: https://docs.scipy.org/doc/scipy/dev/conduct/code_of_conduct.html
-[license]: https://github.com/jorenham/scipy-stubs/blob/master/LICENSE
-[tests]: https://github.com/jorenham/scipy-stubs/tree/master/tests
+[license]: https://github.com/scipy/scipy-stubs/blob/master/LICENSE
+[tests]: https://github.com/scipy/scipy-stubs/tree/master/tests

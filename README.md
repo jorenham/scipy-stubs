@@ -17,24 +17,24 @@
             src="https://anaconda.org/conda-forge/scipy-stubs/badges/version.svg"
         />
     </a>
-    <a href="https://github.com/jorenham/scipy-stubs">
+    <a href="https://github.com/scipy/scipy-stubs">
         <img
             alt="scipy-stubs - Python Versions"
             src="https://img.shields.io/pypi/pyversions/scipy-stubs?style=flat"
         />
     </a>
-    <a href="https://github.com/jorenham/scipy-stubs">
+    <a href="https://github.com/scipy/scipy-stubs">
         <img
             alt="scipy-stubs - license"
-            src="https://img.shields.io/github/license/jorenham/scipy-stubs?style=flat"
+            src="https://img.shields.io/github/license/scipy/scipy-stubs?style=flat"
         />
     </a>
 </p>
 <p align="center">
-    <a href="https://github.com/jorenham/scipy-stubs/actions?query=workflow%3ACI">
+    <a href="https://github.com/scipy/scipy-stubs/actions?query=workflow%3ACI">
         <img
             alt="scipy-stubs - CI"
-            src="https://github.com/jorenham/scipy-stubs/workflows/CI/badge.svg"
+            src="https://github.com/scipy/scipy-stubs/workflows/CI/badge.svg"
         />
     </a>
     <a href="https://github.com/pre-commit/pre-commit">
@@ -95,7 +95,7 @@ ______________________________________________________________________
 
 ## Installation
 
-The source code is currently hosted on GitHub at [github.com/jorenham/scipy-stubs](https://github.com/jorenham/scipy-stubs/).
+The source code is currently hosted on GitHub at [github.com/scipy/scipy-stubs](https://github.com/scipy/scipy-stubs/).
 
 Binary distributions are available at the [Python Package Index (PyPI)](https://pypi.org/project/scipy-stubs/) and on
 [conda-forge](https://anaconda.org/conda-forge/scipy-stubs).
@@ -196,8 +196,8 @@ help a lot if you could open an issue or a PR for it.
 There are many ways that you can help improve `scipy-stubs`, for example
 
 - reporting issues, bugs, or other unexpected outcomes
-- improving the `.pyi` stubs (see [CONTRIBUTING.md](https://github.com/jorenham/scipy-stubs/blob/master/CONTRIBUTING.md))
-- type-testing (see the `README.md` in [`scipy-stubs/tests`](https://github.com/jorenham/scipy-stubs/tree/master/tests) for the
+- improving the `.pyi` stubs (see [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTRIBUTING.md))
+- type-testing (see the `README.md` in [`scipy-stubs/tests`](https://github.com/scipy/scipy-stubs/tree/master/tests) for the
   specifics)
 - write new documentation (usage examples, guides, tips & tricks, FAQ, etc.), or e.g. improve this `README.md`
 - help spread the word on `scipy-stubs`, so that more can benefit from using it
