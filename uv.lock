@@ -301,14 +301,14 @@ wheels = [
 
 [[package]]
 name = "optype"
-version = "0.9.0"
+version = "0.9.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "typing-extensions", marker = "python_full_version < '3.13'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c5/99/3f70b7983a7cfbbd0f9c296dd7f8c6269c57e216f21cd3fde578a0d611ae/optype-0.9.0.tar.gz", hash = "sha256:1c2f99b0708ab6e2625f52093a6e000f805a4346191f09bcce0459da84a265a9", size = 93076 }
+sdist = { url = "https://files.pythonhosted.org/packages/42/b5/bc62c3de61b8ae97cf861c7402cecd9874937a8295089271714c16bcd245/optype-0.9.1.tar.gz", hash = "sha256:f3096963195b9f83e72e1be2f7e7140bbeb30ee5565a28fd207f3e552dd18411", size = 93575 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/08/c2/0d5694ea30f6b852955a86e13e6a28387f60079b0b10e2ca9658fbf5cca5/optype-0.9.0-py3-none-any.whl", hash = "sha256:19dbbb71622961e903e60c12f370d910498e81bc4ae8b40d18c94dd106f4ce6b", size = 81554 },
+    { url = "https://files.pythonhosted.org/packages/6d/2f/d66a2a485916f2c918409a0d4fdb80a84d22ee81d8073f1d7e8e402dc475/optype-0.9.1-py3-none-any.whl", hash = "sha256:4b843085a39a07a3d2ebe9b531eecfabcb523d22a334376488aa583601897caf", size = 81811 },
 ]
 
 [[package]]
@@ -435,7 +435,7 @@ wheels = [
 
 [[package]]
 name = "repo-review"
-version = "0.11.3"
+version = "0.12.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "markdown-it-py" },
@@ -443,9 +443,9 @@ dependencies = [
     { name = "tomli", marker = "python_full_version < '3.11'" },
     { name = "typing-extensions", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/3f/d6/297f323f576776ce9547907e8276d4c801aa43fba1ac62f4e4e0c6923c5e/repo_review-0.11.3.tar.gz", hash = "sha256:cdfd2648da6a314ca6b7e8c9cef0dc91a1eddcefcf662e15724b175eb69fdb13", size = 43676 }
+sdist = { url = "https://files.pythonhosted.org/packages/a8/ec/9c3c2e25b546cf788478edee5a8a4c15c4fb48144c65157898007c1af384/repo_review-0.12.1.tar.gz", hash = "sha256:57e1738fb0d127ba448109c012f16211ed6877434845905c748b170f721c7060", size = 45128 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/99/db/a23731ce40c390a179a639f23a4e8701528ced3b8ea21730a538b0cbed23/repo_review-0.11.3-py3-none-any.whl", hash = "sha256:b79554d299807b2e7ca411d2777bcba1a55a3f1e68eeefaeec31a43e026b7eca", size = 25540 },
+    { url = "https://files.pythonhosted.org/packages/4b/47/8dfe2cee47cb734f74fa50eeaf7d4156c67051e59a4c705024f8c979917b/repo_review-0.12.1-py3-none-any.whl", hash = "sha256:0a9381b0a458a074a0a7e8b15b3e9c17c42f489af879ce55594947b7e63bdad9", size = 26350 },
 ]
 
 [package.optional-dependencies]
@@ -616,7 +616,7 @@ type = [
 
 [package.metadata]
 requires-dist = [
-    { name = "optype", specifier = ">=0.9.0" },
+    { name = "optype", specifier = ">=0.9.1" },
     { name = "scipy", marker = "extra == 'scipy'", specifier = ">=1.15.1,<1.16" },
 ]
 
