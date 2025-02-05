@@ -72,7 +72,7 @@ def find_peaks(
     height: onp.ToFloatND | Sequence[onp.ToFloat | None] | onp.ToFloat | None = None,
     threshold: onp.ToFloatND | Sequence[onp.ToFloat | None] | None = None,
     distance: onp.ToFloat | None = None,
-    prominence: onp.ToFloatND | Sequence[onp.ToFloat | None] | None = None,
+    prominence: onp.ToFloat | onp.ToFloatND | Sequence[onp.ToFloat | None] | None = None,
     width: onp.ToFloatND | Sequence[onp.ToFloat | None] | None = None,
     wlen: onp.ToFloat | None = None,
     rel_height: onp.ToFloat = 0.5,
