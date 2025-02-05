@@ -806,7 +806,7 @@ class rv_continuous(_rv_mixin, rv_generic):
             [_FloatND, tuple[float, ...], tuple[float, ...], bool],
             tuple[onp.ToFloat, ...],
         ]
-        | None = None,
+        | None = ...,
         method: _FitMethod = "MLE",
         **kwds: onp.ToFloat,
     ) -> tuple[_Float, ...]: ...
