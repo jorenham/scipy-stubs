@@ -3,6 +3,7 @@
 
 import importlib.metadata
 import json
+import subprocess  # noqa: S404
 import sys
 import urllib.error
 import urllib.request
@@ -20,6 +21,26 @@ MIN_VERSIONS: Final = (
     (Version("3.12"), Version("1.26")),
     (Version("3.13"), Version("2.1")),
 )
+
+
+class UVPythonVersionParts(TypedDict):
+    major: int
+    minor: int
+    patch: int
+
+
+class UVPythonRelease(TypedDict):
+    name: str
+    version: str
+    version_parths: UVPythonVersionParts
+    path: str | None
+    symlink: str | None
+    url: str | None
+    os: str
+    variant: str
+    implementation: str
+    arch: str
+    libc: str
 
 
 class FileInfo(TypedDict, total=False):
@@ -124,16 +145,16 @@ def get_available_python_versions(
         urllib.error.URLError: If fetching data fails.
 
     """
-    data: list[Release] = cast(
-        "list[Release]",
-        fetch_json("https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json"),
-    )
+    data_raw = subprocess.check_output(["uv", "python", "list", "--output-format=json"])  # noqa: S603, S607
+    data = cast("list[UVPythonRelease]", json.loads(data_raw))
 
     versions: dict[tuple[int, int], Version] = {}
 
-    for release in data[::-1]:
-        version = parse(release["version"])
+    for release in data:
+        if release["implementation"] != "cpython" or release["variant"] != "default":
+            continue
 
+        version = parse(release["version"])
         if version.is_prerelease and not pre_releases:
             continue
 
